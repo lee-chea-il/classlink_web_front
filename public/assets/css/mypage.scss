@@ -1,0 +1,138 @@
+@use "theme";
+@use "mixin";
+/*---------------------------------------*/
+/*--------   2. mypage.scss   -----------*/
+/*---------------------------------------*/
+.page_mypage {
+	border-radius: 5px;
+	border: 1px solid rgba(167, 169, 172, .2);
+	background: #fff;
+	padding: 40px 20px;
+	@media (max-width: 991.98px) {
+		margin: -20px -25px -30px;
+		border: none;
+	}
+	@media (max-width: 575.98px) {
+		padding: 20px 0px;
+	}
+	.title { 
+		color: #303030; font-weight: 500; 
+		@media (max-width: 991.98px) { display: none;}
+	}
+	.info_area {
+		padding: 15px 50px;
+		border-radius: 5px;
+		border: 1px solid rgba(167, 169, 172, .5);
+		background: #fff;
+		margin-top: 15px;
+		font-size: 14px;
+		@media (max-width: 575.98px) {
+			padding: 15px 20px;
+		}
+		.friends { line-height: 30px;}
+	}
+	// 왼쪽 오른쪽 높이 조절
+	.info_area.left {
+		label, label+div { line-height: 47.5px;}
+	}
+	.btn_area {
+		display: flex;
+		align-items: center;
+		margin-top: 15px;
+		justify-content: space-between;
+		@media (max-width: 575.98px) {
+			justify-content: center;
+			.btn:first-child { margin-right: 10px;}
+		}
+	}
+}
+
+.modal_myinfo {
+	$lineheight : 60px;
+	.modal-body { 
+		@media (max-width: 575.98px) { padding: 20px 0; }
+	}
+	.divid_section { 
+		margin: 0 50px;
+		padding-bottom: 20px;
+		border-top: 1px solid #E6E7E8;
+		@media (max-width: 991.98px) {margin: 0 5px;}
+
+		&:first-child { border-top: 0;}
+	}
+	
+	.form-group.row { 
+		> label { font-weight: 400; line-height: $lineheight;}
+		> label+div { line-height: $lineheight;}
+		> label+div button,
+		> label+div a { line-height: normal;}
+	}
+	.friends {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 5px 15px;
+		margin-bottom: 7px;
+		background-color: theme.$color-light4;
+		border-radius: 5px;
+		font-size: 14px;
+		.frid { 
+			@include mixin.text_ellipsis(inline-block, 100px, 20px);
+			@media (max-width: 991.98px) { width: calc(100% - 150px);}
+		}
+		.btn {
+			height: 30px; padding: 0 10px; min-width: unset;
+		}
+		.btn_crud_default { margin-left: auto; margin-right: 10px;}
+	}
+	.profile_photo { margin: 0 auto 25px;}
+	.lacture_info {
+		text-align: left;
+		.title { padding: 5px 0; font-size: 14px; font-weight:400;}
+		.list_area {
+			height: 70px;
+			border: 0.4px solid rgba(167, 169, 172, .4);
+			border-radius: 3px;
+			padding: 15px;
+			overflow-y: auto;
+			overflow-x: hidden;
+		}
+		.lacture {
+			float: left;
+			padding: 10px 24px;
+			margin-right: 10px;
+			margin-bottom: 6px;
+			font-weight: 400;
+			font-size: 14px;
+			background: #E6E7E8;
+			border-radius: 5px;
+
+			@media (max-width: 991.98px) { width: 100%;}
+		}
+	}
+	.btn_section {
+		clear: both;
+		position: relative;
+		height: auto;
+		overflow: hidden;
+		margin: 10px 65px 0;
+		padding-bottom: 20px;
+		display: flex;
+		align-items: center;
+		
+		.exp_txt {
+			font-weight: 400;
+			font-size: 10px;
+			line-height: 14px;
+			/* Text / Unselected */
+			color: #A7A9AC;
+			margin-left:10px;
+
+			@media (max-width: 991.98px) { display: none;}
+		}
+		.btn_crud_point { margin-left: auto;}
+	}
+}
+
+/* jeh-2022.08.30 */

@@ -1,0 +1,32 @@
+@mixin relativeBox($height) {
+	position: relative;
+	height: $height;
+}
+@mixin widthMaxMin($max:1280px, $min:1024px) {
+	max-width: $max;
+	min-width: $min;
+}
+@mixin cover() {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0, .5);
+	z-index: 1000;
+}
+@mixin text_ellipsis($dp, $w, $h) {
+	display: $dp;
+	width: $w; height: $h; line-height: $h;
+	white-space: nowrap;
+	overflow: hidden; text-overflow: ellipsis;
+}
+@mixin divid_line($bcolor,$h) {
+	display: inline-block;
+	vertical-align: middle;
+	width: 1px;
+	height: $h;
+	padding-left: 5px;
+	margin-right: 5px;
+	border-right: 1px solid $bcolor;
+}

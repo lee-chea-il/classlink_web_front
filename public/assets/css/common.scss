@@ -1,0 +1,20 @@
+@charset "UTF-8";
+/*---------------------------------------*/
+/*--------   Table of contents   --------*/
+/*
+0. _reset.scss    : 초기화
+0. incommon.scss  : @use "theme"; @use "mixin"; 공통 scss 
+0. cl.scss        : ClassLink's Scss
+1. login.scss     : 로그인, 회원가입 관련
+2. mypage.scss    : 마이페이지=내정보(공통)
+-----------------------------------------*/
+@use "_reset.scss";
+@use "incommon.scss";
+@use "cl.scss";
+@use "login.scss";
+@use "mypage.scss";
+
+@import url('../plugins/bootstrap/bootstrap.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+
