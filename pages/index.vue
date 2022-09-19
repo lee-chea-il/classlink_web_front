@@ -17,5 +17,5 @@
   import FindIdModal from "@/components/modal/FindIdModal.vue"
   import FindPwModal from "@/components/modal/FindPwModal.vue"
 
-  const titleTxt = '로그인';
+  const titleTxt='로그인';
 </script>
