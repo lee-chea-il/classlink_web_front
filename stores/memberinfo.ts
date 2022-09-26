@@ -8,11 +8,17 @@ export const memberInfo = defineStore("memberInfo", () => {
   });
   const setMemberInfo = (type, data) => {
     myInfo.value[type] = data;
-    console.log("ssss");
+    console.log("멤버");
     try {
-      console.log("3333");
+      console.log("멤버시작");
       const response = axios
-        .get(`https://jsonplaceholder.typicode.com/users`)
+        .post(`http://localhost:8301/updatetest`, {
+          memEmail: "winsori7@naver.com",
+          memId: "winsori",
+          memIdx: "1",
+          memName: "테스트",
+          mem_sex: "M",
+        })
         //const response = await axios.get(`https://jsonplaceholder.typicode.com/users`)//'http://112.171.101.31:3106/aip/data/1'
         .then((res) => {
           console.log(`status: ${res.status}`); // 응답 Status code
