@@ -1,15 +1,16 @@
 <script setup lang="ts">
-	import { ref } from 'vue';
-	import LoginLeftSection from '@/components/LoginLeftSection.vue';
-	import SignUpSection from '@/components/SignUpSection.vue';
-	import SignUpIdentity from '@/components/SignUpIdentity.vue';
-	import SignUpServiceConfirm from '@/components/SignUpServiceConfirm.vue';
-	import SignUpConfirmModal from '@/components/modal/SignUpConfirmModal.vue';
+import { ref } from "vue";
+import LoginLeftSection from "@/components/LoginLeftSection.vue";
+import SignUpSection from "@/components/SignUpSection.vue";
+import SignUpIdentity from "@/components/SignUpIdentity.vue";
+import SignUpServiceConfirm from "@/components/SignUpServiceConfirm.vue";
+import SignUpConfirmModal from "@/components/modal/SignUpConfirmModal.vue";
+import { memberInfo } from "@/stores/memberinfo";
 
-	const modalData1 = ref({
-		title:'서비스 이용 약관',
-		id:'modalTerms01',
-		txt:`제1장 총칙
+const modalData1 = ref({
+  title: "서비스 이용 약관",
+  id: "modalTerms01",
+  txt: `제1장 총칙
 제1조 (목적)
 이 약관(이하 "약관"이라고 합니다)은 주식회사 포인블랙(이하 "회사"라고 합니다)이 제공하는 포인캠퍼스(PoinCampus) 서비스 및 관련 제반 서비스(이하 “서비스”)의 이용과 관련하여 “회사”와 “이용자”와의 권리, 의무 및 책임사항 등을 규정함을 목적으로 합니다.
 
@@ -27,12 +28,12 @@
 서비스: “회사”가 온라인상 접속 가능한 PC 또는 단말기를 통하여 “이용자”에게 “캠퍼스” 개설·관리 및 “콘텐츠” 이용을 위해 제공하는 행위 등을 말합니다.
 결제서비스: “캠퍼스개설자”와 “이용자”의 “클래스” 판매와 구매를 하기 위해 제공하는 행위 등을 말합니다.
 
-`
-	})
-	const modalData2 = ref({
-				title:'개인정보 처리방침',
-				id:'modalTerms02',
-				txt:`제1장 총칙
+`,
+});
+const modalData2 = ref({
+  title: "개인정보 처리방침",
+  id: "modalTerms02",
+  txt: `제1장 총칙
 제1조 (목적)
 이 약관(이하 "약관"이라고 합니다)은 주식회사 포인블랙(이하 "회사"라고 합니다)이 제공하는 포인캠퍼스(PoinCampus) 서비스 및 관련 제반 서비스(이하 “서비스”)의 이용과 관련하여 “회사”와 “이용자”와의 권리, 의무 및 책임사항 등을 규정함을 목적으로 합니다.
 
@@ -50,29 +51,48 @@
 서비스: “회사”가 온라인상 접속 가능한 PC 또는 단말기를 통하여 “이용자”에게 “캠퍼스” 개설·관리 및 “콘텐츠” 이용을 위해 제공하는 행위 등을 말합니다.
 결제서비스: “캠퍼스개설자”와 “이용자”의 “클래스” 판매와 구매를 하기 위해 제공하는 행위 등을 말합니다.
 
-`
-			})
-	const name = ref('SignUp')
-	const signUpProcedure = ref('agree')
-	const title = ref('서비스 이용 동의');
+`,
+});
+const name = ref("SignUp");
+const signUpProcedure = ref("agree");
+const title = ref("서비스 이용 동의");
+
+const store = memberInfo();
+const registerClick = (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  store.setMemberInfo("1", "ndsgirl");
+  console.log(store.myInfo.id);
+};
 </script>
 
 <template>
-	<div class="default-layout">
-		<Header :title="title" />
-		<div class="page_login">
-			<LoginLeftSection />
-			<div class="right_section">
-				<SignUpServiceConfirm v-if="signUpProcedure=='agree'" @confirmServie-comp="() => signUpProcedure='identity'"/>
-				<SignUpIdentity v-else-if="signUpProcedure=='identity'" @identity-comp="() => signUpProcedure='signUp'"/>
-				<SignUpSection v-else />
-			</div>
-		</div>
-		<SignUpConfirmModal v-if="signUpProcedure=='agree'" :modalData='modalData1'/>
-		<SignUpConfirmModal v-if="signUpProcedure=='agree'" :modalData='modalData2'/>
-	</div>
+  <div class="default-layout">
+    <Header :title="title" />
+    <div class="page_login">
+      <LoginLeftSection />
+      <div class="right_section">
+        <SignUpServiceConfirm
+          v-if="signUpProcedure == 'agree'"
+          @confirmServie-comp="() => (signUpProcedure = 'identity')"
+        />
+        <SignUpIdentity
+          v-else-if="signUpProcedure == 'identity'"
+          @identity-comp="() => (signUpProcedure = 'signUp')"
+        />
+        <SignUpSection v-else />
+      </div>
+    </div>
+    <SignUpConfirmModal
+      v-if="signUpProcedure == 'agree'"
+      :modalData="modalData1"
+    />
+    <SignUpConfirmModal
+      v-if="signUpProcedure == 'agree'"
+      :modalData="modalData2"
+    />
+  </div>
+  <button class="btn btn_crud_point" @click="registerClick">멤버체크</button>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
