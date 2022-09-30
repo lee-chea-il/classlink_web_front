@@ -34,6 +34,7 @@
 import { ref } from "vue";
 import CustomCheckBox from "./CustomCheckBox.vue";
 import CustomNextBtn from "./CustomNextBtn.vue";
+//checkboxDatas[0].value.title
 
 const checkboxDatas = ref([
   { title: "약관 전체 동의", checked: false, id: "checkBox_0" },

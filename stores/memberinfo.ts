@@ -8,15 +8,33 @@ export const memberInfo = defineStore("memberInfo", () => {
   });
   const setMemberInfo = (type, data) => {
     myInfo.value[type] = data;
-    console.log("멤버");
+    console.log(data);
     try {
       console.log("멤버시작");
-      const response = axios
-        .post(`http://localhost:8301/updatetest`, {
+      /*
+      .get(`http://localhost:8301/updatetest`, {
           memEmail: "winsori7@naver.com",
           memId: "winsori",
           memIdx: "1",
           memName: "테스트",
+          mem_sex: "M",
+        })
+      */
+      /*
+      .post(`http://localhost:8301/updatetest`, {
+          memEmail: "winsori7@naver.com",
+          memId: "winsori",
+          memIdx: "1",
+          memName: "테스트",
+          mem_sex: "M",
+        })
+        */
+      const response = axios
+        .put(`http://localhost:8301/updatetest`, {
+          memEmail: "winsori7@naver.com",
+          memId: "winsori",
+          memIdx: 1,
+          memName: "테스트999",
           mem_sex: "M",
         })
         //const response = await axios.get(`https://jsonplaceholder.typicode.com/users`)//'http://112.171.101.31:3106/aip/data/1'
