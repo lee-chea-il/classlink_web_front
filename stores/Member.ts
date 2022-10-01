@@ -2,17 +2,14 @@ import { defineStore } from 'pinia';
 import axios from "axios"
 
 export const userInfo = defineStore('MemberInfo', () => {
-  const myInfo = ({
-    id:'',
-    identity:''
-  });
-  /*
   const myInfo = ref({
     id:'',
     identity:''
   });
+  //get
   const setMyInfo = (type,data) => {
     myInfo.value[type] = data;
+<<<<<<< HEAD
     try{
       const response = axios.get(`http://localhost:8301/puttest`)
       .then(res => {
@@ -23,11 +20,7 @@ export const userInfo = defineStore('MemberInfo', () => {
       console.log('response   ',response);
     }catch(error){
       console.log('error');
-    }
-  }
-  */
-  //get
-  const setMyInfo = (type,data) => {
+=======
     console.log("멤버");
     try {
       console.log("멤버시작");
@@ -54,6 +47,7 @@ export const userInfo = defineStore('MemberInfo', () => {
       });*/
     } catch (error) {
       console.log("error");
+>>>>>>> 41323c8f8d16408dcdb4ace68b50d4fde000dcd5
     }
   };
   
@@ -75,7 +69,6 @@ export const userInfo = defineStore('MemberInfo', () => {
         "memName":"닉네임1"
       }
       */
-     //post
       const response = axios.post(`http://localhost:8301/insertMember`,bookData)
       .then(res => {
         console.log(`status: ${JSON.stringify(res.status)}`);     // 응답 Status code
