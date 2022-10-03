@@ -38,18 +38,6 @@ $( document ).ready( function() {
 		}
 	});
 
-	// 패스워드 보이기 안보이기
-	$('#eyeOff').click( function() {
-		$('#eyeOff').addClass('hide');
-		$('#eyeOn').removeClass('hide');
-		$('#password').attr('type', 'text');
-	});
-	$('#eyeOn').click( function() {
-		$('#eyeOn').addClass('hide');
-		$('#eyeOff').removeClass('hide');
-		$('#password').attr('type', 'password');
-	});
-
 	// 패스워드 보이기 안보이기2
 	$('#eyeOff2').click( function() {
 		$('#eyeOff2').addClass('hide');

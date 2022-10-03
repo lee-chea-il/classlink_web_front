@@ -103,10 +103,10 @@
 
 <script lang="ts" setup>
   import { ref } from 'vue';
-  import { userInfo } from "@/stores/userInfo"
+  import { member } from "@/stores/Member"
   
   const modalIdCloseBtn = ref(null);
-  const store = userInfo();
+  const store = member();
   const searchIdEvent = () => {
     const result = store.searchId('f');
     if(result != null){
