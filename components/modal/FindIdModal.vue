@@ -4,7 +4,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="modalFindId">아이디찾기</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button ref="modalIdCloseBtn" type="button" class="close" data-dismiss="modal" aria-label="Close">
             <i class="icons_close"></i>
           </button>
         </div>
@@ -16,7 +16,7 @@
             <div class="input-group input-search">
               <input type="text" class="form-control" />
               <div class="input-group-append">
-                <button id="searchIdbtn" class="btn icons_search_off" type="button"></button>
+                <button @click="searchIdEvent" id="searchIdbtn" class="btn icons_search_off" type="button"></button>
               </div>
             </div>
           </div>
@@ -102,7 +102,17 @@
 </template>
 
 <script lang="ts" setup>
+  import { ref } from 'vue';
+  import { member } from "@/stores/Member"
   
+  const modalIdCloseBtn = ref(null);
+  const store = member();
+  const searchIdEvent = () => {
+    const result = store.searchId('f');
+    if(result != null){
+      modalIdCloseBtn.value.click();
+    }
+  }
 </script>
 
 <style scoped>

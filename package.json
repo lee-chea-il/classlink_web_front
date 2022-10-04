@@ -9,10 +9,13 @@
   },
   "devDependencies": {
     "nuxt": "npm:nuxt3@latest",
-    "nuxt3": "latest"
+    "nuxt3": "latest",
+    "vee-validate": "^4.6.10"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
-    "@pinia/nuxt": "^0.4.1"
+    "@pinia/nuxt": "^0.4.1",
+    "serve": "^14.0.1",
+    "yup": "^0.32.11"
   }
 }

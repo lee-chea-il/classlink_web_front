@@ -2,7 +2,7 @@
 	<div class="form-group">
 		<label for="password" class="hide">비밀번호</label>
 		<input
-			type="password"
+			:type="!isPwEyeOn?'password':'text'"
 			id="password"
 			placeholder="비밀번호 입력"
 			class="form-control form_password"
@@ -10,18 +10,20 @@
 			:value="props.modelValue"
 			@input="addInputTxt"
 		/>
-		<i id="eyeOff" class="icons_eye_off"></i>
-		<i id="eyeOn" class="icons_eye_on hide"></i>
+		<i id="eyeOff" @click="()=>{isPwEyeOn=true;}" :class="[ !isPwEyeOn?'icons_eye_off':'icons_eye_off hide']"></i>
+		<i id="eyeOn" @click="()=>{isPwEyeOn=false;}" :class="[ isPwEyeOn?'icons_eye_on':'icons_eye_on hide']"></i>
 	</div>
 </template>
 
 <script setup lang="ts">
+	
 	const props = defineProps({
 		modelValue:{
 			type:String,
 			required:true
 		}
 	});
+	const isPwEyeOn = ref(false);
 	const emit = defineEmits(['update:modelValue']);
 	const addInputTxt = (e) => {
 		emit('update:modelValue', e.target.value)

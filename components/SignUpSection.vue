@@ -134,7 +134,7 @@
         <button
           class="btn btn btn_crud_point"
           style="margin-top: 20px"
-          @click=""
+          @click="signProcess"
         >
           가입하기
         </button>
@@ -143,6 +143,10 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const signProcess = () => {
+  console.log("ok");
+};
+</script>
 
 <style scoped></style>

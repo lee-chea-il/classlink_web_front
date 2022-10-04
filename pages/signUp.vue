@@ -5,7 +5,7 @@ import SignUpSection from "@/components/SignUpSection.vue";
 import SignUpIdentity from "@/components/SignUpIdentity.vue";
 import SignUpServiceConfirm from "@/components/SignUpServiceConfirm.vue";
 import SignUpConfirmModal from "@/components/modal/SignUpConfirmModal.vue";
-import { memberInfo } from "@/stores/memberinfo";
+import { member } from "@/stores/Member";
 
 const modalData1 = ref({
   title: "서비스 이용 약관",
@@ -57,12 +57,12 @@ const name = ref("SignUp");
 const signUpProcedure = ref("agree");
 const title = ref("서비스 이용 동의");
 
-const store = memberInfo();
+const store = member();
 const registerClick = (e) => {
   e.preventDefault();
   e.stopPropagation();
-  store.setMemberInfo("1", "ndsgirl");
-  console.log(store.myInfo.id);
+  //store.setMyInfo("1", "ndsgirl");
+  //console.log(store.myInfo.id);
 };
 </script>
 

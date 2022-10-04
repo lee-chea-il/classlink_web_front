@@ -1,82 +1,40 @@
 import { defineStore } from 'pinia';
 import axios from "axios"
 
-export const userInfo = defineStore('MemberInfo', () => {
-  const myInfo = ({
-    id:'',
-    identity:''
-  });
-  /*
-  const myInfo = ref({
-    id:'',
-    identity:''
-  });
-  const setMyInfo = (type,data) => {
-    myInfo.value[type] = data;
-<<<<<<< HEAD
-    console.log(data);
-=======
+export const member = defineStore('Member', () => {
+  const myInfo = ref({});
+  const loginPageType = ref('login');
+  
+  //post
+  const checkLogin = (data) => {
+    const loginData ={
+      "memId": data.id,
+      "memPwd":data.pwd
+    };
+    
     try{
-      const response = axios.get(`http://localhost:8301/puttest`)
+      const response = axios.post(`http://localhost:8301/getLogin`,loginData)
       .then(res => {
         console.log(`status: ${JSON.stringify(res.status)}`);     // 응답 Status code
         console.log(`headers: ${JSON.stringify(res.headers)}`);   // 응답 Headers
         console.log(`data: ${JSON.stringify(res.data)}`);         // 응답 Data
-      });
-      console.log('response   ',response);
-    }catch(error){
-      console.log('error');
-    }
-  }
-  */
-  //get
-  const setMyInfo = (type,data) => {
-    console.log("멤버");
->>>>>>> 108a67561503516e26426758e2023aee3e1468dc
-    try {
-      console.log("멤버시작");
-      /*
-      .get(`http://localhost:8301/updatetest`, {
-          memEmail: "winsori7@naver.com",
-          memId: "winsori",
-          memIdx: "1",
-          memName: "테스트",
-          mem_sex: "M",
-        })
-      */
-      /*
-      .post(`http://localhost:8301/updatetest`, {
-          memEmail: "winsori7@naver.com",
-          memId: "winsori",
-          memIdx: "1",
-          memName: "테스트",
-          mem_sex: "M",
-        })
-        */
-      const response = axios
-        .put(`http://localhost:8301/updatetest`, {
-          memEmail: "winsori7@naver.com",
-          memId: "winsori",
-          memIdx: 1,
-          memName: "테스트999",
-          mem_sex: "M",
-        })
-        //const response = await axios.get(`https://jsonplaceholder.typicode.com/users`)//'http://112.171.101.31:3106/aip/data/1'
-        .then((res) => {
-          console.log(`status: ${res.status}`); // 응답 Status code
-          console.log(`headers: ${res.headers}`); // 응답 Headers
-          console.log(`data: ${res.data}`); // 응답 Data
-        });
-      console.log("response   ", response);
-      /*const response = await axios.get('url주소',{
-        params:{
-          //url 뒤에 붙는 param id값
-          id: 12345
+        
+        myInfo.value = res.data.data;
+        
+        if(res.status == 200){
+          if(res.data.returnCode=='_200'){
+            loginPageType.value = 'identity';
+          }else if(res.data.returnCode=='_01'){
+            alert(res.data.returnMessage);
+          }else if(res.data.returnCode=='_02'){
+            alert(res.data.returnMessage);
+          }
+        }else{
+
         }
-      });*/
-    } catch (error) {
-      console.log("error");
-    }
+      });
+      return response;
+    }catch(e){}
   };
   
   //put
@@ -97,7 +55,6 @@ export const userInfo = defineStore('MemberInfo', () => {
         "memName":"닉네임1"
       }
       */
-     //post
       const response = axios.post(`http://localhost:8301/insertMember`,bookData)
       .then(res => {
         console.log(`status: ${JSON.stringify(res.status)}`);     // 응답 Status code
@@ -147,5 +104,5 @@ export const userInfo = defineStore('MemberInfo', () => {
       return response;
     }catch(e){}
   }
-  return { myInfo, setMyInfo, searchId }
+  return { myInfo, loginPageType, checkLogin, searchId }
 })

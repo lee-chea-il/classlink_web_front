@@ -33,19 +33,23 @@
 
 <script setup lang="ts">
   import { ref } from 'vue';
-  import { userInfo } from "@/stores/userInfo"
+  import { member } from "@/stores/Member"
   import CustomTextId from './CustomTextId.vue'
   import CustomTextPw from './CustomTextPw.vue'
   
-  const store = userInfo();
+  const store = member();
   const myIdTxt = ref('');
   const myPwTxt = ref('');
+  const isClickable = ref(true);
 
   const loginClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    store.setMyInfo('id','학생');
-    console.log(store.myInfo.id);
+    if(isClickable){
+      isClickable.value=false;
+      store.checkLogin({id:myIdTxt.value,pwd:myPwTxt.value});
+      //console.log(store.myInfo.id);
+    }
   }
 </script>
 
