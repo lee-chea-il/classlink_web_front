@@ -3,15 +3,19 @@
       <div id="loginRwrap" class="wrap">
         <h2>로그인</h2>
         <div class="form_section">
-          <form>
+          <VForm
+            @submit="onSubmit"
+            v-slot="{ meta: formMeta, errors: formErrors }"
+          >
             <CustomTextId v-model='myIdTxt'/>
             <CustomTextPw v-model='myPwTxt'/>
-            <button class="btn btn_crud_point" @click="loginClick">로그인</button>
+
+            <button type="submit" class="btn btn_crud_point" :disabled="!formMeta.valid">로그인</button>
             <div class="custom-control custom-checkbox">
               <input type="checkbox" class="custom-control-input" id="checkbox01" />
               <label class="custom-control-label" for="checkbox01">로그인 상태 유지</label>
             </div>
-          </form>
+          </VForm>
         </div>
         <div class="link_section">
           <div class="mem_account">
@@ -41,14 +45,11 @@
   const myIdTxt = ref('');
   const myPwTxt = ref('');
   const isClickable = ref(true);
-
-  const loginClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  
+  function onSubmit(data){
     if(isClickable){
       isClickable.value=false;
-      store.checkLogin({id:myIdTxt.value,pwd:myPwTxt.value});
-      //console.log(store.myInfo.id);
+      store.checkLogin(data);
     }
   }
 </script>

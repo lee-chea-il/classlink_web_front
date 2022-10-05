@@ -92,7 +92,6 @@ const registerClick = (e) => {
       :modalData="modalData2"
     />
   </div>
-  <button class="btn btn_crud_point" @click="registerClick">멤버체크</button>
 </template>
 
 <style scoped></style>

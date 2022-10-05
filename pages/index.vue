@@ -22,7 +22,7 @@
   import LoginIdentity from '@/components/LoginIdentity.vue'
   import FindIdModal from "@/components/modal/FindIdModal.vue"
   import FindPwModal from "@/components/modal/FindPwModal.vue"
-
+  
   const store = member();
 
   const titleTxt='로그인';
