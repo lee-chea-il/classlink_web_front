@@ -18,10 +18,11 @@
 
           <!-- [개발참조]:예외처리-오류의 예 -->
           <div class="form-group">
-            <label for="form01">이름</label>
+            <label for="mem_name">이름</label>
             <input
               type="text"
-              id="form01"
+              id="mem_name"
+              name="mem_name"
               placeholder="이름 입력"
               class="form-control is-invalid"
             />
@@ -144,6 +145,10 @@
 </template>
 
 <script setup lang="ts">
+import { ValidationProvider } from "vee-validate";
+//import { useField, useForm } from "vee-validate";
+//import * as yup from "yup";
+
 const signProcess = () => {
   console.log("ok");
 };
