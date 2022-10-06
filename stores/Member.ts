@@ -11,7 +11,9 @@ export const member = defineStore('Member', () => {
       "memId": data.id,
       "memPwd":data.pwd
     };
-    
+    loginPageType.value = 'identity';
+    /*
+    api 활성화되면 주석 해제 할것
     try{
       const response = axios.post(`http://localhost:8301/getLogin`,loginData)
       .then(res => {
@@ -35,6 +37,7 @@ export const member = defineStore('Member', () => {
       });
       return response;
     }catch(e){}
+    */
   };
   
   //put
