@@ -3,3 +3,11 @@
   height: 100%;
 }
 .default-layout{height: 100%;}
+.help.is-danger {
+  color: #f14668;
+}
+.help {
+  display: block;
+  font-size: .75rem;
+  margin-top: 0.25rem;
+}

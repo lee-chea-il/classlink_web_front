@@ -1,7 +1,7 @@
 <template>
 	<div class="form-group">
 		<label for="password" class="hide">비밀번호</label>
-		<input
+		<VField
 			:type="!isPwEyeOn?'password':'text'"
 			id="password"
 			placeholder="비밀번호 입력"
@@ -9,7 +9,11 @@
 			autocomplete="on"
 			:value="props.modelValue"
 			@input="addInputTxt"
+			name="pwd"
+			rules="required:pwd"
 		/>
+		<VErrorMessage name="pwd" class="help is-danger" />
+
 		<i id="eyeOff" @click="()=>{isPwEyeOn=true;}" :class="[ !isPwEyeOn?'icons_eye_off':'icons_eye_off hide']"></i>
 		<i id="eyeOn" @click="()=>{isPwEyeOn=false;}" :class="[ isPwEyeOn?'icons_eye_on':'icons_eye_on hide']"></i>
 	</div>
@@ -28,6 +32,7 @@
 	const addInputTxt = (e) => {
 		emit('update:modelValue', e.target.value)
 	}
+	//|confirmed:password
 </script>
 
 <style scoped>

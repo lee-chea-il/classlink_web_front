@@ -64,15 +64,12 @@ export default defineNuxtConfig({
           content: '교육특화 메타버스 클래스링크 가상공간의 또 다른 학교 오프라인 학교/학원보다 더 학교/학원같은 캠퍼스',
         },
       ],
-      link: [{ rel: 'canonical', href: 'https://www.metaclasslink.com' },{ rel: 'shortcut icon', type: 'image/x-icon', href: './assets/images/favicon.png' },{ rel: 'stylesheet', href: './assets/css/common.css'},{ rel: 'stylesheet', href: './assets/css/base.css'}],
-      script: [
-        {src:'./static/jquery/jquery-3.6.0.min.js'},
-        {src:'./plugins/bootstrap/bootstrap.bundle.min.js',async:true,crossorigin:"anonymous"}
-      ],
+      link: [{ rel: 'canonical', href: 'https://www.metaclasslink.com' },{ rel: 'shortcut icon', type: 'image/x-icon', href: './assets/images/favicon.png' },{ rel: 'stylesheet', href: './assets/css/common.css'},{ rel: 'stylesheet', href: './assets/css/base.css'}]
     },
   },
+  ssr: true,
 
   modules: [
     '@pinia/nuxt'
-  ],
+  ]
 })
