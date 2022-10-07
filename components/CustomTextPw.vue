@@ -12,10 +12,9 @@
 			name="pwd"
 			rules="required:pwd"
 		/>
-		<VErrorMessage name="pwd" class="help is-danger" />
-
 		<i id="eyeOff" @click="()=>{isPwEyeOn=true;}" :class="[ !isPwEyeOn?'icons_eye_off':'icons_eye_off hide']"></i>
 		<i id="eyeOn" @click="()=>{isPwEyeOn=false;}" :class="[ isPwEyeOn?'icons_eye_on':'icons_eye_on hide']"></i>
+		<VErrorMessage name="pwd" class="help is-danger" />
 	</div>
 </template>
 

@@ -68,8 +68,8 @@ export default defineNuxtConfig({
       script: [
         {src:'./static/jquery/jquery-3.6.0.min.js'},
         {src:'./plugins/bootstrap/bootstrap.bundle.min.js',async:true,crossorigin:"anonymous"}
-      ],
-    },
+      ]
+    }
   },
   ssr: true,
 
