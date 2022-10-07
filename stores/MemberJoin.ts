@@ -1,12 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
-export const userInfo = defineStore("MemberInfo", () => {
-  const myInfo = {
-    id: "",
-    identity: "",
-  };
-
+export const memberJoin = defineStore("MemberJoin", () => {
   const myInfo = ref({
     id: "",
     identity: "",
