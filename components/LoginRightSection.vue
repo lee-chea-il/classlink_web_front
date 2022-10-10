@@ -39,7 +39,7 @@
             >아이디 찾기</span
           >
           <span id="findPw" data-toggle="modal" data-target="#modalFindPw"
-            >비밀번호 찾기2</span
+            >비밀번호 찾기</span
           >
         </div>
       </div>

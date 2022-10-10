@@ -22,7 +22,7 @@
 15. cl_building.scss    : CL관리자-건물:프랜차이즈, 지역축제
 100.main.scss           : 메인 홈페이지
 -----------------------------------------*/
-@import url("../plugins/bootstrap/bootstrap.min.css");
+@import url("plugins/bootstrap/bootstrap.min.css");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap");
 /*---------------------------------------*/
 /*--------   0. reset.scss   ------------*/
