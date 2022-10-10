@@ -6,7 +6,7 @@ export const member = defineStore('Member', () => {
   const loginPageType = ref('login');
   const searchIdList = ref([]);
 
-  //get
+  //post
   const getIdFromEmail = (email) => {
     const eData ={
       "memEmail": ''

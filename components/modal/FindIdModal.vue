@@ -4,7 +4,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="modalFindId">아이디찾기</h5>
-          <button ref="modalIdCloseBtn" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button @click="() => isShowTable=false" ref="modalIdCloseBtn" type="button" class="close" data-dismiss="modal" aria-label="Close">
             <i class="icons_close"></i>
           </button>
         </div>
@@ -14,7 +14,8 @@
           </div>
           <div class="form-group">
             <div class="input-group input-search">
-              <input type="text" class="form-control" />
+              <VField v-model="emailTxt" type="text" class="form-control" name="emailTxt"/>
+              <VErrorMessage name="emailTxt" class="help is-danger" />
               <div class="input-group-append">
                 <button @click="searchIdEvent" id="searchIdbtn" class="btn icons_search_off" type="button"></button>
               </div>
@@ -59,8 +60,6 @@
               </table>
             </div>
           </div>
-          <!-- /.검색 후 결과 테이블 -->
-          
         </div>
         <div class="modal-footer">
           <button class="btn btn_crud_point" data-dismiss="modal">로그인하기</button>
@@ -83,10 +82,13 @@
   const modalIdCloseBtn = ref(null);
   const isShowTable = ref(false);
   const listData = ref([]);
+  const emailTxt = ref('');
 
   const searchIdEvent = () => {
-    memStore.getIdFromEmail('aaa@test.com');
+    console.log('emailTxt   ',emailTxt.value);
+    memStore.getIdFromEmail(emailTxt.value);//'aaa@test.com'
     isShowTable.value = true;
+
     /*if(result != null){
       modalIdCloseBtn.value.click();
     }*/

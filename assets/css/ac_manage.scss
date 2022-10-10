@@ -1,0 +1,1142 @@
+@use "theme";
+@use "mixin";
+/*---------------------------------------*/
+/*--------   4.ac_manage.scss   ---------*/
+/*---------------------------------------*/
+
+//학생관리 페이지
+.ac_manage_std {
+	.tab-pane .nothing_txt {
+		@include mixin.nothing_txt(100%);
+		flex-direction: column;
+		min-height: 300px;
+		.txt { line-height: 20px; margin-bottom: 15px;}
+		.btn_area .btn:first-child { margin-right: 10px;} 
+	}
+}
+//학생관리 페이지 - 고정형min992px 관련 수정
+.tab-content.depth03.ac_manage_std {
+	.search_section {
+		@media (max-width: 1099px) { 
+			display: block;
+			.right_area {
+				margin-top: 5px;
+				// text-align: right;
+			}
+		}
+	}
+}
+
+
+// 학생관리 모달
+.modal.ac_manage_std {
+	.btn_section.regi { justify-content: flex-end; }
+	.btn_section.regi .btn_crud_point { margin-left: 15px;}
+}
+
+//선생님관리 모달
+.modal_ac_manage_tch {
+	.info_area .form-group.row {
+		.readonly_txt {
+			font-weight: 400;
+			font-size: 14px;
+			color: theme.$text_unselected_color;
+		}
+		.invalid_text, .valid_text {
+			line-height: initial;
+			font-size: 12px;
+			padding-left: 0;
+		}
+		.exp_txt, .exp_text {
+			width: 100%;
+			margin-top: 0;
+			line-height: initial;
+			font-size: 12px;
+			+ .exp_text { bottom: -22px;}
+		}
+		.group {
+			.exp_txt, .exp_text {
+				position: relative;
+				padding-left: 0;
+				+ .exp_text { bottom: -5px;}
+			}
+		}
+	}
+	.info_area.right {
+		.form-group>label { padding-top: 20px;}
+		label, label + div {
+			line-height: initial;
+		}
+	}
+	.box_area {
+		padding: 10px 13px;
+		border-radius: 5px;
+		border: 0.4px solid rgba(theme.$text_unselected_color, .4);
+		.tit {
+			font-weight: 400;
+			font-size: 12px;
+		}
+	}
+}
+
+//반관리 모달
+.modal_ac_manage_cls {	
+	.modal-body {
+		text-align: left;
+		padding-left: 50px;
+		padding-right: 50px;
+	}
+	.search_class label { font-size: 16px;}
+	.cnts_section, .move_section {
+		position: relative;
+		height: auto;
+		overflow: hidden;
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+
+	}
+	.class_section {
+		width: 48%;
+		.tit {
+			width: 100%;
+			margin: 20px 0;
+		}
+	}
+	.list_section {
+		width: 49%;
+
+		.list_area {
+			@include mixin.border_common;
+			height: 450px;
+			overflow-y: auto;
+
+			li {
+				padding: 8px 15px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				i { cursor: pointer;}
+			}
+		}
+		.sum_info {
+			width: 100%;
+			height: 39px;
+			line-height: 39px;
+			text-align: right;
+			margin-bottom: 5px;
+			font-size: 14px;
+		}
+		.nav-tabs .nav-item { padding: initial;}
+		.nav-tabs + .tab-content {
+			@include mixin.border_common;
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+			border-top: none;
+			height: 408px;
+		}
+	}
+	.list_section.selected {
+		li {
+			display: block;
+			.list, .list_sub li {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding-right: 0;
+				span + i {
+					margin-left: auto;
+				}
+				i.btn { margin-right: 5px;}
+				.ss_txt {
+					margin-left: 10px;
+					font-size: 14px;
+					color: #A7A9AC;
+				}
+			}
+			.list_sub {
+				padding: 4px 0px;
+			}
+		}
+	}
+	.nothing_txt {
+		@include mixin.nothing_txt(100%);
+		flex-direction: column;
+		.txt { line-height: 20px; margin-bottom: 15px;}
+		.btn_area .btn:first-child { margin-right: 10px;} 
+	}
+	.search_std {
+		width: 42%;
+		padding: 30px 25px;
+		@include mixin.border_common;
+
+		.table_area {
+			position: relative;
+			height: auto;
+			overflow: hidden;
+			margin-top: 15px;
+			text-align: center;
+	
+			.table_thead {
+				padding: 5px 0;
+				background: #F9F9FB;
+				border: 1px solid #E6E7E8;
+				border-radius: 5px;
+			}
+	
+			.table_tbody {
+				padding: 5px 0;
+				position: relative;
+				width: 100%;
+				height: 400px;
+				overflow-y: auto;
+			}
+			.tb {
+				position: relative;
+				width: 100%;
+				padding: 15px;
+				overflow-y: auto;
+				overflow-x: hidden;
+			}
+			.custom-control-label::before, .custom-control-label::after { left: -1.5rem;}
+			td {
+				padding: 10px 0;
+			}
+		}
+		.table_area.right {
+			padding: 5px 0;
+			position: relative;
+			width: 100%;
+			height: 438px;
+			overflow-y: auto;
+		}
+		.class_tr th { 
+			padding: 0 0 10px;
+		}
+		.list_class_students { margin-bottom: 20px; }
+		.icons_new { width: 39px; height: 18px;}
+	}
+	.search_name { display: flex; justify-content: space-between; align-items: center;}
+	.search_name .input-search { width: calc(100% - 150px);}
+	.search_name .input-search input[type=text]::placeholder {
+		font-size: 16px;
+		color: rgba(167, 169, 172, 0.7);
+	}
+
+	.btn_move_area {
+		position: relative;
+		width: 16%;
+		height: 490px;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		.custom-checkbox { margin-bottom: 30px;}
+		.btn { margin-bottom: 20px; 
+			&:last-of-type { margin-top: 30px;}
+		}
+	}
+}
+
+//학생관리-출결 모달
+.modal_moreattendance {
+	position: relative;
+	height: auto;
+	overflow: auto;
+	text-align: left;
+	padding-left: 50px;
+	padding-right: 50px;
+	padding-bottom: 30px;
+	.name { font-weight: 700;}
+	.name > span { margin-left: 10px; font-weight: 400; color: theme.$text_unselected_color;}
+}
+
+//학생관리-학습리포트1모달
+.modal_morereports {
+	position: relative;
+	.date_area {
+		display: flex; align-items: center;
+		justify-content: flex-end;
+	}
+	.cnts_section {
+		position: relative;
+		margin-top: 20px;
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		padding: 0 30px;
+		.list_section {
+			position: relative;
+			width: 24%;
+			text-align: left;
+			.title { margin-bottom: 15px;}
+			.list_area {
+				position: relative;
+				margin-top: 5px;
+				padding: 20px 15px;
+				height: 452px;
+				overflow-y: auto;
+				@include mixin.border_common;
+				li { padding: 5px 0; 
+					.custom-control-label { font-size: 16px;}
+				}
+			}
+		}
+	}
+}
+.modal_morereports02 {
+	position: relative;
+	overflow-y: auto;
+	padding-left: 50px;
+	padding-right: 50px;
+	.contents_section {
+		position: relative;
+		height: 580px;
+		overflow-y: auto;
+	}
+	.title_name { margin-bottom: 25px;}
+	.title_name > span { font-weight: 700;}
+	.table_area {
+		margin-bottom: 14px;
+		.table > thead th {
+			font-weight: 400;
+			font-size: 14px;
+			color: #454545;
+		}
+		.table > tbody > tr:nth-child(even) {
+			background-color: #F9F9FC;
+		}
+		.table > tbody > tr > td {
+			padding: 15px 5px;
+			font-size: 16px;
+		}
+	}
+	.graph_area {
+		position: relative;
+		display: flex;
+		align-items: flex-start;
+		background-color: #F9F9FB;
+		padding: 25px 55px;
+		font-size: 14px;
+		color: #A7A9AC;
+		.title {
+			width: 100%;
+			padding-bottom: 15px;
+			margin-bottom: 15px;
+			border-bottom: 0.4px solid rgba(theme.$text_unselected_color, .4);
+		}
+		.reports_graph {
+			padding: 15px 30px;
+			flex-grow: 1;
+			border-radius: 5px;
+			background-color: #fff;
+			.per_num {
+				position: relative;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				height: 20px;
+				margin-bottom: 20px;
+				span {
+					display: inline-block;
+					width: 25%;
+					text-align: left;
+					i { float: right;}
+				}
+			}
+		}
+		
+		.report_box {
+			position: relative;
+			text-align: left;
+			color: #454545;
+			margin-bottom: 15px;
+
+			.subject{ font-size: 16px; margin-bottom: 10px;}
+			.my_average {
+				position: absolute;
+				z-index: 1;
+				width: 40px;
+				height: 51px;
+				top: -2px;
+				padding-left: 10px;
+				font-size: 16px;
+				text-align: right;
+				color: #454545;
+				&::before {
+					display: inline-block;
+					position: absolute;
+					top: 0;
+					left: -12px;
+					content: '';
+					width: 24px;
+					height: 51px;
+					background-image: url(../images/icon_mark_point.png);
+					background-repeat: no-repeat;
+					background-size: contain;
+				}
+			}
+			.class_average {
+				position: absolute;
+				z-index: 1;
+				width: 64px;
+				top: 2px;
+				font-size: 14px;
+				text-align: right;
+				background-color: rgba(255, 255, 255, 1);
+			}
+			.graph_bg {
+				width: 100%;
+				height: 17px;
+				background: #F9F9FC;
+				border: 0.4px solid rgba(167, 169, 172, .4);
+				border-radius: 100px;
+				overflow: hidden;
+				.class_percent { 
+					display: inline-block; 
+					height: 17px;
+				}
+			}
+			
+			&.color01 {
+				.class_average { color: theme.$color_light1;}
+				.class_percent { background-color: theme.$color_light1; }
+			}
+			&.color02 {
+				.class_average { color: theme.$color_emerald;}
+				.class_percent { background-color: theme.$color_emerald; }
+			}
+			&.color03 {
+				.class_average { color: theme.$text_unselected_color}
+				.class_percent { background-color: theme.$color_light3; }
+			}
+		}
+		.per_area {
+			width: 100px;
+			text-align: center;
+			padding: 15px;
+			border-radius: 5px;
+			background-color: #fff;
+			margin-left: 25px;
+			.title { margin-bottom: 50px;}
+			.value {
+				position: relative;
+				padding-top: 34px;
+				padding-bottom: 15px;
+				font-size: 16px;
+				line-height: 18px;
+				color: #454545;
+			}
+		}
+	}	
+	.data_prev {
+		position: absolute;
+		left: 0px;
+		top: 45%;
+	}
+	.data_next {
+		position: absolute;
+		right: 0px;
+		top: 45%;
+	}
+}
+
+/*---------------------------------------*/
+/*--------   4.ac_manage.scss-jeh  ------*/
+/*---------------------------------------*/
+
+/* jeh-2022.09.07 시작 */
+/* 학생 일괄 등록1 - 팝업 M2 */
+#modalBatchregi {
+	.modal-body {
+		text-align: left;
+		padding: 30px;
+	}
+
+	.title01 {
+		font-weight: 700;
+		font-size: 16px;
+		line-height: 23px;
+		color: theme.$color_light1;
+		position: relative;
+		top: -10px;
+	}
+
+	.title02 {
+		font-weight: 700;
+		font-size: 16px;
+		line-height: 23px;
+		color: theme.$color_light1;
+		position: relative;
+		top: 20px;
+	}
+
+	.content {
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 20px;
+		color: theme.$text_unselected_color;
+		position: relative;
+		top: 5px;
+	}
+
+	.content02 {
+		position: relative;
+		top: 4px;
+	}
+
+	.content03 {
+		position: relative;
+		top: 30px;
+	}
+
+	.divid_section {
+		border-top: 1px solid #E6E7E8;
+		position: relative;
+		top: 45px;
+	}
+
+	.file_down {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-end;
+		align-items: center;
+		padding: 8px 20px;
+		gap: 9px;
+		width: 164px;
+		height: 39px;
+		background: #7391FA;
+		border-radius: 5px;
+		color: #ffffff;
+		border: none;
+		position: relative;
+		top: 20px;
+	}
+
+	.icon_download {
+		background-image: url(../images/icons/icon_download_white.png);
+		width: 17px;
+		height: 22px;
+	}
+
+	.button {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-end;
+		align-items: center;
+		padding: 8px 20px;
+		gap: 9px;
+		position: absolute;
+		width: 131px;
+		height: 39px;
+		left: 263px;
+		top: 91px;
+		background: #7391FA;
+		border-radius: 5px;
+		color: #ffffff;
+		cursor: pointer;
+	}
+
+	.icon_link {
+		background-image: url(../images/icons/icon_link_white.png);
+		width: 20px;
+		height: 20px;
+	}
+
+	.modal-footer {
+		border: none;
+		justify-content: center;
+		padding-bottom: 110px;
+		position: relative;
+		top: 90px;
+	}
+
+	.form-control {
+		position: relative;
+		top: 45px;
+	}
+
+	#input00 {
+		width: 59%;
+	}
+
+	.btn_crud_point {
+		min-width: 70px;
+	}
+}
+
+/* 학생 일괄 등록2(성공) - 팝업 S2 */
+#modalBatchregi01 {
+	.title {
+		font-weight: 500;
+		font-size: 16px;
+		line-height: 23px;
+		color: theme.$text_default_color;
+	}
+
+	.content {
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 20px;
+		color: theme.$text_unselected_color;
+		position: relative;
+		top: 8px;
+		right: 448px;
+	}
+
+	.btn_crud_point {
+		min-width: 70px;
+	}
+}
+
+/* 학생 일괄 등록3(실패) - 팝업 S2 */
+#modalBatchregi02 {
+	.icon_information {
+		position: absolute;
+		left: 135px;
+		top: 36px;
+		background-image: url(../images/icons/icon_information_black.png);
+		width: 22px;
+		height: 22px;
+	}
+
+	.title {
+		font-weight: 500;
+		font-size: 16px;
+		line-height: 23px;
+		color: theme.$text_default_color;
+	}
+
+	.content {
+		font-weight: 400;
+		font-size: 12px;
+		line-height: 17px;
+		display: flex;
+		align-items: center;
+		color: theme.$text_unselected_color;
+		position: relative;
+		left: 70px;
+		top: 5px;
+	}
+
+	.outer {
+		position: relative;
+		width: 349px;
+		height: 51px;
+		left: 20px;
+		top: 22px;
+		background: theme.$color_normal;
+		border-radius: 5px;
+		overflow-y: scroll;
+	}
+
+	.title02 {
+		font-weight: 500;
+		font-size: 12px;
+		line-height: 17px;
+		display: flex;
+		align-items: center;
+		color: theme.$text_default_color;
+		padding: 10px 13px 3px 14px;
+	}
+
+	.content02 {
+		font-weight: 400;
+		font-size: 12px;
+		line-height: 17px;
+		display: flex;
+		align-items: center;
+		text-align: left;
+		color: theme.$text_default_color;
+		padding: 0px 15px;
+	}
+
+}
+
+/* 일촌등록 - 팝업 M2 */
+#modalFriendsregi {
+	.input-search {
+		width: 65%;
+	}
+
+	.table_area {
+		position: relative;
+		height: auto;
+		overflow: hidden;
+		margin-top: 25px;
+		@include mixin.border_common;
+
+		.table_thead {
+			padding-right: 10px;
+			background: #F9F9FB;
+		}
+
+		.table_tbody {
+			position: relative;
+			width: 100%;
+			height: 105px;
+			overflow-y: auto;
+		}
+	}
+
+	th {
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 30px;
+		color: theme.$text_unselected_color;
+		padding: 0 11px;
+	}
+
+	thead {
+		box-sizing: border-box;
+		position: relative;
+		width: 100%;
+		height: 30px;
+		background: #F9F9FB;
+	}
+
+	tbody {
+		box-sizing: border-box;
+		position: relative;
+		border-radius: 5px;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
+	td {
+		width: 53px;
+		height: 20px;
+		line-height: 35px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		font-weight: 400;
+		font-size: 14px;
+		color: theme.$text_default_color;
+	}
+
+	.id {
+		display: inline-block;
+		width: 109px;
+		height: 20px;
+		line-height: 26px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.tb {
+		position: relative;
+		width: 100%;
+		padding: 15px;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
+	.btn_crud_point {
+		min-width: 70px;
+	}
+}
+
+/* 학생재배정 - 팝업 M1 */
+#modalReassignstudent {
+	.class_first {
+		display: flex;
+		justify-content: space-evenly;
+		padding: 13px 0px 10px;
+	}
+
+	.class_second {
+		display: flex;
+		justify-content: space-evenly;
+		padding: 10px 0px 55px;
+	}
+
+	.class_box {
+		position: relative;
+		width: 680px;
+		height: 96px;
+		left: 41px;
+		top: 20px;
+		border: 0.4px solid #A7A9AC;
+		border-radius: 3px;
+	}
+
+	.content {
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 20px;
+		display: flex;
+		align-items: center;
+		color: theme.$text_unselected_color;
+		gap: 10px;
+		position: relative;
+		bottom: 30px;
+		left: 140px;
+	}
+
+	.modal-footer {
+		padding-top: 70px;
+	}
+}
+/* jeh-2022.09.07 끝 */
+
+/* jeh-2022.09.08 시작 */
+/* 선생님 등록 팝업창 */
+.modal_ac_manage_tch {
+	.divid_section {
+		margin: 0 10px;
+	}
+	.box_area {
+		box-sizing: border-box;
+		// width: 350px;
+		height: 70px;
+		border: 0.4px solid #A7A9AC;
+		border-radius: 5px;
+	}
+
+	.form-control.xs-input {
+		padding: 1px 8px;
+		width: 93%;
+		min-width: 40px;
+		height: 20px;
+		font-size: 12px;
+		line-height: 17px;
+		position: absolute;
+		top: 2px;
+		left: 75px;
+	}
+
+	.authority div[class^="col-"] {
+		margin: 10px 0px;
+		padding-right: 5px;
+	}
+
+	.authority .box_area {
+		height: 420px;
+	}
+
+	.authority {
+		position: relative;
+		top: 38px;
+	}
+
+	.subject {
+		position: relative;
+		top: 15px;
+	}
+
+}
+/* jeh-2022.09.08 끝 */
+
+/* jeh-2022.09.13 시작 */
+/* 수강정보 -팝업 */
+#modalMoreCourse {
+	.input-search {
+		width: 65%;
+	}
+
+	.table_area {
+		position: relative;
+		height: auto;
+		overflow: hidden;
+		margin-top: 25px;
+		@include mixin.border_common;
+
+		.table_thead {
+			background: #F9F9FB;
+			
+			th:last-child { padding-right: 10px;}
+		}
+
+		.table_tbody {
+			position: relative;
+			width: 100%;
+			height: 105px;
+			overflow-y: auto;
+		}
+	}
+
+	th {
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 30px;
+		color: theme.$text_unselected_color;
+	}
+
+	thead {
+		box-sizing: border-box;
+		position: relative;
+		// width: 100%;
+		// height: 30px;
+		background: #F9F9FB;
+		border-bottom: 0.4px solid rgba(theme.$text_unselected_color, .4);
+	}
+
+	tbody {
+		box-sizing: border-box;
+		position: relative;
+		border-radius: 5px;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
+	td {
+		// width: 53px;
+		// height: 20px;
+		// line-height: 35px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		font-weight: 400;
+		font-size: 14px;
+		color: theme.$text_default_color;
+		vertical-align: middle;
+		padding-top: 10px;
+		padding-bottom: 15px;
+	}
+
+	td .date {
+		align-items: center;
+		// width: 140px;
+		// height: 50px;
+		line-height: 30px;
+		white-space: nowrap;
+		padding: 10px 105px;
+
+		.box01,
+		.box02,
+		i.icons_calendar_off {
+			float: left;
+		}
+	}
+
+	.tb {
+		position: relative;
+		width: 100%;
+		padding: 15px;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
+	.modal-body {
+		padding-top: 0;
+	}
+
+	.box01 {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		padding: 8px 22px 8px 20px;
+		gap: 10px;
+		width: 93.1px;
+		height: 39px;
+		background: #E7EDFF;
+		border-radius: 5px;
+	}
+
+	.btn_crud_default {
+		font-weight: 400;
+		font-size: 14px;
+		padding: 10px 24px;
+	}
+
+
+	.table_area .table_tbody {
+		position: relative;
+		width: 100%;
+		height: 500px;
+		overflow-y: auto;
+
+		tr {
+			background: #FFFFFF;
+			border-bottom: 0.4px solid rgba(theme.$text_unselected_color, .4);
+		}
+
+		tr.memo {
+			border-top: none;
+			textarea {
+				@include mixin.border_common;
+				padding: 10px;
+				text-align: left;
+				overflow: auto;
+				resize: vertical;
+				width: 635px;
+				height: 88px;
+				position: relative;
+			}
+			.btn_crud_point {
+				min-width: 70px;
+				position: relative;
+				width: 90px;
+				height: 90px;
+				vertical-align: top;
+			}
+
+			&.view {
+				textarea {
+					overflow: auto;
+					resize: vertical;
+					width: 720px;
+					height: 88px;
+					position: relative;
+				}
+			
+				.btn_crud_point {
+					min-width: 70px;
+					position: relative;
+					width: 90px;
+					height: 90px;
+					margin-left: 5px;
+				}
+			}
+		}
+		
+	}
+
+	.memo02 {
+		padding-top: 10px;
+	}
+
+	.memo03 {
+		margin: 10px 0px;
+		margin-left: 410px;
+		color: theme.$text_unselected_color;
+	}
+
+	.box02 {
+		overflow: hidden;
+		white-space: normal;
+		width: 720px;
+		height: 88px;
+		position: relative;
+		background: #FFFFFF;
+		@include mixin.border_common;
+		padding: 15px 5px;
+		margin: 0 auto;
+	}
+}
+/* jeh-2022.09.13 끝 */
+
+/* jeh-2022.09.14 시작 */
+#modalMoreMemo {
+	.input-search {
+		width: 65%;
+	}
+
+	.table_area {
+		position: relative;
+		height: auto;
+		overflow: hidden;
+		@include mixin.border_common;
+
+		.table_thead {
+			padding-right: 10px;
+			background: #F9F9FB;
+		}
+
+		.table_tbody {
+			position: relative;
+			width: 100%;
+			height: 105px;
+			overflow-y: auto;
+		}
+	}
+
+	th {
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 30px;
+		color: theme.$text_unselected_color;
+	}
+
+	thead {
+		box-sizing: border-box;
+		background: #F9F9FB;
+	}
+
+	tbody {
+		box-sizing: border-box;
+		position: relative;
+		border-radius: 5px;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
+	td {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		font-weight: 400;
+		font-size: 14px;
+		color: theme.$text_default_color;
+		vertical-align: middle;
+		padding-top: 10px;
+		padding-bottom: 15px;
+		text-align: center;
+	}
+
+	td .date {
+		align-items: center;
+		line-height: 30px;
+		white-space: nowrap;
+		padding: 10px 105px;
+
+		.box01,
+		.box02,
+		i.icons_calendar_off {
+			float: left;
+		}
+	}
+
+	.tb {
+		position: relative;
+		width: 100%;
+		padding: 15px;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
+	.table_area .table_tbody {
+		position: relative;
+		width: 100%;
+		height: 500px;
+		overflow-y: auto;
+	}
+
+	.modal-body {
+		text-align: center;
+		padding-top: 0;
+		.search_section {
+			position: relative;
+			display: flex;
+			margin: 10px 0;
+			align-items: center;
+			justify-content: space-between;
+		}
+	}
+
+	.memo {
+		text-align: left;
+	}
+
+	.memo02 {
+		height: 100px;
+		line-height: 26px;
+		display: inline-block;
+		white-space: inherit;
+		overflow: inherit;
+	}
+
+	tr {
+		border-top: 0.4px solid #E6E7E8;
+	}
+
+	.pagination {
+		justify-content: center;
+	}
+
+}
+/* jeh-2022.09.14 끝 */
