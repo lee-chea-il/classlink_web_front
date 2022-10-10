@@ -1,30 +1,34 @@
 import { defineRule } from "vee-validate";
 
 export default defineNuxtPlugin((nuxtApp) => {
-  defineRule('required', (value, [type]) => {
+  defineRule("required", (value, [type]) => {
     if (!value || !value.length) {
-      let msg = 'This field is required';
-      if(type=='id'){
-        msg = '아이디는 필수 입력입니다.';
-      }else if(type=='pwd'){
-        msg = '패스워드는 필수 입력입니다.';
+      let msg = "This field is required";
+      if (type == "id") {
+        msg = "아이디는 필수 입력입니다.";
+      } else if (type == "pwd") {
+        msg = "패스워드는 필수 입력입니다.";
+      } else if (type == "mem_name") {
+        msg = "이름은 필수 입력입니다.";
+      } else if (type == "mem_nickname") {
+        msg = "닉네임은 필수 입력입니다.";
       }
       return msg;
     }
     return true;
   });
 
-  defineRule('email', value => {
+  defineRule("email", (value) => {
     if (!value || !value.length) {
       return true;
     }
     if (!/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/.test(value)) {
-      return 'This field must be a valid email';
+      return "This field must be a valid email";
     }
     return true;
   });
 
-  defineRule('minLength', (value, [limit]) => {
+  defineRule("minLength", (value, [limit]) => {
     if (!value || !value.length) {
       return true;
     }
@@ -33,8 +37,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
     return true;
   });
-  
-  defineRule('minMax', (value, [min, max]) => {
+
+  defineRule("minMax", (value, [min, max]) => {
     if (!value || !value.length) {
       return true;
     }
