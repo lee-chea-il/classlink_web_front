@@ -4,6 +4,25 @@ import axios from "axios"
 export const member = defineStore('Member', () => {
   const myInfo = ref({});
   const loginPageType = ref('login');
+  const searchIdList = ref([]);
+
+  //get
+  const getIdFromEmail = (email) => {
+    const eData ={
+      "memEmail": ''
+    };
+    eData.memEmail=email;
+    console.log('email   ',email);
+    const response = axios.post(`http://localhost:8301/getMemId`,eData)
+    .then(res => {
+      console.log(`status: ${JSON.stringify(res.status)}`);     // 응답 Status code
+      console.log(`headers: ${JSON.stringify(res.headers)}`);   // 응답 Headers
+      console.log(`data: ${JSON.stringify(res.data)}`);         // 응답 Data
+
+      searchIdList.value = res.data.data;
+    });
+    console.log('response   ',response,email);
+  }
   
   //post
   const checkLogin = (data) => {
@@ -11,9 +30,9 @@ export const member = defineStore('Member', () => {
       "memId": data.id,
       "memPwd":data.pwd
     };
-    loginPageType.value = 'identity';
-    /*
-    api 활성화되면 주석 해제 할것
+    //loginPageType.value = 'identity';
+    /**/
+    //api 활성화되면 주석 해제 할것
     try{
       const response = axios.post(`http://localhost:8301/getLogin`,loginData)
       .then(res => {
@@ -37,7 +56,7 @@ export const member = defineStore('Member', () => {
       });
       return response;
     }catch(e){}
-    */
+    /**/
   };
   
   //put
@@ -107,5 +126,5 @@ export const member = defineStore('Member', () => {
       return response;
     }catch(e){}
   }
-  return { myInfo, loginPageType, checkLogin, searchId }
+  return { myInfo, loginPageType, checkLogin, getIdFromEmail, searchIdList, searchId }
 })

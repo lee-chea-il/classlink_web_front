@@ -50,6 +50,7 @@
     if(isClickable){
       isClickable.value=false;
       store.checkLogin(data);
+      //store.getIdFromEmail('str@ing');
     }
   }
 </script>

@@ -20,9 +20,9 @@
               </div>
             </div>
           </div>
-
+          
           <!-- 검색 후 결과 테이블 -->
-          <div id="searchTable" class="search_result" style="display: none;">
+          <div id="searchTable" :class="[isShowTable?'search_result':'search_result hide']">
             <table class="table table-borderless">
               <colgroup>
                 <col width="35" />
@@ -45,45 +45,15 @@
                   <col width="90" />
                 </colgroup>
                 <tbody>
-                  <tr>
+                  <tr v-for="(item, idx) in listData">
                     <td scope="row">
                       <div class="custom-control custom-radio">
-                        <input type="radio" id="radio01" name="customRadio" class="custom-control-input" />
-                        <label class="custom-control-label" for="radio01"></label>
+                        <input type="radio" :id="'radio'+idx" name="customRadio" class="custom-control-input" />
+                        <label class="custom-control-label" :for="'radio'+idx"></label>
                       </div>
                     </td>
-                    <td class="id"><span>example</span></td>
-                    <td>2022.12.31</td>
-                  </tr>
-                  <tr>
-                    <td scope="row">
-                      <div class="custom-control custom-radio">
-                        <input type="radio" id="radio02" name="customRadio" class="custom-control-input" />
-                        <label class="custom-control-label" for="radio02"></label>
-                      </div>
-                    </td>
-                    <td class="id"><span>exampleexampleexampleexampleexampleexample</span></td>
-                    <td>2022.12.31</td>
-                  </tr>
-                  <tr>
-                    <td scope="row">
-                      <div class="custom-control custom-radio">
-                        <input type="radio" id="radio03" name="customRadio" class="custom-control-input" />
-                        <label class="custom-control-label" for="radio03"></label>
-                      </div>
-                    </td>
-                    <td class="id"><span>exampleexampleexampleexampleexampleexample</span></td>
-                    <td>2022.12.31</td>
-                  </tr>
-                  <tr>
-                    <td scope="row">
-                      <div class="custom-control custom-radio">
-                        <input type="radio" id="radio04" name="customRadio" class="custom-control-input" />
-                        <label class="custom-control-label" for="radio04"></label>
-                      </div>
-                    </td>
-                    <td class="id"><span>exampleexampleexampleexampleexampleexample</span></td>
-                    <td>2022.12.31</td>
+                    <td class="id"><span>{{ item.memId }}</span></td>
+                    <td>{{changeDate(item.regDate)}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -104,17 +74,33 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { member } from "@/stores/Member"
+  import { storeToRefs } from 'pinia';
+  import dayjs from "dayjs";
   
+  const memStore = member();
+  const { searchIdList } = storeToRefs(memStore);
+
   const modalIdCloseBtn = ref(null);
-  const store = member();
+  const isShowTable = ref(false);
+  const listData = ref([]);
+
   const searchIdEvent = () => {
-    const result = store.searchId('f');
-    if(result != null){
+    memStore.getIdFromEmail('aaa@test.com');
+    isShowTable.value = true;
+    /*if(result != null){
       modalIdCloseBtn.value.click();
-    }
+    }*/
   }
+  watch(searchIdList, () => {
+    listData.value = searchIdList.value;console.log("listData.value  changed", listData.value);
+  })
+  const changeDate = (dateString) => {
+    let date = dayjs(dateString);
+    return date.format("YYYY.MM.DD");
+  }
+  
 </script>
 
 <style scoped>
-
+.hide{display: none;}
 </style>
