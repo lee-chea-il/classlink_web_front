@@ -65,7 +65,7 @@ export default defineNuxtConfig({
           content: '교육특화 메타버스 클래스링크 가상공간의 또 다른 학교 오프라인 학교/학원보다 더 학교/학원같은 캠퍼스',
         },
       ],
-      
+      link: [{ rel: 'stylesheet', href: './assets/css/base.css'}],
     }
   },
   ssr: true,

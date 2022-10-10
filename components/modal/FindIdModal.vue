@@ -46,7 +46,7 @@
                   <col width="90" />
                 </colgroup>
                 <tbody>
-                  <tr v-for="(item, idx) in listData">
+                  <tr v-for="(item, idx) in searchIdList">
                     <td scope="row">
                       <div class="custom-control custom-radio">
                         <input type="radio" :id="'radio'+idx" name="customRadio" class="custom-control-input" />
@@ -92,10 +92,10 @@
     /*if(result != null){
       modalIdCloseBtn.value.click();
     }*/
-  }
+  }/*
   watch(searchIdList, () => {
     listData.value = searchIdList.value;console.log("listData.value  changed", listData.value);
-  })
+  })*/
   const changeDate = (dateString) => {
     let date = dayjs(dateString);
     return date.format("YYYY.MM.DD");

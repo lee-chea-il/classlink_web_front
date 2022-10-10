@@ -1,0 +1,375 @@
+@use "theme";
+@use "mixin";
+/*---------------------------------------*/
+/*--------   3. myhome.scss   -----------*/
+/*---------------------------------------*/
+.page_myhome {
+	@mixin myhomeBox($bgcolor) {
+		position: relative;
+		overflow: hidden;
+		background-color: $bgcolor;
+		border-radius: 10px;
+		box-shadow: theme.$box_shadow;
+	}
+	border-radius: 5px;
+	border: 1px solid rgba(167, 169, 172, .4);
+	background: #fff;
+	padding: 20px 25px;
+	@media (max-width: 991.98px) {
+		@include mixin.mobile_wrap;
+		padding-bottom: 66px;
+	}
+	.title {
+		font-weight: 700;
+		color: theme.$color_blue;
+	}
+
+	// 오늘의 학습
+	.today_study {
+		text-align: center;
+		margin-bottom: 15px;
+		@include myhomeBox(theme.$color_background);
+
+		.title { margin: 15px 0;}
+		.cnts {
+			padding: 0px;
+			height: 413px;
+			@media (max-width: 575.98px) { height: 200px;}
+		}
+		.swiper-slide { padding: 0 40px;}
+		.study_box {
+			width: 100%; min-width: 164px;
+			padding: 10px 15px;
+			margin-top: 10px;
+			border-radius: 10px;
+			color: #fff;
+			letter-spacing: .5px;
+			div+div { margin-top:10px;}
+			.academy { font-weight: 500; font-size: 14px; }
+			.time { 
+				width: 100%;
+				padding: 5px;
+				background: rgba(255, 255, 255, 0.5);
+				border-radius: 20px;
+				font-weight: 300;
+			}
+			.subject {
+				font-weight: 500;
+				padding-bottom: 10px;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+			}
+			.lesson { font-size: 12px;
+				.divid {
+					border-color: rgba(255,255,255, .5);
+					margin-top: -1px;
+					margin-right: 2px;
+					padding-left: 5px;
+				}
+			}
+		}
+		.swiper-slide:nth-child(3n+1) .study_box { background: theme.$color_emerald; }
+		.swiper-slide:nth-child(3n+2) .study_box { background: theme.$color_gradiant; }
+		.swiper-slide:nth-child(3n+3) .study_box { background: theme.$color_blue; }
+	}
+
+	// 학습함&공지사항
+	.learned_box { margin-bottom: 20px;}
+	.learned_box,.notice {
+		padding: 20px;
+		@include myhomeBox(theme.$color_light4);
+
+		.title_area {
+			position: relative;
+			display: flex;
+			align-items: center;
+
+			.num {
+				display: inline-block;
+				margin-left: 5px;
+				width: auto;
+				height: 17px;
+				line-height: 17px;
+				padding: 0 5px;
+				background: theme.$color_light1;
+				border-radius: 3px;
+				font-size: 12px;
+				color: #fff;
+			}
+			.more { 
+				margin-left: auto;
+				color: theme.$color_light1;
+				text-decoration: none;
+				i { vertical-align: middle; margin-top: -5px}
+			}
+		}
+		.nav-pills .nav-link { 
+			color: theme.$text_default_color;
+		}		
+		.nav-pills li:first-child button { position: relative; padding-left: 0}
+		.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+			background-color: rgba(255,255,255, 0);
+			font-weight: 500;
+			color: theme.$color_blue;
+
+			&::after {
+				content:'';
+				display: block;
+				width: 100%;
+				height: 5px;
+				border-radius: 5px;
+				background-color: theme.$color_light1;
+			}
+		}
+		.cnts .tab-content {
+			height: 115px;
+			padding: 11px 15px;
+			overflow-y: auto;
+			border-radius: 10px;
+			border: none;
+			background-color: #fff;
+			.tab-pane { height: 100%;}
+			.list_area {
+				height: 100%;
+				li { 
+					display: flex; align-items: center;
+					padding: 8px 0;
+					border-top: 1px solid #D1D3D4;
+					&:first-child {
+						padding-top: 0;
+						border-top: none;
+					}
+				}
+				.type { font-size: 14px; font-weight: 700; margin-right: 10px;}
+				.subject { 
+					font-size: 14px; margin-right: 5px; 
+					max-width: calc(100% - 135px); height: 20px;
+					white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+				}
+				.date { font-size: 12px; color:theme.$text_caption_color; margin-left: auto;}
+			}
+		}
+	}
+
+	// 강의코스
+	.lecture_course {
+		text-align: left;
+		margin-bottom: 15px;
+		padding: 13px 0 0 30px;
+		@include myhomeBox(theme.$color_background);		
+		@media (max-width: 991.98px) {
+			margin-top: 20px;
+		}
+		.title { margin-bottom: 15px;}
+		.cnts { padding-bottom: 5px; height: 166px;}
+		.study_box {
+			margin-bottom: 15px;
+			position: relative;
+			width: 100%; min-width: 225px;
+			color: #fff;
+			letter-spacing: .5px;
+			.box { 
+				width: 100%; 
+				height: 100%;
+				padding: 20px 28px;
+				border-radius: 10px;
+			}
+			div+div { margin-top:5px;}
+			.subject {
+				font-weight: 500;
+			}
+			.time { 
+				width: 100%;
+				padding: 5px;
+				background: rgba(255, 255, 255, 0.5);
+				border-radius: 20px;
+				font-size: 14px;
+				font-weight: 300;
+			}
+			.lesson { font-size: 12px;
+				.divid {
+					border-color: rgba(255,255,255, .5);
+					margin-top: -1px;
+					margin-right: 2px;
+					padding-left: 5px;
+				}
+			}
+			.academy { font-size: 14px; color: theme.$text_default_color;}
+		}
+		.swiper-slide:nth-child(odd) .study_box .box { background: theme.$color_emerald; }
+		.swiper-slide:nth-child(even) .study_box .box { background: theme.$color_light1; }
+		.swiper-button-next, .swiper-button-prev { top: 45%;}
+	}
+
+	// 달력 영역
+	.calendar_section {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		text-align: center;
+		margin-bottom: 15px;
+		padding: 13px 30px;
+		@include myhomeBox(theme.$color_background);		
+		height: 465px;
+		@media (max-width: 991.98px) {
+			padding: 13px;
+			height: auto;
+		}
+		.calendar {
+			.date_area {
+				position: relative;
+				height: auto;
+				display: flex;
+				align-items: center;
+				justify-content: space-around;
+			}
+			.date_area i { cursor: pointer;}
+			.date_area .date { 
+				display: inline-block;
+				line-height: 30px;
+				font-weight: 700;
+				color: theme.$color_blue;
+			}
+			.calendar_table {
+				margin-top: 15px;
+				width: 100%;
+				.week_tit th {
+					font-weight: 700;
+					color: theme.$color_blue;
+					padding-bottom: 7px;
+					border-bottom: 1px solid theme.$color_light1;
+				}
+				.week .calendar-day {
+					width: 14.28%;
+					height: 27px;
+					padding: 8px 0;
+					color: theme.$color_blue;
+					font-size: 14px;
+					.daynum { 
+						display: inline-block;
+						width: 27px;
+						height: 27px;
+						cursor: pointer;
+					}
+					&.today .daynum {
+						display: inline-block;
+						line-height: 27px;
+						border-radius: 50%;
+						background-color: theme.$color_light3;
+					}
+					&.active .daynum
+					{
+						display: inline-block;
+						line-height: 27px;
+						border-radius: 50%;
+						background-color: theme.$color_light2;
+					}
+					&.calendar-other-month {
+						visibility: hidden;
+					}
+				}
+			}
+		}
+
+		.schedule {
+			background: #FFFFFF;
+			border-radius: 10px;
+			margin-top: 10px;
+			padding: 5px 15px;
+			.date { font-size: 14px; font-weight: 700;}
+			.list_area {
+				margin-top: 10px;
+				height: 95px;
+				overflow-y: auto;
+				overflow-x: hidden;
+			}
+			.list_area li {
+				text-align: left;
+				display: flex;
+				font-size: 14px;
+				padding: 10px 0;
+				border-top: 1px solid #E6E7E8;
+				.time { padding: 0 10px;}
+				.lesson_info { width: calc(100% - 50px); }
+				.subject {
+					@include mixin.text_ellipsis(block, 100%, 20px);
+				}
+				.lesson {
+					font-size: 12px;
+					color: theme.$text_unselected_color;
+					.divid { border-color: theme.$text_unselected_color;}
+				}
+			}
+		}
+	}
+
+	// 학원목록
+	.academy_list {
+		text-align: left;
+		margin-bottom: 15px;
+		padding: 13px 0 0 24px;
+		@include myhomeBox(theme.$color_background);
+
+		.title { margin-bottom: 15px;}
+		.cnts { padding-bottom: 5px;}
+		.academy_box {
+			position: relative;
+			margin-bottom: 15px;
+		}
+		.academy_box .box {
+			min-width: 204px;
+			height: 120px;
+			background-color: #fff;
+			border-radius: 10px;
+			overflow: hidden;
+			margin-bottom: 5px;
+			display: flex;
+			align-items: center;
+			img {
+				width: initial;
+				height: initial;
+				margin: 0 auto;
+			}
+		}
+	}
+	.free_trial { 
+		display: none;
+		font-size: 18px;
+		font-weight: 700;
+		background-color: theme.$color_light1;
+		text-align: center;
+		color: #fff;
+		width: 100%;
+		padding: 20px 0;
+		text-decoration: none;
+		z-index: 10;
+		@media (max-width: 575.98px) {
+			position: fixed;			
+			bottom: 0px;
+			left: 0;
+		}
+	}
+	.nothing_txt { @include mixin.nothing_txt(100%,);}
+}
+
+/* 마이홈_선생님 */
+.myhome_teacher {
+	@media (min-width: 992px) {
+		&> .row > .col-lg-3 {
+			flex: 0 0 22%;
+			max-width: 22%;
+		}
+		&> .row > .col-lg-9 {
+			flex: 0 0 78%;
+			max-width: 78%;
+		}
+	}
+	@media (max-width: 991.98px) {
+		padding-bottom: 0px;
+	}
+	.today_study .cnts {
+		padding: 0px;
+		height: 652px;
+		@media (max-width: 575.98px) { height: 200px;}
+	}
+	.notice { margin-bottom: 20px;}	
+}

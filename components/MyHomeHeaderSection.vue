@@ -1,6 +1,18 @@
 <script setup lang="ts">
 	//import { defineProps } from 'vue';
 	//defineProps< {title:String} >()
+	import { ref } from "vue";
+	import { storeToRefs } from 'pinia';
+	import { myHome } from "@/stores/Myhome"
+	
+	const myHomeStore = myHome();
+	const { pageType } = storeToRefs(myHomeStore);
+	const showDataRoom = (e) => {
+		pageType.value = "dataroom";
+	}
+	/*watch(pageType, () => {
+	  listData.value = pageType.value;
+	})*/
 </script>
 
 <template>
@@ -38,7 +50,7 @@
 			</div>
 			<div class="nav_sub">
 				<ul class="nav nav_dapth02 justify-content-center">
-					<li class="nav-item">
+					<li @click='showDataRoom' class="nav-item">
 						<!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
 						<a class="nav-link active" href="#">자료실</a>
 					</li>
@@ -281,11 +293,13 @@
 		</div>
 
 		<!-- goTop 버튼 -->
-		<button class="btn btn_gotop"></button>
+		<button class="btn btn_gotop hide"></button>
 
 	</div>
 </template>
 
 <style scoped>
-
+.hide{
+  display: none;
+}
 </style>
