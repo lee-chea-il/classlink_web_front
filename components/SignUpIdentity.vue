@@ -29,7 +29,7 @@
 		if(idType == '학생'){
 			emit("identity-comp",{identityType:identityType});
 		}else{
-
+			alert('학생으로 체크');
 		}
 	}
 	const tooggleRadioBox = (cData:any) => {

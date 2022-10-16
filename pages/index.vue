@@ -31,3 +31,6 @@
     console.log('set comp');
   }
 </script>
+
+<style scoped>
+</style>

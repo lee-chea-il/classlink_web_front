@@ -3,11 +3,26 @@
   height: 100%;
 }
 .default-layout{height: 100%;}
-.help.is-danger {
+/*.help.is-danger {
   color: #f14668;
 }
 .help {
   display: block;
   font-size: .75rem;
   margin-top: 0.25rem;
+}*/
+.textInput.has-error input {
+  background-color: none;
+  border-color: #FB5353;
+}
+.textInput.has-error input:focus {
+  padding-right: calc(1.5em + 0.75rem)!important;
+  border-color: #FB5353;
+}
+.textInput.success input {
+  background-color: none;
+  border-color: #7391FA;
+}
+.textInput.success input:focus {
+  
 }

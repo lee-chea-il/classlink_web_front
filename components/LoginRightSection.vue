@@ -5,17 +5,20 @@
       <div class="form_section">
         <VForm
           @submit="onSubmit"
-          v-slot="{ meta: formMeta, errors: formErrors }"
+          :validation-schema="schema"
+          @invalid-submit="onInvalidSubmit"
         >
-          <CustomTextId v-model="myIdTxt" />
+          <div class="form-group">
+		        <label for="userid" class="hide">아이디</label>
+            <CustomText v-model="myIdTxt" placeholderTxt="아이디 입력" txtId="userid" txtName="id"/>
+          </div>
           <CustomTextPw v-model="myPwTxt" />
 
           <button
             type="submit"
             class="btn btn_crud_point"
-            :disabled="!formMeta.valid"
           >
-            로그인
+          로그인
           </button>
           <div class="custom-control custom-checkbox">
             <input
@@ -57,14 +60,27 @@
 
 <script setup lang="ts">
   import { ref } from 'vue';
+  import * as Yup from 'yup';
   import { member } from "@/stores/Member"
-  import CustomTextId from './CustomTextId.vue'
+  import CustomText from './CustomText.vue'
   import CustomTextPw from './CustomTextPw.vue'
   
   const store = member();
   const myIdTxt = ref('');
   const myPwTxt = ref('');
   const isClickable = ref(true);
+
+  const schema = Yup.object().shape({
+    /*id: Yup.string().required('필수 정보입니다.'),
+    name: Yup.string().required('필수 정보입니다.'),
+    email: Yup.string().email().required('필수 정보입니다.'),
+    password: Yup.string().min(6).required('필수 정보입니다.'),
+    confirm_password: Yup.string()
+      .required('필수 정보입니다.')
+      .oneOf([Yup.ref('password')], 'Passwords do not match'),*/
+    id: Yup.string().required('필수 정보입니다.'),
+    password: Yup.string().min(6,"6자 이상").max(20,"20자 이하").required('필수 정보입니다.'),
+  });
   
   function onSubmit(data){
     if(isClickable){
@@ -73,6 +89,14 @@
       //store.getIdFromEmail('str@ing');
     }
   }
+  function onInvalidSubmit() {
+    /*const submitBtn = document.querySelector('.btn_crud_point');
+    submitBtn.classList.add('invalid');
+    setTimeout(() => {
+      submitBtn.classList.remove('invalid');
+    }, 1000);*/
+  }
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

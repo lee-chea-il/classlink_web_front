@@ -3,11 +3,11 @@ import { defineRule } from "vee-validate";
 export default defineNuxtPlugin((nuxtApp) => {
   defineRule("required", (value, [type]) => {
     if (!value || !value.length) {
-      let msg = "This field is required";
+      let msg = "필수 정보입니다.";
       if (type == "id") {
         msg = "아이디는 필수 입력입니다.";
-      } else if (type == "pwd") {
-        msg = "패스워드는 필수 입력입니다.";
+      /*} else if (type == "pwd") {
+        msg = "패스워드는 필수 입력입니다.";*/
       } else if (type == "mem_name") {
         msg = "이름은 필수 입력입니다.";
       } else if (type == "mem_nickname") {

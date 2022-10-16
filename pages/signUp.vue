@@ -55,7 +55,7 @@ const modalData2 = ref({
 `,
 });
 const name = ref("SignUp");
-const signUpProcedure = ref("agree1");
+const signUpProcedure = ref("agree");
 const title = ref("서비스 이용 동의");
 
 //const store = member();
