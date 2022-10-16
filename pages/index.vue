@@ -1,13 +1,5 @@
 <template>
   <div class="default-layout">
-    <Link rel="canonical" href="https://www.metaclasslink.com" />
-		<Link rel="shortcut icon" href="../images/favicon.png" />
-		<Link href="assets/css/base.css" rel="stylesheet" />
-    <Link href="assets/css/common.css" rel="stylesheet" />
-    <Script src="plugins/jquery/jquery-3.6.0.min.js"></Script>
-    <Script src="plugins/bootstrap/bootstrap.bundle.min.js"></Script>
-    <Script src="plugins/js/victor.js"></Script>
-
     <HeaderSection :title="titleTxt" />
     <div class="page_login">
       <LoginLeftSection />
@@ -17,8 +9,8 @@
         @identity-comp="setLoginIdentity"
       />
     </div>
-    <FindIdModal />
-    <FindPwModal />
+    <FindIdModal v-if="store.loginPageType=='login'"/>
+    <FindPwModal v-if="store.loginPageType=='login'"/>
   </div>
 </template>
 

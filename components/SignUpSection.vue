@@ -29,12 +29,12 @@
               placeholder="이름 입력"
               class="form-control is-invalid"
               rules="required:mem_name"
-              :value="props.modelValue"
+              :value="modelValue"
               @input="addInputTxt"
             />
-            <VErrorMessage name="mem_name" class="help is-danger" />
+            <VErrorMessage name="mem_name" class="invalid_text" />
           </div>
-          <!-- div class="invalid_text">필수 정보입니다.</div-->
+          <!--<div class="invalid_text">필수 정보입니다.</div>-->
 
           <!-- [개발참조]:예외처리-성공의 예 -->
           <div class="form-group form-inlinebox">
@@ -46,7 +46,7 @@
               placeholder="닉네임 입력"
               class="form-control form-inline is-valid"
               rules="required:mem_nickname"
-              :value="props.modelValue"
+              :value="modelValue"
               @input="addInputTxt"
             />
 
@@ -74,7 +74,7 @@
               placeholder="아이디 입력"
               class="form-control"
               rules="required:mem_id"
-              :value="props.modelValue"
+              :value="modelValue"
               @input="addInputTxt"
             />
           </div>
@@ -94,7 +94,7 @@
               placeholder="비밀번호 입력"
               class="form-control"
               rules="required:mem_pwd"
-              :value="props.modelValue"
+              :value="modelValue"
               @input="addInputTxt"
             />
           </div>
@@ -115,7 +115,7 @@
               placeholder="비밀번호 입력"
               class="form-control"
               rules="required:mem_repwd"
-              :value="props.modelValue"
+              :value="modelValue"
               @input="addInputTxt"
             />
           </div>
@@ -134,7 +134,7 @@
               placeholder="이메일 입력"
               class="form-control form-inline"
               rules="required:mem_email"
-              :value="props.modelValue"
+              :value="modelValue"
               @input="addInputTxt"
             />
 
@@ -179,12 +179,13 @@
 import { ref } from "vue";
 import { memberJoin } from "@/stores/MemberJoin";
 const join = memberJoin();
-const props = defineProps({
+/*const props = defineProps({
   modelValue: {
     type: String,
     required: true,
   },
-});
+});*/
+const modelValue = ref('');
 const emit = defineEmits(["update:modelValue"]);
 const addInputTxt = (e) => {
   emit("update:modelValue", e.target.value);

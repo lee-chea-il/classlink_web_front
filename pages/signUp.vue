@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import HeaderSection from '@/components/HeaderSection.vue'
 import LoginLeftSection from "@/components/LoginLeftSection.vue";
 import SignUpSection from "@/components/SignUpSection.vue";
 import SignUpIdentity from "@/components/SignUpIdentity.vue";
 import SignUpServiceConfirm from "@/components/SignUpServiceConfirm.vue";
 import SignUpConfirmModal from "@/components/modal/SignUpConfirmModal.vue";
-import { member } from "@/stores/Member";
+//import { member } from "@/stores/Member";
 
 const modalData1 = ref({
   title: "서비스 이용 약관",
@@ -54,29 +55,25 @@ const modalData2 = ref({
 `,
 });
 const name = ref("SignUp");
-const signUpProcedure = ref("agree");
+const signUpProcedure = ref("agree1");
 const title = ref("서비스 이용 동의");
 
-const store = member();
+//const store = member();
 const registerClick = (e) => {
   e.preventDefault();
   e.stopPropagation();
   //store.setMyInfo("1", "ndsgirl");
   //console.log(store.myInfo.id);
 };
+const checkIdentity = (e)=>{
+  //console.log("faaa  ",e.identityType);
+  signUpProcedure.value = 'signUp';
+}
 </script>
 
 <template>
   <div class="default-layout">
-    <Link rel="canonical" href="https://www.metaclasslink.com" />
-		<Link rel="shortcut icon" href="../images/favicon.png" />
-		<Link href="assets/css/base.css" rel="stylesheet" />
-    <Link href="assets/css/common.css" rel="stylesheet" />
-    <Script src="plugins/jquery/jquery-3.6.0.min.js"></Script>
-    <Script src="plugins/bootstrap/bootstrap.bundle.min.js"></Script>
-    <Script src="plugins/js/victor.js"></Script>
-    
-    <Header :title="title" />
+    <HeaderSection :title="title" />
     <div class="page_login">
       <LoginLeftSection />
       <div class="right_section">
@@ -86,7 +83,7 @@ const registerClick = (e) => {
         />
         <SignUpIdentity
           v-else-if="signUpProcedure == 'identity'"
-          @identity-comp="() => (signUpProcedure = 'signUp')"
+          @identity-comp=checkIdentity
         />
         <SignUpSection v-else />
       </div>
