@@ -44,7 +44,7 @@
 			}
 		);
 		identityType.value = cData.title;
-		console.log('identityType.value',identityType.value);
+		//console.log('identityType.value',identityType.value);
 	}
 	const emit = defineEmits(['identity-comp'])
 </script>

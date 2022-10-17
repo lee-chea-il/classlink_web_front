@@ -61,6 +61,7 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import * as Yup from 'yup';
+  import { checkLogin } from "@/api"
   import { member } from "@/stores/Member"
   import CustomText from './CustomText.vue'
   import CustomTextPw from './CustomTextPw.vue'
@@ -71,13 +72,6 @@
   const isClickable = ref(true);
 
   const schema = Yup.object().shape({
-    /*id: Yup.string().required('필수 정보입니다.'),
-    name: Yup.string().required('필수 정보입니다.'),
-    email: Yup.string().email().required('필수 정보입니다.'),
-    password: Yup.string().min(6).required('필수 정보입니다.'),
-    confirm_password: Yup.string()
-      .required('필수 정보입니다.')
-      .oneOf([Yup.ref('password')], 'Passwords do not match'),*/
     id: Yup.string().required('필수 정보입니다.'),
     password: Yup.string().min(6,"6자 이상").max(20,"20자 이하").required('필수 정보입니다.'),
   });
@@ -85,8 +79,31 @@
   function onSubmit(data){
     if(isClickable){
       isClickable.value=false;
-      store.checkLogin(data);
-      //store.getIdFromEmail('str@ing');
+      const loginData ={
+        "memId": data.id,
+        "memPwd":data.password
+      };
+      const response = checkLogin(loginData);
+      response.then(res => {
+        //console.log(`status: ${JSON.stringify(res.status)}`);     // 응답 Status code
+        //console.log(`headers: ${JSON.stringify(res.headers)}`);   // 응답 Headers
+        //console.log(`data: ${JSON.stringify(res.data)}`);         // 응답 Data
+        
+        store.myInfo = res.data.data;
+        
+        if(res.status == 200){
+          if(res.data.returnCode=='_200'){
+            store.loginPageType = 'identity';
+          }else if(res.data.returnCode=='_01'){
+            alert(res.data.returnMessage);
+          }else if(res.data.returnCode=='_02'){
+            alert(res.data.returnMessage);
+          }
+        }else{
+
+        }
+        isClickable.value=true;
+      })
     }
   }
   function onInvalidSubmit() {

@@ -72,30 +72,40 @@
 
 <script lang="ts" setup>
   import { ref } from 'vue';
-  import { member } from "@/stores/Member"
-  import { storeToRefs } from 'pinia';
+  import { getIdFromEmail } from "@/api"
   import dayjs from "dayjs";
   
-  const memStore = member();
-  const { searchIdList } = storeToRefs(memStore);
-
   const modalIdCloseBtn = ref(null);
   const isShowTable = ref(false);
-  const listData = ref([]);
   const emailTxt = ref('');
+  const searchIdList = ref([]);
+
+  /*const props = defineProps({
+		modelValue:{
+			type:String,
+			required:true
+		},
+	});*/
+  //const txtName = toRef(props, 'txtName');
 
   const searchIdEvent = () => {
     console.log('emailTxt   ',emailTxt.value);
-    memStore.getIdFromEmail(emailTxt.value);//'aaa@test.com'
-    isShowTable.value = true;
-
-    /*if(result != null){
-      modalIdCloseBtn.value.click();
-    }*/
-  }/*
-  watch(searchIdList, () => {
-    listData.value = searchIdList.value;console.log("listData.value  changed", listData.value);
-  })*/
+    const data ={
+        "memEmail": emailTxt.value
+    };
+    console.log('email   ',data);
+    const response = getIdFromEmail(data);
+    response.then(res => {
+      console.log(`status: ${JSON.stringify(res.status)}`);     // 응답 Status code
+      console.log(`headers: ${JSON.stringify(res.headers)}`);   // 응답 Headers
+      console.log(`data: ${JSON.stringify(res.data)}`);         // 응답 Data
+      
+      if(res.status == 200){
+        searchIdList.value = res.data.data;
+        isShowTable.value = true;
+      }
+    })
+  }
   const changeDate = (dateString) => {
     let date = dayjs(dateString);
     return date.format("YYYY.MM.DD");

@@ -3,7 +3,7 @@
     <HeaderSection :title="titleTxt" />
     <div class="page_login">
       <LoginLeftSection />
-      <LoginRightSection v-if="store.loginPageType=='login'"/>
+      <LoginRightSection v-if="store.loginPageType=='login'" />
       <LoginIdentity
         v-else-if="store.loginPageType == 'identity'"
         @identity-comp="setLoginIdentity"
