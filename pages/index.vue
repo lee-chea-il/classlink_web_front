@@ -23,12 +23,12 @@
   import FindIdModal from "@/components/modal/FindIdModal.vue"
   import FindPwModal from "@/components/modal/FindPwModal.vue"
   
+  const route = useRoute()
   const store = member();
-
   const titleTxt='로그인';
+
   const setLoginIdentity = () => {
-    //() => (signUpProcedure = 'signUp')
-    console.log('set comp');
+    return navigateTo('/myHome')
   }
 </script>
 

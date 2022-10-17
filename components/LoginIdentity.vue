@@ -29,12 +29,7 @@
 		{title:'프랜차이즈 관리자',checked:false,id:'radio_3',class:'btn_status_franchise_administrator'}
 	])
 	const nextBtnEvent = () => {
-		let idType = identityType.value;
-		if(idType == '학생'){
-			emit("identity-comp",{identityType:identityType});
-		}else{
-
-		}
+		emit("identity-comp",{identityType:identityType});
 	}
 	const tooggleRadioBox = (cData:any) => {
 		nextBtnable.value = true;
