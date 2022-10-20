@@ -140,7 +140,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref } from "vue";
 import * as Yup from "yup";
 import CustomText from "@/components/common/custom/CustomText.vue";

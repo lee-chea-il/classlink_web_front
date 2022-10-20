@@ -20,7 +20,7 @@
 	</div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 	import { toRef } from 'vue';
 	import { useField } from 'vee-validate';
 	const props = defineProps({

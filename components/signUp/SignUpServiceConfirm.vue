@@ -30,7 +30,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref } from "vue";
 import CustomCheckBox from "@/components/common/custom/CustomCheckBox.vue";
 import CustomNextBtn from "@/components/common/custom/CustomNextBtn.vue";

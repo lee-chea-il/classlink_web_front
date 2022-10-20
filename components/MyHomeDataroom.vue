@@ -112,7 +112,7 @@
   <!-- //container -->
 </template>
 
-<script setup lang="ts">
+<script setup>
 	import { ref } from "vue";
 	import { storeToRefs } from 'pinia';
 	import { myHome } from "@/stores/Myhome"

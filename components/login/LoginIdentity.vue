@@ -27,7 +27,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref } from "vue";
 import CustomNextBtn from "@/components/common/custom/CustomNextBtn.vue";
 import CustomIdentityBtn from "@/components/common/custom/CustomIdentityBtn.vue";
@@ -63,7 +63,7 @@ const identityDatas = ref([
 const nextBtnEvent = () => {
   emit("identity-comp", { identityType: identityType });
 };
-const tooggleRadioBox = (cData: any) => {
+const tooggleRadioBox = (cData) => {
   nextBtnable.value = true;
   const idx = identityDatas.value.findIndex((data) => {
     return data.id == cData.id;
