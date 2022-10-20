@@ -1,8 +1,8 @@
-import { defineStore } from 'pinia';
+import { defineStore } from "pinia";
 
-export const member = defineStore('Member', () => {
+export const member = defineStore("Member", () => {
   const myInfo = ref({});
-  const loginPageType = ref('login');
+  const loginPageType = ref("login");
 
-  return { myInfo, loginPageType }
-})
+  return { myInfo, loginPageType };
+});

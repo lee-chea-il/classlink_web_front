@@ -1,19 +1,15 @@
-import axios from "axios"
-
-const instanse = axios.create({
-    baseURL:'http://localhost:8301',
-});
+import http from "@/services/http";
 
 const getIdFromEmail = (data) => {
-    try{
-        return instanse.post(`/getMemId`,data);
-    }catch(e){}
-}
+  try {
+    return http.instanse.post(`/getMemId`, data);
+  } catch (e) {}
+};
 
 const checkLogin = (data) => {
-    try{
-        return instanse.post(`/getLogin`,data);
-    }catch(e){}
+  try {
+    return http.instanse.post(`/getLogin`, data);
+  } catch (e) {}
 };
 
 //insert
@@ -71,4 +67,9 @@ console.log(`data: ${JSON.stringify(res.data)}`);         // 응답 Data
 console.log('response   ',response,email);
 */
 
-export {getIdFromEmail, checkLogin}
+const apiLogin = {
+  getIdFromEmail,
+  checkLogin,
+};
+
+export default apiLogin;

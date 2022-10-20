@@ -32,8 +32,8 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import CustomCheckBox from "./CustomCheckBox.vue";
-import CustomNextBtn from "./CustomNextBtn.vue";
+import CustomCheckBox from "@/components/common/custom/CustomCheckBox.vue";
+import CustomNextBtn from "@/components/common/custom/CustomNextBtn.vue";
 //checkboxDatas[0].value.title
 
 const checkboxDatas = ref([

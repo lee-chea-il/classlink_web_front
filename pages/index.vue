@@ -3,34 +3,33 @@
     <HeaderSection :title="titleTxt" />
     <div class="page_login">
       <LoginLeftSection />
-      <LoginRightSection v-if="store.loginPageType=='login'" />
+      <LoginRightSection v-if="store.loginPageType == 'login'" />
       <LoginIdentity
         v-else-if="store.loginPageType == 'identity'"
         @identity-comp="setLoginIdentity"
       />
     </div>
-    <FindIdModal v-if="store.loginPageType=='login'"/>
-    <FindPwModal v-if="store.loginPageType=='login'"/>
+    <FindIdModal v-if="store.loginPageType == 'login'" />
+    <FindPwModal v-if="store.loginPageType == 'login'" />
   </div>
 </template>
 
-<script setup lang="ts">
-  import { member } from "@/stores/Member"
-  import HeaderSection from '@/components/HeaderSection.vue'
-  import LoginLeftSection from '@/components/LoginLeftSection.vue'
-  import LoginRightSection from '@/components/LoginRightSection.vue'
-  import LoginIdentity from '@/components/LoginIdentity.vue'
-  import FindIdModal from "@/components/modal/FindIdModal.vue"
-  import FindPwModal from "@/components/modal/FindPwModal.vue"
-  
-  const route = useRoute()
-  const store = member();
-  const titleTxt='로그인';
+<script setup>
+import { member } from "@/stores/Member";
+import HeaderSection from "@/components/common/HeaderSection.vue";
+import LoginLeftSection from "@/components/login/LoginLeftSection.vue";
+import LoginRightSection from "@/components/login/LoginRightSection.vue";
+import LoginIdentity from "@/components/login/LoginIdentity.vue";
+import FindIdModal from "@/components/common/modal/FindIdModal.vue";
+import FindPwModal from "@/components/common/modal/FindPwModal.vue";
 
-  const setLoginIdentity = () => {
-    return navigateTo('/myHome')
-  }
+const route = useRoute();
+const store = member();
+const titleTxt = "로그인";
+
+const setLoginIdentity = () => {
+  return navigateTo("/myHome");
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

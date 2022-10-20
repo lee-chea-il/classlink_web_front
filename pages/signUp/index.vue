@@ -1,11 +1,11 @@
-<script setup lang="ts">
+<script setup>
 import { ref } from "vue";
-import HeaderSection from '@/components/HeaderSection.vue'
-import LoginLeftSection from "@/components/LoginLeftSection.vue";
-import SignUpSection from "@/components/SignUpSection.vue";
-import SignUpIdentity from "@/components/SignUpIdentity.vue";
-import SignUpServiceConfirm from "@/components/SignUpServiceConfirm.vue";
-import SignUpConfirmModal from "@/components/modal/SignUpConfirmModal.vue";
+import HeaderSection from "@/components/common/HeaderSection.vue";
+import LoginLeftSection from "@/components/login/LoginLeftSection.vue";
+import SignUpSection from "@/components/signUp/signUpSection.vue";
+import SignUpIdentity from "@/components/signUp/signUpIdentity.vue";
+import SignUpServiceConfirm from "@/components/signUp/signUpServiceConfirm.vue";
+import SignUpConfirmModal from "@/components/common/modal/signUpConfirmModal.vue";
 //import { member } from "@/stores/Member";
 
 const modalData1 = ref({
@@ -65,10 +65,10 @@ const registerClick = (e) => {
   //store.setMyInfo("1", "ndsgirl");
   //console.log(store.myInfo.id);
 };
-const checkIdentity = (e)=>{
+const checkIdentity = (e) => {
   //console.log("faaa  ",e.identityType);
-  signUpProcedure.value = 'signUp';
-}
+  signUpProcedure.value = "signUp";
+};
 </script>
 
 <template>
@@ -83,7 +83,7 @@ const checkIdentity = (e)=>{
         />
         <SignUpIdentity
           v-else-if="signUpProcedure == 'identity'"
-          @identity-comp=checkIdentity
+          @identity-comp="checkIdentity"
         />
         <SignUpSection v-else />
       </div>
