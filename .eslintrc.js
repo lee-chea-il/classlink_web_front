@@ -25,6 +25,8 @@ module.exports = {
     'import/no-extraneous-dependencies': 0,
     'vue/no-parsing-error': 0,
     'vue/attribute-hyphenation': 0,
+    'import/namespace': 0,
+    'eslint-disable-line': 0,
     'vue/order-in-components': [
       'error',
       {

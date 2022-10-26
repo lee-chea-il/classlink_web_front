@@ -5,8 +5,9 @@
         <h2>회원가입</h2>
       </div>
       <div class="form_section">
-        <form>
-          <!-- [개발참조]:예외처리 시 css 적용 방법
+        <ValidationObserver v-slot="{ invalid }">
+          <form @submit.prevent="handleSubmit">
+            <!-- [개발참조]:예외처리 시 css 적용 방법
 						1. <input 에 추가
 						오류: class="is-invalid"
 						성공: class="is-valid"
@@ -16,135 +17,161 @@
 						성공: <div class="valid_text">
 						-->
 
-          <!-- [개발참조]:예외처리-오류의 예 -->
-          <div class="form-group">
-            <label for="form01">이름</label>
-            <input
-              id="form01"
-              type="text"
+            <!-- [개발참조]:예외처리-오류의 예 -->
+            <CustomInput
+              id="name"
+              name="이름"
               placeholder="이름 입력"
-              class="form-control is-invalid"
-            />
-          </div>
-          <div class="invalid_text">필수 정보입니다.</div>
-
-          <!-- [개발참조]:예외처리-성공의 예 -->
-          <div class="form-group form-inlinebox">
-            <label for="form02">닉네임</label>
-            <input
-              id="form02"
+              rules="min:2|required"
               type="text"
+              :inputValue="userInfo.name"
+              @change-input="onChangeInput"
+            />
+
+            <!-- [개발참조]:예외처리-성공의 예 -->
+            <CustomInput
+              id="nickName"
+              name="닉네임"
+              rules="min:2|required"
               placeholder="닉네임 입력"
-              class="form-control form-inline is-valid"
-            />
-
-            <div class="custom-control custom-checkbox custom-control-inline">
-              <input
-                id="chk01"
-                type="checkbox"
-                class="custom-control-input"
-                checked
-              />
-              <label class="custom-control-label" for="chk01">이름과동일</label>
-            </div>
-          </div>
-          <!-- <div class="invalid_text">중복된 닉네임입니다.</div> -->
-          <div class="valid_text">가입 가능한 닉네임입니다.</div>
-
-          <div class="form-group">
-            <label for="form03">아이디</label>
-            <input
-              id="form03"
               type="text"
-              placeholder="아이디 입력"
-              class="form-control"
+              :inputValue="userInfo.nickName"
+              @change-input="onChangeInput"
             />
-          </div>
-          <div class="form_ruletext">6자 이상, 20자 이하로 만들어 주세요.</div>
-          <!-- [개발참조]:예외처리 문구
+
+            <CustomInput
+              id="account"
+              name="아이디"
+              rules="required|account"
+              placeholder="아이디 입력"
+              type="text"
+              :inputValue="userInfo.account"
+              @change-input="onChangeInput"
+            />
+            <!-- [개발참조]:예외처리 문구
 						<div class="invalid_text">중복된 아이디입니다.</div>
 						<div class="valid_text">가입 가능한 아이디입니다.</div>
 						-->
 
-          <div class="form-group">
-            <label for="form04">비밀번호</label>
-            <input
-              id="form04"
-              type="password"
+            <CustomInput
+              id="password"
+              name="비밀번호"
+              rules="required|password"
               placeholder="비밀번호 입력"
-              class="form-control"
+              type="password"
+              :inputValue="userInfo.password"
+              @change-input="onChangeInput"
             />
-          </div>
-          <!-- [개발참조]:예외처리 문구
+
+            <CustomInput
+              id="passwordCheck"
+              name="비밀번호 확인"
+              rules="required"
+              placeholder="비밀번호 확인"
+              type="password"
+              :inputValue="userInfo.passwordCheck"
+              :isError="isError"
+              @change-input="onChangePasswordCheck"
+            />
+            <!-- [개발참조]:예외처리 문구
 						<div class="invalid_text">필수 정보입니다.</div>
 						-->
-
+            <!-- 
           <div class="form_ruletext">
             6 ~ 20자 이하, 영문 대/소문자, 숫자, 특수문자 중 2가지를
             조합해주세요.
-          </div>
-          <div class="form-group">
-            <label for="form05">비밀번호 확인</label>
-            <input
-              id="form05"
-              type="password"
-              placeholder="비밀번호 입력"
-              class="form-control"
-            />
-          </div>
-          <!-- [개발참조]:예외처리 문구
+          </div> -->
+
+            <!-- [개발참조]:예외처리 문구
 						<div class="invalid_text">비밀번호가 일치하지 않습니다.</div>
 						<div class="valid_text">확인되었습니다.</div>
 						-->
 
-          <div class="form-group form-inlinebox">
-            <label for="form06">이메일</label>
-            <input
-              id="form06"
-              type="text"
+            <CustomInput
+              id="email"
+              name="이메일"
+              rules="required|email"
               placeholder="이메일 입력"
-              class="form-control form-inline"
+              type="email"
+              :inputValue="userInfo.email"
+              :isBtn="true"
+              @change-input="onChangeInput"
             />
 
-            <button class="btn btn_crud_point disabled">인증번호 받기</button
-            ><!-- [개발참조]:class="disabled"제거시 활성 -->
-          </div>
-          <!-- [개발참조]:예외처리 문구
+            <!-- [개발참조]:예외처리 문구
 						<div class="invalid_text">필수 정보입니다.</div>
 						-->
 
-          <div class="form-group form-inlinebox" style="margin-top: 4px">
-            <label for="form07" style="display: none">인증번호입력</label>
-            <input
-              id="form07"
-              type="text"
+            <CustomInput
+              id="authNumber"
+              name="인증번호"
+              rules="required|numeric|digits:6"
               placeholder="인증번호 입력"
-              class="form-control form-inline"
+              type="authNumber"
+              :inputValue="userInfo.authNumber"
+              :isBtn="true"
+              :auth="true"
+              @change-input="onChangeInput"
             />
 
-            <button class="btn btn_crud_point disabled">확인</button
-            ><!-- [개발참조]:class="disabled"제거시 활성 -->
-          </div>
-          <!-- [개발참조]:예외처리 문구
+            <!-- [개발참조]:예외처리 문구
 						<div class="invalid_text">비밀번호가 일치하지 않습니다.</div>
 						<div class="valid_text">확인되었습니다.</div>
 						-->
-        </form>
-        <!-- [개발참조]:class="disabled"제거시 활성 -->
-        <button
-          class="btn btn btn_crud_point disabled"
-          style="margin-top: 20px"
-        >
-          가입하기
-        </button>
+            <button
+              class="btn btn btn_crud_point"
+              :class="{ disabled: invalid }"
+              style="margin-top: 20px"
+            >
+              가입하기
+            </button>
+          </form>
+          <!-- [개발참조]:class="disabled"제거시 활성 -->
+        </ValidationObserver>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { ValidationObserver } from 'vee-validate'
+import CustomInput from '@/components/common/custom/CustomInput.vue'
 export default {
   name: 'SignUpDetail',
+  components: {
+    CustomInput,
+    ValidationObserver,
+  },
+  data() {
+    return {
+      userInfo: {
+        name: '',
+        nickName: '',
+        account: '',
+        password: '',
+        passwordCheck: '',
+        email: '',
+        authNumber: '',
+      },
+      isError: false,
+    }
+  },
+  methods: {
+    onChangeInput({ target: { value, id } }) {
+      this.userInfo[id] = value
+    },
+    onChangePasswordCheck({ target: { value } }) {
+      this.userInfo.passwordCheck = value
+      if (this.userInfo.passwordCheck === this.userInfo.password) {
+        this.isError = false
+      } else {
+        this.isError = true
+      }
+    },
+    handleSubmit() {
+      console.log('가입완료')
+    },
+  },
 }
 </script>
 

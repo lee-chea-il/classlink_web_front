@@ -24,7 +24,9 @@
             <i id="eyeOff" class="icons_eye_off"></i>
             <i id="eyeOn" class="icons_eye_on hide"></i>
           </div>
-          <button class="btn btn_crud_point">로그인</button>
+          <button class="btn btn_crud_point" @click.prevent="postLogin">
+            로그인
+          </button>
           <div class="custom-control custom-checkbox">
             <input
               id="checkbox01"
@@ -64,8 +66,38 @@
 </template>
 
 <script>
+import { apiLogin } from '@/services'
+
 export default {
   name: 'SignUpForm',
+  data() {
+    return {
+      userInfo: {
+        memId: '',
+        memPwd: '',
+      },
+    }
+  },
+  methods: {
+    async postLogin() {
+      const payload = {
+        account: 'manager',
+        account_type_id: 1,
+        password: 'thqkddkswjs1!',
+      }
+      await apiLogin
+        .postLogin(payload)
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    onSubtmit() {
+      console.log('로그인 시도')
+    },
+  },
 }
 </script>
 
