@@ -11,6 +11,7 @@
               type="text"
               placeholder="아이디 입력"
               class="form-control"
+              autocomplete="on"
             />
           </div>
           <div class="form-group">
@@ -20,6 +21,7 @@
               type="password"
               placeholder="비밀번호 입력"
               class="form-control form_password"
+              autocomplete="on"
             />
             <i id="eyeOff" class="icons_eye_off"></i>
             <i id="eyeOn" class="icons_eye_on hide"></i>
@@ -91,7 +93,7 @@ export default {
           console.log(res)
         })
         .catch((err) => {
-          console.log(err)
+          console.log(err, '에러수정 전입니다.')
         })
     },
     onSubtmit() {
