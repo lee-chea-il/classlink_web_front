@@ -1,0 +1,536 @@
+@use "theme";
+@use "mixin";
+/*---------------------------------------*/
+/*--------  6. ac_manage2.scss  ---------*/
+/*---------------------------------------*/
+
+//프랜차이즈가입관리-가맹한 리스트
+.ac_manage_frc {
+	.cards_section {
+		position: relative;
+		width: 600px;
+		margin: 0 auto;
+		padding-top: 80px;
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		.card {
+			position: relative;
+			overflow: hidden;
+			width: 260px;
+			height: 230px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: flex-end;
+			box-shadow: theme.$box_shadow;
+			border-radius: 20px;
+			border-color: #fff;
+			padding: 10px;
+			margin-bottom: 55px;
+			.standby_txt {
+				position: absolute;
+				z-index: 2;
+				top: 10px;
+				left: 10px;
+				width: 240px;
+				height: 40px;
+				line-height: 40px;
+				text-align: center;
+				background-color: theme.$color_background;
+				border-radius: 12px;
+				color: theme.$text_unselected_color;
+				visibility: hidden;
+			}
+			&.standby {
+				&::before {
+					content: "";
+					position: absolute;
+					z-index: 1;
+					width: 260px;
+					height: 230px;
+					top: 0;
+					left: 0;
+					background: rgba($color: #000000, $alpha: .2);
+				}
+				.standby_txt {
+					visibility: visible;
+				}
+			}
+			.logo {
+				width: 200px;
+				height: 170px;
+				background-repeat: no-repeat;
+				background-position: center center;
+				img { width: 100%; height: auto;}
+			}
+			.academy { font-weight: 500;
+				.btn.signup {
+					font-weight: 500;
+					color: theme.$color_blue;
+				}
+			}
+			&.signup {
+				box-shadow: 0px 0px 15px #D1DBFF;
+			}
+		}
+	}
+	.info_txt {
+		position: relative;
+		margin-top: 10px;
+		width: 100%;
+		text-align: center;
+	}
+}
+
+//프랜차이즈가입관리-월별이용현황
+.ac_manage_frc.frc_monthlyusage {
+	.cards_section .card {
+		cursor: pointer;
+	} 
+}
+
+//결제관리
+.ac_manage_pay {
+	//요금제 박스 .plan_card 공통 이용
+	.plan_card {
+		position: relative;
+		padding-top: 65px;
+
+		.plan_box {
+			position: relative;
+			width: 280px;
+			border-radius: 20px;
+			box-shadow: theme.$box_shadow;
+			overflow: hidden;
+			.plan_tit {
+				padding: 15px 0;
+				.name { font-weight: 700; font-size: 24px;}
+				.price { font-weight: 500; font-size: 20px;}
+			}
+			.btn_area {
+				position: relative;
+				margin: 20px 0;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				.btn+.btn { margin-left: unset; margin-top: 10px;}
+			}
+			.detail_area {
+				width: 200px;
+				margin: 0 auto;
+				padding: 20px 0;
+				border-top: 0.4px solid rgba(167, 169, 172, .4);
+				.detail_list {
+					position: relative;
+					margin: 0 auto 25px;
+					margin-left: 70px;
+					width: 130px;
+					text-align: left;
+					.detail_title { font-size: 15px; font-weight: 500; color: theme.$color_blue; margin-left: -20px;}
+					.detail_info span {
+						padding: 2px 4px;
+						border-radius: 4px;
+						background-color: #e7edff; color: theme.$color_blue;
+						font-size: 14px;
+					}
+					ul.list {
+						font-size: 12px;
+					}
+				}
+			}
+		}
+		
+		.popular {
+			position: absolute;
+			z-index: 1;
+			top: 15px;
+			left: calc(50% - 85px);
+			width: 170px;
+			height: auto;
+			background: #7391FA;
+			border-radius: 50px;
+			padding: 10px;
+			font-weight: 500;
+			font-size: 14px;
+			color: #fff;
+			&+.plan_box {
+				border: 3px solid #7391FA;
+				// .plan_tit { color: #fff;}
+			}
+		}
+
+		&.color01 {
+			.plan_tit { background: #E6E7E8;}
+		}
+		&.color02 {
+			.plan_tit { background: #D1DBFF;}
+			.btn_signup { border: none; background: #D1DBFF;}
+		}
+		&.color03 {
+			.plan_tit { background: #7391FA; color: #fff;}
+			.btn_signup { border: none; background: #7391FA; color: #fff;}
+		}
+		&.color04 {
+			.plan_tit { background: #4FCED0; color: #fff;}
+			.btn_signup { border: none; background: #4FCED0; color: #fff;}
+		} 
+		&.service {
+			padding-top: 20px;
+			.plan_box { width: 400px;}
+			.plan_tit { padding: 30px 0; margin-bottom: 30px; background: #7391FA; color: #fff;}
+			.service { font-size: 18px; }
+			.btn_signup { width: 140px; border: none; background: #7391FA; color: #fff; margin-bottom: 20px;}
+		}
+	}
+
+	.page_title {
+		position: relative;
+		margin-top: 10px;
+		margin-bottom: 30px;
+		width: 100%;
+		text-align: center;
+		font-weight: 500;
+	}
+	.box_blue {
+		position: relative;
+		width: 829px;
+		margin: 0 auto;
+		padding: 50px 20px;
+		border: 1px solid #7391FA;
+		border-radius: 10px;
+		text-align: center;
+	}
+	.select_plan {
+		@extend .plan_card;
+		padding-top: 0;
+		padding-bottom: 20px;
+		.swiper-slide { padding: 10px;}
+		.plan_card {
+			padding-top: 0;
+			cursor: pointer;
+			.content_list {
+				position: relative;
+				padding: 15px 0;
+				ul {
+					width: 160px;
+					margin: 0 auto;
+					display: block;
+					text-align: left;
+					li { padding: 3px 0; font-size: 14px; font-weight: 500;}
+					li i { margin-right: 5px;}
+				}
+			}
+		}
+	}
+	.info_box {
+		position: relative;
+		@include mixin.border_common;
+		padding: 20px;
+		.title_area {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding-bottom: 15px;
+			border-bottom: 0.4px solid rgba(167, 169, 172, .2);
+		}
+		.info_area,
+		.modify_area {
+			margin: 20px 0 50px;
+			.form-group {
+				position: relative;
+				display: flex;
+				align-items: baseline;
+				label { width: 120px; text-align: left; font-size: 16px; line-height: 23px; vertical-align: top; padding: 0 20px;}
+				label + div { text-align: left; vertical-align: top;}
+				textarea {
+					display: block;
+					border: 0.4px solid rgba(167, 169, 172, 0.4);
+					border-radius: 5px;
+					padding: 10px;
+					text-align: left;
+					overflow: auto;
+					resize: vertical;
+					width: 100%;
+					font-size: 14px;
+					font-weight: 400;
+					color: #454545;
+					outline: none;
+				}
+				textarea::placeholder {
+					font-size: 14px;
+					color: #D1D3D4;
+				}
+			}
+		}
+		.modify_section {
+			.modify_area {
+				margin: 0 0 20px;
+				position: relative;
+				padding: 20px;
+				background: #F9F9FC;
+				border-radius: 10px;
+			}
+			.btn_area { margin-top: 10px;}
+		}
+	}
+	.payment_amount {
+		position: relative;
+		margin: 30px 0 20px;
+		border-radius: 10px;
+		border: none;
+		box-shadow: theme.$box_shadow;
+		text-align: center;
+		overflow: hidden;
+		.table {
+			margin-bottom: 0;
+			thead {
+				background: #F9F9FC;
+				font-size: 14px;
+			}
+			tbody td {
+				font-weight: 500;
+				font-size: 20px;
+				vertical-align: middle;
+				padding: 30px 0;
+				input[type='number'] { width: 60px; text-align: center; font-size: 20px;}
+				.num_updn {
+					display: inline-block;
+					width: 50px;
+					vertical-align: middle;
+					line-height: 20px;
+					img { cursor: pointer;}
+				}
+				i { margin: 0 10px;}
+			}
+			td:first-child { padding-left: 85px;}
+			td:last-child { padding-right: 85px;}
+		}
+	}
+	.warning_txt {
+		width: 200px;
+		margin: 0 auto;
+		text-align: left;
+		font-size: 12px;
+		line-height: 25px;
+		.warning {
+			position: relative;
+			color: theme.$color_notice;
+			&::before {
+				content:'';
+				position: absolute;
+				width: 16px;
+				height: 16px;
+				top: 6px;
+				left: -20px;
+				background: url(../images/icon_exclamation.png) no-repeat center center;
+			}
+		}
+		.explain {
+			display: flex;
+			align-items: center;
+			color: theme.$text_unselected_color;
+		}
+		span.circle {
+			display: inline-block;
+			margin: 0 2px;
+			width: 21px;
+			height: 21px;
+			line-height: 21px;
+			border-radius: 50%;
+			text-align: center;
+			vertical-align: middle;
+			background:theme.$color-light4;
+		}
+	}
+	.btn_area { 
+		margin: 35px 0;
+		text-align: center;
+		.btn + .btn { margin-left: 10px;}
+	}
+	.info_txt { 
+		position: relative;
+		width: 829px;
+		margin: 0 auto 30px;
+		padding: 10px 0px;
+		font-size: 12px;
+		li { padding: 3px 0;}
+	}
+	input.input_dates { width: 85px; text-align: center;}
+	.rateplan_section {
+		position: relative;
+		text-align: center;
+		min-height: 1015px;
+		.mu_area {
+			margin-bottom: 40px;
+			ul {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			li {
+				position: relative;
+				width: 190px;
+				text-align: center;
+				&::after {
+					content: '';
+					position: absolute;
+					top: 4px;
+					right: -10px;
+					@include mixin.divid_line(#454545, 30px);
+					border-color: rgba(69, 69, 69, .5)
+					
+				}
+			}
+			li > a {
+				padding: 6px 2px;
+				font-size: 19px; 
+				line-height: 20px; 
+				border-radius: 0;
+			}
+			li.active > a,
+			li:hover > a,
+			li:focus > a {
+				font-weight: 700;
+				color: theme.$color_blue;
+				box-shadow: inset 0 -10px 0 rgba(209, 219, 255);
+				line-height: 20px;
+			}
+		}
+		.plan_area {
+			position: relative;
+			display: flex;
+			justify-content: space-around;
+		}
+		@extend .plan_card;
+	}
+}
+
+//공지사항
+.ac_manage_notice {
+	.search_section .right_area {
+		margin-top: 5px;
+		@media (min-width: 992px) {
+			text-align: right;
+			margin-top: 0;
+		}
+	}
+	.table_section { overflow-x: auto;}
+	.table {
+		@media (max-width: 991.98px) {
+			min-width: 900px;
+		}
+	}
+	table td { vertical-align: middle;}
+	td .state {
+		color: theme.$text_unselected_color;
+		&.warning { color:theme.$color_notice;}
+	}
+	td .date { font-size: 14px !important;}
+	td.td_expand {
+		padding: 18px 20px 15px;
+		text-align: left;
+		font-size: 14px !important;
+		background-color: theme.$color_normal;
+		.file_name {
+			padding: 6px 15px;
+			margin-top: 10px;
+			@include mixin.border_common;
+		}
+		.notice_contents {
+			padding: 10px 15px;
+			width: 100%;
+			height: auto;
+			line-height: 24px;
+		}
+		.functional_area {
+			padding: 10px 15px;
+			position: relative;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			.thumbnail_area {
+				position: relative;
+				width: calc(100% - 275px);
+				.thumbnail {
+					position: relative;
+					display: inline-block;
+					width: 60px;
+					height: 45px;
+					background-repeat: no-repeat;
+					background-position: center center;
+					background-size: cover;
+					background-image: url('../images/sample_notice_noimg.jpg');
+					@include mixin.border_common;
+					border-radius: 0;
+					.more_cover {
+						position: absolute;
+						top: 0; left:0;
+						width: 100%; height: 100%;
+						background-color: rgba(0,0,0,.3);
+						color: #fff;
+						font-weight: 500;;
+						text-align: center;
+						line-height: 45px;
+					}
+				}
+			}
+			.btns_area {
+				text-align: right;
+			}
+		}
+	}
+
+	.btn_expand.up {
+		transform: rotate(0);
+	}
+
+}
+
+//공지사항-등록
+.ac_manage_notice.notice_rigi {
+	.setting_section {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		.left_section {
+			position: relative;
+			.title { 
+				display: inline-block;
+				min-width: 90px;
+			}
+		}
+		.right_section {
+			position: relative;
+
+		}
+	}
+	.file_list {
+		margin-top: 10px;
+	}
+	.write_area {
+		position: relative;
+		margin-top: 10px;
+		width: 100%;
+		min-height: 400px;
+		@include mixin.border_common;
+		text-align: center;
+	}
+	.btn_area {
+		margin-top: 20px;
+		text-align: center;
+	}
+	.exp_txt {
+		display: block;
+		width: 100%;
+		height: 100%;
+		text-align: center;
+		font-size: 14px;
+		color: theme.$text_unselected_color;
+	}
+	.search_result { 
+		overflow-x: auto;
+		.exp_txt { padding: 25px 0;}
+	}
+}
