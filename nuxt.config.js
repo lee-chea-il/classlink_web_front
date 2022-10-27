@@ -85,11 +85,6 @@ export default {
         crossorigin: 'anonymous',
       },
       {
-        src: 'plugins/swiper/swiper-bundle.min.js',
-        async: true,
-        crossorigin: 'anonymous',
-      },
-      {
         src: 'plugins/bootstrap/bootstrap.bundle.min.js',
         async: true,
         crossorigin: 'anonymous',

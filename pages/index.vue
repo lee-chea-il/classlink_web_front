@@ -4,6 +4,28 @@ import CustomSwiper from '@/components/common/custom/CustomSwiper.vue'
 export default {
   name: 'IndexPage',
   components: { educationHeader, CustomSwiper },
+  data(){
+    return {
+      todayLectureList:[
+        { academy:'일산어학원', time:'09:00 ~ 12:00', subject:'영어심화리딩', lessonTitle:'영어',lessonClass:'심화 A반', teacher:'홍길동 선생님' },
+        { academy:'김포어학원', time:'09:00 ~ 12:00', subject:'수학심화리딩', lessonTitle:'수학',lessonClass:'심화 B반', teacher:'임꺽정 선생님' },
+        { academy:'광주어학원', time:'09:00 ~ 12:00', subject:'과학심화리딩', lessonTitle:'과학',lessonClass:'심화 C반', teacher:'임창정 선생님' },
+        { academy:'한남어학원', time:'09:00 ~ 12:00', subject:'체육심화리딩', lessonTitle:'체육',lessonClass:'심화 D반', teacher:'전현무 선생님' },
+        { academy:'마포어학원', time:'09:00 ~ 12:00', subject:'음악심화리딩', lessonTitle:'음악',lessonClass:'심화 E반', teacher:'김종국 선생님' },
+        { academy:'홍대어학원', time:'09:00 ~ 12:00', subject:'사회심화리딩', lessonTitle:'사회',lessonClass:'심화 F반', teacher:'유재석 선생님' },
+        { academy:'잠실어학원', time:'09:00 ~ 12:00', subject:'국어심화리딩', lessonTitle:'국어',lessonClass:'심화 G반', teacher:'사투리 선생님' }
+      ],
+      lectureCourseList:[
+        { academy:'일산어학원', time:'월수금 09:00 ~ 12:00', subject:'영어심화리딩', lessonTitle:'영어',lessonClass:'심화 A반', teacher:'홍길동 선생님' },
+        { academy:'김포어학원', time:'월수금 09:00 ~ 12:00', subject:'수학심화리딩', lessonTitle:'수학',lessonClass:'심화 B반', teacher:'임꺽정 선생님' },
+        { academy:'광주어학원', time:'월수금 09:00 ~ 12:00', subject:'과학심화리딩', lessonTitle:'과학',lessonClass:'심화 C반', teacher:'임창정 선생님' },
+        { academy:'한남어학원', time:'월수금 09:00 ~ 12:00', subject:'체육심화리딩', lessonTitle:'체육',lessonClass:'심화 D반', teacher:'전현무 선생님' },
+        { academy:'마포어학원', time:'월수금 09:00 ~ 12:00', subject:'음악심화리딩', lessonTitle:'음악',lessonClass:'심화 E반', teacher:'김종국 선생님' },
+        { academy:'홍대어학원', time:'월수금 09:00 ~ 12:00', subject:'사회심화리딩', lessonTitle:'사회',lessonClass:'심화 F반', teacher:'유재석 선생님' },
+        { academy:'잠실어학원', time:'월수금 09:00 ~ 12:00', subject:'국어심화리딩', lessonTitle:'국어',lessonClass:'심화 G반', teacher:'사투리 선생님' }
+      ],
+    }
+  },
   methods: {
     onSwiper (swiper) {
       console.log(swiper)
@@ -30,12 +52,10 @@ export default {
               <div class="today_study">
                 <h4 class="title">오늘의 강의</h4>
                 <div class="cnts">
-                  <!-- [개발참조] : 등록된 것이 없을 때
-                  <div class="nothing_txt">
+                  <div v-if="todayLectureList.length==0" class="nothing_txt">
                     새로운 소식이 없습니다.
-                  </div> -->
-
-                  <CustomSwiper />
+                  </div>
+                  <CustomSwiper v-else :dataList='todayLectureList' :isHorizontal="false"/>
                 </div>
               </div>
               <!-- /.오늘의 강의 -->
@@ -665,83 +685,10 @@ export default {
                   <div class="lecture_course">
                     <h4 class="title">강의코스</h4>
                     <div class="cnts">
-                      <!-- [개발참조] : 등록된 것이 없을 때
-                      <div class="nothing_txt">
-                        수강하는 강의 코스가 없습니다.
-                      </div>  -->
-                      <!-- Swiper -->
-                      <div class="swiper swiper_horizontal lecture">
-                        <div class="swiper-wrapper">
-                          <div class="swiper-slide">
-                            <!-- 내용 BOX -->
-                            <div class="study_box">
-                              <div class="box">
-                                <div class="subject">영어심화리딩</div>
-                                <div class="time">월수금 12:00 ~ 12:00</div>
-                                <div class="lesson">
-                                  <span>영어</span><span class="divid"></span>
-                                  <span>심화 A반</span
-                                  ><span class="divid"></span>
-                                  <span class="teacher">홍길동 선생님</span>
-                                </div>
-                              </div>
-                              <div class="academy">청담어학원</div>
-                            </div>
-                          </div>
-                          <div class="swiper-slide">
-                            <!-- 내용 BOX -->
-                            <div class="study_box">
-                              <div class="box">
-                                <div class="subject">영어심화리딩</div>
-                                <div class="time">월수금 12:00 ~ 12:00</div>
-                                <div class="lesson">
-                                  <span>영어</span><span class="divid"></span>
-                                  <span>심화 A반</span
-                                  ><span class="divid"></span>
-                                  <span class="teacher">홍길동 선생님</span>
-                                </div>
-                              </div>
-                              <div class="academy">청담어학원</div>
-                            </div>
-                          </div>
-                          <div class="swiper-slide">
-                            <!-- 내용 BOX -->
-                            <div class="study_box">
-                              <div class="box">
-                                <div class="subject">영어심화리딩</div>
-                                <div class="time">월수금 12:00 ~ 12:00</div>
-                                <div class="lesson">
-                                  <span>영어</span><span class="divid"></span>
-                                  <span>심화 A반</span
-                                  ><span class="divid"></span>
-                                  <span class="teacher">홍길동 선생님</span>
-                                </div>
-                              </div>
-                              <div class="academy">청담어학원</div>
-                            </div>
-                          </div>
-                          <div class="swiper-slide">
-                            <!-- 내용 BOX -->
-                            <div class="study_box">
-                              <div class="box">
-                                <div class="subject">영어심화리딩</div>
-                                <div class="time">월수금 12:00 ~ 12:00</div>
-                                <div class="lesson">
-                                  <span>영어</span><span class="divid"></span>
-                                  <span>심화 A반</span
-                                  ><span class="divid"></span>
-                                  <span class="teacher">홍길동 선생님</span>
-                                </div>
-                              </div>
-                              <div class="academy">청담어학원</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="swiper-scrollbar"></div>
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
-                        <!-- <div class="swiper-pagination"></div> -->
+                      <div v-if="lectureCourseList.length==0" class="nothing_txt">
+                        새로운 소식이 없습니다.
                       </div>
+                      <CustomSwiper v-else :dataList='lectureCourseList'/>
                     </div>
                   </div>
                   <!-- /.강의코스 -->
