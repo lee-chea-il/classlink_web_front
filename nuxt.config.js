@@ -70,10 +70,13 @@ export default {
       },
     ],
     link: [
-      { rel: 'stylesheet', href: 'assets/css/base.css' },
-      { rel: 'stylesheet', href: 'assets/css/common.css' },
-      { rel: 'canonical', href: 'https://www.metaclasslink.com' },
-      { rel: 'shortcut icon', href: 'assets/favicon.png' },
+      // { rel: 'stylesheet', href: 'assets/css/base.css' },
+      // { rel: 'stylesheet', href: 'assets/css/common.css' },
+      {
+        rel: 'canonical',
+        href: 'https://www.metaclasslink.com',
+      },
+      { rel: 'shortcut icon', href: 'favicon.png' },
     ],
     script: [
       {
@@ -96,10 +99,9 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    // { rel: 'stylesheet', href: './assets/css/base.css' },
-    // { rel: 'stylesheet', href: './assets/css/common.css' },
+    '@/assets/css/base.css',
+    '@/assets/css/common.css',
     // { rel: 'canonical', href: 'https://www.metaclasslink.com' },
-    // { rel: 'shortcut icon', href: './assets/favicon.png' },
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins

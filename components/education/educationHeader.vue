@@ -4,21 +4,59 @@
     <div class="nav_web">
       <div class="nav_top_wrap">
         <div class="nav_top">
-          <div class="logo_area">
-            <a
+          <div
+            class="logo_area"
+            @click="$store.commit('common/setActiveNavIdx', 0)"
+          >
+            <NuxtLink to="/"
               ><img src="@/assets/images/ClassLink_logo.svg" alt="ClassLink"
-            /></a>
+            /></NuxtLink>
           </div>
           <div class="nav_area">
             <ul class="nav nav_dapth01 justify-content-center">
-              <li class="nav-item">
-                <a class="nav-link active" href="#">1Depth</a>
+              <li
+                class="nav-item"
+                @click="$store.commit('common/setActiveNavIdx', 1)"
+              >
+                <a
+                  class="nav-link"
+                  :class="{ active: $store.state.common.activeNavIdx === 1 }"
+                  href="#"
+                  >수업준비</a
+                >
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">1Depth</a>
+              <li
+                class="nav-item"
+                @click="$store.commit('common/setActiveNavIdx', 2)"
+              >
+                <a
+                  class="nav-link"
+                  :class="{ active: $store.state.common.activeNavIdx === 2 }"
+                  href="#"
+                  >수업</a
+                >
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">1Depth</a>
+              <li
+                class="nav-item"
+                @click="$store.commit('common/setActiveNavIdx', 3)"
+              >
+                <a
+                  class="nav-link"
+                  :class="{ active: $store.state.common.activeNavIdx === 3 }"
+                  href="#"
+                  >관리</a
+                >
+              </li>
+              <li
+                class="nav-item"
+                @click="$store.commit('common/setActiveNavIdx', 4)"
+              >
+                <a
+                  class="nav-link"
+                  :class="{ active: $store.state.common.activeNavIdx === 4 }"
+                  href="#"
+                  >건물</a
+                >
               </li>
             </ul>
           </div>
@@ -32,24 +70,79 @@
           </div>
         </div>
       </div>
-      <div class="nav_sub">
+      <div v-show="$store.state.common.activeNavIdx === 1" class="nav_sub">
         <ul class="nav nav_dapth02 justify-content-center">
           <li class="nav-item">
             <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
-            <a class="nav-link active" href="#">2Depth</a>
+            <a class="nav-link" href="#">자료실</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">2Depth</a>
+            <a class="nav-link" href="#">레슨</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">2Depth</a>
+            <a class="nav-link" href="#">커리큘럼</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">2Depth</a>
+            <a class="nav-link" href="#">강좌</a>
+          </li>
+        </ul>
+      </div>
+
+      <div v-show="$store.state.common.activeNavIdx === 2" class="nav_sub">
+        <ul class="nav nav_dapth02 justify-content-center">
+          <li class="nav-item">
+            <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
+            <a class="nav-link" href="#">강의코스</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">학습함</a>
+          </li>
+        </ul>
+      </div>
+
+      <div v-show="$store.state.common.activeNavIdx === 3" class="nav_sub">
+        <ul class="nav nav_dapth02 justify-content-center">
+          <li class="nav-item">
+            <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
+            <a class="nav-link" href="#">운영관리</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">출결</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">프랜차이즈 가입관리</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">결제관리</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">공지사항</a>
+          </li>
+        </ul>
+      </div>
+
+      <div v-show="$store.state.common.activeNavIdx === 4" class="nav_sub">
+        <ul class="nav nav_dapth02 justify-content-center">
+          <li class="nav-item">
+            <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
+            <a class="nav-link" href="#">건물 자료실</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">건물 패키지</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">건물SET</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">빌딩</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">지도교사</a>
           </li>
         </ul>
       </div>
     </div>
+
     <!-- 작은탬, 모바일 상단메뉴 < 991.98-->
     <div class="nav_mobile">
       <div class="nav_top_wrap">
@@ -345,7 +438,9 @@
 </template>
 
 <script>
-export default {}
+export default {
+  name: 'EducationHeader',
+}
 </script>
 
 <style></style>
