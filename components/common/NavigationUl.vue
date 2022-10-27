@@ -19,6 +19,9 @@
     <li>
       <nuxt-link to="/signup/detail">회원가입 상세</nuxt-link>
     </li>
+    <li>
+      <nuxt-link to="/reference">자료실</nuxt-link>
+    </li>
   </ul>
 </template>
 

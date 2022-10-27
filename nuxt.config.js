@@ -70,8 +70,6 @@ export default {
       },
     ],
     link: [
-      // { rel: 'stylesheet', href: 'assets/css/base.css' },
-      // { rel: 'stylesheet', href: 'assets/css/common.css' },
       {
         rel: 'canonical',
         href: 'https://www.metaclasslink.com',
@@ -89,6 +87,9 @@ export default {
         async: true,
         crossorigin: 'anonymous',
       },
+      // {
+      //   src: 'plugins/js/victor.js',
+      // },
     ],
   },
 
@@ -100,7 +101,13 @@ export default {
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['~/plugins/vee-validate.js'],
+  plugins: [
+    // '@/plugins/bootstrap/bootstrap.bundle.min.js',
+    // '@/plugins/jquery/jquery-3.6.0.min.js',
+    // '@/plugins/swiper/swiper-bundle.min.js',
+    '@/plugins/js/victor.js',
+    '@/plugins/vee-validate.js',
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -118,12 +125,23 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    // '@nuxtjs/dayjs',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
     baseURL: '/',
+  },
+
+  dayjs: {
+    locales: ['en', 'ja'],
+    defaultLocale: 'en',
+    defaultTimeZone: 'Asia/Tokyo',
+    plugins: [
+      'utc', // import 'dayjs/plugin/utc'
+      'timezone', // import 'dayjs/plugin/timezone'
+    ], // Your Day.js plugin
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

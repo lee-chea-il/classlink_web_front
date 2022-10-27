@@ -1,34 +1,13 @@
 <template>
-  <div class="default-layout">
-    <ul>
-      <li>
-        <nuxt-link to="/">메인</nuxt-link>
-      </li>
-      <li>
-        <nuxt-link to="/login">로그인</nuxt-link>
-      </li>
-
-      <li>
-        <nuxt-link to="/login/identity">로그인 신분선택</nuxt-link>
-      </li>
-      <li>
-        <nuxt-link to="/signup">회원가입</nuxt-link>
-      </li>
-      <li>
-        <nuxt-link to="/signup/type">회원가입 타입</nuxt-link>
-      </li>
-      <li>
-        <nuxt-link to="/signup/detail">회원가입 상세</nuxt-link>
-      </li>
-    </ul>
-    <Nuxt />
-  </div>
+  <div class="default-layout"><NavigationUl /> <Nuxt /></div>
 </template>
 
 <script>
+import NavigationUl from '@/components/common/NavigationUl.vue'
+
 export default {
   name: 'DefailtPage',
-  
+  components: { NavigationUl },
 }
 </script>
 

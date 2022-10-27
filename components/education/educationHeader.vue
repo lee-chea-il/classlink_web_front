@@ -74,7 +74,13 @@
         <ul class="nav nav_dapth02 justify-content-center">
           <li class="nav-item">
             <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
-            <a class="nav-link" href="#">자료실</a>
+            <NuxtLink
+              to="/reference"
+              class="nav-link"
+              :class="{ active: $route.fullPath === '/reference' }"
+              href="#"
+              >자료실</NuxtLink
+            >
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">레슨</a>
