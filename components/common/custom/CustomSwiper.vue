@@ -71,6 +71,27 @@
           navigation: {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev'
+          },
+          breakpoints: (this.isHorizontal)?{
+            360: {
+              slidesPerView: 1.2
+            },
+            575.98: {
+              slidesPerView: 2.2
+            },
+            767.98: {
+              slidesPerView: 3.2
+            },
+          }:{
+            360: {
+              slidesPerView: 1
+            },
+            575.98: {
+              slidesPerView: 2.2
+            },
+            767.98: {
+              slidesPerView: 3.3
+            },
           }
         }
       }
