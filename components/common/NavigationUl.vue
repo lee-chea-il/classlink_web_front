@@ -22,6 +22,9 @@
     <li>
       <nuxt-link to="/reference">자료실</nuxt-link>
     </li>
+    <li>
+      <nuxt-link to="/curriculum">커리큘럼</nuxt-link>
+    </li>
   </ul>
 </template>
 
