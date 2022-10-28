@@ -76,37 +76,38 @@ export default {
       },
       { rel: 'shortcut icon', href: 'favicon.png' },
     ],
-    script: [
-      {
-        src: 'plugins/jquery/jquery-3.6.0.min.js',
-        async: true,
-        crossorigin: 'anonymous',
-      },
-      {
-        src: 'plugins/bootstrap/bootstrap.bundle.min.js',
-        async: true,
-        crossorigin: 'anonymous',
-      },
-      // {
-      //   src: 'plugins/js/victor.js',
-      // },
-    ],
+    script: [],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-    '@/assets/css/base.css',
-    '@/assets/css/common.css',
-    // { rel: 'canonical', href: 'https://www.metaclasslink.com' },
-  ],
+  css: ['assets/css/base.css', 'assets/css/common.css'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    // '@/plugins/bootstrap/bootstrap.bundle.min.js',
-    // '@/plugins/jquery/jquery-3.6.0.min.js',
-    // '@/plugins/swiper/swiper-bundle.min.js',
-    '@/plugins/js/victor.js',
-    '@/plugins/vee-validate.js',
+    {
+      src: 'plugins/jquery/jquery-3.6.0.min.js',
+      // async: true,
+      defer: true,
+      crossorigin: 'anonymous',
+    },
+    {
+      src: 'plugins/bootstrap/bootstrap.bundle.min.js',
+      // async: true,
+      defer: true,
+      crossorigin: 'anonymous',
+    },
+    {
+      src: 'plugins/js/victor.js',
+      // async: true,
+      defer: true,
+      crossorigin: 'anonymous',
+    },
+    {
+      src: 'plugins/vee-validate.js',
+      // async: true,
+      defer: true,
+      crossorigin: 'anonymous',
+    },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

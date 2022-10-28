@@ -75,9 +75,11 @@
           <li class="nav-item">
             <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
             <NuxtLink
-              to="/reference"
+              to="/classPreperation/reference"
               class="nav-link"
-              :class="{ active: $route.fullPath === '/reference' }"
+              :class="{
+                active: $route.fullPath === '/classPreperation/reference',
+              }"
               href="#"
               >자료실</NuxtLink
             >

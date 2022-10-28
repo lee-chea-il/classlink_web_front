@@ -20,7 +20,7 @@
       <nuxt-link to="/signup/detail">회원가입 상세</nuxt-link>
     </li>
     <li>
-      <nuxt-link to="/reference">자료실</nuxt-link>
+      <nuxt-link to="/classPreperation/reference">자료실</nuxt-link>
     </li>
     <li>
       <nuxt-link to="/curriculum">커리큘럼</nuxt-link>
