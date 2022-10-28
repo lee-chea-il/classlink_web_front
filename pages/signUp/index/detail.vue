@@ -39,6 +39,15 @@
               @change-input="onChangeInput"
             />
 
+            <!-- <CustomInput
+              id="account"
+              name="아이디"
+              rules="required|account"
+              placeholder="아이디 입력"
+              type="text"
+              :inputValue="userInfo.account"
+              @change-input="onChangeInput"
+            /> -->
             <CustomInput
               id="account"
               name="아이디"
@@ -46,6 +55,7 @@
               placeholder="아이디 입력"
               type="text"
               :inputValue="userInfo.account"
+              :isIdCheckBtn="true"
               @change-input="onChangeInput"
             />
             <!-- [개발참조]:예외처리 문구
@@ -67,7 +77,7 @@
               id="passwordCheck"
               name="비밀번호 확인"
               rules="required"
-              placeholder="비밀번호 확인"
+              placeholder="비밀번호 입력"
               type="password"
               :inputValue="userInfo.passwordCheck"
               :isError="isError"

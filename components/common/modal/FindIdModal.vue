@@ -42,26 +42,16 @@
           <!-- 검색 후 결과 테이블 -->
           <div id="searchTable" class="search_result" style="display: none">
             <table class="table table-borderless">
-              <colgroup>
-                <col width="35" />
-                <col />
-                <col width="90" />
-              </colgroup>
               <thead>
                 <tr>
-                  <th scope="col"></th>
-                  <th scope="col">아이디</th>
-                  <th scope="col">가입</th>
+                  <th></th>
+                  <th>아이디</th>
+                  <th>가입</th>
                 </tr>
               </thead>
             </table>
             <div class="tbl_overflow">
               <table class="table table-borderless">
-                <colgroup>
-                  <col width="35" />
-                  <col />
-                  <col width="90" />
-                </colgroup>
                 <tbody>
                   <tr>
                     <td scope="row">

@@ -49,7 +49,13 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn_crud_point" data-dismiss="modal">확인</button>
+          <button
+            class="btn btn_crud_point"
+            data-dismiss="modal"
+            @click="confirmBtnEvent"
+          >
+            확인
+          </button>
           <button class="btn btn_crud_default" data-dismiss="modal">
             취소
           </button>
@@ -62,6 +68,11 @@
 <script>
 export default {
   name: 'FindPwModal',
+  methods: {
+    confirmBtnEvent() {
+      this.$router.push('/resetpw')
+    },
+  },
 }
 </script>
 

@@ -11,6 +11,9 @@
       <nuxt-link to="/login/identity">로그인 신분선택</nuxt-link>
     </li>
     <li>
+      <nuxt-link to="/resetpw">비밀번호 재설정</nuxt-link>
+    </li>
+    <li>
       <nuxt-link to="/signup">회원가입</nuxt-link>
     </li>
     <li>

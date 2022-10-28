@@ -12,7 +12,16 @@
               onclick="history.back();"
             ></button>
           </div>
-          <div class="title_area">로그인</div>
+          <div
+            v-if="$route.path === '/login' || $route.path === '/login/identity'"
+            class="title_area"
+          >
+            로그인
+          </div>
+          <div v-else-if="$route.path === '/resetpw'" class="title_area">
+            비밀번호 재설정
+          </div>
+          <div v-else class="title_area">회원가입</div>
           <div class="mobile_navbtn_area">
             <!-- <button id="mobilemuBtn" class="btn icons_mobilemu"></button> -->
           </div>

@@ -1,6 +1,9 @@
 <template>
   <ValidationProvider v-slot="{ errors, classes }" :rules="rules">
-    <div class="form-group" :class="isBtn ? 'form-inlinebox' : ''">
+    <div
+      class="form-group"
+      :class="isBtn || isIdCheckBtn ? 'form-inlinebox' : ''"
+    >
       <label for="name">{{ name }}</label>
 
       <input
@@ -10,11 +13,13 @@
         :type="type"
         :placeholder="placeholder"
         class="form-control"
-        :class="(isError ? 'is-invalid' : classes, isBtn ? 'form-inline' : '')"
+        :class="
+          (isError ? 'is-invalid' : classes,
+          isBtn || isIdCheckBtn ? 'form-inline' : '')
+        "
         autocomplete="off"
         @input="$emit('change-input', $event)"
       />
-
       <!-- [개발참조]:class="disabled"제거시 활성 -->
       <button
         v-if="isBtn"
@@ -23,9 +28,27 @@
       >
         {{ auth ? '확인' : '인증번호 받기' }}
       </button>
+      <button
+        v-if="isIdCheckBtn"
+        class="btn btn_crud_point button"
+        :class="classes['is-valid'] ? '' : 'disabled'"
+      >
+        중복체크
+      </button>
     </div>
-    <div v-if="isError" class="invalid_text">비밀번호가 일치하지 않습니다.</div>
-    <div class="invalid_text">{{ errors[0] }}</div>
+    <div v-if="isError && inputValue !== ''" class="invalid_text">
+      비밀번호가 일치하지 않습니다.
+    </div>
+    <div
+      :class="
+        String(errors[0]).includes('2글자') ||
+        String(errors[0]).includes('주세요')
+          ? 'form_ruletext'
+          : 'invalid_text'
+      "
+    >
+      {{ errors[0] }}
+    </div>
   </ValidationProvider>
 </template>
 
@@ -70,6 +93,10 @@ export default {
       type: Boolean,
     },
     auth: {
+      default: false,
+      type: Boolean,
+    },
+    isIdCheckBtn: {
       default: false,
       type: Boolean,
     },

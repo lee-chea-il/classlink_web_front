@@ -18,7 +18,7 @@ Object.keys(rules).forEach((rule) => {
   extend('limit', (value, params) => {
     const [min, max] = params
     if ((value && value.length < min) || value.length > max) {
-      return `{_field_} 은(는) ${min}자 ~ ${max}자로 입력해 주세요`
+      return `{_field_} 은(는) ${min}자 ~ ${max}자로 입력해 주세요.`
     }
     return true
   })
@@ -32,32 +32,32 @@ Object.keys(rules).forEach((rule) => {
   // 기존에 존재하던 required는 message만 변경
   extend('required', {
     ...required,
-    message: '{_field_} 은(는) 반드시 입력해야 합니다',
+    message: '{_field_} 은(는) 필수 정보입니다.',
   })
 
   extend('required-select', {
     ...required,
-    message: '{_field_} 은(는) 반드시 선택해야 합니다',
+    message: '{_field_} 은(는) 반드시 선택해야 합니다.',
   })
 
   extend('numeric', {
     ...numeric,
-    message: '{_field_} 은(는) 숫자로만 구성되어야 합니다',
+    message: '{_field_} 은(는) 숫자로만 구성되어야 합니다.',
   })
   extend('digits', {
     ...digits,
-    message: '{_field_} 은(는) 6자리 여야 합니다',
+    message: '{_field_} 은(는) 6자리 여야 합니다.',
   })
 
   extend('email', {
     ...email,
-    message: '잘못 입력된 이메일 주소 입니다',
+    message: '잘못 입력된 이메일 주소 입니다.',
   })
 
   extend('account', (value) => {
     const pattern = /^[A-za-z0-9]{6,20}$/
     if (!pattern.test(value)) {
-      return '6자이상,20자 이하로 만들어 주세요'
+      return '6자이상,20자 이하로 만들어 주세요.'
     }
     return true
   })
@@ -72,7 +72,7 @@ Object.keys(rules).forEach((rule) => {
 
   extend('confirmed', {
     ...confirmed,
-    message: '비밀번호와 비밀번호확인이 일치하지 않습니다',
+    message: '비밀번호와 비밀번호확인이 일치하지 않습니다.',
   })
 })
 

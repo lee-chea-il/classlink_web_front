@@ -18,13 +18,20 @@
             <label for="password" class="hide">비밀번호</label>
             <input
               id="password"
-              type="password"
+              :type="!isPwEyeOn ? 'password' : 'text'"
               placeholder="비밀번호 입력"
               class="form-control form_password"
-              autocomplete="on"
             />
-            <i id="eyeOff" class="icons_eye_off"></i>
-            <i id="eyeOn" class="icons_eye_on hide"></i>
+            <i
+              id="eyeOff"
+              :class="!isPwEyeOn ? 'icons_eye_off' : 'icons_eye_off hide'"
+              @click="changePwType"
+            ></i>
+            <i
+              id="eyeOn"
+              :class="isPwEyeOn ? 'icons_eye_on' : 'icons_eye_on hide'"
+              @click="changePwType"
+            ></i>
           </div>
           <button class="btn btn_crud_point" @click.prevent="postLogin">
             로그인
@@ -78,6 +85,7 @@ export default {
         memId: '',
         memPwd: '',
       },
+      isPwEyeOn: false,
     }
   },
   methods: {
@@ -95,6 +103,13 @@ export default {
         .catch((err) => {
           console.log(err, '에러수정 전입니다.')
         })
+    },
+    changePwType() {
+      if (this.isPwEyeOn === false) {
+        this.isPwEyeOn = true
+      } else {
+        this.isPwEyeOn = false
+      }
     },
     onSubtmit() {
       console.log('로그인 시도')
