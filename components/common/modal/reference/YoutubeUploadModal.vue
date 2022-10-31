@@ -48,13 +48,18 @@
                 />
                 <div
                   class="btn btn_crud_default"
-                  data-toggle="modal"
-                  data-target="#modalDataRegiModi"
-                  data-dismiss="modal"
                   @click="$emit('upload-youtube')"
                 >
                   등록
                 </div>
+                <div
+                  id="youtube_btn"
+                  class="btn btn_crud_default"
+                  data-toggle="modal"
+                  data-target="#modalDataRegiModi"
+                  data-dismiss="modal"
+                  style="display: none"
+                ></div>
                 <!-- [개발참조] url 입력하지 않고 버튼 클릭 시 URL 입력 팝업창 노출 
 								<div class="btn btn_crud_default" data-toggle="modal" data-target="#modalDataregi04" data-dismiss="modal">등록</div>
 								-->
@@ -94,6 +99,7 @@
                   data-toggle="modal"
                   data-target="#modalDataRegiModi"
                   data-dismiss="modal"
+                  @click="$emit('upload-page')"
                 >
                   등록
                 </div>

@@ -80,7 +80,12 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['assets/css/base.css', 'assets/css/common.css'],
+  css: [
+    'assets/css/base.css',
+    'assets/css/common.css',
+    'assets/css/custom.css',
+    // 'https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css',
+  ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
@@ -96,6 +101,18 @@ export default {
       defer: true,
       crossorigin: 'anonymous',
     },
+    // {
+    //   src: 'https://cdn.jsdelivr.net/npm/@yaireo/tagify',
+    //   // async: true,
+    //   defer: true,
+    //   crossorigin: 'anonymous',
+    // },
+    // {
+    //   src: 'https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js',
+    //   // async: true,
+    //   defer: true,
+    //   crossorigin: 'anonymous',
+    // },
     {
       src: 'plugins/js/victor.js',
       // async: true,

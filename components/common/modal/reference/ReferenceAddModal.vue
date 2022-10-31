@@ -37,8 +37,8 @@
                       type="text"
                       placeholder=""
                       class="form-control"
-                      :value="uploadFile.name"
                       name="name"
+                      :value="reference.name"
                       @input="$emit('change-input', $event)"
                     />
                   </div>
@@ -47,21 +47,32 @@
                 <div class="form-group row">
                   <label for="" class="col-3 col-lg-3 col-sm-2">과목</label>
                   <div class="col">
-                    <div class="dropdown form-inline">
-                      <button
+                    <!-- <div class="dropdown form-inline"> -->
+                    <!-- <button
                         class="btn dropdown-toggle"
                         type="button"
                         data-toggle="dropdown"
                         aria-expanded="false"
                       >
                         과목 선택
-                      </button>
-                      <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">등록한 과목01</a>
-                        <a class="dropdown-item" href="#">등록한 과목02</a>
-                        <a class="dropdown-item" href="#">등록한 과목03</a>
-                      </div>
-                    </div>
+                      </button> -->
+                    <select
+                      class="select"
+                      name="subject"
+                      :value="reference.subject"
+                      @input="$emit('change-input', $event)"
+                    >
+                      <option class="dropdown-item" :value="1">
+                        등록한 과목01
+                      </option>
+                      <option class="dropdown-item" :value="2">
+                        등록한 과목02
+                      </option>
+                      <option class="dropdown-item" :value="3">
+                        등록한 과목03
+                      </option>
+                    </select>
+                    <!-- </div> -->
                   </div>
                 </div>
 
@@ -70,24 +81,31 @@
                   <div class="col">
                     <input
                       type="text"
-                      placeholder=""
                       class="form-control"
-                      value="설명 입력"
+                      placeholder="설명 입력"
+                      name="desc"
+                      :value="reference.desc"
+                      @input="$emit('change-input', $event)"
                     />
                   </div>
                 </div>
 
                 <div class="form-group row">
+                  <!-- <Tagify /> -->
                   <label for="" class="col-3 col-lg-3 col-sm-2">키워드</label>
                   <div class="col">
                     <input
-                      type="text"
-                      placeholder=""
-                      class="form-control"
-                      value="키워드 입력 후 Enter 키 입력"
+                      id="keywordInput"
+                      placeholder="입력"
+                      name="keyword"
+                      :value="reference.keyword"
+                      @change="$emit('change-input', $event)"
+                      @blur="$emit('change-input', $event)"
                     />
                     <span class="info"
-                      >키워드는 쉼표(,)와 엔터로 구분할 수 있습니다</span
+                      >키워드는
+                      <!-- 쉼표(,)와  -->
+                      엔터로 구분할 수 있습니다</span
                     >
                   </div>
                 </div>
@@ -97,9 +115,11 @@
                   <div class="col">
                     <input
                       type="text"
-                      placeholder=""
                       class="form-control"
-                      value="이름"
+                      placeholder="이름"
+                      name="registrant"
+                      :value="reference.registrant"
+                      @input="$emit('change-input', $event)"
                     />
                   </div>
                 </div>
@@ -113,6 +133,9 @@
                       type="text"
                       placeholder="저장할 폴더를 선택해 주세요"
                       class="form-control form-inline front_button"
+                      name="savePath"
+                      :value="reference.savePath"
+                      @input="$emit('change-input', $event)"
                     />
                     <button
                       class="btn btn_crud_default"
@@ -135,7 +158,10 @@
                           id="chk01"
                           type="checkbox"
                           class="custom-control-input"
-                          checked
+                          name="isOpenEducation"
+                          :value="reference.isOpenEducation"
+                          :checked="reference.isOpenEducation"
+                          @input="$emit('change-input', $event)"
                         />
                         <label
                           class="custom-control-label check"
@@ -152,7 +178,10 @@
                           id="chk02"
                           type="checkbox"
                           class="custom-control-input"
-                          checked
+                          name="inOpenReferenceRoom"
+                          :value="reference.inOpenReferenceRoom"
+                          :checked="reference.inOpenReferenceRoom"
+                          @input="$emit('change-input', $event)"
                         />
                         <label
                           class="custom-control-label check"
@@ -184,12 +213,14 @@
                           uploadType === 'pdf' || uploadType === 'youtube'
                         "
                         id="embed"
+                        class="embed"
                         src=""
                         type="application/pdf"
                       />
                       <canvas
                         v-show="uploadType === 'video'"
                         id="thumb_canvas"
+                        class="canvas"
                       ></canvas>
                     </div>
                     <label for="" class="col-3 col-lg-3 col-sm-2 name cont"
@@ -263,13 +294,18 @@
 <script>
 export default {
   name: 'ReferenceAddModal',
+  components: {},
   props: {
     uploadType: {
       type: String,
       default: '',
     },
     uploadFile: {
-      type: [File, Object],
+      type: [Object, File],
+      default: null,
+    },
+    reference: {
+      type: Object,
       default: null,
     },
   },
@@ -281,6 +317,11 @@ export default {
       } else {
         return null
       }
+    },
+  },
+  watch: {
+    reference(newValue, oldValue) {
+      this.tagify.loadOriginalValues(newValue)
     },
   },
   methods: {
@@ -299,9 +340,16 @@ export default {
 
 <style scoped>
 .video,
-canvas,
-embed {
+.canvas,
+.embed {
   width: 100%;
   height: 100%;
+}
+
+.select {
+  width: 100%;
+  padding: 4px;
+  border-radius: 5px;
+  border-color: rgba(167, 169, 172, 0.4);
 }
 </style>

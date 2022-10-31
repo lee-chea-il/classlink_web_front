@@ -363,6 +363,7 @@
             <!-- /.탭 컨텐츠 -->
           </div>
           <!-- /.왼쪽 영역 -->
+
           <!-- 오른쪽 영역 -->
           <div class="divide_area right">
             <!-- 탭 컨텐츠 -->
@@ -450,6 +451,7 @@
     <ReferenceAddModal
       :uploadType="uploadType"
       :uploadFile="uploadFile"
+      :reference="reference"
       @change-input="onChangeUploadFile"
     />
 
@@ -464,6 +466,7 @@
       :urlData="urlData"
       @change-url="onChangeUrl"
       @upload-youtube="onUploadYoutube"
+      @upload-page="onUploadUrl"
     />
 
     <!-- 퀴즈 업로드 -->
@@ -510,6 +513,7 @@
 </template>
 
 <script>
+import Tagify from '@yaireo/tagify'
 import PageHeader from '@/components/common/PageHeader.vue'
 import ModalDeac from '@/components/common/modal/ModalDesc.vue'
 import SavePathModal from '@/components/common/modal/reference/SavePathModal.vue'
@@ -527,6 +531,8 @@ import NoteTestBrowseModal from '@/components/common/modal/reference/NoteTestBro
 import ShareViewModal from '@/components/common/modal/reference/ShareViewModal.vue'
 import AddressCopySuccessModal from '@/components/common/modal/reference/AddressCopySuccessModal.vue'
 import DeleteModal from '@/components/common/modal/reference/DeleteModal.vue'
+import { apiReference } from '@/services'
+import '@yaireo/tagify/dist/tagify.css'
 
 export default {
   name: 'ReferenceRoom',
@@ -554,6 +560,17 @@ export default {
     return {
       uploadType: '',
       uploadFile: {},
+      textItem: '',
+      reference: {
+        name: '',
+        subject: 0,
+        desc: '',
+        keyword: [],
+        registrant: '',
+        savePath: '',
+        isOpenEducation: true,
+        inOpenReferenceRoom: true,
+      },
       modalDesc: {
         open: false,
         title: '',
@@ -563,7 +580,27 @@ export default {
         youtube: '',
         page: '',
       },
+      keywordList: [
+        { value: '국어', code: 'im' },
+        { value: '수학', code: 'am' },
+        { value: '사회', code: 'ca' },
+        { value: '과학', code: 'th' },
+        { value: '영어', code: 'sm' },
+      ],
     }
+  },
+
+  mounted() {
+    /// ////********* Use mounted property so that this code will excute only after mounting the component**********
+    const input = document.getElementById('keywordInput')
+    const tagify = new Tagify(input, {
+      whitelist: this.keywordList,
+      //  whitelist: ["ironman", "antman", "captain america", "thor", "spiderman"],
+      enforceWhitelist: false, // true일때 keywordList에 있는 태그만 사용
+    })
+    tagify.on('add', function () {
+      // console.log(e.detail.data.value)
+    })
   },
   methods: {
     openModalDesc(tit, msg) {
@@ -573,6 +610,7 @@ export default {
         desc: msg,
       }
     },
+
     onCloseModalDesc() {
       this.modalDesc.open = false
     },
@@ -585,6 +623,7 @@ export default {
       const _ctx = _canvas.getContext('2d')
       if (files[0] && files[0].type === 'video/mp4') {
         this.uploadFile = files[0]
+        this.reference.name = files[0].name
         _video.setAttribute('src', URL.createObjectURL(files[0]))
         _video.addEventListener('loadedmetadata', function () {
           // 비디오 태그의 메타데이터가 들어오면
@@ -610,6 +649,7 @@ export default {
       const targetBtn = document.getElementById('video_target')
       if (files[0] && files[0].type === 'application/pdf') {
         this.uploadFile = files[0]
+        this.reference.name = files[0].name
         _embed.setAttribute(
           'src',
           URL.createObjectURL(files[0]) + '#toolbar=0&navpanes=0&scrollbar=0'
@@ -619,17 +659,53 @@ export default {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
       }
     },
+    async getYoutubeData(youtubeUrl) {
+      const targetBtn = document.querySelector('#youtube_btn')
+      await apiReference
+        .getYoutubeData(youtubeUrl)
+        .then(({ data: { items } }) => {
+          this.uploadFile = {
+            name: items[0].snippet.title,
+            type: 'YOUTUBE',
+            lastModifiedDate: new Date(),
+            size: 0,
+          }
+          this.reference.name = items[0].snippet.title
+          targetBtn.click()
+        })
+    },
     onUploadYoutube() {
       this.uploadType = 'youtube'
+      const youtubeRegex =
+        /(http:|https:)?(\/\/)?(www\.)?(youtube.com|youtu.be)\/(watch|embed)?(\?v=|\/)?(\S+)?/g
       const youtubeUrl = this.urlData.youtube.replace('https://youtu.be/', '')
       const _embed = document.querySelector('#embed')
-      _embed.setAttribute(
-        'src',
-        `https://www.youtube.com/embed/${youtubeUrl}?autoplay=1&mute=1`
-      )
+      if (youtubeRegex.test(this.urlData.youtube) === true) {
+        this.getYoutubeData(youtubeUrl)
+        _embed.setAttribute(
+          'src',
+          `https://www.youtube.com/embed/${youtubeUrl}`
+        )
+      } else {
+        this.openModalDesc('실패', 'URL을 정확히 입력해주세요')
+      }
     },
-    onChangeUploadFile({ target: { name, value } }) {
-      this.uploadFile[name] = value
+    onUploadUrl() {
+      this.uploadType = 'video'
+      const url = this.urlData.page
+      const _embed = document.querySelector('#embed')
+      _embed.setAttribute('src', url)
+    },
+    onChangeUploadFile({ target: { name, value, type, checked } }) {
+      if (type === 'checkbox') {
+        if (checked) {
+          this.reference[name] = true
+        } else {
+          this.reference[name] = false
+        }
+      } else {
+        this.reference[name] = value
+      }
     },
     onChangeUrl({ target: { name, value } }) {
       this.urlData[name] = value

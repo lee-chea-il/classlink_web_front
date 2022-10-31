@@ -1,3 +1,4 @@
 import apiLogin from './apiLogin'
+import apiReference from './apiReference'
 
-export { apiLogin }
+export { apiLogin, apiReference }

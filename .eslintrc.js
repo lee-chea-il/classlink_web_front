@@ -28,6 +28,7 @@ module.exports = {
     'vue/multi-word-component-names': 'off',
     'import/namespace': 0,
     'eslint-disable-line': 0,
+    'no-useless-escape': 0,
     'vue/order-in-components': [
       'error',
       {
