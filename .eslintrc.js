@@ -29,6 +29,7 @@ module.exports = {
     'import/namespace': 0,
     'eslint-disable-line': 0,
     'no-useless-escape': 0,
+    'vue/no-v-html': 0,
     'vue/order-in-components': [
       'error',
       {

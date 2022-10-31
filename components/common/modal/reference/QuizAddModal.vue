@@ -68,9 +68,8 @@
                   <div class="col">
                     <input
                       type="text"
-                      placeholder=""
                       class="form-control"
-                      value="설명 입력"
+                      placeholder="설명 입력"
                     />
                   </div>
                 </div>
@@ -80,9 +79,8 @@
                   <div class="col">
                     <input
                       type="text"
-                      placeholder=""
                       class="form-control"
-                      value="키워드 입력 후 Enter 키 입력"
+                      placeholder="키워드 입력 후 Enter 키 입력"
                     />
                     <span class="info"
                       >키워드는 쉼표(,)와 엔터로 구분할 수 있습니다</span
@@ -166,37 +164,16 @@
             <!-- 오른쪽 영역 -->
             <div class="col-lg-6">
               <div class="regi_area right">
-                <div class="num_area">
-                  <!-- [개발참조] 문항 20개 이상부터는 +버튼이 보이지 않게 돼 추가할 수 없음 -->
-                  <button class="num active">1</button>
-                  <button class="num">2</button>
-                  <button class="num">3</button>
-                  <button class="num">4</button>
-                  <button class="num">5</button>
-                  <button class="num">6</button>
-                  <button class="num">7</button>
-                  <button class="num">8</button>
-                  <button class="num">9</button>
-                  <button class="num">10</button>
-                  <button class="num">11</button>
-                  <button class="num">12</button>
-                  <button class="num">13</button>
-                  <button class="num">14</button>
-                  <button class="num">15</button>
-                  <button class="num">16</button>
-                  <button class="num">17</button>
-                  <button class="num">18</button>
-                  <button class="num">19</button>
-                  <!--
-									<button class="num">20</button>
-									-->
-                  <button class="num plus">
-                    <i class="btn icons_plus_circle_off"></i>
-                  </button>
-                </div>
+                <QuizNumberList
+                  :quizList="quizList"
+                  :currentQuizIdx="currentQuizIdx"
+                  @change-quiz="$emit('change-quiz', $event)"
+                  @plus-quiz="$emit('plus-quiz', $event)"
+                />
+
                 <div class="write_area">
                   <div class="title_area">
-                    <span class="tit">문제</span>
+                    <span class="tit">{{ currentQuizIdx + 1 }}번 문제</span>
                     <button class="btn btn_crud_default btn_first">
                       처음부터<br />미리보기
                     </button>
@@ -204,29 +181,63 @@
                       현재부터<br />미리보기
                     </button>
                   </div>
-                  <div class="edit_area">글쓰기 에디터 영역</div>
+                  <div class="edit_area">
+                    <client-only v-for="(item, idx) in quizList" :key="idx">
+                      <VueEditor
+                        v-if="currentQuizIdx === idx"
+                        v-model="item.quizItem"
+                        :customModules="customModules"
+                        :editorOptions="editorOptions"
+                        :editorToolbar="editorToolbar"
+                      />
+                    </client-only>
+                  </div>
                   <div class="btn_area">
-                    <button class="btn icons_arrow_square_l"></button>
-                    <span class="counter">1/1</span>
-                    <button class="btn icons_arrow_square_r"></button>
-                    <button class="btn btn_crud_default btn_del">삭제</button>
+                    <button
+                      class="btn icons_arrow_square_l"
+                      :class="{ disabled: currentQuizIdx === 0 }"
+                      @click="$emit('quiz-pagination', 'min')"
+                    ></button>
+                    <span class="counter">{{
+                      `${currentQuizIdx + 1}/${quizList.length}`
+                    }}</span>
+                    <button
+                      class="btn icons_arrow_square_r"
+                      :class="{
+                        disabled: currentQuizIdx === quizList.length - 1,
+                      }"
+                      @click="$emit('quiz-pagination', 'plus')"
+                    ></button>
+                    <button
+                      v-if="quizList.length > 1"
+                      class="btn btn_crud_default btn_del"
+                      @click="$emit('delete-quiz', currentQuizIdx)"
+                    >
+                      삭제
+                    </button>
                   </div>
                 </div>
-                <div class="info_area">
-                  <div class="row">
+
+                <div
+                  v-for="(item, idx) in quizList"
+                  :key="item.id"
+                  class="info_area"
+                >
+                  <div v-if="currentQuizIdx === idx" class="row">
                     <div class="col-xl-6">
                       <div class="tit">
                         <div
                           class="custom-control custom-radio custom-control-inline"
                         >
                           <input
-                            id="rad01"
+                            id="isOx"
                             type="radio"
-                            name="radA01"
+                            name="isOx"
                             class="custom-control-input"
-                            checked
+                            :checked="item.quizType === 0"
+                            @change="$emit('select-type', idx, 0)"
                           />
-                          <label class="custom-control-label" for="rad01"
+                          <label class="custom-control-label" for="isOx"
                             >OX 유형</label
                           >
                         </div>
@@ -250,21 +261,30 @@
                           class="custom-control custom-radio custom-control-inline"
                         >
                           <input
-                            id="rad02"
+                            id="isShortAnswer"
                             type="radio"
-                            name="radA01"
+                            name="isShortAnswer"
                             class="custom-control-input"
+                            :checked="item.quizType === 1"
+                            @change="$emit('select-type', idx, 1)"
                           />
-                          <label class="custom-control-label" for="rad02"
+                          <label
+                            class="custom-control-label"
+                            for="isShortAnswer"
                             >단답형</label
                           >
                         </div>
                       </div>
                       <div class="cnt">
                         <input
+                          id="shortAnswer"
                           type="text"
                           placeholder="정답 입력"
+                          name="shortAnswer"
+                          :value="item.shortAnswer"
                           class="form-control form-inline"
+                          :disabled="item.quizType !== 1"
+                          @input="$emit('change-item', $event, idx)"
                         />
                       </div>
                     </div>
@@ -272,9 +292,13 @@
                       <div class="tit">제한시간</div>
                       <div class="cnt">
                         <input
+                          id="limitTime"
                           type="text"
+                          name="limitTime"
+                          :value="item.limitTime"
                           placeholder="문제당 제한시간(초)"
                           class="form-control form-inline"
+                          @input="$emit('change-item', $event, idx)"
                         />
                       </div>
                     </div>
@@ -285,12 +309,16 @@
                             class="custom-control custom-radio custom-control-inline"
                           >
                             <input
-                              id="rad03"
+                              id="isSubjective"
                               type="radio"
-                              name="radA01"
+                              name="isSubjective"
                               class="custom-control-input"
+                              :checked="item.quizType === 2"
+                              @change="$emit('select-type', idx, 2)"
                             />
-                            <label class="custom-control-label" for="rad03"
+                            <label
+                              class="custom-control-label"
+                              for="isSubjective"
                               >주관식 단답형</label
                             >
                           </div>
@@ -300,9 +328,14 @@
                         <div class="tit stit">정답</div>
                         <div class="cnt">
                           <input
+                            id="subjectiveAnswer"
                             type="text"
                             placeholder="정답 입력"
                             class="form-control form-inline"
+                            name="subjectiveAnswer"
+                            :value="item.subjectiveAnswer"
+                            :disabled="item.quizType !== 2"
+                            @input="$emit('change-item', $event, idx)"
                           />
                         </div>
                       </div>
@@ -310,9 +343,14 @@
                         <div class="tit stit">오답</div>
                         <div class="cnt">
                           <input
+                            id="subjectiveWrongAnswer"
+                            name="subjectiveWrongAnswer"
+                            :value="item.subjectiveWrongAnswer"
                             type="text"
                             placeholder="오답 입력"
                             class="form-control form-inline"
+                            :disabled="item.quizType !== 2"
+                            @input="$emit('change-item', $event, idx)"
                           />
                         </div>
                       </div>
@@ -339,8 +377,52 @@
 </template>
 
 <script>
+import { Quill } from 'vue2-editor'
+import { ImageDrop } from 'quill-image-drop-module'
+import ImageEdit from 'quill-image-edit-module'
+import QuizNumberList from '@/components/reference/QuizNumberList.vue'
+
+Quill.register('modules/imageDrop', ImageDrop)
+Quill.register('modules/imageEdit', ImageEdit)
+
 export default {
   name: 'QuizAddModal',
+  components: { QuizNumberList },
+  props: {
+    quizList: {
+      type: Array,
+      default: null,
+    },
+    currentQuizIdx: {
+      type: Number,
+      default: 0,
+    },
+  },
+  data() {
+    return {
+      customModules: [
+        { alias: 'imageDrop', module: ImageDrop },
+        { alias: 'imageEdit', module: ImageEdit },
+      ],
+      editorOptions: {
+        modules: {
+          imageDrop: true,
+          imageEdit: true,
+        },
+      },
+      editorToolbar: [
+        ['bold', 'italic', 'underline', 'strike'],
+        [
+          { align: '' },
+          { align: 'center' },
+          { align: 'right' },
+          { align: 'justify' },
+        ],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['image', 'code-block'],
+      ],
+    }
+  },
 }
 </script>
 

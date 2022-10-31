@@ -222,6 +222,14 @@
                         id="thumb_canvas"
                         class="canvas"
                       ></canvas>
+
+                      <iframe
+                        v-show="uploadType === 'file'"
+                        id="iframe"
+                        class="iframe"
+                        src=""
+                        frameborder="0"
+                      ></iframe>
                     </div>
                     <label for="" class="col-3 col-lg-3 col-sm-2 name cont"
                       >자료 구분</label
@@ -309,6 +317,7 @@ export default {
       default: null,
     },
   },
+
   computed: {
     getDate() {
       const date = this.uploadFile?.lastModifiedDate
@@ -341,7 +350,8 @@ export default {
 <style scoped>
 .video,
 .canvas,
-.embed {
+.embed,
+.iframe {
   width: 100%;
   height: 100%;
 }

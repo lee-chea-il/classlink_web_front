@@ -442,10 +442,11 @@
         </div>
         <!-- /.2단 분류 컨텐츠 -->
       </div>
+      <!-- <div v-html="quizList[0]"></div> -->
     </div>
 
     <!-- 등록 파일 선택 -->
-    <ReferenceSelectModal />
+    <ReferenceSelectModal :uploadType="uploadType" />
 
     <!-- 파일 등록 -->
     <ReferenceAddModal
@@ -469,8 +470,20 @@
       @upload-page="onUploadUrl"
     />
 
-    <!-- 퀴즈 업로드 -->
-    <QuizAddModal />
+    <!-- 퀴즈 업로드 
+      change-quiz= 해당 퀴즈 editor 변경 이벤트
+      change-item = 해당 퀴즈 내용 변경 이벤트
+    -->
+    <QuizAddModal
+      :quizList="quizList"
+      :currentQuizIdx="currentQuizIdx"
+      @change-quiz="onClickQuizList"
+      @quiz-pagination="onClickQuizPagination"
+      @plus-quiz="onPlusQuizList"
+      @delete-quiz="onDeleteQuizItem"
+      @change-item="onChangeQuiz"
+      @select-type="onClickQuizType"
+    />
 
     <!-- 쪽지시험 업로드 -->
     <NoteTestAddModal />
@@ -480,7 +493,6 @@
 
     <!-- 자료실 검색 필터 -->
     <ReferenceFilterModal />
-
     <!-- 자료실 검색 성공 -->
     <SearchResultModal />
 
@@ -587,6 +599,20 @@ export default {
         { value: '과학', code: 'th' },
         { value: '영어', code: 'sm' },
       ],
+      quizList: [
+        {
+          id: 0,
+          quizItem: '',
+          dificultade: 1,
+          limitTime: 0,
+          quizType: 0,
+          oxAnswer: '',
+          shortAnswer: '',
+          subjectiveAnswer: '',
+          subjectiveWrongAnswer: '',
+        },
+      ],
+      currentQuizIdx: 0,
     }
   },
 
@@ -603,6 +629,7 @@ export default {
     })
   },
   methods: {
+    // Modal Event
     openModalDesc(tit, msg) {
       this.modalDesc = {
         open: true,
@@ -614,6 +641,30 @@ export default {
     onCloseModalDesc() {
       this.modalDesc.open = false
     },
+
+    // 등록 자료 내용 변경
+    onChangeUploadFile({ target: { name, value, type, checked } }) {
+      if (type === 'checkbox') {
+        if (checked) {
+          this.reference[name] = true
+        } else {
+          this.reference[name] = false
+        }
+      } else {
+        this.reference[name] = value
+      }
+    },
+
+    // 유튜브, 링크 변경
+    onChangeUrl({ target: { name, value } }) {
+      this.urlData[name] = value
+    },
+
+    onChangeQuiz({ target: { value, name } }, idx) {
+      this.quizList[idx][name] = value
+    },
+
+    // 비디오 업로드
     onUploadVideo({ target: { files } }) {
       this.uploadType = 'video'
       this.uploadFile = {}
@@ -642,6 +693,8 @@ export default {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
       }
     },
+
+    // PDF 업로드
     onUploadPdf({ target: { files } }) {
       this.uploadType = 'pdf'
       this.uploadFile = {}
@@ -659,6 +712,8 @@ export default {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
       }
     },
+
+    // 유튜브 API 호출
     async getYoutubeData(youtubeUrl) {
       const targetBtn = document.querySelector('#youtube_btn')
       await apiReference
@@ -674,6 +729,8 @@ export default {
           targetBtn.click()
         })
     },
+
+    // 유튜브 업로드
     onUploadYoutube() {
       this.uploadType = 'youtube'
       const youtubeRegex =
@@ -687,28 +744,71 @@ export default {
           `https://www.youtube.com/embed/${youtubeUrl}`
         )
       } else {
+        this.openModalDesc('실패', '유튜브 형식의 URL을 입력해주세요')
+      }
+    },
+
+    // URL 업로드
+    onUploadUrl() {
+      const urlRegex = /^(http(s)?:\/\/)([^\/]*)(\.)(com|net|kr|my|shop)(\/)/gi
+      this.uploadType = 'file'
+      const url = this.urlData.page
+      const targetBtn = document.querySelector('#youtube_btn')
+      this.uploadFile = {
+        name: '',
+        type: 'WEB',
+        lastModifiedDate: new Date(),
+        size: 0,
+      }
+      if (urlRegex.test(this.urlData.page) === true) {
+        this.reference.name = url
+
+        const _iframe = document.querySelector('#iframe')
+        _iframe.setAttribute('src', url)
+        targetBtn.click()
+      } else {
         this.openModalDesc('실패', 'URL을 정확히 입력해주세요')
       }
     },
-    onUploadUrl() {
-      this.uploadType = 'video'
-      const url = this.urlData.page
-      const _embed = document.querySelector('#embed')
-      _embed.setAttribute('src', url)
+
+    // 퀴즈 변경 UI
+    onClickQuizList(idx) {
+      this.currentQuizIdx = idx
     },
-    onChangeUploadFile({ target: { name, value, type, checked } }) {
-      if (type === 'checkbox') {
-        if (checked) {
-          this.reference[name] = true
-        } else {
-          this.reference[name] = false
-        }
-      } else {
-        this.reference[name] = value
+
+    onClickQuizPagination(direction) {
+      if (direction === 'plus') {
+        if (this.currentQuizIdx < this.quizList.length - 1)
+          this.currentQuizIdx += 1
+      } else if (direction === 'min') {
+        if (this.currentQuizIdx !== 0) this.currentQuizIdx -= 1
       }
     },
-    onChangeUrl({ target: { name, value } }) {
-      this.urlData[name] = value
+
+    onPlusQuizList() {
+      if (this.quizList.length <= 19) {
+        const quizItem = {
+          id: this.quizList.length + 1,
+          quizItem: '',
+          dificultade: 0,
+          limitTime: 0,
+          quizType: 0,
+          oxAnswer: 0,
+          shortAnswer: '',
+          subjectiveAnswer: '',
+        }
+        this.quizList.push(quizItem)
+      }
+    },
+
+    onDeleteQuizItem(idx) {
+      if (this.quizList.length > 1) {
+        this.quizList.splice(idx, 1)
+      }
+    },
+
+    onClickQuizType(idx, num) {
+      this.quizList[idx].quizType = num
     },
   },
 }

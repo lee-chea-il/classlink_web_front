@@ -101,18 +101,6 @@ export default {
       defer: true,
       crossorigin: 'anonymous',
     },
-    // {
-    //   src: 'https://cdn.jsdelivr.net/npm/@yaireo/tagify',
-    //   // async: true,
-    //   defer: true,
-    //   crossorigin: 'anonymous',
-    // },
-    // {
-    //   src: 'https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js',
-    //   // async: true,
-    //   defer: true,
-    //   crossorigin: 'anonymous',
-    // },
     {
       src: 'plugins/js/victor.js',
       // async: true,
@@ -125,6 +113,7 @@ export default {
       defer: true,
       crossorigin: 'anonymous',
     },
+    { src: 'plugins/vue2-editor', ssr: false, defer: true },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
