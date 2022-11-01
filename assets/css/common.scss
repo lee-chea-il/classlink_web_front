@@ -12,7 +12,7 @@
 5.  ac_preparation.scss : 학원관리-1.수업준비:자료실,레슨,커리큘럼,강좌
 6.  ac_manage2.scss     : 학원관리-3.관리-출결관리,프랜차이즈가입관리,결제관리,공지사항
 7.  ac_class.scss       : 학원관리-2.수업-(1)강의코스:강의계획서,과제함,노트함
-8.  ac_class2.scss      : 학원관리-2.수업-(1)강의코스:질문함,리포트
+8.  ac_class2.scss      : 학원관리-2.수업-(2)학습함:질문함,리포트
 9.  ac_building.scss    : 학원관리-건물관리:자료실,패키지,건물SET,빌딩
 10. ac_building.scss    : 학원관리-건물관리:자료실,패키지,건물SET,빌딩
 11. fr_manage.scss      : 프랜차이즈관리-관리:가맹관리,결제관리,공지사항
@@ -20,6 +20,9 @@
 13. fr_building.scss    : 프랜차이즈관리-건물:자료실,패키지,건물SET
 14. cl_manage.scss      : CL관리자-관리:FC이용현황, 교육기관이용현황, 결제 관리, 공지사항
 15. cl_building.scss    : CL관리자-건물:프랜차이즈, 지역축제
+16. std_class.scss      : 학생사용자-수업:시간표,질문함,필기함,리포트
+17. std_class2.scss     : 학생사용자-강의코스:강의계획서,과제함,노트함
+18. std_manage.scss     : 학생사용자-관리:시험결과,출결,공지사항,다운로드
 100.main.scss           : 메인 홈페이지
 -----------------------------------------*/
 @use "_reset.scss";
@@ -39,13 +42,18 @@
 @use "ac_building.scss";
 
 //프랜차이즈관리자
-// @use "fr_manage.scss";
-// @use "fr_class.scss";
+@use "fr_manage.scss";
+@use "fr_class.scss";
 // @use "fr_building.scss";
 
 //CL관리자
-// @use "cl_manage.scss";
-// @use "cl_building.scss";
+@use "cl_manage.scss";
+@use "cl_building.scss";
+
+//학생사용자
+@use "std_class.scss";
+@use "std_class2.scss";
+@use "std_manage.scss";
 
 //메인홈페이지
 @use "main.scss";

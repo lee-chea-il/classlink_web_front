@@ -4,3 +4,310 @@
 /*--------  7. ac_class2.scss    --------*/
 /*---------------------------------------*/
 /* 학원관리-2.수업-(1)강의코스:질문함,리포트 */
+
+/* 학습함-질문함(기관장).html */
+
+.ac_manage_que {
+  .keyword_area {
+    position: relative;
+    height: auto;
+    padding: 1px 8px;
+  }
+
+  .keyword_area_01 {
+    position: relative;
+    min-width: 520px;
+    max-height: 113px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 10px;
+    overflow-y: auto;
+    white-space: nowrap;
+  }
+
+  .keyword01 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 88px;
+    height: 28px;
+    background: #D1DBFF;
+    border-radius: 3px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  .keyword01-1 {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+    margin: 0px 5px 0px 9px;
+  }
+
+  .x {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    text-align: center;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    background-image: url(../images/icon_×.png);
+    margin-right: 8px;
+  }
+
+  .search_section {
+
+    @media (min-width: 992px) {
+      .right_area {
+        text-align: right;
+        margin-bottom: 30px;
+
+        .filter_lift {
+          margin-top: 5px;
+        }
+      }
+    }
+
+    @media (min-width: 1199.98px) {
+      .right_area {
+        margin-bottom: 70px;
+
+        .filter_lift {
+          margin-top: 0px;
+        }
+      }
+
+    }
+  }
+
+  .study_qustion {
+    cursor: pointer;
+    text-align: left;
+    width: 310px;
+    line-height: 26px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .que_reply {
+    background: #F9F9FB;
+    border-radius: 5px;
+  }
+
+  .input-search {
+    max-width: 30%;
+  }
+}
+
+.ac_manage_que02 {
+  @media (min-width: 992px) {
+    .right_area {
+      text-align: right;
+      margin-bottom: 28px !important;
+
+      .filter_lift {
+        margin-top: 5px;
+      }
+    }
+
+    .input-search {
+      max-width: 60%;
+    }
+
+
+  }
+
+  @media (min-width: 1199.98px) {
+    .right_area {
+      margin-bottom: 70px !important;
+
+      .filter_lift {
+        margin-top: 0px;
+      }
+    }
+  }
+}
+
+
+/* 학습함-질문함-필터 (팝업 L) */
+
+#modalQueFilter {
+
+  .class_section .tit {
+    width: 100%;
+    margin: 20px 20px;
+  }
+
+  .move_section {
+    margin: 0 10px;
+  }
+
+  .list_section {
+    width: 100%;
+    margin: 0 10px;
+  }
+
+  .class_section {
+    width: 100%;
+  }
+
+  .no_search {
+    height: 493px;
+  }
+
+  .cnts_section .list_section .list_area li .custom-control-label {
+    font-size: 16px;
+    line-height: 21px;
+  }
+}
+
+/* 수업 - 학습함 - 질문함 - 질문열람 (팝업 L) */
+
+#modalNoticeView {
+  .notice_tit {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0 0 0 18px;
+  }
+}
+
+/* 수업 - 학습함 - 질문함 - 답변열람 (팝업 L) */
+
+#modalReplyView {
+  .title_area {
+    text-align: left;
+    width: 106%;
+    margin-bottom: 40px;
+    margin-top: -15px;
+
+    .notice_day02,
+    .notice_writer {
+      text-align: right;
+    }
+  }
+
+  .notice_tit {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0 0 0 18px;
+  }
+
+  .file_info {
+    text-align: left;
+  }
+
+  .content_area {
+    width: 97%;
+    height: 332px;
+    border: 0.4px solid rgba(167, 169, 172, 0.4);
+    border-radius: 5px;
+    overflow-y: scroll;
+  }
+
+  .notice_content {
+    text-align: left;
+    margin: 15px 15px;
+  }
+
+  .box {
+    width: 70%;
+    height: 350px;
+    background: #F9F9FC;
+    margin: 56px auto;
+  }
+
+  .icons_thumbnail {
+    margin: 135px auto;
+  }
+
+  .file_icon {
+    display: inline-block;
+    width: 20px;
+    height: 18px;
+    text-align: center;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    background-image: url(../images/icon_file.png);
+    margin: 0px 5px 2px 17px;
+  }
+
+  .save {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #A7A9AC;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  .file_name {
+    padding: 6px 12px;
+    border: 0.4px solid rgba(167, 169, 172, 0.4);
+    border-radius: 5px;
+    width: 97%;
+    margin: 14px auto;
+  }
+
+  .keyword01-1 {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+    margin: 0px 5px 0px 7px;
+  }
+
+  .keyword01 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 88px;
+    height: 28px;
+    background: #D1DBFF;
+    border-radius: 3px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+}
+
+/* 학습함-질문함-답변하기.html */
+
+.ac_manage_que02 {
+  .box {
+    align-items: center;
+    padding: 6px 0px;
+    gap: 10px;
+    width: 109px;
+    height: 30px;
+    background: #E7EDFF;
+    border-radius: 5px;
+    line-height: 13px;
+    text-align: center;
+    margin-left: 10px;
+  }
+
+  .date_area {
+    display: flex;
+    margin-right: 17px;
+    margin-bottom: 58px;
+  }
+}
+
+/* 학습함-리포트.html */
+
+.ac_manage_report {
+  .report_id {
+    display: inline-block;
+    width: 170px;
+    line-height: 26px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

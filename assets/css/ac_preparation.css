@@ -1587,7 +1587,7 @@ ol {
   margin-right: 5px;
   line-height: 39px;
   vertical-align: middle;
-  font-size: 14px;
+  font-size: 14px !important;
   font-weight: 400;
 }
 
@@ -1729,15 +1729,17 @@ ol {
   display: none;
 }
 
-.custom-control-label::before,
+/* .custom-control-label::before,
 .custom-control-label::after {
-  margin-top: -0.2rem;
-  width: 20px;
-  height: 20px;
-  border-radius: 2px;
-  border-color: rgba(0, 0, 0, 0.2);
+	margin-top: -0.2rem;
+	// left: -28px;
+	// left: -2rem;
+	width: 20px;
+	height: 20px;
+	border-radius: 2px;
+	border-color: rgba(0, 0, 0, 0.2);
 }
-
+ */
 .custom-control-input:checked ~ .custom-control-label::before {
   color: #fff;
   border-color: #7391FA;
@@ -1938,6 +1940,54 @@ ol {
 .ac_manage_dtr .divide_area,
 .modal_ac_manage_lesson .divide_area {
   width: 48%;
+}
+.ac_manage_dtr .divide_area .icon_institute,
+.modal_ac_manage_lesson .divide_area .icon_institute {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_institute.png);
+}
+.ac_manage_dtr .divide_area .icon_fran,
+.modal_ac_manage_lesson .divide_area .icon_fran {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_fran.png);
+}
+.ac_manage_dtr .divide_area .icon_open,
+.modal_ac_manage_lesson .divide_area .icon_open {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_open.png);
+}
+.ac_manage_dtr .divide_area .icon_mydata,
+.modal_ac_manage_lesson .divide_area .icon_mydata {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_mydata.png);
 }
 .ac_manage_dtr .divide_area > .tab-content,
 .modal_ac_manage_lesson .divide_area > .tab-content {
@@ -2735,7 +2785,8 @@ ol {
     width: 119px;
   }
 }
-.modal_ac_manage_lec.time_selection .calendar_type01 .search_section .left_area, .modal_ac_manage_lec.time_selection .calendar_type01 .search_section .right_area .search_area {
+.modal_ac_manage_lec.time_selection .calendar_type01 .search_section .left_area,
+.modal_ac_manage_lec.time_selection .calendar_type01 .search_section .right_area .search_area {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -2777,6 +2828,15 @@ ol {
   border-radius: 5px;
   font-size: 14px;
   color: #A7A9AC;
+  cursor: pointer;
+}
+.modal_ac_manage_lec.time_selection .calendar_type01 .search_section .right_area .week:hover,
+.modal_ac_manage_lec.time_selection .calendar_type01 .search_section .right_area .week:focus,
+.modal_ac_manage_lec.time_selection .calendar_type01 .search_section .right_area .week:active,
+.modal_ac_manage_lec.time_selection .calendar_type01 .search_section .right_area .week.active {
+  background: #F9F9FB;
+  border: 0.4px solid #7391FA;
+  color: #7391FA;
 }
 .modal_ac_manage_lec.time_selection .calendar_type01 .search_section .right_area .times input.time {
   width: 140px;
@@ -3392,6 +3452,8 @@ ol {
 #modalDataRegiNote .modal-body {
   text-align: center;
   padding: 35px 35px 5px 35px;
+  height: 470px;
+  overflow-y: scroll;
 }
 #modalDataRegiModi .regi_area,
 #modalDataRegiQuiz .regi_area,
@@ -3403,7 +3465,7 @@ ol {
 #modalDataRegiQuiz .form-group label,
 #modalDataRegiNote .form-group label {
   font-weight: 400;
-  font-size: 16px;
+  font-size: 16px !important;
   margin-right: 5px;
   line-height: 39px;
   vertical-align: middle;
@@ -3457,7 +3519,7 @@ ol {
 #modalDataRegiQuiz .thumb_box,
 #modalDataRegiNote .thumb_box {
   box-sizing: border-box;
-  height: 545px;
+  height: 476px;
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
   padding: 0 15px;
@@ -3470,10 +3532,11 @@ ol {
 #modalDataRegiModi .thumbnail_view,
 #modalDataRegiQuiz .thumbnail_view,
 #modalDataRegiNote .thumbnail_view {
-  height: 290px;
+  height: 230px;
   background: #F9F9FB;
   padding: 10px 0px;
   margin-top: 10px;
+  width: 100%;
 }
 #modalDataRegiModi .title,
 #modalDataRegiQuiz .title,
@@ -3484,6 +3547,7 @@ ol {
 #modalDataRegiQuiz .check03,
 #modalDataRegiNote .check03 {
   padding: 40px 0px;
+  margin-left: 15px;
 }
 #modalDataRegiModi .name,
 #modalDataRegiQuiz .name,
@@ -3511,6 +3575,45 @@ ol {
 #modalDataRegiQuiz .fileChange,
 #modalDataRegiNote .fileChange {
   margin: -25px 0px 0px 359px;
+}
+#modalDataRegiModi .left_area,
+#modalDataRegiQuiz .left_area,
+#modalDataRegiNote .left_area {
+  width: 50%;
+}
+#modalDataRegiModi .right_area,
+#modalDataRegiQuiz .right_area,
+#modalDataRegiNote .right_area {
+  width: 50%;
+}
+#modalDataRegiModi .data_title,
+#modalDataRegiQuiz .data_title,
+#modalDataRegiNote .data_title {
+  width: 20%;
+  margin-left: 20px;
+}
+#modalDataRegiModi .quiz_area,
+#modalDataRegiQuiz .quiz_area,
+#modalDataRegiNote .quiz_area {
+  width: 45%;
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+@media (max-width: 1199.98px) {
+  #modalDataRegiModi .quiz_area,
+#modalDataRegiQuiz .quiz_area,
+#modalDataRegiNote .quiz_area {
+    width: 100%;
+    margin-left: 20px;
+    margin-bottom: 10px;
+  }
+}
+#modalDataRegiModi .quiz_area02,
+#modalDataRegiQuiz .quiz_area02,
+#modalDataRegiNote .quiz_area02 {
+  width: 100%;
+  margin-left: 20px;
+  margin-bottom: 10px;
 }
 
 /* jeh-2022.09.19 */
@@ -3618,6 +3721,11 @@ ol {
   padding: 10px 0px;
   margin-top: 10px;
 }
+#modalLessonView .icons_fullscreen {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
 #modalLessonView .form-group {
   margin-bottom: 0px;
 }
@@ -3663,10 +3771,10 @@ ol {
   line-height: 20px;
 }
 #modalLessonView .quiz .check {
-  margin: -1px 0px 0 68px;
+  margin: -1px 0px 0 10px;
 }
 #modalLessonView .quiz .form-inline {
-  width: 230px;
+  width: 88%;
   height: 62px;
   margin: 3px 0px 0px 13px;
 }
@@ -3695,18 +3803,20 @@ ol {
   margin-top: 10px;
 }
 #modalLessonView .quiz .icons_fullscreen {
-  margin-left: 490px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
 }
 #modalLessonView .quiz .row {
   padding: 4px 0px;
 }
 #modalLessonView .notetest .thumb_box {
   box-sizing: border-box;
-  height: 633px;
+  height: 700px;
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
   padding: 0 15px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 #modalLessonView .notetest .thumbnail_view01 {
   height: 236px;
@@ -3720,14 +3830,22 @@ ol {
   padding: 10px 0px;
   margin-top: 10px;
 }
+#modalLessonView .notetest .icons_fullscreen {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
 #modalLessonView .notetest .active {
   width: 64px;
 }
-#modalLessonView .notetest .preview {
-  margin: 10px 18px 0px 148px;
-}
 #modalLessonView .notetest .page_thumb {
-  justify-content: end;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#modalLessonView .notetest .page_thumb .pagination_section {
+  margin-left: 90px;
 }
 #modalLessonView .notetest .font {
   font-weight: 400;
@@ -3735,10 +3853,10 @@ ol {
   line-height: 20px;
 }
 #modalLessonView .notetest .check {
-  margin: -1px 0px 0 68px;
+  margin: -1px 0px 0 10px;
 }
 #modalLessonView .notetest .form-inline {
-  width: 230px;
+  width: 88%;
   height: 62px;
   margin: 3px 0px 0px 13px;
 }
@@ -3747,7 +3865,7 @@ ol {
   margin: 10px 0 0 0;
 }
 #modalLessonView .notetest .main {
-  margin: 10px 0 0 0px;
+  margin-top: 10px;
 }
 #modalLessonView .notetest .main02 {
   font-weight: 400;
@@ -3763,14 +3881,13 @@ ol {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+#modalLessonView .notetest .cont02 .left_area,
+#modalLessonView .notetest .cont02 .right_area {
+  padding-left: 0;
+  padding-right: 0;
+}
 #modalLessonView .notetest .quiz_sec02 {
   margin-top: 10px;
-}
-#modalLessonView .notetest .ifs01 {
-  margin-left: 278px;
-}
-#modalLessonView .notetest .ifs02 {
-  margin-left: 136px;
 }
 #modalLessonView .notetest .right_area01 {
   padding: 0px 0px 0px 0px;
@@ -3778,20 +3895,16 @@ ol {
   overflow: hidden;
   overflow-y: scroll;
 }
-#modalLessonView .notetest .left_area02 {
-  margin-left: 15px;
-}
-#modalLessonView .notetest .right_area02 {
-  margin: 0 0 0 -15px;
-}
-#modalLessonView .notetest .cont03 {
-  margin-left: 0px;
-}
 #modalLessonView .notetest .title {
   margin: 10px 0 0 0;
 }
 #modalLessonView .notetest .row {
   padding: 4px 0px;
+}
+#modalLessonView .notetest .icons_fullscreen {
+  position: absolute;
+  top: 15px;
+  right: 15px;
 }
 
 /* 레슨등록 / 레슨수정 (팝업 L) */
@@ -3881,10 +3994,11 @@ ol {
   padding: 0 0 0 15px;
 }
 #modalCuriRegi .checkbox00 {
-  margin: -10px -6px -3px 16px;
+  position: absolute;
+  left: 43px;
 }
 #modalCuriRegi .sum {
-  margin: 0 0 0 -113px;
+  margin: 0 0 0 112px;
 }
 #modalCuriRegi .cancel {
   margin: 0 0 0 20px;
@@ -3981,6 +4095,25 @@ ol {
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
   padding: 5px 0 0px 10px;
+}
+
+/* 커리큘럼-저장경로 (팝업 m2) */
+#modalStoragepath.curisave .input-search {
+  margin: -10px 0 -65px 265px;
+}
+#modalStoragepath.curisave .file_name input {
+  margin: 0 0 0 30px;
+  width: 83%;
+}
+#modalStoragepath.curisave .file_name label {
+  text-align: left;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #A7A9AC;
+}
+#modalStoragepath.curisave .modal-body {
+  padding-top: 20px;
+  padding-bottom: 0;
 }
 
 /* -----------------------------    강좌    ----------------------------- */
@@ -4143,6 +4276,7 @@ ol {
   background-size: contain;
   background-image: url(../images/icon_minus_op.png);
   margin: -46px -328px 0 0;
+  cursor: pointer;
 }
 #modalLectureRegi05 .bar_sec {
   width: 390px;

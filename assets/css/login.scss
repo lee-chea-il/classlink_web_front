@@ -1,5 +1,6 @@
 @use "theme";
 @use "mixin";
+
 /*---------------------------------------*/
 /*--------   1.login.scss   -------------*/
 /*---------------------------------------*/
@@ -11,18 +12,23 @@
 	left: 0;
 	background: #fff;
 }
+
 .page_login {
 	display: flex;
-	height :100%;
+	height: 100%;
 	overflow: hidden;
 	text-align: center;
-	@media (max-width: 991.98px) { padding-top: 61px; }
+
+	@media (max-width: 991.98px) {
+		padding-top: 61px;
+	}
 
 	.left_section {
 		width: calc(100vw - 40%);
-		height :100%;
+		height: 100%;
 		padding-top: calc(50vh - 260px);
 		background-color: theme.$color_light3;
+
 		.wrap {
 			position: relative;
 			height: auto;
@@ -30,8 +36,9 @@
 			width: 70%;
 			margin: 0 auto;
 		}
+
 		.text {
-			margin-top:10px;
+			margin-top: 10px;
 			color: theme.$color_blue;
 			font-size: theme.$default_font_size;
 			font-weight: theme.$font_bold;
@@ -42,7 +49,9 @@
 			margin-top: 48px;
 		}
 
-		@media (max-width: 991.98px) { display: none;}
+		@media (max-width: 991.98px) {
+			display: none;
+		}
 	}
 
 	.right_section {
@@ -51,22 +60,31 @@
 		align-items: center;
 		width: calc(100vw - 60%);
 		min-height: 680px;
-		height : 100%;
+		height: 100%;
 		overflow-y: auto;
-		@media (max-width: 991.98px) { 
+
+		@media (max-width: 991.98px) {
 			width: 100%;
 			min-height: 0;
-			h2 { display: none;}
+
+			h2 {
+				display: none;
+			}
 		}
-		
+
 		.wrap {
-			width: 374px; margin: 0 auto;
+			width: 374px;
+			margin: 0 auto;
 			padding-top: 30px;
 			padding-bottom: 30px;
+
 			@media (max-width: 991.98px) {
-				width:  calc(100vw - 40px);
+				width: calc(100vw - 40px);
 			}
-			.btn { width: 100%;}
+
+			.btn {
+				width: 100%;
+			}
 		}
 
 		h2 {
@@ -84,57 +102,102 @@
 				margin-bottom: 15px;
 				border-bottom: 1px solid #E6E7E8;
 			}
-			.text { font-size: 14px;}
-			.text span { color: theme.$color_blue;}
+
+			.text {
+				font-size: 14px;
+			}
+
+			.text span {
+				color: theme.$color_blue;
+			}
 		}
 
-		.form_section { 
+		.form_section {
 			width: 100%;
 			margin: 40px auto 0;
-			@media (max-width: 575.98px) {margin-top: 0px;}
-	
-			.form-group { position: relative; margin-bottom: 15px; text-align: left;}
+
+			@media (max-width: 575.98px) {
+				margin-top: 0px;
+			}
+
+			.form-group {
+				position: relative;
+				margin-bottom: 15px;
+				text-align: left;
+			}
+
 			// .form-control { width: 100%; }
-			.form_password ~ i {
+			.form_password~i {
 				position: absolute;
 				z-index: 100;
 				cursor: pointer;
 				bottom: 12px;
 				right: 10px;
-				&.hide { display: none !important;}
+
+				&.hide {
+					display: none !important;
+				}
+
 				&.change {
 					background-image: url(../images/icons/icon_eye_on.svg);
 				}
 			}
-			.btn { width: 100%;}
-			.btn + .custom-control { margin-top: 15px;}
-		}		
+
+			.btn {
+				width: 100%;
+			}
+
+			.btn+.custom-control {
+				margin-top: 15px;
+			}
+		}
+
 		.form-group.form-inlinebox {
-			label { display: block; font-size: 12px;}
-			label+input {width: calc(100% - 95px);}
+			label {
+				display: block;
+				font-size: 12px;
+			}
+
+			label+input {
+				width: calc(100% - 100px);
+			}
+
 			.form-control+.custom-control {
 				float: right;
 				margin-left: 10px;
 				margin-right: 0;
-				.custom-control-label::before, .custom-control-label::after { margin-top: 0.4rem;}
+
+				.custom-control-label::before,
+				.custom-control-label::after {
+					margin-top: 0.4rem;
+				}
 			}
-			.form-control+.btn { display: block; float: right; width: 92px; font-size: 12px;}
+
+			.form-control+.btn {
+				display: block;
+				float: right;
+				width: 95px;
+				font-size: 12px;
+			}
 		}
 
 		.link_section {
 			width: 300px;
 			margin: 40px auto;
 			font-size: theme.$default_font_size - 2px;
+
 			a {
 				margin-left: 10px;
 				color: theme.$color_light1;
 				text-decoration: underline;
 			}
+
 			.mem_account {
 				padding-bottom: 14px;
 				margin-bottom: 14px;
 				border-bottom: 1px solid #E6E7E8;
 			}
+
 			.mem_find span {
 				position: relative;
 				display: inline-block;
@@ -158,15 +221,22 @@
 		.etctxt_section {
 			font-size: 12px;
 			color: theme.$text_unselected_color;
-			a { color: theme.$text_unselected_color; text-decoration: underline;}
+
+			a {
+				color: theme.$text_unselected_color;
+				text-decoration: underline;
+			}
 		}
 
-		.question_txt { font-size: 14px; margin-top: 15px;}
+		.question_txt {
+			font-size: 14px;
+			margin-top: 15px;
+		}
 
 		.explainType01 {
 			margin-bottom: 50px;
 		}
-		
+
 		.status_section {
 			display: flex;
 			flex-wrap: wrap;
@@ -176,14 +246,19 @@
 			margin: 0px auto;
 			margin-top: 70px;
 			margin-bottom: 80px;
+
 			// @media (min-width: 992px) {
 			// 	.status i { transform: scale(1.2);}
 			// }
 			@media (max-width: 360px) {
 				width: 100%;
-				margin-top:0 ;
+				margin-top: 0;
 			}
-			.custom-control { margin-top: 5px; margin-bottom: 10px;}
+
+			.custom-control {
+				margin-top: 5px;
+				margin-bottom: 10px;
+			}
 		}
 
 		.agree_section {
@@ -194,26 +269,33 @@
 			padding-bottom: 5px;
 			text-align: left;
 			border-radius: 5px;
-			border: 1px solid rgba(0,0,0, 0.1);
-			@media (max-width: 575.98px) {margin-top: 0px;}
+			border: 1px solid rgba(0, 0, 0, 0.1);
+
+			@media (max-width: 575.98px) {
+				margin-top: 0px;
+			}
+
 			.title {
 				padding-left: 20px;
 				background-color: theme.$color_normal;
 				border-top-left-radius: 5px;
 				border-top-right-radius: 5px;
-				border-bottom: 1px solid rgba(0,0,0, 0.1);
+				border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 				font-weight: theme.$font_medium;
 			}
+
 			.cnts {
 				padding-left: 20px;
 			}
+
 			.custom-control {
 				position: relative;
 				padding-top: 15px;
 				padding-bottom: 10px;
 				font-size: 14px;
 			}
-			.custom-control > i {
+
+			.custom-control>i {
 				position: absolute;
 				width: 20px;
 				height: 20px;
@@ -228,16 +310,28 @@
 	.modal-body {
 		padding-left: 60px;
 		padding-right: 60px;
+
 		@media (max-width: 575.98px) {
 			padding-left: 50px;
 			padding-right: 50px;
 		}
 	}
-	.form-group { max-width: 290px; margin: 0 auto; margin-bottom: 10px;}
-	.text-area { margin-bottom: 15px;}
+
+	.form-group {
+		max-width: 290px;
+		margin: 0 auto;
+		margin-bottom: 10px;
+	}
+
+	.text-area {
+		margin-bottom: 15px;
+	}
+
 	.form_pw {
-		label + input {
-			@media (min-width: 576px) { min-width: 235px;}
+		label+input {
+			@media (min-width: 576px) {
+				min-width: 235px;
+			}
 		}
 	}
 }

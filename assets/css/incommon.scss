@@ -33,8 +33,15 @@
 		margin-right: 5px;
 	}
 
-	.file_input_div { position:relative; overflow:hidden;}
-	.file_input_img_btn { padding:0 0 0 5px; }
+	.file_input_div {
+		position: relative;
+		overflow: hidden;
+	}
+
+	.file_input_img_btn {
+		padding: 0 0 0 5px;
+	}
+
 	.file_input_hidden {
 		font-size: 29px;
 		position: absolute;
@@ -114,8 +121,15 @@ i.btn {
 	@include mixin.nothing_txt(100%);
 	flex-direction: column;
 	min-height: 300px;
-	.txt { line-height: 20px; margin-bottom: 15px;}
-	.btn_area .btn:first-child { margin-right: 10px;} 
+
+	.txt {
+		line-height: 20px;
+		margin-bottom: 15px;
+	}
+
+	.btn_area .btn:first-child {
+		margin-right: 10px;
+	}
 }
 
 .page_nodata {
@@ -203,13 +217,6 @@ $navtopHeight: 60px;
 .nav_sub {
 	@include mixin.relativeBox(65px);
 	padding: 14px 0 10px;
-}
-
-//반응형막기관련
-.nav_web {
-	.nav_top {
-		@include mixin.widthMaxMin();
-	}
 }
 
 .nav_mobile {
@@ -654,7 +661,7 @@ $navtopHeight: 60px;
 
 		td.id span {
 			display: inline-block;
-			width: 150px;
+			width: 130px;
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
@@ -1397,6 +1404,16 @@ $navtopHeight: 60px;
 					}
 				}
 			}
+
+			.weeks.today {
+				.tit_week {
+					background-color: theme.$color_light3;
+				}
+
+				.half-hour {
+					background-color: theme.$color_light4;
+				}
+			}
 		}
 	}
 
@@ -1412,6 +1429,7 @@ $navtopHeight: 60px;
 		top: 45%;
 	}
 }
+
 //캘린더 고정형min992px 관련
 .web_only .calendar_type01 {
 	.calendar_section {
@@ -1471,35 +1489,51 @@ $navtopHeight: 60px;
 	margin-bottom: 15px;
 	height: auto;
 	overflow: hidden;
+
 	@media (max-width: 991.98px) {
 		padding: 13px;
 		height: auto;
 	}
+
 	.calendar {
 		.move_calendar {
 			text-align: left;
 			margin-bottom: 10px;
+
 			.date_info {
 				margin: 0 20px;
 			}
 		}
+
 		.calendar_data {
 			@include mixin.border_common;
 			overflow: hidden;
 		}
+
 		.calendar_table {
 			width: 100%;
+
 			.week_tit th {
 				font-weight: 500;
 				font-size: 14px;
 				line-height: 20px;
 				padding: 6px 0;
 				border-bottom: 0.4px solid rgba(167, 169, 172, .4);
-				background-color:  rgba(theme.$text_unselected_color, .1);.sun { color: #FB5353;}
+				background-color: rgba(theme.$text_unselected_color, .1);
 
-				&.sun { color: #FB5353;}
-				&.sat { color: #2C51D7;}
+				.sun {
+					color: #FB5353;
+				}
+
+				&.sun {
+					color: #FB5353;
+				}
+
+				&.sat {
+					color: #2C51D7;
+				}
 			}
+
 			.week .calendar-day {
 				position: relative;
 				width: 14.28%;
@@ -1508,32 +1542,45 @@ $navtopHeight: 60px;
 				color: #454545;
 				font-weight: 400;
 				font-size: 16px;
-				.daynum { 
+
+				.daynum {
 					display: inline-block;
 					width: 27px;
 					height: 27px;
 					cursor: pointer;
 				}
+
 				&.today .daynum {
 					display: inline-block;
 					line-height: 27px;
 					border-radius: 50%;
 					background-color: theme.$color_light3;
 				}
-				&.active .daynum
-				{
+
+				&.active .daynum {
 					display: inline-block;
 					line-height: 27px;
 					border-radius: 50%;
 					background-color: theme.$color_light2;
 				}
-				&.sun { color: #FB5353;}
-				&.sat { color: #2C51D7;}
-				&:nth-child(even) { background-color: theme.$color_background;}
+
+				&.sun {
+					color: #FB5353;
+				}
+
+				&.sat {
+					color: #2C51D7;
+				}
+
+				&:nth-child(even) {
+					background-color: theme.$color_background;
+				}
+
 				&.calendar-other-month {
 					color: theme.$text_unselected_color;
 					background-color: #fff !important;
 				}
+
 				.over_num {
 					position: absolute;
 					width: 24px;
@@ -1547,6 +1594,7 @@ $navtopHeight: 60px;
 					text-align: center;
 					padding: unset;
 				}
+
 				.curi_box {
 					display: flex;
 					align-items: center;
@@ -1557,6 +1605,7 @@ $navtopHeight: 60px;
 					background-color: theme.$color_light1;
 					padding: 2px 4px;
 					margin-bottom: 2px;
+
 					.tit {
 						width: 80px;
 						font-size: 10px;
@@ -1565,8 +1614,12 @@ $navtopHeight: 60px;
 						white-space: nowrap;
 						overflow: hidden;
 						text-overflow: ellipsis;
-						@media (max-width: 991.98px) {width: 60px;}
+
+						@media (max-width: 991.98px) {
+							width: 60px;
+						}
 					}
+
 					.btn_del {
 						width: 16px;
 						height: 16px;
@@ -1582,28 +1635,253 @@ $navtopHeight: 60px;
 		border-radius: 10px;
 		margin-top: 10px;
 		padding: 5px 15px;
-		.date { font-size: 14px; font-weight: 700;}
+
+		.date {
+			font-size: 14px;
+			font-weight: 700;
+		}
+
 		.list_area {
 			margin-top: 10px;
 			height: 95px;
 			overflow-y: auto;
 			overflow-x: hidden;
 		}
+
 		.list_area li {
 			text-align: left;
 			display: flex;
 			font-size: 14px;
 			padding: 10px 0;
 			border-top: 1px solid #E6E7E8;
-			.time { padding: 0 10px;}
-			.lesson_info { width: calc(100% - 50px); }
+
+			.time {
+				padding: 0 10px;
+			}
+
+			.lesson_info {
+				width: calc(100% - 50px);
+			}
+
 			.subject {
 				@include mixin.text_ellipsis(block, 100%, 20px);
 			}
+
 			.lesson {
 				font-size: 12px;
 				color: theme.$text_unselected_color;
-				.divid { border-color: theme.$text_unselected_color;}
+
+				.divid {
+					border-color: theme.$text_unselected_color;
+				}
+			}
+		}
+	}
+}
+
+/* 캘린더 type03 : 출결관리-반출결 캘린더  */
+.calendar_type03 {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	text-align: center;
+	margin-bottom: 15px;
+	height: auto;
+	overflow: hidden;
+
+	@media (max-width: 991.98px) {
+		padding: 13px;
+		height: auto;
+	}
+
+	.calendar {
+		.move_calendar {
+			text-align: left;
+			margin-bottom: 10px;
+
+			.date_info {
+				margin: 0 20px;
+			}
+		}
+
+		.calendar_data {
+			overflow: hidden;
+		}
+
+		.calendar_table {
+			width: 100%;
+			$height: 60px;
+
+			.week_tit th {
+				font-weight: 500;
+				height: $height;
+				line-height: $height;
+				vertical-align: middle;
+				padding: 6px 0;
+
+				&.sun {
+					color: #FB5353;
+				}
+
+				&.sat {
+					color: #2C51D7;
+				}
+			}
+
+			.week .calendar-day {
+				position: relative;
+				width: 14.28%;
+				height: $height;
+				line-height: $height;
+				vertical-align: middle;
+				padding: 5px 0;
+				color: #454545;
+				font-weight: 400;
+				font-size: 16px;
+
+				.daynum {
+					position: relative;
+					display: inline-block;
+					width: $height - 10px;
+					height: $height - 10px;
+					line-height: $height - 10px;
+					vertical-align: middle;
+					border-radius: 50%;
+					cursor: pointer;
+				}
+
+				.daynum.attend::before {
+					position: absolute;
+					content: '';
+					width: 8px;
+					height: 8px;
+					top: 10px;
+					right: 10px;
+					background: theme.$color_light1;
+					border-radius: 50%;
+				}
+
+				&.today .daynum {
+					display: inline-block;
+					background-color: #E6E7E8;
+				}
+
+				&.active .daynum {
+					display: inline-block;
+					color: #ffffff;
+					background-color: theme.$color_light1;
+
+					&.attend::before {
+						background-color: #ffffff;
+					}
+				}
+
+				&.sun {
+					color: #FB5353;
+				}
+
+				&.sat {
+					color: #2C51D7;
+				}
+
+				&.calendar-other-month {
+					color: theme.$text_unselected_color;
+					background-color: #fff !important;
+				}
+
+				.over_num {
+					position: absolute;
+					width: 24px;
+					height: 24px;
+					top: 5px;
+					right: 5px;
+					border-radius: 50%;
+					background-color: #E6E7E8;
+					font-size: 12px;
+					line-height: 24px;
+					text-align: center;
+					padding: unset;
+				}
+
+				.curi_box {
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					width: 100%;
+					height: 18px;
+					border-radius: 5px;
+					background-color: theme.$color_light1;
+					padding: 2px 4px;
+					margin-bottom: 2px;
+
+					.tit {
+						width: 80px;
+						font-size: 10px;
+						line-height: 18px;
+						color: #fff;
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+
+						@media (max-width: 991.98px) {
+							width: 60px;
+						}
+					}
+
+					.btn_del {
+						width: 16px;
+						height: 16px;
+						padding: unset;
+					}
+				}
+			}
+		}
+	}
+
+	.schedule {
+		background: #FFFFFF;
+		border-radius: 10px;
+		margin-top: 10px;
+		padding: 5px 15px;
+
+		.date {
+			font-size: 14px;
+			font-weight: 700;
+		}
+
+		.list_area {
+			margin-top: 10px;
+			height: 95px;
+			overflow-y: auto;
+			overflow-x: hidden;
+		}
+
+		.list_area li {
+			text-align: left;
+			display: flex;
+			font-size: 14px;
+			padding: 10px 0;
+			border-top: 1px solid #E6E7E8;
+
+			.time {
+				padding: 0 10px;
+			}
+
+			.lesson_info {
+				width: calc(100% - 50px);
+			}
+
+			.subject {
+				@include mixin.text_ellipsis(block, 100%, 20px);
+			}
+
+			.lesson {
+				font-size: 12px;
+				color: theme.$text_unselected_color;
+
+				.divid {
+					border-color: theme.$text_unselected_color;
+				}
 			}
 		}
 	}
@@ -1617,7 +1895,11 @@ $navtopHeight: 60px;
 /* No media query for `xs` since this is the default in Bootstrap */
 
 /* Small devices (landscape phones, ≥576px and up) ~sm*/
-@media (min-width: 576px) {}
+@media (min-width: 576px) {
+	.mobile_only {
+		display: block;
+	}
+}
 
 /* Medium devices (tablets, ≥768px and up) ~md*/
 @media (min-width: 768px) {}
@@ -1632,6 +1914,10 @@ $navtopHeight: 60px;
 		display: block;
 	}
 
+	.mobile_only {
+		display: none;
+	}
+
 	//반응형막기관련
 }
 
@@ -1642,6 +1928,10 @@ $navtopHeight: 60px;
 	.web_only .modal-xl {
 		max-width: 950px;
 		width: 950px;
+	}
+
+	.mobile_only {
+		display: none;
 	}
 
 	//고정형min992px 관련
@@ -1668,6 +1958,16 @@ $navtopHeight: 60px;
 	}
 
 	//고정형min992px 관련
+
+	/* .mobile_only {
+		display: none;
+	} */
+
+	.lgW100 {
+		display: block;
+		width: 100%;
+	}
+
 }
 
 /* mobile only */
@@ -1682,7 +1982,36 @@ $navtopHeight: 60px;
 	}
 
 	//모바일 사이즈에서 width를 100%로 변경
+
+	.web_only02 {
+		display: none;
+	}
+
+	.mobile_only {
+		display: block;
+	}
 }
 
 /* Extra small devices (portrait phones, less than 576px) ≤xs*/
 @media (max-width: 575.98px) {}
+
+/* 학생 모바일 반응형 모바일 네비 */
+
+.nav-item02 {
+	font-weight: 500;
+	font-size: 18px;
+	line-height: 26px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #FFFFFF;
+	border-bottom: 0.4px solid rgba(167, 169, 172, 0.4);
+	height: 60px;
+}
+
+a {
+	color: #303033;
+	text-decoration: none;
+	background-color: transparent;
+	text-align: center;
+}

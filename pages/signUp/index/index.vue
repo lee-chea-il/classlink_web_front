@@ -2,7 +2,7 @@
   <div class="right_section">
     <div id="loginRwrap" class="wrap">
       <div class="title_type2">
-        <h2>서비스 이용 동의1</h2>
+        <h2>서비스 이용 동의</h2>
       </div>
       <div class="agree_section">
         <div class="title">

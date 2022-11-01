@@ -548,6 +548,7 @@ ol {
 	@include icons(18px, 18px);
 	background-image: url('../images/icons/icon_check_circle_gray.svg');
 }
+
 /* btns */
 .btn:focus,
 .btn:active {
@@ -972,7 +973,7 @@ ol {
 		margin-right: 5px;
 		line-height: 39px;
 		vertical-align: middle;
-		font-size: $default_font_size - 2px;
+		font-size: $default_font_size - 2px !important;
 		font-weight: $font_regular;
 	}
 }
@@ -1114,7 +1115,7 @@ ol {
 }
 
 // .custom-control { padding-left: 2rem;}
-.custom-control-label::before,
+/* .custom-control-label::before,
 .custom-control-label::after {
 	margin-top: -0.2rem;
 	// left: -28px;
@@ -1124,7 +1125,7 @@ ol {
 	border-radius: 2px;
 	border-color: rgba(0, 0, 0, 0.2);
 }
-
+ */
 .custom-control-input:checked~.custom-control-label::before {
 	color: #fff;
 	border-color: $color_light1;

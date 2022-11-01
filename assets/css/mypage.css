@@ -1587,7 +1587,7 @@ ol {
   margin-right: 5px;
   line-height: 39px;
   vertical-align: middle;
-  font-size: 14px;
+  font-size: 14px !important;
   font-weight: 400;
 }
 
@@ -1729,15 +1729,17 @@ ol {
   display: none;
 }
 
-.custom-control-label::before,
+/* .custom-control-label::before,
 .custom-control-label::after {
-  margin-top: -0.2rem;
-  width: 20px;
-  height: 20px;
-  border-radius: 2px;
-  border-color: rgba(0, 0, 0, 0.2);
+	margin-top: -0.2rem;
+	// left: -28px;
+	// left: -2rem;
+	width: 20px;
+	height: 20px;
+	border-radius: 2px;
+	border-color: rgba(0, 0, 0, 0.2);
 }
-
+ */
 .custom-control-input:checked ~ .custom-control-label::before {
   color: #fff;
   border-color: #7391FA;
@@ -3371,4 +3373,19 @@ ol {
 /* jeh-2022.09.05 끝 */
 #modalMyinfo .friends .btn_crud_default {
   margin-right: 5px;
+}
+
+/* 학원_마이페이지(내정보)-기관장(개설후)-edu_head_aft.html */
+/* 팝업 M2-교육기관정보수정1 */
+#modalInstinfo01 .form-group.form-inlinebox label {
+  display: block;
+}
+#modalInstinfo01 .form-group.form-inlinebox label + input {
+  width: calc(100% - 100px);
+}
+#modalInstinfo01 .form-group.form-inlinebox .form-control + .btn {
+  display: block;
+  float: right;
+  width: 95px;
+  font-size: 12px;
 }/*# sourceMappingURL=mypage.css.map */

@@ -1729,15 +1729,17 @@ ol {
   display: none;
 }
 
-.custom-control-label::before,
+/* .custom-control-label::before,
 .custom-control-label::after {
-  margin-top: -0.2rem;
-  width: 20px;
-  height: 20px;
-  border-radius: 2px;
-  border-color: rgba(0, 0, 0, 0.2);
+	margin-top: -0.2rem;
+	// left: -28px;
+	// left: -2rem;
+	width: 20px;
+	height: 20px;
+	border-radius: 2px;
+	border-color: rgba(0, 0, 0, 0.2);
 }
-
+ */
 .custom-control-input:checked ~ .custom-control-label::before {
   color: #fff;
   border-color: #7391FA;
@@ -2157,11 +2159,6 @@ i.btn {
   padding: 14px 0 10px;
 }
 
-.nav_web .nav_top {
-  max-width: 1280px;
-  min-width: 1024px;
-}
-
 .nav_mobile .nav_top {
   height: 60px;
   min-width: unset;
@@ -2528,7 +2525,7 @@ i.btn {
 }
 .search_result .table td.id span {
   display: inline-block;
-  width: 150px;
+  width: 130px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3231,6 +3228,12 @@ i.btn {
   background-color: #D1DBFF;
   padding: 0 2px;
 }
+.calendar_type01 .calendar_section .calendar_area .weeks.today .tit_week {
+  background-color: #D1DBFF;
+}
+.calendar_type01 .calendar_section .calendar_area .weeks.today .half-hour {
+  background-color: #E7EDFF;
+}
 .calendar_type01 .data_prev {
   position: absolute;
   left: -45px;
@@ -3455,11 +3458,200 @@ i.btn {
   border-color: #A7A9AC;
 }
 
+/* 캘린더 type03 : 출결관리-반출결 캘린더  */
+.calendar_type03 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  margin-bottom: 15px;
+  height: auto;
+  overflow: hidden;
+}
+@media (max-width: 991.98px) {
+  .calendar_type03 {
+    padding: 13px;
+    height: auto;
+  }
+}
+.calendar_type03 .calendar .move_calendar {
+  text-align: left;
+  margin-bottom: 10px;
+}
+.calendar_type03 .calendar .move_calendar .date_info {
+  margin: 0 20px;
+}
+.calendar_type03 .calendar .calendar_data {
+  overflow: hidden;
+}
+.calendar_type03 .calendar .calendar_table {
+  width: 100%;
+}
+.calendar_type03 .calendar .calendar_table .week_tit th {
+  font-weight: 500;
+  height: 60px;
+  line-height: 60px;
+  vertical-align: middle;
+  padding: 6px 0;
+}
+.calendar_type03 .calendar .calendar_table .week_tit th.sun {
+  color: #FB5353;
+}
+.calendar_type03 .calendar .calendar_table .week_tit th.sat {
+  color: #2C51D7;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day {
+  position: relative;
+  width: 14.28%;
+  height: 60px;
+  line-height: 60px;
+  vertical-align: middle;
+  padding: 5px 0;
+  color: #454545;
+  font-weight: 400;
+  font-size: 16px;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day .daynum {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  vertical-align: middle;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day .daynum.attend::before {
+  position: absolute;
+  content: "";
+  width: 8px;
+  height: 8px;
+  top: 10px;
+  right: 10px;
+  background: #7391FA;
+  border-radius: 50%;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day.today .daynum {
+  display: inline-block;
+  background-color: #E6E7E8;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day.active .daynum {
+  display: inline-block;
+  color: #ffffff;
+  background-color: #7391FA;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day.active .daynum.attend::before {
+  background-color: #ffffff;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day.sun {
+  color: #FB5353;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day.sat {
+  color: #2C51D7;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day.calendar-other-month {
+  color: #A7A9AC;
+  background-color: #fff !important;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day .over_num {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 5px;
+  right: 5px;
+  border-radius: 50%;
+  background-color: #E6E7E8;
+  font-size: 12px;
+  line-height: 24px;
+  text-align: center;
+  padding: unset;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day .curi_box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 18px;
+  border-radius: 5px;
+  background-color: #7391FA;
+  padding: 2px 4px;
+  margin-bottom: 2px;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day .curi_box .tit {
+  width: 80px;
+  font-size: 10px;
+  line-height: 18px;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 991.98px) {
+  .calendar_type03 .calendar .calendar_table .week .calendar-day .curi_box .tit {
+    width: 60px;
+  }
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day .curi_box .btn_del {
+  width: 16px;
+  height: 16px;
+  padding: unset;
+}
+.calendar_type03 .schedule {
+  background: #FFFFFF;
+  border-radius: 10px;
+  margin-top: 10px;
+  padding: 5px 15px;
+}
+.calendar_type03 .schedule .date {
+  font-size: 14px;
+  font-weight: 700;
+}
+.calendar_type03 .schedule .list_area {
+  margin-top: 10px;
+  height: 95px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.calendar_type03 .schedule .list_area li {
+  text-align: left;
+  display: flex;
+  font-size: 14px;
+  padding: 10px 0;
+  border-top: 1px solid #E6E7E8;
+}
+.calendar_type03 .schedule .list_area li .time {
+  padding: 0 10px;
+}
+.calendar_type03 .schedule .list_area li .lesson_info {
+  width: calc(100% - 50px);
+}
+.calendar_type03 .schedule .list_area li .subject {
+  display: block;
+  width: 100%;
+  height: 20px;
+  line-height: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.calendar_type03 .schedule .list_area li .lesson {
+  font-size: 12px;
+  color: #A7A9AC;
+}
+.calendar_type03 .schedule .list_area li .lesson .divid {
+  border-color: #A7A9AC;
+}
+
 /* IE 9+10 속성 */
 /* 미디어쿼리 ******************************************************/
 /* Extra small devices (portrait phones, less than 576px) *********/
 /* No media query for `xs` since this is the default in Bootstrap */
 /* Small devices (landscape phones, ≥576px and up) ~sm*/
+@media (min-width: 576px) {
+  .mobile_only {
+    display: block;
+  }
+}
 /* Medium devices (tablets, ≥768px and up) ~md*/
 /* Large devices (desktops, ≥992px and up) ~lg*/
 @media (min-width: 992px) {
@@ -3469,12 +3661,18 @@ i.btn {
   .web_only .nav_web {
     display: block;
   }
+  .mobile_only {
+    display: none;
+  }
 }
 /* Extra large devices (large desktops, ≥1200px and up) ~xl*/
 @media (max-width: 1199.98px) {
   .web_only .modal-xl {
     max-width: 950px;
     width: 950px;
+  }
+  .mobile_only {
+    display: none;
   }
   .web_only .modal-lg {
     max-width: 800px;
@@ -3491,6 +3689,13 @@ i.btn {
   .web_only .nav_mobile {
     display: none;
   }
+  /* .mobile_only {
+  	display: none;
+  } */
+  .lgW100 {
+    display: block;
+    width: 100%;
+  }
 }
 /* mobile only */
 @media (max-width: 767.98px) {
@@ -3501,5 +3706,30 @@ i.btn {
     display: block;
     width: 100%;
   }
+  .web_only02 {
+    display: none;
+  }
+  .mobile_only {
+    display: block;
+  }
 }
-/* Extra small devices (portrait phones, less than 576px) ≤xs*//*# sourceMappingURL=incommon.css.map */
+/* Extra small devices (portrait phones, less than 576px) ≤xs*/
+/* 학생 모바일 반응형 모바일 네비 */
+.nav-item02 {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border-bottom: 0.4px solid rgba(167, 169, 172, 0.4);
+  height: 60px;
+}
+
+a {
+  color: #303033;
+  text-decoration: none;
+  background-color: transparent;
+  text-align: center;
+}/*# sourceMappingURL=incommon.css.map */

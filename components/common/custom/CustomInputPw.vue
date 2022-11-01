@@ -28,9 +28,18 @@
       <!-- [개발참조]:class="disabled"제거시 활성 -->
     </div>
     <div v-if="isError && inputValue !== ''" class="invalid_text">
-      비밀번호가 일치하지 않습니다.F
+      비밀번호가 일치하지 않습니다.
     </div>
-    <div class="invalid_text">{{ errors[0] }}</div>
+    <div
+      :class="
+        String(errors[0]).includes('2글자') ||
+        String(errors[0]).includes('주세요')
+          ? 'form_ruletext'
+          : 'invalid_text'
+      "
+    >
+      {{ errors[0] }}
+    </div>
   </ValidationProvider>
 </template>
 <script>
@@ -72,7 +81,6 @@ export default {
       type: Boolean,
     },
   },
-  
 }
 </script>
 <style scoped>

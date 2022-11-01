@@ -31,12 +31,16 @@
             <!-- [개발참조]:예외처리-성공의 예 -->
             <CustomInput
               id="nickName"
+              :checkValue="nickNameCheck"
               name="닉네임"
               rules="min:2|required"
               placeholder="닉네임 입력"
               type="text"
+              :isCheckBox="true"
               :inputValue="userInfo.nickName"
+              :nickNameCheck="nickNameCheck"
               @change-input="onChangeInput"
+              @change-check="onChangeCheckBox"
             />
 
             <!-- <CustomInput
@@ -152,6 +156,14 @@ export default {
     CustomInput,
     ValidationObserver,
   },
+  // setup(data) {
+  //   watchEffect(() => {
+  //     if (data.userInfo.nickName !== data.userInfo.name) {
+  //       console.log(false)
+  //       this.nickNameCheck = false
+  //     }
+  //   })
+  // },
   data() {
     return {
       userInfo: {
@@ -164,11 +176,21 @@ export default {
         authNumber: '',
       },
       isError: false,
+      nickNameCheck: false,
     }
   },
   methods: {
     onChangeInput({ target: { value, id } }) {
+      console.log(value)
       this.userInfo[id] = value
+      if (
+        this.userInfo.name === '' &&
+        this.userInfo.nickName === this.userInfo.name
+      ) {
+        this.nickNameCheck = true
+      } else {
+        this.nickNameCheck = false
+      }
     },
     onChangePasswordCheck({ target: { value } }) {
       this.userInfo.passwordCheck = value
@@ -176,6 +198,16 @@ export default {
         this.isError = false
       } else {
         this.isError = true
+      }
+    },
+    onClickNickNameCheck() {
+      this.userInfo.nickName = this.userInfo.name
+    },
+    onChangeCheckBox({ target: { checked } }) {
+      this.nickNameCheck = checked
+      console.log('이거머야', this.nickNameCheck)
+      if (checked) {
+        this.userInfo.nickName = this.userInfo.name
       }
     },
     handleSubmit() {

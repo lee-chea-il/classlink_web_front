@@ -4,3 +4,398 @@
 /*--------  7. ac_class.scss    ---------*/
 /*---------------------------------------*/
 /* 학원관리-2.수업-(1)강의코스:강의계획서,과제함,노트함 */
+
+/* 수업-강의코스.html */
+
+.ac_manage_course {
+
+  .course_tit {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    margin: 20px 0;
+  }
+
+  .course_time {
+    padding: 5px 20px;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+  }
+
+  .course_info {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+    margin: 20px 0;
+  }
+
+  .cards_section .course_bgcolor01 {
+    background: #D1DBFF;
+    justify-content: center;
+  }
+
+  .cards_section {
+    position: relative;
+    margin: 0 auto;
+    padding-top: 40px;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width: 92%;
+  }
+
+  .cards_section .card {
+    width: 220px;
+    height: 180px;
+    margin: 22px 14px;
+
+  }
+
+  .course_bgcolor02 {
+    background: #E7EDFF;
+  }
+
+  .course_bgcolor03 {
+    background: #7391FA;
+    color: theme.$color_white;
+  }
+
+  .course_left {
+    justify-content: flex-start;
+  }
+
+  .course_line {
+    display: flex;
+  }
+
+  .course_line .input-search {
+    width: 20%;
+    margin-left: auto;
+  }
+}
+
+/* 수업-강의코스-강의계획서.html */
+
+.nav_mobile {
+  .icons_arrow_dn {
+    margin-left: 10px;
+  }
+
+  .title_area {
+    cursor: pointer;
+  }
+}
+
+.ac_manage_classplan {
+  .course_tit {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 23px;
+    margin-right: 10px;
+  }
+
+  .course_con {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: theme.$text_unselected_color;
+  }
+
+  .btn_sec {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .classplan_tit {
+    cursor: pointer;
+  }
+
+  .form-search {
+    max-width: 26%;
+  }
+}
+
+/* 수업-강의코스-강의계획서-과제 등록.html */
+
+.ac_manage_taskregi {
+  .course_tit {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 23px;
+    margin-right: 10px;
+  }
+
+  .course_con {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: theme.$text_unselected_color;
+  }
+
+  .taskregi_tit {
+    margin: 0 0 30px -15px;
+  }
+
+  .date_area {
+    margin-bottom: 70px;
+  }
+
+  .open_regi {
+    margin-top: 25px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+/* 강의계획서 미리보기/열람 상세보기 (팝업 L) */
+
+#modalNoticeView {
+
+  .notice_tit {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: theme.$text_default_color;
+    margin: 0 0 0 18px;
+  }
+}
+
+/* 강의코스-과제함.html */
+/* 과제 열람 상세보기 (팝업 L) */
+#modalTaskDetail {
+
+  .title_area {
+    width: 109%;
+    margin-bottom: 40px;
+    margin-top: -15px;
+  }
+
+  .notice_day {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: theme.$color_notice;
+    margin: 0 0 0 18px;
+  }
+
+  .title_area .notice_day02,
+  .title_area .notice_writer {
+    text-align: right;
+  }
+
+  .file_icon {
+    display: inline-block;
+    width: 20px;
+    height: 18px;
+    text-align: center;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    background-image: url(../images/icon_file.png);
+    margin: 0px 5px 2px 17px;
+  }
+
+  .save {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #A7A9AC;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  .file_name {
+    padding: 6px 12px;
+    border: 0.4px solid rgba(167, 169, 172, 0.4);
+    border-radius: 5px;
+    width: 97%;
+    margin: 14px auto;
+  }
+
+  .file_info {
+    text-align: left;
+  }
+
+  .box {
+    width: 70%;
+    height: 350px;
+    background: theme.$color_background;
+    margin: 56px auto;
+  }
+
+  .content_area {
+    width: 97%;
+    height: 332px;
+    border: 0.4px solid rgba(167, 169, 172, 0.4);
+    border-radius: 5px;
+    overflow-y: scroll;
+  }
+
+  .icons_thumbnail {
+    margin: 135px auto;
+  }
+
+  .notice_content {
+    text-align: left;
+    margin: 15px 15px;
+  }
+
+  .thumb_box {
+    box-sizing: border-box;
+    height: 545px;
+    border: 0.4px solid rgba(167, 169, 172, 0.4);
+    border-radius: 5px;
+    padding: 0 15px;
+    text-align: left;
+  }
+
+  .thumbnail_view {
+    height: 290px;
+    background: #F9F9FB;
+    padding: 10px 0px;
+    margin-top: 10px;
+  }
+
+  .icons_fullscreen {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+
+  .div_line01 {
+    border-top: 0.4px solid rgba(167, 169, 172, 0.4);
+    margin: 20px 0 0 0;
+  }
+
+  .title {
+    margin: 8px 0 0 0;
+  }
+
+  .name {
+    padding-top: 30px;
+    font-size: 16px;
+  }
+
+  .col {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .div_cont02 {
+    margin: 20px 0px 0px 0px;
+  }
+
+  .cont,
+  .cont label {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #A7A9AC;
+    margin-bottom: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .title_area {
+    margin-top: -5px;
+  }
+
+  .modal-body {
+    text-align: center;
+    padding-top: 35px;
+    overflow: auto;
+    height: 460px;
+  }
+
+  .content_area {
+    height: 456px;
+  }
+}
+
+/* 수업-강의코스-과제함-제출 현황 (팝업 L) */
+
+#modalTaskView {
+  .tab-content.depth03 {
+    border: none;
+  }
+
+  .title_area {
+    margin-bottom: 30px;
+    margin-top: -30px;
+  }
+
+  .dropdown .dropdown-toggle {
+    height: 40px;
+    width: 150%;
+    text-align: left;
+  }
+
+  .task_file {
+    display: inline-block;
+    width: 180px;
+    height: 21px;
+    line-height: 26px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* 수업-강의코스-노트함.html */
+
+.ac_manage_note {
+
+  .search_section .right_area {
+    text-align: right;
+    margin-top: 0;
+  }
+
+  .course_tit {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 23px;
+    margin-right: 10px;
+  }
+
+  .course_con {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: theme.$text_unselected_color;
+  }
+
+}
+
+#modalLessonView.ac_manage_note {
+
+  .thumb_box {
+    height: 570px;
+    margin-top: 49px;
+  }
+
+  .tab-content {
+    height: 569px;
+  }
+
+  .divide_section .btn_crud_default {
+    margin-bottom: 10px;
+  }
+
+  .nodata {
+    padding: 255px 0px;
+    text-align: center;
+    line-height: 30px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 23px;
+    color: #A7A9AC;
+  }
+}

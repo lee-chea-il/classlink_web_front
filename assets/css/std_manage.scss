@@ -1,0 +1,136 @@
+@use "theme";
+@use "mixin";
+/*---------------------------------------*/
+/*--------  18. std_manage.scss  --------*/
+/*---------------------------------------*/
+/* 학생사용자-관리:시험결과,출결,공지사항,다운로드 */
+
+/* 관리-시험결과.html */
+/* 관리-시험결과-상세검색 필터 팝업 */
+
+.modal_std_manage_exam {
+
+  .class_section {
+    width: 23%;
+  }
+}
+
+/* 관리-시험결과.html */
+.std_manage_exam {
+  .keyword_area {
+    position: relative;
+    height: auto;
+    padding: 1px 8px;
+    max-width: 50%;
+  }
+}
+
+/* 관리-출결-주별출결.html */
+.std_manage_attend {
+  .modal_moreattendance {
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+  }
+
+  .calendar_type01 .calendar_section .calendar_area .curriculum_box {
+    width: 100%;
+  }
+}
+
+/* 관리-출결-일별출결.html */
+.std_manage_attend02 {
+  .attend_box {
+    background: #F9F9FB;
+    border: 0.4px solid #D1D3D4;
+    border-radius: 10px;
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    align-items: center;
+  }
+
+  .attend_thumbnail {
+    background: #FFFFFF;
+    border: 0.4px solid #D1D3D4;
+    border-radius: 5px;
+    width: 75px;
+    height: 75px;
+  }
+
+  .attend_thumbnail02 {
+    background: #FFFFFF;
+    border: 0.4px solid #D1D3D4;
+    border-radius: 5px;
+    width: 75px;
+    height: 75px;
+  }
+
+  .icons_thumbnail {
+    width: 45px;
+    margin: -2px 14px;
+  }
+
+  .attend_name {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 23px;
+  }
+
+  .attend_button01 {
+    width: 75px;
+    height: 75px;
+    background: #7391FA;
+    border-radius: 5px;
+    color: #FFFFFF;
+    padding: 25px 23px;
+  }
+
+  .attend_button02 {
+    width: 75px;
+    height: 75px;
+    background: #4FCED0;
+    border-radius: 5px;
+    color: #FFFFFF;
+    padding: 23px 8px;
+    margin-left: 80px;
+  }
+}
+
+/* 관리-다운로드.html */
+.std_manage_down {
+  .cards_section .card {
+    position: relative;
+    overflow: hidden;
+    width: 260px;
+    height: 230px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    box-shadow: 0px 0px 15px rgb(0 0 0 / 10%);
+    border-radius: 20px;
+    border-color: #F9F9FC;
+    padding: 10px;
+    margin-bottom: 55px;
+    background: #F9F9FC;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: #E7EDFF;
+      border: 1px solid #7391FA;
+      cursor: pointer;
+    }
+  }
+
+  .down_title {
+    text-align: center;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 29px;
+    color: #454545;
+    margin-top: 40px;
+  }
+}

@@ -1,0 +1,441 @@
+@use "theme";
+@use "mixin";
+/*---------------------------------------*/
+/*--------  17. std_class2.scss  --------*/
+/*---------------------------------------*/
+/* 학생사용자-강의코스:강의계획서,과제함,노트함 */
+
+/* 강의코스.html */
+
+.std_manage_course {
+  .course_institute {
+    display: flex;
+    background: #F9F9FB;
+    border-radius: 10px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    flex: 0 0 auto;
+    max-width: 100%;
+  }
+
+  .ci_title {
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+
+  .cards_section .card {
+    flex: 0 0 auto;
+  }
+
+  /* 강의코스.html - 모바일반응형*/
+
+  @media (max-width: 575.98px) {
+
+    .course_line .lec_course_search {
+      min-width: 58% !important;
+      margin-left: auto;
+      margin-right: 10px;
+    }
+
+    .course_line .dropdown {
+      margin-left: 12px;
+    }
+  }
+
+}
+
+/* 강의코스-강의계획서.html */
+.std_manage_classplan {
+  .form-search {
+    max-width: 39%;
+  }
+}
+
+/* 강의코스-과제함.html */
+/* 과제 열람 상세보기 (팝업 L) */
+
+#modalTaskDetailStd {
+  .task_view {
+    width: 100%;
+    height: 300px;
+    border: 0.4px solid rgba(167, 169, 172, 0.4);
+    border-radius: 5px;
+  }
+
+  .title_area {
+    width: 100%;
+    height: 40px;
+    background: #F9F9FB;
+    border-radius: 5px 5px 0px 0px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .title_area .task_title {
+    width: 50%;
+  }
+
+  .content_area {
+    width: 97%;
+    height: 200px;
+    border: 0.4px solid rgba(167, 169, 172, 0.4);
+    border-radius: 5px;
+    text-align: left;
+    margin: 15px auto;
+    overflow-y: scroll;
+  }
+
+  .content_area02 {
+    width: 86%;
+    height: 200px;
+    border: 0.4px solid rgba(167, 169, 172, 0.4);
+    border-radius: 5px;
+    text-align: left;
+    margin: 15px auto;
+    overflow-y: scroll;
+  }
+
+  .task_cont {
+    display: flex;
+    align-items: baseline;
+  }
+
+  .task_submit {
+    width: 100%;
+    height: 300px;
+    border: 0.4px solid rgba(167, 169, 172, 0.4);
+    border-radius: 5px;
+  }
+
+  .task_tit {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 23px;
+  }
+
+  .title_area02 {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .task_day02 {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    color: #A7A9AC;
+  }
+
+  .task_submit01 {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    text-align: right;
+    color: #FB5353;
+  }
+
+  .title_area02 .task_tit {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 23px;
+    width: 70%;
+    text-align: left;
+  }
+
+  .task_cont {
+    margin-left: 20px;
+  }
+
+  .add_file {
+    display: flex;
+    align-items: center;
+  }
+
+  .cont_file {
+    width: 10%;
+  }
+
+  .modal-body {
+    text-align: center;
+    padding-top: 35px;
+    height: 480px;
+    overflow-y: scroll;
+  }
+
+  .add_file .input_file {
+    width: 40%;
+  }
+
+}
+
+/* 강의코스-과제함.html */
+/* 과제 열람 상세보기 - 첨부파일 있을때 (팝업 L) */
+
+#modalTaskDetailStdAdd {
+  .task_view {
+    width: 100%;
+    height: 82%;
+    border: 0.4px solid rgba(167, 169, 172, 0.4);
+    border-radius: 5px;
+  }
+
+  .task_view01-1 {
+    width: 100%;
+    height: 73%;
+    border: 0.4px solid rgba(167, 169, 172, 0.4);
+    border-radius: 5px;
+  }
+
+  .title_area {
+    width: 100%;
+    height: 40px;
+    background: #F9F9FB;
+    border-radius: 5px 5px 0px 0px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .title_area .task_title {
+    width: 50%;
+  }
+
+  .content_area {
+    width: 97%;
+    height: 185px;
+    border: 0.4px solid rgba(167, 169, 172, 0.4);
+    border-radius: 5px;
+    text-align: left;
+    margin: 15px auto;
+    overflow-y: scroll;
+    padding: 10px 10px;
+  }
+
+  .content_area02 {
+    width: 86%;
+    height: 200px;
+    border: 0.4px solid rgba(167, 169, 172, 0.4);
+    border-radius: 5px;
+    text-align: left;
+    margin: 15px auto;
+    overflow-y: scroll;
+  }
+
+  .task_cont {
+    display: flex;
+    align-items: baseline;
+  }
+
+  .task_submit {
+    width: 100%;
+    height: 300px;
+    border: 0.4px solid rgba(167, 169, 172, 0.4);
+    border-radius: 5px;
+  }
+
+  .task_tit {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 23px;
+  }
+
+  .title_area02 {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .task_day02 {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    color: #A7A9AC;
+  }
+
+  .task_submit01 {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    text-align: right;
+    color: #FB5353;
+  }
+
+  .title_area02 .task_tit {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 23px;
+    width: 70%;
+    text-align: left;
+  }
+
+  .task_cont {
+    margin-left: 20px;
+  }
+
+  .add_file {
+    display: flex;
+    align-items: center;
+  }
+
+  .cont_file {
+    width: 10%;
+  }
+
+  .modal-body {
+    text-align: center;
+    padding-top: 35px;
+    height: 480px;
+    overflow-y: scroll;
+  }
+
+  .add_file .input_file {
+    width: 40%;
+  }
+
+  .file_info {
+    text-align: left;
+  }
+
+  .file_icon {
+    display: inline-block;
+    width: 20px;
+    height: 18px;
+    text-align: center;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    background-image: url(../images/icon_file.png);
+    margin: 0px 5px 2px 17px;
+  }
+
+  .save {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #A7A9AC;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  .file_name {
+    padding: 6px 12px;
+    border: 0.4px solid rgba(167, 169, 172, 0.4);
+    border-radius: 5px;
+    width: 97%;
+    margin: 14px auto;
+  }
+
+  .task_view .left_area,
+  .task_view01-1 .left_area {
+    width: 50%;
+    margin: 20px 10px;
+  }
+
+  .task_view .right_area,
+  .task_view01-1 .right_area {
+    width: 50%;
+    margin: 20px 10px;
+  }
+
+  .task_view02 {
+    display: flex;
+  }
+
+  .right_area_title {
+    display: flex;
+    align-items: center;
+  }
+
+  .task_filename {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .file_view_screen {
+    width: 80%;
+    height: 236px;
+    background: #F9F9FB;
+    margin: 0 auto;
+  }
+
+  .right_area_title .task_tit {
+    margin-right: 20px;
+  }
+
+  .file_view {
+    width: 100%;
+    height: 236px;
+    border: 0.4px solid rgba(167, 169, 172, 0.4);
+    border-radius: 5px;
+    margin: 15px 0;
+  }
+
+  .icons_fullscreen {
+    position: relative;
+    top: 10px;
+    left: 180px;
+  }
+
+  .file_prev {
+    position: absolute;
+    left: 582px;
+    top: 48%;
+  }
+
+  .file_next {
+    position: absolute;
+    right: 34px;
+    top: 48%;
+  }
+
+  .file_prev02 {
+    position: absolute;
+    left: 582px;
+    top: 121%;
+  }
+
+  .file_next02 {
+    position: absolute;
+    right: 34px;
+    top: 121%;
+  }
+
+  .task_submit02 {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    align-items: center;
+    text-align: right;
+    color: #7391FA;
+  }
+
+}
+
+
+
+
+
+
+/* 관리-시험관리.html */
+#modalExamFiter {
+  .modal-body {
+    padding: 0 30px;
+    text-align: center;
+    padding-top: 35px;
+  }
+}

@@ -1587,7 +1587,7 @@ ol {
   margin-right: 5px;
   line-height: 39px;
   vertical-align: middle;
-  font-size: 14px;
+  font-size: 14px !important;
   font-weight: 400;
 }
 
@@ -1729,15 +1729,17 @@ ol {
   display: none;
 }
 
-.custom-control-label::before,
+/* .custom-control-label::before,
 .custom-control-label::after {
-  margin-top: -0.2rem;
-  width: 20px;
-  height: 20px;
-  border-radius: 2px;
-  border-color: rgba(0, 0, 0, 0.2);
+	margin-top: -0.2rem;
+	// left: -28px;
+	// left: -2rem;
+	width: 20px;
+	height: 20px;
+	border-radius: 2px;
+	border-color: rgba(0, 0, 0, 0.2);
 }
-
+ */
 .custom-control-input:checked ~ .custom-control-label::before {
   color: #fff;
   border-color: #7391FA;
@@ -1935,4 +1937,318 @@ ol {
 /*---------------------------------------*/
 /*--------  7. ac_class.scss    ---------*/
 /*---------------------------------------*/
-/* 학원관리-2.수업-(1)강의코스:강의계획서,과제함,노트함 *//*# sourceMappingURL=ac_class.css.map */
+/* 학원관리-2.수업-(1)강의코스:강의계획서,과제함,노트함 */
+/* 수업-강의코스.html */
+.ac_manage_course .course_tit {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  margin: 20px 0;
+}
+.ac_manage_course .course_time {
+  padding: 5px 20px;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+}
+.ac_manage_course .course_info {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+  margin: 20px 0;
+}
+.ac_manage_course .cards_section .course_bgcolor01 {
+  background: #D1DBFF;
+  justify-content: center;
+}
+.ac_manage_course .cards_section {
+  position: relative;
+  margin: 0 auto;
+  padding-top: 40px;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 92%;
+}
+.ac_manage_course .cards_section .card {
+  width: 220px;
+  height: 180px;
+  margin: 22px 14px;
+}
+.ac_manage_course .course_bgcolor02 {
+  background: #E7EDFF;
+}
+.ac_manage_course .course_bgcolor03 {
+  background: #7391FA;
+  color: #FFFFFF;
+}
+.ac_manage_course .course_left {
+  justify-content: flex-start;
+}
+.ac_manage_course .course_line {
+  display: flex;
+}
+.ac_manage_course .course_line .input-search {
+  width: 20%;
+  margin-left: auto;
+}
+
+/* 수업-강의코스-강의계획서.html */
+.nav_mobile .icons_arrow_dn {
+  margin-left: 10px;
+}
+.nav_mobile .title_area {
+  cursor: pointer;
+}
+
+.ac_manage_classplan .course_tit {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  margin-right: 10px;
+}
+.ac_manage_classplan .course_con {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
+}
+.ac_manage_classplan .btn_sec {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.ac_manage_classplan .classplan_tit {
+  cursor: pointer;
+}
+.ac_manage_classplan .form-search {
+  max-width: 26%;
+}
+
+/* 수업-강의코스-강의계획서-과제 등록.html */
+.ac_manage_taskregi .course_tit {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  margin-right: 10px;
+}
+.ac_manage_taskregi .course_con {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
+}
+.ac_manage_taskregi .taskregi_tit {
+  margin: 0 0 30px -15px;
+}
+.ac_manage_taskregi .date_area {
+  margin-bottom: 70px;
+}
+.ac_manage_taskregi .open_regi {
+  margin-top: 25px;
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+/* 강의계획서 미리보기/열람 상세보기 (팝업 L) */
+#modalNoticeView .notice_tit {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #454545;
+  margin: 0 0 0 18px;
+}
+
+/* 강의코스-과제함.html */
+/* 과제 열람 상세보기 (팝업 L) */
+#modalTaskDetail .title_area {
+  width: 109%;
+  margin-bottom: 40px;
+  margin-top: -15px;
+}
+#modalTaskDetail .notice_day {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #FB5353;
+  margin: 0 0 0 18px;
+}
+#modalTaskDetail .title_area .notice_day02,
+#modalTaskDetail .title_area .notice_writer {
+  text-align: right;
+}
+#modalTaskDetail .file_icon {
+  display: inline-block;
+  width: 20px;
+  height: 18px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_file.png);
+  margin: 0px 5px 2px 17px;
+}
+#modalTaskDetail .save {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
+  margin-left: 10px;
+  cursor: pointer;
+}
+#modalTaskDetail .file_name {
+  padding: 6px 12px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  width: 97%;
+  margin: 14px auto;
+}
+#modalTaskDetail .file_info {
+  text-align: left;
+}
+#modalTaskDetail .box {
+  width: 70%;
+  height: 350px;
+  background: #F9F9FC;
+  margin: 56px auto;
+}
+#modalTaskDetail .content_area {
+  width: 97%;
+  height: 332px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  overflow-y: scroll;
+}
+#modalTaskDetail .icons_thumbnail {
+  margin: 135px auto;
+}
+#modalTaskDetail .notice_content {
+  text-align: left;
+  margin: 15px 15px;
+}
+#modalTaskDetail .thumb_box {
+  box-sizing: border-box;
+  height: 545px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  padding: 0 15px;
+  text-align: left;
+}
+#modalTaskDetail .thumbnail_view {
+  height: 290px;
+  background: #F9F9FB;
+  padding: 10px 0px;
+  margin-top: 10px;
+}
+#modalTaskDetail .icons_fullscreen {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+#modalTaskDetail .div_line01 {
+  border-top: 0.4px solid rgba(167, 169, 172, 0.4);
+  margin: 20px 0 0 0;
+}
+#modalTaskDetail .title {
+  margin: 8px 0 0 0;
+}
+#modalTaskDetail .name {
+  padding-top: 30px;
+  font-size: 16px;
+}
+#modalTaskDetail .col {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#modalTaskDetail .div_cont02 {
+  margin: 20px 0px 0px 0px;
+}
+#modalTaskDetail .cont,
+#modalTaskDetail .cont label {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
+  margin-bottom: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#modalTaskDetail .title_area {
+  margin-top: -5px;
+}
+#modalTaskDetail .modal-body {
+  text-align: center;
+  padding-top: 35px;
+  overflow: auto;
+  height: 460px;
+}
+#modalTaskDetail .content_area {
+  height: 456px;
+}
+
+/* 수업-강의코스-과제함-제출 현황 (팝업 L) */
+#modalTaskView .tab-content.depth03 {
+  border: none;
+}
+#modalTaskView .title_area {
+  margin-bottom: 30px;
+  margin-top: -30px;
+}
+#modalTaskView .dropdown .dropdown-toggle {
+  height: 40px;
+  width: 150%;
+  text-align: left;
+}
+#modalTaskView .task_file {
+  display: inline-block;
+  width: 180px;
+  height: 21px;
+  line-height: 26px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 수업-강의코스-노트함.html */
+.ac_manage_note .search_section .right_area {
+  text-align: right;
+  margin-top: 0;
+}
+.ac_manage_note .course_tit {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  margin-right: 10px;
+}
+.ac_manage_note .course_con {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
+}
+
+#modalLessonView.ac_manage_note .thumb_box {
+  height: 570px;
+  margin-top: 49px;
+}
+#modalLessonView.ac_manage_note .tab-content {
+  height: 569px;
+}
+#modalLessonView.ac_manage_note .divide_section .btn_crud_default {
+  margin-bottom: 10px;
+}
+#modalLessonView.ac_manage_note .nodata {
+  padding: 255px 0px;
+  text-align: center;
+  line-height: 30px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  color: #A7A9AC;
+}/*# sourceMappingURL=ac_class.css.map */

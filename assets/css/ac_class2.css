@@ -1729,15 +1729,17 @@ ol {
   display: none;
 }
 
-.custom-control-label::before,
+/* .custom-control-label::before,
 .custom-control-label::after {
-  margin-top: -0.2rem;
-  width: 20px;
-  height: 20px;
-  border-radius: 2px;
-  border-color: rgba(0, 0, 0, 0.2);
+	margin-top: -0.2rem;
+	// left: -28px;
+	// left: -2rem;
+	width: 20px;
+	height: 20px;
+	border-radius: 2px;
+	border-color: rgba(0, 0, 0, 0.2);
 }
-
+ */
 .custom-control-input:checked ~ .custom-control-label::before {
   color: #fff;
   border-color: #7391FA;
@@ -1935,4 +1937,248 @@ ol {
 /*---------------------------------------*/
 /*--------  7. ac_class2.scss    --------*/
 /*---------------------------------------*/
-/* 학원관리-2.수업-(1)강의코스:질문함,리포트 *//*# sourceMappingURL=ac_class2.css.map */
+/* 학원관리-2.수업-(1)강의코스:질문함,리포트 */
+/* 학습함-질문함(기관장).html */
+.ac_manage_que .keyword_area {
+  position: relative;
+  height: auto;
+  padding: 1px 8px;
+}
+.ac_manage_que .keyword_area_01 {
+  position: relative;
+  min-width: 520px;
+  max-height: 113px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 10px;
+  overflow-y: auto;
+  white-space: nowrap;
+}
+.ac_manage_que .keyword01 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 88px;
+  height: 28px;
+  background: #D1DBFF;
+  border-radius: 3px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.ac_manage_que .keyword01-1 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+  margin: 0px 5px 0px 9px;
+}
+.ac_manage_que .x {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_×.png);
+  margin-right: 8px;
+}
+@media (min-width: 992px) {
+  .ac_manage_que .search_section .right_area {
+    text-align: right;
+    margin-bottom: 30px;
+  }
+  .ac_manage_que .search_section .right_area .filter_lift {
+    margin-top: 5px;
+  }
+}
+@media (min-width: 1199.98px) {
+  .ac_manage_que .search_section .right_area {
+    margin-bottom: 70px;
+  }
+  .ac_manage_que .search_section .right_area .filter_lift {
+    margin-top: 0px;
+  }
+}
+.ac_manage_que .study_qustion {
+  cursor: pointer;
+  text-align: left;
+  width: 310px;
+  line-height: 26px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ac_manage_que .que_reply {
+  background: #F9F9FB;
+  border-radius: 5px;
+}
+.ac_manage_que .input-search {
+  max-width: 30%;
+}
+
+@media (min-width: 992px) {
+  .ac_manage_que02 .right_area {
+    text-align: right;
+    margin-bottom: 28px !important;
+  }
+  .ac_manage_que02 .right_area .filter_lift {
+    margin-top: 5px;
+  }
+  .ac_manage_que02 .input-search {
+    max-width: 60%;
+  }
+}
+@media (min-width: 1199.98px) {
+  .ac_manage_que02 .right_area {
+    margin-bottom: 70px !important;
+  }
+  .ac_manage_que02 .right_area .filter_lift {
+    margin-top: 0px;
+  }
+}
+
+/* 학습함-질문함-필터 (팝업 L) */
+#modalQueFilter .class_section .tit {
+  width: 100%;
+  margin: 20px 20px;
+}
+#modalQueFilter .move_section {
+  margin: 0 10px;
+}
+#modalQueFilter .list_section {
+  width: 100%;
+  margin: 0 10px;
+}
+#modalQueFilter .class_section {
+  width: 100%;
+}
+#modalQueFilter .no_search {
+  height: 493px;
+}
+#modalQueFilter .cnts_section .list_section .list_area li .custom-control-label {
+  font-size: 16px;
+  line-height: 21px;
+}
+
+/* 수업 - 학습함 - 질문함 - 질문열람 (팝업 L) */
+#modalNoticeView .notice_tit {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0 0 0 18px;
+}
+
+/* 수업 - 학습함 - 질문함 - 답변열람 (팝업 L) */
+#modalReplyView .title_area {
+  text-align: left;
+  width: 106%;
+  margin-bottom: 40px;
+  margin-top: -15px;
+}
+#modalReplyView .title_area .notice_day02,
+#modalReplyView .title_area .notice_writer {
+  text-align: right;
+}
+#modalReplyView .notice_tit {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0 0 0 18px;
+}
+#modalReplyView .file_info {
+  text-align: left;
+}
+#modalReplyView .content_area {
+  width: 97%;
+  height: 332px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  overflow-y: scroll;
+}
+#modalReplyView .notice_content {
+  text-align: left;
+  margin: 15px 15px;
+}
+#modalReplyView .box {
+  width: 70%;
+  height: 350px;
+  background: #F9F9FC;
+  margin: 56px auto;
+}
+#modalReplyView .icons_thumbnail {
+  margin: 135px auto;
+}
+#modalReplyView .file_icon {
+  display: inline-block;
+  width: 20px;
+  height: 18px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_file.png);
+  margin: 0px 5px 2px 17px;
+}
+#modalReplyView .save {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
+  margin-left: 10px;
+  cursor: pointer;
+}
+#modalReplyView .file_name {
+  padding: 6px 12px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  width: 97%;
+  margin: 14px auto;
+}
+#modalReplyView .keyword01-1 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+  margin: 0px 5px 0px 7px;
+}
+#modalReplyView .keyword01 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 88px;
+  height: 28px;
+  background: #D1DBFF;
+  border-radius: 3px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+/* 학습함-질문함-답변하기.html */
+.ac_manage_que02 .box {
+  align-items: center;
+  padding: 6px 0px;
+  gap: 10px;
+  width: 109px;
+  height: 30px;
+  background: #E7EDFF;
+  border-radius: 5px;
+  line-height: 13px;
+  text-align: center;
+  margin-left: 10px;
+}
+.ac_manage_que02 .date_area {
+  display: flex;
+  margin-right: 17px;
+  margin-bottom: 58px;
+}
+
+/* 학습함-리포트.html */
+.ac_manage_report .report_id {
+  display: inline-block;
+  width: 170px;
+  line-height: 26px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}/*# sourceMappingURL=ac_class2.css.map */
