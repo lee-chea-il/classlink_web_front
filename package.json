@@ -39,7 +39,8 @@
     "vue-xlsx": "^0.2.1",
     "vue2-editor": "^2.10.3",
     "webpack": "^4.46.0",
-    "youtube-captions-scraper": "^2.0.0"
+    "youtube-captions-scraper": "^2.0.0",
+    "vue-tree-list": "^1.5.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.3",
