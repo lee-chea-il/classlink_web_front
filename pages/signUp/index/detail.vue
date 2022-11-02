@@ -184,7 +184,7 @@ export default {
       console.log(value)
       this.userInfo[id] = value
       if (
-        this.userInfo.name === '' &&
+        this.userInfo.name !== '' &&
         this.userInfo.nickName === this.userInfo.name
       ) {
         this.nickNameCheck = true

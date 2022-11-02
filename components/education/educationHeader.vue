@@ -13,7 +13,7 @@
             /></NuxtLink>
           </div>
           <div class="nav_area">
-            <ul class="nav nav_dapth01 ">
+            <ul class="nav nav_dapth01">
               <li
                 class="nav-item"
                 @click="$store.commit('common/setActiveNavIdx', 1)"
@@ -61,10 +61,29 @@
             </ul>
           </div>
           <div class="function_area">
-            <button type="button" class="btn btn-refresh"></button>
+            <button
+              type="button"
+              class="btn btn-refresh"
+              @click="ReloadPage"
+            ></button>
+
             <!-- [개발참조]버튼 활성 : class="active" 추가 -->
-            <button class="btn btn_nav_myhome">마이홈</button>
-            <button class="btn btn_nav_user active">홍길동 학생</button>
+            <nuxt-link
+              to="/"
+              class="btn btn_nav_myhome"
+              :class="{
+                active: $route.fullPath === '/',
+              }"
+              >마이홈</nuxt-link
+            >
+            <nuxt-link
+              to="/mypage"
+              class="btn btn_nav_user"
+              :class="{
+                active: $route.fullPath === '/mypage',
+              }"
+              >홍길동 선생님</nuxt-link
+            >
             <!-- [개발참조]신규알림표시 : class="newlabel" 추가 -->
             <button class="btn btn_alert icons_bell_off newlabel"></button>
           </div>
@@ -97,7 +116,7 @@
       </div>
 
       <div v-show="$store.state.common.activeNavIdx === 2" class="nav_sub">
-        <ul class="nav nav_dapth02 ">
+        <ul class="nav nav_dapth02">
           <li class="nav-item">
             <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
             <a class="nav-link" href="#">강의코스</a>
@@ -109,7 +128,7 @@
       </div>
 
       <div v-show="$store.state.common.activeNavIdx === 3" class="nav_sub">
-        <ul class="nav nav_dapth02 ">
+        <ul class="nav nav_dapth02">
           <li class="nav-item">
             <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
             <a class="nav-link" href="#">운영관리</a>
@@ -130,7 +149,7 @@
       </div>
 
       <div v-show="$store.state.common.activeNavIdx === 4" class="nav_sub">
-        <ul class="nav nav_dapth02 ">
+        <ul class="nav nav_dapth02">
           <li class="nav-item">
             <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
             <a class="nav-link" href="#">건물 자료실</a>
@@ -448,6 +467,11 @@
 <script>
 export default {
   name: 'EducationHeader',
+  methods: {
+    ReloadPage() {
+      location.reload()
+    },
+  },
 }
 </script>
 
