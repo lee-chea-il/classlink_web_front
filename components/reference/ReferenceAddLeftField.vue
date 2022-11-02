@@ -52,8 +52,14 @@
                 ? 'keywordInputNoteTest'
                 : 'keywordInput'
             "
+            :name="
+              quiz
+                ? 'keywordInputQuiz'
+                : noteTest
+                ? 'keywordInputNoteTest'
+                : 'keywordInput'
+            "
             placeholder="입력"
-            name="keyword"
             :value="reference.keyword"
             @change="$emit('change-input', $event)"
           />

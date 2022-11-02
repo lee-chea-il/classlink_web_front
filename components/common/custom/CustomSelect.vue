@@ -5,9 +5,12 @@
     :value="input"
     @input="$emit('change-input', $event)"
   >
-    <option class="dropdown-item" value="1">등록한 과목01</option>
-    <option class="dropdown-item" value="2">등록한 과목02</option>
-    <option class="dropdown-item" value="3">등록한 과목03</option>
+    <option class="dropdown-item" value="국어">국어</option>
+    <option class="dropdown-item" value="수학">수학</option>
+    <option class="dropdown-item" value="사회">사회</option>
+    <option class="dropdown-item" value="과학">과학</option>
+    <option class="dropdown-item" value="영어">영어</option>
+    <option class="dropdown-item" value="논술">논술</option>
   </select>
 </template>
 
@@ -16,8 +19,8 @@ export default {
   name: 'CustomSelect',
   props: {
     input: {
-      type: Number,
-      default: 0,
+      type: String,
+      default: '국어',
     },
   },
 }

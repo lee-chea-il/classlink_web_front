@@ -12,6 +12,7 @@
         <div class="modal-header">
           <h5 id="exampleModalLabel" class="modal-title">자료 등록</h5>
           <button
+            id="referenceSelectClose"
             type="button"
             class="close"
             data-dismiss="modal"
@@ -58,7 +59,7 @@
               type="button"
               data-dismiss="modal"
               data-toggle="modal"
-              data-target="#modalDataRegiQuiz"
+              @click="$emit('add-quiz')"
             >
               <span class="regi_icon03"></span>
               <div>퀴즈</div>
@@ -73,7 +74,7 @@
               type="button"
               data-dismiss="modal"
               data-toggle="modal"
-              data-target="#modalDataRegiNote"
+              @click="$emit('add-test')"
             >
               <span class="regi_icon04"></span>
               <div>쪽지시험</div>

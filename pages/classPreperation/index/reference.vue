@@ -95,6 +95,7 @@
                 </button>
               </li>
             </ul>
+
             <div id="myTabContent" class="tab-content">
               <!-- 탭 내용01 -->
               <div
@@ -103,262 +104,10 @@
                 role="tabpanel"
                 aria-labelledby="grade-tab"
               >
-                <ul>
-                  <li>
-                    <!-- 리스트01 -->
-                    <div class="list">
-                      <div class="custom-control custom-checkbox form-inline">
-                        <input
-                          id="chkA01"
-                          type="checkbox"
-                          class="custom-control-input"
-                        />
-                        <label
-                          class="custom-control-label"
-                          for="chkA01"
-                        ></label>
-                      </div>
-                      <i id="show_sublist01" class="btn icons_arrow_r"></i>
-                      <span class="text">국어</span>
-                      <i class="icons_plus_circle_off"></i>
-                    </div>
-                    <!-- 리스트01_sub-->
-                    <div id="list_sub01" class="list_sub" style="display: none">
-                      <ul>
-                        <li>
-                          <div
-                            class="custom-control custom-checkbox form-inline"
-                          >
-                            <input
-                              id="chkB01"
-                              type="checkbox"
-                              class="custom-control-input"
-                            />
-                            <label
-                              class="custom-control-label"
-                              for="chkB01"
-                            ></label>
-                          </div>
-                          <i
-                            id="show_sublist01_sub"
-                            class="btn icons_arrow_r"
-                          ></i>
-                          <span class="text">대단원1</span>
-                          <i class="icons_plus_circle_off"></i>
-                        </li>
-                      </ul>
-                    </div>
-                    <!-- /.리스트01_sub-->
-                    <!-- 리스트01_sub_sub-->
-                    <div
-                      id="list_sub01_sub"
-                      class="list_sub_sub"
-                      style="display: none"
-                    >
-                      <ul>
-                        <li class="found">
-                          <!-- [개발참조] 찾은자료 표시  class="found" -->
-                          <div
-                            class="custom-control custom-checkbox form-inline"
-                          >
-                            <input
-                              id="chkC01"
-                              type="checkbox"
-                              class="custom-control-input"
-                            />
-                            <label
-                              class="custom-control-label"
-                              for="chkC01"
-                            ></label>
-                          </div>
-                          <span class="text">문서,동영상일경우</span>
-                          <i class="btn icons_mu_off more_mu">
-                            <div class="more_list" style="display: none">
-                              <ul>
-                                <li data-toggle="modal" data-target="#">
-                                  다운로드
-                                </li>
-                                <li
-                                  data-toggle="modal"
-                                  data-target="#modalDataRegiModi"
-                                >
-                                  수정
-                                </li>
-                                <li
-                                  data-toggle="modal"
-                                  data-target="#modalDataRead"
-                                >
-                                  보기
-                                </li>
-                                <li data-toggle="modal" data-target="#">
-                                  삭제
-                                </li>
-                                <li data-toggle="modal" data-target="#">
-                                  복사
-                                </li>
-                              </ul>
-                            </div>
-                          </i>
-                        </li>
-                        <li>
-                          <div
-                            class="custom-control custom-checkbox form-inline"
-                          >
-                            <input
-                              id="chkC02"
-                              type="checkbox"
-                              class="custom-control-input"
-                            />
-                            <label
-                              class="custom-control-label"
-                              for="chkC02"
-                            ></label>
-                          </div>
-                          <span class="text">퀴즈일 경우</span>
-                          <i class="btn icons_mu_off more_mu">
-                            <div class="more_list" style="display: none">
-                              <ul>
-                                <li data-toggle="modal" data-target="#">
-                                  다운로드
-                                </li>
-                                <li
-                                  data-toggle="modal"
-                                  data-target="#modalDataRegiQuiz"
-                                >
-                                  수정
-                                </li>
-                                <li
-                                  data-toggle="modal"
-                                  data-target="#modalDataReadQuiz"
-                                >
-                                  보기
-                                </li>
-                                <li data-toggle="modal" data-target="#">
-                                  삭제
-                                </li>
-                                <li data-toggle="modal" data-target="#">
-                                  복사
-                                </li>
-                              </ul>
-                            </div>
-                          </i>
-                        </li>
-                        <li>
-                          <div
-                            class="custom-control custom-checkbox form-inline"
-                          >
-                            <input
-                              id="chkC02"
-                              type="checkbox"
-                              class="custom-control-input"
-                            />
-                            <label
-                              class="custom-control-label"
-                              for="chkC02"
-                            ></label>
-                          </div>
-                          <span class="text">쪽지시험일 경우</span>
-                          <i class="btn icons_mu_off more_mu">
-                            <div class="more_list" style="display: none">
-                              <ul>
-                                <li data-toggle="modal" data-target="#">
-                                  다운로드
-                                </li>
-                                <li
-                                  data-toggle="modal"
-                                  data-target="#modalDataRegiNote"
-                                >
-                                  수정
-                                </li>
-                                <li
-                                  data-toggle="modal"
-                                  data-target="#modalDataReadNote"
-                                >
-                                  보기
-                                </li>
-                                <li data-toggle="modal" data-target="#">
-                                  삭제
-                                </li>
-                                <li data-toggle="modal" data-target="#">
-                                  복사
-                                </li>
-                              </ul>
-                            </div>
-                          </i>
-                        </li>
-                      </ul>
-                    </div>
-                    <!-- /.리스트01_sub_sub-->
-                    <!-- /.리스트01 -->
-                  </li>
-                  <li>
-                    <!-- 리스트02 -->
-                    <div class="list">
-                      <div class="custom-control custom-checkbox form-inline">
-                        <input
-                          id="chkA02"
-                          type="checkbox"
-                          class="custom-control-input"
-                        />
-                        <label
-                          class="custom-control-label"
-                          for="chkA02"
-                        ></label>
-                      </div>
-                      <i id="show_sublist02" class="btn icons_arrow_r"></i>
-                      <span class="text">수학</span>
-                      <i class="icons_plus_circle_off"></i>
-                    </div>
-                    <div id="list_sub02" class="list_sub" style="display: none">
-                      <ul>
-                        <li>
-                          <div
-                            class="custom-control custom-checkbox form-inline"
-                          >
-                            <input
-                              id="chkB02"
-                              type="checkbox"
-                              class="custom-control-input"
-                            />
-                            <label
-                              class="custom-control-label"
-                              for="chkB02"
-                            ></label>
-                          </div>
-                          <i
-                            id="show_sublist02_sub"
-                            class="btn icons_arrow_r"
-                          ></i>
-                          <span class="text">자연수 I</span>
-                          <i class="icons_plus_circle_off"></i>
-                        </li>
-                      </ul>
-                    </div>
-                    <!-- /.리스트02 -->
-                  </li>
-                </ul>
+                <VueTreeList :model="referenceList" @click="onClickSelectData">
+                </VueTreeList>
               </div>
               <!-- /.탭 내용01 -->
-              <!-- 탭 내용02 -->
-              <div
-                id="franchise"
-                class="tab-pane fade"
-                role="tabpanel"
-                aria-labelledby="class-tab"
-              >
-                프랜차이즈 동일 구성
-              </div>
-              <!-- /.탭 내용02 -->
-              <!-- 탭 내용03 -->
-              <div
-                id="open"
-                class="tab-pane fade"
-                role="tabpanel"
-                aria-labelledby="class-tab"
-              >
-                공개자료실 동일 구성
-              </div>
-              <!-- /.탭 내용03 -->
             </div>
             <!-- /.탭 컨텐츠 -->
           </div>
@@ -442,19 +191,23 @@
         </div>
         <!-- /.2단 분류 컨텐츠 -->
       </div>
-      <!-- <div v-html="quizList[0]"></div> -->
     </div>
 
     <!-- 등록 파일 선택 -->
-    <ReferenceSelectModal :uploadType="uploadType" />
+    <ReferenceSelectModal
+      :uploadType="uploadType"
+      @add-quiz="onOpenQuizAddModal"
+      @add-test="onOpenNoteTestAddModal"
+    />
 
     <!-- 파일 등록 -->
     <ReferenceAddModal
+      :open="isReferenceAddModal"
       :uploadType="uploadType"
-      pagination
       :uploadFile="uploadFile"
       :reference="reference"
       @change-input="onChangeUploadFile"
+      @close="onCloseReferenceAddModal"
     />
 
     <!-- 비디오& 파일 업로드 -->
@@ -476,11 +229,12 @@
       change-item = 해당 퀴즈 내용 변경 이벤트
     -->
     <QuizAddModal
+      :open="isQuizAddModal"
       :reference="reference"
       :quizList="quizList"
-      :currentQuizIdx="currentQuizIdx"
-      @change-number="onClickQuizList"
-      @quiz-pagination="onClickQuizPagination"
+      :currentPageIdx="currentPageIdx"
+      @change-number="onClickPagination"
+      @pagination="onClickQuizPagination"
       @plus-item="onPlusQuizList"
       @delete-quiz="onDeleteQuizItem"
       @change-item="onChangeQuiz"
@@ -488,20 +242,23 @@
       @change-input="onChangeUploadFile"
       @select-ox="onSelectOx"
       @select-dificultade="onSelectDificultade"
+      @close="onCloseQuizAddModal"
     />
 
     <!-- 쪽지시험 업로드 -->
     <NoteTestAddModal
+      :open="isNoteTestAddModal"
       :reference="reference"
       :noteTestList="noteTestList"
-      :currentNoteTestIdx="currentNoteTestIdx"
+      :currentPageIdx="currentPageIdx"
       @plus-test="onPlusNoteTestList"
-      @change-number="onClickNoteTestList"
+      @change-number="onClickPagination"
       @plus-item="onPlusNoteTestList"
       @change-input="onChangeUploadFile"
       @change-dificultade="onSelectDificultadeTest"
       @change-item="onChangeTest"
       @select-answer="onSelectAnswer"
+      @close="onCloseNoteTestAddModal"
     />
 
     <!-- 저장경로 설정 -->
@@ -514,13 +271,27 @@
     <SearchResultModal />
 
     <!-- 비디오 보기 -->
-    <VideoBrowseModal />
+    <VideoBrowseModal :selectData="selectData" />
 
     <!-- 퀴즈 보기 -->
-    <QuizBrowseModal />
+    <QuizBrowseModal
+      :open="isQuizBrowseModal"
+      :selectData="selectData"
+      :currentPageIdx="currentPageIdx"
+      @change-number="onClickPagination"
+      @close="onCloseQuizBrowseModal"
+      @pagination="onClickQuizPagination"
+    />
 
     <!-- 쪽지시험 보기 -->
-    <NoteTestBrowseModal />
+    <NoteTestBrowseModal
+      :open="isNoteTestBrowseModal"
+      :selectData="selectData"
+      :currentPageIdx="currentPageIdx"
+      @change-number="onClickPagination"
+      @close="onCloseNoteTestBrowseModal"
+      @pagination="onClickQuizPagination"
+    />
 
     <!-- 공유하기 -->
     <ShareViewModal />
@@ -530,6 +301,7 @@
 
     <!-- 삭제 모달 -->
     <DeleteModal />
+
     <!-- 설명 모달 -->
     <ModalDeac
       :open="modalDesc.open"
@@ -537,11 +309,25 @@
       :desc="modalDesc.desc"
       @close="onCloseModalDesc"
     />
+
+    <div
+      id="brouseModal"
+      class="box02"
+      type="button"
+      data-dismiss="modal"
+      data-toggle="modal"
+      data-target="#modalDataRead"
+      style="display: none"
+    >
+      <span class="regi_icon02"></span>
+      <div>자료 열람</div>
+    </div>
   </div>
 </template>
 
 <script>
 import Tagify from '@yaireo/tagify'
+import { VueTreeList, Tree } from 'vue-tree-list'
 import PageHeader from '@/components/common/PageHeader.vue'
 import ModalDeac from '@/components/common/modal/ModalDesc.vue'
 import SavePathModal from '@/components/common/modal/reference/SavePathModal.vue'
@@ -582,23 +368,264 @@ export default {
     ShareViewModal,
     AddressCopySuccessModal,
     DeleteModal,
+    VueTreeList,
   },
   layout: 'EducationLayout',
   data() {
     return {
+      isReferenceAddModal: false,
+      isQuizBrowseModal: false,
+      isQuizAddModal: false,
+      isNoteTestAddModal: false,
+      isNoteTestBrowseModal: false,
       uploadType: '',
-      currentQuizIdx: 0,
-      currentNoteTestIdx: 0,
+      currentPageIdx: 0,
       uploadFile: {},
+      selectData: {},
+      referenceList: new Tree([
+        {
+          id: 0,
+          isLeaf: false,
+          name: 'reference',
+          children: [
+            {
+              id: 0,
+              name: '국어학습자료 애니메이션.mp4',
+              subject: '국어',
+              desc: '등록한 자료 1',
+              keyword: [
+                { title: '국어' },
+                { title: '수학' },
+                { title: '과학' },
+              ],
+              registrant: '등록인',
+              savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+              isOpenEducation: true,
+              inOpenReferenceRoom: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'video/mp4',
+              uploadType: 'video',
+              fileVolume: '',
+              createAt: '',
+              children: [],
+            },
+            {
+              id: 1,
+              name: '수학 학습자료.pdf',
+              subject: '수학',
+              desc: '등록한 자료 2',
+              keyword: [
+                { title: '국어' },
+                { title: '수학' },
+                { title: '과학' },
+              ],
+              registrant: '등록인',
+              savePath:
+                'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
+              isOpenEducation: true,
+              inOpenReferenceRoom: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'application/pdf',
+              uploadType: 'pdf',
+              fileVolume: '',
+              createAt: '',
+              isLeaf: false,
+            },
+            {
+              id: 2,
+              name: '영어 단어 퀴즈.quiz',
+              subject: '영어',
+              desc: '등록한 자료 1',
+              keyword: [
+                { title: '국어' },
+                { title: '수학' },
+                { title: '과학' },
+              ],
+              registrant: '등록인',
+              savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+              isOpenEducation: true,
+              inOpenReferenceRoom: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'quiz',
+              uploadType: 'quiz',
+              fileVolume: '',
+              createAt: '',
+              quizList: [
+                {
+                  id: 0,
+                  problem: '<p>asdfaaaaasdf</p>',
+                  oxAnswer: 0,
+                  dificultade: 1,
+                  limitTime: '3분',
+                  quizType: 0,
+                  shortAnswer: '123',
+                  subjectiveAnswer: '123',
+                  subjectiveWrongAnswer: '123',
+                },
+                {
+                  id: 2,
+                  problem: '<p>asdggggg</p>',
+                  dificultade: 0,
+                  limitTime: '5분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '234',
+                  subjectiveAnswer: '234',
+                  subjectiveWrongAnswer: '234',
+                },
+                {
+                  id: 3,
+                  problem: '<p>234242242424</p>',
+                  dificultade: 0,
+                  limitTime: '2분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '345',
+                  subjectiveAnswer: '345',
+                  subjectiveWrongAnswer: '345',
+                },
+                {
+                  id: 4,
+                  problem: '<p>555555555</p>',
+                  dificultade: 0,
+                  limitTime: '4분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '456',
+                  subjectiveAnswer: '456',
+                  subjectiveWrongAnswer: '456',
+                },
+                {
+                  id: 5,
+                  problem: '<p>asx c</p>',
+                  dificultade: 0,
+                  limitTime: '5분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '567',
+                  subjectiveAnswer: '567',
+                  subjectiveWrongAnswer: '567',
+                },
+              ],
+              isLeaf: false,
+            },
+            {
+              id: 3,
+              name: '사회 쪽지시험 영상.youtube',
+              subject: '사회',
+              desc: '등록한 자료 1',
+              keyword: [
+                { title: '국어' },
+                { title: '수학' },
+                { title: '과학' },
+              ],
+              registrant: '등록인',
+              savePath: 'https://www.youtube.com/embed/1CYbySbtyF0',
+              isOpenEducation: true,
+              inOpenReferenceRoom: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'youtube',
+              uploadType: 'youtube',
+              fileVolume: '',
+              createAt: '',
+              isLeaf: false,
+            },
+            {
+              id: 4,
+              name: '과학 사이트 참고용.url',
+              subject: '과학',
+              desc: '등록한 자료 1',
+              keyword: [
+                { title: '국어' },
+                { title: '수학' },
+                { title: '과학' },
+              ],
+              registrant: '등록인',
+              savePath: 'https://sciencelove.com/725',
+              isOpenEducation: true,
+              inOpenReferenceRoom: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'test',
+              uploadType: 'url',
+              fileVolume: '',
+              createAt: '',
+              isLeaf: false,
+            },
+            {
+              id: 5,
+              name: '수학 쪽지시험.test',
+              subject: '수학',
+              desc: '등록한 자료 1',
+              keyword: [
+                { title: '국어' },
+                { title: '수학' },
+                { title: '과학' },
+              ],
+              registrant: '등록인',
+              savePath: 'https://sciencelove.com/725',
+              isOpenEducation: true,
+              inOpenReferenceRoom: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'test',
+              uploadType: 'test',
+              fileVolume: '',
+              createAt: '',
+              noteTestList: [
+                {
+                  id: 0,
+                  problem: '<p>1번 문제</p>',
+                  exampleList: [
+                    { id: '', example: '<p>답 1임</p>' },
+                    { id: '', example: '<p>답 2임</p>' },
+                    { id: '', example: '<p>답 3임</p>' },
+                    { id: '', example: '<p>답 4임</p>' },
+                    { id: '', example: '<p>답 5임</p>' },
+                  ],
+                  dificultade: 0,
+                  limitTime: '',
+                  answer: 0,
+                },
+                {
+                  id: 1,
+                  problem: '<p>2번 문제</p>',
+                  exampleList: [
+                    { id: '', example: '<p>답 5임</p>' },
+                    { id: '', example: '<p>답 6임</p>' },
+                    { id: '', example: '<p>답 7임</p>' },
+                    { id: '', example: '<p>답 8임</p>' },
+                    { id: '', example: '<p>답 9임</p>' },
+                  ],
+                  dificultade: 2,
+                  limitTime: '',
+                  answer: 2,
+                },
+              ],
+              isLeaf: false,
+            },
+          ],
+        },
+      ]),
       reference: {
         name: '',
-        subject: 0,
+        subject: '',
         desc: '',
         keyword: [],
         registrant: '',
         savePath: '',
         isOpenEducation: true,
         inOpenReferenceRoom: true,
+        fileName: '',
+        fileDivision: '',
+        fileType: '',
+        uploadType: '',
+        fileVolume: '',
+        createAt: '',
       },
       modalDesc: {
         open: false,
@@ -662,6 +689,61 @@ export default {
       }
     },
 
+    onOpenReferenceAddModal() {
+      this.isReferenceAddModal = true
+    },
+
+    onCloseReferenceAddModal() {
+      this.initAddReferenceData()
+      this.isReferenceAddModal = false
+    },
+
+    onOpenQuizBrowseModal() {
+      this.isQuizBrowseModal = true
+    },
+
+    onCloseQuizBrowseModal() {
+      this.initAddReferenceData()
+      this.isQuizBrowseModal = false
+    },
+
+    onOpenQuizAddModal() {
+      this.reference.fileDivision = '교육기관'
+      this.reference.fileType = 'quiz'
+      this.reference.uploadType = 'quiz'
+      this.reference.fileVolume = 0
+      this.reference.createAt = new Date()
+      document.getElementById('referenceSelectClose').click()
+      this.isQuizAddModal = true
+    },
+
+    onCloseQuizAddModal() {
+      this.initAddReferenceData()
+      this.isQuizAddModal = false
+    },
+
+    onOpenNoteTestAddModal() {
+      this.reference.fileDivision = '교육기관'
+      this.reference.fileType = 'test'
+      this.reference.uploadType = 'test'
+      this.reference.fileVolume = 0
+      document.getElementById('referenceSelectClose').click()
+      this.isNoteTestAddModal = true
+    },
+
+    onCloseNoteTestAddModal() {
+      this.isNoteTestAddModal = false
+    },
+
+    onOpenNoteTestBrowseModal() {
+      this.isNoteTestBrowseModal = true
+    },
+
+    onCloseNoteTestBrowseModal() {
+      this.initAddReferenceData()
+      this.isNoteTestBrowseModal = false
+    },
+
     // 태그 컴포넌트 가져오기
     getTagify() {
       const input = document.getElementById('keywordInput')
@@ -705,7 +787,13 @@ export default {
 
     // 등록 자료 내용 변경
     onChangeUploadFile({ target: { id, value, type, checked } }) {
-      if (type === 'checkbox') {
+      if (
+        id === 'keywordInputQuiz' ||
+        id === 'keywordInputNoteTest' ||
+        id === 'keywordInput'
+      ) {
+        this.reference.keyword = value
+      } else if (type === 'checkbox') {
         if (checked) {
           this.reference[id] = true
         } else {
@@ -730,16 +818,24 @@ export default {
     },
 
     // 비디오 업로드
-    onUploadVideo({ target: { files } }) {
+    onUploadVideo({ target: { files, value } }) {
       this.uploadType = 'video'
       this.uploadFile = {}
       const _video = document.querySelector('#video')
-      const targetBtn = document.getElementById('video_target')
       const _canvas = document.querySelector('#thumb_canvas')
+      document.getElementById('selectClose').click()
+      this.onOpenReferenceAddModal()
       const _ctx = _canvas.getContext('2d')
       if (files[0] && files[0].type === 'video/mp4') {
         this.uploadFile = files[0]
         this.reference.name = files[0].name
+        this.reference.fileName = files[0].name
+        this.reference.fileDivision = '교육기관'
+        this.reference.fileType = files[0].type
+        this.reference.uploadType = 'video'
+        this.reference.fileVolume = files[0].size
+        this.reference.createAt = files[0].lastModifiedDate
+
         _video.setAttribute('src', URL.createObjectURL(files[0]))
         _video.addEventListener('loadedmetadata', function () {
           // 비디오 태그의 메타데이터가 들어오면
@@ -753,7 +849,6 @@ export default {
             _ctx.drawImage(_video, 0, 0, _video.videoWidth, _video.videoHeight)
           }, 400)
         })
-        targetBtn.click()
       } else {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
       }
@@ -764,15 +859,22 @@ export default {
       this.uploadType = 'pdf'
       this.uploadFile = {}
       const _embed = document.querySelector('#embed')
-      const targetBtn = document.getElementById('video_target')
+      document.getElementById('selectClose').click()
+      this.onOpenReferenceAddModal()
       if (files[0] && files[0].type === 'application/pdf') {
         this.uploadFile = files[0]
         this.reference.name = files[0].name
+        this.reference.fileName = files[0].name
+        this.reference.fileDivision = '교육기관'
+        this.reference.fileType = files[0].type
+        this.reference.uploadType = 'pdf'
+        this.reference.fileVolume = files[0].size
+        this.reference.createAt = files[0].lastModifiedDate
         _embed.setAttribute(
           'src',
           URL.createObjectURL(files[0]) + '#toolbar=0&navpanes=0&scrollbar=0'
         )
-        targetBtn.click()
+        this.onOpenReferenceAddModal()
       } else {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
       }
@@ -780,7 +882,6 @@ export default {
 
     // 유튜브 API 호출
     async getYoutubeData(youtubeUrl) {
-      const targetBtn = document.querySelector('#youtube_btn')
       await apiReference
         .getYoutubeData(youtubeUrl)
         .then(({ data: { items } }) => {
@@ -791,7 +892,12 @@ export default {
             size: 0,
           }
           this.reference.name = items[0].snippet.title
-          targetBtn.click()
+          this.reference.fileName = items[0].snippet.title
+          this.reference.fileDivision = '교육기관'
+          this.reference.fileType = 'YOUTUBE'
+          this.reference.uploadType = 'youtube'
+          this.reference.fileVolume = 0
+          this.reference.createAt = new Date()
         })
     },
 
@@ -801,6 +907,7 @@ export default {
       const youtubeRegex =
         /(http:|https:)?(\/\/)?(www\.)?(youtube.com|youtu.be)\/(watch|embed)?(\?v=|\/)?(\S+)?/g
       const youtubeUrl = this.urlData.youtube.replace('https://youtu.be/', '')
+      console.log(youtubeUrl)
       const _embed = document.querySelector('#embed')
       if (youtubeRegex.test(this.urlData.youtube) === true) {
         this.getYoutubeData(youtubeUrl)
@@ -808,6 +915,8 @@ export default {
           'src',
           `https://www.youtube.com/embed/${youtubeUrl}`
         )
+        document.getElementById('selectUrlClose').click()
+        this.onOpenReferenceAddModal()
       } else {
         this.openModalDesc('실패', '유튜브 형식의 URL을 입력해주세요')
       }
@@ -818,7 +927,6 @@ export default {
       const urlRegex = /^(http(s)?:\/\/)([^\/]*)(\.)(com|net|kr|my|shop)/gi
       this.uploadType = 'file'
       const url = this.urlData.page
-      const targetBtn = document.querySelector('#youtube_btn')
       this.uploadFile = {
         name: '',
         type: 'WEB',
@@ -827,27 +935,37 @@ export default {
       }
       if (urlRegex.test(this.urlData.page) === true) {
         this.reference.name = url
-
+        this.reference.fileName = url
+        this.reference.fileDivision = '교육기관'
+        this.reference.fileType = 'URL'
+        this.reference.uploadType = 'url'
+        this.reference.fileVolume = 0
+        this.reference.createAt = new Date()
         const _iframe = document.querySelector('#iframe')
         _iframe.setAttribute('src', url)
-        targetBtn.click()
+        document.getElementById('selectUrlClose').click()
+        this.onOpenReferenceAddModal()
       } else {
         this.openModalDesc('실패', 'URL을 정확히 입력해주세요')
       }
     },
 
     // 퀴즈 변경 UI
-    onClickQuizList(idx) {
-      this.currentQuizIdx = idx
+    onClickPagination(idx) {
+      this.currentPageIdx = idx
     },
 
     // 퀴즈 페이지네이션
     onClickQuizPagination(direction) {
+      const number = this.isQuizBrowseModal
+        ? this.selectData.quizList.length
+        : this.isNoteTestBrowseModal
+        ? this.selectData.noteTestList.length
+        : this.quizList.length
       if (direction === 'plus') {
-        if (this.currentQuizIdx < this.quizList.length - 1)
-          this.currentQuizIdx += 1
+        if (this.currentPageIdx < number - 1) this.currentPageIdx += 1
       } else if (direction === 'min') {
-        if (this.currentQuizIdx !== 0) this.currentQuizIdx -= 1
+        if (this.currentPageIdx !== 0) this.currentPageIdx -= 1
       }
     },
 
@@ -863,6 +981,7 @@ export default {
           oxAnswer: 0,
           shortAnswer: '',
           subjectiveAnswer: '',
+          subjectiveWrongAnswer: '',
         }
         this.quizList.push(quizItem)
       }
@@ -910,7 +1029,7 @@ export default {
     // 쪽지 시험
     // 퀴즈 변경 UI
     onClickNoteTestList(idx) {
-      this.currentNoteTestIdx = idx
+      this.currentPageIdx = idx
     },
 
     // 쪽지 시험 추가
@@ -937,6 +1056,83 @@ export default {
 
     onSelectAnswer(idx, targetIdx) {
       this.noteTestList[idx].answer = targetIdx
+    },
+
+    onClickSelectData(data) {
+      console.log(data)
+      this.selectData = data
+
+      if (
+        data.uploadType === 'video' ||
+        data.uploadType === 'pdf' ||
+        data.uploadType === 'youtube' ||
+        data.uploadType === 'url'
+      ) {
+        document.getElementById('brouseModal').click()
+      } else if (data.uploadType === 'quiz') {
+        this.onOpenQuizBrowseModal()
+        // document.getElementById('quizModal').click()
+      } else if (data.uploadType === 'test') {
+        this.onOpenNoteTestBrowseModal()
+      }
+    },
+
+    // 취소시 등록 하려고했던 데이터 지우기
+    initAddReferenceData() {
+      this.uploadType = ''
+      this.currentPageIdx = 0
+      this.uploadFile = {}
+      this.reference = {
+        name: '',
+        subject: '',
+        desc: '',
+        keyword: [],
+        registrant: '',
+        savePath: '',
+        isOpenEducation: true,
+        inOpenReferenceRoom: true,
+        fileName: '',
+        fileDivision: '',
+        fileType: '',
+        fileVolume: '',
+        createAt: '',
+      }
+
+      this.urlData = {
+        youtube: '',
+        page: '',
+      }
+
+      this.quizList = [
+        {
+          id: 0,
+          problem: '',
+          oxAnswer: 0,
+          dificultade: 1,
+          limitTime: 0,
+          quizType: 0,
+          shortAnswer: '',
+          subjectiveAnswer: '',
+          subjectiveWrongAnswer: '',
+        },
+      ]
+
+      this.noteTestList = [
+        {
+          id: 0,
+          problem: '',
+          exampleList: [
+            { id: '', example: '' },
+            { id: '', example: '' },
+            { id: '', example: '' },
+            { id: '', example: '' },
+            { id: '', example: '' },
+          ],
+          dificultade: 0,
+          limitTime: '',
+          answer: 0,
+        },
+      ]
     },
   },
 }

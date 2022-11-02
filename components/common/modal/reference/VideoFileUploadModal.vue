@@ -11,6 +11,7 @@
         <div class="modal-header">
           <h5 id="exampleModalLabel" class="modal-title">자료 등록</h5>
           <button
+            id="selectClose"
             type="button"
             class="close"
             data-dismiss="modal"

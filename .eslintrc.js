@@ -18,7 +18,6 @@ module.exports = {
     'import/extensions': ['off'],
     'comma-dangle': ['error', 'only-multiline'],
     'no-console': 'off',
-    'operator-linebreak': ['error', 'after'],
     camelcase: 0,
     'no-alert': 0,
     'no-multi-assign': 0,
@@ -30,6 +29,7 @@ module.exports = {
     'eslint-disable-line': 0,
     'no-useless-escape': 0,
     'vue/no-v-html': 0,
+    'operator-linebreak': 0,
     'vue/order-in-components': [
       'error',
       {

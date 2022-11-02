@@ -49,7 +49,7 @@ export default {
       type: Object,
       default: null,
     },
-    currentNoteTestIdx: {
+    currentPageIdx: {
       type: Number,
       default: 0,
     },

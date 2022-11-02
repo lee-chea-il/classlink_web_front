@@ -52,26 +52,6 @@ export default {
 </script>
 
 <style scoped>
-.background_close {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9997;
-}
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: table;
-  transition: opacity 0.3s ease;
-}
-
 .modal-wrapper {
   display: table-cell;
   vertical-align: middle;
@@ -92,18 +72,5 @@ export default {
   border-radius: 3px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
-}
-
-.modal-enter-active {
-  opacity: 0;
-}
-
-.modal-leave-active {
-  opacity: 0;
-}
-
-.modal-enter-active .modal-container,
-.modal-leave-active .modal-container {
-  transform: scale(1.1);
 }
 </style>

@@ -35,14 +35,14 @@
           </div>
           <label for="" class="data_title name cont">자료 구분</label>
           <div class="col name cont">
-            <span>프랜차이즈</span>
+            <span>{{ reference.fileDivision }}</span>
           </div>
         </div>
 
         <div class="row">
           <label for="" class="data_title cont">유형</label>
           <div class="col cont">
-            <span>{{ uploadFile.type }}</span>
+            <span>{{ reference.fileType }}</span>
           </div>
         </div>
 
@@ -56,7 +56,7 @@
         <div class="row">
           <label for="" class="data_title cont">용량</label>
           <div class="col cont">
-            <span>{{ getByteSize(uploadFile.size) }}</span>
+            <span>{{ getByteSize(reference.fileVolume) }}</span>
           </div>
         </div>
 
@@ -88,10 +88,14 @@ export default {
       type: [Object, File],
       default: null,
     },
+    reference: {
+      type: Object,
+      default: null,
+    },
   },
   computed: {
     getDate() {
-      const date = this.uploadFile?.lastModifiedDate
+      const date = this.reference?.createAt
       if (date) {
         return ` ${date.getFullYear()} ${date.getMonth() + 1} ${date.getDate()}`
       } else {
