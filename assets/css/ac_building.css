@@ -1587,7 +1587,7 @@ ol {
   margin-right: 5px;
   line-height: 39px;
   vertical-align: middle;
-  font-size: 14px;
+  font-size: 14px !important;
   font-weight: 400;
 }
 
@@ -1729,15 +1729,17 @@ ol {
   display: none;
 }
 
-.custom-control-label::before,
+/* .custom-control-label::before,
 .custom-control-label::after {
-  margin-top: -0.2rem;
-  width: 20px;
-  height: 20px;
-  border-radius: 2px;
-  border-color: rgba(0, 0, 0, 0.2);
+	margin-top: -0.2rem;
+	// left: -28px;
+	// left: -2rem;
+	width: 20px;
+	height: 20px;
+	border-radius: 2px;
+	border-color: rgba(0, 0, 0, 0.2);
 }
-
+ */
 .custom-control-input:checked ~ .custom-control-label::before {
   color: #fff;
   border-color: #7391FA;
@@ -1773,6 +1775,7 @@ ol {
 /* Navs */
 .nav_dapth01 {
   margin-bottom: -1px;
+  justify-content: center !important;
 }
 .nav_dapth01 .nav-link {
   padding: 20px 50px;
@@ -1791,6 +1794,9 @@ ol {
   color: #2C51D7;
 }
 
+.nav_dapth02 {
+  justify-content: center !important;
+}
 .nav_dapth02 .nav-link {
   margin: 0 20px;
   padding: 8px 30px;
@@ -2243,4 +2249,126 @@ ol {
 }
 .ac_manage_building.franchise .icons_thumbnail {
   margin: 60px 120px;
+}
+
+/* 건물-자료실.html */
+/* 자료등록01:자료의 7가지 구분 선택 (팝업 L) */
+#modalDataregi .box07 {
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  display: inline-block;
+  width: 290px;
+  height: 190px;
+  margin: 15px 15px;
+}
+#modalDataregi .box07:hover, #modalDataregi .box07:focus, #modalDataregi .box07:active {
+  border: 1px solid #7391FA;
+  color: #7391FA;
+  cursor: pointer;
+}
+#modalDataregi .box07:hover .regi_icon07, #modalDataregi .box07:focus .regi_icon07, #modalDataregi .box07:active .regi_icon07 {
+  background-image: url(../images/icon_music_on.png);
+}
+#modalDataregi .box07 .regi_icon07 {
+  background-image: url(../images/icon_music_off.png);
+  height: 100%;
+  background-size: cover;
+  display: block;
+  width: 36px;
+  height: 36px;
+  margin: 40px 0 28px 126px;
+}
+#modalDataregi .box07 div:last-child {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
+}
+
+/* 자료실-자료등록/수정-동영상/문서 & 유튜브,URL & 배경음 동일 형식 이용 (팝업 L) */
+#modalDataRegiModi .data_explain input {
+  height: 110px;
+  padding: 10px 10px 70px 10px;
+}
+#modalDataRegiModi .building_check {
+  padding: 0px 80px;
+}
+#modalDataRegiModi .building_RegiModi_box {
+  height: 480px;
+}
+
+/* 자료실-자료등록/퀴즈 (팝업 L) */
+#modalDataRegiQuiz .regiquiz_margin {
+  margin-top: 65px;
+}
+#modalDataRegiQuiz .regiquiz_margin input {
+  height: 110px;
+  padding: 10px 10px 70px 10px;
+}
+#modalDataRegiQuiz .regiquiz_check {
+  padding: 0px 80px;
+}
+#modalDataRegiQuiz .regiquiz_regi {
+  margin-top: 65px;
+}
+#modalDataRegiQuiz .edit_area {
+  min-height: 140px;
+}
+
+/* 자료실-자료등록/쪽지시험 (팝업 L) */
+#modalDataRegiNote .reginote_margin {
+  margin-top: 65px;
+}
+#modalDataRegiNote .reginote_margin input {
+  height: 110px;
+  padding: 10px 10px 70px 10px;
+}
+#modalDataRegiNote .reginote_check {
+  padding: 0px 80px;
+}
+#modalDataRegiNote .reginote_regi {
+  margin-top: 65px;
+}
+#modalDataRegiNote .edit_area {
+  min-height: 140px;
+}
+
+/* 건물-자료실-필터 (팝업 M1) */
+#modalDatafilter.building .filter_first {
+  width: 680px;
+  padding: 0px 17px;
+  text-align: left;
+  margin: 10px 0px;
+}
+#modalDatafilter.building .filter_second {
+  width: 680px;
+  padding: 10px 17px;
+  text-align: left;
+  margin: 10px 0px;
+}
+#modalDatafilter.building .filter_box {
+  height: 190px;
+}
+#modalDatafilter.building .modal-body {
+  height: 180px;
+}
+
+/* 건물-건물SET.html */
+#modalCuriRegi.ac_building .modal_curiregi .divide_area.left .cw_box {
+  height: 0px;
+}
+#modalCuriRegi.ac_building .nav-tabs:not(.depth03) + .tab-content {
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top: none;
+  padding: 15px 15px;
+  overflow-y: auto;
+  height: 390px;
+}
+
+/* 패키지 열람 (팝업 L) */
+#modalLessonView .preview {
+  margin-right: 10px;
 }/*# sourceMappingURL=ac_building.css.map */

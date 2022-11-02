@@ -59,7 +59,7 @@
             <div class="right_section">
               <div class="info_area">
                 <div class="row">
-                  <div class="col-6">
+                  <div class="quiz_area04">
                     <div class="tit">
                       <div
                         class="custom-control custom-radio custom-control-inline"
@@ -82,7 +82,7 @@
                       <button class="btn btn_activated">X</button>
                     </div>
                   </div>
-                  <div class="col-6">
+                  <div class="quiz_area04">
                     <div class="etcbtn_area">
                       <button class="btn btn_crud_default btn_first">
                         처음부터<br />미리보기
@@ -104,7 +104,7 @@
                           class="custom-control-input"
                         />
                         <label class="custom-control-label" for="rad02"
-                          >단답형</label
+                          >주관식 단답형</label
                         >
                       </div>
                     </div>
@@ -116,7 +116,7 @@
                       />
                     </div>
                   </div>
-                  <div class="col-6">
+                  <div class="quiz_area">
                     <div
                       class="custom-control custom-radio custom-control-inline"
                     >
@@ -127,7 +127,7 @@
                         class="custom-control-input"
                       />
                       <label class="custom-control-label" for="rad03"
-                        >주관식 단답형</label
+                        >단답형</label
                       >
                     </div>
                     <div class="mult">

@@ -12,7 +12,7 @@
 5.  ac_preparation.scss : 학원관리-1.수업준비:자료실,레슨,커리큘럼,강좌
 6.  ac_manage2.scss     : 학원관리-3.관리-출결관리,프랜차이즈가입관리,결제관리,공지사항
 7.  ac_class.scss       : 학원관리-2.수업-(1)강의코스:강의계획서,과제함,노트함
-8.  ac_class2.scss      : 학원관리-2.수업-(1)강의코스:질문함,리포트
+8.  ac_class2.scss      : 학원관리-2.수업-(2)학습함:질문함,리포트
 9.  ac_building.scss    : 학원관리-건물관리:자료실,패키지,건물SET,빌딩
 10. ac_building.scss    : 학원관리-건물관리:자료실,패키지,건물SET,빌딩
 11. fr_manage.scss      : 프랜차이즈관리-관리:가맹관리,결제관리,공지사항
@@ -20,6 +20,9 @@
 13. fr_building.scss    : 프랜차이즈관리-건물:자료실,패키지,건물SET
 14. cl_manage.scss      : CL관리자-관리:FC이용현황, 교육기관이용현황, 결제 관리, 공지사항
 15. cl_building.scss    : CL관리자-건물:프랜차이즈, 지역축제
+16. std_class.scss      : 학생사용자-수업:시간표,질문함,필기함,리포트
+17. std_class2.scss     : 학생사용자-강의코스:강의계획서,과제함,노트함
+18. std_manage.scss     : 학생사용자-관리:시험결과,출결,공지사항,다운로드
 100.main.scss           : 메인 홈페이지
 -----------------------------------------*/
 @import url("plugins/bootstrap/bootstrap.min.css");
@@ -1671,7 +1674,7 @@ ol {
   margin-right: 5px;
   line-height: 39px;
   vertical-align: middle;
-  font-size: 14px;
+  font-size: 14px !important;
   font-weight: 400;
 }
 
@@ -1813,15 +1816,17 @@ ol {
   display: none;
 }
 
-.custom-control-label::before,
+/* .custom-control-label::before,
 .custom-control-label::after {
-  margin-top: -0.2rem;
-  width: 20px;
-  height: 20px;
-  border-radius: 2px;
-  border-color: rgba(0, 0, 0, 0.2);
+	margin-top: -0.2rem;
+	// left: -28px;
+	// left: -2rem;
+	width: 20px;
+	height: 20px;
+	border-radius: 2px;
+	border-color: rgba(0, 0, 0, 0.2);
 }
-
+ */
 .custom-control-input:checked ~ .custom-control-label::before {
   color: #fff;
   border-color: #7391FA;
@@ -1857,6 +1862,7 @@ ol {
 /* Navs */
 .nav_dapth01 {
   margin-bottom: -1px;
+  justify-content: center !important;
 }
 .nav_dapth01 .nav-link {
   padding: 20px 50px;
@@ -1875,6 +1881,9 @@ ol {
   color: #2C51D7;
 }
 
+.nav_dapth02 {
+  justify-content: center !important;
+}
 .nav_dapth02 .nav-link {
   margin: 0 20px;
   padding: 8px 30px;
@@ -2239,11 +2248,6 @@ i.btn {
   position: relative;
   height: 65px;
   padding: 14px 0 10px;
-}
-
-.nav_web .nav_top {
-  max-width: 1280px;
-  min-width: 1024px;
 }
 
 .nav_mobile .nav_top {
@@ -2612,7 +2616,7 @@ i.btn {
 }
 .search_result .table td.id span {
   display: inline-block;
-  width: 150px;
+  width: 130px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3315,6 +3319,12 @@ i.btn {
   background-color: #D1DBFF;
   padding: 0 2px;
 }
+.calendar_type01 .calendar_section .calendar_area .weeks.today .tit_week {
+  background-color: #D1DBFF;
+}
+.calendar_type01 .calendar_section .calendar_area .weeks.today .half-hour {
+  background-color: #E7EDFF;
+}
 .calendar_type01 .data_prev {
   position: absolute;
   left: -45px;
@@ -3539,11 +3549,200 @@ i.btn {
   border-color: #A7A9AC;
 }
 
+/* 캘린더 type03 : 출결관리-반출결 캘린더  */
+.calendar_type03 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  margin-bottom: 15px;
+  height: auto;
+  overflow: hidden;
+}
+@media (max-width: 991.98px) {
+  .calendar_type03 {
+    padding: 13px;
+    height: auto;
+  }
+}
+.calendar_type03 .calendar .move_calendar {
+  text-align: left;
+  margin-bottom: 10px;
+}
+.calendar_type03 .calendar .move_calendar .date_info {
+  margin: 0 20px;
+}
+.calendar_type03 .calendar .calendar_data {
+  overflow: hidden;
+}
+.calendar_type03 .calendar .calendar_table {
+  width: 100%;
+}
+.calendar_type03 .calendar .calendar_table .week_tit th {
+  font-weight: 500;
+  height: 60px;
+  line-height: 60px;
+  vertical-align: middle;
+  padding: 6px 0;
+}
+.calendar_type03 .calendar .calendar_table .week_tit th.sun {
+  color: #FB5353;
+}
+.calendar_type03 .calendar .calendar_table .week_tit th.sat {
+  color: #2C51D7;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day {
+  position: relative;
+  width: 14.28%;
+  height: 60px;
+  line-height: 60px;
+  vertical-align: middle;
+  padding: 5px 0;
+  color: #454545;
+  font-weight: 400;
+  font-size: 16px;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day .daynum {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  vertical-align: middle;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day .daynum.attend::before {
+  position: absolute;
+  content: "";
+  width: 8px;
+  height: 8px;
+  top: 10px;
+  right: 10px;
+  background: #7391FA;
+  border-radius: 50%;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day.today .daynum {
+  display: inline-block;
+  background-color: #E6E7E8;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day.active .daynum {
+  display: inline-block;
+  color: #ffffff;
+  background-color: #7391FA;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day.active .daynum.attend::before {
+  background-color: #ffffff;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day.sun {
+  color: #FB5353;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day.sat {
+  color: #2C51D7;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day.calendar-other-month {
+  color: #A7A9AC;
+  background-color: #fff !important;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day .over_num {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 5px;
+  right: 5px;
+  border-radius: 50%;
+  background-color: #E6E7E8;
+  font-size: 12px;
+  line-height: 24px;
+  text-align: center;
+  padding: unset;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day .curi_box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 18px;
+  border-radius: 5px;
+  background-color: #7391FA;
+  padding: 2px 4px;
+  margin-bottom: 2px;
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day .curi_box .tit {
+  width: 80px;
+  font-size: 10px;
+  line-height: 18px;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 991.98px) {
+  .calendar_type03 .calendar .calendar_table .week .calendar-day .curi_box .tit {
+    width: 60px;
+  }
+}
+.calendar_type03 .calendar .calendar_table .week .calendar-day .curi_box .btn_del {
+  width: 16px;
+  height: 16px;
+  padding: unset;
+}
+.calendar_type03 .schedule {
+  background: #FFFFFF;
+  border-radius: 10px;
+  margin-top: 10px;
+  padding: 5px 15px;
+}
+.calendar_type03 .schedule .date {
+  font-size: 14px;
+  font-weight: 700;
+}
+.calendar_type03 .schedule .list_area {
+  margin-top: 10px;
+  height: 95px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.calendar_type03 .schedule .list_area li {
+  text-align: left;
+  display: flex;
+  font-size: 14px;
+  padding: 10px 0;
+  border-top: 1px solid #E6E7E8;
+}
+.calendar_type03 .schedule .list_area li .time {
+  padding: 0 10px;
+}
+.calendar_type03 .schedule .list_area li .lesson_info {
+  width: calc(100% - 50px);
+}
+.calendar_type03 .schedule .list_area li .subject {
+  display: block;
+  width: 100%;
+  height: 20px;
+  line-height: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.calendar_type03 .schedule .list_area li .lesson {
+  font-size: 12px;
+  color: #A7A9AC;
+}
+.calendar_type03 .schedule .list_area li .lesson .divid {
+  border-color: #A7A9AC;
+}
+
 /* IE 9+10 속성 */
 /* 미디어쿼리 ******************************************************/
 /* Extra small devices (portrait phones, less than 576px) *********/
 /* No media query for `xs` since this is the default in Bootstrap */
 /* Small devices (landscape phones, ≥576px and up) ~sm*/
+@media (min-width: 576px) {
+  .mobile_only {
+    display: block;
+  }
+}
 /* Medium devices (tablets, ≥768px and up) ~md*/
 /* Large devices (desktops, ≥992px and up) ~lg*/
 @media (min-width: 992px) {
@@ -3553,12 +3752,18 @@ i.btn {
   .web_only .nav_web {
     display: block;
   }
+  .mobile_only {
+    display: none;
+  }
 }
 /* Extra large devices (large desktops, ≥1200px and up) ~xl*/
 @media (max-width: 1199.98px) {
   .web_only .modal-xl {
     max-width: 950px;
     width: 950px;
+  }
+  .mobile_only {
+    display: none;
   }
   .web_only .modal-lg {
     max-width: 800px;
@@ -3575,6 +3780,13 @@ i.btn {
   .web_only .nav_mobile {
     display: none;
   }
+  /* .mobile_only {
+  	display: none;
+  } */
+  .lgW100 {
+    display: block;
+    width: 100%;
+  }
 }
 /* mobile only */
 @media (max-width: 767.98px) {
@@ -3585,8 +3797,34 @@ i.btn {
     display: block;
     width: 100%;
   }
+  .web_only02 {
+    display: none;
+  }
+  .mobile_only {
+    display: block;
+  }
 }
 /* Extra small devices (portrait phones, less than 576px) ≤xs*/
+/* 학생 모바일 반응형 모바일 네비 */
+.nav-item02 {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border-bottom: 0.4px solid rgba(167, 169, 172, 0.4);
+  height: 60px;
+}
+
+a {
+  color: #303033;
+  text-decoration: none;
+  background-color: transparent;
+  text-align: center;
+}
+
 /*---------------------------------------*/
 /*--------   0.cl.scss   ----------------*/
 /*---------------------------------------*/
@@ -3730,20 +3968,21 @@ i.btn {
   font-size: 12px;
 }
 .page_login .right_section .form-group.form-inlinebox label + input {
-  width: calc(100% - 95px);
+  width: calc(100% - 100px);
 }
 .page_login .right_section .form-group.form-inlinebox .form-control + .custom-control {
   float: right;
   margin-left: 10px;
   margin-right: 0;
 }
-.page_login .right_section .form-group.form-inlinebox .form-control + .custom-control .custom-control-label::before, .page_login .right_section .form-group.form-inlinebox .form-control + .custom-control .custom-control-label::after {
+.page_login .right_section .form-group.form-inlinebox .form-control + .custom-control .custom-control-label::before,
+.page_login .right_section .form-group.form-inlinebox .form-control + .custom-control .custom-control-label::after {
   margin-top: 0.4rem;
 }
 .page_login .right_section .form-group.form-inlinebox .form-control + .btn {
   display: block;
   float: right;
-  width: 92px;
+  width: 95px;
   font-size: 12px;
 }
 .page_login .right_section .link_section {
@@ -5318,6 +5557,21 @@ i.btn {
   margin-right: 5px;
 }
 
+/* 학원_마이페이지(내정보)-기관장(개설후)-edu_head_aft.html */
+/* 팝업 M2-교육기관정보수정1 */
+#modalInstinfo01 .form-group.form-inlinebox label {
+  display: block;
+}
+#modalInstinfo01 .form-group.form-inlinebox label + input {
+  width: calc(100% - 100px);
+}
+#modalInstinfo01 .form-group.form-inlinebox .form-control + .btn {
+  display: block;
+  float: right;
+  width: 95px;
+  font-size: 12px;
+}
+
 /*---------------------------------------*/
 /*--------   3. myhome.scss   -----------*/
 /*---------------------------------------*/
@@ -5841,31 +6095,37 @@ i.btn {
   font-size: 14px;
   color: #A7A9AC;
 }
-.modal_ac_manage_tch .info_area .form-group.row .invalid_text, .modal_ac_manage_tch .info_area .form-group.row .valid_text {
+.modal_ac_manage_tch .info_area .form-group.row .invalid_text,
+.modal_ac_manage_tch .info_area .form-group.row .valid_text {
   line-height: initial;
   font-size: 12px;
   padding-left: 0;
 }
-.modal_ac_manage_tch .info_area .form-group.row .exp_txt, .modal_ac_manage_tch .info_area .form-group.row .exp_text {
+.modal_ac_manage_tch .info_area .form-group.row .exp_txt,
+.modal_ac_manage_tch .info_area .form-group.row .exp_text {
   width: 100%;
   margin-top: 0;
   line-height: initial;
   font-size: 12px;
 }
-.modal_ac_manage_tch .info_area .form-group.row .exp_txt + .exp_text, .modal_ac_manage_tch .info_area .form-group.row .exp_text + .exp_text {
+.modal_ac_manage_tch .info_area .form-group.row .exp_txt + .exp_text,
+.modal_ac_manage_tch .info_area .form-group.row .exp_text + .exp_text {
   bottom: -22px;
 }
-.modal_ac_manage_tch .info_area .form-group.row .group .exp_txt, .modal_ac_manage_tch .info_area .form-group.row .group .exp_text {
+.modal_ac_manage_tch .info_area .form-group.row .group .exp_txt,
+.modal_ac_manage_tch .info_area .form-group.row .group .exp_text {
   position: relative;
   padding-left: 0;
 }
-.modal_ac_manage_tch .info_area .form-group.row .group .exp_txt + .exp_text, .modal_ac_manage_tch .info_area .form-group.row .group .exp_text + .exp_text {
+.modal_ac_manage_tch .info_area .form-group.row .group .exp_txt + .exp_text,
+.modal_ac_manage_tch .info_area .form-group.row .group .exp_text + .exp_text {
   bottom: -5px;
 }
 .modal_ac_manage_tch .info_area.right .form-group > label {
   padding-top: 20px;
 }
-.modal_ac_manage_tch .info_area.right label, .modal_ac_manage_tch .info_area.right label + div {
+.modal_ac_manage_tch .info_area.right label,
+.modal_ac_manage_tch .info_area.right label + div {
   line-height: initial;
 }
 .modal_ac_manage_tch .box_area {
@@ -5886,7 +6146,8 @@ i.btn {
 .modal_ac_manage_cls .search_class label {
   font-size: 16px;
 }
-.modal_ac_manage_cls .cnts_section, .modal_ac_manage_cls .move_section {
+.modal_ac_manage_cls .cnts_section,
+.modal_ac_manage_cls .move_section {
   position: relative;
   height: auto;
   overflow: hidden;
@@ -5941,19 +6202,23 @@ i.btn {
 .modal_ac_manage_cls .list_section.selected li {
   display: block;
 }
-.modal_ac_manage_cls .list_section.selected li .list, .modal_ac_manage_cls .list_section.selected li .list_sub li {
+.modal_ac_manage_cls .list_section.selected li .list,
+.modal_ac_manage_cls .list_section.selected li .list_sub li {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-right: 0;
 }
-.modal_ac_manage_cls .list_section.selected li .list span + i, .modal_ac_manage_cls .list_section.selected li .list_sub li span + i {
+.modal_ac_manage_cls .list_section.selected li .list span + i,
+.modal_ac_manage_cls .list_section.selected li .list_sub li span + i {
   margin-left: auto;
 }
-.modal_ac_manage_cls .list_section.selected li .list i.btn, .modal_ac_manage_cls .list_section.selected li .list_sub li i.btn {
+.modal_ac_manage_cls .list_section.selected li .list i.btn,
+.modal_ac_manage_cls .list_section.selected li .list_sub li i.btn {
   margin-right: 5px;
 }
-.modal_ac_manage_cls .list_section.selected li .list .ss_txt, .modal_ac_manage_cls .list_section.selected li .list_sub li .ss_txt {
+.modal_ac_manage_cls .list_section.selected li .list .ss_txt,
+.modal_ac_manage_cls .list_section.selected li .list_sub li .ss_txt {
   margin-left: 10px;
   font-size: 14px;
   color: #A7A9AC;
@@ -6014,7 +6279,8 @@ i.btn {
   overflow-y: auto;
   overflow-x: hidden;
 }
-.modal_ac_manage_cls .search_std .table_area .custom-control-label::before, .modal_ac_manage_cls .search_std .table_area .custom-control-label::after {
+.modal_ac_manage_cls .search_std .table_area .custom-control-label::before,
+.modal_ac_manage_cls .search_std .table_area .custom-control-label::after {
   left: -1.5rem;
 }
 .modal_ac_manage_cls .search_std .table_area td {
@@ -6133,6 +6399,7 @@ i.btn {
 }
 .modal_morereports .cnts_section .list_section .list_area li .custom-control-label {
   font-size: 16px;
+  line-height: 21px;
 }
 
 .modal_morereports02 {
@@ -6304,6 +6571,424 @@ i.btn {
   position: absolute;
   right: 0px;
   top: 45%;
+}
+
+.ac_manage_exam .confirm_sub {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
+}
+.ac_manage_exam .title_area {
+  display: flex;
+}
+.ac_manage_exam .confirm_title {
+  margin-right: 20px;
+  line-height: 40px;
+}
+.ac_manage_exam .confirm_sub {
+  margin-right: auto;
+  line-height: 40px;
+}
+.ac_manage_exam .btn_filter {
+  margin-right: 5px;
+}
+.ac_manage_exam .btn_filter_off {
+  opacity: 0.3;
+}
+.ac_manage_exam .btn_filter_off.on {
+  opacity: 1;
+}
+.ac_manage_exam .modal-body {
+  text-align: center;
+  padding: 35px 30px;
+}
+.ac_manage_exam .box01 {
+  position: relative;
+  width: 100%;
+}
+.ac_manage_exam .box01 .right_area {
+  text-align: right;
+}
+@media (max-width: 991.98px) {
+  .ac_manage_exam .box01 .right_area {
+    text-align: left;
+  }
+}
+.ac_manage_exam .box01 .right_area .date_box {
+  background: #E7EDFF;
+  border-radius: 5px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 40px;
+  padding: 0 10px;
+  vertical-align: middle;
+}
+.ac_manage_exam .box01 .right_area .input-search {
+  width: calc(100% - 330px);
+}
+.ac_manage_exam .keyword_area {
+  position: relative;
+  height: auto;
+  padding: 1px 8px;
+}
+.ac_manage_exam .keyword_area_01 {
+  position: relative;
+  max-height: 90px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 10px;
+  overflow-y: auto;
+  white-space: nowrap;
+}
+.ac_manage_exam .keyword01 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 88px;
+  height: 28px;
+  background: #D1DBFF;
+  border-radius: 3px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.ac_manage_exam .keyword01-1 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+  margin: 0px 5px 0px 9px;
+}
+.ac_manage_exam .x {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_×.png);
+  margin-right: 8px;
+}
+.ac_manage_exam .filter_wrap {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  overflow-y: auto;
+  background-color: #fff;
+  padding: 12px 15px;
+  margin-top: 20px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+}
+.ac_manage_exam .filter_wrap .filter_section {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+}
+.ac_manage_exam .filter_wrap .filter_section .title_area {
+  width: 140px;
+}
+.ac_manage_exam .filter_wrap .filter_section .filter_area {
+  width: calc(100% - 140px);
+  display: flex;
+  flex-wrap: wrap;
+}
+.ac_manage_exam .filter_wrap .filter_section .filter_area .filter {
+  display: inline-block;
+  text-align: left;
+  width: 140px;
+  margin-bottom: 15px;
+}
+.ac_manage_exam .search_result {
+  position: relative;
+  margin-top: 10px;
+}
+.ac_manage_exam .search_result .tbl_overflow {
+  min-height: 250px;
+}
+.ac_manage_exam .search_result .table th {
+  color: #454545;
+}
+.ac_manage_exam .search_result .table tbody td {
+  padding: 15px 5px;
+  font-size: 16px;
+}
+.ac_manage_exam .search_result .table tbody tr:nth-child(even) {
+  background-color: #F9F9FC;
+}
+.ac_manage_exam .search_result th,
+.ac_manage_exam .search_result td {
+  text-align: center;
+}
+
+.modal_ac_manage_exam .search_class {
+  text-align: right;
+}
+.modal_ac_manage_exam .search_class .date_box {
+  background: #E7EDFF;
+  border-radius: 5px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 40px;
+  padding: 0 10px;
+  vertical-align: middle;
+}
+.modal_ac_manage_exam .cnts_section {
+  position: relative;
+  height: auto;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0 10px;
+  margin-top: 30px;
+}
+.modal_ac_manage_exam .class_section {
+  width: unset;
+}
+.modal_ac_manage_exam .class_section .tit_area {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal_ac_manage_exam .class_section .tit_area .tit {
+  width: auto;
+  margin: 10px 0;
+}
+.modal_ac_manage_exam .class_section .tit_area .step {
+  font-size: 14px;
+  color: #D1D3D4;
+}
+.modal_ac_manage_exam .class_section .list_area {
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  height: 450px;
+  overflow-y: auto;
+}
+.modal_ac_manage_exam .class_section .list_area li {
+  padding: 8px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal_ac_manage_exam .class_section .list_section {
+  width: 100%;
+}
+.modal_ac_manage_exam .class_section .list_section .custom-control-label {
+  font-size: 16px;
+  padding-left: 5px;
+}
+.modal_ac_manage_exam .class_section .list_section .custom-control-label::before,
+.modal_ac_manage_exam .class_section .list_section .custom-control-label::after {
+  margin-top: unset;
+}
+
+.modal_ac_manage_exam .exam_result {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  text-align: left;
+}
+.modal_ac_manage_exam .exam_result .left_area {
+  position: relative;
+  width: 65%;
+}
+.modal_ac_manage_exam .exam_result .left_area .tit_area {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 400;
+  margin-bottom: 15px;
+}
+.modal_ac_manage_exam .exam_result .left_area .tit_area .title {
+  font-weight: 500;
+}
+.modal_ac_manage_exam .exam_result .left_area .tit_area .title span {
+  margin-left: 10px;
+  font-weight: 400;
+  font-size: 14px;
+  color: #A7A9AC;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  height: 650px;
+  overflow-y: auto;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  background-image: url("../images/vline.jpg");
+  background-repeat: repeat-y;
+  background-position: 49.5% 10px;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area {
+  width: 50%;
+  height: 100%;
+  padding: 15px 10px;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box {
+  clear: both;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 50px;
+  gap: 10px;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .num_area {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .num_area .num {
+  color: #7391FA;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .num_area .grade {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  line-height: 20px;
+  font-size: 12px;
+  color: #fff;
+  text-align: center;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .num_area .grade.high {
+  background-color: #7391FA;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .num_area .grade.medium {
+  background-color: #D1DBFF;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .num_area .grade.low {
+  background-color: #D1D3D4;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .questions {
+  position: relative;
+  flex-grow: 1;
+  text-align: center;
+  color: #A7A9AC;
+  font-size: 14px;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .questions .exam_area {
+  width: 100%;
+  min-height: 165px;
+  background: #F9F9FB;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .questions .example_area {
+  width: 45%;
+  min-height: 60px;
+  background: #F9F9FB;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .questions .example_area.left {
+  float: left;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .questions .example_area.right {
+  float: right;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .questions .example_area.blue {
+  border: 1px solid #7391FA;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .questions .example_area.red {
+  border: 1px solid #FB5353;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .questions .popquiz_text ol li {
+  font-size: 12px;
+  padding: 6px 0;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .questions .popquiz_text ol li .blue {
+  color: #7391FA;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .questions .popquiz_text ol li .red {
+  color: #FB5353;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .questions .four_choice {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2%;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .questions .four_choice .chioce {
+  width: 48%;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .questions .four_choice .chioce .img {
+  width: 100%;
+  min-height: 80px;
+  background: #F9F9FB;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .questions .four_choice .chioce.blue {
+  color: #7391FA;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .questions .four_choice .chioce.red {
+  color: #FB5353;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .questions .four_choice .chioce.blue .img {
+  border: 1px solid #7391FA;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .questions .four_choice .chioce.red .img {
+  border: 1px solid #FB5353;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .btn_light3_ss {
+  width: 35px;
+  height: 18px;
+  line-height: 18px;
+  background: #D1DBFF;
+  border-radius: 5px;
+  font-size: 10px;
+  text-align: center;
+  padding: unset;
+}
+.modal_ac_manage_exam .exam_result .left_area .questions_section .questions_area .question_box .btn_detail_hide {
+  background: #7391FA;
+  color: #FFFFFF;
+}
+.modal_ac_manage_exam .exam_result .right_area {
+  position: relative;
+  width: 33%;
+}
+.modal_ac_manage_exam .exam_result .right_area .tit_area {
+  margin-bottom: 15px;
+}
+.modal_ac_manage_exam .exam_result .right_area .search_result {
+  height: 650px;
+  overflow-y: auto;
+}
+.modal_ac_manage_exam .exam_result .right_area .search_result th,
+.modal_ac_manage_exam .exam_result .right_area .search_result td {
+  text-align: center;
+}
+.modal_ac_manage_exam .exam_result .right_area .search_result span.wrong {
+  color: #FB5353;
+}
+.modal_ac_manage_exam .exam_result .right_area .search_result .tbl_overflow {
+  height: calc(100% - 50px);
+}
+.modal_ac_manage_exam .exam_result .right_area .search_result .tbl_overflow td {
+  padding: 15px 5px;
+}
+.modal_ac_manage_exam .exam_result .right_area .search_result .tbl_overflow tr:nth-child(even) {
+  background: #F9F9FC;
 }
 
 /*---------------------------------------*/
@@ -6909,6 +7594,54 @@ i.btn {
 .modal_ac_manage_lesson .divide_area {
   width: 48%;
 }
+.ac_manage_dtr .divide_area .icon_institute,
+.modal_ac_manage_lesson .divide_area .icon_institute {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_institute.png);
+}
+.ac_manage_dtr .divide_area .icon_fran,
+.modal_ac_manage_lesson .divide_area .icon_fran {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_fran.png);
+}
+.ac_manage_dtr .divide_area .icon_open,
+.modal_ac_manage_lesson .divide_area .icon_open {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_open.png);
+}
+.ac_manage_dtr .divide_area .icon_mydata,
+.modal_ac_manage_lesson .divide_area .icon_mydata {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_mydata.png);
+}
 .ac_manage_dtr .divide_area > .tab-content,
 .modal_ac_manage_lesson .divide_area > .tab-content {
   min-height: 300px;
@@ -7155,6 +7888,7 @@ i.btn {
   position: relative;
   height: auto;
   margin-bottom: 10px;
+  text-align: center !important;
 }
 .modal_ac_manage_dtr .modal-body .modal_dataquiz.datanote .info_area .tit {
   width: 80px;
@@ -7187,6 +7921,7 @@ i.btn {
   background-color: #F9F9FB;
   min-height: 165px;
   margin-bottom: 5px;
+  margin-left: 10px;
 }
 .modal_ac_manage_dtr .modal-body .reading_section.modal_dataquiz .write_area .edit_area02:last-child {
   margin-bottom: 0;
@@ -7705,7 +8440,8 @@ i.btn {
     width: 119px;
   }
 }
-.modal_ac_manage_lec.time_selection .calendar_type01 .search_section .left_area, .modal_ac_manage_lec.time_selection .calendar_type01 .search_section .right_area .search_area {
+.modal_ac_manage_lec.time_selection .calendar_type01 .search_section .left_area,
+.modal_ac_manage_lec.time_selection .calendar_type01 .search_section .right_area .search_area {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -7747,6 +8483,15 @@ i.btn {
   border-radius: 5px;
   font-size: 14px;
   color: #A7A9AC;
+  cursor: pointer;
+}
+.modal_ac_manage_lec.time_selection .calendar_type01 .search_section .right_area .week:hover,
+.modal_ac_manage_lec.time_selection .calendar_type01 .search_section .right_area .week:focus,
+.modal_ac_manage_lec.time_selection .calendar_type01 .search_section .right_area .week:active,
+.modal_ac_manage_lec.time_selection .calendar_type01 .search_section .right_area .week.active {
+  background: #F9F9FB;
+  border: 0.4px solid #7391FA;
+  color: #7391FA;
 }
 .modal_ac_manage_lec.time_selection .calendar_type01 .search_section .right_area .times input.time {
   width: 140px;
@@ -7835,8 +8580,8 @@ i.btn {
 }
 #modalDatafilter .filter_box {
   position: relative;
-  width: 680px;
-  height: 350px;
+  width: 90%;
+  height: 283px;
   left: 41px;
   top: 20px;
   border: 0.4px solid #A7A9AC;
@@ -7848,7 +8593,7 @@ i.btn {
 #modalDatafilter .modal-body {
   text-align: center;
   padding-top: 0px;
-  height: 320px;
+  height: 260px;
 }
 #modalDatafilter .filter_name {
   margin: 0 20px;
@@ -7908,18 +8653,21 @@ i.btn {
   color: #454545;
   vertical-align: middle;
 }
-#modalDatafilterResult .title {
-  width: 255px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+#modalDatafilterResult .table_tbody .tb .custom-checkbox {
+  margin: 0 35px;
 }
-#modalDatafilterResult .path {
+#modalDatafilterResult .title {
   width: 220px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+#modalDatafilterResult .path {
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 #modalDatafilterResult .keyword {
-  width: 219px;
+  width: 170px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -7929,6 +8677,15 @@ i.btn {
   padding: 15px;
   overflow-y: auto;
   overflow-x: hidden;
+}
+#modalDatafilterResult .subject {
+  margin: 0px 30px;
+}
+#modalDatafilterResult .icons_zoom_off {
+  margin: 0px 30px;
+}
+#modalDatafilterResult .btn_crud_default {
+  margin-right: 10px;
 }
 #modalDatafilterResult .btn_crud_point {
   min-width: 70px;
@@ -7945,7 +8702,7 @@ i.btn {
 #modalDatafilterResult .bg {
   background-color: #F9F9FC;
 }
-#modalDatafilterResult .name {
+#modalDatafilterResult .th01 {
   padding: 0 35px 0 0;
 }
 #modalDatafilterResult .pagination {
@@ -8157,6 +8914,713 @@ i.btn {
   color: #A7A9AC;
 }
 
+/* 자료실 - 자료등록 - 퀴즈 / 미리보기 - 미리보기 (팝업 L) */
+#modalPreviewQuiz,
+#modalPreviewTest {
+  /* 퀴즈 - 미리보기 - ox유형 - answer_area */
+  /* 퀴즈 - 미리보기 - 답변 단답형일때 - answer_area02 */
+  /* 퀴즈 - 미리보기 - 답변 주관식 단답형일때 - answer_area03 */
+  /* 쪽지시험 - 미리보기 - 답변 이미지있는 경우 - answer_area04 */
+  /* 자료실 - 자료등록 - 퀴즈 - 미리보기 (팝업 L) - 단답형일때 */
+  /* 자료실 - 자료등록 - 퀴즈 - 미리보기 (팝업 L) - 단답형일때 */
+  /* 쪽지시험 - 미리보기 - 답변 이미지 없는 경우 */
+  /* 쪽지시험 - 미리보기 - 답변 이미지있는 경우 */
+  /* 쪽지시험 - 미리보기 - 문제 이미지있는 경우 출력 */
+}
+#modalPreviewQuiz .preview_quiz,
+#modalPreviewTest .preview_quiz {
+  width: 100%;
+  display: flex;
+  flex-flow: row;
+  margin: 0 auto;
+  gap: 40px;
+}
+#modalPreviewQuiz .answer_result,
+#modalPreviewTest .answer_result {
+  width: 250px;
+  height: 512px;
+  background: #F9F9FC;
+  border: 0.4px solid #D1D3D4;
+  border-radius: 5px;
+  overflow-y: scroll;
+}
+#modalPreviewQuiz .answer_area,
+#modalPreviewTest .answer_area {
+  width: 90%;
+  height: 257px;
+  background: #F9F9FC;
+  border: 0.4px solid #D1D3D4;
+  border-radius: 0px 0px 5px 5px;
+  border-top: none;
+  margin: 0 auto;
+  gap: 130px;
+  justify-content: center;
+  align-items: center;
+}
+#modalPreviewQuiz .answer_area02,
+#modalPreviewTest .answer_area02 {
+  width: 90%;
+  height: 257px;
+  background: #F9F9FC;
+  border: 0.4px solid #D1D3D4;
+  border-radius: 0px 0px 5px 5px;
+  border-top: none;
+  margin: 0 auto;
+  gap: 100px;
+  justify-content: center;
+  align-items: center;
+}
+@media (max-width: 1199.98px) {
+  #modalPreviewQuiz .answer_area02,
+#modalPreviewTest .answer_area02 {
+    gap: 25px;
+    flex-flow: column;
+  }
+}
+#modalPreviewQuiz .answer_area03,
+#modalPreviewTest .answer_area03 {
+  width: 90%;
+  height: 257px;
+  background: #F9F9FC;
+  border: 0.4px solid #D1D3D4;
+  border-radius: 0px 0px 5px 5px;
+  border-top: none;
+  margin: 0 auto;
+  gap: 130px;
+  justify-content: center;
+  align-items: center;
+}
+#modalPreviewQuiz .answer_area04,
+#modalPreviewTest .answer_area04 {
+  width: 90%;
+  height: 257px;
+  background: #F9F9FC;
+  border: 0.4px solid #D1D3D4;
+  border-radius: 0px 0px 5px 5px;
+  border-top: none;
+  margin: 0 auto;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+  padding-top: 15px;
+}
+#modalPreviewQuiz .ar_title,
+#modalPreviewTest .ar_title {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 26px;
+  text-align: center;
+  margin: 20px 0px;
+}
+#modalPreviewQuiz .ar_number_select,
+#modalPreviewTest .ar_number_select {
+  width: 50px;
+  height: 50px;
+  background: #7391FA;
+  border-radius: 5px;
+  margin-right: 5px;
+}
+#modalPreviewQuiz .ar_num_font01,
+#modalPreviewTest .ar_num_font01 {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  color: #FFFFFF;
+  line-height: 46px;
+}
+#modalPreviewQuiz .ar_result_select,
+#modalPreviewTest .ar_result_select {
+  width: 139px;
+  height: 50px;
+  background: #FFFFFF;
+  border: 1px solid #7391FA;
+  border-radius: 5px;
+}
+#modalPreviewQuiz .ar_correct,
+#modalPreviewTest .ar_correct {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 29px;
+  color: #7391FA;
+  line-height: 46px;
+}
+#modalPreviewQuiz .ar_wrong,
+#modalPreviewTest .ar_wrong {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 29px;
+  color: #FB5353;
+  line-height: 46px;
+}
+#modalPreviewQuiz .ar_number,
+#modalPreviewTest .ar_number {
+  width: 50px;
+  height: 50px;
+  background: #D1D3D4;
+  border-radius: 5px;
+  margin-right: 5px;
+}
+#modalPreviewQuiz .ar_result,
+#modalPreviewTest .ar_result {
+  width: 139px;
+  height: 50px;
+  background: #FFFFFF;
+  border: 0.4px solid #D1D3D4;
+  border-radius: 5px;
+}
+#modalPreviewQuiz .ar_question,
+#modalPreviewTest .ar_question {
+  justify-content: center;
+  margin: 10px 0;
+}
+#modalPreviewQuiz .left_area,
+#modalPreviewTest .left_area {
+  width: 25%;
+  margin-left: 20px;
+}
+#modalPreviewQuiz .right_area,
+#modalPreviewTest .right_area {
+  width: 75%;
+  margin-right: 20px;
+}
+#modalPreviewQuiz .qa_title,
+#modalPreviewTest .qa_title {
+  width: 90%;
+  height: 50px;
+  background: #7391FA;
+  border-radius: 5px 5px 0px 0px;
+  margin: 0 auto;
+  border: 0.4px solid #D1D3D4;
+}
+#modalPreviewQuiz .qa_title_font,
+#modalPreviewTest .qa_title_font {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 50px;
+  color: #FFFFFF;
+  margin-left: 20px;
+}
+#modalPreviewQuiz .question_area02,
+#modalPreviewTest .question_area02 {
+  width: 90%;
+  height: 205px;
+  background: #E7EDFF;
+  margin: 0 auto;
+  border: 0.4px solid #D1D3D4;
+}
+#modalPreviewQuiz .qa_title_font02,
+#modalPreviewTest .qa_title_font02 {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 50px;
+  color: #FFFFFF;
+  margin-left: auto;
+  padding-right: 20px;
+}
+#modalPreviewQuiz .icon_timer,
+#modalPreviewTest .icon_timer {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_timer.png);
+  margin-left: 90%;
+  margin-top: 15px;
+}
+#modalPreviewQuiz .qa_num,
+#modalPreviewTest .qa_num {
+  width: 50px;
+  height: 50px;
+  background: #7391FA;
+  border-radius: 5px;
+}
+#modalPreviewQuiz .qa_num_font,
+#modalPreviewTest .qa_num_font {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 48px;
+  color: #FFFFFF;
+}
+#modalPreviewQuiz .qusetion_area03,
+#modalPreviewTest .qusetion_area03 {
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+#modalPreviewQuiz .qa_cnts,
+#modalPreviewTest .qa_cnts {
+  width: 70%;
+  text-align: left;
+}
+#modalPreviewQuiz .icon_o,
+#modalPreviewTest .icon_o {
+  display: inline-block;
+  width: 130px;
+  height: 130px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_o.png);
+}
+#modalPreviewQuiz .icon_xx,
+#modalPreviewTest .icon_xx {
+  display: inline-block;
+  width: 130px;
+  height: 130px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_xx.png);
+}
+#modalPreviewQuiz .icon_o_correct,
+#modalPreviewTest .icon_o_correct {
+  display: inline-block;
+  width: 130px;
+  height: 130px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_o_correct.png);
+}
+#modalPreviewQuiz .icon_xx_correct,
+#modalPreviewTest .icon_xx_correct {
+  display: inline-block;
+  width: 130px;
+  height: 130px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_xx_correct.png);
+}
+#modalPreviewQuiz .modal-body,
+#modalPreviewTest .modal-body {
+  height: 570px;
+  overflow-y: scroll;
+}
+#modalPreviewQuiz .data_prev,
+#modalPreviewTest .data_prev {
+  position: absolute;
+  left: 320px;
+  top: 50%;
+  cursor: pointer;
+}
+#modalPreviewQuiz .data_next,
+#modalPreviewTest .data_next {
+  position: absolute;
+  right: 25px;
+  top: 50%;
+  cursor: pointer;
+}
+@media (max-width: 1199.98px) {
+  #modalPreviewQuiz .data_prev,
+#modalPreviewTest .data_prev {
+    position: absolute;
+    left: 290px;
+    top: 50%;
+  }
+  #modalPreviewQuiz .data_next,
+#modalPreviewTest .data_next {
+    right: 23px;
+  }
+}
+#modalPreviewQuiz .aa_number_select,
+#modalPreviewTest .aa_number_select {
+  width: 67px;
+  height: 67px;
+  background: #7391FA;
+  border-radius: 5px;
+}
+#modalPreviewQuiz .aa_result_select,
+#modalPreviewTest .aa_result_select {
+  width: 187px;
+  height: 67px;
+  background: #FFFFFF;
+  border: 1px solid #7391FA;
+  border-radius: 5px;
+}
+#modalPreviewQuiz .aa_number_select,
+#modalPreviewTest .aa_number_select {
+  width: 67px;
+  height: 67px;
+  background: #7391FA;
+  border-radius: 5px;
+  margin-right: 5px;
+}
+#modalPreviewQuiz .aa_num_font01,
+#modalPreviewTest .aa_num_font01 {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 65px;
+  color: #FFFFFF;
+}
+#modalPreviewQuiz .aa_result_select,
+#modalPreviewTest .aa_result_select {
+  width: 187px;
+  height: 67px;
+  background: #FFFFFF;
+  border: 1px solid #7391FA;
+  border-radius: 5px;
+}
+#modalPreviewQuiz .answer_area02 .aa_correct,
+#modalPreviewTest .answer_area02 .aa_correct {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 63px;
+  color: #7391FA;
+}
+#modalPreviewQuiz .aa_number,
+#modalPreviewTest .aa_number {
+  width: 67px;
+  height: 67px;
+  background: #A7A9AC;
+  border-radius: 5px;
+  margin-right: 5px;
+}
+#modalPreviewQuiz .aa_result,
+#modalPreviewTest .aa_result {
+  width: 187px;
+  height: 67px;
+  background: #FFFFFF;
+  border: 0.4px solid #A7A9AC;
+  border-radius: 5px;
+}
+#modalPreviewQuiz .aa_wrong,
+#modalPreviewTest .aa_wrong {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 65px;
+  color: #454545;
+}
+#modalPreviewQuiz .answer_area03 .aa_number_select,
+#modalPreviewTest .answer_area03 .aa_number_select {
+  width: 67px;
+  height: 67px;
+  background: #7391FA;
+  border-radius: 5px;
+}
+#modalPreviewQuiz .answer_area03 .aa_result_select,
+#modalPreviewTest .answer_area03 .aa_result_select {
+  width: 187px;
+  height: 67px;
+  background: #FFFFFF;
+  border: 1px solid #7391FA;
+  border-radius: 5px;
+}
+#modalPreviewQuiz .answer_area03 .aa_number_select,
+#modalPreviewTest .answer_area03 .aa_number_select {
+  width: 120px;
+  height: 67px;
+  background: #7391FA;
+  border-radius: 5px;
+  margin-right: 5px;
+}
+#modalPreviewQuiz .answer_area03 .aa_num_font01,
+#modalPreviewTest .answer_area03 .aa_num_font01 {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 65px;
+  color: #FFFFFF;
+}
+#modalPreviewQuiz .answer_area03 .aa_result_select,
+#modalPreviewTest .answer_area03 .aa_result_select {
+  width: 240px;
+  height: 67px;
+  background: #FFFFFF;
+  border: 1px solid #7391FA;
+  border-radius: 5px;
+}
+#modalPreviewQuiz .answer_area03 .aa_correct,
+#modalPreviewTest .answer_area03 .aa_correct {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 65px;
+  color: #454545;
+  text-align: left;
+  margin-left: 20px;
+}
+#modalPreviewQuiz .answer_area04 .aa_number_select,
+#modalPreviewTest .answer_area04 .aa_number_select {
+  width: 45px;
+  height: 45px;
+  background: #7391FA;
+  border-radius: 5px;
+}
+#modalPreviewQuiz .answer_area04 .aa_num_font01,
+#modalPreviewTest .answer_area04 .aa_num_font01 {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 43px;
+  color: #FFFFFF;
+}
+#modalPreviewQuiz .answer_area04 .aa_result_select,
+#modalPreviewTest .answer_area04 .aa_result_select {
+  width: 70%;
+  height: 45px;
+  background: #FFFFFF;
+  border: 1px solid #7391FA;
+  border-radius: 5px;
+}
+#modalPreviewQuiz .answer_area04 .aa_number,
+#modalPreviewTest .answer_area04 .aa_number {
+  width: 45px;
+  height: 45px;
+  background: #A7A9AC;
+  border-radius: 5px;
+}
+#modalPreviewQuiz .answer_area04 .aa_result,
+#modalPreviewTest .answer_area04 .aa_result {
+  width: 70%;
+  height: 45px;
+  left: 448.98px;
+  top: 551px;
+  background: #FFFFFF;
+  border: 0.4px solid #A7A9AC;
+  border-radius: 5px;
+}
+#modalPreviewQuiz .answer_area04 .aa_wrong,
+#modalPreviewTest .answer_area04 .aa_wrong {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 43px;
+  color: #454545;
+}
+#modalPreviewQuiz .answer_area04 .aa_question,
+#modalPreviewTest .answer_area04 .aa_question {
+  justify-content: center;
+  margin: 10px 0;
+}
+#modalPreviewQuiz .answer_area04 .aa_correct,
+#modalPreviewTest .answer_area04 .aa_correct {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 43px;
+  color: #7391FA;
+}
+#modalPreviewQuiz .answer_area05,
+#modalPreviewTest .answer_area05 {
+  width: 90%;
+  height: 257px;
+  background: #F9F9FC;
+  border: 0.4px solid #D1D3D4;
+  border-radius: 0px 0px 5px 5px;
+  border-top: none;
+  margin: 0 auto;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-flow: row;
+  padding-top: 15px;
+}
+#modalPreviewQuiz .answer_area05 .aa_number_select,
+#modalPreviewTest .answer_area05 .aa_number_select {
+  width: 45px;
+  height: 45px;
+  background: #7391FA;
+  border-radius: 5px;
+}
+#modalPreviewQuiz .answer_area05 .aa_number,
+#modalPreviewTest .answer_area05 .aa_number {
+  width: 45px;
+  height: 45px;
+  background: #A7A9AC;
+  border-radius: 5px;
+}
+#modalPreviewQuiz .answer_area05 .aa_num_font01,
+#modalPreviewTest .answer_area05 .aa_num_font01 {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 43px;
+  color: #FFFFFF;
+}
+#modalPreviewQuiz .answer_area05 .aa_correct_img,
+#modalPreviewTest .answer_area05 .aa_correct_img {
+  width: 150px;
+  height: 110px;
+  background: #FFFFFF;
+  border: 1px solid #7391FA;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+#modalPreviewQuiz .answer_area05 .icons_thumbnail,
+#modalPreviewTest .answer_area05 .icons_thumbnail {
+  width: 53px;
+  height: 54px;
+}
+#modalPreviewQuiz .answer_area05 .aa_question,
+#modalPreviewTest .answer_area05 .aa_question {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+#modalPreviewQuiz .answer_area05 .aa_wrong_img,
+#modalPreviewTest .answer_area05 .aa_wrong_img {
+  width: 150px;
+  height: 110px;
+  background: #FFFFFF;
+  border: 0.4px solid #D1D3D4;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+#modalPreviewQuiz .answer_area05 .aa_wrong,
+#modalPreviewTest .answer_area05 .aa_wrong {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 43px;
+  color: #454545;
+}
+@media (max-width: 1199.98px) {
+  #modalPreviewQuiz .answer_area05 .aa_correct_img,
+#modalPreviewTest .answer_area05 .aa_correct_img {
+    width: 120px;
+    height: 80px;
+  }
+  #modalPreviewQuiz .answer_area05 .aa_wrong_img,
+#modalPreviewTest .answer_area05 .aa_wrong_img {
+    width: 120px;
+    height: 80px;
+  }
+  #modalPreviewQuiz .answer_area05 .aa_num_font01,
+#modalPreviewTest .answer_area05 .aa_num_font01 {
+    line-height: 32px;
+  }
+  #modalPreviewQuiz .answer_area05 .aa_number_select,
+#modalPreviewTest .answer_area05 .aa_number_select {
+    width: 35px;
+    height: 35px;
+  }
+  #modalPreviewQuiz .answer_area05 .aa_correct,
+#modalPreviewTest .answer_area05 .aa_correct {
+    font-size: 18px;
+  }
+  #modalPreviewQuiz .answer_area05 .aa_number,
+#modalPreviewTest .answer_area05 .aa_number {
+    width: 35px;
+    height: 35px;
+  }
+  #modalPreviewQuiz .answer_area05 .aa_wrong,
+#modalPreviewTest .answer_area05 .aa_wrong {
+    font-size: 18px;
+  }
+}
+#modalPreviewQuiz .question_area04-1,
+#modalPreviewTest .question_area04-1 {
+  width: 90%;
+  height: 205px;
+  background: #E7EDFF;
+  margin: 0 auto;
+  border: 0.4px solid #D1D3D4;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-flow: row;
+}
+#modalPreviewQuiz .question_area04-1 .qa_img,
+#modalPreviewTest .question_area04-1 .qa_img {
+  width: 225px;
+  height: 135px;
+  background: #FFFFFF;
+  border: 0.4px solid #A7A9AC;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+}
+#modalPreviewQuiz .question_area04-1 .icons_thumbnail,
+#modalPreviewTest .question_area04-1 .icons_thumbnail {
+  width: 72px;
+  height: 73px;
+}
+#modalPreviewQuiz .question_area04-1 .qusetion_area04-2,
+#modalPreviewTest .question_area04-1 .qusetion_area04-2 {
+  display: flex;
+  align-items: center;
+}
+#modalPreviewQuiz .question_area04-1 .qa_num,
+#modalPreviewTest .question_area04-1 .qa_num {
+  width: 50px;
+  height: 50px;
+  background: #7391FA;
+  border-radius: 5px;
+  margin: 0 20px;
+}
+#modalPreviewQuiz .question_area04-1 .qa_cnts,
+#modalPreviewTest .question_area04-1 .qa_cnts {
+  width: 50%;
+  text-align: left;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 27px;
+}
+#modalPreviewQuiz .question_area04-1 .aa_correct,
+#modalPreviewTest .question_area04-1 .aa_correct {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 43px;
+  color: #7391FA;
+}
+@media (max-width: 1199.98px) {
+  #modalPreviewQuiz .question_area04-1 .qa_img,
+#modalPreviewTest .question_area04-1 .qa_img {
+    width: 140px;
+    height: 105px;
+  }
+  #modalPreviewQuiz .question_area04-1 .qa_cnts,
+#modalPreviewTest .question_area04-1 .qa_cnts {
+    width: 50%;
+    text-align: left;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 24px;
+  }
+}
+
+/* 자료실 - 자료등록 - 쪽지시험 - 보기 편집창 (팝업 m2) */
+#modalTastVeiwEdit .edit_box {
+  width: 90%;
+  height: 276px;
+  border: 0.4px solid #A7A9AC;
+  border-radius: 5px;
+  margin: 0 auto;
+  overflow-y: scroll;
+}
+#modalTastVeiwEdit .edit_tool {
+  width: 100%;
+  height: 44px;
+  border-bottom: 0.4px solid #A7A9AC;
+  margin: 0 auto;
+  padding: 9px 0;
+}
+#modalTastVeiwEdit .edit_view02 {
+  width: 90%;
+  height: 420px;
+  background: #F9F9FC;
+  margin: 20px auto;
+}
+#modalTastVeiwEdit .icons_thumbnail {
+  margin: 50px auto;
+}
+
 /* 자료등록02-1 (팝업 L) */
 #modalDataregi02 .box01 {
   border: 0.4px solid rgba(167, 169, 172, 0.4);
@@ -8333,6 +9797,62 @@ i.btn {
   margin: 20px 0;
   border-bottom: 0.4px solid #D1D3D4;
 }
+#modalDataRead .left_area,
+#modalDataReadQuiz .left_area,
+#modalDataReadNote .left_area {
+  width: 50%;
+}
+#modalDataRead .right_area,
+#modalDataReadQuiz .right_area,
+#modalDataReadNote .right_area {
+  width: 50%;
+}
+#modalDataRead .data_title,
+#modalDataReadQuiz .data_title,
+#modalDataReadNote .data_title {
+  width: 20%;
+  margin-left: 20px;
+}
+#modalDataRead .quiz_area04,
+#modalDataReadQuiz .quiz_area04,
+#modalDataReadNote .quiz_area04 {
+  width: 45%;
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+#modalDataRead .quiz_area,
+#modalDataReadQuiz .quiz_area,
+#modalDataReadNote .quiz_area {
+  width: 45%;
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+@media (max-width: 1199.98px) {
+  #modalDataRead .quiz_area,
+#modalDataReadQuiz .quiz_area,
+#modalDataReadNote .quiz_area {
+    width: 100%;
+    margin-left: 20px;
+    margin-bottom: 10px;
+  }
+}
+#modalDataRead .quiz_area02,
+#modalDataReadQuiz .quiz_area02,
+#modalDataReadNote .quiz_area02 {
+  width: 100%;
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+#modalDataRead .modal-body .reading_section.modal_dataquiz .info_area .tit,
+#modalDataReadQuiz .modal-body .reading_section.modal_dataquiz .info_area .tit,
+#modalDataReadNote .modal-body .reading_section.modal_dataquiz .info_area .tit {
+  width: 120px;
+}
+#modalDataRead .quiz_area03,
+#modalDataReadQuiz .quiz_area03,
+#modalDataReadNote .quiz_area03 {
+  margin-top: 24px;
+}
 
 /* 팝업 S2- 자료실 자료열람(동영상, 문서) 자료 공유 */
 #modalDataShare01 .form-share {
@@ -8362,6 +9882,8 @@ i.btn {
 #modalDataRegiNote .modal-body {
   text-align: center;
   padding: 35px 35px 5px 35px;
+  height: 470px;
+  overflow-y: scroll;
 }
 #modalDataRegiModi .regi_area,
 #modalDataRegiQuiz .regi_area,
@@ -8373,7 +9895,7 @@ i.btn {
 #modalDataRegiQuiz .form-group label,
 #modalDataRegiNote .form-group label {
   font-weight: 400;
-  font-size: 16px;
+  font-size: 16px !important;
   margin-right: 5px;
   line-height: 39px;
   vertical-align: middle;
@@ -8427,7 +9949,7 @@ i.btn {
 #modalDataRegiQuiz .thumb_box,
 #modalDataRegiNote .thumb_box {
   box-sizing: border-box;
-  height: 545px;
+  height: 476px;
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
   padding: 0 15px;
@@ -8440,10 +9962,11 @@ i.btn {
 #modalDataRegiModi .thumbnail_view,
 #modalDataRegiQuiz .thumbnail_view,
 #modalDataRegiNote .thumbnail_view {
-  height: 290px;
+  height: 230px;
   background: #F9F9FB;
   padding: 10px 0px;
   margin-top: 10px;
+  width: 100%;
 }
 #modalDataRegiModi .title,
 #modalDataRegiQuiz .title,
@@ -8454,6 +9977,7 @@ i.btn {
 #modalDataRegiQuiz .check03,
 #modalDataRegiNote .check03 {
   padding: 40px 0px;
+  margin-left: 15px;
 }
 #modalDataRegiModi .name,
 #modalDataRegiQuiz .name,
@@ -8481,6 +10005,45 @@ i.btn {
 #modalDataRegiQuiz .fileChange,
 #modalDataRegiNote .fileChange {
   margin: -25px 0px 0px 359px;
+}
+#modalDataRegiModi .left_area,
+#modalDataRegiQuiz .left_area,
+#modalDataRegiNote .left_area {
+  width: 50%;
+}
+#modalDataRegiModi .right_area,
+#modalDataRegiQuiz .right_area,
+#modalDataRegiNote .right_area {
+  width: 50%;
+}
+#modalDataRegiModi .data_title,
+#modalDataRegiQuiz .data_title,
+#modalDataRegiNote .data_title {
+  width: 20%;
+  margin-left: 20px;
+}
+#modalDataRegiModi .quiz_area,
+#modalDataRegiQuiz .quiz_area,
+#modalDataRegiNote .quiz_area {
+  width: 45%;
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+@media (max-width: 1199.98px) {
+  #modalDataRegiModi .quiz_area,
+#modalDataRegiQuiz .quiz_area,
+#modalDataRegiNote .quiz_area {
+    width: 100%;
+    margin-left: 20px;
+    margin-bottom: 10px;
+  }
+}
+#modalDataRegiModi .quiz_area02,
+#modalDataRegiQuiz .quiz_area02,
+#modalDataRegiNote .quiz_area02 {
+  width: 100%;
+  margin-left: 20px;
+  margin-bottom: 10px;
 }
 
 /* jeh-2022.09.19 */
@@ -8588,6 +10151,11 @@ i.btn {
   padding: 10px 0px;
   margin-top: 10px;
 }
+#modalLessonView .icons_fullscreen {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
 #modalLessonView .form-group {
   margin-bottom: 0px;
 }
@@ -8633,10 +10201,10 @@ i.btn {
   line-height: 20px;
 }
 #modalLessonView .quiz .check {
-  margin: -1px 0px 0 68px;
+  margin: -1px 0px 0 10px;
 }
 #modalLessonView .quiz .form-inline {
-  width: 230px;
+  width: 88%;
   height: 62px;
   margin: 3px 0px 0px 13px;
 }
@@ -8665,18 +10233,20 @@ i.btn {
   margin-top: 10px;
 }
 #modalLessonView .quiz .icons_fullscreen {
-  margin-left: 490px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
 }
 #modalLessonView .quiz .row {
   padding: 4px 0px;
 }
 #modalLessonView .notetest .thumb_box {
   box-sizing: border-box;
-  height: 633px;
+  height: 700px;
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
   padding: 0 15px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 #modalLessonView .notetest .thumbnail_view01 {
   height: 236px;
@@ -8690,14 +10260,22 @@ i.btn {
   padding: 10px 0px;
   margin-top: 10px;
 }
+#modalLessonView .notetest .icons_fullscreen {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
 #modalLessonView .notetest .active {
   width: 64px;
 }
-#modalLessonView .notetest .preview {
-  margin: 10px 18px 0px 148px;
-}
 #modalLessonView .notetest .page_thumb {
-  justify-content: end;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#modalLessonView .notetest .page_thumb .pagination_section {
+  margin-left: 90px;
 }
 #modalLessonView .notetest .font {
   font-weight: 400;
@@ -8705,10 +10283,10 @@ i.btn {
   line-height: 20px;
 }
 #modalLessonView .notetest .check {
-  margin: -1px 0px 0 68px;
+  margin: -1px 0px 0 10px;
 }
 #modalLessonView .notetest .form-inline {
-  width: 230px;
+  width: 88%;
   height: 62px;
   margin: 3px 0px 0px 13px;
 }
@@ -8717,7 +10295,7 @@ i.btn {
   margin: 10px 0 0 0;
 }
 #modalLessonView .notetest .main {
-  margin: 10px 0 0 0px;
+  margin-top: 10px;
 }
 #modalLessonView .notetest .main02 {
   font-weight: 400;
@@ -8733,14 +10311,13 @@ i.btn {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+#modalLessonView .notetest .cont02 .left_area,
+#modalLessonView .notetest .cont02 .right_area {
+  padding-left: 0;
+  padding-right: 0;
+}
 #modalLessonView .notetest .quiz_sec02 {
   margin-top: 10px;
-}
-#modalLessonView .notetest .ifs01 {
-  margin-left: 278px;
-}
-#modalLessonView .notetest .ifs02 {
-  margin-left: 136px;
 }
 #modalLessonView .notetest .right_area01 {
   padding: 0px 0px 0px 0px;
@@ -8748,20 +10325,16 @@ i.btn {
   overflow: hidden;
   overflow-y: scroll;
 }
-#modalLessonView .notetest .left_area02 {
-  margin-left: 15px;
-}
-#modalLessonView .notetest .right_area02 {
-  margin: 0 0 0 -15px;
-}
-#modalLessonView .notetest .cont03 {
-  margin-left: 0px;
-}
 #modalLessonView .notetest .title {
   margin: 10px 0 0 0;
 }
 #modalLessonView .notetest .row {
   padding: 4px 0px;
+}
+#modalLessonView .notetest .icons_fullscreen {
+  position: absolute;
+  top: 15px;
+  right: 15px;
 }
 
 /* 레슨등록 / 레슨수정 (팝업 L) */
@@ -8833,7 +10406,7 @@ i.btn {
   margin-bottom: 10px;
 }
 #modalCuriRegi .form-inline {
-  width: 72%;
+  width: 70%;
   display: inline-block;
   vertical-align: middle;
 }
@@ -8851,10 +10424,11 @@ i.btn {
   padding: 0 0 0 15px;
 }
 #modalCuriRegi .checkbox00 {
-  margin: -10px -6px -3px 16px;
+  position: absolute;
+  left: 43px;
 }
 #modalCuriRegi .sum {
-  margin: 0 0 0 -113px;
+  margin: 0 0 0 112px;
 }
 #modalCuriRegi .cancel {
   margin: 0 0 0 20px;
@@ -8951,6 +10525,25 @@ i.btn {
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
   padding: 5px 0 0px 10px;
+}
+
+/* 커리큘럼-저장경로 (팝업 m2) */
+#modalStoragepath.curisave .input-search {
+  margin: -10px 0 -65px 265px;
+}
+#modalStoragepath.curisave .file_name input {
+  margin: 0 0 0 30px;
+  width: 83%;
+}
+#modalStoragepath.curisave .file_name label {
+  text-align: left;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #A7A9AC;
+}
+#modalStoragepath.curisave .modal-body {
+  padding-top: 20px;
+  padding-bottom: 0;
 }
 
 /* -----------------------------    강좌    ----------------------------- */
@@ -9113,6 +10706,7 @@ i.btn {
   background-size: contain;
   background-image: url(../images/icon_minus_op.png);
   margin: -46px -328px 0 0;
+  cursor: pointer;
 }
 #modalLectureRegi05 .bar_sec {
   width: 390px;
@@ -9740,6 +11334,18 @@ i.btn {
 .ac_manage_notice.notice_rigi .setting_section .left_section {
   position: relative;
 }
+.ac_manage_notice.notice_rigi .setting_section .left_section .subject_area {
+  position: relative;
+}
+.ac_manage_notice.notice_rigi .setting_section .left_section .subject_area input[type=text] {
+  width: calc(100% - 290px);
+  min-width: 215px;
+}
+@-moz-document url-prefix() {
+  .ac_manage_notice.notice_rigi .setting_section .left_section .subject_area input[type=text] {
+    width: calc(100% - 412px);
+  }
+}
 .ac_manage_notice.notice_rigi .setting_section .left_section .title {
   display: inline-block;
   min-width: 90px;
@@ -9776,6 +11382,213 @@ i.btn {
 }
 .ac_manage_notice.notice_rigi .search_result .exp_txt {
   padding: 25px 0;
+}
+
+.ac_manage_atd .search_section .date_box {
+  background: #E7EDFF;
+  border-radius: 5px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 40px;
+  padding: 0 10px;
+  vertical-align: middle;
+}
+.ac_manage_atd .divide_section {
+  gap: 1%;
+  margin-top: 25px;
+}
+.ac_manage_atd .divide_section .divide_area.first {
+  width: 19%;
+}
+.ac_manage_atd .divide_section .divide_area.second {
+  width: 44%;
+  padding-top: 45px;
+}
+.ac_manage_atd .divide_section .divide_area.third {
+  width: 34%;
+  padding-top: 45px;
+}
+.ac_manage_atd .divide_section .divide_area.third .search_result th, .ac_manage_atd .divide_section .divide_area.third .search_result td {
+  text-align: center;
+  color: #454545;
+}
+.ac_manage_atd .divide_section .divide_area.third .search_result .tbl_overflow {
+  height: 440px;
+}
+.ac_manage_atd .divide_section .divide_area.third .search_result .tbl_overflow td {
+  padding: 15px 5px;
+  font-size: 16px;
+}
+.ac_manage_atd .divide_section .divide_area.third .search_result .tbl_overflow tr:nth-child(even) {
+  background: #F9F9FC;
+}
+.ac_manage_atd .list_section {
+  width: 100%;
+}
+.ac_manage_atd .list_section .list_area {
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  height: 472px;
+  overflow-y: auto;
+}
+.ac_manage_atd .list_section .list_area li {
+  padding: 8px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ac_manage_atd .list_section .list_area li i {
+  cursor: pointer;
+}
+.ac_manage_atd .list_section .sum_info {
+  width: 100%;
+  height: 39px;
+  line-height: 39px;
+  text-align: right;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+.ac_manage_atd .list_section .nav-tabs .nav-item {
+  padding: initial;
+}
+.ac_manage_atd .list_section .nav-tabs + .tab-content {
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top: none;
+  height: 408px;
+}
+.ac_manage_atd .list_section.selected li {
+  display: block;
+}
+.ac_manage_atd .list_section.selected li .list, .ac_manage_atd .list_section.selected li .list_sub li {
+  display: flex;
+  align-items: center;
+  padding-right: 0;
+}
+.ac_manage_atd .list_section.selected li .list span + i, .ac_manage_atd .list_section.selected li .list_sub li span + i {
+  margin-left: auto;
+}
+.ac_manage_atd .list_section.selected li .list i.btn, .ac_manage_atd .list_section.selected li .list_sub li i.btn {
+  margin-right: 5px;
+}
+.ac_manage_atd .list_section.selected li .list .ss_txt, .ac_manage_atd .list_section.selected li .list_sub li .ss_txt {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #A7A9AC;
+}
+.ac_manage_atd .list_section.selected li .list_sub {
+  padding: 4px 0px;
+}
+.ac_manage_atd .list_section.selected li .list_sub li {
+  padding-left: 20px;
+}
+.ac_manage_atd .list_area .btn.btn_chceck {
+  height: 30px;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+.ac_manage_atd .list_area .btn_attend {
+  height: 20px;
+  line-height: 17px;
+  padding: 0 0 2px 0;
+  background: #A7A9AC;
+  font-size: 14px;
+  color: #fff;
+}
+.ac_manage_atd .list_area .btn_inout {
+  height: 20px;
+  line-height: 17px;
+  padding: 0px;
+  background: #7391FA;
+  font-size: 14px;
+  color: #fff;
+}
+.ac_manage_atd .calendar .info_area {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ac_manage_atd .calendar .info_area .ss_txt {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #A7A9AC;
+}
+
+.modal_batchattendance {
+  position: relative;
+  padding: 0 10px;
+}
+.modal_batchattendance .date_area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.modal_batchattendance .date_area .date {
+  margin-left: auto;
+}
+.modal_batchattendance .cnts_section {
+  position: relative;
+  margin-top: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.modal_batchattendance .cnts_section .list_section {
+  position: relative;
+  width: 50%;
+  text-align: left;
+}
+.modal_batchattendance .cnts_section .list_section .all {
+  position: relative;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+.modal_batchattendance .cnts_section .list_section .all .custom-control-label {
+  font-size: 16px;
+  line-height: 21px;
+}
+.modal_batchattendance .cnts_section .list_section .all .ss_txt {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #A7A9AC;
+}
+.modal_batchattendance .cnts_section .list_section .list_area {
+  position: relative;
+  margin-top: 5px;
+  padding: 10px;
+  height: 225px;
+  overflow-y: auto;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+}
+.modal_batchattendance .cnts_section .list_section .list_area li {
+  padding: 5px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal_batchattendance .cnts_section .list_section .list_area li .custom-control-label {
+  font-size: 16px;
+  line-height: 21px;
+}
+.modal_batchattendance .cnts_section .list_section .list_area li .times {
+  font-size: 14px;
+}
+.modal_batchattendance .cnts_section .list_section .btn_area {
+  position: relative;
+  height: auto;
+  overflow: hidden;
+  margin-top: 20px;
+}
+.modal_batchattendance .cnts_section .list_section .btn_area .btn {
+  width: 100%;
 }
 
 /*---------------------------------------*/
@@ -10095,17 +11908,17 @@ i.btn {
 }
 .ac_manage_notice .btns_area {
   text-align: right;
-  width: 30%;
   margin: 0px -10px -2px 0;
 }
 
 /* 공지사항-등록.html 페이지 */
 .notice_rigi .content {
   font-weight: 400;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 20px;
   align-items: center;
   text-align: right;
+  letter-spacing: -0.5px;
   color: #A7A9AC;
 }
 .notice_rigi .file_area {
@@ -10113,11 +11926,10 @@ i.btn {
 }
 .notice_rigi .date_area {
   display: flex;
-  margin: -13px 0 0 0px;
 }
 .notice_rigi .target_area {
   display: flex;
-  margin: 15px 0 0 0px;
+  margin: 15px 0px;
 }
 .notice_rigi .box01 {
   align-items: center;
@@ -10149,7 +11961,7 @@ i.btn {
 }
 .notice_rigi .file_list {
   margin-top: 0px !important;
-  width: 92%;
+  max-width: 92%;
   margin-left: 93px;
 }
 .notice_rigi .write_area {
@@ -10200,17 +12012,22 @@ i.btn {
   margin: 5px 30px;
   text-align: left;
 }
+#modalNoticeTarget .notice_second .form-check {
+  margin: 5px 30px;
+  text-align: left;
+}
 #modalNoticeTarget .notice_first {
-  margin: 17px 0 0 0;
+  display: flex;
+  margin-top: 16px;
+}
+#modalNoticeTarget .notice_second {
+  display: flex;
 }
 #modalNoticeTarget .notice_first label,
 #modalNoticeTarget .notice_second label {
   font-weight: 400;
   font-size: 16px;
   line-height: 23px;
-}
-#modalNoticeTarget .notice_second .form-check {
-  margin: 0 220px 0 -40px;
 }
 
 /* 공지사항 상세보기 (팝업 L) */
@@ -10253,7 +12070,7 @@ i.btn {
 }
 #modalNoticeView .file_name {
   padding: 6px 12px;
-  border: 0.4px solid #A7A9AC;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
   width: 97%;
   margin: 14px auto;
@@ -10270,7 +12087,7 @@ i.btn {
 #modalNoticeView .content_area {
   width: 97%;
   height: 332px;
-  border: 0.4px solid #A7A9AC;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
   overflow-y: scroll;
 }
@@ -10424,10 +12241,570 @@ i.btn {
 /*--------  7. ac_class.scss    ---------*/
 /*---------------------------------------*/
 /* 학원관리-2.수업-(1)강의코스:강의계획서,과제함,노트함 */
+/* 수업-강의코스.html */
+.ac_manage_course .course_tit {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  margin: 20px 0;
+}
+.ac_manage_course .course_time {
+  padding: 5px 20px;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+}
+.ac_manage_course .course_info {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+  margin: 20px 0;
+}
+.ac_manage_course .cards_section .course_bgcolor01 {
+  background: #D1DBFF;
+  justify-content: center;
+}
+.ac_manage_course .cards_section {
+  position: relative;
+  margin: 0 auto;
+  padding-top: 40px;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 92%;
+}
+.ac_manage_course .cards_section .card {
+  width: 220px;
+  height: 180px;
+  margin: 22px 14px;
+}
+.ac_manage_course .course_bgcolor02 {
+  background: #E7EDFF;
+}
+.ac_manage_course .course_bgcolor03 {
+  background: #7391FA;
+  color: #FFFFFF;
+}
+.ac_manage_course .course_left {
+  justify-content: flex-start;
+}
+.ac_manage_course .course_line {
+  display: flex;
+}
+.ac_manage_course .course_line .input-search {
+  width: 20%;
+  margin-left: auto;
+}
+
+/* 수업-강의코스-강의계획서.html */
+.nav_mobile .icons_arrow_dn {
+  margin-left: 10px;
+}
+.nav_mobile .title_area {
+  cursor: pointer;
+}
+
+.ac_manage_classplan .course_tit {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  margin-right: 10px;
+}
+.ac_manage_classplan .course_con {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
+}
+.ac_manage_classplan .btn_sec {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.ac_manage_classplan .classplan_tit {
+  cursor: pointer;
+}
+.ac_manage_classplan .form-search {
+  max-width: 26%;
+}
+
+/* 수업-강의코스-강의계획서-과제 등록.html */
+.ac_manage_taskregi .course_tit {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  margin-right: 10px;
+}
+.ac_manage_taskregi .course_con {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
+}
+.ac_manage_taskregi .taskregi_tit {
+  margin: 0 0 30px -15px;
+}
+.ac_manage_taskregi .date_area {
+  margin-bottom: 70px;
+}
+.ac_manage_taskregi .open_regi {
+  margin-top: 25px;
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+/* 강의계획서 미리보기/열람 상세보기 (팝업 L) */
+#modalNoticeView .notice_tit {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #454545;
+  margin: 0 0 0 18px;
+}
+
+/* 강의코스-과제함.html */
+/* 과제 열람 상세보기 (팝업 L) */
+#modalTaskDetail .title_area {
+  width: 109%;
+  margin-bottom: 40px;
+  margin-top: -15px;
+}
+#modalTaskDetail .notice_day {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #FB5353;
+  margin: 0 0 0 18px;
+}
+#modalTaskDetail .title_area .notice_day02,
+#modalTaskDetail .title_area .notice_writer {
+  text-align: right;
+}
+#modalTaskDetail .file_icon {
+  display: inline-block;
+  width: 20px;
+  height: 18px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_file.png);
+  margin: 0px 5px 2px 17px;
+}
+#modalTaskDetail .save {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
+  margin-left: 10px;
+  cursor: pointer;
+}
+#modalTaskDetail .file_name {
+  padding: 6px 12px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  width: 97%;
+  margin: 14px auto;
+}
+#modalTaskDetail .file_info {
+  text-align: left;
+}
+#modalTaskDetail .box {
+  width: 70%;
+  height: 350px;
+  background: #F9F9FC;
+  margin: 56px auto;
+}
+#modalTaskDetail .content_area {
+  width: 97%;
+  height: 332px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  overflow-y: scroll;
+}
+#modalTaskDetail .icons_thumbnail {
+  margin: 135px auto;
+}
+#modalTaskDetail .notice_content {
+  text-align: left;
+  margin: 15px 15px;
+}
+#modalTaskDetail .thumb_box {
+  box-sizing: border-box;
+  height: 545px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  padding: 0 15px;
+  text-align: left;
+}
+#modalTaskDetail .thumbnail_view {
+  height: 290px;
+  background: #F9F9FB;
+  padding: 10px 0px;
+  margin-top: 10px;
+}
+#modalTaskDetail .icons_fullscreen {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+#modalTaskDetail .div_line01 {
+  border-top: 0.4px solid rgba(167, 169, 172, 0.4);
+  margin: 20px 0 0 0;
+}
+#modalTaskDetail .title {
+  margin: 8px 0 0 0;
+}
+#modalTaskDetail .name {
+  padding-top: 30px;
+  font-size: 16px;
+}
+#modalTaskDetail .col {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#modalTaskDetail .div_cont02 {
+  margin: 20px 0px 0px 0px;
+}
+#modalTaskDetail .cont,
+#modalTaskDetail .cont label {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
+  margin-bottom: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#modalTaskDetail .title_area {
+  margin-top: -5px;
+}
+#modalTaskDetail .modal-body {
+  text-align: center;
+  padding-top: 35px;
+  overflow: auto;
+  height: 460px;
+}
+#modalTaskDetail .content_area {
+  height: 456px;
+}
+
+/* 수업-강의코스-과제함-제출 현황 (팝업 L) */
+#modalTaskView .tab-content.depth03 {
+  border: none;
+}
+#modalTaskView .title_area {
+  margin-bottom: 30px;
+  margin-top: -30px;
+}
+#modalTaskView .dropdown .dropdown-toggle {
+  height: 40px;
+  width: 150%;
+  text-align: left;
+}
+#modalTaskView .task_file {
+  display: inline-block;
+  width: 180px;
+  height: 21px;
+  line-height: 26px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 수업-강의코스-노트함.html */
+.ac_manage_note .search_section .right_area {
+  text-align: right;
+  margin-top: 0;
+}
+.ac_manage_note .course_tit {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  margin-right: 10px;
+}
+.ac_manage_note .course_con {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
+}
+
+#modalLessonView.ac_manage_note .thumb_box {
+  height: 570px;
+  margin-top: 49px;
+}
+#modalLessonView.ac_manage_note .tab-content {
+  height: 569px;
+}
+#modalLessonView.ac_manage_note .divide_section .btn_crud_default {
+  margin-bottom: 10px;
+}
+#modalLessonView.ac_manage_note .nodata {
+  padding: 255px 0px;
+  text-align: center;
+  line-height: 30px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  color: #A7A9AC;
+}
+
 /*---------------------------------------*/
 /*--------  7. ac_class2.scss    --------*/
 /*---------------------------------------*/
 /* 학원관리-2.수업-(1)강의코스:질문함,리포트 */
+/* 학습함-질문함(기관장).html */
+.ac_manage_que .keyword_area {
+  position: relative;
+  height: auto;
+  padding: 1px 8px;
+}
+.ac_manage_que .keyword_area_01 {
+  position: relative;
+  min-width: 520px;
+  max-height: 113px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 10px;
+  overflow-y: auto;
+  white-space: nowrap;
+}
+.ac_manage_que .keyword01 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 88px;
+  height: 28px;
+  background: #D1DBFF;
+  border-radius: 3px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.ac_manage_que .keyword01-1 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+  margin: 0px 5px 0px 9px;
+}
+.ac_manage_que .x {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_×.png);
+  margin-right: 8px;
+}
+@media (min-width: 992px) {
+  .ac_manage_que .search_section .right_area {
+    text-align: right;
+    margin-bottom: 30px;
+  }
+  .ac_manage_que .search_section .right_area .filter_lift {
+    margin-top: 5px;
+  }
+}
+@media (min-width: 1199.98px) {
+  .ac_manage_que .search_section .right_area {
+    margin-bottom: 70px;
+  }
+  .ac_manage_que .search_section .right_area .filter_lift {
+    margin-top: 0px;
+  }
+}
+.ac_manage_que .study_qustion {
+  cursor: pointer;
+  text-align: left;
+  width: 310px;
+  line-height: 26px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ac_manage_que .que_reply {
+  background: #F9F9FB;
+  border-radius: 5px;
+}
+.ac_manage_que .input-search {
+  max-width: 30%;
+}
+
+@media (min-width: 992px) {
+  .ac_manage_que02 .right_area {
+    text-align: right;
+    margin-bottom: 28px !important;
+  }
+  .ac_manage_que02 .right_area .filter_lift {
+    margin-top: 5px;
+  }
+  .ac_manage_que02 .input-search {
+    max-width: 60%;
+  }
+}
+@media (min-width: 1199.98px) {
+  .ac_manage_que02 .right_area {
+    margin-bottom: 70px !important;
+  }
+  .ac_manage_que02 .right_area .filter_lift {
+    margin-top: 0px;
+  }
+}
+
+/* 학습함-질문함-필터 (팝업 L) */
+#modalQueFilter .class_section .tit {
+  width: 100%;
+  margin: 20px 20px;
+}
+#modalQueFilter .move_section {
+  margin: 0 10px;
+}
+#modalQueFilter .list_section {
+  width: 100%;
+  margin: 0 10px;
+}
+#modalQueFilter .class_section {
+  width: 100%;
+}
+#modalQueFilter .no_search {
+  height: 493px;
+}
+#modalQueFilter .cnts_section .list_section .list_area li .custom-control-label {
+  font-size: 16px;
+  line-height: 21px;
+}
+
+/* 수업 - 학습함 - 질문함 - 질문열람 (팝업 L) */
+#modalNoticeView .notice_tit {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0 0 0 18px;
+}
+
+/* 수업 - 학습함 - 질문함 - 답변열람 (팝업 L) */
+#modalReplyView .title_area {
+  text-align: left;
+  width: 106%;
+  margin-bottom: 40px;
+  margin-top: -15px;
+}
+#modalReplyView .title_area .notice_day02,
+#modalReplyView .title_area .notice_writer {
+  text-align: right;
+}
+#modalReplyView .notice_tit {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0 0 0 18px;
+}
+#modalReplyView .file_info {
+  text-align: left;
+}
+#modalReplyView .content_area {
+  width: 97%;
+  height: 332px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  overflow-y: scroll;
+}
+#modalReplyView .notice_content {
+  text-align: left;
+  margin: 15px 15px;
+}
+#modalReplyView .box {
+  width: 70%;
+  height: 350px;
+  background: #F9F9FC;
+  margin: 56px auto;
+}
+#modalReplyView .icons_thumbnail {
+  margin: 135px auto;
+}
+#modalReplyView .file_icon {
+  display: inline-block;
+  width: 20px;
+  height: 18px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_file.png);
+  margin: 0px 5px 2px 17px;
+}
+#modalReplyView .save {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
+  margin-left: 10px;
+  cursor: pointer;
+}
+#modalReplyView .file_name {
+  padding: 6px 12px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  width: 97%;
+  margin: 14px auto;
+}
+#modalReplyView .keyword01-1 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+  margin: 0px 5px 0px 7px;
+}
+#modalReplyView .keyword01 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 88px;
+  height: 28px;
+  background: #D1DBFF;
+  border-radius: 3px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+/* 학습함-질문함-답변하기.html */
+.ac_manage_que02 .box {
+  align-items: center;
+  padding: 6px 0px;
+  gap: 10px;
+  width: 109px;
+  height: 30px;
+  background: #E7EDFF;
+  border-radius: 5px;
+  line-height: 13px;
+  text-align: center;
+  margin-left: 10px;
+}
+.ac_manage_que02 .date_area {
+  display: flex;
+  margin-right: 17px;
+  margin-bottom: 58px;
+}
+
+/* 학습함-리포트.html */
+.ac_manage_report .report_id {
+  display: inline-block;
+  width: 170px;
+  line-height: 26px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /*---------------------------------------*/
 /*--------   9. ac_building.scss   ------*/
 /*---------------------------------------*/
@@ -10741,6 +13118,1806 @@ i.btn {
   margin: 60px 120px;
 }
 
+/* 건물-자료실.html */
+/* 자료등록01:자료의 7가지 구분 선택 (팝업 L) */
+#modalDataregi .box07 {
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  display: inline-block;
+  width: 290px;
+  height: 190px;
+  margin: 15px 15px;
+}
+#modalDataregi .box07:hover, #modalDataregi .box07:focus, #modalDataregi .box07:active {
+  border: 1px solid #7391FA;
+  color: #7391FA;
+  cursor: pointer;
+}
+#modalDataregi .box07:hover .regi_icon07, #modalDataregi .box07:focus .regi_icon07, #modalDataregi .box07:active .regi_icon07 {
+  background-image: url(../images/icon_music_on.png);
+}
+#modalDataregi .box07 .regi_icon07 {
+  background-image: url(../images/icon_music_off.png);
+  height: 100%;
+  background-size: cover;
+  display: block;
+  width: 36px;
+  height: 36px;
+  margin: 40px 0 28px 126px;
+}
+#modalDataregi .box07 div:last-child {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
+}
+
+/* 자료실-자료등록/수정-동영상/문서 & 유튜브,URL & 배경음 동일 형식 이용 (팝업 L) */
+#modalDataRegiModi .data_explain input {
+  height: 110px;
+  padding: 10px 10px 70px 10px;
+}
+#modalDataRegiModi .building_check {
+  padding: 0px 80px;
+}
+#modalDataRegiModi .building_RegiModi_box {
+  height: 480px;
+}
+
+/* 자료실-자료등록/퀴즈 (팝업 L) */
+#modalDataRegiQuiz .regiquiz_margin {
+  margin-top: 65px;
+}
+#modalDataRegiQuiz .regiquiz_margin input {
+  height: 110px;
+  padding: 10px 10px 70px 10px;
+}
+#modalDataRegiQuiz .regiquiz_check {
+  padding: 0px 80px;
+}
+#modalDataRegiQuiz .regiquiz_regi {
+  margin-top: 65px;
+}
+#modalDataRegiQuiz .edit_area {
+  min-height: 140px;
+}
+
+/* 자료실-자료등록/쪽지시험 (팝업 L) */
+#modalDataRegiNote .reginote_margin {
+  margin-top: 65px;
+}
+#modalDataRegiNote .reginote_margin input {
+  height: 110px;
+  padding: 10px 10px 70px 10px;
+}
+#modalDataRegiNote .reginote_check {
+  padding: 0px 80px;
+}
+#modalDataRegiNote .reginote_regi {
+  margin-top: 65px;
+}
+#modalDataRegiNote .edit_area {
+  min-height: 140px;
+}
+
+/* 건물-자료실-필터 (팝업 M1) */
+#modalDatafilter.building .filter_first {
+  width: 680px;
+  padding: 0px 17px;
+  text-align: left;
+  margin: 10px 0px;
+}
+#modalDatafilter.building .filter_second {
+  width: 680px;
+  padding: 10px 17px;
+  text-align: left;
+  margin: 10px 0px;
+}
+#modalDatafilter.building .filter_box {
+  height: 190px;
+}
+#modalDatafilter.building .modal-body {
+  height: 180px;
+}
+
+/* 건물-건물SET.html */
+#modalCuriRegi.ac_building .modal_curiregi .divide_area.left .cw_box {
+  height: 0px;
+}
+#modalCuriRegi.ac_building .nav-tabs:not(.depth03) + .tab-content {
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top: none;
+  padding: 15px 15px;
+  overflow-y: auto;
+  height: 390px;
+}
+
+/* 패키지 열람 (팝업 L) */
+#modalLessonView .preview {
+  margin-right: 10px;
+}
+
+/*---------------------------------------*/
+/*--------   11. fr_manage.scss    ------*/
+/*---------------------------------------*/
+/* 가맹관리 - 가맹한기관 */
+.ac_manage_fran .fran_address {
+  display: inline-block;
+  max-width: 230px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ac_manage_fran .input-search {
+  width: 120%;
+}
+.ac_manage_fran .right_area {
+  margin-right: 40px;
+}
+
+/* 가맹관리 - 가맹한기관 // 관리 - 가맹관리 - 상세 팝업 - 팝업 M2 */
+#modalViewDetail .view_box {
+  width: 460px;
+  background: #F9F9FC;
+  border-radius: 5px;
+  text-align: left;
+  padding: 15px 25px;
+  margin: 0 auto;
+}
+#modalViewDetail .line {
+  border-top: 1px solid #D1D3D4;
+  margin: 5px 0 5px 0;
+}
+#modalViewDetail .row {
+  padding: 10px 0px;
+}
+#modalViewDetail .title {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+}
+#modalViewDetail .col {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+}
+#modalViewDetail .modal-body {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 0px;
+}
+#modalViewDetail .view_address {
+  display: inline-block;
+  max-width: 320px;
+  line-height: 26px;
+}
+
+/* 가맹관리 - 가맹요청한기관 */
+.ac_manage_fran {
+  /* 가맹관리 - 월별이용현황 */
+}
+.ac_manage_fran .table tbody td,
+.ac_manage_fran .table tbody td {
+  font-weight: 400;
+  font-size: 16px;
+  border-top: none;
+  color: #454545;
+  line-height: 32px;
+}
+.ac_manage_fran .fran_id {
+  display: inline-block;
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 결제내역 */
+.ac_manage_fran_pay .box01 {
+  align-items: center;
+  padding: 6px 55px 11px 55px;
+  gap: 10px;
+  width: 230px;
+  background: #E7EDFF;
+  border-radius: 5px;
+  line-height: 13px;
+  text-align: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.ac_manage_fran_pay .content01 {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+}
+.ac_manage_fran_pay .form-pay {
+  margin-left: 7px;
+  width: 43%;
+}
+.ac_manage_fran_pay .form-pay .form-control {
+  margin: 0 46px 0 0px;
+}
+.ac_manage_fran_pay .headbtn {
+  cursor: pointer;
+  color: #7391FA;
+}
+
+/* 결제관리 - 결제내역 - 상세 (팝업 L) */
+#modalPayDetail .box_blue {
+  position: relative;
+  width: 85%;
+  margin: 0 auto;
+  padding: 50px 20px;
+  border: 1px solid #7391FA;
+  border-radius: 10px;
+  text-align: center;
+}
+#modalPayDetail .title {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 36px;
+  align-items: center;
+  text-align: center;
+  color: #2C51D7;
+  margin: 0 0px 36px 0px;
+}
+#modalPayDetail .check_circle {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: auto;
+  background-image: url(../images/icon_check_circle.png);
+}
+#modalPayDetail .table td,
+#modalPayDetail .table th {
+  padding: 0.5rem;
+}
+#modalPayDetail .table td {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+}
+#modalPayDetail .font01 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+}
+#modalPayDetail .font02 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+  color: #7391FA;
+}
+
+/* 관리 - 결제관리 - 결제내역 - 기관장상세 팝업 M2 */
+#modalHeadDetail .view_box {
+  width: 460px;
+  background: #F9F9FC;
+  border-radius: 5px;
+  text-align: left;
+  padding: 15px 25px;
+  margin: 0 auto;
+}
+#modalHeadDetail .title {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+}
+#modalHeadDetail .view_address {
+  display: inline-block;
+  max-width: 320px;
+  line-height: 26px;
+}
+#modalHeadDetail .col {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+}
+#modalHeadDetail .row {
+  padding: 10px 0px;
+}
+
+/* 프랜-마이홈.html */
+.fran_myhome .myhome {
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+}
+
+/*---------------------------------------*/
+/*--------   12. fr_class.scss     ------*/
+/*---------------------------------------*/
+/* 자료실.html */
+.ac_manage_dtr .btn_get {
+  margin-left: auto;
+  height: 37px;
+}
+
+/* 자료실 - 자료 가져오기 - 상세 (팝업 L) */
+#modalDataGet .ac_manage_dtr .divide_area > .tab-content li .list_sub_sub > ul > li,
+#modalDataGet .modal_ac_manage_lesson .divide_area > .tab-content li .list_sub_sub > ul > li {
+  display: flex;
+  padding: 4px 0 4px 60px;
+}
+#modalDataGet .text {
+  margin-left: 10px;
+}
+
+/* 커리큘럼 - 커리큘럼등록/수정 (팝업 L) 수정 */
+#modalCuriRegi .form-group {
+  margin-bottom: 0.7rem;
+}
+#modalCuriRegi .form-group textarea {
+  padding: 10px 10px 40px 10px;
+}
+#modalCuriRegi .custom-control-label {
+  width: 145%;
+}
+#modalCuriRegi .list_area_text {
+  line-height: 40px;
+}
+@media (max-width: 1199.98px) {
+  #modalCuriRegi .list_area_text {
+    display: inline-block;
+    width: 149px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+#modalCuriRegi .icon_mydata {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_mydata.png);
+  margin-right: 10px;
+  margin-left: 20px;
+}
+#modalCuriRegi .icon_youtube_sm {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_youtube_sm.png);
+  margin-right: -10px;
+  margin-left: 10px;
+}
+#modalCuriRegi .icon_exam_sm {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_exam_sm.png);
+  margin-right: -10px;
+  margin-left: 10px;
+}
+#modalCuriRegi .icon_link_sm {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_link_sm.png);
+  margin-right: -10px;
+  margin-left: 10px;
+}
+#modalCuriRegi .icon_mp4_sm {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_mp4_sm.png);
+  margin-right: -10px;
+  margin-left: 10px;
+}
+#modalCuriRegi .icon_pdf_sm {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_pdf_sm.png);
+  margin-right: -10px;
+  margin-left: 10px;
+}
+#modalCuriRegi .icon_quiz_sm {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_quiz_sm.png);
+  margin-right: -10px;
+  margin-left: 10px;
+}
+#modalCuriRegi .icons_unlink {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icons/icon_unlink.svg);
+}
+#modalCuriRegi .icons_unlink:hover, #modalCuriRegi .icons_unlink:focus, #modalCuriRegi .icons_unlink:active {
+  background-image: url(../images/icons/icon_link.svg);
+  cursor: pointer;
+}
+
+/*---------------------------------------*/
+/*-------- 14. cl_manage.scss   ---------*/
+/*---------------------------------------*/
+/* CL관리자-관리:FC이용현황, 교육기관이용현황, 결제 관리, 공지사항 */
+/* FC이용현황-이용중인FC.html */
+.cl_manage_fc .dropdown button {
+  width: 130px;
+  text-align: left;
+}
+
+/* FC이용현황 - 이용 중인 FC - 상세 - 팝업 M2 */
+#modalViewDetail .view_box {
+  overflow-y: scroll;
+  height: 460px;
+  width: 460px;
+  background: #F9F9FC;
+  border-radius: 5px;
+  text-align: left;
+  padding: 30px 35px;
+  margin: 0 auto;
+}
+
+/* 팝업 S2- FC 이용현황 - 가맹요청한FC 승인요청 */
+#modalFCapproval .ap_title,
+#modalFClift .ap_title,
+#modalFCactive .ap_title,
+#modalFCpause .ap_title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 0px;
+}
+#modalFCapproval .ap_content,
+#modalFClift .ap_content,
+#modalFCactive .ap_content,
+#modalFCpause .ap_content {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+}
+#modalFCapproval .modal-footer,
+#modalFClift .modal-footer,
+#modalFCactive .modal-footer,
+#modalFCpause .modal-footer {
+  padding-bottom: 20px;
+}
+#modalFCapproval .modal-body,
+#modalFClift .modal-body,
+#modalFCactive .modal-body,
+#modalFCpause .modal-body {
+  padding-top: 20px;
+}
+
+/* FC이용현황 - 월별이용현황상세(팝업 M1) */
+#modalFrcdetail .modal-body {
+  overflow-y: scroll;
+  height: 400px;
+}
+
+/* 교육기관이용현황-이용중인기관.html */
+.cl_manage_fc .ac_use .more_list li {
+  min-width: 134px !important;
+}
+
+/* 팝업 S2- 교육기관이용현황 - 이용중인기관 - 진입허용여부 */
+#modalEnterCheck .custom-control-label {
+  line-height: 22px;
+  font-size: 20px;
+  margin: 12px 0;
+}
+
+/* 공지사항-등록.html */
+.notice_rigi .cl_manage_notice .box02 {
+  padding: 11px 20px 10px 25px;
+}
+
+/*---------------------------------------*/
+/*-------- 15. cl_building.scss ---------*/
+/*---------------------------------------*/
+/* CL관리자-건물:프랜차이즈, 지역축제 */
+/* 건물-프랜차이즈.html */
+.cl_manage_fc .ac_build .more_list li {
+  min-width: 136px !important;
+}
+.cl_manage_fc .build_name {
+  display: inline-block;
+  max-width: 80px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  color: #7391FA;
+}
+.cl_manage_fc .icon_sl {
+  vertical-align: top;
+  color: #7391FA;
+}
+
+/* 건물 - 프랜차이즈 - 건물 등록/변경 팝업 M2 */
+#modalBuildChg .build_box {
+  width: 147px;
+  height: 55px;
+  background: #FFFFFF;
+  border: 0.4px solid #A7A9AC;
+  border-radius: 5px;
+  line-height: 55px;
+  margin: 0 5px;
+}
+#modalBuildChg .fc_build_title {
+  display: inline-block;
+  width: 75px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#modalBuildChg .fc_build_regi {
+  display: flex;
+}
+#modalBuildChg .icons_minus_circle_off {
+  margin: 0 0 43px 10px;
+}
+#modalBuildChg .build_name02 {
+  display: inline-block;
+  max-width: 210px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#modalBuildChg .input-search {
+  margin: 15px 5px -21px 0;
+}
+#modalBuildChg .building_regi {
+  width: 459px;
+  height: 330px;
+  background: #F9F9FC;
+  border-radius: 5px;
+  margin: 20px auto;
+  overflow: scroll;
+}
+#modalBuildChg .build_regi_default {
+  width: 439px;
+  background: #FFFFFF;
+  border-radius: 5px;
+  border: 0.4px solid #A7A9AC;
+  border-color: rgba(167, 169, 172, 0.4);
+}
+#modalBuildChg .build_regi_point {
+  width: 439px;
+  background: #E7EDFF;
+  border-radius: 5px;
+  border: 0.4px solid #A7A9AC;
+  border-color: rgba(167, 169, 172, 0.4);
+}
+#modalBuildChg .icon_plus_circle_disabled {
+  background-image: url(../images/icon_plus_circle_disabled.png);
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
+#modalBuildChg .table thead th {
+  padding-bottom: 15px;
+}
+
+/*---------------------------------------*/
+/*--------  16. std_class.scss   --------*/
+/*---------------------------------------*/
+/* 학생사용자-수업:시간표,질문함,필기함,리포트 */
+/* 수업-시간표.html */
+#modalMoreAttendance .StdTimeLine .calendar_type01 .calendar_section .calendar_area .curriculum_box {
+  width: 100%;
+}
+#modalMoreAttendance .StdTimeLine .class_choice {
+  margin-bottom: 10px;
+}
+#modalMoreAttendance .StdTimeLine .calendar_type01 .calendar_section .calendar_area .curriculum_box .academe_tit {
+  font-weight: 700;
+  font-size: 12px;
+  margin-bottom: 0px;
+  margin-left: 10px;
+}
+#modalMoreAttendance .StdTimeLine .calendar_type01 .calendar_section .calendar_area .curriculum_box .academe_gen {
+  font-weight: 400;
+  font-size: 12px;
+  margin-bottom: 0px;
+  margin-left: 10px;
+}
+#modalMoreAttendance .StdTimeLine .calendar_type01 .calendar_section .calendar_area .curriculum_box .academe {
+  margin-left: 10px;
+}
+#modalMoreAttendance .StdTimeLine .calendar_type01 .calendar_section .calendar_area .curriculum_box .academe_class {
+  font-weight: 400;
+  font-size: 12px;
+  margin-bottom: 0px;
+  margin-left: 10px;
+}
+#modalMoreAttendance .StdTimeLine .calendar_type01 .calendar_section .calendar_area .curriculum_box {
+  align-items: flex-start;
+}
+#modalMoreAttendance .StdTimeLine .calendar_type01 .calendar_section .calendar_area .long .academe_down {
+  margin-top: 100%;
+}
+#modalMoreAttendance .StdTimeLine .calendar_type01 .calendar_section .calendar_area .middle .academe_down {
+  margin-top: 7%;
+}
+@media (max-width: 575.98px) {
+  #modalMoreAttendance .StdTimeLine .calendar_type01 .calendar_section .calendar_area .curriculum_box .academe_tit {
+    margin-left: 10px;
+  }
+}
+@media (max-width: 767.98px) {
+  #modalMoreAttendance .StdTimeLine .calendar_type01 .calendar_section .calendar_area .curriculum_box .academe_tit {
+    margin: 0px 9px;
+  }
+}
+#modalMoreAttendance .StdTimeLine .curriculum_box {
+  cursor: pointer;
+}
+
+/* 수업-시간표.html */
+#modalMoreAttendance .StdTimeLine {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: -20px;
+}
+#modalMoreAttendance .calendar_type01 .search_section .move_calendar .date_info {
+  margin: 0 10px;
+}
+@media (max-width: 575.98px) {
+  #modalMoreAttendance .tab-content.depth03 {
+    padding: 10px 6px;
+  }
+}
+
+/* 수업-시간표.html */
+/* 팝업 S2- 시간표 강의 더보기 팝업 */
+#modalTimePop .ap_title {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 23px;
+}
+#modalTimePop .ap_content01 {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+}
+#modalTimePop .ap_content02 {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+}
+#modalTimePop .modal-body {
+  padding-top: 23px;
+  text-align: left;
+}
+
+/* 수업-질문함.html (모바일 반응형)*/
+@media (max-width: 575.98px) {
+  .tab-content.depth03 {
+    padding: 30px 6px;
+  }
+  .tab-content.depth03 > .tab-pane,
+.modal .modal-body > .tab-pane {
+    min-height: 200px;
+  }
+  #content {
+    background-color: #FFF;
+    padding: 0px;
+    height: calc(100% - 130px);
+  }
+}
+/* 수업-질문함.html (모바일 반응형)*/
+.tab-content.depth03 > .tab-pane,
+.modal .modal-body > .tab-pane {
+  min-height: 200px;
+}
+
+.mobile_only .ac_manage_que02 .right_area .form-inline {
+  width: 100% !important;
+}
+.mobile_only .ac_manage_que02 .btn_area {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 10px;
+}
+.mobile_only .ac_manage_que02 .keyword01 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100px;
+  height: 24px;
+  background: #D1DBFF;
+  border-radius: 3px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+.mobile_only .ac_manage_que02 .keyword_area_01 {
+  position: relative;
+  width: 100%;
+  max-height: 85px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0px 0 0 15px;
+  overflow-y: auto;
+  white-space: nowrap;
+}
+.mobile_only .ac_manage_que02 .keyword01-1 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+  margin: 0px 5px 0px 9px;
+}
+.mobile_only .ac_manage_que02 .x {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_×.png);
+  margin-right: 8px;
+}
+.mobile_only .ac_manage_que02 .qustion01 {
+  max-width: 90%;
+  height: 187px;
+  border: 0.4px solid #A7A9AC;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  margin: 0 auto;
+  /*     border-color: rgba(167, 169, 172, 0.4);
+  border-width: 0.4px; */
+}
+.mobile_only .ac_manage_que02 .study_qustion {
+  display: inline-block;
+  width: 230px;
+  line-height: 26px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mobile_only .ac_manage_que02 .number_area {
+  margin: 67px 0;
+}
+.mobile_only .ac_manage_que02 .name_time {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #A7A9AC;
+  display: flex;
+}
+.mobile_only .ac_manage_que02 .name_time .date {
+  margin-left: auto;
+}
+.mobile_only .ac_manage_que02 .question_info {
+  display: flex;
+}
+.mobile_only .ac_manage_que02 .line {
+  min-width: 229px;
+  border: 0.4px solid #A7A9AC;
+  margin: 10px 0px;
+}
+.mobile_only .ac_manage_que02 .left_area .tit {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 29px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #A7A9AC;
+  margin-right: 20px;
+}
+.mobile_only .ac_manage_que02 .right_area .cont {
+  line-height: 29px;
+}
+.mobile_only .ac_manage_que02 .qustion02 .number_area {
+  margin-left: 55px;
+}
+.mobile_only .ac_manage_que02 .qustion03 {
+  margin-left: -20px;
+  max-width: 100%;
+  height: 187px;
+  border: 0.4px solid #A7A9AC;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  margin: 0 auto;
+  background: #F9F9FB;
+}
+.mobile_only .ac_manage_que02 .qustion02 {
+  margin-top: 10px;
+  margin-right: -10px;
+  margin-left: -68px;
+}
+.mobile_only .ac_manage_que02 .answer01 {
+  margin-left: 40px;
+  margin-top: 10px;
+}
+
+/* 수업-질문함.html */
+/* 수업 - 학습함 - 질문함 - 질문열람 (팝업 L) */
+#modalNoticeView .std_reply {
+  /* 수업 - 학습함 - 질문함 - 질문열람 (팝업 L) (모바일 반응형) */
+}
+#modalNoticeView .std_reply .content_area {
+  height: 100px;
+}
+#modalNoticeView .std_reply .btns_area {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 16px;
+  margin-top: 10px;
+  gap: 5px;
+}
+#modalNoticeView .std_reply .question_view {
+  height: 313px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  background-color: #F9F9FC;
+}
+#modalNoticeView .std_reply .title_area {
+  text-align: left;
+  width: 108%;
+  margin-bottom: 19px;
+  margin-top: 15px;
+}
+#modalNoticeView .std_reply .reply_view {
+  height: 268px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  margin-top: 20px;
+}
+#modalNoticeView .std_reply .modal-body {
+  overflow-y: scroll;
+  height: 510px;
+  overflow-x: clip;
+}
+@media (max-width: 575.98px) {
+  #modalNoticeView .std_reply .notice_title {
+    display: inline-block;
+    width: 111%;
+    line-height: 26px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #modalNoticeView .std_reply .notice_writer,
+#modalNoticeView .std_reply .notice_day02 {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    align-items: center;
+    text-align: right;
+    color: #A7A9AC;
+    margin-right: 10px;
+  }
+  #modalNoticeView .std_reply .btns_area {
+    display: flex;
+    justify-content: center;
+    margin-right: 0;
+    margin-top: 10px;
+    gap: 5px;
+  }
+  #modalNoticeView .std_reply .question_view {
+    height: 340px;
+    border: 0.4px solid rgba(167, 169, 172, 0.4);
+    border-radius: 5px;
+    background-color: #F9F9FC;
+  }
+  #modalNoticeView .std_reply .reply_view {
+    height: 300px;
+  }
+}
+
+/* 수업-질문함-질문등록.html */
+/* 학습함-질문함-필터 (팝업 L) */
+#modalQueFilter {
+  /* 학습함-질문함-필터 (팝업 L) 모바일반응형*/
+}
+#modalQueFilter .list_area02 {
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  height: 215px;
+  overflow-y: auto;
+  width: 85%;
+  margin-left: 18px;
+}
+#modalQueFilter .list_area03 {
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  height: 215px;
+  overflow-y: auto;
+  width: 85%;
+  margin-left: 18px;
+}
+#modalQueFilter .list_area_all li {
+  padding: 8px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#modalQueFilter .list_area_all .tit {
+  width: 100%;
+  margin: 20px 20px;
+}
+@media (max-width: 575.98px) {
+  #modalQueFilter .cnts_section,
+#modalQueFilter .move_section {
+    flex-flow: column;
+  }
+  #modalQueFilter .no_search {
+    height: 100%;
+  }
+  #modalQueFilter .modal-body {
+    text-align: left;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  #modalQueFilter .list_section {
+    width: 94%;
+    margin: 0 10px;
+  }
+  #modalQueFilter .list_section .list_area {
+    height: 100%;
+  }
+  #modalQueFilter .list_area02,
+#modalQueFilter .list_area03 {
+    height: 100%;
+  }
+}
+
+/* 수업-질문함-질문등록.html (모바일 반응형)*/
+@media (max-width: 575.98px) {
+  .que_regi.depth03 {
+    padding: 30px 20px;
+  }
+  .ac_manage_que02 .content {
+    margin: 0 0 0 96px;
+  }
+  .ac_manage_que02 .table {
+    min-width: 900px;
+  }
+}
+/* 수업-필기함.html */
+.std_manage_note .keyword_area {
+  position: relative;
+  height: auto;
+  padding: 1px 8px;
+}
+.std_manage_note .keyword_area_01 {
+  position: relative;
+  min-width: 520px;
+  max-height: 113px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 10px;
+  overflow-y: auto;
+  white-space: nowrap;
+}
+.std_manage_note .keyword01 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 88px;
+  height: 28px;
+  background: #D1DBFF;
+  border-radius: 3px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.std_manage_note .keyword01-1 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+  margin: 0px 5px 0px 9px;
+}
+.std_manage_note .x {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_×.png);
+  margin-right: 8px;
+}
+.std_manage_note .search_section {
+  position: relative;
+  display: flex;
+  align-items: flex-start !important;
+  margin-bottom: 15px;
+}
+.std_manage_note .DetailSearch .left_erea {
+  width: 100%;
+  background: #F9F9FB;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  display: flex;
+  justify-content: flex-start;
+}
+.std_manage_note .DetailSearch .left_erea .left_left {
+  flex-flow: column;
+  display: flex;
+  row-gap: 10px;
+  -moz-column-gap: 20px;
+       column-gap: 20px;
+  margin-left: 8px;
+  margin-top: 8px;
+  margin-bottom: 2px;
+}
+.std_manage_note .DetailSearch .right_erea .search_btn {
+  height: 90%;
+}
+.std_manage_note .ds_cont .tit {
+  margin-right: 30px;
+  margin-left: 10px;
+}
+.std_manage_note .DetailSearch .date_box {
+  background: #E7EDFF;
+  border-radius: 5px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 40px;
+  padding: 0 10px;
+  vertical-align: middle;
+}
+.std_manage_note .DetailSearch .left_erea .left_right {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  margin-left: 8px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+.std_manage_note .divide_section .btn_crud_default {
+  margin-bottom: 10px;
+  margin-left: 15px;
+}
+.std_manage_note .tab-content {
+  height: 569px;
+  margin-left: 15px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+.DetailSearch {
+  margin-left: 0px;
+  display: flex;
+}
+
+/* 수업-필기함.html 모바일 반응형 */
+/* @media (max-width: 767.98px) {
+    .search_section {
+      display: block !important;
+    }
+
+    .keyword01 {
+      display: block;
+      align-items: center;
+      height: 27px;
+      background: #D1DBFF;
+      border-radius: 3px;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+
+    .keyword_area_01 {
+      min-width: 390px;
+      margin: 0px 10px;
+    }
+
+    .search_section .right_area {
+      margin: 0 10px;
+    }
+
+    .right_area .form-inline {
+      width: 72%;
+    }
+
+    .ds_cont {
+      width: 100%;
+    }
+
+    .DetailSearch {
+      max-height: 230px;
+      background: #F9F9FB;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      margin: 0px 10px 0 13px;
+    }
+
+    .DetailSearch .left_erea .tit {
+      line-height: 42px;
+    }
+
+    .DetailSearch .left_erea {
+      padding: 0px 8px;
+    }
+
+    .left_erea .tit_last {
+      margin-top: 20px;
+    }
+
+    .ds_cont input {
+      width: 100%;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+
+    .ds_cont .dropdown {
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+
+    .date_box {
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+
+    .DetailSearch .date_box {
+      background: #E7EDFF;
+      border-radius: 5px;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 40px;
+      padding: 0px 14px;
+      vertical-align: middle;
+    }
+
+    .search_btn {
+      padding: 0 145px;
+      margin: 10px 0px 10px 14px;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+
+    .search_section {
+      display: block !important;
+    }
+
+    .keyword01 {
+      display: block;
+      align-items: center;
+      height: 27px;
+      background: #D1DBFF;
+      border-radius: 3px;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+
+    .keyword_area_01 {
+      min-width: 390px;
+      margin: 0px 10px;
+    }
+
+    .search_section .right_area {
+      margin: 0 10px;
+    }
+
+    .right_area .form-inline {
+      width: 72%;
+    }
+
+    .ds_cont {
+      width: 100%;
+    }
+
+    .DetailSearch {
+      max-height: 250px;
+      background: #F9F9FB;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      margin: 0px 10px 0 13px;
+    }
+
+    .DetailSearch .left_erea .tit {
+      line-height: 42px;
+    }
+
+    .DetailSearch .left_erea {
+      padding: 0px 8px;
+    }
+
+    .left_erea .tit_last {
+      margin-top: 62px;
+    }
+
+    .ds_cont input {
+      width: 100%;
+      margin-top: 5px;
+    }
+
+    .ds_cont .dropdown {
+      margin-top: 5px;
+    }
+
+    .date_box {
+      margin-top: 5px;
+    }
+
+    .DetailSearch .date_box {
+      background: #E7EDFF;
+      border-radius: 5px;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 40px;
+      padding: 0px 14px;
+      vertical-align: middle;
+    }
+
+    .search_btn {
+      padding: 0 145px;
+      margin: 10px 0px 10px 14px;
+    }
+  }
+} */
+/* 수업-질문함.html */
+.ac_manage_que02 .box01 {
+  position: relative;
+  width: 100%;
+}
+.ac_manage_que02 .keyword_area {
+  position: relative;
+  height: auto;
+  padding: 1px 8px;
+  max-width: 30%;
+}
+.ac_manage_que02 .keyword_area_01 {
+  position: relative;
+  max-height: 90px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 10px;
+  overflow-y: auto;
+  white-space: nowrap;
+}
+.ac_manage_que02 .keyword01 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 88px;
+  height: 28px;
+  background: #D1DBFF;
+  border-radius: 3px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.ac_manage_que02 .search_section .right_area {
+  width: 40%;
+}
+
+/*---------------------------------------*/
+/*--------  17. std_class2.scss  --------*/
+/*---------------------------------------*/
+/* 학생사용자-강의코스:강의계획서,과제함,노트함 */
+/* 강의코스.html */
+.std_manage_course {
+  /* 강의코스.html - 모바일반응형*/
+}
+.std_manage_course .course_institute {
+  display: flex;
+  background: #F9F9FB;
+  border-radius: 10px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  flex: 0 0 auto;
+  max-width: 100%;
+}
+.std_manage_course .ci_title {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.std_manage_course .cards_section .card {
+  flex: 0 0 auto;
+}
+@media (max-width: 575.98px) {
+  .std_manage_course .course_line .lec_course_search {
+    min-width: 58% !important;
+    margin-left: auto;
+    margin-right: 10px;
+  }
+  .std_manage_course .course_line .dropdown {
+    margin-left: 12px;
+  }
+}
+
+/* 강의코스-강의계획서.html */
+.std_manage_classplan .form-search {
+  max-width: 39%;
+}
+
+/* 강의코스-과제함.html */
+/* 과제 열람 상세보기 (팝업 L) */
+#modalTaskDetailStd .task_view {
+  width: 100%;
+  height: 300px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+}
+#modalTaskDetailStd .title_area {
+  width: 100%;
+  height: 40px;
+  background: #F9F9FB;
+  border-radius: 5px 5px 0px 0px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+#modalTaskDetailStd .title_area .task_title {
+  width: 50%;
+}
+#modalTaskDetailStd .content_area {
+  width: 97%;
+  height: 200px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  text-align: left;
+  margin: 15px auto;
+  overflow-y: scroll;
+}
+#modalTaskDetailStd .content_area02 {
+  width: 86%;
+  height: 200px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  text-align: left;
+  margin: 15px auto;
+  overflow-y: scroll;
+}
+#modalTaskDetailStd .task_cont {
+  display: flex;
+  align-items: baseline;
+}
+#modalTaskDetailStd .task_submit {
+  width: 100%;
+  height: 300px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+}
+#modalTaskDetailStd .task_tit {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+}
+#modalTaskDetailStd .title_area02 {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+#modalTaskDetailStd .task_day02 {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  color: #A7A9AC;
+}
+#modalTaskDetailStd .task_submit01 {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  color: #FB5353;
+}
+#modalTaskDetailStd .title_area02 .task_tit {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  width: 70%;
+  text-align: left;
+}
+#modalTaskDetailStd .task_cont {
+  margin-left: 20px;
+}
+#modalTaskDetailStd .add_file {
+  display: flex;
+  align-items: center;
+}
+#modalTaskDetailStd .cont_file {
+  width: 10%;
+}
+#modalTaskDetailStd .modal-body {
+  text-align: center;
+  padding-top: 35px;
+  height: 480px;
+  overflow-y: scroll;
+}
+#modalTaskDetailStd .add_file .input_file {
+  width: 40%;
+}
+
+/* 강의코스-과제함.html */
+/* 과제 열람 상세보기 - 첨부파일 있을때 (팝업 L) */
+#modalTaskDetailStdAdd .task_view {
+  width: 100%;
+  height: 82%;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+}
+#modalTaskDetailStdAdd .task_view01-1 {
+  width: 100%;
+  height: 73%;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+}
+#modalTaskDetailStdAdd .title_area {
+  width: 100%;
+  height: 40px;
+  background: #F9F9FB;
+  border-radius: 5px 5px 0px 0px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+#modalTaskDetailStdAdd .title_area .task_title {
+  width: 50%;
+}
+#modalTaskDetailStdAdd .content_area {
+  width: 97%;
+  height: 185px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  text-align: left;
+  margin: 15px auto;
+  overflow-y: scroll;
+  padding: 10px 10px;
+}
+#modalTaskDetailStdAdd .content_area02 {
+  width: 86%;
+  height: 200px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  text-align: left;
+  margin: 15px auto;
+  overflow-y: scroll;
+}
+#modalTaskDetailStdAdd .task_cont {
+  display: flex;
+  align-items: baseline;
+}
+#modalTaskDetailStdAdd .task_submit {
+  width: 100%;
+  height: 300px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+}
+#modalTaskDetailStdAdd .task_tit {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+}
+#modalTaskDetailStdAdd .title_area02 {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+#modalTaskDetailStdAdd .task_day02 {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  color: #A7A9AC;
+}
+#modalTaskDetailStdAdd .task_submit01 {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  color: #FB5353;
+}
+#modalTaskDetailStdAdd .title_area02 .task_tit {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  width: 70%;
+  text-align: left;
+}
+#modalTaskDetailStdAdd .task_cont {
+  margin-left: 20px;
+}
+#modalTaskDetailStdAdd .add_file {
+  display: flex;
+  align-items: center;
+}
+#modalTaskDetailStdAdd .cont_file {
+  width: 10%;
+}
+#modalTaskDetailStdAdd .modal-body {
+  text-align: center;
+  padding-top: 35px;
+  height: 480px;
+  overflow-y: scroll;
+}
+#modalTaskDetailStdAdd .add_file .input_file {
+  width: 40%;
+}
+#modalTaskDetailStdAdd .file_info {
+  text-align: left;
+}
+#modalTaskDetailStdAdd .file_icon {
+  display: inline-block;
+  width: 20px;
+  height: 18px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_file.png);
+  margin: 0px 5px 2px 17px;
+}
+#modalTaskDetailStdAdd .save {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
+  margin-left: 10px;
+  cursor: pointer;
+}
+#modalTaskDetailStdAdd .file_name {
+  padding: 6px 12px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  width: 97%;
+  margin: 14px auto;
+}
+#modalTaskDetailStdAdd .task_view .left_area,
+#modalTaskDetailStdAdd .task_view01-1 .left_area {
+  width: 50%;
+  margin: 20px 10px;
+}
+#modalTaskDetailStdAdd .task_view .right_area,
+#modalTaskDetailStdAdd .task_view01-1 .right_area {
+  width: 50%;
+  margin: 20px 10px;
+}
+#modalTaskDetailStdAdd .task_view02 {
+  display: flex;
+}
+#modalTaskDetailStdAdd .right_area_title {
+  display: flex;
+  align-items: center;
+}
+#modalTaskDetailStdAdd .task_filename {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+}
+#modalTaskDetailStdAdd .file_view_screen {
+  width: 80%;
+  height: 236px;
+  background: #F9F9FB;
+  margin: 0 auto;
+}
+#modalTaskDetailStdAdd .right_area_title .task_tit {
+  margin-right: 20px;
+}
+#modalTaskDetailStdAdd .file_view {
+  width: 100%;
+  height: 236px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  margin: 15px 0;
+}
+#modalTaskDetailStdAdd .icons_fullscreen {
+  position: relative;
+  top: 10px;
+  left: 180px;
+}
+#modalTaskDetailStdAdd .file_prev {
+  position: absolute;
+  left: 582px;
+  top: 48%;
+}
+#modalTaskDetailStdAdd .file_next {
+  position: absolute;
+  right: 34px;
+  top: 48%;
+}
+#modalTaskDetailStdAdd .file_prev02 {
+  position: absolute;
+  left: 582px;
+  top: 121%;
+}
+#modalTaskDetailStdAdd .file_next02 {
+  position: absolute;
+  right: 34px;
+  top: 121%;
+}
+#modalTaskDetailStdAdd .task_submit02 {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  align-items: center;
+  text-align: right;
+  color: #7391FA;
+}
+
+/* 관리-시험관리.html */
+#modalExamFiter .modal-body {
+  padding: 0 30px;
+  text-align: center;
+  padding-top: 35px;
+}
+
+/*---------------------------------------*/
+/*--------  18. std_manage.scss  --------*/
+/*---------------------------------------*/
+/* 학생사용자-관리:시험결과,출결,공지사항,다운로드 */
+/* 관리-시험결과.html */
+/* 관리-시험결과-상세검색 필터 팝업 */
+.modal_std_manage_exam .class_section {
+  width: 23%;
+}
+
+/* 관리-시험결과.html */
+.std_manage_exam .keyword_area {
+  position: relative;
+  height: auto;
+  padding: 1px 8px;
+  max-width: 50%;
+}
+
+/* 관리-출결-주별출결.html */
+.std_manage_attend .modal_moreattendance {
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+}
+.std_manage_attend .calendar_type01 .calendar_section .calendar_area .curriculum_box {
+  width: 100%;
+}
+
+/* 관리-출결-일별출결.html */
+.std_manage_attend02 .attend_box {
+  background: #F9F9FB;
+  border: 0.4px solid #D1D3D4;
+  border-radius: 10px;
+  margin: 20px 0;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  align-items: center;
+}
+.std_manage_attend02 .attend_thumbnail {
+  background: #FFFFFF;
+  border: 0.4px solid #D1D3D4;
+  border-radius: 5px;
+  width: 75px;
+  height: 75px;
+}
+.std_manage_attend02 .attend_thumbnail02 {
+  background: #FFFFFF;
+  border: 0.4px solid #D1D3D4;
+  border-radius: 5px;
+  width: 75px;
+  height: 75px;
+}
+.std_manage_attend02 .icons_thumbnail {
+  width: 45px;
+  margin: -2px 14px;
+}
+.std_manage_attend02 .attend_name {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+}
+.std_manage_attend02 .attend_button01 {
+  width: 75px;
+  height: 75px;
+  background: #7391FA;
+  border-radius: 5px;
+  color: #FFFFFF;
+  padding: 25px 23px;
+}
+.std_manage_attend02 .attend_button02 {
+  width: 75px;
+  height: 75px;
+  background: #4FCED0;
+  border-radius: 5px;
+  color: #FFFFFF;
+  padding: 23px 8px;
+  margin-left: 80px;
+}
+
+/* 관리-다운로드.html */
+.std_manage_down .cards_section .card {
+  position: relative;
+  overflow: hidden;
+  width: 260px;
+  height: 230px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  border-color: #F9F9FC;
+  padding: 10px;
+  margin-bottom: 55px;
+  background: #F9F9FC;
+}
+.std_manage_down .cards_section .card:hover, .std_manage_down .cards_section .card:focus, .std_manage_down .cards_section .card:active {
+  background: #E7EDFF;
+  border: 1px solid #7391FA;
+  cursor: pointer;
+}
+.std_manage_down .down_title {
+  text-align: center;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 29px;
+  color: #454545;
+  margin-top: 40px;
+}
+
 /*---------------------------------------*/
 /*--------   100. main.scss   -----------*/
 /*---------------------------------------*/
@@ -10773,7 +14950,7 @@ i.btn {
   height: auto;
   margin: 0 auto;
 }
-#main_content .main_img01 {
+#main_content .main01_img {
   display: inline-block;
   width: 485px;
   height: 368px;
@@ -10782,11 +14959,265 @@ i.btn {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;
-  background-image: url(../images/main_img01.png);
+  background-image: url(../images/main01_img.png);
 }
 #main_content .gradient_bar01 {
   width: 563px;
   height: 13px;
   background: linear-gradient(90deg, #2C51D7 0%, #4FCED0 100%);
   border-radius: 50px;
+}
+#main_content .main02_img {
+  display: inline-block;
+  width: 600px;
+  height: 290px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/main02_img.png);
+}
+#main_content .main03_img1 {
+  display: inline-block;
+  width: 439px;
+  height: 290px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/main03_img1.png);
+}
+#main_content .main03_img2 {
+  display: inline-block;
+  width: 439px;
+  height: 290px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/main03_img2.png);
+}
+#main_content .main03_img3 {
+  display: inline-block;
+  width: 439px;
+  height: 290px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/main03_img3.png);
+}
+#main_content .main03_img4 {
+  display: inline-block;
+  width: 439px;
+  height: 290px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/main03_img4.png);
+}
+#main_content .main03_img5 {
+  display: inline-block;
+  width: 439px;
+  height: 290px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/main03_img5.png);
+}
+#main_content .main03_img6 {
+  display: inline-block;
+  width: 439px;
+  height: 290px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/main03_img6.png);
+}
+#main_content .slick-prev {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  background-image: url(../images/icons/icon_arrow_light1.svg);
+  background-size: 16px auto;
+  transform: rotate(-90deg);
+  box-shadow: -2px 0px 3px 3px rgba(0, 0, 0, 0.07);
+  position: absolute;
+  top: 43%;
+  left: 31.9%;
+  z-index: 100;
+}
+#main_content .slick-next {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  background-image: url(../images/icons/icon_arrow_light1.svg);
+  background-size: 16px auto;
+  transform: rotate(90deg);
+  box-shadow: 2px 0px 3px 3px rgba(0, 0, 0, 0.07);
+  position: absolute;
+  top: 43%;
+  right: 32.4%;
+}
+#main_content .slick-arrow {
+  border: none;
+  text-indent: -9999px;
+  overflow: hidden;
+}
+#main_content .slick-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+#main_content .slick-dots li {
+  float: left;
+  list-style: none;
+  border: none;
+  margin: 0 5px;
+  width: 9px;
+  height: 9px;
+}
+#main_content .slick-dots li button {
+  background: url(../images/icon_slider_circle_off.png) no-repeat 0 0;
+  text-indent: -9999px;
+  overflow: hidden;
+  border: none;
+}
+#main_content .slick-dots .slick-active button {
+  background: url(../images/icon_slider_circle_on.png) no-repeat 0 0;
+}
+#main_content .main04_img1 {
+  display: inline-block;
+  width: 485px;
+  height: 368px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/main04_img1.png);
+}
+#main_content .main04_img2 {
+  display: inline-block;
+  width: 342px;
+  height: 342px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/main04_img2.png);
+}
+#main_content .main04_img3 {
+  display: inline-block;
+  width: 342px;
+  height: 342px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/main04_img3.png);
+}
+#main_content .main04_img4 {
+  display: inline-block;
+  width: 342px;
+  height: 342px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/main04_img4.png);
+}
+#main_content .main04_img5 {
+  display: inline-block;
+  width: 1089px;
+  height: 428px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/main04_img5.png);
+}
+#main_content .main05_img1 {
+  display: inline-block;
+  width: 192px;
+  height: 192px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/main05_img1.png);
+}
+#main_content .main05_img2 {
+  display: inline-block;
+  width: 192px;
+  height: 192px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/main05_img2.png);
+}
+#main_content .main05_img3 {
+  display: inline-block;
+  width: 192px;
+  height: 192px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/main05_img3.png);
+}
+#main_content .main05_img4 {
+  display: inline-block;
+  width: 192px;
+  height: 192px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/main05_img4.png);
+}
+#main_content .main05_img5 {
+  display: inline-block;
+  width: 192px;
+  height: 192px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/main05_img5.png);
 }/*# sourceMappingURL=common.css.map */

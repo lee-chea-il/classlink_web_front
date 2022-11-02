@@ -1587,7 +1587,7 @@ ol {
   margin-right: 5px;
   line-height: 39px;
   vertical-align: middle;
-  font-size: 14px;
+  font-size: 14px !important;
   font-weight: 400;
 }
 
@@ -1729,15 +1729,17 @@ ol {
   display: none;
 }
 
-.custom-control-label::before,
+/* .custom-control-label::before,
 .custom-control-label::after {
-  margin-top: -0.2rem;
-  width: 20px;
-  height: 20px;
-  border-radius: 2px;
-  border-color: rgba(0, 0, 0, 0.2);
+	margin-top: -0.2rem;
+	// left: -28px;
+	// left: -2rem;
+	width: 20px;
+	height: 20px;
+	border-radius: 2px;
+	border-color: rgba(0, 0, 0, 0.2);
 }
-
+ */
 .custom-control-input:checked ~ .custom-control-label::before {
   color: #fff;
   border-color: #7391FA;
@@ -1773,6 +1775,7 @@ ol {
 /* Navs */
 .nav_dapth01 {
   margin-bottom: -1px;
+  justify-content: center !important;
 }
 .nav_dapth01 .nav-link {
   padding: 20px 50px;
@@ -1791,6 +1794,9 @@ ol {
   color: #2C51D7;
 }
 
+.nav_dapth02 {
+  justify-content: center !important;
+}
 .nav_dapth02 .nav-link {
   margin: 0 20px;
   padding: 8px 30px;
@@ -2249,17 +2255,17 @@ ol {
 }
 .ac_manage_notice .btns_area {
   text-align: right;
-  width: 30%;
   margin: 0px -10px -2px 0;
 }
 
 /* 공지사항-등록.html 페이지 */
 .notice_rigi .content {
   font-weight: 400;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 20px;
   align-items: center;
   text-align: right;
+  letter-spacing: -0.5px;
   color: #A7A9AC;
 }
 .notice_rigi .file_area {
@@ -2267,11 +2273,10 @@ ol {
 }
 .notice_rigi .date_area {
   display: flex;
-  margin: -13px 0 0 0px;
 }
 .notice_rigi .target_area {
   display: flex;
-  margin: 15px 0 0 0px;
+  margin: 15px 0px;
 }
 .notice_rigi .box01 {
   align-items: center;
@@ -2303,7 +2308,7 @@ ol {
 }
 .notice_rigi .file_list {
   margin-top: 0px !important;
-  width: 92%;
+  max-width: 92%;
   margin-left: 93px;
 }
 .notice_rigi .write_area {
@@ -2354,17 +2359,22 @@ ol {
   margin: 5px 30px;
   text-align: left;
 }
+#modalNoticeTarget .notice_second .form-check {
+  margin: 5px 30px;
+  text-align: left;
+}
 #modalNoticeTarget .notice_first {
-  margin: 17px 0 0 0;
+  display: flex;
+  margin-top: 16px;
+}
+#modalNoticeTarget .notice_second {
+  display: flex;
 }
 #modalNoticeTarget .notice_first label,
 #modalNoticeTarget .notice_second label {
   font-weight: 400;
   font-size: 16px;
   line-height: 23px;
-}
-#modalNoticeTarget .notice_second .form-check {
-  margin: 0 220px 0 -40px;
 }
 
 /* 공지사항 상세보기 (팝업 L) */
@@ -2407,7 +2417,7 @@ ol {
 }
 #modalNoticeView .file_name {
   padding: 6px 12px;
-  border: 0.4px solid #A7A9AC;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
   width: 97%;
   margin: 14px auto;
@@ -2424,7 +2434,7 @@ ol {
 #modalNoticeView .content_area {
   width: 97%;
   height: 332px;
-  border: 0.4px solid #A7A9AC;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
   overflow-y: scroll;
 }

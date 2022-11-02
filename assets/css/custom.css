@@ -11,3 +11,7 @@
 .tagify {
   border-radius: 5px;
 }
+
+.example .ql-editor {
+  min-height: 85px;
+}

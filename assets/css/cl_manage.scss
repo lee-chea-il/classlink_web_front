@@ -1,0 +1,97 @@
+@use "theme";
+@use "mixin";
+/*---------------------------------------*/
+/*-------- 14. cl_manage.scss   ---------*/
+/*---------------------------------------*/
+/* CL관리자-관리:FC이용현황, 교육기관이용현황, 결제 관리, 공지사항 */
+
+/* FC이용현황-이용중인FC.html */
+
+.cl_manage_fc {
+  .dropdown button {
+    width: 130px;
+    text-align: left;
+  }
+}
+
+/* FC이용현황 - 이용 중인 FC - 상세 - 팝업 M2 */
+
+#modalViewDetail {
+
+  .view_box {
+    overflow-y: scroll;
+    height: 460px;
+    width: 460px;
+    background: #F9F9FC;
+    border-radius: 5px;
+    text-align: left;
+    padding: 30px 35px;
+    margin: 0 auto;
+  }
+}
+
+/* 팝업 S2- FC 이용현황 - 가맹요청한FC 승인요청 */
+
+#modalFCapproval,
+#modalFClift,
+#modalFCactive,
+#modalFCpause {
+
+  .ap_title {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 0px;
+  }
+
+  .ap_content {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+  }
+
+  .modal-footer {
+    padding-bottom: 20px;
+  }
+
+  .modal-body {
+    padding-top: 20px;
+  }
+
+}
+
+/* FC이용현황 - 월별이용현황상세(팝업 M1) */
+
+#modalFrcdetail {
+  .modal-body {
+    overflow-y: scroll;
+    height: 400px;
+  }
+}
+
+/* 교육기관이용현황-이용중인기관.html */
+
+.cl_manage_fc {
+
+  .ac_use .more_list li {
+    min-width: 134px !important;
+  }
+}
+
+/* 팝업 S2- 교육기관이용현황 - 이용중인기관 - 진입허용여부 */
+
+#modalEnterCheck {
+  .custom-control-label {
+    line-height: 22px;
+    font-size: 20px;
+    margin: 12px 0;
+  }
+}
+
+/* 공지사항-등록.html */
+
+.notice_rigi {
+
+  .cl_manage_notice .box02 {
+    padding: 11px 20px 10px 25px;
+  }
+}

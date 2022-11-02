@@ -73,82 +73,30 @@
               role="tabpanel"
               aria-labelledby="grade-tab"
             >
-              <ul>
-                <li>
-                  <!-- 리스트01 -->
-                  <div class="list">
-                    <i
-                      id="show_sublistLessonRegi01"
-                      class="btn icons_arrow_r"
-                    ></i>
-                    <span class="text">국어</span>
-                    <!-- <i class="icons_plus_circle_off"></i> -->
-                  </div>
-                  <!-- 리스트01_sub-->
-                  <div
-                    id="list_sublistLessonRegi01"
-                    class="list_sub"
-                    style="display: none"
-                  >
-                    <ul>
-                      <li>
-                        <i
-                          id="show_sublistLessonRegi01_sub"
-                          class="btn icons_arrow_r"
-                        ></i>
-                        <span class="text">대단원1</span>
-                        <!-- <i class="icons_plus_circle_off"></i> -->
-                      </li>
-                    </ul>
-                  </div>
-                  <!-- /.리스트01_sub-->
-                  <!-- 리스트01_sub_sub-->
-                  <div
-                    id="list_sublistLessonRegi01_sub"
-                    class="list_sub_sub"
-                    style="display: none"
-                  >
-                    <ul>
-                      <li>
-                        <span class="text">자연수의 혼합 계산 영상1.mp4</span>
-                      </li>
-                      <li>
-                        <span class="text">자연수의 혼합 계산 영상2.mp4</span>
-                      </li>
-                    </ul>
-                  </div>
-                  <!-- /.리스트01_sub_sub-->
-                  <!-- /.리스트01 -->
-                </li>
-                <li>
-                  <!-- 리스트02 -->
-                  <div class="list">
-                    <i
-                      id="show_sublistLessonRegi02"
-                      class="btn icons_arrow_r"
-                    ></i>
-                    <span class="text">수학</span>
-                    <!-- <i class="icons_plus_circle_off"></i> -->
-                  </div>
-                  <div
-                    id="list_sublistLessonRegi02"
-                    class="list_sub"
-                    style="display: none"
-                  >
-                    <ul>
-                      <li>
-                        <i
-                          id="show_sublistLessonRegi02_sub"
-                          class="btn icons_arrow_r"
-                        ></i>
-                        <span class="text">자연수 I</span>
-                        <!-- <i class="icons_plus_circle_off"></i> -->
-                      </li>
-                    </ul>
-                  </div>
-                  <!-- /.리스트02 -->
-                </li>
-              </ul>
+              <VueTreeList
+                :model="educationPath"
+                :default-expanded="true"
+                :class="`id`"
+                @click="onClick"
+              >
+                <span
+                  slot="addTreeNodeIcon1"
+                  class="custom-control custom-checkbox form-inline"
+                >
+                  <input
+                    id="chkC01"
+                    class="custom-control-input"
+                    type="checkbox"
+                  />
+                  <label class="custom-control-label" for="chkC01"></label>
+                </span>
+
+                <span slot="addTreeNodeIcon" class="icon">＋</span>
+                <span slot="addLeafNodeIcon" class="icon"></span>
+
+                <span slot="addTreeNodeIcon" class="icon"></span>
+                <span slot="delNodeIcon" class="icon"></span
+              ></VueTreeList>
             </div>
             <!-- /.탭01 내용 -->
             <!-- 탭02 내용 -->
@@ -175,7 +123,7 @@
           <!-- /.탭 컨텐츠 -->
           <div class="select_path">
             <span class="tit">선택폴더</span>
-            <span>수학 &gt; 대단원</span>
+            <span>{{ selectPath.path }}</span>
           </div>
         </div>
         <div class="modal-footer">
@@ -190,9 +138,104 @@
 </template>
 
 <script>
+import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
 export default {
   name: 'SavePathModal',
+  components: {
+    VueTreeList,
+  },
+  data() {
+    return {
+      educationPath: new Tree([
+        {
+          name: '학원',
+          id: 1,
+          pid: 0,
+          path: '학원',
+          isClick: false,
+          children: [
+            {
+              name: '국어',
+              id: 2,
+              isLeaf: false,
+              path: '학원/국어',
+              pid: 1,
+              isClick: false,
+              children: [
+                {
+                  name: '1단원',
+                  id: 7,
+                  isLeaf: false,
+                  path: '학원/국어/1단원',
+                  pid: 6,
+                  isClick: false,
+                },
+              ],
+            },
+          ],
+        },
+      ]),
+      selectPath: {},
+    }
+  },
+  methods: {
+    onDel(node) {
+      console.log(node)
+      node.remove()
+    },
+
+    onChangeName(params) {
+      console.log(params)
+    },
+
+    onAddNode(params) {
+      console.log(params)
+    },
+
+    onClick(params) {
+      console.log(params)
+      this.selectPath = params
+    },
+
+    onClickTarget(e) {
+      console.log(e)
+    },
+
+    addNode() {
+      console.log('vvvvvvvvvvvvvvvvvvvvvvvv')
+      const node = new TreeNode({ name: 'new node', isLeaf: false })
+      if (!this.data.children) this.data.children = []
+      this.data.addChildren(node)
+    },
+
+    getNewTree() {
+      const vm = this
+      function _dfs(oldNode) {
+        const newNode = {}
+
+        for (const k in oldNode) {
+          if (k !== 'children' && k !== 'parent') {
+            newNode[k] = oldNode[k]
+          }
+        }
+
+        if (oldNode.children && oldNode.children.length > 0) {
+          newNode.children = []
+          for (let i = 0, len = oldNode.children.length; i < len; i++) {
+            newNode.children.push(_dfs(oldNode.children[i]))
+          }
+        }
+        return newNode
+      }
+
+      vm.newTree = _dfs(vm.data)
+    },
+  },
 }
 </script>
 
-<style></style>
+<style>
+.background {
+  background: #eee;
+}
+</style>

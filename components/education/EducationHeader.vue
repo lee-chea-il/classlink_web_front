@@ -13,7 +13,7 @@
             /></NuxtLink>
           </div>
           <div class="nav_area">
-            <ul class="nav nav_dapth01 justify-content-center">
+            <ul class="nav nav_dapth01 ">
               <li
                 class="nav-item"
                 @click="$store.commit('common/setActiveNavIdx', 1)"
@@ -71,7 +71,7 @@
         </div>
       </div>
       <div v-show="$store.state.common.activeNavIdx === 1" class="nav_sub">
-        <ul class="nav nav_dapth02 justify-content-center">
+        <ul class="nav nav_dapth02">
           <li class="nav-item">
             <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
             <NuxtLink
@@ -97,7 +97,7 @@
       </div>
 
       <div v-show="$store.state.common.activeNavIdx === 2" class="nav_sub">
-        <ul class="nav nav_dapth02 justify-content-center">
+        <ul class="nav nav_dapth02 ">
           <li class="nav-item">
             <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
             <a class="nav-link" href="#">강의코스</a>
@@ -109,7 +109,7 @@
       </div>
 
       <div v-show="$store.state.common.activeNavIdx === 3" class="nav_sub">
-        <ul class="nav nav_dapth02 justify-content-center">
+        <ul class="nav nav_dapth02 ">
           <li class="nav-item">
             <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
             <a class="nav-link" href="#">운영관리</a>
@@ -130,7 +130,7 @@
       </div>
 
       <div v-show="$store.state.common.activeNavIdx === 4" class="nav_sub">
-        <ul class="nav nav_dapth02 justify-content-center">
+        <ul class="nav nav_dapth02 ">
           <li class="nav-item">
             <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
             <a class="nav-link" href="#">건물 자료실</a>

@@ -1,0 +1,246 @@
+@use "theme";
+@use "mixin";
+/*---------------------------------------*/
+/*--------   11. fr_manage.scss    ------*/
+/*---------------------------------------*/
+//프랜차이즈관리-관리:가맹관리,결제관리,공지사항
+
+/* 가맹관리 - 가맹한기관 */
+
+.ac_manage_fran {
+
+  .fran_address {
+    display: inline-block;
+    max-width: 230px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .input-search {
+    width: 120%;
+  }
+
+  .right_area {
+    margin-right: 40px;
+  }
+}
+
+/* 가맹관리 - 가맹한기관 // 관리 - 가맹관리 - 상세 팝업 - 팝업 M2 */
+
+#modalViewDetail {
+
+  .view_box {
+    width: 460px;
+    background: #F9F9FC;
+    border-radius: 5px;
+    text-align: left;
+    padding: 15px 25px;
+    margin: 0 auto;
+  }
+
+  .line {
+    border-top: 1px solid theme.$text_caption_color;
+    margin: 5px 0 5px 0;
+  }
+
+  .row {
+    padding: 10px 0px;
+  }
+
+  .title {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .col {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .modal-body {
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 0px;
+  }
+
+  .view_address {
+    display: inline-block;
+    max-width: 320px;
+    line-height: 26px;
+  }
+
+}
+
+/* 가맹관리 - 가맹요청한기관 */
+
+.ac_manage_fran {
+
+  .table tbody td,
+  .table tbody td {
+    font-weight: 400;
+    font-size: 16px;
+    border-top: none;
+    color: #454545;
+    line-height: 32px;
+  }
+
+  /* 가맹관리 - 월별이용현황 */
+
+  .fran_id {
+    display: inline-block;
+    max-width: 140px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+}
+
+
+/* 결제내역 */
+
+.ac_manage_fran_pay {
+
+  .box01 {
+    align-items: center;
+    padding: 6px 55px 11px 55px;
+    gap: 10px;
+    width: 230px;
+    background: #E7EDFF;
+    border-radius: 5px;
+    line-height: 13px;
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .content01 {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .form-pay {
+    margin-left: 7px;
+    width: 43%;
+  }
+
+  .form-pay .form-control {
+    margin: 0 46px 0 0px;
+  }
+
+  .headbtn {
+    cursor: pointer;
+    color: theme.$color_light1;
+  }
+}
+
+/* 결제관리 - 결제내역 - 상세 (팝업 L) */
+
+#modalPayDetail {
+
+  .box_blue {
+    position: relative;
+    width: 85%;
+    margin: 0 auto;
+    padding: 50px 20px;
+    border: 1px solid #7391FA;
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  .title {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 36px;
+    align-items: center;
+    text-align: center;
+    color: #2C51D7;
+    margin: 0 0px 36px 0px;
+  }
+
+  .check_circle {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: auto;
+    background-image: url(../images/icon_check_circle.png);
+  }
+
+  .table td,
+  .table th {
+    padding: 0.5rem;
+  }
+
+  .table td {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 23px;
+  }
+
+  .font01 {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+  }
+
+  .font02 {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+    color: theme.$color_light1;
+  }
+}
+
+/* 관리 - 결제관리 - 결제내역 - 기관장상세 팝업 M2 */
+
+#modalHeadDetail {
+  .view_box {
+    width: 460px;
+    background: #F9F9FC;
+    border-radius: 5px;
+    text-align: left;
+    padding: 15px 25px;
+    margin: 0 auto;
+  }
+
+  .title {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .view_address {
+    display: inline-block;
+    max-width: 320px;
+    line-height: 26px;
+  }
+
+  .col {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .row {
+    padding: 10px 0px;
+  }
+}
+
+/* 프랜-마이홈.html */
+
+.fran_myhome {
+
+  .myhome {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+  }
+}

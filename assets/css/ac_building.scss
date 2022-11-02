@@ -6,167 +6,167 @@
 
 //건물-빌딩 페이지
 .ac_manage_building {
-	.place_section {
-		position: relative;
-		display: flex;
-		align-items: flex-start;
-		justify-content: space-between;
+  .place_section {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
 
-		.left_area {
-			position: relative;
-			width: 55%;
-			min-height: 550px;
-			display: flex;
-			flex-wrap: wrap;
-			justify-content: space-between;
+    .left_area {
+      position: relative;
+      width: 55%;
+      min-height: 550px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
 
-			.place_box {
-				position: relative;
-				// width: 300px;
-				width: 49%;
-				min-height: 265px;
-				margin-bottom: 20px;
-				@include mixin.border_common;
+      .place_box {
+        position: relative;
+        // width: 300px;
+        width: 49%;
+        min-height: 265px;
+        margin-bottom: 20px;
+        @include mixin.border_common;
 
-				.btn_close {
-					position: absolute;
-					z-index: 1;
-					width: 24px;
-					height: 24px;
-					top: -10px;
-					right: -10px;
-				}
+        .btn_close {
+          position: absolute;
+          z-index: 1;
+          width: 24px;
+          height: 24px;
+          top: -10px;
+          right: -10px;
+        }
 
-				.btn_reset {
-					position: absolute;
-					z-index: 1;
-					top: 10px;
-					left: 10px;
-					padding: 0 10px;
-					font-size: 14px;
-				}
+        .btn_reset {
+          position: absolute;
+          z-index: 1;
+          top: 10px;
+          left: 10px;
+          padding: 0 10px;
+          font-size: 14px;
+        }
 
-				.space {
-					width: 100%;
-					height: 194px;
-					background-repeat: no-repeat;
-					background-position: center center;
-					background-size: cover;
-					background-image: url('../images/sample_building_noimg.jpg');
-					border-bottom: 0.4px solid rgba(167, 169, 172, 0.4);
-					cursor: pointer;
-				}
+        .space {
+          width: 100%;
+          height: 194px;
+          background-repeat: no-repeat;
+          background-position: center center;
+          background-size: cover;
+          background-image: url('../images/sample_building_noimg.jpg');
+          border-bottom: 0.4px solid rgba(167, 169, 172, 0.4);
+          cursor: pointer;
+        }
 
-				.thumb_list {
-					position: relative;
-					width: 100%;
-					height: calc(100% - 194px);
-					display: flex;
-					align-items: center;
-					justify-content: space-around;
-					background-color: theme.$color_background;
+        .thumb_list {
+          position: relative;
+          width: 100%;
+          height: calc(100% - 194px);
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          background-color: theme.$color_background;
 
-					.thumbnail {
-						position: relative;
-						width: 45px;
-						height: 45px;
-						background-repeat: no-repeat;
-						background-position: center center;
-						background-size: cover;
-						background-image: url('../images/sample_teacher_noimg.jpg');
-						@include mixin.border_common;
+          .thumbnail {
+            position: relative;
+            width: 45px;
+            height: 45px;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            background-image: url('../images/sample_teacher_noimg.jpg');
+            @include mixin.border_common;
 
-						.btn_cancel {
-							position: absolute;
-							z-index: 1;
-							top: -10px;
-							right: -10px;
-						}
-					}
-				}
-			}
-		}
+            .btn_cancel {
+              position: absolute;
+              z-index: 1;
+              top: -10px;
+              right: -10px;
+            }
+          }
+        }
+      }
+    }
 
-		.right_area {
-			position: relative;
-			width: 35%;
-			height: 550px;
-			@include mixin.border_common;
+    .right_area {
+      position: relative;
+      width: 35%;
+      height: 550px;
+      @include mixin.border_common;
 
-			.placement_area {
-				position: relative;
-				width: 100%;
-				height: 100%;
-				padding: 20px 25px 10px;
+      .placement_area {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 20px 25px 10px;
 
-				.title {
-					font-weight: 500;
-				}
+        .title {
+          font-weight: 500;
+        }
 
-				.list_area {
-					position: relative;
-					margin-top: 20px;
-					width: 100%;
-					height: 100%;
+        .list_area {
+          position: relative;
+          margin-top: 20px;
+          width: 100%;
+          height: 100%;
 
-					.active,
-					.tab-content {
-						background-color: theme.$color_background;
-					}
+          .active,
+          .tab-content {
+            background-color: theme.$color_background;
+          }
 
-					.tab-content {
-						padding: 10px;
-						height: 435px;
-						overflow-y: auto;
-					}
+          .tab-content {
+            padding: 10px;
+            height: 435px;
+            overflow-y: auto;
+          }
 
-					.tab-pane ul li {
-						padding: 5px 0;
-					}
+          .tab-pane ul li {
+            padding: 5px 0;
+          }
 
-					.info_box {
-						position: relative;
-						display: flex;
-						align-items: center;
-						justify-content: space-between;
-						padding: 12px 15px;
-						@include mixin.border_common;
-						background: #fff;
+          .info_box {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            @include mixin.border_common;
+            background: #fff;
 
-						.img {
-							width: 50px;
-							height: 50px;
-							@include mixin.border_common;
-							background-repeat: no-repeat;
-							background-position: center center;
-							background-size: cover;
-							background-image: url('../images/sample_building_noimg.jpg');
-						}
+            .img {
+              width: 50px;
+              height: 50px;
+              @include mixin.border_common;
+              background-repeat: no-repeat;
+              background-position: center center;
+              background-size: cover;
+              background-image: url('../images/sample_building_noimg.jpg');
+            }
 
-						.name {
-							margin-left: 10px;
-						}
+            .name {
+              margin-left: 10px;
+            }
 
-						.btn {
-							width: 24px;
-							height: 24px;
-							margin-left: auto;
-						}
-					}
-				}
-			}
-		}
+            .btn {
+              width: 24px;
+              height: 24px;
+              margin-left: auto;
+            }
+          }
+        }
+      }
+    }
 
-		.move_area {
-			position: relative;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			width: 10%;
-			min-height: 550px;
-		}
-	}
+    .move_area {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 10%;
+      min-height: 550px;
+    }
+  }
 }
 
 /*---------------------------------------*/
@@ -305,25 +305,25 @@
     margin: 50px 0 0 0px;
   }
 
-//   .place_section .left_area .place_box .thumb_list {
-//     position: relative;
-//     width: 100%;
-//     height: calc(100% - 229px);
-//     display: flex;
-//     align-items: center;
-//     justify-content: space-around;
-//     margin-bottom: 30px;
-//     background-color: #F9F9FC;
-//   }
+  //   .place_section .left_area .place_box .thumb_list {
+  //     position: relative;
+  //     width: 100%;
+  //     height: calc(100% - 229px);
+  //     display: flex;
+  //     align-items: center;
+  //     justify-content: space-around;
+  //     margin-bottom: 30px;
+  //     background-color: #F9F9FC;
+  //   }
 
-//   .place_section .left_area .place_box {
-//     position: relative;
-//     width: 49%;
-//     min-height: 289px;
-//     margin-bottom: 12px;
-//     border: 0.4px solid rgba(167, 169, 172, 0.4);
-//     border-radius: 5px;
-//   }
+  //   .place_section .left_area .place_box {
+  //     position: relative;
+  //     width: 49%;
+  //     min-height: 289px;
+  //     margin-bottom: 12px;
+  //     border: 0.4px solid rgba(167, 169, 172, 0.4);
+  //     border-radius: 5px;
+  //   }
 
 }
 
@@ -385,7 +385,7 @@
 
   .place_section .left_area .place_box .space {
     margin: 35px 0px 0 0px;
-	background-image: url('../images/sample_building_frc_noimg.jpg');
+    background-image: url('../images/sample_building_frc_noimg.jpg');
   }
 
   .thumb {
@@ -397,5 +397,174 @@
 
   .icons_thumbnail {
     margin: 60px 120px;
+  }
+}
+
+/* 건물-자료실.html */
+
+/* 자료등록01:자료의 7가지 구분 선택 (팝업 L) */
+
+#modalDataregi {
+  .box07 {
+    @include mixin.border_common;
+    display: inline-block;
+    width: 290px;
+    height: 190px;
+    margin: 15px 15px;
+
+    &:hover,
+    &:focus,
+    &:active {
+      border: 1px solid theme.$color_light1;
+      color: theme.$color_light1;
+      cursor: pointer;
+
+      .regi_icon07 {
+        background-image: url(../images/icon_music_on.png);
+      }
+
+    }
+
+    .regi_icon07 {
+      background-image: url(../images/icon_music_off.png);
+      height: 100%;
+      background-size: cover;
+      display: block;
+      width: 36px;
+      height: 36px;
+      margin: 40px 0 28px 126px;
+    }
+
+    div:last-child {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      color: theme.$text_unselected_color;
+    }
+  }
+}
+
+/* 자료실-자료등록/수정-동영상/문서 & 유튜브,URL & 배경음 동일 형식 이용 (팝업 L) */
+
+#modalDataRegiModi {
+
+  .data_explain input {
+    height: 110px;
+    padding: 10px 10px 70px 10px;
+  }
+
+  .building_check {
+    padding: 0px 80px;
+  }
+
+  .building_RegiModi_box {
+    height: 480px;
+  }
+}
+
+/* 자료실-자료등록/퀴즈 (팝업 L) */
+
+#modalDataRegiQuiz {
+
+  .regiquiz_margin {
+    margin-top: 65px;
+  }
+
+  .regiquiz_margin input {
+    height: 110px;
+    padding: 10px 10px 70px 10px;
+  }
+
+  .regiquiz_check {
+    padding: 0px 80px;
+  }
+
+  .regiquiz_regi {
+    margin-top: 65px;
+  }
+
+  .edit_area {
+    min-height: 140px;
+  }
+}
+
+/* 자료실-자료등록/쪽지시험 (팝업 L) */
+
+#modalDataRegiNote {
+
+  .reginote_margin {
+    margin-top: 65px;
+  }
+
+  .reginote_margin input {
+    height: 110px;
+    padding: 10px 10px 70px 10px;
+  }
+
+  .reginote_check {
+    padding: 0px 80px;
+  }
+
+  .reginote_regi {
+    margin-top: 65px;
+  }
+
+  .edit_area {
+    min-height: 140px;
+  }
+}
+
+/* 건물-자료실-필터 (팝업 M1) */
+
+#modalDatafilter.building {
+
+  .filter_first {
+    width: 680px;
+    padding: 0px 17px;
+    text-align: left;
+    margin: 10px 0px;
+  }
+
+  .filter_second {
+    width: 680px;
+    padding: 10px 17px;
+    text-align: left;
+    margin: 10px 0px;
+  }
+
+  .filter_box {
+    height: 190px;
+  }
+
+  .modal-body {
+    height: 180px;
+  }
+}
+
+/* 건물-건물SET.html */
+
+#modalCuriRegi.ac_building {
+  .modal_curiregi .divide_area.left .cw_box {
+    height: 0px;
+  }
+
+  .nav-tabs:not(.depth03)+.tab-content {
+    border: 0.4px solid rgba(167, 169, 172, 0.4);
+    border-radius: 5px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top: none;
+    padding: 15px 15px;
+    overflow-y: auto;
+    height: 390px;
+  }
+}
+
+/* 패키지 열람 (팝업 L) */
+
+#modalLessonView {
+
+  .preview {
+    margin-right: 10px;
   }
 }

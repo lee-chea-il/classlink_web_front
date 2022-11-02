@@ -367,7 +367,6 @@
 
 	.btns_area {
 		text-align: right;
-		width: 30%;
 		margin: 0px -10px -2px 0;
 	}
 }
@@ -377,10 +376,11 @@
 
 	.content {
 		font-weight: 400;
-		font-size: 14px;
+		font-size: 13px;
 		line-height: 20px;
 		align-items: center;
 		text-align: right;
+		letter-spacing: -.5px;
 		color: theme.$text_unselected_color;
 	}
 
@@ -390,12 +390,11 @@
 
 	.date_area {
 		display: flex;
-		margin: -13px 0 0 0px;
 	}
 
 	.target_area {
 		display: flex;
-		margin: 15px 0 0 0px;
+		margin: 15px 0px;
 	}
 
 	.box01 {
@@ -431,7 +430,7 @@
 
 	.file_list {
 		margin-top: 0px !important;
-		width: 92%;
+		max-width: 92%;
 		margin-left: 93px;
 	}
 
@@ -498,8 +497,18 @@
 		text-align: left;
 	}
 
+	.notice_second .form-check {
+		margin: 5px 30px;
+		text-align: left;
+	}
+
 	.notice_first {
-		margin: 17px 0 0 0;
+		display: flex;
+		margin-top: 16px;
+	}
+
+	.notice_second {
+		display: flex;
 	}
 
 	.notice_first label,
@@ -507,10 +516,6 @@
 		font-weight: 400;
 		font-size: 16px;
 		line-height: 23px;
-	}
-
-	.notice_second .form-check {
-		margin: 0 220px 0 -40px;
 	}
 
 }
@@ -562,7 +567,7 @@
 
 	.file_name {
 		padding: 6px 12px;
-		border: 0.4px solid #A7A9AC;
+		border: 0.4px solid rgba(167, 169, 172, 0.4);
 		border-radius: 5px;
 		width: 97%;
 		margin: 14px auto;
@@ -582,7 +587,7 @@
 	.content_area {
 		width: 97%;
 		height: 332px;
-		border: 0.4px solid #A7A9AC;
+		border: 0.4px solid rgba(167, 169, 172, 0.4);
 		border-radius: 5px;
 		overflow-y: scroll;
 	}
@@ -626,8 +631,13 @@
 		margin-right: 5px;
 	}
 
-	.btn_filter_off { opacity: .3;}
-	.btn_filter_off.on { opacity: 1;}
+	.btn_filter_off {
+		opacity: .3;
+	}
+
+	.btn_filter_off.on {
+		opacity: 1;
+	}
 
 	.modal-body {
 		text-align: center;
@@ -643,8 +653,11 @@
 		@include mixin.border_common;
 		margin-top: 10px;
 		text-align: left;
+
 		@media (min-width: 992px) {
-			.right_area { text-align: right;}
+			.right_area {
+				text-align: right;
+			}
 		}
 	}
 
@@ -705,19 +718,25 @@
 		padding: 12px 15px;
 		margin-top: 20px;
 		@include mixin.border_common;
+
 		.filter_section {
 			position: relative;
 			display: flex;
 			align-items: flex-start;
-			.title_area { width: 140px;}
-			.filter_area { 
+
+			.title_area {
+				width: 140px;
+			}
+
+			.filter_area {
 				width: calc(100% - 140px);
 				display: flex;
 				flex-wrap: wrap;
+
 				.filter {
 					display: inline-block;
 					text-align: left;
-					width: 140px; 
+					width: 140px;
 					margin-bottom: 15px;
 				}
 			}
@@ -727,10 +746,23 @@
 	.search_result {
 		position: relative;
 		margin-top: 10px;
-		.tbl_overflow { min-height: 250px;}
-		.table th { color: #454545;}
-		.table tbody td { padding:15px 5px; font-size: 16px;}
-		.table tbody tr:nth-child(even) { background-color: theme.$color_background;}
+
+		.tbl_overflow {
+			min-height: 250px;
+		}
+
+		.table th {
+			color: #454545;
+		}
+
+		.table tbody td {
+			padding: 15px 5px;
+			font-size: 16px;
+		}
+
+		.table tbody tr:nth-child(even) {
+			background-color: theme.$color_background;
+		}
 
 	}
 }

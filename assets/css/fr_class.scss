@@ -1,0 +1,179 @@
+@use "theme";
+@use "mixin";
+/*---------------------------------------*/
+/*--------   12. fr_class.scss     ------*/
+/*---------------------------------------*/
+//프랜차이즈관리-수업:자료실,레슨,커리큘럼
+
+/* 자료실.html */
+
+.ac_manage_dtr {
+
+  .btn_get {
+    margin-left: auto;
+    height: 37px;
+  }
+}
+
+/* 자료실 - 자료 가져오기 - 상세 (팝업 L) */
+
+#modalDataGet {
+
+  .ac_manage_dtr .divide_area>.tab-content li .list_sub_sub>ul>li,
+  .modal_ac_manage_lesson .divide_area>.tab-content li .list_sub_sub>ul>li {
+    display: flex;
+    padding: 4px 0 4px 60px;
+  }
+
+  .text {
+    margin-left: 10px;
+  }
+}
+
+/* 커리큘럼 - 커리큘럼등록/수정 (팝업 L) 수정 */
+
+#modalCuriRegi {
+
+  .form-group {
+    margin-bottom: 0.7rem;
+  }
+
+  .form-group textarea {
+    padding: 10px 10px 40px 10px;
+  }
+
+  .custom-control-label {
+    width: 145%;
+  }
+
+  .list_area_text {
+    line-height: 40px;
+  }
+
+  @media (max-width: 1199.98px) {
+    .list_area_text {
+      display: inline-block;
+      width: 149px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .icon_mydata {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    background-image: url(../images/icon_mydata.png);
+    margin-right: 10px;
+    margin-left: 20px;
+  }
+
+  .icon_youtube_sm {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    background-image: url(../images/icon_youtube_sm.png);
+    margin-right: -10px;
+    margin-left: 10px;
+  }
+
+  .icon_exam_sm {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    background-image: url(../images/icon_exam_sm.png);
+    margin-right: -10px;
+    margin-left: 10px;
+  }
+
+  .icon_link_sm {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    background-image: url(../images/icon_link_sm.png);
+    margin-right: -10px;
+    margin-left: 10px;
+  }
+
+  .icon_mp4_sm {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    background-image: url(../images/icon_mp4_sm.png);
+    margin-right: -10px;
+    margin-left: 10px;
+  }
+
+  .icon_pdf_sm {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    background-image: url(../images/icon_pdf_sm.png);
+    margin-right: -10px;
+    margin-left: 10px;
+  }
+
+  .icon_quiz_sm {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    background-image: url(../images/icon_quiz_sm.png);
+    margin-right: -10px;
+    margin-left: 10px;
+  }
+
+  .icons_unlink {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    background-image: url(../images/icons/icon_unlink.svg);
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-image: url(../images/icons/icon_link.svg);
+      cursor: pointer;
+    }
+  }
+}

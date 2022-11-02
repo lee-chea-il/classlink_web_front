@@ -1,0 +1,114 @@
+@use "theme";
+@use "mixin";
+/*---------------------------------------*/
+/*-------- 15. cl_building.scss ---------*/
+/*---------------------------------------*/
+/* CL관리자-건물:프랜차이즈, 지역축제 */
+
+/* 건물-프랜차이즈.html */
+
+.cl_manage_fc {
+
+  .ac_build .more_list li {
+    min-width: 136px !important;
+  }
+
+  .build_name {
+    display: inline-block;
+    max-width: 80px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    color: #7391FA;
+  }
+
+  .icon_sl {
+    vertical-align: top;
+    color: #7391FA;
+  }
+
+}
+
+/* 건물 - 프랜차이즈 - 건물 등록/변경 팝업 M2 */
+
+#modalBuildChg {
+  .build_box {
+    width: 147px;
+    height: 55px;
+    background: #FFFFFF;
+    border: 0.4px solid #A7A9AC;
+    border-radius: 5px;
+    line-height: 55px;
+    margin: 0 5px;
+  }
+
+  .fc_build_title {
+    display: inline-block;
+    width: 75px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .fc_build_regi {
+    display: flex;
+  }
+
+  .icons_minus_circle_off {
+    margin: 0 0 43px 10px;
+  }
+
+  .build_name02 {
+    display: inline-block;
+    max-width: 210px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .input-search {
+    margin: 15px 5px -21px 0;
+  }
+
+  .building_regi {
+    width: 459px;
+    height: 330px;
+    background: #F9F9FC;
+    border-radius: 5px;
+    margin: 20px auto;
+    overflow: scroll;
+  }
+
+  .build_regi_default {
+    width: 439px;
+    background: #FFFFFF;
+    border-radius: 5px;
+    border: 0.4px solid #A7A9AC;
+    border-color: rgba(167, 169, 172, 0.4);
+  }
+
+  .build_regi_point {
+    width: 439px;
+    background: #E7EDFF;
+    border-radius: 5px;
+    border: 0.4px solid #A7A9AC;
+    border-color: rgba(167, 169, 172, 0.4);
+  }
+
+  .icon_plus_circle_disabled {
+    background-image: url(../images/icon_plus_circle_disabled.png);
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+  }
+
+  .table thead th {
+    padding-bottom: 15px;
+  }
+}

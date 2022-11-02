@@ -451,6 +451,7 @@
     <!-- 파일 등록 -->
     <ReferenceAddModal
       :uploadType="uploadType"
+      pagination
       :uploadFile="uploadFile"
       :reference="reference"
       @change-input="onChangeUploadFile"
@@ -471,28 +472,44 @@
     />
 
     <!-- 퀴즈 업로드 
-      change-quiz= 해당 퀴즈 editor 변경 이벤트
+      change-number= 해당 퀴즈 editor 변경 이벤트
       change-item = 해당 퀴즈 내용 변경 이벤트
     -->
     <QuizAddModal
+      :reference="reference"
       :quizList="quizList"
       :currentQuizIdx="currentQuizIdx"
-      @change-quiz="onClickQuizList"
+      @change-number="onClickQuizList"
       @quiz-pagination="onClickQuizPagination"
-      @plus-quiz="onPlusQuizList"
+      @plus-item="onPlusQuizList"
       @delete-quiz="onDeleteQuizItem"
       @change-item="onChangeQuiz"
       @select-type="onClickQuizType"
+      @change-input="onChangeUploadFile"
+      @select-ox="onSelectOx"
+      @select-dificultade="onSelectDificultade"
     />
 
     <!-- 쪽지시험 업로드 -->
-    <NoteTestAddModal />
+    <NoteTestAddModal
+      :reference="reference"
+      :noteTestList="noteTestList"
+      :currentNoteTestIdx="currentNoteTestIdx"
+      @plus-test="onPlusNoteTestList"
+      @change-number="onClickNoteTestList"
+      @plus-item="onPlusNoteTestList"
+      @change-input="onChangeUploadFile"
+      @change-dificultade="onSelectDificultadeTest"
+      @change-item="onChangeTest"
+      @select-answer="onSelectAnswer"
+    />
 
     <!-- 저장경로 설정 -->
     <SavePathModal />
 
     <!-- 자료실 검색 필터 -->
     <ReferenceFilterModal />
+
     <!-- 자료실 검색 성공 -->
     <SearchResultModal />
 
@@ -513,7 +530,6 @@
 
     <!-- 삭제 모달 -->
     <DeleteModal />
-
     <!-- 설명 모달 -->
     <ModalDeac
       :open="modalDesc.open"
@@ -571,8 +587,9 @@ export default {
   data() {
     return {
       uploadType: '',
+      currentQuizIdx: 0,
+      currentNoteTestIdx: 0,
       uploadFile: {},
-      textItem: '',
       reference: {
         name: '',
         subject: 0,
@@ -602,31 +619,38 @@ export default {
       quizList: [
         {
           id: 0,
-          quizItem: '',
+          problem: '',
+          oxAnswer: 0,
           dificultade: 1,
           limitTime: 0,
           quizType: 0,
-          oxAnswer: '',
           shortAnswer: '',
           subjectiveAnswer: '',
           subjectiveWrongAnswer: '',
         },
       ],
-      currentQuizIdx: 0,
+      noteTestList: [
+        {
+          id: 0,
+          problem: '',
+          exampleList: [
+            { id: '', example: '' },
+            { id: '', example: '' },
+            { id: '', example: '' },
+            { id: '', example: '' },
+            { id: '', example: '' },
+          ],
+          dificultade: 0,
+          limitTime: '',
+          answer: 0,
+        },
+      ],
     }
   },
-
   mounted() {
-    /// ////********* Use mounted property so that this code will excute only after mounting the component**********
-    const input = document.getElementById('keywordInput')
-    const tagify = new Tagify(input, {
-      whitelist: this.keywordList,
-      //  whitelist: ["ironman", "antman", "captain america", "thor", "spiderman"],
-      enforceWhitelist: false, // true일때 keywordList에 있는 태그만 사용
-    })
-    tagify.on('add', function () {
-      // console.log(e.detail.data.value)
-    })
+    this.getTagify()
+    this.getTagifyQuiz()
+    this.getTagifyNoteTest()
   },
   methods: {
     // Modal Event
@@ -638,20 +662,57 @@ export default {
       }
     },
 
+    // 태그 컴포넌트 가져오기
+    getTagify() {
+      const input = document.getElementById('keywordInput')
+      if (input) {
+        const tagify = new Tagify(input, {
+          whitelist: this.keywordList,
+          //  whitelist: ["ironman", "antman", "captain america", "thor", "spiderman"],
+          enforceWhitelist: false, // true일때 keywordList에 있는 태그만 사용
+        })
+        tagify.on('add', function () {})
+      }
+    },
+
+    // 퀴즈 태그 컴포넌트 가져오기
+    getTagifyQuiz() {
+      const input = document.getElementById('keywordInputQuiz')
+      if (input) {
+        const tagify = new Tagify(input, {
+          whitelist: this.keywordList,
+          enforceWhitelist: false,
+        })
+        tagify.on('add', function () {})
+      }
+    },
+
+    // 쪽지시험 태그 컴포넌트 가져오기
+    getTagifyNoteTest() {
+      const input = document.getElementById('keywordInputNoteTest')
+      if (input) {
+        const tagify = new Tagify(input, {
+          whitelist: this.keywordList,
+          enforceWhitelist: false,
+        })
+        tagify.on('add', function () {})
+      }
+    },
+
     onCloseModalDesc() {
       this.modalDesc.open = false
     },
 
     // 등록 자료 내용 변경
-    onChangeUploadFile({ target: { name, value, type, checked } }) {
+    onChangeUploadFile({ target: { id, value, type, checked } }) {
       if (type === 'checkbox') {
         if (checked) {
-          this.reference[name] = true
+          this.reference[id] = true
         } else {
-          this.reference[name] = false
+          this.reference[id] = false
         }
       } else {
-        this.reference[name] = value
+        this.reference[id] = value
       }
     },
 
@@ -662,6 +723,10 @@ export default {
 
     onChangeQuiz({ target: { value, name } }, idx) {
       this.quizList[idx][name] = value
+    },
+
+    onChangeTest({ target: { value, name } }, idx) {
+      this.noteTestList[idx][name] = value
     },
 
     // 비디오 업로드
@@ -750,7 +815,7 @@ export default {
 
     // URL 업로드
     onUploadUrl() {
-      const urlRegex = /^(http(s)?:\/\/)([^\/]*)(\.)(com|net|kr|my|shop)(\/)/gi
+      const urlRegex = /^(http(s)?:\/\/)([^\/]*)(\.)(com|net|kr|my|shop)/gi
       this.uploadType = 'file'
       const url = this.urlData.page
       const targetBtn = document.querySelector('#youtube_btn')
@@ -776,6 +841,7 @@ export default {
       this.currentQuizIdx = idx
     },
 
+    // 퀴즈 페이지네이션
     onClickQuizPagination(direction) {
       if (direction === 'plus') {
         if (this.currentQuizIdx < this.quizList.length - 1)
@@ -785,11 +851,12 @@ export default {
       }
     },
 
+    // 퀴즈 리스트 하나 추가
     onPlusQuizList() {
       if (this.quizList.length <= 19) {
         const quizItem = {
           id: this.quizList.length + 1,
-          quizItem: '',
+          problem: '',
           dificultade: 0,
           limitTime: 0,
           quizType: 0,
@@ -801,14 +868,75 @@ export default {
       }
     },
 
+    // 선택한 퀴즈 지우기
     onDeleteQuizItem(idx) {
       if (this.quizList.length > 1) {
         this.quizList.splice(idx, 1)
       }
     },
 
+    // 퀴즈 타입 변경
     onClickQuizType(idx, num) {
       this.quizList[idx].quizType = num
+      if (num === 0) {
+        this.quizList[idx].shortAnswer = ''
+        this.quizList[idx].subjectiveAnswer = ''
+        this.quizList[idx].subjectiveWrongAnswer = ''
+      } else if (num === 1) {
+        this.quizList[idx].oxAnswer = 0
+        this.quizList[idx].subjectiveAnswer = ''
+        this.quizList[idx].subjectiveWrongAnswer = ''
+      } else {
+        this.quizList[idx].oxAnswer = 0
+        this.quizList[idx].shortAnswer = ''
+      }
+    },
+
+    // ox클릭 이벤트
+    onSelectOx(idx, num) {
+      this.quizList[idx].oxAnswer = num
+    },
+
+    // 난이도 설정
+    onSelectDificultade(idx, num) {
+      this.quizList[idx].dificultade = num
+    },
+
+    // 난이도 설정 쪽지 시험
+    onSelectDificultadeTest(idx, num) {
+      this.noteTestList[idx].dificultade = num
+    },
+
+    // 쪽지 시험
+    // 퀴즈 변경 UI
+    onClickNoteTestList(idx) {
+      this.currentNoteTestIdx = idx
+    },
+
+    // 쪽지 시험 추가
+    onPlusNoteTestList() {
+      if (this.noteTestList.length <= 19) {
+        const noteTestItem = {
+          id: this.noteTestList.length,
+          problem: '',
+          exampleList: [
+            { id: '', example: '' },
+            { id: '', example: '' },
+            { id: '', example: '' },
+            { id: '', example: '' },
+            { id: '', example: '' },
+          ],
+          dificultade: 0,
+          limitTime: '',
+          answer: 0,
+        }
+
+        this.noteTestList.push(noteTestItem)
+      }
+    },
+
+    onSelectAnswer(idx, targetIdx) {
+      this.noteTestList[idx].answer = targetIdx
     },
   },
 }
