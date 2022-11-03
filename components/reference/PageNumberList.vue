@@ -10,7 +10,7 @@
     >
       {{ idx + 1 }}
     </button>
-    <button v-if="itemList.length !== 20" class="num plus">
+    <button v-if="itemList?.length !== 20" class="num plus">
       <i
         class="btn icons_plus_circle_off"
         @click="$emit('plus-item', $event)"

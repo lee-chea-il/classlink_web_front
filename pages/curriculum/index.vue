@@ -156,7 +156,7 @@ export default {
       /*
       master,teacher
       */
-      identity: 'teacher',
+      identity: 'master',
       pid: 0,
       newTree: {},
       receiveInstitutionData: [

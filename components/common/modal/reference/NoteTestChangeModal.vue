@@ -14,7 +14,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <!-- [개발참조] 자료등록일때 출력되는 버튼 -->
-            <h5 id="exampleModalLabel" class="modal-title">자료 등록</h5>
+            <h5 id="exampleModalLabel" class="modal-title">자료 수정</h5>
             <!-- [개발참조] 자료수정일때 출력되는 버튼 -->
             <!-- <h5 class="modal-title" id="exampleModalLabel">자료 수정</h5> -->
             <button
@@ -31,23 +31,24 @@
             <div class="modal_dataquiz datanote row">
               <!-- 모달 내용 구분 class-->
               <!-- 왼쪽 영역 -->
+              <!-- 왼쪽 영역 -->
               <ReferenceAddLeftField
                 :reference="reference"
                 :noteTest="true"
                 @change-input="$emit('change-input', $event)"
               />
               <!-- /.왼쪽 영역 -->
-
+              <!-- /.왼쪽 영역 -->
               <!-- 오른쪽 영역 -->
               <div class="right_area">
                 <div
-                  v-for="(item, idx) in noteTestList"
+                  v-for="(item, idx) in reference.noteTestList"
                   :key="item.id"
                   class="regi_area right"
                 >
                   <div v-if="currentPageIdx === idx">
                     <PageNumberList
-                      :itemList="noteTestList"
+                      :itemList="reference.noteTestList"
                       :currentIdx="currentPageIdx"
                       @change-number="$emit('change-number', $event)"
                       @plus-item="$emit('plus-item', $event)"
@@ -64,7 +65,7 @@
                       </div>
                       <div class="edit_area">
                         <CustomEditor
-                          :itemList="noteTestList"
+                          :itemList="reference.noteTestList"
                           :currentIdx="currentPageIdx"
                         />
                       </div>
@@ -75,7 +76,7 @@
                         ></button>
                         <span class="counter"
                           >{{ currentPageIdx + 1 }}/{{
-                            noteTestList.length
+                            reference.noteTestList.length
                           }}</span
                         >
                         <button
@@ -83,7 +84,6 @@
                           @click="$emit('pagination', 'plus')"
                         ></button>
                         <button
-                          v-if="noteTestList.length > 1"
                           class="btn btn_crud_default btn_del"
                           @click="$emit('delete-item', currentPageIdx)"
                         >
@@ -95,8 +95,9 @@
                           <div class="quiz_area02">
                             <!-- 문제의 보기  -->
                             <CustomDescEditor
-                              :itemList="noteTestList[currentPageIdx]"
+                              :itemList="reference.noteTestList[currentPageIdx]"
                               :currentPageIdx="currentPageIdx"
+                              :changePage="true"
                               @select-answer="
                                 $emit('select-answer', currentPageIdx, $event)
                               "
@@ -184,7 +185,7 @@ import CustomDescEditor from '@/components/reference/CustomDescEditor.vue'
 import PageNumberList from '@/components/reference/PageNumberList.vue'
 
 export default {
-  name: 'NoteTestAddModal',
+  name: 'NoteTestChangeModal',
   components: {
     ReferenceAddLeftField,
     CustomEditor,
@@ -208,3 +209,5 @@ export default {
   },
 }
 </script>
+
+<style></style>
