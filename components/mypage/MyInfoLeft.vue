@@ -16,7 +16,7 @@
             <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
               >ID</label
             >
-            <div class="col">IDIDIDIDIDIDDID</div>
+            <div class="col">{{ myInfo.account }}</div>
           </div>
           <div class="form-group row">
             <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
@@ -36,45 +36,50 @@
             <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
               >이름</label
             >
-            <div class="col">홍길동</div>
+            <div class="col">{{ myInfo.name }}</div>
           </div>
           <div class="form-group row">
             <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
               >닉네임</label
             >
-            <div class="col">홍길동</div>
+            <div class="col">{{ myInfo.nickname }}</div>
           </div>
           <div class="form-group row">
             <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
               >신분목록</label
             >
-            <div class="col">선생님, 프랜차이즈 관리자</div>
+            <div class="col">{{ myInfo.identity }}</div>
           </div>
           <div class="form-group row">
             <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
               >직위</label
             >
-            <div class="col">선생님</div>
+            <div class="col">{{ myInfo.position }}</div>
           </div>
           <div class="form-group row">
             <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
               >연락처</label
             >
-            <div class="col">010-1111-2222</div>
+            <div class="col">{{ myInfo.phone }}</div>
           </div>
           <div class="form-group row">
             <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
               >이메일</label
             >
-            <div class="col">example@mail.com</div>
+            <div class="col">{{ myInfo.email }}</div>
           </div>
           <div class="form-group row">
             <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
               >상태</label
             >
             <div class="col">
-              <!-- <button class="btn btn_activated active">활성화</button> -->
-              <button class="btn btn_activated">비활성화</button>
+              <button
+                class="btn btn_activated"
+                :class="myInfo.state ? 'active' : ''"
+              >
+                {{ myInfo.state ? '활성화' : '비활성화' }}
+              </button>
+              <!-- <button class="btn btn_activated">비활성화</button> -->
             </div>
           </div>
           <!--알림 팝업은 기관장 개설전, 선생님일 때는 hide-->
@@ -83,8 +88,20 @@
               >알림 팝업</label
             >
             <div class="col">
-              <button class="btn btn_activated active">ON</button>
-              <button class="btn btn_activated">OFF</button>
+              <button
+                class="btn btn_activated"
+                :class="myInfo.alarm ? 'active' : ''"
+                @click="onClickAlarmBtn"
+              >
+                ON
+              </button>
+              <button
+                class="btn btn_activated"
+                :class="!myInfo.alarm ? 'active' : ''"
+                @click="onClickAlarmBtn"
+              >
+                OFF
+              </button>
             </div>
           </div>
           <!--알림 팝업-->
@@ -95,6 +112,17 @@
   <!-- /.왼쪽 영역 -->
 </template>
 <script>
-export default {}
+export default {
+  name: 'MyInfoLeft',
+  props: { myInfo: { type: Object, default: null } },
+  created() {
+    console.log(this.myInfo)
+  },
+  methods: {
+    onClickAlarmBtn() {
+      this.$emit('alarmBtn-click')
+    },
+  },
+}
 </script>
 <style scoped></style>

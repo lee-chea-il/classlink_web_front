@@ -77,7 +77,7 @@
               <div class="form-group">
                 <label for="form03">교육기관 설명</label>
                 <input
-                  id="form03"
+                  id="form04"
                   type="text"
                   placeholder="교육기관 설명 입력"
                   class="form-control"
@@ -88,7 +88,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn_crud_point">저장</button>
+          <button class="btn btn_crud_point" data-dismiss="modal">저장</button>
           <button class="btn btn_crud_default" data-dismiss="modal">
             취소
           </button>
@@ -98,7 +98,6 @@
   </div>
 </template>
 <script>
-// import CustomInput from '@/components/common/custom/CustomInput.vue'
 export default {
   name: 'UpdateEduInfoModal',
   components: {},
@@ -109,17 +108,7 @@ export default {
     },
     eduInfo: {
       type: Object,
-      default: () => ({
-        name: '',
-        tel: '',
-        address: '',
-        description: '',
-      }),
-    },
-  },
-  methods: {
-    onChangeInput() {
-      this.$emit('change-input')
+      default: null,
     },
   },
 }

@@ -6,10 +6,10 @@
         <div class="page_mypage edu_head_aft row">
           <div class="title col-12">내 정보</div>
           <!-- 왼쪽 영역 -->
-          <MyInfoLeft />
+          <MyInfoLeft :myInfo="myInfo" @alarmBtn-click="changeAlarmState" />
           <!-- 오른쪽 영역 -->
           <!-- <MyInfoRightFran /> -->
-          <MyInfoRightEdu />
+          <MyInfoRightEdu :eduInfo="eduInfo" :franInfo="franInfo" />
           <!-- /.오른쪽 영역 -->
           <!-- 하단 버튼 영역 -->
           <div class="btn_area col-12">
@@ -188,13 +188,16 @@
 
     <!-- 팝업 M2-비밀번호변경 -->
     <UpdatePasswordModal
-      :userInfo="userInfo"
-      :typeCheck="typeCheck"
+      :myInfo="myInfo"
+      :newPassword="newPassword"
+      :pwTypeInfo="pwTypeInfo"
       :isError="isError"
-      @change-type2="onChangeType2"
+      @confirm-click="updatePassword"
       @change-input="onChangeInput"
-      @check-password="onChangePasswordCheck"
+      @check-pw="onChangePasswordCheck"
       @change-type1="onChangeType1"
+      @change-type2="onChangeType2"
+      @change-type3="onChangeType3"
     />
 
     <!-- 팝업 M2-교육기관정보수정1  -->
@@ -451,10 +454,18 @@
     </div>
 
     <!-- 팝업 S2-로그아웃 -->
-    <LogoutModal @logoutBtn-click="goLoginPage" @change-input="onChangeInput" />
+    <LogoutModal @logoutBtn-click="goLoginPage" />
 
     <!-- 팝업 S1-신분전환 -->
     <ChangeIdentityModal />
+
+    <!-- 설명 모달 -->
+    <ModalDesc
+      :open="modalDesc.open"
+      :title="modalDesc.title"
+      :desc="modalDesc.desc"
+      @close="onCloseModalDesc"
+    />
   </div>
 </template>
 
@@ -466,9 +477,10 @@ import UpdateMyInfoModal from '@/components/common/modal/mypage/UpdateMyInfoModa
 import ProfileImageModal from '@/components/common/modal/mypage/ProfileImageModal.vue'
 import ProfileCWImageModal from '@/components/common/modal/mypage/ProfileCWImageModal.vue'
 import UpdatePasswordModal from '@/components/common/modal/mypage/UpdatePasswordModal.vue'
-import UpdateEduInfoModal from '@/components/common/modal/mypage/UpdateEduInfoModal.vue'
 import LogoutModal from '@/components/common/modal/mypage/LogoutModal.vue'
 import ChangeIdentityModal from '@/components/common/modal/mypage/ChangeIdentityModal.vue'
+import UpdateEduInfoModal from '@/components/common/modal/mypage/UpdateEduInfoModal.vue'
+import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 export default {
   name: 'MyPage',
   components: {
@@ -478,60 +490,126 @@ export default {
     ProfileImageModal,
     ProfileCWImageModal,
     UpdatePasswordModal,
-    UpdateEduInfoModal,
     LogoutModal,
     ChangeIdentityModal,
+    UpdateEduInfoModal,
+    ModalDesc,
   },
-  methods: {
-    goLoginPage() {
-      this.$router.push('/login')
-    },
-    onChangeInput({ target: { value, id } }) {
-      this.userInfo[id] = value
-    },
-    onChangePasswordCheck({ target: { value } }) {
-      this.userInfo.passwordCheck = value
-      if (this.userInfo.passwordCheck === this.userInfo.password) {
-        this.isError = false
-      } else {
-        this.isError = true
-      }
-    },
-    onChangeType1() {
-      if (this.isPwEyeOn1 === false) {
-        this.isPwEyeOn1 = true
-      } else {
-        this.isPwEyeOn1 = false
-      }
-    },
-    onChangeType2() {
-      if (this.isPwEyeOn2 === false) {
-        this.isPwEyeOn2 = true
-      } else {
-        this.isPwEyeOn2 = false
-      }
-    },
-  },
-  date() {
+  data() {
     return {
-      userInfo: {
-        recentPassword: '',
-        newPassword: '',
-        newPasswordCheck: '',
+      modalDesc: {
+        open: false,
+        title: '',
+        desc: '',
+      },
+      myInfo: {
+        account: 'id',
+        name: '김유진',
+        nickname: '김유진',
+        identity: '기관장, 선생님',
+        position: '선생님',
+        phone: '010-1234-1234',
+        email: 'lastepisode@naver.com',
+        state: true,
+        alarm: false,
+        profile_image: '',
+        profile_cw_image: '',
+        password: '1234!',
       },
       eduInfo: {
-        name: '',
-        tel: '',
-        address: '',
-        description: '',
+        name: '김유진',
+        tel: '010-1234-1234',
+        address: '집',
+        description: '설명',
+        code: '67890',
       },
-      typeCheck: {
+      franInfo: {
+        name: '유진 프랜',
+        tel: '031-634-4742',
+        code: '12345',
+        address: '주소',
+      },
+      newPassword: {
+        recentPassword: '1234',
+        password: '',
+        passwordCheck: '',
+      },
+      pwTypeInfo: {
         isPwEyeOn1: false,
         isPwEyeOn2: false,
         isPwEyeOn3: false,
       },
       isError: false,
     }
+  },
+  created() {
+    console.log(this.eduInfo)
+  },
+  methods: {
+    // 모달 이벤트
+    openModalDesc(tit, msg) {
+      this.modalDesc = {
+        open: true,
+        title: tit,
+        desc: msg,
+      }
+    },
+    onCloseModalDesc() {
+      this.modalDesc.open = false
+    },
+
+    // 로그아웃
+    goLoginPage() {
+      this.$router.push('/login')
+    },
+
+    // 알림 설정
+    changeAlarmState() {
+      if (this.myInfo.alarm) {
+        this.myInfo.alarm = false
+      } else {
+        this.myInfo.alarm = true
+      }
+    },
+
+    // 비밀번호 변경
+    onChangeInput({ target: { value, id } }) {
+      this.newPassword[id] = value
+    },
+    onChangePasswordCheck({ target: { value } }) {
+      this.newPassword.passwordCheck = value
+      if (this.newPassword.passwordCheck === this.newPassword.password) {
+        this.isError = false
+      } else {
+        this.isError = true
+      }
+    },
+    onChangeType1() {
+      if (this.pwTypeInfo.isPwEyeOn1 === false) {
+        this.pwTypeInfo.isPwEyeOn1 = true
+      } else {
+        this.pwTypeInfo.isPwEyeOn1 = false
+      }
+    },
+    onChangeType2() {
+      if (this.pwTypeInfo.isPwEyeOn2 === false) {
+        this.pwTypeInfo.isPwEyeOn2 = true
+      } else {
+        this.pwTypeInfo.isPwEyeOn2 = false
+      }
+    },
+    onChangeType3() {
+      if (this.pwTypeInfo.isPwEyeOn3 === false) {
+        this.pwTypeInfo.isPwEyeOn3 = true
+      } else {
+        this.pwTypeInfo.isPwEyeOn3 = false
+      }
+    },
+    updatePassword() {
+      if (this.myInfo.password !== this.newPassword.recentPassword) {
+        this.openModalDesc('변경 실패', '현재 비밀번호가 일치하지 않습니다.')
+      }
+    },
   },
 }
 </script>

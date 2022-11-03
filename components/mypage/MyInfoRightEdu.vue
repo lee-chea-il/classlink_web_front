@@ -7,25 +7,25 @@
           <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
             >교육기관 이름</label
           >
-          <div class="col">에듀케이어학원</div>
+          <div class="col">{{ eduInfo.name }}</div>
         </div>
         <div class="form-group row">
           <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
             >교육기관 연락처</label
           >
-          <div class="col">031-634-4742</div>
+          <div class="col">{{ eduInfo.tel }}</div>
         </div>
         <div class="form-group row">
           <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
             >교육기관 코드</label
           >
-          <div class="col">12345</div>
+          <div class="col">{{ eduInfo.code }}</div>
         </div>
         <div class="form-group row">
           <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
             >교육기관 주소</label
           >
-          <div class="col">이천시 이섭대천로 1334</div>
+          <div class="col">{{ eduInfo.address }}</div>
         </div>
         <div class="form-group row">
           <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
@@ -48,25 +48,25 @@
           <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
             >프랜차이즈 이름</label
           >
-          <div class="col">에듀케이어학원</div>
+          <div class="col">{{ franInfo.name }}</div>
         </div>
         <div class="form-group row">
           <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
             >프랜차이즈 연락처</label
           >
-          <div class="col">031-634-4742</div>
+          <div class="col">{{ franInfo.tel }}</div>
         </div>
         <div class="form-group row">
           <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
             >프랜차이즈 코드</label
           >
-          <div class="col">12345</div>
+          <div class="col">{{ franInfo.code }}</div>
         </div>
         <div class="form-group row">
           <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
             >프랜차이즈 주소</label
           >
-          <div class="col">이천시 이섭대천로 1334</div>
+          <div class="col">{{ franInfo.address }}</div>
         </div>
         <div class="form-group row">
           <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
@@ -89,7 +89,19 @@
   <!-- /.오른쪽 영역 -->
 </template>
 <script>
-export default { name: 'MyInfoRightEdu' }
+export default {
+  name: 'MyInfoRightEdu',
+  props: {
+    eduInfo: {
+      type: Object,
+      default: null,
+    },
+    franInfo: {
+      type: Object,
+      default: null,
+    },
+  },
+}
 </script>
 <style scoped>
 .info_area {

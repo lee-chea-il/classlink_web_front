@@ -1,15 +1,20 @@
 <template>
   <ValidationProvider v-slot="{ errors, classes }" :rules="rules">
-    <div class="form-group">
-      <label v-if="name === '비밀번호'" for="name">{{ name }}</label>
+    <div
+      class="form-group"
+      :class="isBtn || isIdCheckBtn ? 'form-inlinebox' : ''"
+    >
       <input
         :id="id"
-        :value="inputValue"
         :name="name"
+        :value="inputValue"
         :type="!isPwEyeOn ? 'password' : 'text'"
         :placeholder="placeholder"
         class="form-control"
-        :class="isError ? 'is-invalid' : classes"
+        :class="
+          (isError ? 'is-invalid' : classes,
+          isBtn || isIdCheckBtn ? 'form-inline' : '')
+        "
         autocomplete="off"
         @input="$emit('change-input', $event)"
       />
@@ -25,21 +30,23 @@
         :class="isPwEyeOn ? 'icons_eye_on' : 'icons_eye_on hide'"
         @click="$emit('change-type')"
       ></i>
-      <!-- [개발참조]:class="disabled"제거시 활성 -->
     </div>
-    <div v-if="isError && inputValue !== ''" class="invalid_text">
+    <div v-if="isError && inputValue !== ''" class="invalid_text01">
       비밀번호가 일치하지 않습니다.
     </div>
-    <div class="invalid_text">
+    <div class="invalid_text01">
       {{ errors[0] }}
     </div>
   </ValidationProvider>
 </template>
+
 <script>
 import { ValidationProvider } from 'vee-validate'
 export default {
-  name: 'CustomInputPw',
-  components: { ValidationProvider },
+  name: 'CustomMypageInputPw',
+  components: {
+    ValidationProvider,
+  },
   props: {
     inputValue: {
       default: '',
@@ -69,6 +76,18 @@ export default {
       default: false,
       type: Boolean,
     },
+    isBtn: {
+      default: false,
+      type: Boolean,
+    },
+    auth: {
+      default: false,
+      type: Boolean,
+    },
+    isIdCheckBtn: {
+      default: false,
+      type: Boolean,
+    },
     isPwEyeOn: {
       default: false,
       type: Boolean,
@@ -76,12 +95,26 @@ export default {
   },
 }
 </script>
+
 <style scoped>
-.i {
+button {
+  white-space: nowrap;
+}
+.invalid_text01 {
+  margin-top: -15px !important;
+}
+.icons_eye_on {
   position: absolute;
-  z-index: 100;
+  z-index: 10;
   cursor: pointer;
-  bottom: 12px;
-  right: 10px;
+  top: 15px;
+  right: 23px;
+}
+.icons_eye_off {
+  position: absolute;
+  z-index: 10;
+  cursor: pointer;
+  top: 16px;
+  right: 23px;
 }
 </style>
