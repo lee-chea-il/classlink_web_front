@@ -275,7 +275,7 @@
                 class="btn btn_crud_default"
                 data-dismiss="modal"
                 data-toggle="modal"
-                data-target="#modalDataRegiQuiz"
+                @click="$emit('change')"
               >
                 수정
               </button>

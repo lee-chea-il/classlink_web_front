@@ -4,14 +4,17 @@
       <div class="tit">
         <div class="custom-control custom-radio custom-control-inline">
           <input
-            :id="`item${idx}`"
+            :id="!changePage ? `item${idx}` : `target${idx}`"
             type="radio"
             name="radB"
             class="custom-control-input"
             :checked="itemList.answer === idx"
             @click="$emit('select-answer', idx)"
           />
-          <label class="custom-control-label" :for="`item${idx}`">
+          <label
+            class="custom-control-label"
+            :for="!changePage ? `item${idx}` : `target${idx}`"
+          >
             보기{{ idx + 1 }} <br /><span
               v-if="itemList.answer === idx"
               class="exp_smtxt"
@@ -52,6 +55,10 @@ export default {
     currentPageIdx: {
       type: Number,
       default: 0,
+    },
+    changePage: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

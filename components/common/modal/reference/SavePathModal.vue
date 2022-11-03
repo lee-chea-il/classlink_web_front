@@ -73,7 +73,7 @@
               role="tabpanel"
               aria-labelledby="grade-tab"
             >
-              <VueTreeList
+              <!-- <VueTreeList
                 :model="educationPath"
                 :default-expanded="true"
                 :class="`id`"
@@ -96,7 +96,7 @@
 
                 <span slot="addTreeNodeIcon" class="icon"></span>
                 <span slot="delNodeIcon" class="icon"></span
-              ></VueTreeList>
+              ></VueTreeList> -->
             </div>
             <!-- /.탭01 내용 -->
             <!-- 탭02 내용 -->
@@ -138,43 +138,43 @@
 </template>
 
 <script>
-import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
+// import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
 export default {
   name: 'SavePathModal',
   components: {
-    VueTreeList,
+    // VueTreeList,
   },
   data() {
     return {
-      educationPath: new Tree([
-        {
-          name: '학원',
-          id: 1,
-          pid: 0,
-          path: '학원',
-          isClick: false,
-          children: [
-            {
-              name: '국어',
-              id: 2,
-              isLeaf: false,
-              path: '학원/국어',
-              pid: 1,
-              isClick: false,
-              children: [
-                {
-                  name: '1단원',
-                  id: 7,
-                  isLeaf: false,
-                  path: '학원/국어/1단원',
-                  pid: 6,
-                  isClick: false,
-                },
-              ],
-            },
-          ],
-        },
-      ]),
+      // educationPath: new Tree([
+      //   {
+      //     name: '학원',
+      //     id: 1,
+      //     pid: 0,
+      //     path: '학원',
+      //     isClick: false,
+      //     children: [
+      //       {
+      //         name: '국어',
+      //         id: 2,
+      //         isLeaf: false,
+      //         path: '학원/국어',
+      //         pid: 1,
+      //         isClick: false,
+      //         children: [
+      //           {
+      //             name: '1단원',
+      //             id: 7,
+      //             isLeaf: false,
+      //             path: '학원/국어/1단원',
+      //             pid: 6,
+      //             isClick: false,
+      //           },
+      //         ],
+      //       },
+      //     ],
+      //   },
+      // ]),
       selectPath: {},
     }
   },
@@ -201,12 +201,12 @@ export default {
       console.log(e)
     },
 
-    addNode() {
-      console.log('vvvvvvvvvvvvvvvvvvvvvvvv')
-      const node = new TreeNode({ name: 'new node', isLeaf: false })
-      if (!this.data.children) this.data.children = []
-      this.data.addChildren(node)
-    },
+    // addNode() {
+    //   console.log('vvvvvvvvvvvvvvvvvvvvvvvv')
+    //   const node = new TreeNode({ name: 'new node', isLeaf: false })
+    //   if (!this.data.children) this.data.children = []
+    //   this.data.addChildren(node)
+    // },
 
     getNewTree() {
       const vm = this

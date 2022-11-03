@@ -43,24 +43,19 @@
 
       <div class="form-group row">
         <label for="" class="data_title">키워드</label>
-        <div class="col">
+        <div id="inputBox" class="col">
           <input
             :id="
               quiz
                 ? 'keywordInputQuiz'
                 : noteTest
                 ? 'keywordInputNoteTest'
+                : change
+                ? 'keywordChange'
                 : 'keywordInput'
             "
-            :name="
-              quiz
-                ? 'keywordInputQuiz'
-                : noteTest
-                ? 'keywordInputNoteTest'
-                : 'keywordInput'
-            "
+            name="keyword"
             placeholder="입력"
-            :value="reference.keyword"
             @change="$emit('change-input', $event)"
           />
           <span class="info">키워드는 엔터로 구분할 수 있습니다</span>
@@ -142,7 +137,6 @@
 import CustomSelect from '../common/custom/CustomSelect.vue'
 import CustomBtnInput from '../common/custom/CustomBtnInput.vue'
 import CustomModalInput from '@/components/common/custom/CustomModalInput.vue'
-
 export default {
   name: 'ReferenceAddLeftField',
   components: { CustomModalInput, CustomSelect, CustomBtnInput },
@@ -159,7 +153,17 @@ export default {
       type: Boolean,
       default: false,
     },
+    change: {
+      type: Boolean,
+      default: false,
+    },
   },
+  data() {
+    return {
+      value: '',
+    }
+  },
+  methods: {},
 }
 </script>
 
@@ -170,4 +174,42 @@ export default {
   border-radius: 5px;
   border-color: rgba(167, 169, 172, 0.4);
 }
+
+/* .keywordUl {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.keywordUl li {
+  padding: 4px 12px;
+  background: #7391fa;
+  color: whi;
+  margin: 4px;
+  border-radius: 12px;
+  color: white;
+  position: relative;
+  cursor: pointer;
+}
+
+.keywordUl li::after {
+  content: 'x';
+  position: absolute;
+  background: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  color: whi;
+  border-radius: 50%;
+  color: white;
+  right: -8px;
+  top: -13px;
+  display: none;
+}
+
+.keywordUl li:hover:after {
+  display: flex;
+} */
 </style>

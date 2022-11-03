@@ -104,8 +104,17 @@
                 role="tabpanel"
                 aria-labelledby="grade-tab"
               >
-                <VueTreeList :model="referenceList" @click="onClickSelectData">
-                </VueTreeList>
+                <!-- <VueTreeList :model="referenceList" @click="onClickSelectData">
+                </VueTreeList> -->
+                <ul>
+                  <li
+                    v-for="(item, idx) in referenceList"
+                    :key="idx"
+                    @click="onClickSelectData(item)"
+                  >
+                    {{ item.name }}
+                  </li>
+                </ul>
               </div>
               <!-- /.탭 내용01 -->
             </div>
@@ -224,10 +233,6 @@
       @upload-page="onUploadUrl"
     />
 
-    <!-- 퀴즈 업로드 
-      change-number= 해당 퀴즈 editor 변경 이벤트
-      change-item = 해당 퀴즈 내용 변경 이벤트
-    -->
     <QuizAddModal
       :open="isQuizAddModal"
       :reference="reference"
@@ -251,14 +256,15 @@
       :reference="reference"
       :noteTestList="noteTestList"
       :currentPageIdx="currentPageIdx"
-      @plus-test="onPlusNoteTestList"
       @change-number="onClickPagination"
-      @plus-item="onPlusNoteTestList"
       @change-input="onChangeUploadFile"
       @change-dificultade="onSelectDificultadeTest"
       @change-item="onChangeTest"
-      @select-answer="onSelectAnswer"
       @close="onCloseNoteTestAddModal"
+      @delete-item="onDeleteNoteTest"
+      @plus-item="onPlusNoteTestList"
+      @pagination="onClickQuizPagination"
+      @select-answer="onSelectAnswer"
     />
 
     <!-- 저장경로 설정 -->
@@ -271,7 +277,12 @@
     <SearchResultModal />
 
     <!-- 비디오 보기 -->
-    <VideoBrowseModal :selectData="selectData" />
+    <VideoBrowseModal
+      :open="isReferenceBrowseModal"
+      :selectData="selectData"
+      @close="onCloseReferenceBrowseModal"
+      @reference-change="onOpenReferenceChangeModal"
+    />
 
     <!-- 퀴즈 보기 -->
     <QuizBrowseModal
@@ -281,6 +292,7 @@
       @change-number="onClickPagination"
       @close="onCloseQuizBrowseModal"
       @pagination="onClickQuizPagination"
+      @change="onOpenQuizChangeModal"
     />
 
     <!-- 쪽지시험 보기 -->
@@ -291,6 +303,49 @@
       @change-number="onClickPagination"
       @close="onCloseNoteTestBrowseModal"
       @pagination="onClickQuizPagination"
+      @change="onOpenNoteTestChangeModal"
+    />
+
+    <!-- 자료 수정 -->
+    <ReferenceChangeModal
+      :open="isReferenceChangeModal"
+      :reference="selectData"
+      @close="onCloseReferenceChangeModal"
+      @change-input="onChangeSelectData"
+    />
+
+    <!-- 퀴즈 수정 -->
+    <QuizChangeModal
+      :open="isQuizChangeModal"
+      :quiz="selectData"
+      :currentPageIdx="currentPageIdx"
+      @delete-quiz="onDeleteSelectQuizItem"
+      @close="onCloseQuizChangeModal"
+      @change-input="onChangeSelectData"
+      @change-number="onClickPagination"
+      @pagination="onClickQuizPagination"
+      @plus-item="onPlusSelectQuizList"
+      @select-type="onClickSelectQuizType"
+      @select-ox="onSelectChangeOx"
+      @select-dificultade="onSelectChangeDificultade"
+      @change-item="onChangeSelectQuiz"
+    />
+
+    <!-- 쪽지시험 수정 -->
+    <NoteTestChangeModal
+      :open="isNoteTestChangeModal"
+      :reference="selectData"
+      :noteTestList="noteTestList"
+      :currentPageIdx="currentPageIdx"
+      @close="onCloseNoteTestChangeModal"
+      @change-item="onChangeSelectTest"
+      @change-input="onChangeSelectData"
+      @change-number="onClickPagination"
+      @change-dificultade="onSelectChangeDificultadeTest"
+      @delete-item="onDeleteSelectNoteTest"
+      @pagination="onClickQuizPagination"
+      @select-answer="onSelectChangeAnswer"
+      @plus-item="onPlusSelectNoteTestList"
     />
 
     <!-- 공유하기 -->
@@ -309,25 +364,11 @@
       :desc="modalDesc.desc"
       @close="onCloseModalDesc"
     />
-
-    <div
-      id="brouseModal"
-      class="box02"
-      type="button"
-      data-dismiss="modal"
-      data-toggle="modal"
-      data-target="#modalDataRead"
-      style="display: none"
-    >
-      <span class="regi_icon02"></span>
-      <div>자료 열람</div>
-    </div>
   </div>
 </template>
 
 <script>
 import Tagify from '@yaireo/tagify'
-import { VueTreeList, Tree } from 'vue-tree-list'
 import PageHeader from '@/components/common/PageHeader.vue'
 import ModalDeac from '@/components/common/modal/ModalDesc.vue'
 import SavePathModal from '@/components/common/modal/reference/SavePathModal.vue'
@@ -345,6 +386,9 @@ import NoteTestBrowseModal from '@/components/common/modal/reference/NoteTestBro
 import ShareViewModal from '@/components/common/modal/reference/ShareViewModal.vue'
 import AddressCopySuccessModal from '@/components/common/modal/reference/AddressCopySuccessModal.vue'
 import DeleteModal from '@/components/common/modal/reference/DeleteModal.vue'
+import ReferenceChangeModal from '@/components/common/modal/reference/ReferenceChangeModal.vue'
+import QuizChangeModal from '@/components/common/modal/reference/QuizChangeModal.vue'
+import NoteTestChangeModal from '@/components/common/modal/reference/NoteTestChangeModal.vue'
 import { apiReference } from '@/services'
 import '@yaireo/tagify/dist/tagify.css'
 
@@ -368,249 +412,224 @@ export default {
     ShareViewModal,
     AddressCopySuccessModal,
     DeleteModal,
-    VueTreeList,
+    ReferenceChangeModal,
+    QuizChangeModal,
+    NoteTestChangeModal,
   },
   layout: 'EducationLayout',
   data() {
     return {
       isReferenceAddModal: false,
-      isQuizBrowseModal: false,
       isQuizAddModal: false,
       isNoteTestAddModal: false,
+      isReferenceBrowseModal: false,
+      isQuizBrowseModal: false,
       isNoteTestBrowseModal: false,
+      isReferenceChangeModal: false,
+      isQuizChangeModal: false,
+      isNoteTestChangeModal: false,
       uploadType: '',
       currentPageIdx: 0,
       uploadFile: {},
       selectData: {},
-      referenceList: new Tree([
+      referenceList: [
         {
           id: 0,
+          name: '국어학습자료 애니메이션.mp4',
+          subject: '국어',
+          desc: '등록한 자료 1',
+          keyword: [{ title: '국어' }, { title: '수학' }, { title: '과학' }],
+          registrant: '등록인',
+          savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+          isOpenEducation: true,
+          inOpenReferenceRoom: true,
+          fileName: '',
+          fileDivision: '교육기관',
+          fileType: 'video/mp4',
+          uploadType: 'video',
+          fileVolume: '',
+          createAt: '',
+          children: [],
+        },
+        {
+          id: 1,
+          name: '수학 학습자료.pdf',
+          subject: '수학',
+          desc: '등록한 자료 2',
+          keyword: [{ title: '국어' }, { title: '수학' }, { title: '과학' }],
+          registrant: '등록인',
+          savePath:
+            'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
+          isOpenEducation: true,
+          inOpenReferenceRoom: true,
+          fileName: '',
+          fileDivision: '교육기관',
+          fileType: 'application/pdf',
+          uploadType: 'pdf',
+          fileVolume: '',
+          createAt: '',
           isLeaf: false,
-          name: 'reference',
-          children: [
+        },
+        {
+          id: 2,
+          name: '영어 단어 퀴즈.quiz',
+          subject: '영어',
+          desc: '등록한 자료 1',
+          keyword: [{ title: '국어' }, { title: '수학' }, { title: '과학' }],
+          registrant: '등록인',
+          savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+          isOpenEducation: true,
+          inOpenReferenceRoom: true,
+          fileName: '',
+          fileDivision: '교육기관',
+          fileType: 'quiz',
+          uploadType: 'quiz',
+          fileVolume: '',
+          createAt: '',
+          quizList: [
             {
               id: 0,
-              name: '국어학습자료 애니메이션.mp4',
-              subject: '국어',
-              desc: '등록한 자료 1',
-              keyword: [
-                { title: '국어' },
-                { title: '수학' },
-                { title: '과학' },
-              ],
-              registrant: '등록인',
-              savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
-              isOpenEducation: true,
-              inOpenReferenceRoom: true,
-              fileName: '',
-              fileDivision: '교육기관',
-              fileType: 'video/mp4',
-              uploadType: 'video',
-              fileVolume: '',
-              createAt: '',
-              children: [],
-            },
-            {
-              id: 1,
-              name: '수학 학습자료.pdf',
-              subject: '수학',
-              desc: '등록한 자료 2',
-              keyword: [
-                { title: '국어' },
-                { title: '수학' },
-                { title: '과학' },
-              ],
-              registrant: '등록인',
-              savePath:
-                'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
-              isOpenEducation: true,
-              inOpenReferenceRoom: true,
-              fileName: '',
-              fileDivision: '교육기관',
-              fileType: 'application/pdf',
-              uploadType: 'pdf',
-              fileVolume: '',
-              createAt: '',
-              isLeaf: false,
+              problem: '<p>asdfaaaaasdf</p>',
+              oxAnswer: 0,
+              dificultade: 1,
+              limitTime: '3분',
+              quizType: 0,
+              shortAnswer: '123',
+              subjectiveAnswer: '123',
+              subjectiveWrongAnswer: '123',
             },
             {
               id: 2,
-              name: '영어 단어 퀴즈.quiz',
-              subject: '영어',
-              desc: '등록한 자료 1',
-              keyword: [
-                { title: '국어' },
-                { title: '수학' },
-                { title: '과학' },
-              ],
-              registrant: '등록인',
-              savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
-              isOpenEducation: true,
-              inOpenReferenceRoom: true,
-              fileName: '',
-              fileDivision: '교육기관',
-              fileType: 'quiz',
-              uploadType: 'quiz',
-              fileVolume: '',
-              createAt: '',
-              quizList: [
-                {
-                  id: 0,
-                  problem: '<p>asdfaaaaasdf</p>',
-                  oxAnswer: 0,
-                  dificultade: 1,
-                  limitTime: '3분',
-                  quizType: 0,
-                  shortAnswer: '123',
-                  subjectiveAnswer: '123',
-                  subjectiveWrongAnswer: '123',
-                },
-                {
-                  id: 2,
-                  problem: '<p>asdggggg</p>',
-                  dificultade: 0,
-                  limitTime: '5분',
-                  quizType: 0,
-                  oxAnswer: 0,
-                  shortAnswer: '234',
-                  subjectiveAnswer: '234',
-                  subjectiveWrongAnswer: '234',
-                },
-                {
-                  id: 3,
-                  problem: '<p>234242242424</p>',
-                  dificultade: 0,
-                  limitTime: '2분',
-                  quizType: 0,
-                  oxAnswer: 0,
-                  shortAnswer: '345',
-                  subjectiveAnswer: '345',
-                  subjectiveWrongAnswer: '345',
-                },
-                {
-                  id: 4,
-                  problem: '<p>555555555</p>',
-                  dificultade: 0,
-                  limitTime: '4분',
-                  quizType: 0,
-                  oxAnswer: 0,
-                  shortAnswer: '456',
-                  subjectiveAnswer: '456',
-                  subjectiveWrongAnswer: '456',
-                },
-                {
-                  id: 5,
-                  problem: '<p>asx c</p>',
-                  dificultade: 0,
-                  limitTime: '5분',
-                  quizType: 0,
-                  oxAnswer: 0,
-                  shortAnswer: '567',
-                  subjectiveAnswer: '567',
-                  subjectiveWrongAnswer: '567',
-                },
-              ],
-              isLeaf: false,
+              problem: '<p>asdggggg</p>',
+              dificultade: 0,
+              limitTime: '5분',
+              quizType: 0,
+              oxAnswer: 0,
+              shortAnswer: '234',
+              subjectiveAnswer: '234',
+              subjectiveWrongAnswer: '234',
             },
             {
               id: 3,
-              name: '사회 쪽지시험 영상.youtube',
-              subject: '사회',
-              desc: '등록한 자료 1',
-              keyword: [
-                { title: '국어' },
-                { title: '수학' },
-                { title: '과학' },
-              ],
-              registrant: '등록인',
-              savePath: 'https://www.youtube.com/embed/1CYbySbtyF0',
-              isOpenEducation: true,
-              inOpenReferenceRoom: true,
-              fileName: '',
-              fileDivision: '교육기관',
-              fileType: 'youtube',
-              uploadType: 'youtube',
-              fileVolume: '',
-              createAt: '',
-              isLeaf: false,
+              problem: '<p>234242242424</p>',
+              dificultade: 0,
+              limitTime: '2분',
+              quizType: 0,
+              oxAnswer: 0,
+              shortAnswer: '345',
+              subjectiveAnswer: '345',
+              subjectiveWrongAnswer: '345',
             },
             {
               id: 4,
-              name: '과학 사이트 참고용.url',
-              subject: '과학',
-              desc: '등록한 자료 1',
-              keyword: [
-                { title: '국어' },
-                { title: '수학' },
-                { title: '과학' },
-              ],
-              registrant: '등록인',
-              savePath: 'https://sciencelove.com/725',
-              isOpenEducation: true,
-              inOpenReferenceRoom: true,
-              fileName: '',
-              fileDivision: '교육기관',
-              fileType: 'test',
-              uploadType: 'url',
-              fileVolume: '',
-              createAt: '',
-              isLeaf: false,
+              problem: '<p>555555555</p>',
+              dificultade: 0,
+              limitTime: '4분',
+              quizType: 0,
+              oxAnswer: 0,
+              shortAnswer: '456',
+              subjectiveAnswer: '456',
+              subjectiveWrongAnswer: '456',
             },
             {
               id: 5,
-              name: '수학 쪽지시험.test',
-              subject: '수학',
-              desc: '등록한 자료 1',
-              keyword: [
-                { title: '국어' },
-                { title: '수학' },
-                { title: '과학' },
-              ],
-              registrant: '등록인',
-              savePath: 'https://sciencelove.com/725',
-              isOpenEducation: true,
-              inOpenReferenceRoom: true,
-              fileName: '',
-              fileDivision: '교육기관',
-              fileType: 'test',
-              uploadType: 'test',
-              fileVolume: '',
-              createAt: '',
-              noteTestList: [
-                {
-                  id: 0,
-                  problem: '<p>1번 문제</p>',
-                  exampleList: [
-                    { id: '', example: '<p>답 1임</p>' },
-                    { id: '', example: '<p>답 2임</p>' },
-                    { id: '', example: '<p>답 3임</p>' },
-                    { id: '', example: '<p>답 4임</p>' },
-                    { id: '', example: '<p>답 5임</p>' },
-                  ],
-                  dificultade: 0,
-                  limitTime: '',
-                  answer: 0,
-                },
-                {
-                  id: 1,
-                  problem: '<p>2번 문제</p>',
-                  exampleList: [
-                    { id: '', example: '<p>답 5임</p>' },
-                    { id: '', example: '<p>답 6임</p>' },
-                    { id: '', example: '<p>답 7임</p>' },
-                    { id: '', example: '<p>답 8임</p>' },
-                    { id: '', example: '<p>답 9임</p>' },
-                  ],
-                  dificultade: 2,
-                  limitTime: '',
-                  answer: 2,
-                },
-              ],
-              isLeaf: false,
+              problem: '<p>asx c</p>',
+              dificultade: 0,
+              limitTime: '5분',
+              quizType: 0,
+              oxAnswer: 0,
+              shortAnswer: '567',
+              subjectiveAnswer: '567',
+              subjectiveWrongAnswer: '567',
             },
           ],
+          isLeaf: false,
         },
-      ]),
+        {
+          id: 3,
+          name: '사회 쪽지시험 영상.youtube',
+          subject: '사회',
+          desc: '등록한 자료 1',
+          keyword: [{ title: '국어' }, { title: '수학' }, { title: '과학' }],
+          registrant: '등록인',
+          savePath: 'https://www.youtube.com/embed/1CYbySbtyF0',
+          isOpenEducation: true,
+          inOpenReferenceRoom: true,
+          fileName: '',
+          fileDivision: '교육기관',
+          fileType: 'youtube',
+          uploadType: 'youtube',
+          fileVolume: '',
+          createAt: '',
+          isLeaf: false,
+        },
+        {
+          id: 4,
+          name: '과학 사이트 참고용.url',
+          subject: '과학',
+          desc: '등록한 자료 1',
+          keyword: [{ title: '국어' }, { title: '수학' }, { title: '과학' }],
+          registrant: '등록인',
+          savePath: 'https://sciencelove.com/725',
+          isOpenEducation: true,
+          inOpenReferenceRoom: true,
+          fileName: '',
+          fileDivision: '교육기관',
+          fileType: 'test',
+          uploadType: 'url',
+          fileVolume: '',
+          createAt: '',
+          isLeaf: false,
+        },
+        {
+          id: 5,
+          name: '수학 쪽지시험.test',
+          subject: '수학',
+          desc: '등록한 자료 1',
+          keyword: [{ title: '국어' }, { title: '수학' }, { title: '과학' }],
+          registrant: '등록인',
+          savePath: 'https://sciencelove.com/725',
+          isOpenEducation: true,
+          inOpenReferenceRoom: true,
+          fileName: '',
+          fileDivision: '교육기관',
+          fileType: 'test',
+          uploadType: 'test',
+          fileVolume: '',
+          createAt: '',
+          noteTestList: [
+            {
+              id: 0,
+              problem: '<p>1번 문제</p>',
+              exampleList: [
+                { id: '', example: '<p>답 1임</p>' },
+                { id: '', example: '<p>답 2임</p>' },
+                { id: '', example: '<p>답 3임</p>' },
+                { id: '', example: '<p>답 4임</p>' },
+                { id: '', example: '<p>답 5임</p>' },
+              ],
+              dificultade: 0,
+              limitTime: '',
+              answer: 0,
+            },
+            {
+              id: 1,
+              problem: '<p>2번 문제</p>',
+              exampleList: [
+                { id: '', example: '<p>답 5임</p>' },
+                { id: '', example: '<p>답 6임</p>' },
+                { id: '', example: '<p>답 7임</p>' },
+                { id: '', example: '<p>답 8임</p>' },
+                { id: '', example: '<p>답 9임</p>' },
+              ],
+              dificultade: 2,
+              limitTime: '',
+              answer: 2,
+            },
+          ],
+          isLeaf: false,
+        },
+      ],
       reference: {
         name: '',
         subject: '',
@@ -678,6 +697,7 @@ export default {
     this.getTagify()
     this.getTagifyQuiz()
     this.getTagifyNoteTest()
+    this.getTagifyReferenceChange()
   },
   methods: {
     // Modal Event
@@ -698,15 +718,6 @@ export default {
       this.isReferenceAddModal = false
     },
 
-    onOpenQuizBrowseModal() {
-      this.isQuizBrowseModal = true
-    },
-
-    onCloseQuizBrowseModal() {
-      this.initAddReferenceData()
-      this.isQuizBrowseModal = false
-    },
-
     onOpenQuizAddModal() {
       this.reference.fileDivision = '교육기관'
       this.reference.fileType = 'quiz'
@@ -721,7 +732,6 @@ export default {
       this.initAddReferenceData()
       this.isQuizAddModal = false
     },
-
     onOpenNoteTestAddModal() {
       this.reference.fileDivision = '교육기관'
       this.reference.fileType = 'test'
@@ -731,8 +741,25 @@ export default {
       this.isNoteTestAddModal = true
     },
 
+    onOpenReferenceBrowseModal() {
+      this.isReferenceBrowseModal = true
+    },
+
+    onCloseReferenceBrowseModal() {
+      this.isReferenceBrowseModal = false
+    },
+
     onCloseNoteTestAddModal() {
       this.isNoteTestAddModal = false
+    },
+
+    onOpenQuizBrowseModal() {
+      this.isQuizBrowseModal = true
+    },
+
+    onCloseQuizBrowseModal() {
+      this.initAddReferenceData()
+      this.isQuizBrowseModal = false
     },
 
     onOpenNoteTestBrowseModal() {
@@ -744,6 +771,37 @@ export default {
       this.isNoteTestBrowseModal = false
     },
 
+    onOpenReferenceChangeModal() {
+      this.onCloseReferenceBrowseModal()
+      this.isReferenceChangeModal = true
+    },
+
+    onCloseReferenceChangeModal() {
+      this.initAddReferenceData()
+      this.selectData = {}
+      this.isReferenceChangeModal = false
+    },
+
+    onOpenQuizChangeModal() {
+      this.onCloseQuizBrowseModal()
+      this.isQuizChangeModal = true
+    },
+
+    onCloseQuizChangeModal() {
+      this.selectData = {}
+      this.isQuizChangeModal = false
+    },
+
+    onOpenNoteTestChangeModal() {
+      this.onCloseNoteTestBrowseModal()
+      this.isNoteTestChangeModal = true
+    },
+
+    onCloseNoteTestChangeModal() {
+      this.selectData = {}
+      this.isNoteTestChangeModal = false
+    },
+
     // 태그 컴포넌트 가져오기
     getTagify() {
       const input = document.getElementById('keywordInput')
@@ -753,6 +811,7 @@ export default {
           //  whitelist: ["ironman", "antman", "captain america", "thor", "spiderman"],
           enforceWhitelist: false, // true일때 keywordList에 있는 태그만 사용
         })
+
         tagify.on('add', function () {})
       }
     },
@@ -781,18 +840,36 @@ export default {
       }
     },
 
+    // 수정페이지 태그 컴포넌트 가져오기
+    getTagifyReferenceChange() {
+      const input = document.getElementById('keywordChange')
+      // const keyword = JSON.parse(JSON.stringify(this.selectData.keyword))
+      if (input) {
+        const tagify = new Tagify(input, {
+          whitelist: this.keywordList,
+          enforceWhitelist: false,
+        })
+        // for (const x of keyword) {
+        //   tagify.addTags(x.title, true, false)
+        //   tagify.removeAllTags()
+        // }
+        tagify.on()
+      }
+    },
+
     onCloseModalDesc() {
       this.modalDesc.open = false
     },
 
     // 등록 자료 내용 변경
-    onChangeUploadFile({ target: { id, value, type, checked } }) {
+    onChangeUploadFile({ target: { id, value, type, checked, name } }) {
       if (
         id === 'keywordInputQuiz' ||
         id === 'keywordInputNoteTest' ||
-        id === 'keywordInput'
+        id === 'keywordInput' ||
+        id === 'keywordChange'
       ) {
-        this.reference.keyword = value
+        this.reference[name] = value
       } else if (type === 'checkbox') {
         if (checked) {
           this.reference[id] = true
@@ -801,6 +878,25 @@ export default {
         }
       } else {
         this.reference[id] = value
+      }
+    },
+
+    onChangeSelectData({ target: { id, value, type, checked, name } }) {
+      if (
+        id === 'keywordInputQuiz' ||
+        id === 'keywordInputNoteTest' ||
+        id === 'keywordInput' ||
+        id === 'keywordChange'
+      ) {
+        this.selectData[name] = value
+      } else if (type === 'checkbox') {
+        if (checked) {
+          this.selectData[id] = true
+        } else {
+          this.selectData[id] = false
+        }
+      } else {
+        this.selectData[id] = value
       }
     },
 
@@ -813,8 +909,17 @@ export default {
       this.quizList[idx][name] = value
     },
 
+    // 수정 페이지 변경
+    onChangeSelectQuiz({ target: { value, name } }, idx) {
+      this.selectData.quizList[idx][name] = value
+    },
+
     onChangeTest({ target: { value, name } }, idx) {
       this.noteTestList[idx][name] = value
+    },
+
+    onChangeSelectTest({ target: { value, name } }, idx) {
+      this.selectData.noteTestList[idx][name] = value
     },
 
     // 비디오 업로드
@@ -961,6 +1066,12 @@ export default {
         ? this.selectData.quizList.length
         : this.isNoteTestBrowseModal
         ? this.selectData.noteTestList.length
+        : this.isQuizChangeModal
+        ? this.selectData.quizList.length
+        : this.isNoteTestChangeModal
+        ? this.selectData.noteTestList.length
+        : this.isNoteTestAddModal
+        ? this.noteTestList.length
         : this.quizList.length
       if (direction === 'plus') {
         if (this.currentPageIdx < number - 1) this.currentPageIdx += 1
@@ -987,10 +1098,47 @@ export default {
       }
     },
 
+    // 퀴즈 수정페이지 리스트 추가
+    onPlusSelectQuizList() {
+      if (this.selectData.quizList.length <= 19) {
+        const quizItem = {
+          id: this.selectData.quizList.length + 1,
+          problem: '',
+          dificultade: 0,
+          limitTime: 0,
+          quizType: 0,
+          oxAnswer: 0,
+          shortAnswer: '',
+          subjectiveAnswer: '',
+          subjectiveWrongAnswer: '',
+        }
+        this.selectData.quizList.push(quizItem)
+      }
+    },
+
     // 선택한 퀴즈 지우기
     onDeleteQuizItem(idx) {
       if (this.quizList.length > 1) {
         this.quizList.splice(idx, 1)
+      }
+    },
+    // 수정 페이지 퀴즈 지우기
+    onDeleteSelectQuizItem(idx) {
+      if (this.selectData.quizList.length > 1) {
+        this.selectData.quizList.splice(idx, 1)
+      }
+    },
+
+    // 선택한 퀴즈 지우기
+    onDeleteNoteTest(idx) {
+      if (this.noteTestList.length > 1) {
+        this.noteTestList.splice(idx, 1)
+      }
+    },
+    // 수정 페이지 퀴즈 지우기
+    onDeleteSelectNoteTest(idx) {
+      if (this.selectData.noteTestList.length > 1) {
+        this.selectData.noteTestList.splice(idx, 1)
       }
     },
 
@@ -1011,9 +1159,31 @@ export default {
       }
     },
 
+    // 수정 페이지 퀴즈 타입 변경
+    onClickSelectQuizType(idx, num) {
+      this.selectData.quizList[idx].quizType = num
+      if (num === 0) {
+        this.selectData.quizList[idx].shortAnswer = ''
+        this.selectData.quizList[idx].subjectiveAnswer = ''
+        this.selectData.quizList[idx].subjectiveWrongAnswer = ''
+      } else if (num === 1) {
+        this.selectData.quizList[idx].oxAnswer = 0
+        this.selectData.quizList[idx].subjectiveAnswer = ''
+        this.selectData.quizList[idx].subjectiveWrongAnswer = ''
+      } else {
+        this.selectData.quizList[idx].oxAnswer = 0
+        this.selectData.quizList[idx].shortAnswer = ''
+      }
+    },
+
     // ox클릭 이벤트
     onSelectOx(idx, num) {
       this.quizList[idx].oxAnswer = num
+    },
+
+    // 수정 페이지ox클릭 이벤트
+    onSelectChangeOx(idx, num) {
+      this.selectData.quizList[idx].oxAnswer = num
     },
 
     // 난이도 설정
@@ -1021,9 +1191,19 @@ export default {
       this.quizList[idx].dificultade = num
     },
 
+    // 수정 페이지난이도 설정
+    onSelectChangeDificultade(idx, num) {
+      this.selectData.quizList[idx].dificultade = num
+    },
+
     // 난이도 설정 쪽지 시험
     onSelectDificultadeTest(idx, num) {
       this.noteTestList[idx].dificultade = num
+    },
+
+    // 수정 페이지 난이도 설정 쪽지 시험
+    onSelectChangeDificultadeTest(idx, num) {
+      this.selectData.noteTestList[idx].dificultade = num
     },
 
     // 쪽지 시험
@@ -1054,24 +1234,48 @@ export default {
       }
     },
 
+    // 수정 페이지 쪽지 시험 추가
+    onPlusSelectNoteTestList() {
+      if (this.selectData.noteTestList.length <= 19) {
+        const noteTestItem = {
+          id: this.selectData.noteTestList.length,
+          problem: '',
+          exampleList: [
+            { id: '', example: '' },
+            { id: '', example: '' },
+            { id: '', example: '' },
+            { id: '', example: '' },
+            { id: '', example: '' },
+          ],
+          dificultade: 0,
+          limitTime: '',
+          answer: 0,
+        }
+
+        this.selectData.noteTestList.push(noteTestItem)
+      }
+    },
+
     onSelectAnswer(idx, targetIdx) {
       this.noteTestList[idx].answer = targetIdx
     },
 
-    onClickSelectData(data) {
-      console.log(data)
-      this.selectData = data
+    // 수정 페이지
+    onSelectChangeAnswer(idx, targetIdx) {
+      this.selectData.noteTestList[idx].answer = targetIdx
+    },
 
+    onClickSelectData(data) {
+      this.selectData = data
       if (
         data.uploadType === 'video' ||
         data.uploadType === 'pdf' ||
         data.uploadType === 'youtube' ||
         data.uploadType === 'url'
       ) {
-        document.getElementById('brouseModal').click()
+        this.onOpenReferenceBrowseModal()
       } else if (data.uploadType === 'quiz') {
         this.onOpenQuizBrowseModal()
-        // document.getElementById('quizModal').click()
       } else if (data.uploadType === 'test') {
         this.onOpenNoteTestBrowseModal()
       }

@@ -211,7 +211,7 @@
                 class="btn btn_crud_default"
                 data-dismiss="modal"
                 data-toggle="modal"
-                data-target="#modalDataRegiNote"
+                @click="$emit('change')"
               >
                 수정
               </button>
@@ -219,6 +219,7 @@
                 class="btn btn_crud_default"
                 data-toggle="modal"
                 data-target="#modalDataDelete"
+                @click="$emit('close')"
               >
                 삭제
               </button>
