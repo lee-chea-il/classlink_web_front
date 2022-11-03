@@ -461,17 +461,78 @@ export default {
       console.log(copyCheckData)
     },
     pasteData() {
+      let idNum = new Date().valueOf()
+      function _addNode(parentNode, oldNode) {
+        let node, i, len
+        if (oldNode.name) {
+          const newNode = {}
+          newNode.children = []
+          newNode.id = idNum
+          newNode.isLeaf = oldNode.isLeaf
+          newNode.name = oldNode.name
+          newNode.parent = oldNode.parent
+          newNode.pid = oldNode.id
+          newNode.readOnly = oldNode.readOnly
+          newNode.isChecked = false
+          newNode.dbIdx = oldNode.dbIdx
+          newNode.type = oldNode.type
+          node = new TreeNode(newNode)
+          parentNode.addChildren(node)
+          idNum++
+          if (!oldNode.isLeaf) {
+            if (oldNode.children && oldNode.children.length > 0) {
+              len = oldNode.children.length
+              for (i = 0; i < len; i++) {
+                _addNode(node, oldNode.children[i])
+              }
+            }
+          }
+        } else if (oldNode.children && oldNode.children.length > 0) {
+          len = oldNode.children.length
+          for (i = 0; i < len; i++) {
+            _addNode(parentNode, oldNode.children[i])
+          }
+        }
+      }
       function _pasteData(oldNode) {
-        if (!oldNode.isChecked && oldNode.children && oldNode.children.length > 0) {
+        if (oldNode.children && oldNode.children.length > 0) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
             _pasteData(oldNode.children[len - i - 1])
           }
         }
-        if (oldNode.isChecked) {
-          oldNode.remove()
+        if (oldNode.isPaste) {
+          _addNode(oldNode, copyCheckData)
         }
       }
-      _pasteData(this.institutionData)
+      function _checkPasteData(oldNode) {
+        if (oldNode.children && oldNode.children.length > 0) {
+          for (let i = 0, len = oldNode.children.length; i < len; i++) {
+            if (oldNode.children[len - i - 1].isLeaf) {
+              if (oldNode.children[len - i - 1].isChecked) {
+                oldNode.isPaste = true
+              }
+            } else {
+              _checkPasteData(oldNode.children[len - i - 1])
+            }
+          }
+        }
+        if (oldNode.isChecked) {
+          oldNode.isPaste = true
+        }
+      }
+      function _resetPasteData(oldNode) {
+        if (oldNode.children && oldNode.children.length > 0) {
+          for (let i = 0, len = oldNode.children.length; i < len; i++) {
+            if (!oldNode.children[len - i - 1].isLeaf) oldNode.paste = false
+          }
+        }
+        oldNode.paste = false
+      }
+      if (copyCheckData.children && copyCheckData.children.length > 0) {
+        _checkPasteData(this.myCurriculumData)
+        _pasteData(this.myCurriculumData)
+        _resetPasteData(this.myCurriculumData)
+      }
     },
     delData() {
       function _dell(oldNode) {
