@@ -63,6 +63,7 @@
                   aria-controls="home"
                   aria-selected="true"
                 >
+                  <span class="icon_institute"></span>
                   교육기관
                 </button>
               </li>
@@ -77,6 +78,7 @@
                   aria-controls="profile"
                   aria-selected="false"
                 >
+                  <span class="icon_fran"></span>
                   프랜차이즈
                 </button>
               </li>
@@ -91,6 +93,7 @@
                   aria-controls="profile"
                   aria-selected="false"
                 >
+                  <span class="icon_open"></span>
                   공개자료실
                 </button>
               </li>
@@ -104,20 +107,73 @@
                 role="tabpanel"
                 aria-labelledby="grade-tab"
               >
-                <!-- <VueTreeList :model="referenceList" @click="onClickSelectData">
-                </VueTreeList> -->
-                <ul>
-                  <li
-                    v-for="(item, idx) in referenceList"
-                    :key="idx"
-                    @click="onClickSelectData(item)"
+                <VueTreeList
+                  :model="institutionData"
+                  :default-expanded="true"
+                  default-tree-node-name="새 폴더"
+                  :is-drop="identity == 'master' ? true : false"
+                  :is-show-option="identity == 'master' ? true : false"
+                  @click="onClick"
+                  @change-name="onChangeName"
+                >
+                  <span
+                    slot="addTreeNodeIcon1"
+                    class="custom-control custom-checkbox form-inline"
                   >
-                    {{ item.name }}
-                  </li>
-                </ul>
+                    <input
+                      id="chkC01"
+                      class="custom-control-input"
+                      type="checkbox"
+                    />
+                    <label class="custom-control-label" for="chkC01"></label>
+                  </span>
+
+                  <span slot="addTreeNodeIcon" class="icon">＋</span>
+                  <span slot="addLeafNodeIcon" class="icon"></span>
+
+                  <span slot="addTreeNodeIcon" class="icon"></span>
+                  <span slot="delNodeIcon" class="icon"></span>
+                </VueTreeList>
               </div>
               <!-- /.탭 내용01 -->
+              <!-- 탭 내용02 -->
+              <div
+                id="franchise"
+                class="tab-pane fade"
+                role="tabpanel"
+                aria-labelledby="class-tab"
+              >
+                <VueTreeList
+                  :model="franchiseData"
+                  :default-expanded="true"
+                  default-tree-node-name="새 폴더"
+                  :is-drop="identity == 'master' ? true : false"
+                  :is-show-option="identity == 'master' ? true : false"
+                  @click="onClick"
+                  @change-name="onChangeName"
+                >
+                  <span
+                    slot="addTreeNodeIcon1"
+                    class="custom-control custom-checkbox form-inline"
+                  >
+                    <input
+                      id="chkC01"
+                      class="custom-control-input"
+                      type="checkbox"
+                    />
+                    <label class="custom-control-label" for="chkC01"></label>
+                  </span>
+
+                  <span slot="addTreeNodeIcon" class="icon">＋</span>
+                  <span slot="addLeafNodeIcon" class="icon"></span>
+
+                  <span slot="addTreeNodeIcon" class="icon"></span>
+                  <span slot="delNodeIcon" class="icon"></span>
+                </VueTreeList>
+              </div>
+              <!-- /.탭 내용02 -->
             </div>
+
             <!-- /.탭 컨텐츠 -->
           </div>
           <!-- /.왼쪽 영역 -->
@@ -137,6 +193,7 @@
                   aria-controls="home"
                   aria-selected="true"
                 >
+                  <span class="icon_mydata"></span>
                   내 자료
                 </button>
               </li>
@@ -149,48 +206,32 @@
                 role="tabpanel"
                 aria-labelledby="grade-tab"
               >
-                <ul>
-                  <li>
-                    <!-- 리스트01 -->
-                    <div class="list">
-                      <div class="custom-control custom-checkbox form-inline">
-                        <input
-                          id="chkAr01"
-                          type="checkbox"
-                          class="custom-control-input"
-                        />
-                        <label
-                          class="custom-control-label"
-                          for="chkAr01"
-                        ></label>
-                      </div>
-                      <i id="show_sublist01" class="btn icons_arrow_r"></i>
-                      <span class="text">국어</span>
-                      <i class="icons_plus_circle_off"></i>
-                    </div>
-                    <!-- /.리스트01 -->
-                  </li>
-                  <li>
-                    <!-- 리스트02 -->
-                    <div class="list">
-                      <div class="custom-control custom-checkbox form-inline">
-                        <input
-                          id="chkAr02"
-                          type="checkbox"
-                          class="custom-control-input"
-                        />
-                        <label
-                          class="custom-control-label"
-                          for="chkAr02"
-                        ></label>
-                      </div>
-                      <i id="show_sublist02" class="btn icons_arrow_r"></i>
-                      <span class="text">수학</span>
-                      <i class="icons_plus_circle_off"></i>
-                    </div>
-                    <!-- /.리스트02 -->
-                  </li>
-                </ul>
+                <VueTreeList
+                  :model="myCurriculumData"
+                  :default-expanded="false"
+                  @click="onClick"
+                  @change-name="onChangeName"
+                >
+                  <span
+                    slot="addTreeNodeIcon1"
+                    class="custom-control custom-checkbox form-inline"
+                  >
+                    <input
+                      id="chkC01"
+                      class="custom-control-input"
+                      type="checkbox"
+                    />
+                    <label class="custom-control-label" for="chkC01"></label>
+                  </span>
+
+                  <span slot="addTreeNodeIcon" class="icon">＋</span>
+                  <span slot="addLeafNodeIcon" class="icon"></span>
+
+                  <span slot="addTreeNodeIcon" class="icon"></span>
+                  <span slot="delNodeIcon" class="icon"></span>
+                </VueTreeList>
+                <br />
+                <br />
               </div>
               <!-- /.탭 내용01 -->
             </div>
@@ -209,7 +250,7 @@
       @add-test="onOpenNoteTestAddModal"
     />
 
-    <!-- 파일 등록 -->
+    <!-- 파일 등록 (동영상,문서,유튜브,url) -->
     <ReferenceAddModal
       :open="isReferenceAddModal"
       :uploadType="uploadType"
@@ -219,13 +260,13 @@
       @close="onCloseReferenceAddModal"
     />
 
-    <!-- 비디오& 파일 업로드 -->
+    <!-- 비디오 & 파일 업로드 선택 -->
     <VideoFileUploadModal
       @upload-video="onUploadVideo"
       @upload-pdf="onUploadPdf"
     />
 
-    <!-- 유튜브 업로드 -->
+    <!-- 유튜브 & url 업로드 선택 -->
     <YoutubeUploadModal
       :urlData="urlData"
       @change-url="onChangeUrl"
@@ -233,6 +274,7 @@
       @upload-page="onUploadUrl"
     />
 
+    <!-- 퀴즈 등록 -->
     <QuizAddModal
       :open="isQuizAddModal"
       :reference="reference"
@@ -248,9 +290,10 @@
       @select-ox="onSelectOx"
       @select-dificultade="onSelectDificultade"
       @close="onCloseQuizAddModal"
+      @preview="onOpenQuizPreviewModal"
     />
 
-    <!-- 쪽지시험 업로드 -->
+    <!-- 쪽지시험 등록 -->
     <NoteTestAddModal
       :open="isNoteTestAddModal"
       :reference="reference"
@@ -265,6 +308,7 @@
       @plus-item="onPlusNoteTestList"
       @pagination="onClickQuizPagination"
       @select-answer="onSelectAnswer"
+      @preview="onOpenNoteTestPreviewModal"
     />
 
     <!-- 저장경로 설정 -->
@@ -276,7 +320,7 @@
     <!-- 자료실 검색 성공 -->
     <SearchResultModal />
 
-    <!-- 비디오 보기 -->
+    <!-- 비디오 & 문서 & 유튜브 & url 보기 -->
     <VideoBrowseModal
       :open="isReferenceBrowseModal"
       :selectData="selectData"
@@ -293,6 +337,16 @@
       @close="onCloseQuizBrowseModal"
       @pagination="onClickQuizPagination"
       @change="onOpenQuizChangeModal"
+      @preview="onOpenQuizPreviewModal"
+    />
+
+    <!-- 퀴즈 미리보기 -->
+    <QuizPreviewModal
+      :open="isQuizPreviewModal.open"
+      :quizList="isQuizPreviewModal.select ? selectData.quizList : quizList"
+      :currentPageIdx="currentPageIdx"
+      @close="onCloseQuizPreviewModal"
+      @pagination="onClickQuizPagination"
     />
 
     <!-- 쪽지시험 보기 -->
@@ -304,6 +358,18 @@
       @close="onCloseNoteTestBrowseModal"
       @pagination="onClickQuizPagination"
       @change="onOpenNoteTestChangeModal"
+      @preview="onOpenNoteTestPreviewModal"
+    />
+
+    <!-- 쪽지시험 미리보기 -->
+    <NoteTestPreviewModal
+      :open="isNoteTestPreviewModal.open"
+      :testList="
+        isNoteTestPreviewModal.select ? selectData.noteTestList : noteTestList
+      "
+      :currentPageIdx="currentPageIdx"
+      @close="onCloseNoteTestPreviewModal"
+      @pagination="onClickQuizPagination"
     />
 
     <!-- 자료 수정 -->
@@ -329,6 +395,7 @@
       @select-ox="onSelectChangeOx"
       @select-dificultade="onSelectChangeDificultade"
       @change-item="onChangeSelectQuiz"
+      @preview="onOpenQuizPreviewModal"
     />
 
     <!-- 쪽지시험 수정 -->
@@ -346,6 +413,7 @@
       @pagination="onClickQuizPagination"
       @select-answer="onSelectChangeAnswer"
       @plus-item="onPlusSelectNoteTestList"
+      @preview="onOpenNoteTestPreviewModal"
     />
 
     <!-- 공유하기 -->
@@ -369,6 +437,7 @@
 
 <script>
 import Tagify from '@yaireo/tagify'
+import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
 import PageHeader from '@/components/common/PageHeader.vue'
 import ModalDeac from '@/components/common/modal/ModalDesc.vue'
 import SavePathModal from '@/components/common/modal/reference/SavePathModal.vue'
@@ -391,6 +460,10 @@ import QuizChangeModal from '@/components/common/modal/reference/QuizChangeModal
 import NoteTestChangeModal from '@/components/common/modal/reference/NoteTestChangeModal.vue'
 import { apiReference } from '@/services'
 import '@yaireo/tagify/dist/tagify.css'
+import QuizPreviewModal from '@/components/common/modal/reference/QuizPreviewModal.vue'
+import NoteTestPreviewModal from '@/components/common/modal/reference/NoteTestPreviewModal.vue'
+
+let copyCheckData = []
 
 export default {
   name: 'ReferenceRoom',
@@ -415,10 +488,460 @@ export default {
     ReferenceChangeModal,
     QuizChangeModal,
     NoteTestChangeModal,
+    QuizPreviewModal,
+    NoteTestPreviewModal,
+    VueTreeList,
   },
   layout: 'EducationLayout',
   data() {
     return {
+      identity: 'master',
+      pid: 0,
+      newTree: {},
+      receiveInstitutionData: [
+        {
+          name: '마포 학원',
+          children: [
+            {
+              name: '국어',
+              children: [
+                {
+                  name: '1단원',
+                  children: [
+                    {
+                      id: 0,
+                      name: '국어학습자료 애니메이션.mp4',
+                      subject: '국어',
+                      desc: '등록한 자료 1',
+                      keyword: [
+                        { title: '국어' },
+                        { title: '수학' },
+                        { title: '과학' },
+                      ],
+                      registrant: '등록인',
+                      savePath:
+                        'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                      isOpenEducation: true,
+                      inOpenReferenceRoom: true,
+                      fileName: '',
+                      fileDivision: '교육기관',
+                      fileType: 'video/mp4',
+                      uploadType: 'video',
+                      fileVolume: '',
+                      createAt: '',
+                      dbIdx: 1,
+                      type: 'institution',
+                    },
+                    {
+                      id: 1,
+                      name: '수학 학습자료.pdf',
+                      subject: '수학',
+                      desc: '등록한 자료 2',
+                      keyword: [
+                        { title: '국어' },
+                        { title: '수학' },
+                        { title: '과학' },
+                      ],
+                      registrant: '등록인',
+                      savePath:
+                        'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
+                      isOpenEducation: true,
+                      inOpenReferenceRoom: true,
+                      fileName: '',
+                      fileDivision: '교육기관',
+                      fileType: 'application/pdf',
+                      uploadType: 'pdf',
+                      fileVolume: '',
+                      createAt: '',
+                      isLeaf: false,
+                      dbIdx: 2,
+                      type: 'institution',
+                    },
+                    {
+                      id: 2,
+                      name: '영어 단어 퀴즈.quiz',
+                      subject: '영어',
+                      desc: '등록한 자료 1',
+                      keyword: [
+                        { title: '국어' },
+                        { title: '수학' },
+                        { title: '과학' },
+                      ],
+                      registrant: '등록인',
+                      savePath:
+                        'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                      isOpenEducation: true,
+                      inOpenReferenceRoom: true,
+                      fileName: '',
+                      fileDivision: '교육기관',
+                      fileType: 'quiz',
+                      uploadType: 'quiz',
+                      fileVolume: '',
+                      createAt: '',
+                      quizList: [
+                        {
+                          id: 0,
+                          problem: '<p>asdfaaaaasdf</p>',
+                          oxAnswer: 0,
+                          dificultade: 1,
+                          limitTime: '3분',
+                          quizType: 0,
+                          shortAnswer: '123',
+                          subjectiveAnswer: '123',
+                          shortWrongAnswer: '123',
+                        },
+                        {
+                          id: 2,
+                          problem: '<p>asdggggg</p>',
+                          dificultade: 0,
+                          limitTime: '5분',
+                          quizType: 0,
+                          oxAnswer: 0,
+                          shortAnswer: '234',
+                          subjectiveAnswer: '234',
+                          shortWrongAnswer: '234',
+                        },
+                        {
+                          id: 3,
+                          problem: '<p>234242242424</p>',
+                          dificultade: 0,
+                          limitTime: '2분',
+                          quizType: 0,
+                          oxAnswer: 0,
+                          shortAnswer: '345',
+                          subjectiveAnswer: '345',
+                          shortWrongAnswer: '345',
+                        },
+                        {
+                          id: 4,
+                          problem: '<p>555555555</p>',
+                          dificultade: 0,
+                          limitTime: '4분',
+                          quizType: 0,
+                          oxAnswer: 0,
+                          shortAnswer: '456',
+                          subjectiveAnswer: '456',
+                          shortWrongAnswer: '456',
+                        },
+                        {
+                          id: 5,
+                          problem: '<p>asx c</p>',
+                          dificultade: 0,
+                          limitTime: '5분',
+                          quizType: 0,
+                          oxAnswer: 0,
+                          shortAnswer: '567',
+                          subjectiveAnswer: '567',
+                          shortWrongAnswer: '567',
+                        },
+                      ],
+                      isLeaf: false,
+                      dbIdx: 3,
+                      type: 'institution',
+                    },
+                    {
+                      id: 3,
+                      name: '사회 쪽지시험 영상.youtube',
+                      subject: '사회',
+                      desc: '등록한 자료 1',
+                      keyword: [
+                        { title: '국어' },
+                        { title: '수학' },
+                        { title: '과학' },
+                      ],
+                      registrant: '등록인',
+                      savePath: 'https://www.youtube.com/embed/1CYbySbtyF0',
+                      isOpenEducation: true,
+                      inOpenReferenceRoom: true,
+                      fileName: '',
+                      fileDivision: '교육기관',
+                      fileType: 'youtube',
+                      uploadType: 'youtube',
+                      fileVolume: '',
+                      createAt: '',
+                      isLeaf: false,
+                      dbIdx: 4,
+                      type: 'institution',
+                    },
+                    {
+                      id: 4,
+                      name: '과학 사이트 참고용.url',
+                      subject: '과학',
+                      desc: '등록한 자료 1',
+                      keyword: [
+                        { title: '국어' },
+                        { title: '수학' },
+                        { title: '과학' },
+                      ],
+                      registrant: '등록인',
+                      savePath: 'https://sciencelove.com/725',
+                      isOpenEducation: true,
+                      inOpenReferenceRoom: true,
+                      fileName: '',
+                      fileDivision: '교육기관',
+                      fileType: 'test',
+                      uploadType: 'url',
+                      fileVolume: '',
+                      createAt: '',
+                      isLeaf: false,
+                      dbIdx: 5,
+                      type: 'institution',
+                    },
+                    {
+                      id: 5,
+                      name: '수학 쪽지시험.test',
+                      subject: '수학',
+                      desc: '등록한 자료 1',
+                      keyword: [
+                        { title: '국어' },
+                        { title: '수학' },
+                        { title: '과학' },
+                      ],
+                      registrant: '등록인',
+                      savePath: 'https://sciencelove.com/725',
+                      isOpenEducation: true,
+                      inOpenReferenceRoom: true,
+                      fileName: '',
+                      fileDivision: '교육기관',
+                      fileType: 'test',
+                      uploadType: 'test',
+                      fileVolume: '',
+                      createAt: '',
+                      noteTestList: [
+                        {
+                          id: 0,
+                          problem: '<p>1번 문제</p>',
+                          exampleList: [
+                            { id: '', example: '<p>답 1임</p>' },
+                            { id: '', example: '<p>답 2임</p>' },
+                            { id: '', example: '<p>답 3임</p>' },
+                            { id: '', example: '<p>답 4임</p>' },
+                            { id: '', example: '<p>답 5임</p>' },
+                          ],
+                          dificultade: 0,
+                          limitTime: '',
+                          answer: 0,
+                        },
+                        {
+                          id: 1,
+                          problem: '<p>2번 문제</p>',
+                          exampleList: [
+                            { id: '', example: '<p>답 5임</p>' },
+                            { id: '', example: '<p>답 6임</p>' },
+                            { id: '', example: '<p>답 7임</p>' },
+                            { id: '', example: '<p>답 8임</p>' },
+                            { id: '', example: '<p>답 9임</p>' },
+                          ],
+                          dificultade: 2,
+                          limitTime: '',
+                          answer: 2,
+                        },
+                      ],
+                      isLeaf: false,
+                      dbIdx: 6,
+                      type: 'institution',
+                    },
+                  ],
+                },
+                {
+                  name: '2단원',
+                  children: [
+                    {
+                      name: '법과 작문1.link',
+                      type: 'institution',
+                      dbIdx: 5,
+                    },
+                    {
+                      name: '법과 작문2.link',
+                      type: 'institution',
+                      dbIdx: 6,
+                    },
+                    {
+                      name: '법과 작문3.link',
+                      type: 'institution',
+                      dbIdx: 7,
+                    },
+                    {
+                      name: '법과 작문4.link',
+                      type: 'institution',
+                      dbIdx: 8,
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              name: '수학',
+              children: [
+                {
+                  name: '1단원',
+                  children: [
+                    {
+                      name: '삼각함수1.link',
+                      type: 'institution',
+                      dbIdx: 1,
+                    },
+                    {
+                      name: '삼각함수2.link',
+                      type: 'institution',
+                      dbIdx: 2,
+                    },
+                    {
+                      name: '삼각함수3.link',
+                      type: 'institution',
+                      dbIdx: 3,
+                    },
+                    {
+                      name: '삼각함수4.link',
+                      type: 'institution',
+                      dbIdx: 4,
+                    },
+                  ],
+                },
+                {
+                  name: '2단원',
+                  children: [
+                    {
+                      name: '2차 방정식1.link',
+                      type: 'institution',
+                      dbIdx: 5,
+                    },
+                    {
+                      name: '2차 방정식2.link',
+                      type: 'institution',
+                      dbIdx: 6,
+                    },
+                    {
+                      name: '2차 방정식3.link',
+                      type: 'institution',
+                      dbIdx: 7,
+                    },
+                    {
+                      name: '2차 방정식4.link',
+                      type: 'institution',
+                      dbIdx: 8,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      receiveFranchiseData: [
+        {
+          name: '서울 학원',
+          children: [
+            {
+              name: '과학',
+              children: [
+                {
+                  name: '1단원',
+                  children: [
+                    {
+                      name: '일산화탄소1.link',
+                      type: 'franchise',
+                      dbIdx: 1,
+                    },
+                    {
+                      name: '일산화탄소2.link',
+                      type: 'franchise',
+                      dbIdx: 2,
+                    },
+                    {
+                      name: '일산화탄소3.link',
+                      type: 'franchise',
+                      dbIdx: 3,
+                    },
+                    {
+                      name: '일산화탄소4.link',
+                      type: 'franchise',
+                      dbIdx: 4,
+                    },
+                  ],
+                },
+                {
+                  name: '2단원',
+                  children: [
+                    {
+                      name: '이산화탄소1.link',
+                      type: 'franchise',
+                      dbIdx: 5,
+                    },
+                    {
+                      name: '이산화탄소2.link',
+                      type: 'franchise',
+                      dbIdx: 6,
+                    },
+                    {
+                      name: '이산화탄소3.link',
+                      type: 'franchise',
+                      dbIdx: 7,
+                    },
+                    {
+                      name: '이산화탄소4.link',
+                      type: 'franchise',
+                      dbIdx: 8,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      receiveCurriculumData: [
+        {
+          name: '국어',
+          children: [
+            {
+              name: '1단원',
+              children: [
+                {
+                  name: '사투리 작문1.link',
+                  type: 'institution',
+                },
+                {
+                  name: '사투리 작문2.link',
+                  type: 'franchise',
+                },
+              ],
+            },
+            {
+              name: '2단원',
+              children: [
+                {
+                  name: '부산 사투리 작문1.link',
+                  type: 'curriculum',
+                },
+                {
+                  name: '부산 사투리 작문2.link',
+                  type: 'institution',
+                },
+                {
+                  name: '부산 사투리 작문2.link',
+                  type: 'franchise',
+                },
+                {
+                  name: '부산 사투리 작문2.link',
+                  type: 'institution',
+                },
+                {
+                  name: '부산 사투리 작문2.link',
+                  type: 'franchise',
+                },
+                {
+                  name: '네이버란.link',
+                  type: 'curriculum',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      institutionData: new Tree(false, []),
+      franchiseData: new Tree(false, []),
+      myCurriculumData: new Tree(false, []),
       isReferenceAddModal: false,
       isQuizAddModal: false,
       isNoteTestAddModal: false,
@@ -428,6 +951,16 @@ export default {
       isReferenceChangeModal: false,
       isQuizChangeModal: false,
       isNoteTestChangeModal: false,
+      isQuizPreviewModal: {
+        open: false,
+        previewPage: '',
+        select: false,
+      },
+      isNoteTestPreviewModal: {
+        open: false,
+        previewPage: '',
+        select: false,
+      },
       uploadType: '',
       currentPageIdx: 0,
       uploadFile: {},
@@ -496,7 +1029,7 @@ export default {
               quizType: 0,
               shortAnswer: '123',
               subjectiveAnswer: '123',
-              subjectiveWrongAnswer: '123',
+              shortWrongAnswer: '123',
             },
             {
               id: 2,
@@ -507,7 +1040,7 @@ export default {
               oxAnswer: 0,
               shortAnswer: '234',
               subjectiveAnswer: '234',
-              subjectiveWrongAnswer: '234',
+              shortWrongAnswer: '234',
             },
             {
               id: 3,
@@ -518,7 +1051,7 @@ export default {
               oxAnswer: 0,
               shortAnswer: '345',
               subjectiveAnswer: '345',
-              subjectiveWrongAnswer: '345',
+              shortWrongAnswer: '345',
             },
             {
               id: 4,
@@ -529,7 +1062,7 @@ export default {
               oxAnswer: 0,
               shortAnswer: '456',
               subjectiveAnswer: '456',
-              subjectiveWrongAnswer: '456',
+              shortWrongAnswer: '456',
             },
             {
               id: 5,
@@ -540,7 +1073,7 @@ export default {
               oxAnswer: 0,
               shortAnswer: '567',
               subjectiveAnswer: '567',
-              subjectiveWrongAnswer: '567',
+              shortWrongAnswer: '567',
             },
           ],
           isLeaf: false,
@@ -670,9 +1203,9 @@ export default {
           dificultade: 1,
           limitTime: 0,
           quizType: 0,
-          shortAnswer: '',
           subjectiveAnswer: '',
-          subjectiveWrongAnswer: '',
+          shortAnswer: '',
+          shortWrongAnswer: '',
         },
       ],
       noteTestList: [
@@ -698,6 +1231,79 @@ export default {
     this.getTagifyQuiz()
     this.getTagifyNoteTest()
     this.getTagifyReferenceChange()
+    const dataMapping = (item, isReadOnly) => {
+      const result = []
+      const len = item.length
+      console.log(item)
+      for (let i = 0; i < len; i++) {
+        if (item[i].children !== undefined) {
+          console.log(item[i])
+          result[i] = {
+            name: item[i].name,
+            id: this.pid,
+            isLeaf: false,
+            pid: this.pid,
+            children: [],
+            readOnly: isReadOnly,
+            isChecked: false,
+            type: item[i].type,
+          }
+          this.pid++
+          result[i].children = dataMapping(item[i].children, isReadOnly)
+        } else {
+          result[i] = {
+            name: item[i].name,
+            id: this.pid,
+            pid: this.pid,
+            isLeaf: true,
+            readOnly: isReadOnly,
+            isChecked: false,
+            type: item[i].type,
+            subject: item[i].subject,
+            desc: item[i].desc,
+            keyword: item[i].keyword,
+            registrant: item[i].registrant,
+            savePath: item[i].savePath,
+            isOpenEducation: item[i].isOpenEducation,
+            inOpenReferenceRoom: item[i].inOpenReferenceRoom,
+            fileName: item[i].fileName,
+            fileDivision: item[i].fileDivision,
+            fileType: item[i].fileType,
+            uploadType: item[i].uploadType,
+            fileVolume: item[i].fileVolume,
+            createAt: item[i].createAt,
+            quizList: item[i].quizList,
+            noteTestList: item[i].noteTestList,
+          }
+          this.pid++
+        }
+      }
+      return result
+    }
+
+    if (this.identity === 'master') {
+      this.institutionData = new Tree(
+        false,
+        dataMapping(this.receiveInstitutionData, false)
+      )
+      this.franchiseData = new Tree(
+        false,
+        dataMapping(this.receiveFranchiseData, false)
+      )
+    } else {
+      this.institutionData = new Tree(
+        true,
+        dataMapping(this.receiveInstitutionData, true)
+      )
+      this.franchiseData = new Tree(
+        true,
+        dataMapping(this.receiveFranchiseData, true)
+      )
+    }
+    this.myCurriculumData = new Tree(
+      false,
+      dataMapping(this.receiveCurriculumData, false)
+    )
   },
   methods: {
     // Modal Event
@@ -800,6 +1406,71 @@ export default {
     onCloseNoteTestChangeModal() {
       this.selectData = {}
       this.isNoteTestChangeModal = false
+    },
+
+    onOpenQuizPreviewModal(prevPage, page) {
+      this.isQuizPreviewModal = {
+        open: true,
+        previewPage: prevPage,
+      }
+      if (page === 'first') {
+        this.currentPageIdx = 0
+      }
+      if (prevPage === 'add') {
+        this.isQuizAddModal = false
+        this.isQuizPreviewModal.select = false
+      } else if (prevPage === 'browse') {
+        this.isQuizBrowseModal = false
+        this.isQuizPreviewModal.select = true
+      } else {
+        this.isQuizChangeModal = false
+        this.isQuizPreviewModal.select = true
+      }
+    },
+
+    onCloseQuizPreviewModal() {
+      this.isQuizPreviewModal.open = false
+      const target = this.isQuizPreviewModal.previewPage
+      if (target === 'add') {
+        this.isQuizAddModal = true
+      } else if (target === 'browse') {
+        this.isQuizBrowseModal = true
+      } else {
+        this.isQuizChangeModal = true
+      }
+    },
+
+    onOpenNoteTestPreviewModal(prevPage, page) {
+      this.isNoteTestPreviewModal = {
+        open: true,
+        previewPage: prevPage,
+      }
+
+      if (page === 'first') {
+        this.currentPageIdx = 0
+      }
+      if (prevPage === 'add') {
+        this.isNoteTestAddModal = false
+        this.isNoteTestPreviewModal.select = false
+      } else if (prevPage === 'browse') {
+        this.isNoteTestBrowseModal = false
+        this.isNoteTestPreviewModal.select = true
+      } else {
+        this.isNoteTestChangeModal = false
+        this.isNoteTestPreviewModal.select = true
+      }
+    },
+
+    onCloseNoteTestPreviewModal() {
+      this.isNoteTestPreviewModal.open = false
+      const target = this.isNoteTestPreviewModal.previewPage
+      if (target === 'add') {
+        this.isNoteTestAddModal = true
+      } else if (target === 'browse') {
+        this.isNoteTestBrowseModal = true
+      } else {
+        this.isNoteTestChangeModal = true
+      }
     },
 
     // 태그 컴포넌트 가져오기
@@ -946,7 +1617,6 @@ export default {
           // 비디오 태그의 메타데이터가 들어오면
           _canvas.width = _video.videoWidth
           _canvas.height = _video.videoHeight
-          // console.log(_video.duration, _video.currentTime)
           const time = Math.random() * _video.duration // 비디오의 영상길이 중 랜덤 타임을 뽑음
           _video.currentTime = time // 해당 시간으로 이동
           setTimeout(() => {
@@ -1012,7 +1682,6 @@ export default {
       const youtubeRegex =
         /(http:|https:)?(\/\/)?(www\.)?(youtube.com|youtu.be)\/(watch|embed)?(\?v=|\/)?(\S+)?/g
       const youtubeUrl = this.urlData.youtube.replace('https://youtu.be/', '')
-      console.log(youtubeUrl)
       const _embed = document.querySelector('#embed')
       if (youtubeRegex.test(this.urlData.youtube) === true) {
         this.getYoutubeData(youtubeUrl)
@@ -1061,20 +1730,9 @@ export default {
     },
 
     // 퀴즈 페이지네이션
-    onClickQuizPagination(direction) {
-      const number = this.isQuizBrowseModal
-        ? this.selectData.quizList.length
-        : this.isNoteTestBrowseModal
-        ? this.selectData.noteTestList.length
-        : this.isQuizChangeModal
-        ? this.selectData.quizList.length
-        : this.isNoteTestChangeModal
-        ? this.selectData.noteTestList.length
-        : this.isNoteTestAddModal
-        ? this.noteTestList.length
-        : this.quizList.length
+    onClickQuizPagination(direction, max) {
       if (direction === 'plus') {
-        if (this.currentPageIdx < number - 1) this.currentPageIdx += 1
+        if (this.currentPageIdx < max - 1) this.currentPageIdx += 1
       } else if (direction === 'min') {
         if (this.currentPageIdx !== 0) this.currentPageIdx -= 1
       }
@@ -1092,7 +1750,7 @@ export default {
           oxAnswer: 0,
           shortAnswer: '',
           subjectiveAnswer: '',
-          subjectiveWrongAnswer: '',
+          shortWrongAnswer: '',
         }
         this.quizList.push(quizItem)
       }
@@ -1110,7 +1768,7 @@ export default {
           oxAnswer: 0,
           shortAnswer: '',
           subjectiveAnswer: '',
-          subjectiveWrongAnswer: '',
+          shortWrongAnswer: '',
         }
         this.selectData.quizList.push(quizItem)
       }
@@ -1148,14 +1806,14 @@ export default {
       if (num === 0) {
         this.quizList[idx].shortAnswer = ''
         this.quizList[idx].subjectiveAnswer = ''
-        this.quizList[idx].subjectiveWrongAnswer = ''
+        this.quizList[idx].shortWrongAnswer = ''
       } else if (num === 1) {
         this.quizList[idx].oxAnswer = 0
         this.quizList[idx].subjectiveAnswer = ''
-        this.quizList[idx].subjectiveWrongAnswer = ''
       } else {
         this.quizList[idx].oxAnswer = 0
         this.quizList[idx].shortAnswer = ''
+        this.quizList[idx].shortWrongAnswer = ''
       }
     },
 
@@ -1165,14 +1823,14 @@ export default {
       if (num === 0) {
         this.selectData.quizList[idx].shortAnswer = ''
         this.selectData.quizList[idx].subjectiveAnswer = ''
-        this.selectData.quizList[idx].subjectiveWrongAnswer = ''
+        this.selectData.quizList[idx].shortWrongAnswer = ''
       } else if (num === 1) {
         this.selectData.quizList[idx].oxAnswer = 0
         this.selectData.quizList[idx].subjectiveAnswer = ''
-        this.selectData.quizList[idx].subjectiveWrongAnswer = ''
       } else {
         this.selectData.quizList[idx].oxAnswer = 0
         this.selectData.quizList[idx].shortAnswer = ''
+        this.selectData.quizList[idx].shortWrongAnswer = ''
       }
     },
 
@@ -1257,14 +1915,16 @@ export default {
     },
 
     onSelectAnswer(idx, targetIdx) {
-      this.noteTestList[idx].answer = targetIdx
+      this.noteTestList[idx].answer = targetIdx + 1
     },
 
     // 수정 페이지
     onSelectChangeAnswer(idx, targetIdx) {
-      this.selectData.noteTestList[idx].answer = targetIdx
+      console.log(targetIdx)
+      this.selectData.noteTestList[idx].answer = targetIdx + 1
     },
 
+    // 자료 클릭 이벤트
     onClickSelectData(data) {
       this.selectData = data
       if (
@@ -1317,7 +1977,7 @@ export default {
           quizType: 0,
           shortAnswer: '',
           subjectiveAnswer: '',
-          subjectiveWrongAnswer: '',
+          shortWrongAnswer: '',
         },
       ]
 
@@ -1337,8 +1997,212 @@ export default {
           answer: 0,
         },
       ]
+
+      // tree component
+    },
+
+    // tree component
+    onDel(node) {
+      console.log(node)
+      node.remove()
+    },
+
+    onChangeName(params) {
+      console.log(params)
+    },
+
+    onAddNode(params) {
+      console.log(params)
+    },
+
+    onClick(params) {
+      console.log(params)
+      this.selectData = params
+      if (
+        params.uploadType === 'video' ||
+        params.uploadType === 'pdf' ||
+        params.uploadType === 'youtube' ||
+        params.uploadType === 'url'
+      ) {
+        this.onOpenReferenceBrowseModal()
+      } else if (params.uploadType === 'quiz') {
+        this.onOpenQuizBrowseModal()
+      } else if (params.uploadType === 'test') {
+        this.onOpenNoteTestBrowseModal()
+      }
+    },
+
+    addNode() {
+      const node = new TreeNode({ name: 'new node', isLeaf: false })
+      if (!this.data.children) this.data.children = []
+      this.data.addChildren(node)
+    },
+
+    getNewTree() {
+      const vm = this
+      function _dfs(oldNode) {
+        const newNode = {}
+
+        for (const k in oldNode) {
+          if (k !== 'children' && k !== 'parent') {
+            newNode[k] = oldNode[k]
+          }
+        }
+
+        if (oldNode.children && oldNode.children.length > 0) {
+          newNode.children = []
+          for (let i = 0, len = oldNode.children.length; i < len; i++) {
+            newNode.children.push(_dfs(oldNode.children[i]))
+          }
+        }
+        return newNode
+      }
+
+      vm.newTree = _dfs(vm.data)
+    },
+    copyData() {
+      let idNum = new Date().valueOf()
+      function _dfs(oldNode) {
+        const newNode = {}
+        if (oldNode.isChecked) {
+          newNode.children = []
+          newNode.id = idNum
+          newNode.isLeaf = oldNode.isLeaf
+          newNode.name = oldNode.name
+          newNode.parent = oldNode.parent
+          newNode.pid = oldNode.id
+          newNode.readOnly = oldNode.readOnly
+          newNode.isChecked = false
+          newNode.dbIdx = oldNode.dbIdx
+          newNode.type = oldNode.type
+          console.log(newNode.name)
+          idNum++
+        }
+        if (oldNode.children && oldNode.children.length > 0) {
+          const list = []
+          for (let i = 0, len = oldNode.children.length; i < len; i++) {
+            list.push(_dfs(oldNode.children[i]))
+          }
+          newNode.children = list
+        }
+        return newNode
+      }
+      const instiTab = document.getElementById('institute')
+      if (instiTab.classList.contains('show')) {
+        copyCheckData = _dfs(this.institutionData)
+      } else {
+        copyCheckData = _dfs(this.franchiseData)
+      }
+      console.log(copyCheckData)
+    },
+    pasteData() {
+      let idNum = new Date().valueOf()
+      function _addNode(parentNode, oldNode) {
+        let node, i, len
+        if (oldNode.name) {
+          const newNode = {}
+          newNode.children = []
+          newNode.id = idNum
+          newNode.isLeaf = oldNode.isLeaf
+          newNode.name = oldNode.name
+          newNode.parent = oldNode.parent
+          newNode.pid = oldNode.id
+          newNode.readOnly = oldNode.readOnly
+          newNode.isChecked = false
+          newNode.dbIdx = oldNode.dbIdx
+          newNode.type = oldNode.type
+          node = new TreeNode(newNode)
+          parentNode.addChildren(node)
+          idNum++
+          if (!oldNode.isLeaf) {
+            if (oldNode.children && oldNode.children.length > 0) {
+              len = oldNode.children.length
+              for (i = 0; i < len; i++) {
+                _addNode(node, oldNode.children[i])
+              }
+            }
+          }
+        } else if (oldNode.children && oldNode.children.length > 0) {
+          len = oldNode.children.length
+          for (i = 0; i < len; i++) {
+            _addNode(parentNode, oldNode.children[i])
+          }
+        }
+      }
+      function _pasteData(oldNode) {
+        if (oldNode.children && oldNode.children.length > 0) {
+          for (let i = 0, len = oldNode.children.length; i < len; i++) {
+            _pasteData(oldNode.children[len - i - 1])
+          }
+        }
+        if (oldNode.isPaste) {
+          _addNode(oldNode, copyCheckData)
+        }
+      }
+      function _checkPasteData(oldNode) {
+        if (oldNode.children && oldNode.children.length > 0) {
+          for (let i = 0, len = oldNode.children.length; i < len; i++) {
+            if (oldNode.children[len - i - 1].isLeaf) {
+              if (oldNode.children[len - i - 1].isChecked) {
+                oldNode.isPaste = true
+              }
+            } else {
+              _checkPasteData(oldNode.children[len - i - 1])
+            }
+          }
+        }
+        if (oldNode.isChecked) {
+          oldNode.isPaste = true
+        }
+      }
+      function _resetPasteData(oldNode) {
+        if (oldNode.children && oldNode.children.length > 0) {
+          for (let i = 0, len = oldNode.children.length; i < len; i++) {
+            if (!oldNode.children[len - i - 1].isLeaf) oldNode.paste = false
+          }
+        }
+        oldNode.paste = false
+      }
+      if (copyCheckData.children && copyCheckData.children.length > 0) {
+        _checkPasteData(this.myCurriculumData)
+        _pasteData(this.myCurriculumData)
+        _resetPasteData(this.myCurriculumData)
+      }
+    },
+    delData() {
+      function _dell(oldNode) {
+        if (
+          !oldNode.isChecked &&
+          oldNode.children &&
+          oldNode.children.length > 0
+        ) {
+          for (let i = 0, len = oldNode.children.length; i < len; i++) {
+            _dell(oldNode.children[len - i - 1])
+          }
+        }
+        if (oldNode.isChecked) {
+          oldNode.remove()
+        }
+      }
+      _dell(this.myCurriculumData)
     },
   },
 }
 </script>
-<style></style>
+<style scoped>
+#institute > .vtl {
+  height: 349px;
+}
+#franchise > .vtl {
+  height: 349px;
+}
+#mydata > .vtl {
+  height: 300px;
+}
+.main > ul {
+  display: none;
+}
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
+  margin-left: 0.15rem;
+}
+</style>

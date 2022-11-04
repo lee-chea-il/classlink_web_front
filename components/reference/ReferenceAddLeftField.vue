@@ -143,7 +143,7 @@ export default {
   props: {
     reference: {
       type: Object,
-      default: null,
+      default: () => {},
     },
     quiz: {
       type: Boolean,

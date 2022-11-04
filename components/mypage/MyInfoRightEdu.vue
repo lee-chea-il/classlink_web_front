@@ -159,11 +159,11 @@ export default {
     },
     eduInfo: {
       type: Object,
-      default: null,
+      default: () => {},
     },
     franInfo: {
       type: Object,
-      default: null,
+      default: () => {},
     },
   },
 }

@@ -68,7 +68,13 @@
                       :disabled="
                         selectData?.noteTestList?.length - 1 === currentPageIdx
                       "
-                      @click="$emit('pagination', 'plus')"
+                      @click="
+                        $emit(
+                          'pagination',
+                          'plus',
+                          selectData.noteTestList.length
+                        )
+                      "
                     ></button>
                   </div>
                 </div>
@@ -95,10 +101,16 @@
                     <div class="row">
                       <div class="col-12">
                         <div class="etcbtn_area">
-                          <button class="btn btn_crud_default btn_first">
+                          <button
+                            class="btn btn_crud_default btn_first"
+                            @click="$emit('preview', 'browse', 'first')"
+                          >
                             처음부터<br />미리보기
                           </button>
-                          <button class="btn btn_crud_default btn_present">
+                          <button
+                            class="btn btn_crud_default btn_present"
+                            @click="$emit('preview', 'browse')"
+                          >
                             현재부터<br />미리보기
                           </button>
                         </div>
@@ -274,7 +286,7 @@ export default {
     },
     selectData: {
       type: Object,
-      default: null,
+      default: () => {},
     },
     currentPageIdx: {
       type: Number,

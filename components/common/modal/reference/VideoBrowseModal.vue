@@ -149,7 +149,7 @@ export default {
     },
     selectData: {
       type: Object,
-      default: null,
+      default: () => {},
     },
   },
 }

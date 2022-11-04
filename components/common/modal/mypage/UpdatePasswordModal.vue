@@ -127,15 +127,15 @@ export default {
   props: {
     myInfo: {
       type: Object,
-      default: null,
+      default: () => {},
     },
     newPassword: {
       type: Object,
-      default: null,
+      default: () => {},
     },
     pwTypeInfo: {
       type: Object,
-      default: null,
+      default: () => {},
     },
     isError: {
       type: Boolean,

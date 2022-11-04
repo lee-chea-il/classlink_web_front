@@ -28,6 +28,7 @@ export default defineComponent({
     checkBoxData: {
       type: Object,
       required: true,
+      default: () => {},
     },
   },
   methods: {

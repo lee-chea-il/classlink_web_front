@@ -52,10 +52,16 @@
                   <div class="write_area">
                     <div class="title_area">
                       <span class="tit">{{ currentPageIdx + 1 }}번 문제</span>
-                      <button class="btn btn_crud_default btn_first">
+                      <button
+                        class="btn btn_crud_default btn_first"
+                        @click="$emit('preview', 'add', 'first')"
+                      >
                         처음부터<br />미리보기
                       </button>
-                      <button class="btn btn_crud_default btn_present">
+                      <button
+                        class="btn btn_crud_default btn_present"
+                        @click="$emit('preview', 'add')"
+                      >
                         현재부터<br />미리보기
                       </button>
                     </div>
@@ -81,7 +87,7 @@
                         :class="{
                           disabled: currentPageIdx === quizList.length - 1,
                         }"
-                        @click="$emit('pagination', 'plus')"
+                        @click="$emit('pagination', 'plus', quizList.length)"
                       ></button>
                       <button
                         v-if="quizList.length > 1"
@@ -178,18 +184,18 @@
                             <label
                               class="custom-control-label"
                               for="isShortAnswer"
-                              >단답형</label
+                              >주관식 단답형</label
                             >
                           </div>
                         </div>
                         <div class="cnt">
                           <input
-                            id="shortAnswer"
+                            id="subjectiveAnswer"
                             type="text"
                             placeholder="정답 입력"
-                            name="shortAnswer"
-                            :value="item.shortAnswer"
                             class="form-control form-inline"
+                            name="subjectiveAnswer"
+                            :value="item.subjectiveAnswer"
                             :disabled="item.quizType !== 1"
                             @input="$emit('change-item', $event, idx)"
                           />
@@ -226,7 +232,7 @@
                               <label
                                 class="custom-control-label"
                                 for="isSubjective"
-                                >주관식 단답형</label
+                                >단답형</label
                               >
                             </div>
                           </div>
@@ -235,12 +241,12 @@
                           <div class="tit stit">정답</div>
                           <div class="cnt">
                             <input
-                              id="subjectiveAnswer"
+                              id="shortAnswer"
                               type="text"
                               placeholder="정답 입력"
+                              name="shortAnswer"
+                              :value="item.shortAnswer"
                               class="form-control form-inline"
-                              name="subjectiveAnswer"
-                              :value="item.subjectiveAnswer"
                               :disabled="item.quizType !== 2"
                               @input="$emit('change-item', $event, idx)"
                             />
@@ -250,9 +256,9 @@
                           <div class="tit stit">오답</div>
                           <div class="cnt">
                             <input
-                              id="subjectiveWrongAnswer"
-                              name="subjectiveWrongAnswer"
-                              :value="item.subjectiveWrongAnswer"
+                              id="shortWrongAnswer"
+                              name="shortWrongAnswer"
+                              :value="item.shortWrongAnswer"
                               type="text"
                               placeholder="오답 입력"
                               class="form-control form-inline"
@@ -304,7 +310,7 @@ export default {
     open: Boolean,
     quizList: {
       type: Array,
-      default: null,
+      default: () => [],
     },
     currentPageIdx: {
       type: Number,
@@ -312,7 +318,7 @@ export default {
     },
     reference: {
       type: Object,
-      default: null,
+      default: () => {},
     },
   },
   watch: {

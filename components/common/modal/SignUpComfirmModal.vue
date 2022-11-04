@@ -36,6 +36,7 @@ export default {
     modalData: {
       type: Object,
       required: true,
+      default: () => {},
     },
   },
 }

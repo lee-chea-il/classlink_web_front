@@ -86,11 +86,11 @@ export default {
     },
     uploadFile: {
       type: [Object, File],
-      default: null,
+      default: () => {},
     },
     reference: {
       type: Object,
-      default: null,
+      default: () => {},
     },
   },
   computed: {

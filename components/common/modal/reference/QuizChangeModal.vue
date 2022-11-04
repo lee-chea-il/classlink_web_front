@@ -50,17 +50,13 @@
                       <span class="tit">문제</span>
                       <button
                         class="btn btn_crud_default btn_first"
-                        data-toggle="modal"
-                        data-target="#modalPreviewQuiz"
-                        data-dismiss="modal"
+                        @click="$emit('preview', 'change', 'first')"
                       >
                         처음부터<br />미리보기
                       </button>
                       <button
                         class="btn btn_crud_default btn_present"
-                        data-toggle="modal"
-                        data-target="#modalPreviewQuiz"
-                        data-dismiss="modal"
+                        @click="$emit('preview', 'change')"
                       >
                         현재부터<br />미리보기
                       </button>
@@ -86,7 +82,9 @@
                           disabled:
                             currentPageIdx === quiz.quizList?.length - 1,
                         }"
-                        @click="$emit('pagination', 'plus')"
+                        @click="
+                          $emit('pagination', 'plus', quiz.quizList.length)
+                        "
                       ></button>
                       <button
                         v-if="quiz.quizList?.length > 1"
@@ -190,12 +188,12 @@
 
                         <div class="cnt">
                           <input
-                            id="shortAnswer"
+                            id="subjectiveAnswer"
                             type="text"
                             placeholder="정답 입력"
-                            name="shortAnswer"
-                            :value="item.shortAnswer"
                             class="form-control form-inline"
+                            name="subjectiveAnswer"
+                            :value="item.subjectiveAnswer"
                             :disabled="item.quizType !== 1"
                             @input="$emit('change-item', $event, idx)"
                           />
@@ -241,12 +239,12 @@
                           <div class="tit stit">정답</div>
                           <div class="cnt">
                             <input
-                              id="subjectiveAnswer"
+                              id="shortAnswer"
                               type="text"
                               placeholder="정답 입력"
+                              name="shortAnswer"
+                              :value="item.shortAnswer"
                               class="form-control form-inline"
-                              name="subjectiveAnswer"
-                              :value="item.subjectiveAnswer"
                               :disabled="item.quizType !== 2"
                               @input="$emit('change-item', $event, idx)"
                             />
@@ -256,9 +254,9 @@
                           <div class="tit stit">오답</div>
                           <div class="cnt">
                             <input
-                              id="subjectiveWrongAnswer"
-                              name="subjectiveWrongAnswer"
-                              :value="item.subjectiveWrongAnswer"
+                              id="shortWrongAnswer"
+                              name="shortWrongAnswer"
+                              :value="item.shortWrongAnswer"
                               type="text"
                               placeholder="오답 입력"
                               class="form-control form-inline"
@@ -309,7 +307,7 @@ export default {
     },
     quiz: {
       type: Object,
-      default: null,
+      default: () => {},
     },
     currentPageIdx: {
       type: Number,

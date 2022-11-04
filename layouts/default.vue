@@ -6,7 +6,7 @@
 import NavigationUl from '@/components/common/NavigationUl.vue'
 
 export default {
-  name: 'DefailtPage',
+  name: 'DefaultPage',
   components: { NavigationUl },
 }
 </script>

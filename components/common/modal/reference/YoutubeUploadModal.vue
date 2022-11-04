@@ -106,7 +106,7 @@ export default {
   props: {
     urlData: {
       type: Object,
-      default: null,
+      default: () => {},
     },
   },
 }

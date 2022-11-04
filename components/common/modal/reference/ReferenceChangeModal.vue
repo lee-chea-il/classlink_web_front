@@ -144,7 +144,7 @@ export default {
     },
     reference: {
       type: Object,
-      default: null,
+      default: () => {},
     },
   },
 }

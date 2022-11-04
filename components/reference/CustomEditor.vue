@@ -17,7 +17,7 @@ export default {
   props: {
     itemList: {
       type: Array,
-      default: null,
+      default: () => {},
     },
     currentIdx: {
       type: Number,

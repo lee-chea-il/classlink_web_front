@@ -62,7 +62,9 @@
                     :disabled="
                       selectData?.quizList?.length === currentPageIdx + 1
                     "
-                    @click="$emit('pagination', 'plus')"
+                    @click="
+                      $emit('pagination', 'plus', selectData.quizList.length)
+                    "
                   ></button>
                 </div>
               </div>
@@ -107,10 +109,16 @@
                       </div>
                       <div class="quiz_area04">
                         <div class="etcbtn_area">
-                          <button class="btn btn_crud_default btn_first">
+                          <button
+                            class="btn btn_crud_default btn_first"
+                            @click="$emit('preview', 'browse', 'first')"
+                          >
                             처음부터<br />미리보기
                           </button>
-                          <button class="btn btn_crud_default btn_present">
+                          <button
+                            class="btn btn_crud_default btn_present"
+                            @click="$emit('preview', 'browse')"
+                          >
                             현재부터<br />미리보기
                           </button>
                         </div>
@@ -138,7 +146,7 @@
                             type="text"
                             placeholder="정답 입력"
                             class="form-control form-inline"
-                            :value="item.shortAnswer"
+                            :value="item.subjectiveAnswer"
                             readOnly
                           />
                         </div>
@@ -166,7 +174,7 @@
                               type="text"
                               placeholder="정답 입력"
                               class="form-control form-inline"
-                              :value="item.subjectiveAnswer"
+                              :value="item.shortAnswer"
                               readOnly
                             />
                           </div>
@@ -178,7 +186,7 @@
                               type="text"
                               placeholder="오답 입력"
                               class="form-control form-inline"
-                              :value="item.subjectiveWrongAnswer"
+                              :value="item.shortWrongAnswer"
                               readOnly
                             />
                           </div>
@@ -334,7 +342,7 @@ export default {
     open: Boolean,
     selectData: {
       type: Object,
-      default: null,
+      default: () => {},
     },
     currentPageIdx: {
       type: Number,

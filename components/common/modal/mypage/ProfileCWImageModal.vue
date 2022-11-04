@@ -70,7 +70,7 @@ export default {
     },
     myInfo: {
       type: Object,
-      default: null,
+      default: () => {},
     },
     uploadImageFile: {
       type: String,

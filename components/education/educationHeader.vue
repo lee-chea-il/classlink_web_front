@@ -14,21 +14,19 @@
           </div>
           <div class="nav_area">
             <ul class="nav nav_dapth01">
-              <li
-                class="nav-item"
-                @click="$store.commit('common/setActiveNavIdx', 1)"
-              >
-                <a
-                  class="nav-link"
-                  :class="{ active: $store.state.common.activeNavIdx === 1 }"
-                  href="#"
-                  >수업준비</a
+              <!-- @click="$store.commit('common/setActiveNavIdx', 1)" -->
+              <li class="nav-item">
+                <nuxt-link
+                  :class="{
+                    'nav-link': true,
+                    active: $route.matched[0].path === '/classPreperation',
+                  }"
+                  to="/classPreperation/reference"
+                  >수업준비</nuxt-link
                 >
               </li>
-              <li
-                class="nav-item"
-                @click="$store.commit('common/setActiveNavIdx', 2)"
-              >
+
+              <li class="nav-item">
                 <a
                   class="nav-link"
                   :class="{ active: $store.state.common.activeNavIdx === 2 }"
@@ -36,10 +34,7 @@
                   >수업</a
                 >
               </li>
-              <li
-                class="nav-item"
-                @click="$store.commit('common/setActiveNavIdx', 3)"
-              >
+              <li class="nav-item">
                 <a
                   class="nav-link"
                   :class="{ active: $store.state.common.activeNavIdx === 3 }"
@@ -47,10 +42,7 @@
                   >관리</a
                 >
               </li>
-              <li
-                class="nav-item"
-                @click="$store.commit('common/setActiveNavIdx', 4)"
-              >
+              <li class="nav-item">
                 <a
                   class="nav-link"
                   :class="{ active: $store.state.common.activeNavIdx === 4 }"
@@ -89,7 +81,10 @@
           </div>
         </div>
       </div>
-      <div v-show="$store.state.common.activeNavIdx === 1" class="nav_sub">
+      <div
+        v-show="$route.matched[0].path === '/classPreperation'"
+        class="nav_sub"
+      >
         <ul class="nav nav_dapth02">
           <li class="nav-item">
             <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->

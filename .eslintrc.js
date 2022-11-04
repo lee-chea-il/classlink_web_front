@@ -18,7 +18,7 @@ module.exports = {
     'import/extensions': ['off'],
     'comma-dangle': ['error', 'only-multiline'],
     'no-console': 'off',
-    camelcase: 0,
+    camelcase: 1,
     'no-alert': 0,
     'no-multi-assign': 0,
     'import/no-extraneous-dependencies': 0,

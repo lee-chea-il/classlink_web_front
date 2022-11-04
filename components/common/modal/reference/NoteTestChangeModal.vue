@@ -56,10 +56,16 @@
                     <div class="write_area">
                       <div class="title_area">
                         <span class="tit">문제</span>
-                        <button class="btn btn_crud_default btn_first">
+                        <button
+                          class="btn btn_crud_default btn_first"
+                          @click="$emit('preview', 'change', 'first')"
+                        >
                           처음부터<br />미리보기
                         </button>
-                        <button class="btn btn_crud_default btn_present">
+                        <button
+                          class="btn btn_crud_default btn_present"
+                          @click="$emit('preview', 'change')"
+                        >
                           현재부터<br />미리보기
                         </button>
                       </div>
@@ -81,7 +87,13 @@
                         >
                         <button
                           class="btn icons_arrow_square_r"
-                          @click="$emit('pagination', 'plus')"
+                          @click="
+                            $emit(
+                              'pagination',
+                              'plus',
+                              reference.noteTestList.length
+                            )
+                          "
                         ></button>
                         <button
                           class="btn btn_crud_default btn_del"
@@ -196,15 +208,15 @@ export default {
     open: Boolean,
     reference: {
       type: Object,
-      default: null,
+      default: () => {},
     },
     noteTestList: {
       type: Array,
-      default: null,
+      default: () => {},
     },
     currentPageIdx: {
       type: Number,
-      default: null,
+      default: () => {},
     },
   },
 }

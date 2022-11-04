@@ -8,7 +8,7 @@
             type="radio"
             name="radB"
             class="custom-control-input"
-            :checked="itemList.answer === idx"
+            :checked="itemList.answer === idx + 1"
             @click="$emit('select-answer', idx)"
           />
           <label
@@ -16,7 +16,7 @@
             :for="!changePage ? `item${idx}` : `target${idx}`"
           >
             보기{{ idx + 1 }} <br /><span
-              v-if="itemList.answer === idx"
+              v-if="itemList.answer === idx + 1"
               class="exp_smtxt"
               >(정답)</span
             >
@@ -50,7 +50,7 @@ export default {
   props: {
     itemList: {
       type: Object,
-      default: null,
+      default: () => {},
     },
     currentPageIdx: {
       type: Number,

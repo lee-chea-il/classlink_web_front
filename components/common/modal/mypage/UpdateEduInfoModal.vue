@@ -108,7 +108,7 @@ export default {
     },
     eduInfo: {
       type: Object,
-      default: null,
+      default: () => {},
     },
   },
 }
