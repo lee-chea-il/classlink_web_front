@@ -200,9 +200,6 @@ export default {
         this.isError = true
       }
     },
-    onClickNickNameCheck() {
-      this.userInfo.nickName = this.userInfo.name
-    },
     onChangeCheckBox({ target: { checked } }) {
       this.nickNameCheck = checked
       if (checked) {

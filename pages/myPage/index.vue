@@ -43,7 +43,7 @@
     <UpdateMyInfoModal
       :myInfo="myInfo"
       :nickNameCheck="nickNameCheck"
-      @change-input="onChangeInput"
+      @change-input="onChangeMyInfoInput"
       @change-check="onChangeCheckBox"
     />
 
@@ -594,14 +594,6 @@ export default {
     // 비밀번호 변경
     onChangeInput({ target: { value, id } }) {
       this.newPassword[id] = value
-      if (
-        this.myInfo.name !== '' &&
-        this.myInfo.nickName === this.myInfo.name
-      ) {
-        this.nickNameCheck = true
-      } else {
-        this.nickNameCheck = false
-      }
     },
     onChangePasswordCheck({ target: { value } }) {
       this.newPassword.passwordCheck = value
@@ -662,13 +654,24 @@ export default {
     },
 
     // 내 정보 수정
+    onChangeMyInfoInput({ target: { value, id } }) {
+      this.myInfo[id] = value
+      if (
+        this.myInfo.name !== '' &&
+        this.myInfo.nickName === this.myInfo.name
+      ) {
+        this.nickNameCheck = true
+      } else {
+        this.nickNameCheck = false
+      }
+    },
     onClickNickNameCheck() {
-      this.userInfo.nickName = this.userInfo.name
+      this.myInfo.nickName = this.myInfo.name
     },
     onChangeCheckBox({ target: { checked } }) {
       this.nickNameCheck = checked
       if (checked) {
-        this.userInfo.nickName = this.userInfo.name
+        this.myInfo.nickName = this.myInfo.name
       }
     },
   },
