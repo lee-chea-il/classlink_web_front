@@ -2398,6 +2398,8 @@ ol {
   padding-left: 30px;
   padding-right: 30px;
   text-align: left;
+  height: 490px;
+  overflow-y: scroll;
 }
 .modal_ac_manage_lesson .divide_section .divide_area,
 .modal_ac_manage_curi .divide_section .divide_area {
@@ -3070,13 +3072,23 @@ ol {
 
 /* jeh-2022.09.15 */
 /* 자료등록01 (팝업 L) */
+#modalDataregi .box_up,
+#modalDataregi .box_down {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+}
 #modalDataregi .box01 {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
-  display: inline-block;
-  width: 290px;
+  width: 250px;
   height: 190px;
-  margin: 15px 15px;
 }
 #modalDataregi .box01:hover, #modalDataregi .box01:focus, #modalDataregi .box01:active {
   border: 1px solid #7391FA;
@@ -3088,12 +3100,11 @@ ol {
 }
 #modalDataregi .box01 .regi_icon01 {
   background-image: url(../images/icon_video_play_off.png);
-  height: 100%;
   background-size: cover;
   display: block;
   width: 48px;
   height: 27px;
-  margin: 40px 0 28px 120px;
+  margin-bottom: 20px;
 }
 #modalDataregi .box01 div:last-child {
   font-weight: 400;
@@ -3102,14 +3113,14 @@ ol {
   color: #A7A9AC;
 }
 #modalDataregi .box02 {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
-  display: inline-block;
-  width: 290px;
+  width: 250px;
   height: 190px;
-  margin: 15px 15px;
-  position: relative;
-  top: 10px;
 }
 #modalDataregi .box02:hover, #modalDataregi .box02:focus, #modalDataregi .box02:active {
   border: 1px solid #7391FA;
@@ -3121,12 +3132,11 @@ ol {
 }
 #modalDataregi .box02 .regi_icon02 {
   background-image: url(../images/icon_paper_text_off.png);
-  height: 100%;
   background-size: cover;
   display: block;
   width: 30px;
   height: 37px;
-  margin: 40px 0 28px 128px;
+  margin-bottom: 20px;
 }
 #modalDataregi .box02 div:last-child {
   font-weight: 400;
@@ -3135,14 +3145,14 @@ ol {
   color: #A7A9AC;
 }
 #modalDataregi .box03 {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
-  display: inline-block;
-  width: 290px;
+  width: 250px;
   height: 190px;
-  margin: 15px 15px;
-  position: relative;
-  top: 13px;
 }
 #modalDataregi .box03:hover, #modalDataregi .box03:focus, #modalDataregi .box03:active {
   border: 1px solid #7391FA;
@@ -3154,12 +3164,11 @@ ol {
 }
 #modalDataregi .box03 .regi_icon03 {
   background-image: url(../images/icon_quiz_off.png);
-  height: 100%;
   background-size: cover;
   display: block;
   width: 40px;
   height: 40px;
-  margin: 40px 0 28px 120px;
+  margin-bottom: 20px;
 }
 #modalDataregi .box03 div:last-child {
   font-weight: 400;
@@ -3168,14 +3177,14 @@ ol {
   color: #A7A9AC;
 }
 #modalDataregi .box04 {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
-  display: inline-block;
-  width: 290px;
+  width: 250px;
   height: 190px;
-  margin: 15px 15px;
-  position: relative;
-  top: -10px;
 }
 #modalDataregi .box04:hover, #modalDataregi .box04:focus, #modalDataregi .box04:active {
   border: 1px solid #7391FA;
@@ -3187,12 +3196,11 @@ ol {
 }
 #modalDataregi .box04 .regi_icon04 {
   background-image: url(../images/icon_exam_off.png);
-  height: 100%;
   background-size: cover;
   display: block;
   width: 42px;
   height: 40px;
-  margin: 40px 0 28px 120px;
+  margin-bottom: 20px;
 }
 #modalDataregi .box04 div:last-child {
   font-weight: 400;
@@ -3201,12 +3209,14 @@ ol {
   color: #A7A9AC;
 }
 #modalDataregi .box05 {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
-  display: inline-block;
-  width: 290px;
+  width: 250px;
   height: 190px;
-  margin: 15px 15px;
 }
 #modalDataregi .box05:hover, #modalDataregi .box05:focus, #modalDataregi .box05:active {
   border: 1px solid #7391FA;
@@ -3218,12 +3228,11 @@ ol {
 }
 #modalDataregi .box05 .regi_icon05 {
   background-image: url(../images/icon_youtube_off.png);
-  height: 100%;
   background-size: cover;
   display: block;
   width: 45px;
   height: 30px;
-  margin: 40px 0 28px 120px;
+  margin-bottom: 20px;
 }
 #modalDataregi .box05 div:last-child {
   font-weight: 400;
@@ -3232,14 +3241,14 @@ ol {
   color: #A7A9AC;
 }
 #modalDataregi .box06 {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
-  display: inline-block;
-  width: 290px;
+  width: 250px;
   height: 190px;
-  margin: 15px 15px;
-  position: relative;
-  top: 6px;
 }
 #modalDataregi .box06:hover, #modalDataregi .box06:focus, #modalDataregi .box06:active {
   border: 1px solid #7391FA;
@@ -3251,12 +3260,11 @@ ol {
 }
 #modalDataregi .box06 .regi_icon06 {
   background-image: url(../images/icon_link_off.png);
-  height: 100%;
   background-size: cover;
   display: block;
   width: 36px;
   height: 36px;
-  margin: 40px 0 28px 120px;
+  margin-bottom: 20px;
 }
 #modalDataregi .box06 div:last-child {
   font-weight: 400;
@@ -3480,8 +3488,22 @@ ol {
   background-position: center center;
   background-size: contain;
   background-image: url(../images/icon_timer.png);
-  margin-left: 90%;
   margin-top: 15px;
+}
+#modalPreviewQuiz .limit_time_font,
+#modalPreviewTest .limit_time_font {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  color: #2C51D7;
+}
+#modalPreviewQuiz .limit_time,
+#modalPreviewTest .limit_time {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 10px;
+  gap: 10px;
 }
 #modalPreviewQuiz .qa_num,
 #modalPreviewTest .qa_num {
@@ -4393,8 +4415,52 @@ ol {
 #modalDataRegiQuiz .quiz_area02,
 #modalDataRegiNote .quiz_area02 {
   width: 100%;
-  margin-left: 20px;
+  margin-left: 5px;
   margin-bottom: 10px;
+}
+#modalDataRegiModi .right_area .comment_area .tit,
+#modalDataRegiQuiz .right_area .comment_area .tit,
+#modalDataRegiNote .right_area .comment_area .tit {
+  float: left;
+  font-size: 14px;
+}
+#modalDataRegiModi .right_area .comment_area .tit_area .check label,
+#modalDataRegiQuiz .right_area .comment_area .tit_area .check label,
+#modalDataRegiNote .right_area .comment_area .tit_area .check label {
+  font-size: 12px;
+}
+#modalDataRegiModi .right_area .comment_area .cnt_area textarea,
+#modalDataRegiQuiz .right_area .comment_area .cnt_area textarea,
+#modalDataRegiNote .right_area .comment_area .cnt_area textarea {
+  width: 100%;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+}
+#modalDataRegiModi .right_area .comment_area .tit_area,
+#modalDataRegiQuiz .right_area .comment_area .tit_area,
+#modalDataRegiNote .right_area .comment_area .tit_area {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+#modalDataRegiModi textarea::-moz-placeholder, #modalDataRegiQuiz textarea::-moz-placeholder, #modalDataRegiNote textarea::-moz-placeholder {
+  color: #A7A9AC;
+  font-size: 14px;
+  padding: 10px;
+}
+#modalDataRegiModi textarea:-ms-input-placeholder, #modalDataRegiQuiz textarea:-ms-input-placeholder, #modalDataRegiNote textarea:-ms-input-placeholder {
+  color: #A7A9AC;
+  font-size: 14px;
+  padding: 10px;
+}
+#modalDataRegiModi textarea::placeholder,
+#modalDataRegiQuiz textarea::placeholder,
+#modalDataRegiNote textarea::placeholder {
+  color: #A7A9AC;
+  font-size: 14px;
+  padding: 10px;
 }
 
 /* jeh-2022.09.19 */

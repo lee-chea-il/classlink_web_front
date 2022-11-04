@@ -538,6 +538,8 @@
 		padding-left: 30px;
 		padding-right: 30px;
 		text-align: left;
+		height: 490px;
+		overflow-y: scroll;
 	}
 
 	.divide_section .divide_area {
@@ -1312,12 +1314,25 @@
 /* jeh-2022.09.15 */
 /* 자료등록01 (팝업 L) */
 #modalDataregi {
+
+	.box_up,
+	.box_down {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 20px;
+		margin-top: 20px;
+	}
+
+
 	.box01 {
+		display: flex;
+		flex-flow: column;
+		justify-content: center;
+		align-items: center;
 		@include mixin.border_common;
-		display: inline-block;
-		width: 290px;
+		width: 250px;
 		height: 190px;
-		margin: 15px 15px;
 
 		&:hover,
 		&:focus,
@@ -1334,12 +1349,11 @@
 
 		.regi_icon01 {
 			background-image: url(../images/icon_video_play_off.png);
-			height: 100%;
 			background-size: cover;
 			display: block;
 			width: 48px;
 			height: 27px;
-			margin: 40px 0 28px 120px;
+			margin-bottom: 20px;
 		}
 
 		div:last-child {
@@ -1351,13 +1365,13 @@
 	}
 
 	.box02 {
+		display: flex;
+		flex-flow: column;
+		justify-content: center;
+		align-items: center;
 		@include mixin.border_common;
-		display: inline-block;
-		width: 290px;
+		width: 250px;
 		height: 190px;
-		margin: 15px 15px;
-		position: relative;
-		top: 10px;
 
 		&:hover,
 		&:focus,
@@ -1374,12 +1388,11 @@
 
 		.regi_icon02 {
 			background-image: url(../images/icon_paper_text_off.png);
-			height: 100%;
 			background-size: cover;
 			display: block;
 			width: 30px;
 			height: 37px;
-			margin: 40px 0 28px 128px;
+			margin-bottom: 20px;
 		}
 
 		div:last-child {
@@ -1391,13 +1404,13 @@
 	}
 
 	.box03 {
+		display: flex;
+		flex-flow: column;
+		justify-content: center;
+		align-items: center;
 		@include mixin.border_common;
-		display: inline-block;
-		width: 290px;
+		width: 250px;
 		height: 190px;
-		margin: 15px 15px;
-		position: relative;
-		top: 13px;
 
 		&:hover,
 		&:focus,
@@ -1414,12 +1427,11 @@
 
 		.regi_icon03 {
 			background-image: url(../images/icon_quiz_off.png);
-			height: 100%;
 			background-size: cover;
 			display: block;
 			width: 40px;
 			height: 40px;
-			margin: 40px 0 28px 120px;
+			margin-bottom: 20px;
 		}
 
 		div:last-child {
@@ -1431,13 +1443,13 @@
 	}
 
 	.box04 {
+		display: flex;
+		flex-flow: column;
+		justify-content: center;
+		align-items: center;
 		@include mixin.border_common;
-		display: inline-block;
-		width: 290px;
+		width: 250px;
 		height: 190px;
-		margin: 15px 15px;
-		position: relative;
-		top: -10px;
 
 		&:hover,
 		&:focus,
@@ -1454,12 +1466,11 @@
 
 		.regi_icon04 {
 			background-image: url(../images/icon_exam_off.png);
-			height: 100%;
 			background-size: cover;
 			display: block;
 			width: 42px;
 			height: 40px;
-			margin: 40px 0 28px 120px;
+			margin-bottom: 20px;
 		}
 
 		div:last-child {
@@ -1471,11 +1482,13 @@
 	}
 
 	.box05 {
+		display: flex;
+		flex-flow: column;
+		justify-content: center;
+		align-items: center;
 		@include mixin.border_common;
-		display: inline-block;
-		width: 290px;
+		width: 250px;
 		height: 190px;
-		margin: 15px 15px;
 
 		&:hover,
 		&:focus,
@@ -1492,12 +1505,11 @@
 
 		.regi_icon05 {
 			background-image: url(../images/icon_youtube_off.png);
-			height: 100%;
 			background-size: cover;
 			display: block;
 			width: 45px;
 			height: 30px;
-			margin: 40px 0 28px 120px;
+			margin-bottom: 20px;
 		}
 
 		div:last-child {
@@ -1509,13 +1521,14 @@
 	}
 
 	.box06 {
+		display: flex;
+		flex-flow: column;
+		justify-content: center;
+		align-items: center;
 		@include mixin.border_common;
-		display: inline-block;
-		width: 290px;
+		width: 250px;
 		height: 190px;
-		margin: 15px 15px;
-		position: relative;
-		top: 6px;
+
 
 		&:hover,
 		&:focus,
@@ -1532,12 +1545,11 @@
 
 		.regi_icon06 {
 			background-image: url(../images/icon_link_off.png);
-			height: 100%;
 			background-size: cover;
 			display: block;
 			width: 36px;
 			height: 36px;
-			margin: 40px 0 28px 120px;
+			margin-bottom: 20px;
 		}
 
 		div:last-child {
@@ -1760,8 +1772,22 @@
 		background-position: center center;
 		background-size: contain;
 		background-image: url(../images/icon_timer.png);
-		margin-left: 90%;
 		margin-top: 15px;
+	}
+
+	.limit_time_font {
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 23px;
+		color: #2C51D7;
+	}
+
+	.limit_time {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		margin-right: 10px;
+		gap: 10px;
 	}
 
 	.qa_num {
@@ -2674,9 +2700,39 @@
 
 	.quiz_area02 {
 		width: 100%;
-		margin-left: 20px;
+		margin-left: 5px;
 		margin-bottom: 10px;
 	}
+
+	.right_area .comment_area .tit {
+		float: left;
+		font-size: 14px;
+	}
+
+	.right_area .comment_area .tit_area .check label {
+		font-size: 12px;
+	}
+
+	.right_area .comment_area .cnt_area textarea {
+		width: 100%;
+		border: 0.4px solid rgba(167, 169, 172, 0.4);
+		border-radius: 5px;
+	}
+
+	.right_area .comment_area .tit_area {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 10px;
+	}
+
+	textarea::placeholder {
+		color: #A7A9AC;
+		font-size: 14px;
+		padding: 10px;
+	}
+
 }
 
 /* jeh-2022.09.19 */

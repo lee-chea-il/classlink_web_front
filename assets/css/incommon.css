@@ -2166,6 +2166,12 @@ i.btn {
 .nav_mobile .nav_top {
   height: 60px;
   min-width: unset;
+  position: fixed;
+  height: 60px;
+  background-color: #fff;
+  width: 100%;
+  z-index: 100;
+  border-bottom: 1px solid #E6E7E8;
 }
 .nav_mobile .logo_area,
 .nav_mobile .title_area {
