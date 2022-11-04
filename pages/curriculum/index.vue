@@ -43,6 +43,7 @@
                     :model="institutionData"
                     :default-expanded="true"
                     default-tree-node-name="새 폴더"
+                    icon-type="institution"
                     :is-drop="(identity=='master')?true:false"
                     :is-show-option="(identity=='master')?true:false"
                     @click="onClick"
@@ -68,6 +69,7 @@
                     :model="franchiseData"
                     :default-expanded="true"
                     default-tree-node-name="새 폴더"
+                    icon-type="franchise"
                     :is-drop="(identity=='master')?true:false"
                     :is-show-option="(identity=='master')?true:false"
                     @click="onClick"
@@ -107,6 +109,8 @@
 								<div id="mydata" class="tab-pane fade show active" role="tabpanel" aria-labelledby="grade-tab">
 									
                   <vue-tree-list
+                    default-tree-node-name="새 폴더"
+                    icon-type="curriculum"
                     :model="myCurriculumData"
                     :default-expanded="false"
                     @click="onClick"
@@ -156,7 +160,7 @@ export default {
       /*
       master,teacher
       */
-      identity: 'master',
+      identity: 'teacher',
       pid: 0,
       newTree: {},
       receiveInstitutionData: [
@@ -204,6 +208,10 @@ export default {
                       type: 'institution',
                       dbIdx: 8
                     }
+                  ]
+                },
+                {
+                  name: '3단원', children: [
                   ]
                 }
               ]
@@ -358,13 +366,30 @@ export default {
     const dataMapping=(item,isReadOnly) => {
       const result=[]
       const len=item.length
+      let dType=''
       for (let i=0;i<len; i++) {
+        dType=''
         if(item[i].children!==undefined){
-          result[i]={name:item[i].name,id:this.pid,isLeaf:false,pid:this.pid,children:[],readOnly:isReadOnly,isChecked:false,type:item[i].type}
+          result[i]={name:item[i].name,id:this.pid,isLeaf:false,pid:this.pid,children:[],readOnly:isReadOnly,isChecked:false,type:item[i].type,dataType:dType}
           this.pid++
           result[i].children=dataMapping(item[i].children,isReadOnly)
         }else{
-          result[i]={name:item[i].name,id:this.pid,pid:this.pid,isLeaf:true,readOnly:isReadOnly,isChecked:false,type:item[i].type}
+          const sp=item[i].name.split('.')
+          const extension=sp[sp.length-1]
+          if(extension==='pdf'||extension==='ppt'||extension==='doc'||extension==='xls'||extension==='hwp'){
+            dType='video'
+          }else if(extension==='pdf'||extension==='ppt'||extension==='doc'||extension==='xls'||extension==='hwp'||extension==='txt'){
+            dType='document'
+          }else if(extension==='quiz'){
+            dType='quiz'
+          }else if(extension==='exam'){
+            dType='exam'
+          }else if(extension==='utobe'){
+            dType='utobe'
+          }else if(extension==='url'){
+            dType='url'
+          }
+          result[i]={name:item[i].name,id:this.pid,pid:this.pid,isLeaf:true,readOnly:isReadOnly,isChecked:false,type:item[i].type,dataType:dType}
           this.pid++
         }
       }
@@ -565,5 +590,83 @@ export default {
 }
 .custom-checkbox .custom-control-input:checked ~ .custom-control-label::after{
   margin-left: 0.15rem;
+}
+.icon_mp4_sm{
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(./assets/images/icon_mp4_sm.png);
+  margin-right: 10px;
+  margin-left: 10px;
+}
+.icon_pdf_sm{
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(./assets/images/icon_pdf_sm.png);
+  margin-right: 10px;
+  margin-left: 10px;
+}
+.icon_quiz_sm{
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(./assets/images/icon_quiz_sm.png);
+  margin-right: 10px;
+  margin-left: 10px;
+}
+.icon_exam_sm{
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(./assets/images/icon_exam_sm.png);
+  margin-right: 10px;
+  margin-left: 10px;
+}
+.icon_youtube_sm{
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(./assets/images/icon_youtube_sm.png);
+  margin-right: 10px;
+  margin-left: 10px;
+}
+.icon_link_sm{
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(./assets/images/icon_link_sm.png);
+  margin-right: 10px;
+  margin-left: 10px;
 }
 </style>
