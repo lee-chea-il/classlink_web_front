@@ -205,7 +205,6 @@ export default {
     },
     onChangeCheckBox({ target: { checked } }) {
       this.nickNameCheck = checked
-      console.log('이거머야', this.nickNameCheck)
       if (checked) {
         this.userInfo.nickName = this.userInfo.name
       }

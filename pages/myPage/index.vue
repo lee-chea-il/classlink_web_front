@@ -3,16 +3,20 @@
     <EducationHeader />
     <div id="content" class="content">
       <div class="content_area">
-        <div class="page_mypage edu_head_aft row">
+        <div class="page_mypage edu_head_bef row">
           <div class="title">내 정보</div>
           <!-- 왼쪽 영역 -->
           <MyInfoLeft :myInfo="myInfo" @alarmBtn-click="changeAlarmState" />
           <!-- 오른쪽 영역 -->
-          <!-- <MyInfoRightFran /> -->
-          <MyInfoRightEdu :eduInfo="eduInfo" :franInfo="franInfo" />
+          <MyInfoRightEdu
+            :myInfo="myInfo"
+            :eduInfo="eduInfo"
+            :franInfo="franInfo"
+            @alarmBtn-click="changeAlarmState"
+          />
           <!-- /.오른쪽 영역 -->
           <!-- 하단 버튼 영역 -->
-          <div class="btn_area col-12">
+          <div class="btn_area">
             <button
               class="btn btn_crud_default"
               data-toggle="modal"
@@ -36,7 +40,12 @@
 
     <!-- 모달 팝업 ------------------------------------->
     <!-- 팝업M1-내정보수정 -->
-    <UpdateMyInfoModal />
+    <UpdateMyInfoModal
+      :myInfo="myInfo"
+      :nickNameCheck="nickNameCheck"
+      @change-input="onChangeInput"
+      @change-check="onChangeCheckBox"
+    />
 
     <!-- 팝업 M2- 내정보 수정 - 프로필 이미지 등록1 -->
     <ProfileImageModal
@@ -465,6 +474,9 @@
     <!-- 팝업 S1-신분전환 -->
     <ChangeIdentityModal />
 
+    <!-- 팝업 M2- 내정보 수정 - 교육기관 정보 개설 -->
+    <RegistEduModal />
+
     <!-- 설명 모달 -->
     <ModalDesc
       :open="modalDesc.open"
@@ -477,7 +489,6 @@
 
 <script>
 import MyInfoLeft from '@/components/mypage/MyInfoLeft.vue'
-// import MyInfoRightFran from '@/components/mypage/MyInfoRightFran.vue'
 import MyInfoRightEdu from '@/components/mypage/MyInfoRightEdu.vue'
 import UpdateMyInfoModal from '@/components/common/modal/mypage/UpdateMyInfoModal.vue'
 import ProfileImageModal from '@/components/common/modal/mypage/ProfileImageModal.vue'
@@ -486,6 +497,7 @@ import UpdatePasswordModal from '@/components/common/modal/mypage/UpdatePassword
 import LogoutModal from '@/components/common/modal/mypage/LogoutModal.vue'
 import ChangeIdentityModal from '@/components/common/modal/mypage/ChangeIdentityModal.vue'
 import UpdateEduInfoModal from '@/components/common/modal/mypage/UpdateEduInfoModal.vue'
+import RegistEduModal from '@/components/common/modal/mypage/RegistEduModal.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 export default {
   name: 'MyPage',
@@ -499,6 +511,7 @@ export default {
     LogoutModal,
     ChangeIdentityModal,
     UpdateEduInfoModal,
+    RegistEduModal,
     ModalDesc,
   },
   data() {
@@ -513,7 +526,7 @@ export default {
         name: '김유진',
         nickname: '김유진',
         identity: '기관장, 선생님',
-        position: '선생님',
+        position: '기관장',
         phone: '010-1234-1234',
         email: 'lastepisode@naver.com',
         state: true,
@@ -521,6 +534,7 @@ export default {
         profile_image: require('@/assets/images/mypage/profile1.png'),
         profile_cw_image: require('@/assets/images/mypage/cwprofile1.png'),
         password: '1234!',
+        authNumber: '',
       },
       eduInfo: {
         name: '김유진',
@@ -546,6 +560,7 @@ export default {
         isPwEyeOn3: false,
       },
       isError: false,
+      nickNameCheck: false,
       uploadImageFile: '',
     }
   },
@@ -579,6 +594,14 @@ export default {
     // 비밀번호 변경
     onChangeInput({ target: { value, id } }) {
       this.newPassword[id] = value
+      if (
+        this.myInfo.name !== '' &&
+        this.myInfo.nickName === this.myInfo.name
+      ) {
+        this.nickNameCheck = true
+      } else {
+        this.nickNameCheck = false
+      }
     },
     onChangePasswordCheck({ target: { value } }) {
       this.newPassword.passwordCheck = value
@@ -635,6 +658,17 @@ export default {
             '해당 파일은 제한된 용량을 초과하였습니다. (이미지 제한 용량: 3MB)'
           )
         }
+      }
+    },
+
+    // 내 정보 수정
+    onClickNickNameCheck() {
+      this.userInfo.nickName = this.userInfo.name
+    },
+    onChangeCheckBox({ target: { checked } }) {
+      this.nickNameCheck = checked
+      if (checked) {
+        this.userInfo.nickName = this.userInfo.name
       }
     },
   },
