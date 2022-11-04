@@ -1961,11 +1961,21 @@ ol {
 .page_mypage .title {
   color: #303030;
   font-weight: 500;
+  width: 100%;
+  margin-left: 20px;
 }
 @media (max-width: 991.98px) {
   .page_mypage .title {
     display: none;
   }
+}
+.page_mypage .left_area {
+  width: 56%;
+  margin-left: 20px;
+}
+.page_mypage .right_area {
+  width: 39%;
+  margin-left: 20px;
 }
 .page_mypage .info_area {
   padding: 15px 50px;
@@ -1975,13 +1985,89 @@ ol {
   margin-top: 15px;
   font-size: 14px;
 }
+@media (max-width: 991.98px) {
+  .page_mypage .info_area .form-group.row {
+    margin-bottom: 1px;
+    margin-left: 10px;
+  }
+}
 @media (max-width: 575.98px) {
   .page_mypage .info_area {
     padding: 15px 20px;
   }
+  .page_mypage .info_area .form-group.row {
+    margin-bottom: 1px;
+    margin-left: 10px;
+  }
 }
 .page_mypage .info_area .friends {
   line-height: 30px;
+}
+@media (max-width: 575.98px) {
+  .page_mypage .right_square .form-group.row:first-child {
+    padding-top: 17px;
+  }
+}
+.page_mypage .pp_area {
+  width: 33%;
+  padding-left: 20px;
+}
+@media (max-width: 991.98px) {
+  .page_mypage .pp_area {
+    width: 100%;
+  }
+}
+.page_mypage .info_area02 {
+  width: 66%;
+  padding-left: 10px;
+}
+@media (max-width: 575.98px) {
+  .page_mypage .info_area02 {
+    width: 100%;
+    padding-left: 10px;
+  }
+}
+.page_mypage .info_area_title {
+  width: 35%;
+  margin-left: 20px;
+}
+@media (max-width: 1199.98px) {
+  .page_mypage .info_area {
+    padding: 15px 10px;
+  }
+}
+@media (max-width: 991.98px) {
+  .page_mypage .left_area {
+    width: 85%;
+    margin: 0 auto;
+  }
+  .page_mypage .right_area {
+    width: 85%;
+    margin: 0 auto;
+  }
+}
+@media (max-width: 575.98px) {
+  .page_mypage .left_area {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 60px;
+  }
+  .page_mypage .right_area {
+    width: 80%;
+    margin: 0 auto;
+  }
+  .page_mypage .btn_area {
+    justify-content: center;
+    gap: 10px;
+  }
+  .page_mypage .right_up {
+    width: 110%;
+    margin-left: -28px;
+  }
+  .page_mypage .right_square {
+    width: 101%;
+    padding: 0 15px 0 0;
+  }
 }
 .page_mypage .info_area.left label,
 .page_mypage .info_area.left label + div {
@@ -1992,6 +2078,9 @@ ol {
   align-items: center;
   margin-top: 15px;
   justify-content: space-between;
+  width: 100%;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 @media (max-width: 575.98px) {
   .page_mypage .btn_area {
@@ -2001,11 +2090,66 @@ ol {
     margin-right: 10px;
   }
 }
+@media (max-width: 991.98px) {
+  .page_mypage .btn_area {
+    justify-content: center;
+  }
+  .page_mypage .btn_area .btn:first-child {
+    margin-right: 10px;
+  }
+}
 
+/* 팝업M1-내정보수정  */
 @media (max-width: 575.98px) {
   .modal_myinfo .modal-body {
     padding: 20px 0;
   }
+}
+.modal_myinfo .info_area {
+  width: 60%;
+  margin: 0 auto;
+}
+.modal_myinfo .info_area_title {
+  width: 15%;
+  margin-left: 20px;
+}
+.modal_myinfo .form-group .form-inline {
+  width: 68%;
+}
+.modal_myinfo .form-certifi {
+  margin-top: -10px;
+}
+.modal_myinfo .form-certifi .btn_crud_point {
+  width: 117px;
+}
+@media (max-width: 1199.98px) {
+  .modal_myinfo .info_area {
+    width: 80%;
+    margin: 0 auto;
+  }
+}
+@media (max-width: 991.98px) {
+  .modal_myinfo .info_area {
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+@media (max-width: 575.98px) {
+  .modal_myinfo .form-group .form-inline {
+    width: 65%;
+  }
+  .modal_myinfo .form-group .btn_crud_point {
+    font-size: 12px;
+  }
+  .modal_myinfo .form-certifi .btn_crud_point {
+    width: 94px;
+  }
+}
+.modal_myinfo .form-group.form-inlinebox .form-control + .btn {
+  display: block;
+  float: right;
+  width: 95px;
+  font-size: 12px;
 }
 .modal_myinfo .divid_section {
   margin: 0 50px;
@@ -2080,7 +2224,7 @@ ol {
   height: 70px;
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 3px;
-  padding: 15px;
+  padding: 15px 40px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -2105,7 +2249,7 @@ ol {
   position: relative;
   height: auto;
   overflow: hidden;
-  margin: 10px 65px 0;
+  margin: 10px 40px 0;
   padding-bottom: 20px;
   display: flex;
   align-items: center;
@@ -2125,6 +2269,16 @@ ol {
 }
 .modal_myinfo .btn_section .btn_crud_point {
   margin-left: auto;
+}
+.modal_myinfo .left_area .info_area .form-group.row .exp_txt02 {
+  position: absolute;
+  padding-left: 15px;
+  left: -18px;
+  width: 100%;
+  font-size: 12px;
+  color: #A7A9AC;
+  line-height: initial;
+  bottom: 6px;
 }
 
 /* jeh-2022.08.30 시작 */
@@ -2182,10 +2336,9 @@ ol {
 }
 
 /* 학원관리자 - 선생님 */
-.page_mypage.teacher .info_area.right {
-  padding: 15px 50px 268px 50px;
-}
-
+/* .page_mypage.teacher .info_area.right {
+	padding: 15px 50px 268px 50px;
+} */
 /* 학원관리자 - 선생님, 프랜관리자 */
 .page_mypage.teacher_fran .info_area .form-group.row > label + div {
   line-height: 47.5px;
@@ -2215,8 +2368,8 @@ ol {
   padding: 15px 25px;
 }
 
-.page_mypage.edu_head_bef .info_area.right {
-  padding: 15px 50px 25px 50px;
+.right_area .right {
+  height: 97%;
 }
 
 /* 프랜차이즈 - 프랜차이즈 관리자 */
@@ -2280,6 +2433,9 @@ ol {
   background-position: center center;
   background-size: contain;
   background-image: url(../images/icons/icon_eye_off.svg);
+  /* @media (max-width: 360px) {
+  	bottom: 48px;
+  } */
 }
 #modalPwchange .icons_eye_on2 {
   position: absolute;
@@ -2342,11 +2498,12 @@ ol {
   border-radius: 5px;
   border-color: rgba(167, 169, 172, 0.4);
   border-width: 0.4px;
+  position: relative;
 }
 #modalPwchange .explainType01 {
   display: inline-block;
   margin: 0 auto;
-  padding: 15px 50px;
+  padding: 15px 78px;
   margin-top: 40px;
   margin-bottom: 10px;
   background-color: #F9F9FB;
@@ -2377,6 +2534,24 @@ ol {
   cursor: pointer;
   bottom: 16px;
   right: 23px;
+}
+#modalPwchange .info_area_title {
+  width: 30%;
+}
+@media (max-width: 575.98px) {
+  #modalPwchange .info_area_title {
+    width: 100%;
+  }
+}
+@media (max-width: 575.98px) {
+  #modalPwchange .explainType01 {
+    padding: 15px 30px 15px 30px;
+    margin-left: -15px;
+    margin-right: 12px;
+  }
+}
+#modalPwchange .info_area .form-group .col {
+  margin-left: -14px;
 }
 
 /* jeh-2022.09.01 끝 */
@@ -2425,6 +2600,11 @@ ol {
   text-align: left;
   padding: 0px 60px;
 }
+@media (max-width: 575.98px) {
+  #modalInstinfo01 .form-group {
+    padding: 0px 30px;
+  }
+}
 
 /* 팝업 M2-교육기관정보수정2 - 로고업로드1 */
 #modalInstinfo02 .explainType01 {
@@ -2452,6 +2632,11 @@ ol {
   text-align: center;
   font-size: 12px;
 }
+@media (max-width: 575.98px) {
+  #modalInstinfo02 .explainType02 {
+    padding: 120px 94px;
+  }
+}
 #modalInstinfo02 .explainType02 a {
   color: #454545;
   font-size: 14px;
@@ -2468,6 +2653,11 @@ ol {
 #modalInstinfo02 .btn_sec {
   min-width: 195px;
   margin: 0.25rem;
+}
+@media (max-width: 575.98px) {
+  #modalInstinfo02 .btn_sec {
+    min-width: 124px;
+  }
 }
 
 /* jeh-2022.09.02 끝 */
@@ -2505,14 +2695,27 @@ ol {
   min-width: 195px;
   margin: 0.25rem;
 }
+@media (max-width: 575.98px) {
+  #modalInstinfo03 .btn_sec {
+    min-width: 140px;
+  }
+}
 #modalInstinfo03 .thumbnail {
   width: 402px;
   height: 270px;
   background: #A7A9AC;
   border-radius: 5px;
-  justify-content: right;
+  justify-content: center;
   display: flex;
   margin: -10px 32px;
+  align-items: center;
+  position: relative;
+}
+@media (max-width: 575.98px) {
+  #modalInstinfo03 .thumbnail {
+    width: 97%;
+    margin: 0 auto;
+  }
 }
 #modalInstinfo03 .sample_uplodeimg {
   height: 140px;
@@ -2520,14 +2723,14 @@ ol {
   background-image: url(../images/sample_uplodeimg.jpg);
   background-size: cover;
   border-radius: 5px;
-  position: relative;
-  left: 12px;
-  top: 65px;
 }
 #modalInstinfo03 .box_set {
   width: 140px;
   height: 28px;
   display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 #modalInstinfo03 .box1 {
   width: 28px;
@@ -2666,6 +2869,11 @@ ol {
   text-align: center;
   font-size: 12px;
 }
+@media (max-width: 575.98px) {
+  #modalInstinfo04 .explainType02 {
+    padding: 120px 90px;
+  }
+}
 #modalInstinfo04 .explainType02 a {
   color: #454545;
   font-size: 14px;
@@ -2676,6 +2884,11 @@ ol {
 #modalInstinfo04 .btn_sec {
   min-width: 195px;
   margin: 0.25rem;
+}
+@media (max-width: 575.98px) {
+  #modalInstinfo04 .btn_sec {
+    min-width: 124px;
+  }
 }
 
 /* 팝업 M2-교육기관정보수정5 - 교육기관이미지등록2 */
@@ -2711,14 +2924,27 @@ ol {
   min-width: 195px;
   margin: 0.25rem;
 }
+@media (max-width: 575.98px) {
+  #modalInstinfo05 .btn_sec {
+    min-width: 140px;
+  }
+}
 #modalInstinfo05 .thumbnail {
   width: 402px;
   height: 270px;
   background: #A7A9AC;
   border-radius: 5px;
-  justify-content: right;
+  justify-content: center;
   display: flex;
   margin: -10px 32px;
+  align-items: center;
+  position: relative;
+}
+@media (max-width: 575.98px) {
+  #modalInstinfo05 .thumbnail {
+    width: 97%;
+    margin: 0 auto;
+  }
 }
 #modalInstinfo05 .sample_uplodeimg {
   height: 140px;
@@ -2726,14 +2952,14 @@ ol {
   background-image: url(../images/sample_uplodeimg.jpg);
   background-size: cover;
   border-radius: 5px;
-  position: relative;
-  left: 43px;
-  top: 11px;
 }
 #modalInstinfo05 .box_set {
   width: 140px;
   height: 28px;
   display: flex;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 #modalInstinfo05 .box1 {
   width: 28px;
@@ -2847,14 +3073,26 @@ ol {
 }
 #modalInstinfo05 .outer0 {
   box-sizing: border-box;
-  position: absolute;
   width: 229px;
-  height: 159.85px;
-  left: 136px;
-  top: 292px;
+  height: 159px;
   background: rgba(255, 255, 255, 0.5);
   border: 1px solid #FFFFFF;
   border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@media (max-width: 575.98px) {
+  #modalInstinfo05 .outer0 {
+    left: 53px;
+    top: 348px;
+  }
+}
+@media (max-width: 767.98px) {
+  #modalInstinfo05 .outer0 {
+    left: 153px;
+    top: 298px;
+  }
 }
 
 /* 팝업M1-내정보수정 수정 */
@@ -2906,6 +3144,11 @@ ol {
   text-align: center;
   font-size: 12px;
 }
+@media (max-width: 575.98px) {
+  #modalMyinfo02 .explainType02 {
+    padding: 120px 90px 120px 90px;
+  }
+}
 #modalMyinfo02 .explainType02 a {
   color: #454545;
   font-size: 14px;
@@ -2916,6 +3159,11 @@ ol {
 #modalMyinfo02 .btn_sec {
   min-width: 195px;
   margin: 0.25rem;
+}
+@media (max-width: 575.98px) {
+  #modalMyinfo02 .btn_sec {
+    min-width: 114px;
+  }
 }
 
 #modalMyinfo03 .explainType01 {
@@ -2950,14 +3198,21 @@ ol {
   min-width: 195px;
   margin: 0.25rem;
 }
+@media (max-width: 575.98px) {
+  #modalMyinfo03 .btn_sec {
+    min-width: 135px;
+  }
+}
 #modalMyinfo03 .thumbnail {
-  width: 402px;
+  max-width: 402px;
   height: 270px;
   background: #A7A9AC;
   border-radius: 5px;
-  justify-content: right;
+  justify-content: center;
+  align-items: center;
   display: flex;
-  margin: -10px 32px;
+  margin: 0 auto;
+  position: relative;
 }
 #modalMyinfo03 .sample_uplodeimg {
   height: 140px;
@@ -2973,6 +3228,9 @@ ol {
   width: 140px;
   height: 28px;
   display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 #modalMyinfo03 .box1 {
   width: 28px;
@@ -3111,6 +3369,11 @@ ol {
   text-align: center;
   font-size: 12px;
 }
+@media (max-width: 575.98px) {
+  #modalMyinfo04 .explainType02 {
+    padding: 120px 90px 120px 90px;
+  }
+}
 #modalMyinfo04 .explainType02 a {
   color: #454545;
   font-size: 14px;
@@ -3121,6 +3384,11 @@ ol {
 #modalMyinfo04 .btn_sec {
   min-width: 195px;
   margin: 0.25rem;
+}
+@media (max-width: 575.98px) {
+  #modalMyinfo04 .btn_sec {
+    min-width: 124px;
+  }
 }
 
 /* 팝업 M2- 내정보 수정 - CW 이미지 등록2 */
@@ -3156,14 +3424,27 @@ ol {
   min-width: 195px;
   margin: 0.25rem;
 }
+@media (max-width: 575.98px) {
+  #modalMyinfo05 .btn_sec {
+    min-width: 135px;
+  }
+}
 #modalMyinfo05 .thumbnail {
   width: 402px;
   height: 270px;
   background: #A7A9AC;
   border-radius: 5px;
-  justify-content: right;
+  justify-content: center;
   display: flex;
   margin: -10px 32px;
+  align-items: center;
+  position: relative;
+}
+@media (max-width: 575.98px) {
+  #modalMyinfo05 .thumbnail {
+    width: 97%;
+    margin: 0 auto;
+  }
 }
 #modalMyinfo05 .sample_uplodeimg {
   height: 140px;
@@ -3171,14 +3452,14 @@ ol {
   background-image: url(../images/sample_uplodeimg.jpg);
   background-size: cover;
   border-radius: 5px;
-  position: relative;
-  left: 43px;
-  top: 11px;
 }
 #modalMyinfo05 .box_set {
   width: 140px;
   height: 28px;
   display: flex;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 #modalMyinfo05 .box1 {
   width: 28px;
@@ -3292,21 +3573,31 @@ ol {
 }
 #modalMyinfo05 .outer0 {
   box-sizing: border-box;
-  position: absolute;
   width: 229px;
-  height: 159.85px;
-  left: 136px;
-  top: 292px;
+  height: 159px;
   background: rgba(255, 255, 255, 0.5);
   border: 1px solid #FFFFFF;
   border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@media (max-width: 575.98px) {
+  #modalMyinfo05 .outer0 {
+    left: 53px;
+    top: 348px;
+  }
+}
+@media (max-width: 767.98px) {
+  #modalMyinfo05 .outer0 {
+    left: 153px;
+    top: 298px;
+  }
 }
 
 /* 팝업 M2- 내정보 수정 - 프로필 이미지 등록1 */
 #modalMyinfo03 .thumbnail .profile_photo {
   position: relative;
-  top: 65px;
-  left: 10px;
   width: 140px;
   height: 140px;
 }
@@ -3392,4 +3683,113 @@ ol {
   float: right;
   width: 95px;
   font-size: 12px;
+}
+
+/* 마이페이지(내정보)-학생사용자.html */
+/* 팝업M1-내정보수정 */
+#modalMyinfo.madal_student .left_area,
+#modalFriendsdetail .left_area {
+  width: 50%;
+}
+#modalMyinfo.madal_student .right_area,
+#modalFriendsdetail .right_area {
+  width: 50%;
+}
+#modalMyinfo.madal_student .info_area,
+#modalFriendsdetail .info_area {
+  width: 100%;
+}
+#modalMyinfo.madal_student .info_area_title02,
+#modalFriendsdetail .info_area_title02 {
+  width: 28%;
+  margin-left: 20px;
+}
+#modalMyinfo.madal_student .info_area .form-group .col,
+#modalFriendsdetail .info_area .form-group .col {
+  margin-right: 20px;
+}
+#modalMyinfo.madal_student .divid_section,
+#modalFriendsdetail .divid_section {
+  margin: 0 auto;
+  padding-bottom: 20px;
+  width: 90%;
+}
+#modalMyinfo.madal_student .right_area .info_area .dropdown,
+#modalFriendsdetail .right_area .info_area .dropdown {
+  width: auto;
+}
+#modalMyinfo.madal_student .sub_title,
+#modalFriendsdetail .sub_title {
+  width: 100%;
+}
+#modalMyinfo.madal_student .lacture_area,
+#modalFriendsdetail .lacture_area {
+  width: 100%;
+}
+#modalMyinfo.madal_student .right_area .right .form-group .form-id-search,
+#modalFriendsdetail .right_area .right .form-group .form-id-search {
+  width: 100%;
+}
+@media (max-width: 767.98px) {
+  #modalMyinfo.madal_student .left_area,
+#modalFriendsdetail .left_area {
+    width: 100%;
+  }
+  #modalMyinfo.madal_student .right_area,
+#modalFriendsdetail .right_area {
+    width: 100%;
+  }
+  #modalMyinfo.madal_student .info_area .form-group.row > label + div .exp_txt,
+#modalMyinfo.madal_student .info_area .form-group.row > label + div .exp_text,
+#modalFriendsdetail .info_area .form-group.row > label + div .exp_txt,
+#modalFriendsdetail .info_area .form-group.row > label + div .exp_text {
+    letter-spacing: -1px;
+  }
+  #modalMyinfo.madal_student .btn_section,
+#modalFriendsdetail .btn_section {
+    margin: 10px 25px 0;
+  }
+}
+@media (max-width: 991.98px) {
+  #modalMyinfo.madal_student .left_area,
+#modalFriendsdetail .left_area {
+    width: 100%;
+  }
+  #modalMyinfo.madal_student .right_area,
+#modalFriendsdetail .right_area {
+    width: 100%;
+  }
+}
+
+/* (완)학원_마이페이지(내정보)-기관장(개설전)-edu_head_bef.html */
+/* 팝업 M2- 내정보 수정 - 교육기관 정보 개설 */
+#modalInstRegi .section {
+  width: 80%;
+  margin: 0 auto;
+  text-align: left;
+}
+#modalInstRegi .form-inline label {
+  justify-content: flex-start;
+  width: 100%;
+}
+#modalInstRegi .form-group.form-inlinebox .form-control + .btn {
+  display: block;
+  float: right;
+  width: 95px;
+  font-size: 12px;
+}
+#modalInstRegi .form-group.form-inlinebox label + input {
+  width: calc(100% - 100px);
+}
+#modalInstRegi .form-inlinebox {
+  width: 100%;
+}
+#modalInstRegi .form_section .btn_crud_point {
+  margin-top: 20px;
+  width: 100%;
+}
+#modalInstRegi .section .question_txt {
+  font-size: 14px;
+  margin-top: 15px;
+  text-align: center;
 }/*# sourceMappingURL=mypage.css.map */

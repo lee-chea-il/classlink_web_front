@@ -1,27 +1,24 @@
 <template>
   <!-- 왼쪽 영역 -->
-  <div class="col-lg-7">
-    <div class="info_area left">
-      <div class="row">
-        <div class="col-lg-4">
+  <div class="left_area">
+					<div class="info_area left">
+						<div class="row">
+							<div class="pp_area">
           <!-- [개발참조]: 업로드 사진은 <span>의 backgroung-image로 젹용 -->
           <div class="profile_photo">
-            <span
+            <!-- <span
               style="background-image: url(../images/sample_profile_photo.jpg)"
-            ></span>
+            ></span> -->
+            <img :src="myInfo.profile_image" class="profile_img" />
           </div>
         </div>
-        <div class="col-lg-8">
-          <div class="form-group row">
-            <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
-              >ID</label
-            >
+        <div class="info_area02">
+								<div class="form-group row">
+									<label for="" class="info_area_title col-form-label">ID</label>
             <div class="col">{{ myInfo.account }}</div>
           </div>
           <div class="form-group row">
-            <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
-              >비밀번호</label
-            >
+            <label for="" class="info_area_title col-form-label">비밀번호</label>
             <div class="col">
               <button
                 class="btn btn_crud_default"
@@ -33,45 +30,31 @@
             </div>
           </div>
           <div class="form-group row">
-            <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
-              >이름</label
-            >
+            <label for="" class="info_area_title col-form-label">이름</label>
             <div class="col">{{ myInfo.name }}</div>
           </div>
           <div class="form-group row">
-            <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
-              >닉네임</label
-            >
+            <label for="" class="info_area_title col-form-label">닉네임</label>
             <div class="col">{{ myInfo.nickname }}</div>
           </div>
           <div class="form-group row">
-            <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
-              >신분목록</label
-            >
+            <label for="" class="info_area_title col-form-label">신분목록</label>
             <div class="col">{{ myInfo.identity }}</div>
           </div>
           <div class="form-group row">
-            <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
-              >직위</label
-            >
+            <label for="" class="info_area_title col-form-label">직위</label>
             <div class="col">{{ myInfo.position }}</div>
           </div>
           <div class="form-group row">
-            <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
-              >연락처</label
-            >
+            <label for="" class="info_area_title col-form-label">연락처</label>
             <div class="col">{{ myInfo.phone }}</div>
           </div>
           <div class="form-group row">
-            <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
-              >이메일</label
-            >
+            <label for="" class="info_area_title col-form-label">이메일</label>
             <div class="col">{{ myInfo.email }}</div>
           </div>
           <div class="form-group row">
-            <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
-              >상태</label
-            >
+            <label for="" class="info_area_title col-form-label">상태</label>
             <div class="col">
               <button
                 class="btn btn_activated"
@@ -84,9 +67,7 @@
           </div>
           <!--알림 팝업은 기관장 개설전, 선생님일 때는 hide-->
           <div class="form-group row">
-            <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
-              >알림 팝업</label
-            >
+            <label for="" class="info_area_title col-form-label">알림 팝업</label>
             <div class="col">
               <button
                 class="btn btn_activated"
@@ -125,4 +106,11 @@ export default {
   },
 }
 </script>
-<style scoped></style>
+<style scoped>
+.profile_img {
+  width: 108px;
+  height: 108px;
+  object-fit: cover;
+  border-radius: 55px;
+}
+</style>

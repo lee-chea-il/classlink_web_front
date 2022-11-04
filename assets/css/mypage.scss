@@ -21,10 +21,22 @@
 	.title {
 		color: #303030;
 		font-weight: 500;
+		width: 100%;
+		margin-left: 20px;
 
 		@media (max-width: 991.98px) {
 			display: none;
 		}
+	}
+
+	.left_area {
+		width: 56%;
+		margin-left: 20px;
+	}
+
+	.right_area {
+		width: 39%;
+		margin-left: 20px;
 	}
 
 	.info_area {
@@ -35,12 +47,103 @@
 		margin-top: 15px;
 		font-size: 14px;
 
+		@media (max-width: 991.98px) {
+			.form-group.row {
+				margin-bottom: 1px;
+				margin-left: 10px;
+			}
+		}
+
 		@media (max-width: 575.98px) {
 			padding: 15px 20px;
+
+			.form-group.row {
+				margin-bottom: 1px;
+				margin-left: 10px;
+			}
 		}
 
 		.friends {
 			line-height: 30px;
+		}
+	}
+
+	.right_square {
+
+		@media (max-width: 575.98px) {
+			.form-group.row:first-child {
+				padding-top: 17px;
+			}
+		}
+	}
+
+	.pp_area {
+		width: 33%;
+		padding-left: 20px;
+
+		@media (max-width: 991.98px) {
+			width: 100%;
+		}
+	}
+
+	.info_area02 {
+		width: 66%;
+		padding-left: 10px;
+
+		@media (max-width: 575.98px) {
+			width: 100%;
+			padding-left: 10px;
+		}
+	}
+
+	.info_area_title {
+		width: 35%;
+		margin-left: 20px;
+	}
+
+	@media (max-width: 1199.98px) {
+		.info_area {
+			padding: 15px 10px;
+		}
+	}
+
+	@media (max-width: 991.98px) {
+		.left_area {
+			width: 85%;
+			margin: 0 auto;
+		}
+
+		.right_area {
+			width: 85%;
+			margin: 0 auto;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		.left_area {
+			width: 80%;
+			margin: 0 auto;
+			margin-top: 60px;
+		}
+
+		.right_area {
+			width: 80%;
+			margin: 0 auto;
+		}
+
+		.btn_area {
+			justify-content: center;
+			gap: 10px;
+		}
+
+		.right_up {
+			width: 110%;
+			margin-left: -28px;
+		}
+
+		.right_square {
+			width: 101%;
+			padding: 0 15px 0 0;
 		}
 	}
 
@@ -58,8 +161,19 @@
 		align-items: center;
 		margin-top: 15px;
 		justify-content: space-between;
+		width: 100%;
+		margin-left: 20px;
+		margin-right: 20px;
 
 		@media (max-width: 575.98px) {
+			justify-content: center;
+
+			.btn:first-child {
+				margin-right: 10px;
+			}
+		}
+
+		@media (max-width: 991.98px) {
 			justify-content: center;
 
 			.btn:first-child {
@@ -69,6 +183,8 @@
 	}
 }
 
+/* 팝업M1-내정보수정  */
+
 .modal_myinfo {
 	$lineheight : 60px;
 
@@ -76,6 +192,66 @@
 		@media (max-width: 575.98px) {
 			padding: 20px 0;
 		}
+	}
+
+	.info_area {
+		width: 60%;
+		margin: 0 auto;
+	}
+
+	.info_area_title {
+		width: 15%;
+		margin-left: 20px;
+	}
+
+	.form-group .form-inline {
+		width: 68%;
+	}
+
+	.form-certifi {
+		margin-top: -10px;
+	}
+
+	.form-certifi .btn_crud_point {
+		width: 117px;
+	}
+
+	@media (max-width: 1199.98px) {
+		.info_area {
+			width: 80%;
+			margin: 0 auto;
+		}
+
+
+	}
+
+	@media (max-width: 991.98px) {
+		.info_area {
+			width: 100%;
+			margin: 0 auto;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		.form-group .form-inline {
+			width: 65%;
+		}
+
+		.form-group .btn_crud_point {
+			font-size: 12px;
+		}
+
+		.form-certifi .btn_crud_point {
+			width: 94px;
+		}
+
+	}
+
+	.form-group.form-inlinebox .form-control+.btn {
+		display: block;
+		float: right;
+		width: 95px;
+		font-size: 12px;
 	}
 
 	.divid_section {
@@ -156,7 +332,7 @@
 			height: 70px;
 			border: 0.4px solid rgba(167, 169, 172, .4);
 			border-radius: 3px;
-			padding: 15px;
+			padding: 15px 40px;
 			overflow-y: auto;
 			overflow-x: hidden;
 		}
@@ -183,7 +359,7 @@
 		position: relative;
 		height: auto;
 		overflow: hidden;
-		margin: 10px 65px 0;
+		margin: 10px 40px 0;
 		padding-bottom: 20px;
 		display: flex;
 		align-items: center;
@@ -205,6 +381,18 @@
 			margin-left: auto;
 		}
 	}
+
+	.left_area .info_area .form-group.row .exp_txt02 {
+		position: absolute;
+		padding-left: 15px;
+		left: -18px;
+		width: 100%;
+		font-size: 12px;
+		color: #A7A9AC;
+		line-height: initial;
+		bottom: 6px;
+	}
+
 }
 
 /* jeh-2022.08.30 시작 */
@@ -273,9 +461,9 @@
 // }
 
 /* 학원관리자 - 선생님 */
-.page_mypage.teacher .info_area.right {
+/* .page_mypage.teacher .info_area.right {
 	padding: 15px 50px 268px 50px;
-}
+} */
 
 /* 학원관리자 - 선생님, 프랜관리자 */
 .page_mypage.teacher_fran .info_area .form-group.row>label+div {
@@ -306,9 +494,13 @@
 	padding: 15px 25px;
 }
 
-.page_mypage.edu_head_bef .info_area.right {
-	padding: 15px 50px 25px 50px;
+.right_area .right {
+	height: 97%;
 }
+
+// .page_mypage.edu_head_bef .info_area.right {
+// 	padding: 15px 50px 25px 50px;
+// }
 
 /* 프랜차이즈 - 프랜차이즈 관리자 */
 .page_mypage.fran_man .info_area .form-group.row>label+div {
@@ -379,6 +571,14 @@
 		background-position: center center;
 		background-size: contain;
 		background-image: url(../images/icons/icon_eye_off.svg);
+
+		/* @media (max-width: 360px) {
+			bottom: 48px;
+		} */
+
+		// @media (max-width: 575.98px) {
+		// 	bottom: 33px;
+		// }
 	}
 
 	.icons_eye_on2 {
@@ -447,12 +647,13 @@
 		border-radius: 5px;
 		border-color: rgba(167, 169, 172, 0.4);
 		border-width: 0.4px;
+		position: relative;
 	}
 
 	.explainType01 {
 		display: inline-block;
 		margin: 0 auto;
-		padding: 15px 50px;
+		padding: 15px 78px;
 		margin-top: 40px;
 		margin-bottom: 10px;
 		background-color: #F9F9FB;
@@ -487,6 +688,26 @@
 		cursor: pointer;
 		bottom: 16px;
 		right: 23px;
+	}
+
+	.info_area_title {
+		width: 30%;
+
+		@media (max-width: 575.98px) {
+			width: 100%;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		.explainType01 {
+			padding: 15px 30px 15px 30px;
+			margin-left: -15px;
+			margin-right: 12px;
+		}
+	}
+
+	.info_area .form-group .col {
+		margin-left: -14px;
 	}
 }
 
@@ -544,6 +765,10 @@
 	.form-group {
 		text-align: left;
 		padding: 0px 60px;
+
+		@media (max-width: 575.98px) {
+			padding: 0px 30px;
+		}
 	}
 
 }
@@ -576,6 +801,10 @@
 		border-radius: 5px;
 		text-align: center;
 		font-size: 12px;
+
+		@media (max-width: 575.98px) {
+			padding: 120px 94px;
+		}
 	}
 
 	.explainType02 a {
@@ -597,6 +826,10 @@
 	.btn_sec {
 		min-width: 195px;
 		margin: 0.25rem;
+
+		@media (max-width: 575.98px) {
+			min-width: 124px;
+		}
 	}
 }
 
@@ -641,6 +874,10 @@
 	.btn_sec {
 		min-width: 195px;
 		margin: 0.25rem;
+
+		@media (max-width: 575.98px) {
+			min-width: 140px;
+		}
 	}
 
 	.thumbnail {
@@ -648,9 +885,16 @@
 		height: 270px;
 		background: #A7A9AC;
 		border-radius: 5px;
-		justify-content: right;
+		justify-content: center;
 		display: flex;
 		margin: -10px 32px;
+		align-items: center;
+		position: relative;
+
+		@media (max-width: 575.98px) {
+			width: 97%;
+			margin: 0 auto;
+		}
 	}
 
 	.sample_uplodeimg {
@@ -659,15 +903,15 @@
 		background-image: url(../images/sample_uplodeimg.jpg);
 		background-size: cover;
 		border-radius: 5px;
-		position: relative;
-		left: 12px;
-		top: 65px;
 	}
 
 	.box_set {
 		width: 140px;
 		height: 28px;
 		display: flex;
+		position: absolute;
+		top: 0;
+		right: 0;
 	}
 
 	.box1 {
@@ -838,6 +1082,10 @@
 		border-radius: 5px;
 		text-align: center;
 		font-size: 12px;
+
+		@media (max-width: 575.98px) {
+			padding: 120px 90px;
+		}
 	}
 
 	.explainType02 a {
@@ -852,6 +1100,10 @@
 	.btn_sec {
 		min-width: 195px;
 		margin: 0.25rem;
+
+		@media (max-width: 575.98px) {
+			min-width: 124px;
+		}
 	}
 }
 
@@ -892,16 +1144,27 @@
 	.btn_sec {
 		min-width: 195px;
 		margin: 0.25rem;
+
+		@media (max-width: 575.98px) {
+			min-width: 140px;
+		}
 	}
 
 	.thumbnail {
 		width: 402px;
 		height: 270px;
-		background: theme.$text_unselected_color;
+		background: #A7A9AC;
 		border-radius: 5px;
-		justify-content: right;
+		justify-content: center;
 		display: flex;
 		margin: -10px 32px;
+		align-items: center;
+		position: relative;
+
+		@media (max-width: 575.98px) {
+			width: 97%;
+			margin: 0 auto;
+		}
 	}
 
 	.sample_uplodeimg {
@@ -910,15 +1173,15 @@
 		background-image: url(../images/sample_uplodeimg.jpg);
 		background-size: cover;
 		border-radius: 5px;
-		position: relative;
-		left: 43px;
-		top: 11px;
 	}
 
 	.box_set {
 		width: 140px;
 		height: 28px;
 		display: flex;
+		position: absolute;
+		right: 0;
+		top: 0;
 	}
 
 	.box1 {
@@ -1061,14 +1324,25 @@
 
 	.outer0 {
 		box-sizing: border-box;
-		position: absolute;
 		width: 229px;
-		height: 159.85px;
-		left: 136px;
-		top: 292px;
+		height: 159px;
 		background: rgba(255, 255, 255, 0.5);
 		border: 1px solid theme.$color_white;
 		border-radius: 5px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		@media (max-width: 575.98px) {
+			left: 53px;
+			top: 348px;
+		}
+
+		@media (max-width: 767.98px) {
+			left: 153px;
+			top: 298px;
+		}
+
 	}
 
 }
@@ -1142,6 +1416,10 @@
 		border-radius: 5px;
 		text-align: center;
 		font-size: 12px;
+
+		@media (max-width: 575.98px) {
+			padding: 120px 90px 120px 90px;
+		}
 	}
 
 	.explainType02 a {
@@ -1156,6 +1434,10 @@
 	.btn_sec {
 		min-width: 195px;
 		margin: 0.25rem;
+
+		@media (max-width: 575.98px) {
+			min-width: 114px;
+		}
 	}
 
 }
@@ -1196,16 +1478,22 @@
 	.btn_sec {
 		min-width: 195px;
 		margin: 0.25rem;
+
+		@media (max-width: 575.98px) {
+			min-width: 135px;
+		}
 	}
 
 	.thumbnail {
-		width: 402px;
+		max-width: 402px;
 		height: 270px;
 		background: #A7A9AC;
 		border-radius: 5px;
-		justify-content: right;
+		justify-content: center;
+		align-items: center;
 		display: flex;
-		margin: -10px 32px;
+		margin: 0 auto;
+		position: relative;
 	}
 
 	.sample_uplodeimg {
@@ -1223,6 +1511,9 @@
 		width: 140px;
 		height: 28px;
 		display: flex;
+		position: absolute;
+		top: 0;
+		right: 0;
 	}
 
 	.box1 {
@@ -1392,6 +1683,11 @@
 		border-radius: 5px;
 		text-align: center;
 		font-size: 12px;
+
+		@media (max-width: 575.98px) {
+			padding: 120px 90px 120px 90px;
+		}
+
 	}
 
 	.explainType02 a {
@@ -1406,6 +1702,10 @@
 	.btn_sec {
 		min-width: 195px;
 		margin: 0.25rem;
+
+		@media (max-width: 575.98px) {
+			min-width: 124px;
+		}
 	}
 
 }
@@ -1447,16 +1747,27 @@
 	.btn_sec {
 		min-width: 195px;
 		margin: 0.25rem;
+
+		@media (max-width: 575.98px) {
+			min-width: 135px;
+		}
 	}
 
 	.thumbnail {
 		width: 402px;
 		height: 270px;
-		background: theme.$text_unselected_color;
+		background: #A7A9AC;
 		border-radius: 5px;
-		justify-content: right;
+		justify-content: center;
 		display: flex;
 		margin: -10px 32px;
+		align-items: center;
+		position: relative;
+
+		@media (max-width: 575.98px) {
+			width: 97%;
+			margin: 0 auto;
+		}
 	}
 
 	.sample_uplodeimg {
@@ -1465,15 +1776,28 @@
 		background-image: url(../images/sample_uplodeimg.jpg);
 		background-size: cover;
 		border-radius: 5px;
-		position: relative;
-		left: 43px;
-		top: 11px;
+		// position: relative;
+		// left: 43px;
+		// top: 11px;
 	}
 
 	.box_set {
 		width: 140px;
 		height: 28px;
 		display: flex;
+		position: absolute;
+		right: 0;
+		top: 0;
+
+		// @media (max-width: 575.98px) {
+		// 	right: 20px;
+		// 	top: 293px;
+		// }
+
+		// @media (max-width: 767.98px) {
+		// 	right: 20px;
+		// 	top: 240px;
+		// }
 	}
 
 	.box1 {
@@ -1616,14 +1940,25 @@
 
 	.outer0 {
 		box-sizing: border-box;
-		position: absolute;
 		width: 229px;
-		height: 159.85px;
-		left: 136px;
-		top: 292px;
+		height: 159px;
 		background: rgba(255, 255, 255, 0.5);
 		border: 1px solid theme.$color_white;
 		border-radius: 5px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		@media (max-width: 575.98px) {
+			left: 53px;
+			top: 348px;
+		}
+
+		@media (max-width: 767.98px) {
+			left: 153px;
+			top: 298px;
+		}
+
 	}
 }
 
@@ -1631,8 +1966,6 @@
 #modalMyinfo03 {
 	.thumbnail .profile_photo {
 		position: relative;
-		top: 65px;
-		left: 10px;
 		width: 140px;
 		height: 140px;
 	}
@@ -1742,5 +2075,125 @@
 		float: right;
 		width: 95px;
 		font-size: 12px;
+	}
+}
+
+/* 마이페이지(내정보)-학생사용자.html */
+/* 팝업M1-내정보수정 */
+
+#modalMyinfo.madal_student,
+#modalFriendsdetail {
+	.left_area {
+		width: 50%;
+	}
+
+	.right_area {
+		width: 50%;
+	}
+
+	.info_area {
+		width: 100%;
+	}
+
+	.info_area_title02 {
+		width: 28%;
+		margin-left: 20px;
+	}
+
+	.info_area .form-group .col {
+		margin-right: 20px;
+	}
+
+	.divid_section {
+		margin: 0 auto;
+		padding-bottom: 20px;
+		width: 90%;
+	}
+
+	.right_area .info_area .dropdown {
+		width: auto;
+	}
+
+	.sub_title {
+		width: 100%;
+	}
+
+	.lacture_area {
+		width: 100%;
+	}
+
+	.right_area .right .form-group .form-id-search {
+		width: 100%;
+	}
+
+	@media (max-width: 767.98px) {
+		.left_area {
+			width: 100%;
+		}
+
+		.right_area {
+			width: 100%;
+		}
+
+		.info_area .form-group.row>label+div .exp_txt,
+		.info_area .form-group.row>label+div .exp_text {
+			letter-spacing: -1px;
+		}
+
+		.btn_section {
+			margin: 10px 25px 0;
+		}
+	}
+
+	@media (max-width: 991.98px) {
+		.left_area {
+			width: 100%;
+		}
+
+		.right_area {
+			width: 100%;
+		}
+	}
+}
+
+/* (완)학원_마이페이지(내정보)-기관장(개설전)-edu_head_bef.html */
+/* 팝업 M2- 내정보 수정 - 교육기관 정보 개설 */
+
+#modalInstRegi {
+	.section {
+		width: 80%;
+		margin: 0 auto;
+		text-align: left;
+	}
+
+	.form-inline label {
+		justify-content: flex-start;
+		width: 100%;
+	}
+
+	.form-group.form-inlinebox .form-control+.btn {
+		display: block;
+		float: right;
+		width: 95px;
+		font-size: 12px;
+	}
+
+	.form-group.form-inlinebox label+input {
+		width: calc(100% - 100px);
+	}
+
+	.form-inlinebox {
+		width: 100%;
+	}
+
+	.form_section .btn_crud_point {
+		margin-top: 20px;
+		width: 100%;
+	}
+
+	.section .question_txt {
+		font-size: 14px;
+		margin-top: 15px;
+		text-align: center;
 	}
 }

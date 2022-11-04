@@ -2189,7 +2189,7 @@ ol {
 }
 #modalNoticeView .std_reply .btns_area {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   margin-right: 16px;
   margin-top: 10px;
   gap: 5px;

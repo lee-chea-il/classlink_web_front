@@ -1,36 +1,26 @@
 <template>
   <!-- 오른쪽 영역 -->
-  <div class="col-lg-5">
+  <div class="right_area">
     <div class="info_area right">
       <div class="right_up">
         <div class="form-group row">
-          <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
-            >교육기관 이름</label
-          >
+          <label for="" class="info_area_title col-form-label">교육기관 이름</label>
           <div class="col">{{ eduInfo.name }}</div>
         </div>
         <div class="form-group row">
-          <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
-            >교육기관 연락처</label
-          >
+          <label for="" class="info_area_title col-form-label">교육기관 연락처</label>
           <div class="col">{{ eduInfo.tel }}</div>
         </div>
         <div class="form-group row">
-          <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
-            >교육기관 코드</label
-          >
+          <label for="" class="info_area_title col-form-label">교육기관 코드</label>
           <div class="col">{{ eduInfo.code }}</div>
         </div>
         <div class="form-group row">
-          <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
-            >교육기관 주소</label
-          >
+          <label for="" class="info_area_title col-form-label">교육기관 주소</label>
           <div class="col">{{ eduInfo.address }}</div>
         </div>
         <div class="form-group row">
-          <label for="" class="col-4 col-lg-5 col-sm-3 col-form-label"
-            >교육기관 정보</label
-          >
+          <label for="" class="info_area_title col-form-label">교육기관 정보</label>
           <div class="col">
             <button
               class="btn btn_crud_default"

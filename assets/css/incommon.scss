@@ -223,6 +223,12 @@ $navtopHeight: 60px;
 	.nav_top {
 		height: $navtopHeight;
 		min-width: unset;
+		position: fixed;
+		height: 60px;
+		background-color: #fff;
+		width: 100%;
+		z-index: 100;
+		border-bottom: 1px solid #E6E7E8;
 	}
 
 	.logo_area,

@@ -4,7 +4,7 @@
     <div id="content" class="content">
       <div class="content_area">
         <div class="page_mypage edu_head_aft row">
-          <div class="title col-12">내 정보</div>
+          <div class="title">내 정보</div>
           <!-- 왼쪽 영역 -->
           <MyInfoLeft :myInfo="myInfo" @alarmBtn-click="changeAlarmState" />
           <!-- 오른쪽 영역 -->
@@ -39,7 +39,13 @@
     <UpdateMyInfoModal />
 
     <!-- 팝업 M2- 내정보 수정 - 프로필 이미지 등록1 -->
-    <ProfileImageModal />
+    <ProfileImageModal
+      :myInfo="myInfo"
+      :uploadImageFile="uploadImageFile"
+      title="프로필 이미지 등록"
+      @uploadBtn-click="onClickInputButton"
+      @selected-file="onFileSelected"
+    />
 
     <!-- 팝업 M2- 내정보 수정 - 프로필 이미지 등록2-->
     <!-- <div
@@ -512,8 +518,8 @@ export default {
         email: 'lastepisode@naver.com',
         state: true,
         alarm: false,
-        profile_image: '',
-        profile_cw_image: '',
+        profile_image: require('@/assets/images/mypage/profile1.png'),
+        profile_cw_image: require('@/assets/images/mypage/cwprofile1.png'),
         password: '1234!',
       },
       eduInfo: {
@@ -540,10 +546,8 @@ export default {
         isPwEyeOn3: false,
       },
       isError: false,
+      uploadImageFile: '',
     }
-  },
-  created() {
-    console.log(this.eduInfo)
   },
   methods: {
     // 모달 이벤트
@@ -608,6 +612,29 @@ export default {
     updatePassword() {
       if (this.myInfo.password !== this.newPassword.recentPassword) {
         this.openModalDesc('변경 실패', '현재 비밀번호가 일치하지 않습니다.')
+      }
+    },
+
+    // 이미지 업로드
+    onClickInputButton() {
+      const inputBtn = document.getElementById('upload-input')
+      inputBtn.click()
+    },
+    onFileSelected({ target }) {
+      const input = target
+      if (input.files && input.files[0]) {
+        if (input.files[0].size < 3145728) {
+          const reader = new FileReader()
+          reader.onload = (e) => {
+            this.uploadImageFile = e.target.result
+          }
+          reader.readAsDataURL(input.files[0])
+        } else {
+          this.openModalDesc(
+            '업로드 제한',
+            '해당 파일은 제한된 용량을 초과하였습니다. (이미지 제한 용량: 3MB)'
+          )
+        }
       }
     },
   },
