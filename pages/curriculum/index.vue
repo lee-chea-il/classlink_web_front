@@ -78,6 +78,12 @@
                   :is-show-option="identity == 'master' ? true : false"
                   @click="onClick"
                   @change-name="onChangeName"
+                  @more-menu="moreMenu"
+                  @more-menu-down="moreMenuDown"
+                  @more-menu-update="moreMenuUpdate"
+                  @more-menu-view="moreMenuView"
+                  @more-menu-dell="moreMenuDell"
+                  @more-menu-copy="moreMenuCopy"
                 >
                   <span
                     slot="addTreeNodeIcon1"
@@ -115,6 +121,12 @@
                   :is-show-option="identity == 'master' ? true : false"
                   @click="onClick"
                   @change-name="onChangeName"
+                  @more-menu="moreMenu"
+                  @more-menu-down="moreMenuDown"
+                  @more-menu-update="moreMenuUpdate"
+                  @more-menu-view="moreMenuView"
+                  @more-menu-dell="moreMenuDell"
+                  @more-menu-copy="moreMenuCopy"
                 >
                   <span
                     slot="addTreeNodeIcon1"
@@ -174,6 +186,12 @@
                   :default-expanded="false"
                   @click="onClick"
                   @change-name="onChangeName"
+                  @more-menu="moreMenu"
+                  @more-menu-down="moreMenuDown"
+                  @more-menu-update="moreMenuUpdate"
+                  @more-menu-view="moreMenuView"
+                  @more-menu-dell="moreMenuDell"
+                  @more-menu-copy="moreMenuCopy"
                 >
                   <span
                     slot="addTreeNodeIcon1"
@@ -598,7 +616,6 @@ export default {
       } else {
         copyCheckData = _dfs(this.franchiseData)
       }
-      console.log(copyCheckData)
     },
     pasteData() {
       let idNum = new Date().valueOf()
@@ -691,6 +708,39 @@ export default {
       }
       _dell(this.myCurriculumData)
     },
+    moreMenu({e}) {
+      const hasOffClass = e.target.classList.contains('icons_mu_off')
+      const iLists = document.querySelectorAll('.more_mu ')
+      let i=0
+      for(i=0;i<iLists.length;i++){
+        iLists[i].classList.remove('icons_mu_on')
+        iLists[i].classList.add('icons_mu_off')
+      }
+      const moreLists = document.querySelectorAll('.more_list')
+      for(i=0;i<moreLists.length;i++){
+        moreLists[i].style.display='none'
+      }
+      if(hasOffClass){
+        e.target.classList.remove('icons_mu_off')
+        e.target.classList.add('icons_mu_on')
+        e.target.querySelector('.more_list').style.display='block'
+      }
+    },
+    moreMenuDown(node) {
+      console.log(`down ${node}`)
+    },
+    moreMenuUpdate(node) {
+      console.log(`update ${node}`)
+    },
+    moreMenuView(node) {
+      console.log(`view ${node}`)
+    },
+    moreMenuDell(node) {
+      node.remove()
+    },
+    moreMenuCopy(node) {
+      console.log(`copy ${node}`)
+    }
   },
 }
 </script>
