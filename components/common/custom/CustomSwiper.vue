@@ -55,6 +55,10 @@
       isHorizontal:{
         type:Boolean,
         default:true
+      },
+      copyCheckData:{
+        type:Array,
+        default:() => []
       }
     },
     data() {
