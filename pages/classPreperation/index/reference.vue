@@ -1,14 +1,16 @@
 <template>
-  <div>
+  <div ref="generatePdf">
     <PageHeader title="자료실" />
     <div class="tab-content depth03 ac_manage_dtr">
       <div class="tab-pane active">
         <!-- 컨트롤 버튼 영역 -->
         <div class="search_section">
           <div class="left_area">
-            <div class="btn btn_crud_default">복사</div>
-            <button class="btn btn_crud_default">붙여넣기</button>
-            <button class="btn btn_crud_default">삭제</button>
+            <div class="btn btn_crud_default" @click="copyData">복사</div>
+            <button class="btn btn_crud_default" @click="pasteData">
+              붙여넣기
+            </button>
+            <button class="btn btn_crud_default" @click="delData">삭제</button>
           </div>
 
           <div class="right_area">
@@ -82,21 +84,6 @@
                   프랜차이즈
                 </button>
               </li>
-              <li class="nav-item" role="presentation">
-                <button
-                  id="class-tab"
-                  class="nav-link"
-                  data-toggle="tab"
-                  data-target="#open"
-                  type="button"
-                  role="tab"
-                  aria-controls="profile"
-                  aria-selected="false"
-                >
-                  <span class="icon_open"></span>
-                  공개자료실
-                </button>
-              </li>
             </ul>
 
             <div id="myTabContent" class="tab-content">
@@ -107,33 +94,15 @@
                 role="tabpanel"
                 aria-labelledby="grade-tab"
               >
-                <VueTreeList
-                  :model="institutionData"
-                  :default-expanded="true"
-                  default-tree-node-name="새 폴더"
-                  :is-drop="identity == 'master' ? true : false"
-                  :is-show-option="identity == 'master' ? true : false"
-                  @click="onClick"
-                  @change-name="onChangeName"
-                >
-                  <span
-                    slot="addTreeNodeIcon1"
-                    class="custom-control custom-checkbox form-inline"
-                  >
-                    <input
-                      id="chkC01"
-                      class="custom-control-input"
-                      type="checkbox"
-                    />
-                    <label class="custom-control-label" for="chkC01"></label>
-                  </span>
-
-                  <span slot="addTreeNodeIcon" class="icon">＋</span>
-                  <span slot="addLeafNodeIcon" class="icon"></span>
-
-                  <span slot="addTreeNodeIcon" class="icon"></span>
-                  <span slot="delNodeIcon" class="icon"></span>
-                </VueTreeList>
+                <ReferenceTreeView
+                  ref="institution"
+                  :dataList="receiveInstitutionData"
+                  :editable="identity == 'master' ? true : false"
+                  :identity="identity"
+                  :pidNum="0"
+                  @file-view="onClick"
+                  @copyDataCallBack="copyDataCallBack"
+                />
               </div>
               <!-- /.탭 내용01 -->
               <!-- 탭 내용02 -->
@@ -143,33 +112,14 @@
                 role="tabpanel"
                 aria-labelledby="class-tab"
               >
-                <VueTreeList
-                  :model="franchiseData"
-                  :default-expanded="true"
-                  default-tree-node-name="새 폴더"
-                  :is-drop="identity == 'master' ? true : false"
-                  :is-show-option="identity == 'master' ? true : false"
-                  @click="onClick"
-                  @change-name="onChangeName"
-                >
-                  <span
-                    slot="addTreeNodeIcon1"
-                    class="custom-control custom-checkbox form-inline"
-                  >
-                    <input
-                      id="chkC01"
-                      class="custom-control-input"
-                      type="checkbox"
-                    />
-                    <label class="custom-control-label" for="chkC01"></label>
-                  </span>
-
-                  <span slot="addTreeNodeIcon" class="icon">＋</span>
-                  <span slot="addLeafNodeIcon" class="icon"></span>
-
-                  <span slot="addTreeNodeIcon" class="icon"></span>
-                  <span slot="delNodeIcon" class="icon"></span>
-                </VueTreeList>
+                <ReferenceTreeView
+                  ref="franchise"
+                  :dataList="receiveFranchiseData"
+                  :editable="identity == 'master' ? true : false"
+                  :identity="identity"
+                  :pidNum="1000"
+                  @copyDataCallBack="copyDataCallBack"
+                />
               </div>
               <!-- /.탭 내용02 -->
             </div>
@@ -206,30 +156,13 @@
                 role="tabpanel"
                 aria-labelledby="grade-tab"
               >
-                <VueTreeList
-                  :model="myCurriculumData"
-                  :default-expanded="false"
-                  @click="onClick"
-                  @change-name="onChangeName"
-                >
-                  <span
-                    slot="addTreeNodeIcon1"
-                    class="custom-control custom-checkbox form-inline"
-                  >
-                    <input
-                      id="chkC01"
-                      class="custom-control-input"
-                      type="checkbox"
-                    />
-                    <label class="custom-control-label" for="chkC01"></label>
-                  </span>
-
-                  <span slot="addTreeNodeIcon" class="icon">＋</span>
-                  <span slot="addLeafNodeIcon" class="icon"></span>
-
-                  <span slot="addTreeNodeIcon" class="icon"></span>
-                  <span slot="delNodeIcon" class="icon"></span>
-                </VueTreeList>
+                <ReferenceTreeView
+                  ref="curriculum"
+                  :expanded="false"
+                  :dataList="receiveCurriculumData"
+                  identity="master"
+                  :pidNum="2000"
+                />
                 <br />
                 <br />
               </div>
@@ -256,8 +189,12 @@
       :uploadType="uploadType"
       :uploadFile="uploadFile"
       :reference="reference"
+      :pushKeyword="pushKeyword"
+      @change-keyword="changePushKeyword"
       @change-input="onChangeUploadFile"
       @close="onCloseReferenceAddModal"
+      @set-keyword="setKeyword"
+      @delete-keyword="deleteKeyword"
     />
 
     <!-- 비디오 & 파일 업로드 선택 -->
@@ -280,6 +217,7 @@
       :reference="reference"
       :quizList="quizList"
       :currentPageIdx="currentPageIdx"
+      :pushKeyword="pushKeyword"
       @change-number="onClickPagination"
       @pagination="onClickQuizPagination"
       @plus-item="onPlusQuizList"
@@ -291,6 +229,9 @@
       @select-dificultade="onSelectDificultade"
       @close="onCloseQuizAddModal"
       @preview="onOpenQuizPreviewModal"
+      @change-keyword="changePushKeyword"
+      @set-keyword="setKeyword"
+      @delete-keyword="deleteKeyword"
     />
 
     <!-- 쪽지시험 등록 -->
@@ -299,6 +240,7 @@
       :reference="reference"
       :noteTestList="noteTestList"
       :currentPageIdx="currentPageIdx"
+      :pushKeyword="pushKeyword"
       @change-number="onClickPagination"
       @change-input="onChangeUploadFile"
       @change-dificultade="onSelectDificultadeTest"
@@ -309,6 +251,9 @@
       @pagination="onClickQuizPagination"
       @select-answer="onSelectAnswer"
       @preview="onOpenNoteTestPreviewModal"
+      @change-keyword="changePushKeyword"
+      @set-keyword="setKeyword"
+      @delete-keyword="deleteKeyword"
     />
 
     <!-- 저장경로 설정 -->
@@ -326,6 +271,8 @@
       :selectData="selectData"
       @close="onCloseReferenceBrowseModal"
       @reference-change="onOpenReferenceChangeModal"
+      @view-url="onOpenSavePathModal"
+      @delete="openSelectModal"
     />
 
     <!-- 퀴즈 보기 -->
@@ -338,6 +285,8 @@
       @pagination="onClickQuizPagination"
       @change="onOpenQuizChangeModal"
       @preview="onOpenQuizPreviewModal"
+      @view-url="onOpenSavePathModal"
+      @delete="openSelectModal"
     />
 
     <!-- 퀴즈 미리보기 -->
@@ -359,6 +308,8 @@
       @pagination="onClickQuizPagination"
       @change="onOpenNoteTestChangeModal"
       @preview="onOpenNoteTestPreviewModal"
+      @view-url="onOpenSavePathModal"
+      @delete="openSelectModal"
     />
 
     <!-- 쪽지시험 미리보기 -->
@@ -376,8 +327,12 @@
     <ReferenceChangeModal
       :open="isReferenceChangeModal"
       :reference="selectData"
+      :pushKeyword="pushKeyword"
       @close="onCloseReferenceChangeModal"
       @change-input="onChangeSelectData"
+      @change-keyword="changePushKeyword"
+      @set-keyword="setSelectKeyword"
+      @delete-keyword="deleteSelectKeyword"
     />
 
     <!-- 퀴즈 수정 -->
@@ -385,6 +340,7 @@
       :open="isQuizChangeModal"
       :quiz="selectData"
       :currentPageIdx="currentPageIdx"
+      :pushKeyword="pushKeyword"
       @delete-quiz="onDeleteSelectQuizItem"
       @close="onCloseQuizChangeModal"
       @change-input="onChangeSelectData"
@@ -396,6 +352,9 @@
       @select-dificultade="onSelectChangeDificultade"
       @change-item="onChangeSelectQuiz"
       @preview="onOpenQuizPreviewModal"
+      @change-keyword="changePushKeyword"
+      @set-keyword="setSelectKeyword"
+      @delete-keyword="deleteSelectKeyword"
     />
 
     <!-- 쪽지시험 수정 -->
@@ -404,6 +363,7 @@
       :reference="selectData"
       :noteTestList="noteTestList"
       :currentPageIdx="currentPageIdx"
+      :pushKeyword="pushKeyword"
       @close="onCloseNoteTestChangeModal"
       @change-item="onChangeSelectTest"
       @change-input="onChangeSelectData"
@@ -414,16 +374,23 @@
       @select-answer="onSelectChangeAnswer"
       @plus-item="onPlusSelectNoteTestList"
       @preview="onOpenNoteTestPreviewModal"
+      @change-keyword="changePushKeyword"
+      @set-keyword="setSelectKeyword"
+      @delete-keyword="deleteSelectKeyword"
     />
 
     <!-- 공유하기 -->
-    <ShareViewModal />
+    <ShareViewModal
+      :open="isShareViewModal.open"
+      :url="isShareViewModal.url"
+      @close="onCloseSavePathModal"
+    />
 
     <!-- 주소 복사 성공 -->
     <AddressCopySuccessModal />
 
     <!-- 삭제 모달 -->
-    <DeleteModal />
+    <DeleteModal :open="isSelectModal.open" @close="onCloseSelectModal" />
 
     <!-- 설명 모달 -->
     <ModalDeac
@@ -432,39 +399,38 @@
       :desc="modalDesc.desc"
       @close="onCloseModalDesc"
     />
+
+    <button @click="exportToPDF">Export to PDF</button>
   </div>
 </template>
 
 <script>
-import Tagify from '@yaireo/tagify'
-import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
-import PageHeader from '@/components/common/PageHeader.vue'
-import ModalDeac from '@/components/common/modal/ModalDesc.vue'
-import SavePathModal from '@/components/common/modal/reference/SavePathModal.vue'
-import ReferenceSelectModal from '@/components/common/modal/reference/ReferenceSelectModal.vue'
-import ReferenceAddModal from '@/components/common/modal/reference/ReferenceAddModal.vue'
-import VideoFileUploadModal from '@/components/common/modal/reference/VideoFileUploadModal.vue'
-import YoutubeUploadModal from '@/components/common/modal/reference/YoutubeUploadModal.vue'
-import QuizAddModal from '@/components/common/modal/reference/QuizAddModal.vue'
-import NoteTestAddModal from '@/components/common/modal/reference/NoteTestAddModal.vue'
-import ReferenceFilterModal from '@/components/common/modal/reference/ReferenceFilterModal.vue'
-import SearchResultModal from '@/components/common/modal/reference/SearchResultModal.vue'
-import VideoBrowseModal from '@/components/common/modal/reference/VideoBrowseModal.vue'
-import QuizBrowseModal from '@/components/common/modal/reference/QuizBrowseModal.vue'
-import NoteTestBrowseModal from '@/components/common/modal/reference/NoteTestBrowseModal.vue'
-import ShareViewModal from '@/components/common/modal/reference/ShareViewModal.vue'
-import AddressCopySuccessModal from '@/components/common/modal/reference/AddressCopySuccessModal.vue'
-import DeleteModal from '@/components/common/modal/reference/DeleteModal.vue'
-import ReferenceChangeModal from '@/components/common/modal/reference/ReferenceChangeModal.vue'
-import QuizChangeModal from '@/components/common/modal/reference/QuizChangeModal.vue'
-import NoteTestChangeModal from '@/components/common/modal/reference/NoteTestChangeModal.vue'
-import { apiReference } from '@/services'
-import '@yaireo/tagify/dist/tagify.css'
-import QuizPreviewModal from '@/components/common/modal/reference/QuizPreviewModal.vue'
-import NoteTestPreviewModal from '@/components/common/modal/reference/NoteTestPreviewModal.vue'
-
-let copyCheckData = []
-
+// import { jsPDF } from 'jspdf'
+import html2pdf from 'html2pdf.js'
+import PageHeader from '~/components/common/PageHeader.vue'
+import ModalDeac from '~/components/common/modal/ModalDesc.vue'
+import SavePathModal from '~/components/common/modal/reference/SavePathModal.vue'
+import ReferenceSelectModal from '~/components/common/modal/reference/ReferenceSelectModal.vue'
+import ReferenceAddModal from '~/components/common/modal/reference/ReferenceAddModal.vue'
+import VideoFileUploadModal from '~/components/common/modal/reference/VideoFileUploadModal.vue'
+import YoutubeUploadModal from '~/components/common/modal/reference/YoutubeUploadModal.vue'
+import QuizAddModal from '~/components/common/modal/reference/QuizAddModal.vue'
+import NoteTestAddModal from '~/components/common/modal/reference/NoteTestAddModal.vue'
+import ReferenceFilterModal from '~/components/common/modal/reference/ReferenceFilterModal.vue'
+import SearchResultModal from '~/components/common/modal/reference/SearchResultModal.vue'
+import VideoBrowseModal from '~/components/common/modal/reference/VideoBrowseModal.vue'
+import QuizBrowseModal from '~/components/common/modal/reference/QuizBrowseModal.vue'
+import NoteTestBrowseModal from '~/components/common/modal/reference/NoteTestBrowseModal.vue'
+import ShareViewModal from '~/components/common/modal/reference/ShareViewModal.vue'
+import AddressCopySuccessModal from '~/components/common/modal/reference/AddressCopySuccessModal.vue'
+import DeleteModal from '~/components/common/modal/reference/DeleteModal.vue'
+import ReferenceChangeModal from '~/components/common/modal/reference/ReferenceChangeModal.vue'
+import QuizChangeModal from '~/components/common/modal/reference/QuizChangeModal.vue'
+import NoteTestChangeModal from '~/components/common/modal/reference/NoteTestChangeModal.vue'
+import { apiReference } from '~/services'
+import QuizPreviewModal from '~/components/common/modal/reference/QuizPreviewModal.vue'
+import NoteTestPreviewModal from '~/components/common/modal/reference/NoteTestPreviewModal.vue'
+import ReferenceTreeView from '~/components/common/custom/CustomReferenceTreeView.vue'
 export default {
   name: 'ReferenceRoom',
   components: {
@@ -490,14 +456,42 @@ export default {
     NoteTestChangeModal,
     QuizPreviewModal,
     NoteTestPreviewModal,
-    VueTreeList,
+    ReferenceTreeView,
   },
   layout: 'EducationLayout',
   data() {
     return {
-      identity: 'master',
-      pid: 0,
-      newTree: {},
+      identity: 'teacher',
+      pushKeyword: '',
+      // Modal Flag
+      isReferenceAddModal: false,
+      isQuizAddModal: false,
+      isNoteTestAddModal: false,
+      isReferenceBrowseModal: false,
+      isQuizBrowseModal: false,
+      isNoteTestBrowseModal: false,
+      isReferenceChangeModal: false,
+      isQuizChangeModal: false,
+      isNoteTestChangeModal: false,
+      isQuizPreviewModal: {
+        open: false,
+        previewPage: '',
+        select: false,
+      },
+      isNoteTestPreviewModal: {
+        open: false,
+        previewPage: '',
+        select: false,
+      },
+      isShareViewModal: {
+        open: false,
+        path: '',
+        url: '',
+      },
+      isSelectModal: {
+        open: false,
+        previewPage: '',
+      },
       receiveInstitutionData: [
         {
           name: '마포 학원',
@@ -513,11 +507,7 @@ export default {
                       name: '국어학습자료 애니메이션.mp4',
                       subject: '국어',
                       desc: '등록한 자료 1',
-                      keyword: [
-                        { title: '국어' },
-                        { title: '수학' },
-                        { title: '과학' },
-                      ],
+                      keyword: ['국어', '수학'],
                       registrant: '등록인',
                       savePath:
                         'https://media.w3.org/2010/05/sintel/trailer.mp4',
@@ -537,11 +527,7 @@ export default {
                       name: '수학 학습자료.pdf',
                       subject: '수학',
                       desc: '등록한 자료 2',
-                      keyword: [
-                        { title: '국어' },
-                        { title: '수학' },
-                        { title: '과학' },
-                      ],
+                      keyword: ['국어', '수학'],
                       registrant: '등록인',
                       savePath:
                         'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
@@ -562,11 +548,7 @@ export default {
                       name: '영어 단어 퀴즈.quiz',
                       subject: '영어',
                       desc: '등록한 자료 1',
-                      keyword: [
-                        { title: '국어' },
-                        { title: '수학' },
-                        { title: '과학' },
-                      ],
+                      keyword: ['국어', '수학'],
                       registrant: '등록인',
                       savePath:
                         'https://media.w3.org/2010/05/sintel/trailer.mp4',
@@ -644,11 +626,7 @@ export default {
                       name: '사회 쪽지시험 영상.youtube',
                       subject: '사회',
                       desc: '등록한 자료 1',
-                      keyword: [
-                        { title: '국어' },
-                        { title: '수학' },
-                        { title: '과학' },
-                      ],
+                      keyword: ['국어', '수학'],
                       registrant: '등록인',
                       savePath: 'https://www.youtube.com/embed/1CYbySbtyF0',
                       isOpenEducation: true,
@@ -668,11 +646,7 @@ export default {
                       name: '과학 사이트 참고용.url',
                       subject: '과학',
                       desc: '등록한 자료 1',
-                      keyword: [
-                        { title: '국어' },
-                        { title: '수학' },
-                        { title: '과학' },
-                      ],
+                      keyword: ['국어', '수학'],
                       registrant: '등록인',
                       savePath: 'https://sciencelove.com/725',
                       isOpenEducation: true,
@@ -692,11 +666,7 @@ export default {
                       name: '수학 쪽지시험.test',
                       subject: '수학',
                       desc: '등록한 자료 1',
-                      keyword: [
-                        { title: '국어' },
-                        { title: '수학' },
-                        { title: '과학' },
-                      ],
+                      keyword: ['국어', '수학'],
                       registrant: '등록인',
                       savePath: 'https://sciencelove.com/725',
                       isOpenEducation: true,
@@ -939,28 +909,7 @@ export default {
           ],
         },
       ],
-      institutionData: new Tree(false, []),
-      franchiseData: new Tree(false, []),
-      myCurriculumData: new Tree(false, []),
-      isReferenceAddModal: false,
-      isQuizAddModal: false,
-      isNoteTestAddModal: false,
-      isReferenceBrowseModal: false,
-      isQuizBrowseModal: false,
-      isNoteTestBrowseModal: false,
-      isReferenceChangeModal: false,
-      isQuizChangeModal: false,
-      isNoteTestChangeModal: false,
-      isQuizPreviewModal: {
-        open: false,
-        previewPage: '',
-        select: false,
-      },
-      isNoteTestPreviewModal: {
-        open: false,
-        previewPage: '',
-        select: false,
-      },
+
       uploadType: '',
       currentPageIdx: 0,
       uploadFile: {},
@@ -1167,7 +1116,7 @@ export default {
         name: '',
         subject: '',
         desc: '',
-        keyword: [],
+        keyword: ['수학', '과학'],
         registrant: '',
         savePath: '',
         isOpenEducation: true,
@@ -1226,85 +1175,6 @@ export default {
       ],
     }
   },
-  mounted() {
-    this.getTagify()
-    this.getTagifyQuiz()
-    this.getTagifyNoteTest()
-    this.getTagifyReferenceChange()
-    const dataMapping = (item, isReadOnly) => {
-      const result = []
-      const len = item.length
-      console.log(item)
-      for (let i = 0; i < len; i++) {
-        if (item[i].children !== undefined) {
-          console.log(item[i])
-          result[i] = {
-            name: item[i].name,
-            id: this.pid,
-            isLeaf: false,
-            pid: this.pid,
-            children: [],
-            readOnly: isReadOnly,
-            isChecked: false,
-            type: item[i].type,
-          }
-          this.pid++
-          result[i].children = dataMapping(item[i].children, isReadOnly)
-        } else {
-          result[i] = {
-            name: item[i].name,
-            id: this.pid,
-            pid: this.pid,
-            isLeaf: true,
-            readOnly: isReadOnly,
-            isChecked: false,
-            type: item[i].type,
-            subject: item[i].subject,
-            desc: item[i].desc,
-            keyword: item[i].keyword,
-            registrant: item[i].registrant,
-            savePath: item[i].savePath,
-            isOpenEducation: item[i].isOpenEducation,
-            inOpenReferenceRoom: item[i].inOpenReferenceRoom,
-            fileName: item[i].fileName,
-            fileDivision: item[i].fileDivision,
-            fileType: item[i].fileType,
-            uploadType: item[i].uploadType,
-            fileVolume: item[i].fileVolume,
-            createAt: item[i].createAt,
-            quizList: item[i].quizList,
-            noteTestList: item[i].noteTestList,
-          }
-          this.pid++
-        }
-      }
-      return result
-    }
-
-    if (this.identity === 'master') {
-      this.institutionData = new Tree(
-        false,
-        dataMapping(this.receiveInstitutionData, false)
-      )
-      this.franchiseData = new Tree(
-        false,
-        dataMapping(this.receiveFranchiseData, false)
-      )
-    } else {
-      this.institutionData = new Tree(
-        true,
-        dataMapping(this.receiveInstitutionData, true)
-      )
-      this.franchiseData = new Tree(
-        true,
-        dataMapping(this.receiveFranchiseData, true)
-      )
-    }
-    this.myCurriculumData = new Tree(
-      false,
-      dataMapping(this.receiveCurriculumData, false)
-    )
-  },
   methods: {
     // Modal Event
     openModalDesc(tit, msg) {
@@ -1313,6 +1183,24 @@ export default {
         title: tit,
         desc: msg,
       }
+    },
+
+    onCloseModalDesc() {
+      this.modalDesc.open = false
+    },
+
+    openSelectModal(url) {
+      console.log(url)
+      this[url] = false
+      this.isSelectModal = {
+        open: true,
+        previewPage: url,
+      }
+    },
+
+    onCloseSelectModal() {
+      this[this.isSelectModal.previewPage] = true
+      this.isSelectModal.open = false
     },
 
     onOpenReferenceAddModal() {
@@ -1473,63 +1361,19 @@ export default {
       }
     },
 
-    // 태그 컴포넌트 가져오기
-    getTagify() {
-      const input = document.getElementById('keywordInput')
-      if (input) {
-        const tagify = new Tagify(input, {
-          whitelist: this.keywordList,
-          //  whitelist: ["ironman", "antman", "captain america", "thor", "spiderman"],
-          enforceWhitelist: false, // true일때 keywordList에 있는 태그만 사용
-        })
-
-        tagify.on('add', function () {})
+    onOpenSavePathModal(path, url) {
+      this[path] = false
+      this.isShareViewModal = {
+        open: true,
+        path,
+        url,
       }
     },
 
-    // 퀴즈 태그 컴포넌트 가져오기
-    getTagifyQuiz() {
-      const input = document.getElementById('keywordInputQuiz')
-      if (input) {
-        const tagify = new Tagify(input, {
-          whitelist: this.keywordList,
-          enforceWhitelist: false,
-        })
-        tagify.on('add', function () {})
-      }
-    },
-
-    // 쪽지시험 태그 컴포넌트 가져오기
-    getTagifyNoteTest() {
-      const input = document.getElementById('keywordInputNoteTest')
-      if (input) {
-        const tagify = new Tagify(input, {
-          whitelist: this.keywordList,
-          enforceWhitelist: false,
-        })
-        tagify.on('add', function () {})
-      }
-    },
-
-    // 수정페이지 태그 컴포넌트 가져오기
-    getTagifyReferenceChange() {
-      const input = document.getElementById('keywordChange')
-      // const keyword = JSON.parse(JSON.stringify(this.selectData.keyword))
-      if (input) {
-        const tagify = new Tagify(input, {
-          whitelist: this.keywordList,
-          enforceWhitelist: false,
-        })
-        // for (const x of keyword) {
-        //   tagify.addTags(x.title, true, false)
-        //   tagify.removeAllTags()
-        // }
-        tagify.on()
-      }
-    },
-
-    onCloseModalDesc() {
-      this.modalDesc.open = false
+    onCloseSavePathModal() {
+      this.isShareViewModal.open = false
+      console.log(this.isShareViewModal)
+      this[this.isShareViewModal.path] = true
     },
 
     // 등록 자료 내용 변경
@@ -1591,6 +1435,32 @@ export default {
 
     onChangeSelectTest({ target: { value, name } }, idx) {
       this.selectData.noteTestList[idx][name] = value
+    },
+
+    setKeyword({ target: { value } }) {
+      const keywordList = [...this.reference.keyword]
+      keywordList.push(value)
+      this.pushKeyword = ''
+      this.reference.keyword = Array.from(new Set(keywordList))
+    },
+
+    deleteKeyword(idx) {
+      this.reference.keyword.splice(idx, 1)
+    },
+
+    setSelectKeyword({ target: { value } }) {
+      const keywordList = [...this.selectData.keyword]
+      keywordList.push(value)
+      this.pushKeyword = ''
+      this.selectData.keyword = Array.from(new Set(keywordList))
+    },
+
+    deleteSelectKeyword(idx) {
+      this.selectData.keyword.splice(idx, 1)
+    },
+
+    changePushKeyword({ target: { value } }) {
+      this.pushKeyword = value
     },
 
     // 비디오 업로드
@@ -2016,7 +1886,6 @@ export default {
     },
 
     onClick(params) {
-      console.log(params)
       this.selectData = params
       if (
         params.uploadType === 'video' ||
@@ -2032,159 +1901,71 @@ export default {
       }
     },
 
-    addNode() {
-      const node = new TreeNode({ name: 'new node', isLeaf: false })
-      if (!this.data.children) this.data.children = []
-      this.data.addChildren(node)
-    },
-
-    getNewTree() {
-      const vm = this
-      function _dfs(oldNode) {
-        const newNode = {}
-
-        for (const k in oldNode) {
-          if (k !== 'children' && k !== 'parent') {
-            newNode[k] = oldNode[k]
-          }
-        }
-
-        if (oldNode.children && oldNode.children.length > 0) {
-          newNode.children = []
-          for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            newNode.children.push(_dfs(oldNode.children[i]))
-          }
-        }
-        return newNode
-      }
-
-      vm.newTree = _dfs(vm.data)
-    },
     copyData() {
-      let idNum = new Date().valueOf()
-      function _dfs(oldNode) {
-        const newNode = {}
-        if (oldNode.isChecked) {
-          newNode.children = []
-          newNode.id = idNum
-          newNode.isLeaf = oldNode.isLeaf
-          newNode.name = oldNode.name
-          newNode.parent = oldNode.parent
-          newNode.pid = oldNode.id
-          newNode.readOnly = oldNode.readOnly
-          newNode.isChecked = false
-          newNode.dbIdx = oldNode.dbIdx
-          newNode.type = oldNode.type
-          console.log(newNode.name)
-          idNum++
-        }
-        if (oldNode.children && oldNode.children.length > 0) {
-          const list = []
-          for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            list.push(_dfs(oldNode.children[i]))
-          }
-          newNode.children = list
-        }
-        return newNode
-      }
       const instiTab = document.getElementById('institute')
       if (instiTab.classList.contains('show')) {
-        copyCheckData = _dfs(this.institutionData)
+        this.$refs.institution.copyData()
       } else {
-        copyCheckData = _dfs(this.franchiseData)
+        this.$refs.franchise.copyData()
       }
-      console.log(copyCheckData)
     },
     pasteData() {
-      let idNum = new Date().valueOf()
-      function _addNode(parentNode, oldNode) {
-        let node, i, len
-        if (oldNode.name) {
-          const newNode = {}
-          newNode.children = []
-          newNode.id = idNum
-          newNode.isLeaf = oldNode.isLeaf
-          newNode.name = oldNode.name
-          newNode.parent = oldNode.parent
-          newNode.pid = oldNode.id
-          newNode.readOnly = oldNode.readOnly
-          newNode.isChecked = false
-          newNode.dbIdx = oldNode.dbIdx
-          newNode.type = oldNode.type
-          node = new TreeNode(newNode)
-          parentNode.addChildren(node)
-          idNum++
-          if (!oldNode.isLeaf) {
-            if (oldNode.children && oldNode.children.length > 0) {
-              len = oldNode.children.length
-              for (i = 0; i < len; i++) {
-                _addNode(node, oldNode.children[i])
-              }
-            }
-          }
-        } else if (oldNode.children && oldNode.children.length > 0) {
-          len = oldNode.children.length
-          for (i = 0; i < len; i++) {
-            _addNode(parentNode, oldNode.children[i])
-          }
-        }
-      }
-      function _pasteData(oldNode) {
-        if (oldNode.children && oldNode.children.length > 0) {
-          for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            _pasteData(oldNode.children[len - i - 1])
-          }
-        }
-        if (oldNode.isPaste) {
-          _addNode(oldNode, copyCheckData)
-        }
-      }
-      function _checkPasteData(oldNode) {
-        if (oldNode.children && oldNode.children.length > 0) {
-          for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            if (oldNode.children[len - i - 1].isLeaf) {
-              if (oldNode.children[len - i - 1].isChecked) {
-                oldNode.isPaste = true
-              }
-            } else {
-              _checkPasteData(oldNode.children[len - i - 1])
-            }
-          }
-        }
-        if (oldNode.isChecked) {
-          oldNode.isPaste = true
-        }
-      }
-      function _resetPasteData(oldNode) {
-        if (oldNode.children && oldNode.children.length > 0) {
-          for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            if (!oldNode.children[len - i - 1].isLeaf) oldNode.paste = false
-          }
-        }
-        oldNode.paste = false
-      }
-      if (copyCheckData.children && copyCheckData.children.length > 0) {
-        _checkPasteData(this.myCurriculumData)
-        _pasteData(this.myCurriculumData)
-        _resetPasteData(this.myCurriculumData)
-      }
+      this.$refs.curriculum.pasteData(this.copyCheckData)
     },
     delData() {
-      function _dell(oldNode) {
-        if (
-          !oldNode.isChecked &&
-          oldNode.children &&
-          oldNode.children.length > 0
-        ) {
-          for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            _dell(oldNode.children[len - i - 1])
-          }
-        }
-        if (oldNode.isChecked) {
-          oldNode.remove()
-        }
-      }
-      _dell(this.myCurriculumData)
+      this.$refs.curriculum.delData()
+    },
+    copyDataCallBack(copyData) {
+      this.copyCheckData = copyData
+      console.log(this.copyCheckData)
+    },
+
+    exportToPDF() {
+      window.scrollTo(0, 0)
+      html2pdf(this.$refs.generatePdf, {
+        margin: 0,
+        filename: 'document.pdf',
+        image: { type: 'jpg', quality: 0.95 },
+        html2canvas: {
+          scrollY: 0,
+          scale: 4,
+          dpi: 300,
+          letterRendering: true,
+          allowTaint: false,
+          ignoreElements(element) {
+            // pdf에 출력하지 않아야할 dom이 있다면 해당 옵션 사용
+            if (element.id === 'pdf-button-area') {
+              return true
+            }
+          },
+        },
+        jsPDF: {
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4',
+          compressPDF: true,
+        },
+      })
+
+      // const pages = document.querySelector('#itemDiv')
+      // this.workspaceService.exportAllToPDF(pages)
+
+      /* eslint-disable new-cap */
+      // const doc = new jsPDF({
+      //   orientation: 'portrait',
+      //   unit: 'px',
+      //   format: 'a4',
+      //   compressPDF: true,
+      // })
+
+      // doc.html(pages, {
+      //   callback: (doc) => {
+      //     doc.deletePage(doc.getNumberOfPages())
+      //     doc.save('pdf-export')
+      //   },
+      // })
+
+      // doc.save('test.pdf')
     },
   },
 }

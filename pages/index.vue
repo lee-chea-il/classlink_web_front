@@ -1,7 +1,7 @@
 <template>
   <!-- <Tutorial /> -->
   <!-- header -->
-  <div class="main">
+  <div class="main" >
     <EducationHeader />
     <!-- //header -->
     <!-- container -->

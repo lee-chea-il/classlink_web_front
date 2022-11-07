@@ -8,17 +8,8 @@
   >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 id="exampleModalLabel" class="modal-title">저장경로</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <i class="icons_close"></i>
-          </button>
-        </div>
+        <ModalHeader title="저장 경로" @close="$emit('close')" />
+
         <div class="modal-body">
           <!-- 탭 컨텐츠 -->
           <ul id="myTab" class="nav nav-tabs" role="tablist">
@@ -138,11 +129,13 @@
 </template>
 
 <script>
+import ModalHeader from '../../ModalHeader.vue'
+
 // import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
 export default {
   name: 'SavePathModal',
   components: {
-    // VueTreeList,
+    ModalHeader,
   },
   data() {
     return {

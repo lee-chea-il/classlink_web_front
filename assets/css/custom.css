@@ -1,17 +1,3 @@
-.tagify__input::before {
-  font-size: 12px;
-  margin: 6px 0 6px 0;
-}
-
-.tagify__input:empty::before {
-  font-size: 12px;
-  margin-top: 6px;
-}
-
-.tagify {
-  border-radius: 5px;
-}
-
 .example .ql-editor {
   min-height: 85px;
 }

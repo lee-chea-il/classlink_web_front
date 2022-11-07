@@ -12,18 +12,8 @@
       <div class="background_close" @click="$emit('close')"></div>
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 id="exampleModalLabel" class="modal-title">자료 열람</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-              @click="$emit('close')"
-            >
-              <i class="icons_close"></i>
-            </button>
-          </div>
+          <ModalHeader title="자료 열람" @close="$emit('close')" />
+
           <div class="modal-body">
             <!-- 자료 열람 -->
             <div class="reading_section modal_dataquiz">
@@ -271,11 +261,10 @@
               >
                 이동
               </button>
-              <button
-                class="btn btn_crud_default"
-                data-toggle="modal"
-                data-target="#modalDataShare01"
-              >
+              <button class="btn btn_crud_default" data-toggle="modal">
+                <!-- @click="
+                  $emit('view-url', 'isQuizBrowseModal', selectData.savePath)
+                " -->
                 공유
               </button>
               <button class="btn btn_crud_default">다운로드</button>
@@ -290,44 +279,14 @@
               <button
                 class="btn btn_crud_default"
                 data-toggle="modal"
-                data-target="#modalDataDelete"
+                @click="$emit('delete', 'isQuizBrowseModal')"
               >
                 삭제
               </button>
             </div>
-            <!-- [개발참조] 하단 info_section 부분은 열람 팝업 공통 -->
-            <div class="info_section">
-              <div class="cont">
-                <span class="title">파일 이름</span>
-                <span>등록한 자료 이름</span>
-              </div>
-              <div class="cont">
-                <div class="title">설명</div>
-                <span>등록한 설명</span>
-              </div>
-              <div class="line"></div>
 
-              <div class="cont02">
-                <div class="title">자료 구분</div>
-                <span class="title03-1">프랜차이즈</span>
-              </div>
-              <div class="cont02">
-                <div class="title">콘텐츠 유형</div>
-                <span class="title04-1">동영상</span>
-              </div>
-              <div class="cont02">
-                <div class="title">공개 여부</div>
-                <span class="title05-1">ON</span>
-              </div>
-              <div class="cont02">
-                <div class="title">과목</div>
-                <span class="title06-1">수학</span>
-              </div>
-              <div class="cont02">
-                <div class="title">경로</div>
-                <span class="title07-1">저장 경로가 입력되는 공간입니다.</span>
-              </div>
-            </div>
+            <!-- [개발참조] 하단 info_section 부분은 열람 팝업 공통 -->
+            <FileInfoSection :fileInfo="selectData" />
           </div>
         </div>
       </div>
@@ -336,8 +295,12 @@
 </template>
 
 <script>
+import ModalHeader from '../../ModalHeader.vue'
+import FileInfoSection from '@/components/reference/FileInfoSection.vue'
+
 export default {
   name: 'QuizBrowseModal',
+  components: { FileInfoSection, ModalHeader },
   props: {
     open: Boolean,
     selectData: {

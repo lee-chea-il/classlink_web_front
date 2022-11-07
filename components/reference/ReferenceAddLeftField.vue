@@ -45,19 +45,27 @@
         <label for="" class="data_title">키워드</label>
         <div id="inputBox" class="col">
           <input
-            :id="
-              quiz
-                ? 'keywordInputQuiz'
-                : noteTest
-                ? 'keywordInputNoteTest'
-                : change
-                ? 'keywordChange'
-                : 'keywordInput'
-            "
+            id="keyword"
+            class="form-control"
             name="keyword"
             placeholder="입력"
-            @change="$emit('change-input', $event)"
+            :value="pushKeyword"
+            @input="$emit('changePushKeyword', $event)"
+            @keyup.enter="$emit('set-keyword', $event)"
           />
+          <div class="keyword_area_01">
+            <span
+              v-for="(item, idx) in reference.keyword"
+              :key="idx"
+              class="keyword01"
+            >
+              <span class="keyword01-1">{{ item }}</span
+              ><span
+                class="x span"
+                @click="$emit('delete-keyword', idx)"
+              ></span>
+            </span>
+          </div>
           <span class="info">키워드는 엔터로 구분할 수 있습니다</span>
         </div>
       </div>
@@ -145,17 +153,10 @@ export default {
       type: Object,
       default: () => {},
     },
-    quiz: {
-      type: Boolean,
-      default: false,
-    },
-    noteTest: {
-      type: Boolean,
-      default: false,
-    },
-    change: {
-      type: Boolean,
-      default: false,
+
+    pushKeyword: {
+      type: String,
+      default: '',
     },
   },
   data() {
@@ -175,41 +176,7 @@ export default {
   border-color: rgba(167, 169, 172, 0.4);
 }
 
-/* .keywordUl {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-
-.keywordUl li {
-  padding: 4px 12px;
-  background: #7391fa;
-  color: whi;
-  margin: 4px;
-  border-radius: 12px;
-  color: white;
-  position: relative;
+.span {
   cursor: pointer;
 }
-
-.keywordUl li::after {
-  content: 'x';
-  position: absolute;
-  background: red;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 25px;
-  height: 25px;
-  color: whi;
-  border-radius: 50%;
-  color: white;
-  right: -8px;
-  top: -13px;
-  display: none;
-}
-
-.keywordUl li:hover:after {
-  display: flex;
-} */
 </style>

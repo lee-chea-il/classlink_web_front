@@ -14,7 +14,6 @@
           </div>
           <div class="nav_area">
             <ul class="nav nav_dapth01">
-              <!-- @click="$store.commit('common/setActiveNavIdx', 1)" -->
               <li class="nav-item">
                 <nuxt-link
                   :class="{
@@ -90,8 +89,8 @@
             <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
             <NuxtLink
               to="/classPreperation/reference"
-              class="nav-link"
               :class="{
+                'nav-link': true,
                 active: $route.fullPath === '/classPreperation/reference',
               }"
               href="#"
@@ -99,7 +98,14 @@
             >
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">레슨</a>
+            <NuxtLink
+              :class="{
+                'nav-link': true,
+                active: $route.fullPath === '/classPreperation/lesson',
+              }"
+              to="/classPreperation/lesson"
+              >레슨</NuxtLink
+            >
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">커리큘럼</a>

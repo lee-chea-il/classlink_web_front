@@ -12,29 +12,19 @@
       <div class="background_close" @click="$emit('close')"></div>
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-          <div class="modal-header">
-            <!-- [개발참조] 자료등록일때 출력되는 버튼 -->
-            <h5 id="exampleModalLabel" class="modal-title">자료 수정</h5>
-            <!-- [개발참조] 자료수정일때 출력되는 버튼 -->
-            <!-- <h5 class="modal-title" id="exampleModalLabel">자료 수정</h5> -->
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-              @click="$emit('close')"
-            >
-              <i class="icons_close"></i>
-            </button>
-          </div>
+          <ModalHeader title="자료 수정" @close="$emit('close')" />
+
           <div class="modal-body">
             <div class="modal_dataregi row">
               <!-- 모달 내용 구분 class-->
               <!-- 왼쪽 영역 -->
               <ReferenceAddLeftField
                 :reference="reference"
-                :change="true"
+                :pushKeyword="pushKeyword"
                 @change-input="$emit('change-input', $event)"
+                @set-keyword="$emit('set-keyword', $event)"
+                @change-keyword="$emit('changePushKeyword', $event)"
+                @delete-keyword="$emit('delete-keyword', $event)"
               />
               <!-- /.왼쪽 영역 -->
               <!-- 오른쪽 영역 -->
@@ -132,11 +122,12 @@
 </template>
 
 <script>
+import ModalHeader from '../../ModalHeader.vue'
 import ReferenceAddLeftField from '@/components/reference/ReferenceAddLeftField.vue'
 
 export default {
   name: 'ReferenceChangeModal',
-  components: { ReferenceAddLeftField },
+  components: { ReferenceAddLeftField, ModalHeader },
   props: {
     open: {
       type: Boolean,
@@ -145,6 +136,10 @@ export default {
     reference: {
       type: Object,
       default: () => {},
+    },
+    pushKeyword: {
+      type: String,
+      default: '',
     },
   },
 }

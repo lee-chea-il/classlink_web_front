@@ -1,44 +1,53 @@
 <template>
-  <div
-    id="modalDataShare01"
-    class="modal fade double"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 id="exampleModalLabel" class="modal-title">자료 공유</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <i class="icons_close"></i>
-          </button>
+  <Transition name="modal">
+    <div
+      v-show="open"
+      id="modalDataShare01"
+      class="modal double modal-mask"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+      style="display: block"
+    >
+      <div class="background_close" @click="$emit('close')"></div>
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <ModalHeader title="자료 공유" @close="$emit('close')" />
+
+          <div class="modal-body">
+            Ctrl + C를 눌러서 복사해 주세요.
+            <!-- [개발참조] value값에 해당 자료의 공유 주소를 출력  -->
+            <input
+              type="text"
+              :value="url"
+              class="form-control form-inline form-share"
+            />
+          </div>
         </div>
-        <div class="modal-body">
-          Ctrl + C를 눌러서 복사해 주세요.
-          <!-- [개발참조] value값에 해당 자료의 공유 주소를 출력  -->
-          <input
-            type="text"
-            value="https://www.youtube.com/"
-            class="form-control form-inline form-share"
-          />
+        <div class="modal-footer">
+          <!-- <button class="btn btn_crud_point">확인</button> -->
         </div>
-      </div>
-      <div class="modal-footer">
-        <!-- <button class="btn btn_crud_point">확인</button> -->
       </div>
     </div>
-  </div>
+  </Transition>
 </template>
 
 <script>
+import ModalHeader from '../../ModalHeader.vue'
+
 export default {
   name: 'ShareViewModal',
+  components: { ModalHeader },
+  props: {
+    open: {
+      type: Boolean,
+      default: false,
+    },
+    url: {
+      type: String,
+      default: '',
+    },
+  },
 }
 </script>
 

@@ -84,7 +84,6 @@ export default {
     'assets/css/base.css',
     'assets/css/common.css',
     'assets/css/custom.css',
-    // 'https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css',
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins

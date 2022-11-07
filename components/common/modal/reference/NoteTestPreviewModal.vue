@@ -12,20 +12,7 @@
       <div class="background_close" @click="$emit('close')"></div>
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 id="exampleModalLabel" class="modal-title">
-              쪽지시험 미리보기
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-              @click="$emit('close')"
-            >
-              <i class="icons_close"></i>
-            </button>
-          </div>
+          <ModalHeader title="쪽지시험 미리보기" @close="$emit('close')" />
 
           <div class="modal-body">
             <div class="preview_quiz row">
@@ -142,8 +129,11 @@
 </template>
 
 <script>
+import ModalHeader from '../../ModalHeader.vue'
+
 export default {
   name: 'NoteTestPreviewModal',
+  components: { ModalHeader },
   props: {
     open: {
       type: Boolean,

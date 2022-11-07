@@ -63,6 +63,35 @@
 		height: 100%;
 		overflow-y: auto;
 
+		.form-confirm {
+			display: flex;
+			gap: 10px;
+
+			.form-inline {
+				max-width: 83%;
+			}
+
+			.confirm_time {
+				line-height: 35px;
+				margin: 0px 10px;
+				font-size: 14px;
+				font-weight: 400;
+			}
+
+			.confirm_btn {
+				width: 95px !important;
+			}
+
+			@media (max-width: 767.98px) {
+
+				.form-confirm .form-inline {
+					width: 50%;
+				}
+
+			}
+
+		}
+
 		@media (max-width: 991.98px) {
 			width: 100%;
 			min-height: 0;
@@ -152,156 +181,157 @@
 			}
 		}
 
-		.form-group.form-inlinebox {
-			label {
-				display: block;
-				font-size: 12px;
-			}
+	}
 
-			label+input {
-				width: calc(100% - 100px);
-			}
-
-			.form-control+.custom-control {
-				float: right;
-				margin-left: 10px;
-				margin-right: 0;
-
-				.custom-control-label::before,
-				.custom-control-label::after {
-					margin-top: 0.4rem;
-				}
-			}
-
-			.form-control+.btn {
-				display: block;
-				float: right;
-				width: 95px;
-				font-size: 12px;
-			}
-		}
-
-		.link_section {
-			width: 300px;
-			margin: 40px auto;
-			font-size: theme.$default_font_size - 2px;
-
-			a {
-				margin-left: 10px;
-				color: theme.$color_light1;
-				text-decoration: underline;
-			}
-
-			.mem_account {
-				padding-bottom: 14px;
-				margin-bottom: 14px;
-				border-bottom: 1px solid #E6E7E8;
-			}
-
-			.mem_find span {
-				position: relative;
-				display: inline-block;
-				padding: 2px 20px;
-				text-decoration: underline;
-				cursor: pointer;
-
-				&:first-child::after {
-					content: "|";
-					position: absolute;
-					width: 3px;
-					text-align: center;
-					height: 17px;
-					top: 1px;
-					right: -4px;
-					color: #E6E7E8;
-				}
-			}
-		}
-
-		.etctxt_section {
+	.form-group.form-inlinebox {
+		label {
+			display: block;
 			font-size: 12px;
-			color: theme.$text_unselected_color;
+		}
 
-			a {
-				color: theme.$text_unselected_color;
-				text-decoration: underline;
+		label+input {
+			width: calc(100% - 101px);
+		}
+
+		.form-control+.custom-control {
+			float: right;
+			margin-left: 10px;
+			margin-right: 0;
+
+			.custom-control-label::before,
+			.custom-control-label::after {
+				margin-top: 0.4rem;
 			}
 		}
 
-		.question_txt {
-			font-size: 14px;
-			margin-top: 15px;
+		.form-control+.btn {
+			display: block;
+			float: right;
+			width: 95px;
+			font-size: 12px;
+		}
+	}
+
+	.link_section {
+		width: 300px;
+		margin: 40px auto;
+		font-size: theme.$default_font_size - 2px;
+
+		a {
+			margin-left: 10px;
+			color: theme.$color_light1;
+			text-decoration: underline;
 		}
 
-		.explainType01 {
-			margin-bottom: 50px;
+		.mem_account {
+			padding-bottom: 14px;
+			margin-bottom: 14px;
+			border-bottom: 1px solid #E6E7E8;
 		}
 
-		.status_section {
-			display: flex;
-			flex-wrap: wrap;
-			justify-content: space-around;
-			align-items: center;
-			width: 374px;
-			margin: 0px auto;
-			margin-top: 70px;
-			margin-bottom: 80px;
-
-			// @media (min-width: 992px) {
-			// 	.status i { transform: scale(1.2);}
-			// }
-			@media (max-width: 360px) {
-				width: 100%;
-				margin-top: 0;
-			}
-
-			.custom-control {
-				margin-top: 5px;
-				margin-bottom: 10px;
-			}
-		}
-
-		.agree_section {
+		.mem_find span {
 			position: relative;
-			height: auto;
-			margin-top: 50px;
-			margin-bottom: 60px;
-			padding-bottom: 5px;
-			text-align: left;
-			border-radius: 5px;
-			border: 1px solid rgba(0, 0, 0, 0.1);
+			display: inline-block;
+			padding: 2px 20px;
+			text-decoration: underline;
+			cursor: pointer;
 
-			@media (max-width: 575.98px) {
-				margin-top: 0px;
-			}
-
-			.title {
-				padding-left: 20px;
-				background-color: theme.$color_normal;
-				border-top-left-radius: 5px;
-				border-top-right-radius: 5px;
-				border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-				font-weight: theme.$font_medium;
-			}
-
-			.cnts {
-				padding-left: 20px;
-			}
-
-			.custom-control {
-				position: relative;
-				padding-top: 15px;
-				padding-bottom: 10px;
-				font-size: 14px;
-			}
-
-			.custom-control>i {
+			&:first-child::after {
+				content: "|";
 				position: absolute;
-				width: 20px;
-				height: 20px;
-				cursor: pointer;
-				right: 10px;
+				width: 3px;
+				text-align: center;
+				height: 17px;
+				top: 1px;
+				right: -4px;
+				color: #E6E7E8;
 			}
+		}
+	}
+
+	.etctxt_section {
+		font-size: 12px;
+		color: theme.$text_unselected_color;
+
+		a {
+			color: theme.$text_unselected_color;
+			text-decoration: underline;
+		}
+	}
+
+	.question_txt {
+		font-size: 14px;
+		margin-top: 15px;
+	}
+
+	.explainType01 {
+		margin-bottom: 50px;
+	}
+
+	.status_section {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-around;
+		align-items: center;
+		width: 374px;
+		margin: 0px auto;
+		margin-top: 70px;
+		margin-bottom: 80px;
+
+		// @media (min-width: 992px) {
+		// 	.status i { transform: scale(1.2);}
+		// }
+		@media (max-width: 360px) {
+			width: 100%;
+			margin-top: 0;
+		}
+
+		.custom-control {
+			margin-top: 5px;
+			margin-bottom: 10px;
+		}
+	}
+
+	.agree_section {
+		position: relative;
+		height: auto;
+		margin-top: 50px;
+		margin-bottom: 60px;
+		padding-bottom: 5px;
+		text-align: left;
+		border-radius: 5px;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+
+		@media (max-width: 575.98px) {
+			margin-top: 0px;
+		}
+
+		.title {
+			padding-left: 20px;
+			background-color: theme.$color_normal;
+			border-top-left-radius: 5px;
+			border-top-right-radius: 5px;
+			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+			font-weight: theme.$font_medium;
+		}
+
+		.cnts {
+			padding-left: 20px;
+		}
+
+		.custom-control {
+			position: relative;
+			padding-top: 15px;
+			padding-bottom: 10px;
+			font-size: 14px;
+		}
+
+		.custom-control>i {
+			position: absolute;
+			width: 20px;
+			height: 20px;
+			cursor: pointer;
+			right: 10px;
 		}
 	}
 }

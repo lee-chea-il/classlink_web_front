@@ -8,17 +8,8 @@
   >
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 id="exampleModalLabel" class="modal-title">필터</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <i class="icons_close"></i>
-          </button>
-        </div>
+        <ModalHeader title="필터" @close="$emit('close')" />
+
         <div class="modal-body">
           <div class="modal_datafilter">
             <!-- 모달 내용 구분 class-->
@@ -407,8 +398,11 @@
 </template>
 
 <script>
+import ModalHeader from '../../ModalHeader.vue'
+
 export default {
   name: 'ReferenceFilterModal',
+  components: { ModalHeader },
 }
 </script>
 

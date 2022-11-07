@@ -4402,6 +4402,55 @@ ol {
   margin-left: 20px;
   margin-bottom: 10px;
 }
+#modalDataRegiModi .keyword_area_01,
+#modalDataRegiQuiz .keyword_area_01,
+#modalDataRegiNote .keyword_area_01 {
+  position: relative;
+  min-width: 310px;
+  height: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 10px;
+  overflow-x: auto;
+  white-space: nowrap;
+  margin-top: 10px;
+  margin-left: -10px;
+}
+#modalDataRegiModi .keyword01,
+#modalDataRegiQuiz .keyword01,
+#modalDataRegiNote .keyword01 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 49px;
+  height: 28px;
+  background: #D1DBFF;
+  border-radius: 3px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+#modalDataRegiModi .keyword01-1,
+#modalDataRegiQuiz .keyword01-1,
+#modalDataRegiNote .keyword01-1 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+  margin: 0px 5px 0px 9px;
+}
+#modalDataRegiModi .x,
+#modalDataRegiQuiz .x,
+#modalDataRegiNote .x {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_×.png);
+  margin-right: 8px;
+}
 @media (max-width: 1199.98px) {
   #modalDataRegiModi .quiz_area,
 #modalDataRegiQuiz .quiz_area,

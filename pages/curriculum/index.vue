@@ -73,7 +73,7 @@
                 <TreeView
                   ref="institution"
                   :dataList="receiveInstitutionData"
-                  :editable="(identity=='master')?true:false"
+                  :editable="identity == 'master' ? true : false"
                   :identity="identity"
                   :pidNum="0"
                   @copyDataCallBack="copyDataCallBack"
@@ -91,7 +91,7 @@
                 <TreeView
                   ref="franchise"
                   :dataList="receiveFranchiseData"
-                  :editable="(identity=='master')?true:false"
+                  :editable="identity == 'master' ? true : false"
                   :identity="identity"
                   :pidNum="1000"
                   @copyDataCallBack="copyDataCallBack"
@@ -161,7 +161,7 @@ export default {
   name: 'MyCurriculum',
   components: {
     PageHeader,
-    TreeView
+    TreeView,
   },
   layout: 'EducationLayout',
   data() {
@@ -398,7 +398,7 @@ export default {
             },
           ],
         },
-      ]
+      ],
     }
   },
   methods: {
@@ -417,9 +417,9 @@ export default {
       this.$refs.curriculum.delData()
     },
     copyDataCallBack(copyData) {
-      this.copyCheckData=copyData
+      this.copyCheckData = copyData
       console.log(this.copyCheckData)
-    }
+    },
   },
 }
 </script>
