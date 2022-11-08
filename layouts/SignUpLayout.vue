@@ -1,6 +1,5 @@
 <template>
   <div class="default-layout">
-    <NavigationUl />
     <LoginHeaderSection />
     <div class="page_login">
       <LoginLeftSection />
@@ -15,7 +14,6 @@
 </template>
 
 <script>
-import NavigationUl from '@/components/common/NavigationUl.vue'
 import LoginHeaderSection from '@/components/login/LoginHeaderSection.vue'
 import LoginLeftSection from '@/components/login/LoginLeftSection.vue'
 import SignUpComfirmModal from '@/components/common/modal/SignUpComfirmModal.vue'
@@ -23,7 +21,6 @@ import SignUpComfirmModal from '@/components/common/modal/SignUpComfirmModal.vue
 export default {
   name: 'SignUp',
   components: {
-    NavigationUl,
     LoginHeaderSection,
     LoginLeftSection,
     SignUpComfirmModal,

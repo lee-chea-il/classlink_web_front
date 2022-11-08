@@ -169,7 +169,7 @@
                                 id="checkbox01"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="item.isCommentary"
                               />
                               <label
                                 class="custom-control-label"
@@ -184,6 +184,7 @@
                             id=""
                             rows="3"
                             placeholder="입력한 해설"
+                            :value="item.commentary"
                           ></textarea>
                         </div>
                       </div>
@@ -198,14 +199,11 @@
                 class="btn btn_crud_default"
                 data-toggle="modal"
                 data-target="#modalStoragepath"
+                @click="$emit('open-save-path', 'isNoteTestBrowseModal')"
               >
                 이동
               </button>
-              <button
-                class="btn btn_crud_default"
-                data-toggle="modal"
-                data-target="#modalDataShare01"
-              >
+              <button class="btn btn_crud_default" data-toggle="modal">
                 공유
               </button>
               <button class="btn btn_crud_default">다운로드</button>

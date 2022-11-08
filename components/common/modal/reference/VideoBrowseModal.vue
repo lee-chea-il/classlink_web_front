@@ -57,7 +57,7 @@
               <button
                 class="btn btn_crud_default"
                 data-toggle="modal"
-                data-target="#modalStoragepath"
+                @click="$emit('open-save-path', 'isReferenceBrowseModal')"
               >
                 이동
               </button>

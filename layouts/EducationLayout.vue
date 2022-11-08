@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-    <NavigationUl v-if="$route.fullPath !== '/curriculum'" />
     <EducationHeader />
     <div id="content" class="content">
       <div class="content_area">
@@ -11,11 +10,10 @@
 </template>
 
 <script>
-import NavigationUl from '@/components/common/NavigationUl.vue'
 import EducationHeader from '@/components/education/EducationHeader.vue'
 export default {
   name: 'EducationLayout',
-  components: { NavigationUl, EducationHeader },
+  components: { EducationHeader },
 }
 </script>
 

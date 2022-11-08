@@ -21,10 +21,12 @@
               <ReferenceAddLeftField
                 :reference="reference"
                 :pushKeyword="pushKeyword"
+                target="noteTest"
                 @change-input="$emit('change-input', $event)"
                 @set-keyword="$emit('set-keyword', $event)"
                 @change-keyword="$emit('changePushKeyword', $event)"
                 @delete-keyword="$emit('delete-keyword', $event)"
+                @open-save-path="$emit('open-save-path', $event)"
               />
               <!-- /.왼쪽 영역 -->
 
@@ -145,6 +147,42 @@
                                 class="form-control form-inline"
                                 @input="$emit('change-item', $event, idx)"
                               />
+                            </div>
+                          </div>
+
+                          <div class="quiz_area02 comment_area">
+                            <div class="tit_area">
+                              <div class="tit">해설</div>
+                              <div class="check">
+                                <div
+                                  class="custom-control custom-checkbox form-inline"
+                                >
+                                  <input
+                                    id="isCommentary"
+                                    name="isCommentary"
+                                    type="checkbox"
+                                    class="custom-control-input"
+                                    :value="item.isCommentary"
+                                    :checked="item.isCommentary"
+                                    @input="$emit('change-item', $event, idx)"
+                                  />
+                                  <label
+                                    class="custom-control-label"
+                                    for="isCommentary"
+                                    >정답 및 해설 노출</label
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                            <div class="cnt_area">
+                              <textarea
+                                id="commentary"
+                                name="commentary"
+                                :value="item.commentary"
+                                rows="3"
+                                placeholder="입력한 해설"
+                                @input="$emit('change-item', $event, idx)"
+                              ></textarea>
                             </div>
                           </div>
                         </div>

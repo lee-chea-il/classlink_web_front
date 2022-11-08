@@ -94,7 +94,9 @@
           rules="min:2|required"
           type="text"
           :inputValue="reference.savePath"
+          :target="target"
           @change-input="$emit('change-input', $event)"
+          @open-save-path="$emit('open-save-path', $event)"
         />
       </div>
 
@@ -103,7 +105,7 @@
           <span class="check01">
             <span class="custom-control custom-checkbox form-inline checked">
               <input
-                id="chk01"
+                :id="setTarget"
                 type="checkbox"
                 class="custom-control-input"
                 name="isOpenEducation"
@@ -113,7 +115,7 @@
               />
               <label
                 class="custom-control-label check"
-                for="chk01"
+                :for="setTarget"
               ></label> </span
             ><span>교육기관에 해당 자료를 공개합니다.</span>
           </span>
@@ -121,7 +123,7 @@
           <span class="check02">
             <span class="custom-control custom-checkbox form-inline checked">
               <input
-                id="chk02"
+                :id="setTargetTwo"
                 type="checkbox"
                 class="custom-control-input"
                 name="inOpenReferenceRoom"
@@ -131,7 +133,7 @@
               />
               <label
                 class="custom-control-label check"
-                for="chk02"
+                :for="setTargetTwo"
               ></label> </span
             ><span>공개자료실에 해당 자료를 공개합니다.</span>
           </span>
@@ -158,13 +160,43 @@ export default {
       type: String,
       default: '',
     },
+    target: {
+      type: String,
+      default: '',
+    },
   },
-  data() {
-    return {
-      value: '',
-    }
+  computed: {
+    setTarget() {
+      if (this.target === 'quiz') {
+        return 'quizTarget'
+      } else if (this.target === 'noteTest') {
+        return 'noteTestTarget'
+      } else if (this.target === 'referenceChange') {
+        return 'referenceChangeTarget'
+      } else if (this.target === 'quizChange') {
+        return 'quizChangeTarget'
+      } else if (this.target === 'noteTestChange') {
+        return 'noteTestChangeTarget'
+      } else {
+        return 'refereceTarget'
+      }
+    },
+    setTargetTwo() {
+      if (this.target === 'quiz') {
+        return 'quizTargetTwo'
+      } else if (this.target === 'noteTest') {
+        return 'noteTestTargetTwo'
+      } else if (this.target === 'referenceChange') {
+        return 'referenceChangeTargetTwo'
+      } else if (this.target === 'quizChange') {
+        return 'quizChangeTargetTwo'
+      } else if (this.target === 'noteTestChange') {
+        return 'noteTestChangeTargetTwo'
+      } else {
+        return 'refereceTargetTwo'
+      }
+    },
   },
-  methods: {},
 }
 </script>
 

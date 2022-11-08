@@ -22,7 +22,7 @@
         <button
           class="btn btn_crud_default"
           data-toggle="modal"
-          data-target="#modalStoragepath"
+          @click="$emit('open-save-path', setTarget)"
         >
           찾아보기
         </button>
@@ -81,6 +81,27 @@ export default {
     isIdCheckBtn: {
       default: false,
       type: Boolean,
+    },
+    target: {
+      type: String,
+      default: '',
+    },
+  },
+  computed: {
+    setTarget() {
+      if (this.target === 'quiz') {
+        return 'isQuizAddModal'
+      } else if (this.target === 'noteTest') {
+        return 'isNoteTestAddModal'
+      } else if (this.target === 'quizChange') {
+        return 'isQuizChangeModal'
+      } else if (this.target === 'noteTestChange') {
+        return 'isNoteTestChangeModal'
+      } else if (this.target === 'referenceChange') {
+        return 'isReferenceChange'
+      } else {
+        return 'isReferenceAddModal'
+      }
     },
   },
 }
