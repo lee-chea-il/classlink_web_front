@@ -42,4 +42,8 @@ export default defineComponent({
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.custom-control-label::after {
+  left: -1.6rem !important;
+}
+</style>

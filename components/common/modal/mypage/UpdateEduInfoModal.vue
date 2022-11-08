@@ -9,7 +9,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 id="exampleModalLabel" class="modal-title">{{ title }}</h5>
+          <h5 id="exampleModalLabel" class="modal-title">교육기관 정보 수정</h5>
           <button
             type="button"
             class="close"
@@ -20,7 +20,12 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="thumbnail_area">
+          <div
+            class="thumbnail_area"
+            :style="{
+              'background-image': `url(${eduInfo.cw_image})`,
+            }"
+          >
             <button
               type="button"
               class="btn icons_camera_gray"
@@ -37,59 +42,71 @@
                 data-target="#modalInstinfo02"
                 data-dismiss="modal"
               ></button>
-              <div class="outer2">
-                <i class="icons_thumbnail"></i>
+              <div
+                class="outer2"
+                :style="{
+                  'background-image': `url(${eduInfo.logo_image})`,
+                }"
+              >
+                <i
+                  v-if="
+                    eduInfo.logo_image === null || eduInfo.logo_image === ''
+                  "
+                  class="icons_thumbnail"
+                ></i>
               </div>
             </div>
           </div>
+
           <div class="form_section">
-            <form>
-              <div class="form-group">
-                <label for="form01">교육기관 이름</label>
-                <input
-                  id="form01"
-                  type="text"
+            <ValidationObserver>
+              <form>
+                <CustomInput
+                  id="edu_title"
+                  name="교육기관 이름"
                   placeholder="교육기관 이름 입력"
-                  class="form-control"
-                  :value="eduInfo.name"
-                />
-              </div>
-              <div class="form-group">
-                <label for="form02">연락처</label>
-                <input
-                  id="form02"
+                  rules="min:2|required"
                   type="text"
+                  :inputValue="eduInfo.edu_title"
+                  :isEduInfo="true"
+                  @change-input="$emit('change-input', $event)"
+                />
+
+                <CustomInput
+                  id="tel"
+                  name="연락처"
                   placeholder="연락처 입력"
-                  class="form-control"
-                  :value="eduInfo.tel"
-                />
-              </div>
-              <div class="form-group">
-                <label for="form03">교육기관 주소</label>
-                <input
-                  id="form03"
+                  rules="min:2|required"
                   type="text"
+                  :inputValue="eduInfo.tel"
+                  @change-input="$emit('change-input', $event)"
+                />
+
+                <CustomInput
+                  id="address"
+                  name="교육기관 주소"
                   placeholder="교육기관 주소 입력"
-                  class="form-control"
-                  :value="eduInfo.address"
-                />
-              </div>
-              <div class="form-group">
-                <label for="form03">교육기관 설명</label>
-                <input
-                  id="form04"
+                  rules="min:2|required"
                   type="text"
-                  placeholder="교육기관 설명 입력"
-                  class="form-control"
-                  :value="eduInfo.description"
+                  :inputValue="eduInfo.address"
+                  @change-input="$emit('change-input', $event)"
                 />
-              </div>
-            </form>
+
+                <CustomInput
+                  id="description"
+                  name="교육기관 설명"
+                  placeholder="교육기관 설명 입력"
+                  type="text"
+                  :inputValue="eduInfo.description"
+                  @change-input="$emit('change-input', $event)"
+                />
+              </form>
+            </ValidationObserver>
           </div>
         </div>
         <div class="modal-footer">
           <button class="btn btn_crud_point" data-dismiss="modal">저장</button>
-          <button class="btn btn_crud_default" data-dismiss="modal">
+          <button class="btn btn_crud_default">
             취소
           </button>
         </div>
@@ -98,14 +115,16 @@
   </div>
 </template>
 <script>
+import { ValidationObserver } from 'vee-validate'
+import CustomInput from '@/components/common/custom/CustomInput.vue'
 export default {
   name: 'UpdateEduInfoModal',
-  components: {},
+  components: {
+    CustomInput,
+    ValidationObserver,
+  },
+
   props: {
-    title: {
-      type: String,
-      default: '교육기관 정보 수정',
-    },
     eduInfo: {
       type: Object,
       default: () => {},
@@ -113,4 +132,20 @@ export default {
   },
 }
 </script>
-<style scoped></style>
+<style scoped>
+.thumbnail_area {
+  background-size: cover !important;
+  background-position: center !important;
+}
+.outer2 {
+  background-size: cover;
+  background-position: center;
+}
+/* .form_section {
+  margin: 0 auto;
+  padding: 0px 60px;
+} */
+.form-group {
+  padding: 0px !important;
+}
+</style>

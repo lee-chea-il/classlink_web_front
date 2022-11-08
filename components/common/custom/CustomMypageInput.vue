@@ -18,6 +18,7 @@
           :type="type"
           :placeholder="placeholder"
           class="form-control"
+          :maxlength="id === 'phone' ? '13' : ''"
           :class="
             (isError ? 'is-invalid' : classes,
             isBtn || isIdCheckBtn ? 'form-inline' : '')

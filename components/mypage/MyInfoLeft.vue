@@ -5,11 +5,22 @@
       <div class="row">
         <div class="pp_area">
           <!-- [개발참조]: 업로드 사진은 <span>의 backgroung-image로 젹용 -->
-          <div class="profile_photo">
+          <div
+            class="profile_photo"
+            :style="
+              myInfo.profile_image === '' || myInfo.profile_image === null
+                ? {
+                    'background-image': `url(${sample_photo})`,
+                  }
+                : {
+                    'background-image': `url(${myInfo.profile_image})`,
+                  }
+            "
+          >
             <!-- <span
               style="background-image: url(../images/sample_profile_photo.jpg)"
             ></span> -->
-            <img :src="myInfo.profile_image" class="profile_img" />
+            <!-- <img :src="myInfo.profile_image" class="profile_img" /> -->
           </div>
         </div>
         <div class="info_area02">
@@ -100,6 +111,11 @@
 export default {
   name: 'MyInfoLeft',
   props: { myInfo: { type: Object, default: null } },
+  data() {
+    return {
+      sample_photo: require('@/assets/images/sample_profile_photo.jpg'),
+    }
+  },
   created() {
     console.log(this.myInfo)
   },
@@ -111,10 +127,8 @@ export default {
 }
 </script>
 <style scoped>
-.profile_img {
-  width: 108px;
-  height: 108px;
-  object-fit: cover;
-  border-radius: 55px;
+.profile_photo {
+  background-size: cover;
+  background-position: center;
 }
 </style>

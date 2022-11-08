@@ -83,15 +83,19 @@
 export default {
   name: 'ProfileImageModal',
   props: {
-    title: {
-      type: String,
-      default: '',
-    },
     myInfo: {
       type: Object,
       default: () => {},
     },
+    eduInfo: {
+      type: Object,
+      default: () => {},
+    },
     uploadImageFile: {
+      type: String,
+      default: '',
+    },
+    title: {
       type: String,
       default: '',
     },

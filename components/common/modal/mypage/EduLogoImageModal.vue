@@ -1,7 +1,7 @@
 <template>
   <div
-    id="modalMyinfo04"
-    class="modal fade modal_myinfo04"
+    id="modalInstinfo02"
+    class="modal fade modal_Instinfo02"
     tabindex="-1"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
@@ -9,7 +9,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 id="exampleModalLabel" class="modal-title">CW 이미지 등록</h5>
+          <h5 id="exampleModalLabel" class="modal-title">{{ title }}</h5>
           <button
             type="button"
             class="close"
@@ -24,7 +24,7 @@
             파일 업로드 후, 이미지를 자르고 '확인’을 클릭하세요. <br />
             업로드 가능한 이미지 파일 형식 : <span>png, jpg, jpeg</span>
             <br />
-            자르기 영역은 가로형으로 설정됩니다.
+            영역은 정방형으로 설정됩니다.
           </div>
           <div class="btn_section">
             <button
@@ -32,8 +32,7 @@
               @click="$emit('uploadBtn-click')"
             >
               {{
-                myInfo.profile_cw_image === '' ||
-                myInfo.profile_cw_image === null
+                eduInfo.logo_image === '' || eduInfo.logo_image === null
                   ? '이미지 불러오기'
                   : '이미지 교체하기'
               }}
@@ -49,15 +48,13 @@
             </button> -->
           </div>
           <div
-            v-if="
-              myInfo.profile_cw_image === '' || myInfo.profile_cw_image === null
-            "
+            v-if="eduInfo.logo_image === '' || eduInfo.logo_image === null"
             class="explainType02"
           >
             <a
               class=""
               data-toggle="modal"
-              data-target="#modalMyinfo05"
+              data-target="#modalMyinfo03"
               @click="$emit('uploadBtn-click')"
             >
               <i class="icons_plus_circle_off"></i> 이미지 불러오기
@@ -67,9 +64,7 @@
             <img
               class="preview-img"
               :src="
-                uploadImageFile === ''
-                  ? myInfo.profile_cw_image
-                  : uploadImageFile
+                uploadImageFile === '' ? eduInfo.logo_image : uploadImageFile
               "
             />
           </div>
@@ -86,13 +81,21 @@
 </template>
 <script>
 export default {
-  name: 'ProfileCWImageModal',
+  name: 'ProfileImageModal',
   props: {
     myInfo: {
       type: Object,
       default: () => {},
     },
+    eduInfo: {
+      type: Object,
+      default: () => {},
+    },
     uploadImageFile: {
+      type: String,
+      default: '',
+    },
+    title: {
       type: String,
       default: '',
     },
@@ -121,7 +124,7 @@ export default {
   top: 125px;
 }
 .preview-img {
-  width: 400px;
+  width: 250px;
   height: 250px;
   object-fit: cover;
 }

@@ -2,9 +2,25 @@
   <ValidationProvider v-slot="{ errors, classes }" :rules="rules">
     <div
       class="form-group"
-      :class="isBtn || isIdCheckBtn || isCheckBox ? 'form-inlinebox' : ''"
+      :class="
+        isBtn || isIdCheckBtn || isCheckBox
+          ? 'form-inlinebox'
+          : isAddressBtn
+          ? 'form-inlinebox form-inline form-mb'
+          : ''
+      "
     >
-      <label for="name">{{ name }}</label>
+      <label
+        for="name"
+        :style="
+          name === '인증번호'
+            ? {
+                display: 'none',
+              }
+            : {}
+        "
+        >{{ name }}</label
+      >
 
       <input
         :id="id"
@@ -13,9 +29,12 @@
         :type="type"
         :placeholder="placeholder"
         class="form-control"
+        :maxlength="id === 'phone' ? '13' : ''"
         :class="
           (isError ? 'is-invalid' : classes,
-          isBtn || isIdCheckBtn || isCheckBox ? 'form-inline' : '')
+          isBtn || isIdCheckBtn || isCheckBox || isAddressBtn
+            ? 'form-inline'
+            : '')
         "
         autocomplete="off"
         @input="$emit('change-input', $event)"
@@ -35,9 +54,17 @@
       >
         중복체크
       </button>
+      <button
+        v-if="isAddressBtn"
+        class="btn btn_crud_default"
+        @click="$emit('click-address', $event)"
+        @click.prevent
+      >
+        주소 검색
+      </button>
       <div
         v-if="isCheckBox"
-        class="custom-control custom-checkbox"
+        class="custom-control custom-checkbox check-ml"
         :class="classes['is-valid'] ? '' : 'disabled'"
       >
         <input
@@ -50,17 +77,11 @@
         <label class="custom-control-label" for="checkbox01">이름과 동일</label>
       </div>
     </div>
+
     <div v-if="isError && inputValue !== ''" class="invalid_text">
       비밀번호가 일치하지 않습니다.
     </div>
-    <div
-      :class="
-        String(errors[0]).includes('2글자') ||
-        String(errors[0]).includes('주세요')
-          ? 'form_ruletext'
-          : 'invalid_text'
-      "
-    >
+    <div class="invalid_text" :class="isEduInfo ? 'invalid_pl' : ''">
       {{ errors[0] }}
     </div>
   </ValidationProvider>
@@ -122,6 +143,23 @@ export default {
       default: false,
       type: Boolean,
     },
+    isEduInfo: {
+      default: false,
+      type: Boolean,
+    },
+    isAddressBtn: {
+      default: false,
+      type: Boolean,
+    },
+    authlabel: {
+      default: false,
+      type: Boolean,
+    },
+  },
+  methods: {
+    clickAddressBtn() {
+      console.log('이거머야')
+    },
   },
 }
 </script>
@@ -129,5 +167,20 @@ export default {
 <style scoped>
 button {
   white-space: nowrap;
+}
+.invalid_pl {
+  padding: 0 60px;
+}
+.form-mb {
+  margin-bottom: 1rem;
+}
+.custom-control-label::after {
+  left: -1.65rem !important;
+}
+.check-ml {
+  margin-left: 3px !important;
+}
+.hide-label {
+  display: block !important;
 }
 </style>

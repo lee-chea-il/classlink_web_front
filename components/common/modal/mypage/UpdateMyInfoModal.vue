@@ -22,7 +22,13 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="profile_images_area">
+          <div
+            class="profile_images_area"
+            :style="{
+              'background-image': `url(${myInfo.profile_cw_image})`,
+            }"
+          >
+            <!-- <img :src="myInfo.profile_cw_image" class="profile_cw_img" /> -->
             <button
               type="button"
               class="btn icons_camera_gray"
@@ -30,13 +36,18 @@
               data-target="#modalMyinfo04"
               data-dismiss="modal"
             ></button>
-            <!-- [개발참조]: 업로드 사진은 <span>의 backgroung-image로 젹용 -->
-            <div class="profile_photo">
-              <!-- <span
-                style="background-image: url()"
-                class="profile_span"
-              ></span> -->
-              <img :src="myInfo.profile_image" class="profile_img" />
+            <div
+              class="profile_photo"
+              :style="
+                myInfo.profile_image === '' || myInfo.profile_image === null
+                  ? {
+                      'background-image': `url(${sample_photo})`,
+                    }
+                  : {
+                      'background-image': `url(${myInfo.profile_image})`,
+                    }
+              "
+            >
               <button
                 type="button"
                 class="btn icons_camera"
@@ -60,17 +71,16 @@
                 />
 
                 <CustomMypageInput
-                  id="nickName"
-                  :checkValue="nickNameCheck"
+                  id="nickname"
                   name="닉네임"
                   rules="min:2|required"
                   placeholder="닉네임 입력"
                   :isCheckBox="true"
                   type="text"
-                  :inputValue="myInfo.nickName"
+                  :inputValue="myInfo.nickname"
                   :nickNameCheck="nickNameCheck"
                   @change-input="$emit('change-input', $event)"
-                  @change-check="onChangeCheckBox"
+                  @change-check="$emit('change-check', $event)"
                 />
 
                 <CustomMypageInput
@@ -137,11 +147,10 @@ export default {
       default: false,
     },
   },
-
-  methods: {
-    onChangeCheckBox() {
-      this.$emit('change-check')
-    },
+  data() {
+    return {
+      sample_photo: require('@/assets/images/sample_profile_photo.jpg'),
+    }
   },
 }
 </script>
@@ -155,4 +164,16 @@ export default {
 /* .form-group {
   padding: 0 15px;
 } */
+
+.profile_images_area {
+  width: 100%;
+  height: 170px;
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+.profile_photo {
+  background-size: cover;
+  background-position: center;
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div
-    id="modalMyinfo04"
-    class="modal fade modal_myinfo04"
+    id="modalInstinfo04"
+    class="modal fade modal_Instinfo04"
     tabindex="-1"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
@@ -9,7 +9,9 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 id="exampleModalLabel" class="modal-title">CW 이미지 등록</h5>
+          <h5 id="exampleModalLabel" class="modal-title">
+            교육기관 이미지 등록
+          </h5>
           <button
             type="button"
             class="close"
@@ -32,8 +34,7 @@
               @click="$emit('uploadBtn-click')"
             >
               {{
-                myInfo.profile_cw_image === '' ||
-                myInfo.profile_cw_image === null
+                eduInfo.cw_image === '' || eduInfo.cw_image === null
                   ? '이미지 불러오기'
                   : '이미지 교체하기'
               }}
@@ -49,9 +50,7 @@
             </button> -->
           </div>
           <div
-            v-if="
-              myInfo.profile_cw_image === '' || myInfo.profile_cw_image === null
-            "
+            v-if="eduInfo.cw_image === '' || eduInfo.cw_image === null"
             class="explainType02"
           >
             <a
@@ -66,11 +65,7 @@
           <div v-else class="preview-area">
             <img
               class="preview-img"
-              :src="
-                uploadImageFile === ''
-                  ? myInfo.profile_cw_image
-                  : uploadImageFile
-              "
+              :src="uploadImageFile === '' ? eduInfo.cw_image : uploadImageFile"
             />
           </div>
         </div>
@@ -86,9 +81,9 @@
 </template>
 <script>
 export default {
-  name: 'ProfileCWImageModal',
+  name: 'EduCWImageModal',
   props: {
-    myInfo: {
+    eduInfo: {
       type: Object,
       default: () => {},
     },

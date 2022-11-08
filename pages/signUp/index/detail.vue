@@ -31,7 +31,6 @@
             <!-- [개발참조]:예외처리-성공의 예 -->
             <CustomInput
               id="nickName"
-              :checkValue="nickNameCheck"
               name="닉네임"
               rules="min:2|required"
               placeholder="닉네임 입력"
@@ -102,6 +101,16 @@
 						-->
 
             <CustomInput
+              id="phone"
+              name="연락처"
+              placeholder="연락처 입력"
+              rules="min:2|required"
+              type="text"
+              :inputValue="userInfo.phone"
+              @change-input="onChangeInput"
+            />
+
+            <CustomInput
               id="email"
               name="이메일"
               rules="required|email"
@@ -125,6 +134,7 @@
               :inputValue="userInfo.authNumber"
               :isBtn="true"
               :auth="true"
+              :authlabel="true"
               @change-input="onChangeInput"
             />
 
@@ -174,6 +184,7 @@ export default {
         passwordCheck: '',
         email: '',
         authNumber: '',
+        phone: '',
       },
       isError: false,
       nickNameCheck: false,
@@ -181,7 +192,7 @@ export default {
   },
   methods: {
     onChangeInput({ target: { value, id } }) {
-      console.log(value)
+      console.log(value, id)
       this.userInfo[id] = value
       if (
         this.userInfo.name !== '' &&
@@ -190,6 +201,14 @@ export default {
         this.nickNameCheck = true
       } else {
         this.nickNameCheck = false
+      }
+      if (id === 'phone') {
+        this.userInfo[id] = value
+          .replace(/[^0-9]/g, '')
+          .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
+          .replace(/(-{1,2})$/g, '')
+          .replace(/ /g, '')
+          .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
       }
     },
     onChangePasswordCheck({ target: { value } }) {
@@ -213,4 +232,4 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped></style>

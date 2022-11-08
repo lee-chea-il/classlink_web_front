@@ -1,7 +1,7 @@
 <template>
   <div
     id="modalInstRegi"
-    class="modal fade modal_myinfo02"
+    class="modal fade"
     tabindex="-1"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
@@ -23,49 +23,74 @@
           <div class="section">
             <div id="loginRwrap" class="wrap">
               <div class="form_section">
-                <form>
-                  <div class="form-group">
-                    <label for="reg-form01">교육기관 이름</label>
-                    <input
-                      id="reg-form01"
-                      type="text"
+                <ValidationObserver v-slot="{ invalid }">
+                  <form>
+                    <CustomInput
+                      id="edu_title"
+                      name="교육기관 이름"
                       placeholder="교육기관 이름 입력"
-                      class="form-control"
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="reg-form02">연락처</label>
-                    <input
-                      id="reg-form02"
+                      rules="required"
                       type="text"
+                      :inputValue="eduInfo.edu_title"
+                      @change-input="$emit('change-input', $event)"
+                    />
+
+                    <CustomInput
+                      id="tel"
+                      name="연락처"
                       placeholder="연락처 입력"
-                      class="form-control"
-                    />
-                  </div>
-                  <div class="form-group form-inlinebox form-inline">
-                    <label for="reg-form03">교육기관 주소</label>
-                    <input
-                      id="reg-form03"
+                      rules="required"
                       type="text"
+                      :inputValue="eduInfo.tel"
+                      @change-input="$emit('change-input', $event)"
+                    />
+
+                    <!-- <div class="form-group">
+                      <label for="reg-form02">연락처</label>
+                      <input
+                        id="reg-form02"
+                        type="text"
+                        placeholder="연락처 입력"
+                        class="form-control"
+                      />
+                    </div> -->
+
+                    <CustomInput
+                      id="address"
+                      name="교육기관 주소"
                       placeholder="교육기관 주소 입력"
-                      class="form-control form-inline"
-                    />
-                    <button class="btn btn_crud_default">주소 검색</button>
-                  </div>
-                  <div class="form-group">
-                    <label for="reg-form04">교육기관 설명</label>
-                    <input
-                      id="reg-form04"
+                      rules="required"
                       type="text"
-                      placeholder="교육기관 설명 입력"
-                      class="form-control"
+                      :isAddressBtn="true"
+                      :inputValue="eduInfo.address"
+                      @change-input="$emit('change-input', $event)"
+                      @click-address="$emit('click-address', $event)"
                     />
-                  </div>
-                </form>
+
+                    <CustomInput
+                      id="description"
+                      name="교육기관 설명"
+                      placeholder="교육기관 설명 입력"
+                      rules="required"
+                      type="text"
+                      :inputValue="eduInfo.description"
+                      @change-input="$emit('change-input', $event)"
+                    />
+
+                    <button
+                      class="btn btn_crud_point btn_mb"
+                      :class="{ disabled: invalid }"
+                      data-dismiss="modal"
+                      @click.prevent
+                    >
+                      교육기관 개설하기
+                    </button>
+                  </form>
+                </ValidationObserver>
                 <!-- [개발참조]:class="disabled"제거시 활성 -->
-                <button class="btn btn_crud_point disabled btn_mb">
+                <!-- <button class="btn btn_crud_point disabled btn_mb">
                   교육기관 개설하기
-                </button>
+                </button> -->
 
                 <!-- <div class="question_txt">나중에 만들고 싶어요.</div> -->
               </div>
@@ -77,8 +102,17 @@
   </div>
 </template>
 <script>
+import { ValidationObserver } from 'vee-validate'
+import CustomInput from '@/components/common/custom/CustomInput.vue'
 export default {
   name: 'RegistEduModal',
+  components: { ValidationObserver, CustomInput },
+  props: {
+    eduInfo: {
+      type: Object,
+      default: () => {},
+    },
+  },
 }
 </script>
 <style scoped>

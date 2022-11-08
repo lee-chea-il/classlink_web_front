@@ -8,7 +8,7 @@
           <label for="" class="info_area_title col-form-label"
             >교육기관 이름</label
           >
-          <div class="col">{{ eduInfo.name }}</div>
+          <div class="col">{{ eduInfo.edu_title }}</div>
         </div>
         <div class="form-group row">
           <label for="" class="info_area_title col-form-label"
