@@ -66,6 +66,15 @@
                       @change-input="$emit('change-input', $event)"
                       @click-address="$emit('click-address', $event)"
                     />
+                    <CustomInput
+                      id="address"
+                      name="교육기관 상세 주소"
+                      placeholder="교육기관 상세 주소 입력"
+                      rules="required"
+                      type="text"
+                      :inputValue="eduInfo.address_detail"
+                      @change-input="$emit('change-input', $event)"
+                    />
 
                     <CustomInput
                       id="description"

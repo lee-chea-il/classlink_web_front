@@ -471,6 +471,7 @@ export default {
         edu_title: '김유진',
         tel: '010-1234-1234',
         address: '집',
+        address_detail: '1층',
         description: '설명',
         code: '67890',
         logo_image: require('@/assets/images/mypage/profile1.png'),

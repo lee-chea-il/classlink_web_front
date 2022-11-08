@@ -13,7 +13,7 @@
       <label
         for="name"
         :style="
-          name === '인증번호'
+          name === '인증번호' || name === '교육기관 상세 주소'
             ? {
                 display: 'none',
               }

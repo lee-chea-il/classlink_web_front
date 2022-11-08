@@ -1,7 +1,7 @@
 <template>
   <!-- <Tutorial /> -->
   <!-- header -->
-  <div class="main" >
+  <div class="main">
     <EducationHeader />
     <!-- //header -->
     <!-- container -->
@@ -807,4 +807,8 @@ export default {
   },
 }
 </script>
-
+<style scoped>
+.lecture_course .swiper-button-prev {
+  top: 40% !important;
+}
+</style>

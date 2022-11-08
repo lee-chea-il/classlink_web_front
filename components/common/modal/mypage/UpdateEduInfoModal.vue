@@ -93,6 +93,15 @@
                   @change-input="$emit('change-input', $event)"
                   @click-address="$emit('click-address', $event)"
                 />
+                <CustomInput
+                  id="address"
+                  name="교육기관 상세 주소"
+                  placeholder="교육기관 상세 주소 입력"
+                  rules="min:2|required"
+                  type="text"
+                  :inputValue="eduInfo.address_detail"
+                  @change-input="$emit('change-input', $event)"
+                />
 
                 <CustomInput
                   id="description"
@@ -108,9 +117,7 @@
         </div>
         <div class="modal-footer">
           <button class="btn btn_crud_point" data-dismiss="modal">저장</button>
-          <button class="btn btn_crud_default">
-            취소
-          </button>
+          <button class="btn btn_crud_default">취소</button>
         </div>
       </div>
     </div>
