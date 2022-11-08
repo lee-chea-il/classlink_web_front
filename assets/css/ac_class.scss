@@ -115,11 +115,27 @@
   .form-search {
     max-width: 26%;
   }
+
+  .search_section {
+    width: 100%;
+  }
+
+  .left_area {
+    width: 50%;
+  }
+
+  .right_area {
+    width: 50%;
+  }
 }
 
 /* 수업-강의코스-강의계획서-과제 등록.html */
 
 .ac_manage_taskregi {
+  .left_area {
+    margin-left: 10px;
+  }
+
   .course_tit {
     font-weight: 400;
     font-size: 16px;
@@ -168,9 +184,25 @@
 #modalTaskDetail {
 
   .title_area {
-    width: 109%;
+    width: 100%;
     margin-bottom: 40px;
     margin-top: -15px;
+
+    .notice_tit {
+      width: 9%;
+    }
+
+    .notice_title {
+      width: 58%;
+    }
+
+    .notice_day02 {
+      width: 16%;
+    }
+
+    .notice_writer {
+      width: 16%;
+    }
   }
 
   .notice_day {
@@ -214,10 +246,16 @@
     border-radius: 5px;
     width: 97%;
     margin: 14px auto;
+    cursor: pointer;
   }
 
   .file_info {
     text-align: left;
+  }
+
+  .divide_section .divide_area {
+    width: 48%;
+    margin: 0 auto;
   }
 
   .box {
@@ -258,12 +296,18 @@
     background: #F9F9FB;
     padding: 10px 0px;
     margin-top: 10px;
+    width: 100%;
   }
 
   .icons_fullscreen {
     position: absolute;
-    top: 15px;
+    top: 107px;
     right: 15px;
+  }
+
+  .title02 {
+    margin-left: 20px;
+    width: 20%;
   }
 
   .div_line01 {
@@ -272,7 +316,7 @@
   }
 
   .title {
-    margin: 8px 0 0 0;
+    margin: 8px 0px 0px 15px;
   }
 
   .name {
@@ -325,6 +369,22 @@
 #modalTaskView {
   .tab-content.depth03 {
     border: none;
+  }
+
+  .notice_tit {
+    width: 9%;
+  }
+
+  .notice_title {
+    width: 58%;
+  }
+
+  .notice_day02 {
+    width: 16%;
+  }
+
+  .notice_writer {
+    width: 16%;
   }
 
   .title_area {

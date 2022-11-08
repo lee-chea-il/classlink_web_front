@@ -2070,7 +2070,17 @@ ol {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  margin: 0 0 0 18px;
+  margin: 0 0px 0 30px;
+  width: 8%;
+}
+#modalNoticeView .notice_title {
+  width: 50%;
+}
+#modalNoticeView .notice_day02 {
+  width: 16%;
+}
+#modalNoticeView .notice_writer {
+  width: 16%;
 }
 
 /* 수업 - 학습함 - 질문함 - 답변열람 (팝업 L) */

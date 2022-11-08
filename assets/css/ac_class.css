@@ -2028,8 +2028,20 @@ ol {
 .ac_manage_classplan .form-search {
   max-width: 26%;
 }
+.ac_manage_classplan .search_section {
+  width: 100%;
+}
+.ac_manage_classplan .left_area {
+  width: 50%;
+}
+.ac_manage_classplan .right_area {
+  width: 50%;
+}
 
 /* 수업-강의코스-강의계획서-과제 등록.html */
+.ac_manage_taskregi .left_area {
+  margin-left: 10px;
+}
 .ac_manage_taskregi .course_tit {
   font-weight: 400;
   font-size: 16px;
@@ -2067,9 +2079,21 @@ ol {
 /* 강의코스-과제함.html */
 /* 과제 열람 상세보기 (팝업 L) */
 #modalTaskDetail .title_area {
-  width: 109%;
+  width: 100%;
   margin-bottom: 40px;
   margin-top: -15px;
+}
+#modalTaskDetail .title_area .notice_tit {
+  width: 9%;
+}
+#modalTaskDetail .title_area .notice_title {
+  width: 58%;
+}
+#modalTaskDetail .title_area .notice_day02 {
+  width: 16%;
+}
+#modalTaskDetail .title_area .notice_writer {
+  width: 16%;
 }
 #modalTaskDetail .notice_day {
   font-weight: 400;
@@ -2108,9 +2132,14 @@ ol {
   border-radius: 5px;
   width: 97%;
   margin: 14px auto;
+  cursor: pointer;
 }
 #modalTaskDetail .file_info {
   text-align: left;
+}
+#modalTaskDetail .divide_section .divide_area {
+  width: 48%;
+  margin: 0 auto;
 }
 #modalTaskDetail .box {
   width: 70%;
@@ -2145,18 +2174,23 @@ ol {
   background: #F9F9FB;
   padding: 10px 0px;
   margin-top: 10px;
+  width: 100%;
 }
 #modalTaskDetail .icons_fullscreen {
   position: absolute;
-  top: 15px;
+  top: 107px;
   right: 15px;
+}
+#modalTaskDetail .title02 {
+  margin-left: 20px;
+  width: 20%;
 }
 #modalTaskDetail .div_line01 {
   border-top: 0.4px solid rgba(167, 169, 172, 0.4);
   margin: 20px 0 0 0;
 }
 #modalTaskDetail .title {
-  margin: 8px 0 0 0;
+  margin: 8px 0px 0px 15px;
 }
 #modalTaskDetail .name {
   padding-top: 30px;
@@ -2199,6 +2233,18 @@ ol {
 /* 수업-강의코스-과제함-제출 현황 (팝업 L) */
 #modalTaskView .tab-content.depth03 {
   border: none;
+}
+#modalTaskView .notice_tit {
+  width: 9%;
+}
+#modalTaskView .notice_title {
+  width: 58%;
+}
+#modalTaskView .notice_day02 {
+  width: 16%;
+}
+#modalTaskView .notice_writer {
+  width: 16%;
 }
 #modalTaskView .title_area {
   margin-bottom: 30px;
