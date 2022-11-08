@@ -150,16 +150,18 @@
         <!-- /.2단 분류 컨텐츠 -->
       </div>
     </div>
+    <CurriculumUpdateModal />
   </div>
 </template>
 
 <script>
 import PageHeader from '~/components/common/PageHeader.vue'
 import TreeView from '@/components/common/custom/CustomTreeView.vue'
+import CurriculumUpdateModal from '@/components/common/modal/curriculum/CurriculumUpdateModal.vue'
 
 export default {
   name: 'MyCurriculum',
-  components: { PageHeader, TreeView },
+  components: { PageHeader, TreeView, CurriculumUpdateModal },
   data() {
     return {
       /*
@@ -420,7 +422,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 #institute > .vtl {
   height: 349px;
 }
