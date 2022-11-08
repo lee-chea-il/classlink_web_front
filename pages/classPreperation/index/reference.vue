@@ -1909,12 +1909,15 @@ export default {
         this.$refs.franchise.copyData()
       }
     },
+    
     pasteData() {
       this.$refs.curriculum.pasteData(this.copyCheckData)
     },
+
     delData() {
       this.$refs.curriculum.delData()
     },
+
     copyDataCallBack(copyData) {
       this.copyCheckData = copyData
       console.log(this.copyCheckData)
@@ -1925,7 +1928,7 @@ export default {
       html2pdf(this.$refs.generatePdf, {
         margin: 0,
         filename: 'document.pdf',
-        image: { type: 'jpg', quality: 0.95 },
+        image: { type: 'jpeg', quality: 0.95 },
         html2canvas: {
           scrollY: 0,
           scale: 4,

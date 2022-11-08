@@ -26,7 +26,7 @@
       <nuxt-link to="/classPreperation/reference">자료실</nuxt-link>
     </li>
     <li>
-      <nuxt-link to="/curriculum">커리큘럼</nuxt-link>
+      <nuxt-link to="/classPreperation/curriculum">커리큘럼</nuxt-link>
     </li>
   </ul>
 </template>

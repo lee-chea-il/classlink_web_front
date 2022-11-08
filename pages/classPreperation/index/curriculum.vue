@@ -154,16 +154,12 @@
 </template>
 
 <script>
-import PageHeader from '@/components/common/PageHeader.vue'
+import PageHeader from '~/components/common/PageHeader.vue'
 import TreeView from '@/components/common/custom/CustomTreeView.vue'
 
 export default {
   name: 'MyCurriculum',
-  components: {
-    PageHeader,
-    TreeView,
-  },
-  layout: 'EducationLayout',
+  components: { PageHeader, TreeView },
   data() {
     return {
       /*
@@ -423,6 +419,7 @@ export default {
   },
 }
 </script>
+
 <style scoped>
 #institute > .vtl {
   height: 349px;
