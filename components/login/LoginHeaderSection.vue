@@ -12,7 +12,9 @@
               onclick="history.back();"
             ></button>
           </div>
-          <div v-if="$route.path === '/login'" class="title_area">로그인</div>
+          <div v-if="$route.path === '/login'" class="title_area">
+            {{ title }}
+          </div>
           <div v-if="$route.path === '/login/identity'" class="title_area">
             신분 유형
           </div>
@@ -28,7 +30,9 @@
           <div v-else-if="$route.path === '/signup/detail'" class="title_area">
             회원가입
           </div>
-          <div v-else class="title_area">교육기관 개설</div>
+          <div v-else-if="$route.path === '/registedu'" class="title_area">
+            교육기관 개설
+          </div>
           <div class="mobile_navbtn_area">
             <!-- <button id="mobilemuBtn" class="btn icons_mobilemu"></button> -->
           </div>
@@ -42,6 +46,12 @@
 <script>
 export default {
   name: 'LoginHeaderSection',
+  props: {
+    title: {
+      type: String,
+      default: '',
+    },
+  },
 }
 </script>
 
