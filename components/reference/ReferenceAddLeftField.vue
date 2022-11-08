@@ -100,44 +100,35 @@
         />
       </div>
 
-      <div class="form-group row check03">
-        <div class="cont07">
-          <span class="check01">
-            <span class="custom-control custom-checkbox form-inline checked">
-              <input
-                :id="setTarget"
-                type="checkbox"
-                class="custom-control-input"
-                name="isOpenEducation"
-                :value="reference.isOpenEducation"
-                :checked="reference.isOpenEducation"
-                @input="$emit('change-input', $event)"
-              />
-              <label
-                class="custom-control-label check"
-                :for="setTarget"
-              ></label> </span
-            ><span>교육기관에 해당 자료를 공개합니다.</span>
-          </span>
-
-          <span class="check02">
-            <span class="custom-control custom-checkbox form-inline checked">
-              <input
-                :id="setTargetTwo"
-                type="checkbox"
-                class="custom-control-input"
-                name="inOpenReferenceRoom"
-                :value="reference.inOpenReferenceRoom"
-                :checked="reference.inOpenReferenceRoom"
-                @input="$emit('change-input', $event)"
-              />
-              <label
-                class="custom-control-label check"
-                :for="setTargetTwo"
-              ></label> </span
-            ><span>공개자료실에 해당 자료를 공개합니다.</span>
-          </span>
-        </div>
+      <div class="check_sec">
+        <span class="custom-control custom-checkbox form-inline">
+          <input
+            :id="setTarget"
+            type="checkbox"
+            class="custom-control-input"
+            name="isOpenEducation"
+            :value="reference.isOpenEducation"
+            :checked="reference.isOpenEducation"
+            @input="$emit('change-input', $event)"
+          />
+          <label class="custom-control-label checkbox06" :for="setTarget"
+            >교육기관에 해당 자료를 공개합니다.</label
+          >
+        </span>
+        <span class="custom-control custom-checkbox form-inline">
+          <input
+            :id="setTargetTwo"
+            type="checkbox"
+            class="custom-control-input"
+            name="inOpenReferenceRoom"
+            :value="reference.inOpenReferenceRoom"
+            :checked="reference.inOpenReferenceRoom"
+            @input="$emit('change-input', $event)"
+          />
+          <label class="custom-control-label checkbox07" :for="setTargetTwo"
+            >계속 등록하기</label
+          >
+        </span>
       </div>
     </div>
   </div>
