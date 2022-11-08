@@ -183,4 +183,7 @@ button {
 .hide-label {
   display: block !important;
 }
+.form-inlinebox {
+  width: 100%;
+}
 </style>

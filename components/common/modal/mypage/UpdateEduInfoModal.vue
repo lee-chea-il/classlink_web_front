@@ -88,8 +88,10 @@
                   placeholder="교육기관 주소 입력"
                   rules="min:2|required"
                   type="text"
+                  :isAddressBtn="true"
                   :inputValue="eduInfo.address"
                   @change-input="$emit('change-input', $event)"
+                  @click-address="$emit('click-address', $event)"
                 />
 
                 <CustomInput

@@ -89,6 +89,7 @@
     <UpdateEduInfoModal
       :eduInfo="eduInfo"
       @change-input="onChangeEduInfoInput"
+      @click-address="openModalAddress"
     />
 
     <!-- 팝업 M2-교육기관정보수정2 - 로고업로드1 -->

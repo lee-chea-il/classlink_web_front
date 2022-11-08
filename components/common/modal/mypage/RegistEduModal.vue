@@ -1,7 +1,7 @@
 <template>
   <div
     id="modalInstRegi"
-    class="modal fade"
+    class="modal fade modalInstRegi"
     tabindex="-1"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
