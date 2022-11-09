@@ -1,13 +1,10 @@
 <template>
-  <div class="default-layout"><NavigationUl /> <Nuxt /></div>
+  <div class="default-layout"><Nuxt /></div>
 </template>
 
 <script>
-import NavigationUl from '@/components/common/NavigationUl.vue'
-
 export default {
   name: 'DefaultPage',
-  components: { NavigationUl },
 }
 </script>
 

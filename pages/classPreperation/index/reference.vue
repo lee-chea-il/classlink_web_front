@@ -1,5 +1,5 @@
 <template>
-  <div ref="generatePdf">
+  <div>
     <PageHeader title="자료실" />
     <div class="tab-content depth03 ac_manage_dtr">
       <div class="tab-pane active">
@@ -195,6 +195,7 @@
       @close="onCloseReferenceAddModal"
       @set-keyword="setKeyword"
       @delete-keyword="deleteKeyword"
+      @open-save-path="onOpenSavePathModal"
     />
 
     <!-- 비디오 & 파일 업로드 선택 -->
@@ -232,6 +233,7 @@
       @change-keyword="changePushKeyword"
       @set-keyword="setKeyword"
       @delete-keyword="deleteKeyword"
+      @open-save-path="onOpenSavePathModal"
     />
 
     <!-- 쪽지시험 등록 -->
@@ -254,16 +256,8 @@
       @change-keyword="changePushKeyword"
       @set-keyword="setKeyword"
       @delete-keyword="deleteKeyword"
+      @open-save-path="onOpenSavePathModal"
     />
-
-    <!-- 저장경로 설정 -->
-    <SavePathModal />
-
-    <!-- 자료실 검색 필터 -->
-    <ReferenceFilterModal />
-
-    <!-- 자료실 검색 성공 -->
-    <SearchResultModal />
 
     <!-- 비디오 & 문서 & 유튜브 & url 보기 -->
     <VideoBrowseModal
@@ -271,8 +265,9 @@
       :selectData="selectData"
       @close="onCloseReferenceBrowseModal"
       @reference-change="onOpenReferenceChangeModal"
-      @view-url="onOpenSavePathModal"
+      @view-url="onOpenShareViewModal"
       @delete="openSelectModal"
+      @open-save-path="onOpenSavePathModal"
     />
 
     <!-- 퀴즈 보기 -->
@@ -285,8 +280,9 @@
       @pagination="onClickQuizPagination"
       @change="onOpenQuizChangeModal"
       @preview="onOpenQuizPreviewModal"
-      @view-url="onOpenSavePathModal"
+      @view-url="onOpenShareViewModal"
       @delete="openSelectModal"
+      @open-save-path="onOpenSavePathModal"
     />
 
     <!-- 퀴즈 미리보기 -->
@@ -308,8 +304,9 @@
       @pagination="onClickQuizPagination"
       @change="onOpenNoteTestChangeModal"
       @preview="onOpenNoteTestPreviewModal"
-      @view-url="onOpenSavePathModal"
+      @view-url="onOpenShareViewModal"
       @delete="openSelectModal"
+      @open-save-path="onOpenSavePathModal"
     />
 
     <!-- 쪽지시험 미리보기 -->
@@ -321,6 +318,7 @@
       :currentPageIdx="currentPageIdx"
       @close="onCloseNoteTestPreviewModal"
       @pagination="onClickQuizPagination"
+      @pdf="exportToPDF"
     />
 
     <!-- 자료 수정 -->
@@ -333,6 +331,7 @@
       @change-keyword="changePushKeyword"
       @set-keyword="setSelectKeyword"
       @delete-keyword="deleteSelectKeyword"
+      @open-save-path="onOpenSavePathModal"
     />
 
     <!-- 퀴즈 수정 -->
@@ -355,6 +354,7 @@
       @change-keyword="changePushKeyword"
       @set-keyword="setSelectKeyword"
       @delete-keyword="deleteSelectKeyword"
+      @open-save-path="onOpenSavePathModal"
     />
 
     <!-- 쪽지시험 수정 -->
@@ -377,13 +377,14 @@
       @change-keyword="changePushKeyword"
       @set-keyword="setSelectKeyword"
       @delete-keyword="deleteSelectKeyword"
+      @open-save-path="onOpenSavePathModal"
     />
 
     <!-- 공유하기 -->
     <ShareViewModal
       :open="isShareViewModal.open"
       :url="isShareViewModal.url"
-      @close="onCloseSavePathModal"
+      @close="onCloseShareViewModal"
     />
 
     <!-- 주소 복사 성공 -->
@@ -400,12 +401,20 @@
       @close="onCloseModalDesc"
     />
 
-    <button @click="exportToPDF">Export to PDF</button>
+    <!-- 저장경로 설정 -->
+    <SavePathModal :open="isSavePathModal.open" @close="onCloseSavePathModal" />
+
+    <!-- 자료실 검색 필터 -->
+    <ReferenceFilterModal />
+
+    <!-- 자료실 검색 성공 -->
+    <SearchResultModal />
+
+    <!-- <button @click="exportToPDF">Export to PDF</button> -->
   </div>
 </template>
 
 <script>
-// import { jsPDF } from 'jspdf'
 import html2pdf from 'html2pdf.js'
 import PageHeader from '~/components/common/PageHeader.vue'
 import ModalDeac from '~/components/common/modal/ModalDesc.vue'
@@ -431,6 +440,8 @@ import { apiReference } from '~/services'
 import QuizPreviewModal from '~/components/common/modal/reference/QuizPreviewModal.vue'
 import NoteTestPreviewModal from '~/components/common/modal/reference/NoteTestPreviewModal.vue'
 import ReferenceTreeView from '~/components/common/custom/CustomReferenceTreeView.vue'
+// import NoteTestPrint from '~/components/reference/NoteTestPrint.vue'
+
 export default {
   name: 'ReferenceRoom',
   components: {
@@ -457,6 +468,7 @@ export default {
     QuizPreviewModal,
     NoteTestPreviewModal,
     ReferenceTreeView,
+    // NoteTestPrint,
   },
   layout: 'EducationLayout',
   data() {
@@ -489,6 +501,10 @@ export default {
         url: '',
       },
       isSelectModal: {
+        open: false,
+        previewPage: '',
+      },
+      isSavePathModal: {
         open: false,
         previewPage: '',
       },
@@ -1171,6 +1187,8 @@ export default {
           dificultade: 0,
           limitTime: '',
           answer: 0,
+          isCommentary: true,
+          commentary: '',
         },
       ],
     }
@@ -1361,7 +1379,7 @@ export default {
       }
     },
 
-    onOpenSavePathModal(path, url) {
+    onOpenShareViewModal(path, url) {
       this[path] = false
       this.isShareViewModal = {
         open: true,
@@ -1370,46 +1388,49 @@ export default {
       }
     },
 
-    onCloseSavePathModal() {
+    onCloseShareViewModal() {
       this.isShareViewModal.open = false
       console.log(this.isShareViewModal)
       this[this.isShareViewModal.path] = true
     },
 
+    onOpenSavePathModal(path) {
+      this[path] = false
+      this.isSavePathModal = {
+        open: true,
+        previewPage: path,
+      }
+    },
+
+    onCloseSavePathModal() {
+      this.isSavePathModal.open = false
+      this[this.isSavePathModal.previewPage] = true
+    },
+
     // 등록 자료 내용 변경
     onChangeUploadFile({ target: { id, value, type, checked, name } }) {
-      if (
-        id === 'keywordInputQuiz' ||
-        id === 'keywordInputNoteTest' ||
-        id === 'keywordInput' ||
-        id === 'keywordChange'
-      ) {
-        this.reference[name] = value
-      } else if (type === 'checkbox') {
+      if (type === 'checkbox') {
         if (checked) {
           this.reference[id] = true
         } else {
           this.reference[id] = false
         }
+      } else if (name === 'inOpenReferenceRoom' || name === 'isOpenEducation') {
+        this.reference[name] = value
       } else {
         this.reference[id] = value
       }
     },
 
     onChangeSelectData({ target: { id, value, type, checked, name } }) {
-      if (
-        id === 'keywordInputQuiz' ||
-        id === 'keywordInputNoteTest' ||
-        id === 'keywordInput' ||
-        id === 'keywordChange'
-      ) {
-        this.selectData[name] = value
-      } else if (type === 'checkbox') {
+      if (type === 'checkbox') {
         if (checked) {
           this.selectData[id] = true
         } else {
           this.selectData[id] = false
         }
+      } else if (name === 'inOpenReferenceRoom' || name === 'isOpenEducation') {
+        this.selectData[name] = value
       } else {
         this.selectData[id] = value
       }
@@ -1429,12 +1450,28 @@ export default {
       this.selectData.quizList[idx][name] = value
     },
 
-    onChangeTest({ target: { value, name } }, idx) {
-      this.noteTestList[idx][name] = value
+    onChangeTest({ target: { value, name, type, checked } }, idx) {
+      if (type === 'checkbox') {
+        if (checked) {
+          this.noteTestList[idx][name] = true
+        } else {
+          this.noteTestList[idx][name] = false
+        }
+      } else {
+        this.noteTestList[idx][name] = value
+      }
     },
 
-    onChangeSelectTest({ target: { value, name } }, idx) {
-      this.selectData.noteTestList[idx][name] = value
+    onChangeSelectTest({ target: { value, name, type, checked } }, idx) {
+      if (type === 'checkbox') {
+        if (checked) {
+          this.selectData.noteTestList[idx][name] = true
+        } else {
+          this.selectData.noteTestList[idx][name] = false
+        }
+      } else {
+        this.selectData.noteTestList[idx][name] = value
+      }
     },
 
     setKeyword({ target: { value } }) {
@@ -1469,10 +1506,10 @@ export default {
       this.uploadFile = {}
       const _video = document.querySelector('#video')
       const _canvas = document.querySelector('#thumb_canvas')
-      document.getElementById('selectClose').click()
-      this.onOpenReferenceAddModal()
       const _ctx = _canvas.getContext('2d')
       if (files[0] && files[0].type === 'video/mp4') {
+        document.getElementById('selectClose').click()
+        this.onOpenReferenceAddModal()
         this.uploadFile = files[0]
         this.reference.name = files[0].name
         this.reference.fileName = files[0].name
@@ -1504,9 +1541,9 @@ export default {
       this.uploadType = 'pdf'
       this.uploadFile = {}
       const _embed = document.querySelector('#embed')
-      document.getElementById('selectClose').click()
-      this.onOpenReferenceAddModal()
       if (files[0] && files[0].type === 'application/pdf') {
+        document.getElementById('selectClose').click()
+        this.onOpenReferenceAddModal()
         this.uploadFile = files[0]
         this.reference.name = files[0].name
         this.reference.fileName = files[0].name
@@ -1559,7 +1596,7 @@ export default {
           'src',
           `https://www.youtube.com/embed/${youtubeUrl}`
         )
-        document.getElementById('selectUrlClose').click()
+        document.getElementById('selectCloseYoutube').click()
         this.onOpenReferenceAddModal()
       } else {
         this.openModalDesc('실패', '유튜브 형식의 URL을 입력해주세요')
@@ -1587,7 +1624,7 @@ export default {
         this.reference.createAt = new Date()
         const _iframe = document.querySelector('#iframe')
         _iframe.setAttribute('src', url)
-        document.getElementById('selectUrlClose').click()
+        document.getElementById('selectCloseYoutube').click()
         this.onOpenReferenceAddModal()
       } else {
         this.openModalDesc('실패', 'URL을 정확히 입력해주세요')
@@ -1909,7 +1946,7 @@ export default {
         this.$refs.franchise.copyData()
       }
     },
-    
+
     pasteData() {
       this.$refs.curriculum.pasteData(this.copyCheckData)
     },
@@ -1925,30 +1962,34 @@ export default {
 
     exportToPDF() {
       window.scrollTo(0, 0)
-      html2pdf(this.$refs.generatePdf, {
-        margin: 0,
-        filename: 'document.pdf',
-        image: { type: 'jpeg', quality: 0.95 },
-        html2canvas: {
-          scrollY: 0,
-          scale: 4,
-          dpi: 300,
-          letterRendering: true,
-          allowTaint: false,
-          ignoreElements(element) {
-            // pdf에 출력하지 않아야할 dom이 있다면 해당 옵션 사용
-            if (element.id === 'pdf-button-area') {
-              return true
-            }
+      const targetElem = document.querySelector('#modalPreviewTest')
+
+      setTimeout(() => {
+        html2pdf(targetElem, {
+          margin: 0,
+          filename: 'document.pdf',
+          image: { type: 'jpeg', quality: 0.95 },
+          html2canvas: {
+            scrollY: 0,
+            scale: 1,
+            dpi: 300,
+            letterRendering: true,
+            allowTaint: false,
+            ignoreElements(element) {
+              // pdf에 출력하지 않아야할 dom이 있다면 해당 옵션 사용
+              if (element.id === 'noneItem') {
+                return true
+              }
+            },
           },
-        },
-        jsPDF: {
-          orientation: 'portrait',
-          unit: 'mm',
-          format: 'a4',
-          compressPDF: true,
-        },
-      })
+          jsPDF: {
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4',
+            compressPDF: true,
+          },
+        })
+      }, 1500)
 
       // const pages = document.querySelector('#itemDiv')
       // this.workspaceService.exportAllToPDF(pages)
@@ -1973,6 +2014,7 @@ export default {
   },
 }
 </script>
+
 <style scoped>
 #institute > .vtl {
   height: 349px;
@@ -1986,7 +2028,7 @@ export default {
 .main > ul {
   display: none;
 }
-.custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
+/* .custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
   margin-left: 0.15rem;
-}
+} */
 </style>

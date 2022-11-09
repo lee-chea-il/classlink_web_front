@@ -2,7 +2,6 @@
   <Transition name="modal">
     <div
       v-show="open"
-      id="modalPreviewTest"
       class="modal double modal-mask"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
@@ -14,10 +13,10 @@
         <div class="modal-content">
           <ModalHeader title="쪽지시험 미리보기" @close="$emit('close')" />
 
-          <div class="modal-body">
+          <div id="modalPreviewTest" class="modal-body">
             <div class="preview_quiz row">
               <!-- 왼쪽영역 -->
-              <div class="left_area">
+              <div id="noneItem" class="left_area">
                 <div class="answer_result">
                   <div class="ar_title">정답 결과</div>
                   <div
@@ -40,7 +39,7 @@
               <!-- /. 왼쪽영역 -->
 
               <!-- 오른쪽영역 -->
-              <div class="right_area">
+              <div id="pdfItem" class="right_area">
                 <div v-for="(test, idx) in testList" :key="idx">
                   <div v-if="idx === currentPageIdx" class="question_area">
                     <div class="qa_title row">
@@ -107,10 +106,15 @@
                       </div>
                     </div>
                     <!-- div class="question_area" -->
-                    <div class="data_prev" @click="$emit('pagination', 'min')">
+                    <div
+                      id="noneItem"
+                      class="data_prev"
+                      @click="$emit('pagination', 'min')"
+                    >
                       <i class="icons_arrow_square_l"></i>
                     </div>
                     <div
+                      id="noneItem"
                       class="data_next"
                       @click="$emit('pagination', 'plus', testList.length)"
                     >

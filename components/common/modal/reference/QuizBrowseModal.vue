@@ -258,6 +258,7 @@
                 class="btn btn_crud_default"
                 data-toggle="modal"
                 data-target="#modalStoragepath"
+                @click="$emit('open-save-path', 'isQuizBrowseModal')"
               >
                 이동
               </button>

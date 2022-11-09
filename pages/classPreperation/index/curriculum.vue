@@ -62,6 +62,7 @@
                 </button>
               </li>
             </ul>
+
             <div id="myTabContent" class="tab-content">
               <!-- 탭 내용01 -->
               <div
@@ -123,6 +124,7 @@
                 </button>
               </li>
             </ul>
+            
             <div id="myTabContent" class="tab-content">
               <!-- 탭 내용01 -->
               <div

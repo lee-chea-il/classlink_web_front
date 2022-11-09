@@ -94,48 +94,41 @@
           rules="min:2|required"
           type="text"
           :inputValue="reference.savePath"
+          :target="target"
           @change-input="$emit('change-input', $event)"
+          @open-save-path="$emit('open-save-path', $event)"
         />
       </div>
 
-      <div class="form-group row check03">
-        <div class="cont07">
-          <span class="check01">
-            <span class="custom-control custom-checkbox form-inline checked">
-              <input
-                id="chk01"
-                type="checkbox"
-                class="custom-control-input"
-                name="isOpenEducation"
-                :value="reference.isOpenEducation"
-                :checked="reference.isOpenEducation"
-                @input="$emit('change-input', $event)"
-              />
-              <label
-                class="custom-control-label check"
-                for="chk01"
-              ></label> </span
-            ><span>교육기관에 해당 자료를 공개합니다.</span>
-          </span>
-
-          <span class="check02">
-            <span class="custom-control custom-checkbox form-inline checked">
-              <input
-                id="chk02"
-                type="checkbox"
-                class="custom-control-input"
-                name="inOpenReferenceRoom"
-                :value="reference.inOpenReferenceRoom"
-                :checked="reference.inOpenReferenceRoom"
-                @input="$emit('change-input', $event)"
-              />
-              <label
-                class="custom-control-label check"
-                for="chk02"
-              ></label> </span
-            ><span>공개자료실에 해당 자료를 공개합니다.</span>
-          </span>
-        </div>
+      <div class="check_sec">
+        <span class="custom-control custom-checkbox form-inline">
+          <input
+            :id="setTarget"
+            type="checkbox"
+            class="custom-control-input"
+            name="isOpenEducation"
+            :value="reference.isOpenEducation"
+            :checked="reference.isOpenEducation"
+            @input="$emit('change-input', $event)"
+          />
+          <label class="custom-control-label checkbox06" :for="setTarget"
+            >교육기관에 해당 자료를 공개합니다.</label
+          >
+        </span>
+        <span class="custom-control custom-checkbox form-inline">
+          <input
+            :id="setTargetTwo"
+            type="checkbox"
+            class="custom-control-input"
+            name="inOpenReferenceRoom"
+            :value="reference.inOpenReferenceRoom"
+            :checked="reference.inOpenReferenceRoom"
+            @input="$emit('change-input', $event)"
+          />
+          <label class="custom-control-label checkbox07" :for="setTargetTwo"
+            >계속 등록하기</label
+          >
+        </span>
       </div>
     </div>
   </div>
@@ -158,13 +151,43 @@ export default {
       type: String,
       default: '',
     },
+    target: {
+      type: String,
+      default: '',
+    },
   },
-  data() {
-    return {
-      value: '',
-    }
+  computed: {
+    setTarget() {
+      if (this.target === 'quiz') {
+        return 'quizTarget'
+      } else if (this.target === 'noteTest') {
+        return 'noteTestTarget'
+      } else if (this.target === 'referenceChange') {
+        return 'referenceChangeTarget'
+      } else if (this.target === 'quizChange') {
+        return 'quizChangeTarget'
+      } else if (this.target === 'noteTestChange') {
+        return 'noteTestChangeTarget'
+      } else {
+        return 'refereceTarget'
+      }
+    },
+    setTargetTwo() {
+      if (this.target === 'quiz') {
+        return 'quizTargetTwo'
+      } else if (this.target === 'noteTest') {
+        return 'noteTestTargetTwo'
+      } else if (this.target === 'referenceChange') {
+        return 'referenceChangeTargetTwo'
+      } else if (this.target === 'quizChange') {
+        return 'quizChangeTargetTwo'
+      } else if (this.target === 'noteTestChange') {
+        return 'noteTestChangeTargetTwo'
+      } else {
+        return 'refereceTargetTwo'
+      }
+    },
   },
-  methods: {},
 }
 </script>
 

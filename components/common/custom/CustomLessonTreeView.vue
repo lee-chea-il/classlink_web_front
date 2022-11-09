@@ -14,11 +14,11 @@
     @more-menu-dell="moreMenuDell"
     @more-menu-copy="moreMenuCopy"
   >
-    <!-- <span slot="addTreeNodeIcon" class="icon">＋</span>
+    <span slot="addTreeNodeIcon" class="icon">＋</span>
     <span slot="addLeafNodeIcon" class="icon"></span>
 
     <span slot="addTreeNodeIcon" class="icon"></span>
-    <span slot="delNodeIcon" class="icon"></span> -->
+    <span slot="delNodeIcon" class="icon"></span>
   </vue-tree-list>
 </template>
 
@@ -71,24 +71,6 @@ export default {
             children: [],
             readOnly: isReadOnly,
             isChecked: false,
-
-            subject: item[i].subject,
-            desc: item[i].desc,
-            keyword: item[i].keyword,
-            registrant: item[i].registrant,
-            savePath: item[i].savePath,
-            isOpenEducation: item[i].isOpenEducation,
-            inOpenReferenceRoom: item[i].inOpenReferenceRoom,
-            fileName: item[i].fileName,
-            fileDivision: item[i].fileDivision,
-            fileType: item[i].fileType,
-            uploadType: item[i].uploadType,
-            fileVolume: item[i].fileVolume,
-            createAt: item[i].createAt,
-            dbIdx: item[i].dbIdx,
-            type: item[i].type,
-            quizList: item[i].quizList,
-            noteTestList: item[i].noteTestList,
           }
 
           this.pid++
@@ -101,24 +83,6 @@ export default {
             isLeaf: true,
             readOnly: isReadOnly,
             isChecked: false,
-
-            subject: item[i].subject,
-            desc: item[i].desc,
-            keyword: item[i].keyword,
-            registrant: item[i].registrant,
-            savePath: item[i].savePath,
-            isOpenEducation: item[i].isOpenEducation,
-            inOpenReferenceRoom: item[i].inOpenReferenceRoom,
-            fileName: item[i].fileName,
-            fileDivision: item[i].fileDivision,
-            fileType: item[i].fileType,
-            uploadType: item[i].uploadType,
-            fileVolume: item[i].fileVolume,
-            createAt: item[i].createAt,
-            dbIdx: item[i].dbIdx,
-            type: item[i].type,
-            quizList: item[i].quizList,
-            noteTestList: item[i].noteTestList,
           }
           this.pid++
         }
@@ -146,6 +110,7 @@ export default {
 
     onClick(params) {
       console.log(params)
+      this.$emit('file-view', params)
     },
 
     addNode() {
@@ -321,7 +286,6 @@ export default {
     },
     moreMenuView(node) {
       console.log(`view ${node}`)
-      this.$emit('file-view', node)
     },
     moreMenuDell(node) {
       node.remove()
@@ -333,7 +297,7 @@ export default {
 }
 </script>
 <style scoped>
-.custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
+.custom-control-input:checked ~ .custom-control-label::after {
   margin-left: 0.15rem;
 }
 </style>

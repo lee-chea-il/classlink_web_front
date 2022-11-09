@@ -8,8 +8,17 @@
   >
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content">
-        <ModalHeader title="자료 검색 결과" @close="$emit('close')" />
-
+        <div class="modal-header">
+          <h5 id="exampleModalLabel" class="modal-title">자료 검색 결과</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <i class="icons_close"></i>
+          </button>
+        </div>
         <div class="modal-body">
           <div class="modal_datafilter_result">
             <!-- 모달 내용 구분 class-->
@@ -44,15 +53,6 @@
             <div class="table_area">
               <div class="table_thead">
                 <table class="tb">
-                  <colgroup>
-                    <col width="10%" />
-                    <col width="25%" />
-                    <col width="20%" />
-                    <col width="10%" />
-                    <col width="20%" />
-                    <col width="5%" />
-                    <col width="10%" />
-                  </colgroup>
                   <thead>
                     <tr>
                       <th>
@@ -68,27 +68,21 @@
                           ></label>
                         </div>
                       </th>
-                      <th class="name">파일이름</th>
-                      <th>경로</th>
-                      <th>과목</th>
-                      <th>키워드</th>
-                      <th>보기</th>
-                      <th>위치</th>
+                      <th class="th01">파일이름</th>
+                      <th class="th02">경로</th>
+                      <th></th>
+                      <th></th>
+                      <th class="th03">과목</th>
+                      <th class="th04">키워드</th>
+                      <th class="th05">보기</th>
+                      <th class="th06">위치</th>
+                      <th></th>
                     </tr>
                   </thead>
                 </table>
               </div>
               <div class="table_tbody">
                 <table class="tb">
-                  <colgroup>
-                    <col width="10%" />
-                    <col width="25%" />
-                    <col width="20%" />
-                    <col width="10%" />
-                    <col width="20%" />
-                    <col width="5%" />
-                    <col width="10%" />
-                  </colgroup>
                   <tbody>
                     <tr>
                       <td>
@@ -117,7 +111,7 @@
                           자연수의 혼합계산
                         </div>
                       </td>
-                      <td>수학</td>
+                      <td><div class="subject">수학</div></td>
                       <td>
                         <div class="keyword">
                           키워드1, 키워드2, 키워드3, 키워드4, 키워드5, 키워드6,
@@ -162,7 +156,7 @@
                           자연수의 혼합계산
                         </div>
                       </td>
-                      <td>수학</td>
+                      <td><div class="subject">수학</div></td>
                       <td>
                         <div class="keyword">
                           키워드1, 키워드2, 키워드3, 키워드4, 키워드5, 키워드6,
@@ -207,7 +201,7 @@
                           자연수의 혼합계산
                         </div>
                       </td>
-                      <td>수학</td>
+                      <td><div class="subject">수학</div></td>
                       <td>
                         <div class="keyword">
                           키워드1, 키워드2, 키워드3, 키워드4, 키워드5, 키워드6,
@@ -252,7 +246,7 @@
                           자연수의 혼합계산
                         </div>
                       </td>
-                      <td>수학</td>
+                      <td><div class="subject">수학</div></td>
                       <td>
                         <div class="keyword">
                           키워드1, 키워드2, 키워드3, 키워드4, 키워드5, 키워드6,
@@ -301,11 +295,8 @@
 </template>
 
 <script>
-import ModalHeader from '../../ModalHeader.vue'
-
 export default {
   name: 'SearchResultModal',
-  components: { ModalHeader },
 }
 </script>
 

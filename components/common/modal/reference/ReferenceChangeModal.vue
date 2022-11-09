@@ -21,10 +21,12 @@
               <ReferenceAddLeftField
                 :reference="reference"
                 :pushKeyword="pushKeyword"
+                target="referenceChange"
                 @change-input="$emit('change-input', $event)"
                 @set-keyword="$emit('set-keyword', $event)"
                 @change-keyword="$emit('changePushKeyword', $event)"
                 @delete-keyword="$emit('delete-keyword', $event)"
+                @open-save-path="$emit('open-save-path', $event)"
               />
               <!-- /.왼쪽 영역 -->
               <!-- 오른쪽 영역 -->

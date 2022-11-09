@@ -8,7 +8,18 @@
   >
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content">
-        <ModalHeader title="자료 등록" @close="$emit('close')" />
+        <div class="modal-header">
+          <h5 id="exampleModalLabel" class="modal-title">자료 등록</h5>
+          <button
+            id="selectClose"
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <i class="icons_close"></i>
+          </button>
+        </div>
 
         <div class="modal-body">
           <div class="modal_dataregi">
@@ -92,11 +103,8 @@
 </template>
 
 <script>
-import ModalHeader from '../../ModalHeader.vue'
-
 export default {
   name: 'VideoFileUploadModal',
-  components: { ModalHeader },
 }
 </script>
 
