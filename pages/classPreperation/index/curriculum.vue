@@ -434,7 +434,4 @@ export default {
 #mydata > .vtl {
   height: 300px;
 }
-.main > ul {
-  display: none;
-}
 </style>
