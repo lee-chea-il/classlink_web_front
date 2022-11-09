@@ -181,10 +181,11 @@
                   </div>
                   <div id="myTabContent" class="tab-content">
                     <div id="myDataPap">
-                      <TreeView
+                      <LessonTreeView
                         ref="franchise"
                         :dataList="receiveAddLessonData"
                         :editable="false"
+                        :expanded="false"
                         identity="master"
                         :pidNum="2000"
                         @copyDataCallBack="$emit('call-back')"
@@ -280,9 +281,10 @@
 <script>
 import ModalHeader from '../../ModalHeader.vue'
 import TreeView from '~/components/common/custom/CustomReferenceTreeView.vue'
+import LessonTreeView from '~/components/common/custom/CustomLessonTreeView.vue'
 export default {
   name: 'LessonAddModal',
-  components: { ModalHeader, TreeView },
+  components: { ModalHeader, TreeView, LessonTreeView },
   props: {
     open: {
       type: Boolean,

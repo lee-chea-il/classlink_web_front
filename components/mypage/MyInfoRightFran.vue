@@ -90,6 +90,3 @@ export default {
     name:'MyInfoRightFran',
 }
 </script>
-<style>
-    
-</style>

@@ -170,7 +170,35 @@
     <LessonChangeModal :open="isLessonChange" @close="closeLessonChangeModal" />
 
     <!-- 레슨 열람 -->
-    <LessonBrowseModal :open="isLessonBrowse" @close="closeLessonBrowseModal" />
+    <LessonBrowseModal
+      :open="isLessonBrowse"
+      :lessonItem="lessonItem"
+      :selectReference="selectReference"
+      :currentIdx="currentIdx"
+      @pagination="setPagination"
+      @select-reference="setSelectReference"
+      @close="closeLessonBrowseModal"
+      @quiz-preview="openQuizPreview"
+      @test-preview="openNoteTestPreview"
+    />
+
+    <!-- 퀴즈 미리보기 -->
+    <QuizPreviewModal
+      :open="isQuizPreviewModal.open"
+      :quizList="selectReference.quizList"
+      :currentPageIdx="currentIdx"
+      @close="closeQuizPreview"
+      @pagination="setPagination"
+    />
+
+    <!-- 쪽지시험 미리보기 -->
+    <NoteTestPreviewModal
+      :open="isNoteTestPreviewModal.open"
+      :testList="selectReference.noteTestList"
+      :currentPageIdx="currentIdx"
+      @pagination="setPagination"
+      @close="closeNoteTestPreview"
+    />
 
     <button @click="openLessonChangeModal">레슨변경</button>
     <button @click="openLessonBrowseModal">레슨열람</button>
@@ -182,6 +210,8 @@ import TreeView from '~/components/common/custom/CustomReferenceTreeView.vue'
 import LessonAddModal from '~/components/common/modal/lesson/LessonAddModal.vue'
 import LessonBrowseModal from '~/components/common/modal/lesson/LessonBrowseModal.vue'
 import LessonChangeModal from '~/components/common/modal/lesson/LessonChangeModal.vue'
+import NoteTestPreviewModal from '~/components/common/modal/reference/NoteTestPreviewModal.vue'
+import QuizPreviewModal from '~/components/common/modal/reference/QuizPreviewModal.vue'
 import PageHeader from '~/components/common/PageHeader.vue'
 
 export default {
@@ -192,6 +222,8 @@ export default {
     LessonAddModal,
     LessonChangeModal,
     LessonBrowseModal,
+    QuizPreviewModal,
+    NoteTestPreviewModal,
   },
   layout: 'EducationLayout',
   data() {
@@ -201,6 +233,14 @@ export default {
       isLessonAdd: false,
       isLessonChange: false,
       isLessonBrowse: false,
+      isQuizPreviewModal: {
+        open: false,
+        prevPage: '',
+      },
+      isNoteTestPreviewModal: {
+        open: false,
+        prevPage: '',
+      },
       copyCheckData: [],
       receiveInstitutionLessonData: [
         {
@@ -405,6 +445,233 @@ export default {
           ],
         },
       ],
+      lessonItem: {
+        title: '3-1반 수업',
+        desc: '3-1반 전체 수업 내용',
+        role: '3-1반 학생들의 평균적인 이해를 도와줄 수 있다.',
+        keyword: ['국어', '수학', '영어', '사회'],
+        isOpen: true,
+        type: '프랜차이즈',
+        savePath: '수학>대단원>피타고라스',
+        createAt: '2022.05.03',
+        ragistrant: '홍길남',
+        subject: '수학',
+        referenceList: [
+          {
+            id: 0,
+            name: '국어학습자료 애니메이션.mp4',
+            subject: '국어',
+            desc: '등록한 자료 1',
+            keyword: ['국어', '수학'],
+            registrant: '등록인',
+            savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+            isOpenEducation: true,
+            inOpenReferenceRoom: true,
+            fileName: '',
+            fileDivision: '교육기관',
+            fileType: 'video/mp4',
+            uploadType: 'video',
+            fileVolume: '',
+            createAt: '',
+            dbIdx: 1,
+            type: 'institution',
+          },
+          {
+            id: 1,
+            name: '수학 학습자료.pdf',
+            subject: '수학',
+            desc: '등록한 자료 2',
+            keyword: ['국어', '수학'],
+            registrant: '등록인',
+            savePath:
+              'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
+            isOpenEducation: true,
+            inOpenReferenceRoom: true,
+            fileName: '',
+            fileDivision: '교육기관',
+            fileType: 'application/pdf',
+            uploadType: 'pdf',
+            fileVolume: '',
+            createAt: '',
+            isLeaf: false,
+            dbIdx: 2,
+            type: 'franchise',
+          },
+          {
+            id: 2,
+            name: '영어 단어 퀴즈.quiz',
+            subject: '영어',
+            desc: '등록한 자료 1',
+            keyword: ['국어', '수학'],
+            registrant: '등록인',
+            savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+            isOpenEducation: true,
+            inOpenReferenceRoom: true,
+            fileName: '',
+            fileDivision: '교육기관',
+            fileType: 'quiz',
+            uploadType: 'quiz',
+            fileVolume: '',
+            createAt: '',
+            quizList: [
+              {
+                id: 0,
+                problem: '<p>asdfaaaaasdf</p>',
+                oxAnswer: 0,
+                dificultade: 1,
+                limitTime: '3분',
+                quizType: 0,
+                shortAnswer: '123',
+                subjectiveAnswer: '123',
+                shortWrongAnswer: '123',
+              },
+              {
+                id: 2,
+                problem: '<p>asdggggg</p>',
+                dificultade: 0,
+                limitTime: '5분',
+                quizType: 0,
+                oxAnswer: 0,
+                shortAnswer: '234',
+                subjectiveAnswer: '234',
+                shortWrongAnswer: '234',
+              },
+              {
+                id: 3,
+                problem: '<p>234242242424</p>',
+                dificultade: 0,
+                limitTime: '2분',
+                quizType: 0,
+                oxAnswer: 0,
+                shortAnswer: '345',
+                subjectiveAnswer: '345',
+                shortWrongAnswer: '345',
+              },
+              {
+                id: 4,
+                problem: '<p>555555555</p>',
+                dificultade: 0,
+                limitTime: '4분',
+                quizType: 0,
+                oxAnswer: 0,
+                shortAnswer: '456',
+                subjectiveAnswer: '456',
+                shortWrongAnswer: '456',
+              },
+              {
+                id: 5,
+                problem: '<p>asx c</p>',
+                dificultade: 0,
+                limitTime: '5분',
+                quizType: 0,
+                oxAnswer: 0,
+                shortAnswer: '567',
+                subjectiveAnswer: '567',
+                shortWrongAnswer: '567',
+              },
+            ],
+            isLeaf: false,
+            dbIdx: 3,
+            type: 'franchise',
+          },
+          {
+            id: 3,
+            name: '사회 쪽지시험 영상.youtube',
+            subject: '사회',
+            desc: '등록한 자료 1',
+            keyword: ['국어', '수학'],
+            registrant: '등록인',
+            savePath: 'https://www.youtube.com/embed/1CYbySbtyF0',
+            isOpenEducation: true,
+            inOpenReferenceRoom: true,
+            fileName: '',
+            fileDivision: '교육기관',
+            fileType: 'youtube',
+            uploadType: 'youtube',
+            fileVolume: '',
+            createAt: '',
+            isLeaf: false,
+            dbIdx: 4,
+            type: 'institution',
+          },
+          {
+            id: 4,
+            name: '과학 사이트 참고용.url',
+            subject: '과학',
+            desc: '등록한 자료 1',
+            keyword: ['국어', '수학'],
+            registrant: '등록인',
+            savePath: 'https://sciencelove.com/725',
+            isOpenEducation: true,
+            inOpenReferenceRoom: true,
+            fileName: '',
+            fileDivision: '교육기관',
+            fileType: 'test',
+            uploadType: 'url',
+            fileVolume: '',
+            createAt: '',
+            isLeaf: false,
+            dbIdx: 5,
+            type: 'franchise',
+          },
+          {
+            id: 5,
+            name: '수학 쪽지시험.test',
+            subject: '수학',
+            desc: '등록한 자료 1',
+            keyword: ['국어', '수학'],
+            registrant: '등록인',
+            savePath: 'https://sciencelove.com/725',
+            isOpenEducation: true,
+            inOpenReferenceRoom: true,
+            fileName: '',
+            fileDivision: '교육기관',
+            fileType: 'test',
+            uploadType: 'test',
+            fileVolume: '',
+            createAt: '',
+            noteTestList: [
+              {
+                id: 0,
+                problem: '<p>1번 문제</p>',
+                exampleList: [
+                  { id: '', example: '<p>답 1임</p>' },
+                  { id: '', example: '<p>답 2임</p>' },
+                  { id: '', example: '<p>답 3임</p>' },
+                  { id: '', example: '<p>답 4임</p>' },
+                  { id: '', example: '<p>답 5임</p>' },
+                ],
+                dificultade: 0,
+                limitTime: '',
+                answer: 0,
+                isCommentary: true,
+                commentary: '',
+              },
+              {
+                id: 1,
+                problem: '<p>2번 문제</p>',
+                exampleList: [
+                  { id: '', example: '<p>답 5임</p>' },
+                  { id: '', example: '<p>답 6임</p>' },
+                  { id: '', example: '<p>답 7임</p>' },
+                  { id: '', example: '<p>답 8임</p>' },
+                  { id: '', example: '<p>답 9임</p>' },
+                ],
+                dificultade: 2,
+                limitTime: '',
+                answer: 2,
+                isCommentary: true,
+                commentary: '',
+              },
+            ],
+            isLeaf: false,
+            dbIdx: 6,
+            type: 'institution',
+          },
+        ],
+      },
+      selectReference: {},
+      currentIdx: 0,
     }
   },
   methods: {
@@ -422,10 +689,41 @@ export default {
 
     openLessonBrowseModal() {
       this.isLessonBrowse = true
+      this.selectReference = this.lessonItem.referenceList[0]
     },
 
     closeLessonBrowseModal() {
       this.isLessonBrowse = false
+    },
+
+    openQuizPreview(page) {
+      this[page] = false
+      this.isQuizPreviewModal = {
+        open: true,
+        prevPage: page,
+      }
+    },
+
+    closeQuizPreview() {
+      this[this.isQuizPreviewModal.prevPage] = true
+      this.isQuizPreviewModal = {
+        open: false,
+      }
+    },
+
+    openNoteTestPreview(page) {
+      this[page] = false
+      this.isNoteTestPreviewModal = {
+        open: true,
+        prevPage: page,
+      }
+    },
+
+    closeNoteTestPreview() {
+      this[this.isNoteTestPreviewModal.prevPage] = true
+      this.isNoteTestPreviewModal = {
+        open: false,
+      }
     },
 
     setLessonFlag(flag) {
@@ -452,6 +750,25 @@ export default {
     copyDataCallBack(copyData) {
       this.copyCheckData = copyData
       console.log(this.copyCheckData)
+    },
+
+    setSelectReference(reference) {
+      this.selectReference = reference
+      this.currentIdx = 0
+    },
+
+    setPagination(direction, maxLength) {
+      if (direction === 'plus') {
+        if (this.currentIdx + 1 < maxLength) {
+          this.currentIdx += 1
+        }
+      } else if (direction === 'min') {
+        if (this.currentIdx > 0) {
+          this.currentIdx -= 1
+        }
+      } else {
+        return null
+      }
     },
   },
 }

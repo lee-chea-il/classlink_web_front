@@ -37,21 +37,8 @@
               />
             </div>
           </div>
-          <div class="modal-footer">
-            <!-- [개발참조] 자료등록일때 출력되는 버튼 -->
-            <button class="btn btn_crud_point">등록</button>
-            <button
-              id="close"
-              class="btn btn_crud_default"
-              data-dismiss="modal"
-              @click="$emit('close')"
-            >
-              취소
-            </button>
-            <!-- [개발참조] 자료수정일때 출력되는 버튼 -->
-            <!-- 	<button class="btn btn_crud_point">완료</button>
-					<button class="btn btn_crud_default" data-dismiss="modal">취소</button> -->
-          </div>
+
+          <ModalBtnBox @close="$emit('close')" />
         </div>
       </div>
     </div>
@@ -60,11 +47,17 @@
 
 <script>
 import ModalHeader from '../../ModalHeader.vue'
+import ModalBtnBox from '../../ModalBtnBox.vue'
 import ReferenceAddLeftField from '@/components/reference/ReferenceAddLeftField.vue'
 import ReferenceRightModal from '@/components/reference/ReferenceRightModal.vue'
 export default {
   name: 'ReferenceAddModal',
-  components: { ReferenceAddLeftField, ReferenceRightModal, ModalHeader },
+  components: {
+    ReferenceAddLeftField,
+    ReferenceRightModal,
+    ModalHeader,
+    ModalBtnBox,
+  },
   props: {
     open: Boolean,
     uploadType: {

@@ -1716,11 +1716,11 @@ export default {
         this.quizList[idx].shortWrongAnswer = ''
       } else if (num === 1) {
         this.quizList[idx].oxAnswer = 0
-        this.quizList[idx].subjectiveAnswer = ''
-      } else {
-        this.quizList[idx].oxAnswer = 0
         this.quizList[idx].shortAnswer = ''
         this.quizList[idx].shortWrongAnswer = ''
+      } else {
+        this.quizList[idx].oxAnswer = 0
+        this.quizList[idx].subjectiveAnswer = ''
       }
     },
 
@@ -1733,11 +1733,11 @@ export default {
         this.selectData.quizList[idx].shortWrongAnswer = ''
       } else if (num === 1) {
         this.selectData.quizList[idx].oxAnswer = 0
-        this.selectData.quizList[idx].subjectiveAnswer = ''
-      } else {
-        this.selectData.quizList[idx].oxAnswer = 0
         this.selectData.quizList[idx].shortAnswer = ''
         this.selectData.quizList[idx].shortWrongAnswer = ''
+      } else {
+        this.selectData.quizList[idx].oxAnswer = 0
+        this.selectData.quizList[idx].subjectiveAnswer = ''
       }
     },
 

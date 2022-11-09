@@ -17,47 +17,13 @@
           <div class="modal-body">
             <!-- 자료 열람 -->
             <div class="reading_section modal_dataquiz">
-              <div class="left_section">
-                <div class="num_area">
-                  <button
-                    v-for="(item, idx) in selectData.quizList"
-                    :key="idx"
-                    class="num"
-                    :class="{ active: idx === currentPageIdx }"
-                    @click="$emit('change-number', idx)"
-                  >
-                    {{ idx + 1 }}
-                  </button>
-                </div>
-                <div v-for="(item, idx) in selectData.quizList" :key="idx">
-                  <div v-if="idx === currentPageIdx" class="write_area">
-                    <div class="edit_area edit_area_padding_12">
-                      <button class="btn icons_fullscreen"></button>
-                      <div v-html="item.problem"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="btn_area button_margin_top_3">
-                  <button
-                    class="btn icons_arrow_square_l"
-                    :disabled="currentPageIdx === 0"
-                    @click="$emit('pagination', 'min')"
-                  ></button>
-                  <span class="counter">
-                    {{ currentPageIdx + 1 }} /
-                    {{ selectData?.quizList?.length }}
-                  </span>
-                  <button
-                    class="btn icons_arrow_square_r"
-                    :disabled="
-                      selectData?.quizList?.length === currentPageIdx + 1
-                    "
-                    @click="
-                      $emit('pagination', 'plus', selectData.quizList.length)
-                    "
-                  ></button>
-                </div>
-              </div>
+              <QuizLeftSection
+                :quizList="selectData.quizList"
+                :currentIdx="currentPageIdx"
+                @pagination="setPagination"
+                @change-number="$emit('change-number', $event)"
+              />
+
               <div class="right_section">
                 <div v-for="(item, idx) in selectData.quizList" :key="idx">
                   <div v-if="idx === currentPageIdx" class="info_area">
@@ -298,10 +264,11 @@
 <script>
 import ModalHeader from '../../ModalHeader.vue'
 import FileInfoSection from '@/components/reference/FileInfoSection.vue'
+import QuizLeftSection from '~/components/reference/quizBrowse/QuizLeftSection.vue'
 
 export default {
   name: 'QuizBrowseModal',
-  components: { FileInfoSection, ModalHeader },
+  components: { FileInfoSection, ModalHeader, QuizLeftSection },
   props: {
     open: Boolean,
     selectData: {
@@ -311,6 +278,11 @@ export default {
     currentPageIdx: {
       type: Number,
       default: 0,
+    },
+  },
+  methods: {
+    setPagination(e, idx) {
+      this.$emit('pagination', e, idx)
     },
   },
 }

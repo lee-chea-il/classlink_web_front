@@ -424,7 +424,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #institute > .vtl {
   height: 349px;
 }

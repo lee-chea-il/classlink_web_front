@@ -119,7 +119,14 @@
             >
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">강좌</a>
+            <NuxtLink
+              :class="{
+                'nav-link': true,
+                active: $route.fullPath === '/classPreperation/lecture',
+              }"
+              to="/classPreperation/lecture"
+              >강좌</NuxtLink
+            >
           </li>
         </ul>
       </div>

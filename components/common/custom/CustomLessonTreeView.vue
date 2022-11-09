@@ -4,7 +4,7 @@
     :default-expanded="expanded"
     default-tree-node-name="새 폴더"
     :is-drop="identity == 'master' ? true : false"
-    :is-show-option="identity == 'master' ? true : false"
+    :is-show-option="false"
     @click="onClick"
     @change-name="onChangeName"
     @more-menu="moreMenu"

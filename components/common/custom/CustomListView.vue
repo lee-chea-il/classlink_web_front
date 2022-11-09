@@ -27,34 +27,34 @@ import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
 export default {
   name: 'CustomListView',
   components: {
-    VueTreeList
+    VueTreeList,
   },
   props: {
-    dataList:{
-      type:Array,
-      default:() => []
+    dataList: {
+      type: Array,
+      default: () => [],
     },
-    editable:{
-      type:Boolean,
-      default:false
+    editable: {
+      type: Boolean,
+      default: false,
     },
-    identity:{
-      type:String,
-      default:'teacher'
+    identity: {
+      type: String,
+      default: 'teacher',
     },
-    pidNum:{
-      type:Number,
-      default:0
+    pidNum: {
+      type: Number,
+      default: 0,
     },
-    expanded:{
-      type:Boolean,
-      default:true
-    }
+    expanded: {
+      type: Boolean,
+      default: true,
+    },
   },
-  data(){
+  data() {
     return {
       datas: new Tree(false, []),
-      pid: this.pidNum
+      pid: this.pidNum,
     }
   },
   mounted() {
@@ -64,20 +64,33 @@ export default {
       let sp = []
       let dType = ''
       for (let i = 0; i < len; i++) {
-        sp=item[i].name.split('.')
-        dType=sp[sp.length-1]
-        if(dType==='mp4'||dType==='mp3'||dType==='avi'||dType==='mov'||dType==='flv'){
-          dType='video'
-        }else if(dType==='pdf'||dType==='ppt'||dType==='doc'||dType==='xls'||dType==='hwp'||dType==='txt'){
-          dType='document'
-        }else if(dType==='quiz'){
-          dType='quiz'
-        }else if(dType==='exam'){
-          dType='exam'
-        }else if(dType==='utobe'){
-          dType='utobe'
-        }else if(dType==='utobe'){
-          dType='url'
+        sp = item[i].name.split('.')
+        dType = sp[sp.length - 1]
+        if (
+          dType === 'mp4' ||
+          dType === 'mp3' ||
+          dType === 'avi' ||
+          dType === 'mov' ||
+          dType === 'flv'
+        ) {
+          dType = 'video'
+        } else if (
+          dType === 'pdf' ||
+          dType === 'ppt' ||
+          dType === 'doc' ||
+          dType === 'xls' ||
+          dType === 'hwp' ||
+          dType === 'txt'
+        ) {
+          dType = 'document'
+        } else if (dType === 'quiz') {
+          dType = 'quiz'
+        } else if (dType === 'exam') {
+          dType = 'exam'
+        } else if (dType === 'utobe') {
+          dType = 'utobe'
+        } else if (dType === 'utobe') {
+          dType = 'url'
         }
         result[i] = {
           name: item[i].name,
@@ -97,7 +110,7 @@ export default {
       }
       return result
     }
-    this.datas = new Tree( false, dataMapping(this.dataList, false) )
+    this.datas = new Tree(false, dataMapping(this.dataList, false))
   },
   methods: {
     onDel(node) {
@@ -171,7 +184,7 @@ export default {
         }
         return newNode
       }
-      this.$emit('copyDataCallBack',_dfs(this.datas))
+      this.$emit('copyDataCallBack', _dfs(this.datas))
     },
     pasteData(copyCheckData) {
       let idNum = new Date().valueOf()
@@ -264,22 +277,22 @@ export default {
       }
       _dell(this.datas)
     },
-    moreMenu({e}) {
+    moreMenu({ e }) {
       const hasOffClass = e.target.classList.contains('icons_mu_off')
       const iLists = document.querySelectorAll('.more_mu ')
-      let i=0
-      for(i=0;i<iLists.length;i++){
+      let i = 0
+      for (i = 0; i < iLists.length; i++) {
         iLists[i].classList.remove('icons_mu_on')
         iLists[i].classList.add('icons_mu_off')
       }
       const moreLists = document.querySelectorAll('.more_list')
-      for(i=0;i<moreLists.length;i++){
-        moreLists[i].style.display='none'
+      for (i = 0; i < moreLists.length; i++) {
+        moreLists[i].style.display = 'none'
       }
-      if(hasOffClass){
+      if (hasOffClass) {
         e.target.classList.remove('icons_mu_off')
         e.target.classList.add('icons_mu_on')
-        e.target.querySelector('.more_list').style.display='block'
+        e.target.querySelector('.more_list').style.display = 'block'
       }
     },
     moreMenuDown(node) {
@@ -296,12 +309,12 @@ export default {
     },
     moreMenuCopy(node) {
       console.log(`copy ${node}`)
-    }
+    },
   },
 }
 </script>
-<style>
-.custom-control-input:checked ~ .custom-control-label::after{
+<style scoped>
+.custom-control-input:checked ~ .custom-control-label::after {
   margin-left: 0.15rem;
 }
 </style>
