@@ -8772,6 +8772,7 @@ a {
 .modal_ac_manage_lesson .divide_area {
   width: 48%;
 }
+.icon_institute,
 .ac_manage_dtr .divide_area .icon_institute,
 .modal_ac_manage_lesson .divide_area .icon_institute {
   display: inline-block;

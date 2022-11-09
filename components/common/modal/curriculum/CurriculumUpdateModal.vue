@@ -36,8 +36,8 @@
                     </div>
                   </div> -->
 
-                  <div class="title">CW 교실</div>
-                  <div class="cw_box">
+                  <div class="title">
+                    CW 교실
                     <div class="dropdown form-inline">
                       <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                         교실선택
@@ -46,14 +46,16 @@
                         <a class="dropdown-item" href="#">01</a>
                         <a class="dropdown-item" href="#">02</a>
                       </div>
-                      <ul class="list-group drag p10">
-                        
-
-
-
-
-                      </ul>
                     </div>
+                  </div>
+                  <div class="cw_box">
+                    <img id="cwBoxBackImg" />
+                    <CustomImgListView
+                      ref="classWorld"
+                      :expanded="false"
+                      :cwData="cwData"
+                      :pidNum="0"
+                    />
                   </div>
                   <div class="item_list_wrap">
                     <div class="item_list">
@@ -154,19 +156,11 @@
                           <button class="btn btn_crud_default cancel">초기화</button> -->
                         </div>
                         <div class="list_area">
-                          
-
-
-                          <TreeView
+                          <CustomListView
                             ref="update"
-                            :expanded="false"
                             :dataList="lessonDataList"
-                            identity="master"
                             :pidNum="3000"
                           />
-
-
-
                         </div>
                       </div>
                     </div>
@@ -210,12 +204,14 @@
 </template>
 
 <script>
-import TreeView from '@/components/common/custom/CustomTreeView.vue'
+import CustomListView from '@/components/common/custom/CustomListView.vue'
+import CustomImgListView from '@/components/common/custom/CustomImgListView.vue'
 
 export default {
   name: 'CurriculumUpdateModal',
   components: {
-    TreeView
+    CustomListView,
+    CustomImgListView
   },
   props: {
     open: Boolean,
@@ -257,6 +253,29 @@ export default {
           dbIdx: 1
         },
       ],
+      cwData: {
+        backImg_url: require('@/assets/images/cw/type1/cw_bg_guide.jpg'),
+        interactionObjects:[
+          {
+            nomal_url: require('@/assets/images/cw/type1/object/101.png'),
+            over_url: require('@/assets/images/cw/type1/object/101.png'),
+            icon_nomal_url: require('@/assets/images/cw/type1/icon/4.png'),
+            icon_over_url: require('@/assets/images/cw/type1/icon/4.png'),
+            imgIdx: 0,
+            left:15,
+            top:56
+          },
+          {
+            nomal_url: require('@/assets/images/cw/type1/object/99.png'),
+            over_url: require('@/assets/images/cw/type1/object/99.png'),
+            icon_nomal_url: require('@/assets/images/cw/type1/icon/4.png'),
+            icon_over_url: require('@/assets/images/cw/type1/icon/4.png'),
+            imgIdx: 1,
+            left:15,
+            top:56
+          }
+        ]
+      }
     }
   },
   methods: {
@@ -277,12 +296,12 @@ export default {
     copyDataCallBack(copyData) {
       this.copyCheckData = copyData
       console.log(this.copyCheckData)
-    },
+    }
   }
 }
 </script>
 
-<style scoped>
+<style>
 .modal-wrapper {
   display: table-cell;
   vertical-align: middle;
