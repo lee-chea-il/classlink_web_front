@@ -43,17 +43,24 @@
                         교실선택
                       </button>
                       <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">01</a>
-                        <a class="dropdown-item" href="#">02</a>
+                        <a 
+                          v-for="dropMenu in dropMenuList"
+                          :key="dropMenu"
+                          class="dropdown-item"
+                          href="#"
+                          :value="dropMenu"
+                          @click="selectDropMenu(dropMenu)"
+                        >
+                          {{dropMenu}}
+                        </a>
                       </div>
                     </div>
                   </div>
                   <div class="cw_box">
                     <img id="cwBoxBackImg" />
                     <CustomImgListView
-                      ref="classWorld"
+                      ref="imgListView"
                       :expanded="false"
-                      :cwData="cwData"
                       :pidNum="0"
                     />
                   </div>
@@ -226,6 +233,8 @@ export default {
   },
   data() {
     return {
+      dropMenuList: [],
+      dropMenuListData: [],
       lessonDataList: [
         {
           name: '화법과 작문111.mp4',
@@ -253,55 +262,93 @@ export default {
           dbIdx: 1
         },
       ],
-      cwData: {
-        backImg_url: require('@/assets/images/cw/type1/cw_bg_guide.jpg'),
-        interactionObjects:[
-          {
-            nomal_url: require('@/assets/images/cw/type1/object/101.png'),
-            over_url: require('@/assets/images/cw/type1/object/101.png'),
-            icon_nomal_url: require('@/assets/images/cw/type1/icon/4.png'),
-            icon_over_url: require('@/assets/images/cw/type1/icon/4.png'),
-            imgIdx: 0,
-            left:15,
-            top:56
-          },
-          {
-            nomal_url: require('@/assets/images/cw/type1/object/99.png'),
-            over_url: require('@/assets/images/cw/type1/object/99.png'),
-            icon_nomal_url: require('@/assets/images/cw/type1/icon/4.png'),
-            icon_over_url: require('@/assets/images/cw/type1/icon/4.png'),
-            imgIdx: 1,
-            left:15,
-            top:56
-          }
-        ]
-      }
+      cwData: null
+    }
+  },
+  mounted() {
+    this.dropMenuListData=[
+      {
+        codeNum:'CW_001',
+        name:'CW_001',
+        data: {
+          backImg_url: require('@/assets/images/cw/type1/cw_bg_guide.jpg'),
+          interactionObjects:[
+            {
+              nomal_url: require('@/assets/images/cw/type1/object/101.png'),
+              over_url: require('@/assets/images/cw/type1/object/101.png'),
+              icon_nomal_url: require('@/assets/images/cw/type1/icon/4.png'),
+              icon_over_url: require('@/assets/images/cw/type1/icon/4.png'),
+              imgIdx: 0,
+              left:18,
+              top:56,
+              height:319
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type1/object/99.png'),
+              over_url: require('@/assets/images/cw/type1/object/99.png'),
+              icon_nomal_url: require('@/assets/images/cw/type1/icon/4.png'),
+              icon_over_url: require('@/assets/images/cw/type1/icon/4.png'),
+              imgIdx: 1,
+              left:160,
+              top:56,
+              height:179
+            }
+          ]
+        }
+      },
+      {
+        codeNum:'CW_002',
+        name:'CW_002',
+        data: {
+          backImg_url: require('@/assets/images/cw/type1/cw_bg_guide.jpg'),
+          interactionObjects:[
+            {
+              nomal_url: require('@/assets/images/cw/type1/object/101.png'),
+              over_url: require('@/assets/images/cw/type1/object/101.png'),
+              icon_nomal_url: require('@/assets/images/cw/type1/icon/4.png'),
+              icon_over_url: require('@/assets/images/cw/type1/icon/4.png'),
+              imgIdx: 0,
+              left:18,
+              top:56,
+              height:319
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type1/object/99.png'),
+              over_url: require('@/assets/images/cw/type1/object/99.png'),
+              icon_nomal_url: require('@/assets/images/cw/type1/icon/4.png'),
+              icon_over_url: require('@/assets/images/cw/type1/icon/4.png'),
+              imgIdx: 1,
+              left:160,
+              top:56,
+              height:179
+            }
+          ]
+        }
+      },
+    ]
+    this.dropMenuList=[]
+    for(let i=0;i<this.dropMenuListData.length;i++){
+      this.dropMenuList.push(this.dropMenuListData[i].name)
     }
   },
   methods: {
-    copyData() {
-      const instiTab = document.getElementById('institute')
-      if (instiTab.classList.contains('show')) {
-        this.$refs.institution.copyData()
-      } else {
-        this.$refs.franchise.copyData()
+    selectDropMenu(value) {
+      this.cwData=null
+      for(let i=0;i<this.dropMenuListData.length;i++){
+        if(value===this.dropMenuListData[i].name){
+          this.cwData=this.dropMenuListData[i]
+          break
+        }
       }
-    },
-    pasteData() {
-      this.$refs.curriculum.pasteData(this.copyCheckData)
-    },
-    delData() {
-      this.$refs.curriculum.delData()
-    },
-    copyDataCallBack(copyData) {
-      this.copyCheckData = copyData
-      console.log(this.copyCheckData)
+      if(this.cwData){
+        this.$refs.imgListView.setData(this.cwData.data)
+      }
     }
   }
 }
 </script>
 
-<style scoped>
+<style>
 .modal-wrapper {
   display: table-cell;
   vertical-align: middle;
@@ -329,5 +376,8 @@ export default {
 }
 #modalCuriRegi .form-inline{
   width: initial;
+}
+.custom-control-input:checked ~ .custom-control-label::after {
+  margin-left: 0.15rem;
 }
 </style>
