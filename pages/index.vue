@@ -40,7 +40,12 @@
               <div class="right_right">
                 <div class="row">
                   <div class="right_right_all">
-                    <Calendar />
+                    <Calendar
+                      :selectedDateTaskList="selectedDateTaskList"
+                      :selectedDate="selectedDate"
+                      :selectedDateTitle="selectedDateTitle"
+                      @click-date="onDayClick"
+                    />
                   </div>
                 </div>
               </div>
@@ -80,58 +85,72 @@ export default {
         {
           academy: '일산어학원',
           time: '09:00 ~ 12:00',
+          time_start: '09:00',
           subject: '영어심화리딩',
           lessonTitle: '영어',
           lessonClass: '심화 A반',
           teacher: '홍길동 선생님',
+          date: '2022-11-09',
         },
         {
           academy: '김포어학원',
           time: '09:00 ~ 12:00',
+          time_start: '09:00',
           subject: '수학심화리딩',
           lessonTitle: '수학',
           lessonClass: '심화 B반',
           teacher: '임꺽정 선생님',
+          date: '2022-11-09',
         },
         {
           academy: '광주어학원',
           time: '09:00 ~ 12:00',
+          time_start: '09:00',
           subject: '과학심화리딩',
           lessonTitle: '과학',
           lessonClass: '심화 C반',
           teacher: '임창정 선생님',
+          date: '2022-11-09',
         },
         {
           academy: '한남어학원',
           time: '09:00 ~ 12:00',
+          time_start: '09:00',
           subject: '체육심화리딩',
           lessonTitle: '체육',
           lessonClass: '심화 D반',
           teacher: '전현무 선생님',
+          date: '2022-11-10',
         },
         {
           academy: '마포어학원',
           time: '09:00 ~ 12:00',
+          time_start: '09:00',
           subject: '음악심화리딩',
           lessonTitle: '음악',
           lessonClass: '심화 E반',
           teacher: '김종국 선생님',
+          date: '2022-11-10',
         },
         {
           academy: '홍대어학원',
           time: '09:00 ~ 12:00',
+          time_start: '09:00',
           subject: '사회심화리딩',
           lessonTitle: '사회',
           lessonClass: '심화 F반',
           teacher: '유재석 선생님',
+          date: '2022-11-10',
         },
         {
           academy: '잠실어학원',
           time: '09:00 ~ 12:00',
+          time_start: '09:00',
           subject: '국어심화리딩',
           lessonTitle: '국어',
           lessonClass: '심화 G반',
           teacher: '사투리 선생님',
+          date: '2022-11-10',
         },
       ],
 
@@ -235,7 +254,39 @@ export default {
         { category: 3, subject: '반 공지입니다.', date: '2022.11.08' },
       ],
       selectedNoticeList: [],
+
+      // 캘린더
+      selectedDate: new Date(),
+      selectedDateTitle: '',
+
+      selectedDateTaskList: [],
     }
+  },
+  created() {
+    // 캘린더 날짜 변환
+    const days = ['일', '월', '화', '수', '목', '금', '토']
+    this.selectedDateTitle =
+      this.selectedDate.getFullYear() +
+      '년 ' +
+      (this.selectedDate.getMonth() + 1) +
+      '월 ' +
+      this.selectedDate.getDate() +
+      '일 ' +
+      days[this.selectedDate.getDay()] +
+      '요일'
+    const today = new Date()
+
+    const year = today.getFullYear()
+    const month = ('0' + (today.getMonth() + 1)).slice(-2)
+    const day = ('0' + today.getDate()).slice(-2)
+    const dateString = year + '-' + month + '-' + day
+    const array = []
+    for (let i = 0; i < this.todayLectureList.length; i++) {
+      if (this.todayLectureList[i].date === dateString) {
+        array.push(this.todayLectureList[i])
+      }
+    }
+    this.selectedDateTaskList = array
   },
   methods: {
     // 학습함
@@ -259,6 +310,19 @@ export default {
         }
       }
       this.selectedNoticeList = array
+    },
+    // 캘린더
+    onDayClick(day) {
+      console.log(day)
+      this.selectedDate = new Date(day.id)
+      this.selectedDateTitle = day.ariaLabel
+      const array = []
+      for (let i = 0; i < this.todayLectureList.length; i++) {
+        if (this.todayLectureList[i].date === day.id) {
+          array.push(this.todayLectureList[i])
+        }
+      }
+      this.selectedDateTaskList = array
     },
   },
 }
