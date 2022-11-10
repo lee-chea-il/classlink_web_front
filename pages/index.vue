@@ -83,6 +83,7 @@ export default {
       // 오늘의 강의
       todayLectureList: [
         {
+        
           academy: '일산어학원',
           time: '09:00 ~ 12:00',
           time_start: '09:00',
@@ -263,6 +264,7 @@ export default {
         {
           key: 'today',
           highlight: 'blue', // Boolean, String, Object
+          bar: 'blue',
           content: '#2c51d7', // Boolean, String, Object
           dates: new Date(),
           excludeDates: null,
