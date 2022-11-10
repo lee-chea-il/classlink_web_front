@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <EducationHeader />
+    <EduHeader />
     <div id="content" class="content">
       <div class="content_area">
         <div class="page_mypage edu_head_bef row">
