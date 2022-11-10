@@ -244,19 +244,131 @@ $navtopHeight: 60px;
 		// display: none;
 		position: absolute;
 		width: 100%;
-		max-width: 318px;
+		// max-width: 318px;
 		height: 100%;
 		top: 0;
 		left: 0px;
-		margin-left: -320px;
+		margin-left: -960px;
 		background-color: theme.$color_white;
 
 		li>a {
 			text-decoration: none;
 		}
 
+		.momu_dapth00 {
+			position: absolute;
+			top: 0px;
+			left: 65px;
+
+			.line {
+				width: 130%;
+				height: 0px;
+				border: 0.4px solid #D1D3D4;
+				margin-top: 30px;
+				margin-left: -25px;
+			}
+
+			.btn_nav_login.active::before,
+			.btn_nav_login:hover::before,
+			.btn_nav_login:focus::before {
+				background: url(../images/icons/icon_login.svg) no-repeat center;
+				background-size: contain;
+			}
+
+			.btn_nav_login::before {
+				display: inline-block;
+				content: "";
+				margin-right: 4px;
+				margin-bottom: -2px;
+				// width: 16px;
+				// height: 16px;
+				background: url(../images/icons/icon_login.svg) no-repeat center;
+				background-size: contain;
+			}
+
+			.btn_nav_login::before {
+				width: 24px;
+				height: 24px;
+				line-height: normal;
+				vertical-align: middle;
+				margin-top: -7px;
+			}
+
+			.btn_nav_login {
+				text-align: center;
+				min-width: 90px;
+				height: 32px;
+				border: 1px solid #A7A9AC;
+				border-radius: 20px;
+				font-size: 14px;
+				font-weight: 400;
+				color: #A7A9AC;
+				vertical-align: middle;
+				line-height: 18px;
+			}
+
+			.function_area button {
+				text-align: left;
+				border: none;
+				font-size: 16px;
+				font-weight: 500;
+				line-height: normal;
+				margin: 5px 0;
+			}
+
+			.btn_nav_join.active::before,
+			.btn_nav_join:hover::before,
+			.btn_nav_join:focus::before {
+				background: url(../images/icons/icon_memjoin.svg) no-repeat center;
+				background-size: contain;
+			}
+
+			.btn_nav_join::before {
+				display: inline-block;
+				content: "";
+				margin-right: 4px;
+				margin-bottom: -2px;
+				// width: 16px;
+				// height: 16px;
+				background: url(../images/icons/icon_memjoin.svg) no-repeat center;
+				background-size: contain;
+			}
+
+			.btn_nav_join::before {
+				width: 24px;
+				height: 24px;
+				line-height: normal;
+				vertical-align: middle;
+				margin-top: -7px;
+			}
+
+			.btn_nav_join {
+				text-align: center;
+				min-width: 90px;
+				height: 32px;
+				border: 1px solid #A7A9AC;
+				border-radius: 20px;
+				font-size: 14px;
+				font-weight: 400;
+				color: #A7A9AC;
+				vertical-align: middle;
+				line-height: 18px;
+			}
+
+			.function_area button {
+				text-align: left;
+				border: none;
+				font-size: 16px;
+				font-weight: 500;
+				line-height: normal;
+				margin: 5px 0;
+			}
+		}
+
 		.momu_dapth01 {
-			padding: 0 70px;
+			padding: 0px 150px;
+			margin-top: 90px;
+			margin-left: -180px;
 
 			li {
 				position: relative;
@@ -272,7 +384,7 @@ $navtopHeight: 60px;
 				a>i {
 					position: absolute;
 					top: 13px;
-					right: 0;
+					right: -160px;
 				}
 			}
 
@@ -343,7 +455,8 @@ $navtopHeight: 60px;
 		}
 
 		.function_area {
-			margin: 40px 60px;
+			margin-top: 30px;
+			margin-left: -39px;
 
 			button {
 				text-align: left;

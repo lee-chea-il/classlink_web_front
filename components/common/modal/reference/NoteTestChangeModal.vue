@@ -42,6 +42,8 @@
                 @select-answer="setAnswer"
                 @change-dificultade="setDificultade"
                 @change-item="setItem"
+                @add-example="$emit('add-example', $event)"
+                @delete-example="setDeleteExample"
               />
               <!-- /.오른쪽 영역 -->
             </div>
@@ -101,6 +103,9 @@ export default {
     },
     setItem(e, idx) {
       this.$emit('change-item', e, idx)
+    },
+    setDeleteExample(e, idx) {
+      this.$emit('delete-example', this.currentPageIdx, idx)
     },
   },
 }

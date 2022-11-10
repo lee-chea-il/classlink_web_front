@@ -9,11 +9,18 @@
               :itemList="noteTestList[currentIdx]"
               :currentIdx="currentIdx"
               @select-answer="$emit('select-answer', currentIdx, $event)"
+              @delete-example="setDeleteExample"
             />
             <!-- /.문제의 보기  -->
             <!-- [개발참조] 보기 4까지 생성되었을 때는 추가 버튼 보이지 않음 -->
-            <div class="example">
-              <button class="btn icons_plus_circle_off"></button>
+            <div
+              v-if="noteTestList[currentIdx].exampleList.length < 4"
+              class="example"
+            >
+              <button
+                class="btn icons_plus_circle_off"
+                @click="$emit('add-example', currentIdx)"
+              ></button>
             </div>
           </div>
           <div class="quiz_area">
@@ -109,6 +116,11 @@ export default {
     currentIdx: {
       type: Number,
       default: 0,
+    },
+  },
+  methods: {
+    setDeleteExample(idx, targetIdx) {
+      this.$emit('delete-example', idx, targetIdx)
     },
   },
 }

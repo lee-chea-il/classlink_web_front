@@ -2040,6 +2040,7 @@ ol {
   .page_mypage .left_area {
     width: 85%;
     margin: 0 auto;
+    margin-top: 20px;
   }
   .page_mypage .right_area {
     width: 85%;

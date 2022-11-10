@@ -28,6 +28,8 @@
           @select-answer="setAnswer"
           @change-dificultade="setDificultade"
           @change-item="setItem"
+          @add-example="$emit('add-example', $event)"
+          @delete-example="setDeleteExample"
         />
       </div>
       <!-- </div> -->
@@ -79,6 +81,10 @@ export default {
 
     setItem(e, idx) {
       this.$emit('change-item', e, idx)
+    },
+
+    setDeleteExample(idx, targetIdx) {
+      this.$emit('delete-example', idx, targetIdx)
     },
   },
 }

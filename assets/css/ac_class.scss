@@ -432,6 +432,28 @@
     color: theme.$text_unselected_color;
   }
 
+  .title {
+    margin: 8px 0px 0px 15px;
+  }
+
+  .title02 {
+    margin-left: 20px;
+    width: 20%;
+  }
+
+  .thumbnail_view {
+    width: 100%;
+  }
+
+  .icons_fullscreen {
+    position: absolute;
+    right: 15px;
+    top: 108px !important;
+  }
+
+  .divide_section .btn_crud_danger {
+    margin-bottom: 10px;
+  }
 }
 
 #modalLessonView.ac_manage_note {

@@ -4616,6 +4616,11 @@ ol {
   background: #F9F9FB;
   padding: 10px 0px;
   margin-top: 10px;
+  width: 100%;
+}
+#modalLessonView .title02 {
+  width: 20%;
+  margin-left: 15px;
 }
 #modalLessonView .icons_fullscreen {
   position: absolute;
@@ -4633,7 +4638,7 @@ ol {
   margin: 20px 0 0 0;
 }
 #modalLessonView .title {
-  margin: 8px 0 0 0;
+  margin: 8px 0 0 15px;
 }
 #modalLessonView .name {
   padding-top: 30px;
@@ -4651,6 +4656,8 @@ ol {
   background: #F9F9FB;
   padding: 10px 0px;
   margin-top: 10px;
+  width: 100%;
+  position: relative;
 }
 #modalLessonView .quiz .active {
   width: 64px;
@@ -4705,6 +4712,36 @@ ol {
 }
 #modalLessonView .quiz .row {
   padding: 4px 0px;
+}
+#modalLessonView .quiz .left_area {
+  width: 42%;
+  margin-right: 10px;
+  margin-left: 15px;
+}
+#modalLessonView .quiz .right_area {
+  width: 42%;
+  margin-right: 10px;
+  margin-left: 15px;
+}
+#modalLessonView .quiz .title02 {
+  width: 20%;
+  margin-left: 15px;
+}
+#modalLessonView .quiz .title03 {
+  width: 40%;
+  margin-left: 15px;
+}
+#modalLessonView .quiz .title04 {
+  width: 20%;
+  margin-left: 15px;
+}
+#modalLessonView .quiz .title05 {
+  width: 50%;
+  margin-left: 15px;
+}
+#modalLessonView .quiz .title06 {
+  width: 24%;
+  margin-left: 15px;
 }
 #modalLessonView .notetest .thumb_box {
   box-sizing: border-box;
@@ -4801,6 +4838,55 @@ ol {
   position: absolute;
   top: 15px;
   right: 15px;
+}
+#modalLessonView .notetest .left_area {
+  width: 64%;
+  margin-right: 10px;
+}
+#modalLessonView .notetest .thumbnail_view01 {
+  width: 100%;
+  position: relative;
+}
+#modalLessonView .notetest .thumbnail_view02 {
+  width: 100%;
+  position: relative;
+}
+#modalLessonView .notetest .right_area01 {
+  width: 33%;
+}
+#modalLessonView .notetest .left_area02 {
+  width: 45%;
+  margin-left: 15px;
+}
+#modalLessonView .notetest .right_area02 {
+  width: 45%;
+  margin-left: 15px;
+}
+#modalLessonView .notetest .title03 {
+  width: 40%;
+  margin-left: 15px;
+}
+#modalLessonView .notetest .title04 {
+  width: 20%;
+  margin-left: 15px;
+}
+#modalLessonView .notetest .quiz_sec02 .left_area {
+  width: 42%;
+  margin-right: 10px;
+  margin-left: 15px;
+}
+#modalLessonView .notetest .quiz_sec02 .right_area {
+  width: 42%;
+  margin-right: 10px;
+  margin-left: 15px;
+}
+#modalLessonView .notetest .quiz_sec02 .title05 {
+  width: 50%;
+  margin-left: 15px;
+}
+#modalLessonView .notetest .title06 {
+  width: 24%;
+  margin-left: 15px;
 }
 
 /* 레슨등록 / 레슨수정 (팝업 L) */
@@ -5210,4 +5296,250 @@ ol {
   text-align: center;
   padding-top: 30px;
   padding-bottom: 0;
+}
+
+/* 페이지쿼리.html */
+/* [개발참조] 퀴즈, 쪽지시험 pdf 저장 관련 */
+.pdf_save {
+  /* 쪽지시험 - 미리보기 - 답변 이미지 없는 경우 */
+  /* 쪽지시험 - 미리보기 - 문제 이미지있는 경우 출력 */
+}
+@page a4sheet {
+  .pdf_save {
+    size: 21cm 29.7cm;
+  }
+}
+.pdf_save .a4 {
+  range: a4sheet;
+  page-break-after: always;
+}
+.pdf_save .question_area {
+  width: 810px;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+.pdf_save .preview_quiz {
+  width: 100%;
+  display: flex;
+  flex-flow: row;
+  margin: 0 auto;
+  gap: 40px;
+}
+.pdf_save .answer_result {
+  width: 250px;
+  height: 512px;
+  background: #F9F9FC;
+  border: 0.4px solid #D1D3D4;
+  border-radius: 5px;
+  overflow-y: scroll;
+}
+.pdf_save .qa_title {
+  width: 90%;
+  height: 50px;
+  background: #7391FA;
+  border-radius: 5px 5px 0px 0px;
+  margin: 0 auto;
+  border: 0.4px solid #D1D3D4;
+}
+.pdf_save .qa_title_font {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 50px;
+  color: #FFFFFF;
+  margin-left: 20px;
+}
+.pdf_save .question_area02 {
+  width: 90%;
+  height: 205px;
+  background: #E7EDFF;
+  margin: 0 auto;
+  border: 0.4px solid #D1D3D4;
+}
+.pdf_save .qa_title_font02 {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 50px;
+  color: #FFFFFF;
+  margin-left: auto;
+  padding-right: 20px;
+}
+.pdf_save .icon_timer {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_timer.png);
+  margin-top: 15px;
+}
+.pdf_save .limit_time_font {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  color: #2C51D7;
+}
+.pdf_save .limit_time {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 10px;
+  gap: 10px;
+}
+.pdf_save .qa_num {
+  width: 50px;
+  height: 50px;
+  background: #7391FA;
+  border-radius: 5px;
+}
+.pdf_save .qa_num_font {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 48px;
+  color: #FFFFFF;
+  margin: 0 20px;
+}
+.pdf_save .qusetion_area03 {
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.pdf_save .qa_cnts {
+  width: 70%;
+  text-align: left;
+}
+.pdf_save .answer_area04 {
+  width: 90%;
+  height: 257px;
+  background: #F9F9FC;
+  border: 0.4px solid #D1D3D4;
+  border-radius: 0px 0px 5px 5px;
+  border-top: none;
+  margin: 0 auto;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+  padding-top: 15px;
+}
+.pdf_save .answer_area04 .aa_number_select {
+  width: 45px;
+  height: 45px;
+  background: #7391FA;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+.pdf_save .answer_area04 .aa_num_font01 {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 43px;
+  color: #FFFFFF;
+  padding: 0 17px;
+}
+.pdf_save .answer_area04 .aa_result_select {
+  width: 70%;
+  height: 45px;
+  background: #FFFFFF;
+  border: 1px solid #7391FA;
+  border-radius: 5px;
+  padding: 0 10px;
+}
+.pdf_save .answer_area04 .aa_number {
+  width: 45px;
+  height: 45px;
+  background: #A7A9AC;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+.pdf_save .answer_area04 .aa_result {
+  width: 70%;
+  height: 45px;
+  left: 448.98px;
+  top: 551px;
+  background: #FFFFFF;
+  border: 0.4px solid #A7A9AC;
+  border-radius: 5px;
+  padding: 0 10px;
+}
+.pdf_save .answer_area04 .aa_wrong {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 43px;
+  color: #454545;
+}
+.pdf_save .answer_area04 .aa_question {
+  justify-content: center;
+  margin: 10px 0;
+}
+.pdf_save .answer_area04 .aa_correct {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 43px;
+  color: #7391FA;
+}
+.pdf_save .question_area04-1 {
+  width: 90%;
+  height: 205px;
+  background: #E7EDFF;
+  margin: 0 auto;
+  border: 0.4px solid #D1D3D4;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-flow: row;
+}
+.pdf_save .question_area04-1 .qa_img {
+  width: 225px;
+  height: 135px;
+  background: #FFFFFF;
+  border: 0.4px solid #A7A9AC;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+}
+.pdf_save .question_area04-1 .icons_thumbnail {
+  width: 72px;
+  height: 73px;
+}
+.pdf_save .question_area04-1 .qusetion_area04-2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pdf_save .question_area04-1 .qa_num {
+  width: 50px;
+  height: 50px;
+  background: #7391FA;
+  border-radius: 5px;
+  margin: 0 20px;
+}
+.pdf_save .question_area04-1 .qa_cnts {
+  width: 50%;
+  text-align: left;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 27px;
+}
+.pdf_save .question_area04-1 .aa_correct {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 43px;
+  color: #7391FA;
+}
+@media (max-width: 1199.98px) {
+  .pdf_save .question_area04-1 .qa_img {
+    width: 140px;
+    height: 105px;
+  }
+  .pdf_save .question_area04-1 .qa_cnts {
+    width: 50%;
+    text-align: left;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 24px;
+  }
 }/*# sourceMappingURL=ac_preparation.css.map */
