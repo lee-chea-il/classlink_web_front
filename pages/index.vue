@@ -42,8 +42,8 @@
                   <div class="right_right_all">
                     <Calendar
                       :selectedDateTaskList="selectedDateTaskList"
-                      :selectedDate="selectedDate"
                       :selectedDateTitle="selectedDateTitle"
+                      :attributes="attributes"
                       @click-date="onDayClick"
                     />
                   </div>
@@ -258,8 +258,17 @@ export default {
       // 캘린더
       selectedDate: new Date(),
       selectedDateTitle: '',
-
       selectedDateTaskList: [],
+      attributes: [
+        {
+          key: 'today',
+          highlight: 'blue', // Boolean, String, Object
+          content: '#2c51d7', // Boolean, String, Object
+          dates: new Date(),
+          excludeDates: null,
+          order: 1,
+        },
+      ],
     }
   },
   created() {
@@ -313,7 +322,6 @@ export default {
     },
     // 캘린더
     onDayClick(day) {
-      console.log(day)
       this.selectedDate = new Date(day.id)
       this.selectedDateTitle = day.ariaLabel
       const array = []

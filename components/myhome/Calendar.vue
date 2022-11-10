@@ -2,10 +2,12 @@
   <div class="calendar_section">
     <!-- 캘린더 영역 -->
     <DatePicker
-      v-model="date"
+      :value="attributes"
       trim-weeks
       class="custom-calendar"
+      color="teal"
       :masks="{ title: 'YYYY MMM' }"
+      :attributes="attributes"
       @dayclick="$emit('click-date', $event)"
     />
     <!-- / 캘린더 영역 -->
@@ -53,13 +55,13 @@ export default {
       type: Array,
       default: () => [],
     },
-    selectedDate: {
-      type: Date,
-      default: null,
-    },
     selectedDateTitle: {
       type: String,
       default: '',
+    },
+    attributes: {
+      type: Array,
+      default: () => [],
     },
   },
   setup(props, { emit }) {
@@ -70,7 +72,6 @@ export default {
 
     return { date }
   },
-  methods: {},
 }
 </script>
 <style scoped>
@@ -92,7 +93,9 @@ export default {
   --day-height: 150px;
   --weekday-bg: #f8fafc;
   --weekday-border: 1px solid #f9f9fc;
-  --blue-600: #7391fa;
+  --blue-600: #d1dbff;
+  --teal-600: #afeced;
+  --white: #2c51d7;
   border: 0;
   background-color: #f9f9fc;
   width: 100%;
