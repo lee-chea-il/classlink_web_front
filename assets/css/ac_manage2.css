@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*---------------------------------------*/
 /*--------   theme.scss   ---------------*/
 /*---------------------------------------*/
@@ -2599,7 +2600,8 @@ ol {
   width: 34%;
   padding-top: 45px;
 }
-.ac_manage_atd .divide_section .divide_area.third .search_result th, .ac_manage_atd .divide_section .divide_area.third .search_result td {
+.ac_manage_atd .divide_section .divide_area.third .search_result th,
+.ac_manage_atd .divide_section .divide_area.third .search_result td {
   text-align: center;
   color: #454545;
 }
@@ -2653,18 +2655,22 @@ ol {
 .ac_manage_atd .list_section.selected li {
   display: block;
 }
-.ac_manage_atd .list_section.selected li .list, .ac_manage_atd .list_section.selected li .list_sub li {
+.ac_manage_atd .list_section.selected li .list,
+.ac_manage_atd .list_section.selected li .list_sub li {
   display: flex;
   align-items: center;
   padding-right: 0;
 }
-.ac_manage_atd .list_section.selected li .list span + i, .ac_manage_atd .list_section.selected li .list_sub li span + i {
+.ac_manage_atd .list_section.selected li .list span + i,
+.ac_manage_atd .list_section.selected li .list_sub li span + i {
   margin-left: auto;
 }
-.ac_manage_atd .list_section.selected li .list i.btn, .ac_manage_atd .list_section.selected li .list_sub li i.btn {
+.ac_manage_atd .list_section.selected li .list i.btn,
+.ac_manage_atd .list_section.selected li .list_sub li i.btn {
   margin-right: 5px;
 }
-.ac_manage_atd .list_section.selected li .list .ss_txt, .ac_manage_atd .list_section.selected li .list_sub li .ss_txt {
+.ac_manage_atd .list_section.selected li .list .ss_txt,
+.ac_manage_atd .list_section.selected li .list_sub li .ss_txt {
   margin-left: 10px;
   font-size: 14px;
   color: #A7A9AC;
@@ -2780,4 +2786,658 @@ ol {
 }
 .modal_batchattendance .cnts_section .list_section .btn_area .btn {
   width: 100%;
+}
+
+/* ------------------ 프랜차이즈가입관리-가맹한리스트 ------------------ */
+/* 프랜차이즈가입관리 -가입요청(팝업 M2) */
+#modalFrcsignup .form-control {
+  width: 240px;
+}
+#modalFrcsignup .title {
+  margin: 0px 0 15px 0;
+}
+#modalFrcsignup .preview {
+  width: 236px;
+  height: 174px;
+  background: #F9F9FB;
+  border-radius: 5px;
+  margin: 20px 0px 20px 116px;
+}
+#modalFrcsignup .icons_thumbnail {
+  margin: 48px 0 0 0;
+}
+
+/* 프랜차이즈가입관리-월별이용현황2 */
+/* 프랜차이즈가입관리 - 월별이용현황상세(팝업 M1) */
+#modalFrcdetail .table thead th {
+  padding-bottom: 20px;
+}
+#modalFrcdetail .modal-body {
+  text-align: center;
+  padding-top: 22px;
+}
+
+/* ------------------ 결제관리 ------------------ */
+/* 관리 - 결제관리 */
+.ac_manage_pay {
+  /* 결제관리-카드정보 */
+  /* 결제관리 - 결제내역 */
+}
+.ac_manage_pay .title {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 36px;
+  align-items: center;
+  text-align: center;
+  color: #2C51D7;
+  margin: 0 0px 36px 0px;
+}
+.ac_manage_pay .check_circle {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: auto;
+  background-image: url(../images/icon_check_circle.png);
+}
+.ac_manage_pay .table td,
+.ac_manage_pay .table th {
+  padding: 0.5rem;
+}
+.ac_manage_pay .table td {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 23px;
+}
+.ac_manage_pay .unpay {
+  margin: 0px 0 -38px 674px;
+}
+.ac_manage_pay .font01 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+}
+.ac_manage_pay .font02 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+  color: #7391FA;
+}
+.ac_manage_pay .info_box .info_area .form-group label,
+.ac_manage_pay .info_box .modify_area .form-group label {
+  width: 170px;
+}
+.ac_manage_pay .info_box {
+  width: 65%;
+  margin: 0 auto;
+}
+.ac_manage_pay .info_area .custom-control,
+.ac_manage_pay .info_area .form-check {
+  margin: 0 0 0 25px;
+}
+.ac_manage_pay .first_name {
+  margin-top: 20px;
+}
+.ac_manage_pay .credit {
+  width: 240px;
+  height: 80px;
+  background: #FFFFFF;
+  border: 1px solid #7391FA;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.ac_manage_pay .font03 {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 75px;
+  margin: 25px 0px 0 90px;
+}
+.ac_manage_pay .account {
+  width: 240px;
+  height: 80px;
+  background: #FFFFFF;
+  border: 0.4px solid #A7A9AC;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.ac_manage_pay .account:hover, .ac_manage_pay .account:focus, .ac_manage_pay .account:active {
+  border: 1px solid #7391FA;
+}
+.ac_manage_pay .pay_choice {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0px 20px 0px;
+}
+.ac_manage_pay .address {
+  margin: 0 0px 0px -70px;
+}
+.ac_manage_pay .custom-control-label::before,
+.ac_manage_pay .custom-control-label::after {
+  margin-top: -3px;
+  left: -11px;
+}
+.ac_manage_pay .address02 {
+  margin: 0 0 0 -128px;
+}
+.ac_manage_pay .font04 {
+  font-weight: 400;
+  font-size: 14px !important;
+  line-height: 20px;
+}
+.ac_manage_pay .check01::before,
+.ac_manage_pay .check01::after {
+  margin-top: -3px;
+  left: -28px;
+}
+.ac_manage_pay .address02::before,
+.ac_manage_pay .address02::after {
+  margin-top: -3px;
+  left: -3px;
+}
+.ac_manage_pay .info_area .custom-control-label,
+.ac_manage_pay .info_area .form-check-label {
+  font-size: 14px;
+}
+.ac_manage_pay .icons_printer {
+  display: inline-block;
+  width: 24px;
+  height: 22px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icons/icon_printer.svg);
+}
+.ac_manage_pay .icons_printer:hover, .ac_manage_pay .icons_printer:focus, .ac_manage_pay .icons_printer:active {
+  background-image: url(../images/icons/icon_printer_on.svg);
+  cursor: pointer;
+}
+
+/* 팝업 S2- 결제 관리 - 현재 요금제 취소 팝업 */
+#modalCancleSub .modal-body {
+  padding-bottom: 25px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 30px;
+  text-align: left;
+  margin: -9px 0px -13px 10px;
+}
+
+/* 팝업 S2- 결제관리 - 카드정보 - 카드 등록 확인 팝업 */
+#modalServiceSub .title {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 23px;
+  margin-bottom: 20px;
+}
+#modalServiceSub .btn_crud_point {
+  width: 93px;
+}
+
+/* 결제관리 - 요금제.html */
+.ac_manage_pay .plan_card.color02 .btn_signup,
+.ac_manage_pay .color02.rateplan_section .btn_signup,
+.ac_manage_pay .color02.select_plan .btn_signup {
+  border: none;
+  background: #D1DBFF;
+}
+.ac_manage_pay .plan_card.color02 .btn_signup:hover, .ac_manage_pay .plan_card.color02 .btn_signup:focus, .ac_manage_pay .plan_card.color02 .btn_signup:active,
+.ac_manage_pay .color02.rateplan_section .btn_signup:hover,
+.ac_manage_pay .color02.rateplan_section .btn_signup:focus,
+.ac_manage_pay .color02.rateplan_section .btn_signup:active,
+.ac_manage_pay .color02.select_plan .btn_signup:hover,
+.ac_manage_pay .color02.select_plan .btn_signup:focus,
+.ac_manage_pay .color02.select_plan .btn_signup:active {
+  background: #7391FA;
+  cursor: pointer;
+  color: #FFFFFF;
+}
+.ac_manage_pay .plan_card.color03 .btn_signup,
+.ac_manage_pay .color03.rateplan_section .btn_signup,
+.ac_manage_pay .color03.select_plan .btn_signup {
+  border: none;
+  background: #7391FA;
+  color: #FFFFFF;
+}
+.ac_manage_pay .plan_card.color03 .btn_signup:hover, .ac_manage_pay .plan_card.color03 .btn_signup:focus, .ac_manage_pay .plan_card.color03 .btn_signup:active,
+.ac_manage_pay .color03.rateplan_section .btn_signup:hover,
+.ac_manage_pay .color03.rateplan_section .btn_signup:focus,
+.ac_manage_pay .color03.rateplan_section .btn_signup:active,
+.ac_manage_pay .color03.select_plan .btn_signup:hover,
+.ac_manage_pay .color03.select_plan .btn_signup:focus,
+.ac_manage_pay .color03.select_plan .btn_signup:active {
+  background: #2C51D7;
+  cursor: pointer;
+}
+.ac_manage_pay .plan_card.color04 .btn_signup,
+.ac_manage_pay .color04.rateplan_section .btn_signup,
+.ac_manage_pay .color04.select_plan .btn_signup {
+  border: none;
+  background: #4FCED0;
+  color: #FFFFFF;
+}
+.ac_manage_pay .plan_card.color04 .btn_signup:hover, .ac_manage_pay .plan_card.color04 .btn_signup:focus, .ac_manage_pay .plan_card.color04 .btn_signup:active,
+.ac_manage_pay .color04.rateplan_section .btn_signup:hover,
+.ac_manage_pay .color04.rateplan_section .btn_signup:focus,
+.ac_manage_pay .color04.rateplan_section .btn_signup:active,
+.ac_manage_pay .color04.select_plan .btn_signup:hover,
+.ac_manage_pay .color04.select_plan .btn_signup:focus,
+.ac_manage_pay .color04.select_plan .btn_signup:active {
+  background: #AFECED;
+  cursor: pointer;
+}
+.ac_manage_pay .plan_card.service .btn_signup,
+.ac_manage_pay .service.rateplan_section .btn_signup,
+.ac_manage_pay .service.select_plan .btn_signup {
+  width: 140px;
+  border: none;
+  background: #7391FA;
+  color: #FFFFFF;
+  margin-bottom: 20px;
+}
+.ac_manage_pay .plan_card.service .btn_signup:hover, .ac_manage_pay .plan_card.service .btn_signup:focus, .ac_manage_pay .plan_card.service .btn_signup:active,
+.ac_manage_pay .service.rateplan_section .btn_signup:hover,
+.ac_manage_pay .service.rateplan_section .btn_signup:focus,
+.ac_manage_pay .service.rateplan_section .btn_signup:active,
+.ac_manage_pay .service.select_plan .btn_signup:hover,
+.ac_manage_pay .service.select_plan .btn_signup:focus,
+.ac_manage_pay .service.select_plan .btn_signup:active {
+  background: #2C51D7;
+  cursor: pointer;
+}
+
+/* ------------------ 공지사항 ------------------ */
+/* 공지사항.html 페이지 */
+.ac_manage_notice {
+  /* .btn {
+     margin-right: 10px;
+   } */
+}
+.ac_manage_notice .dropdown .dropdown-toggle {
+  height: 40px;
+  /* margin-right: 10px; */
+}
+.ac_manage_notice .form-search {
+  height: 40px;
+  /* margin-right: 10px; */
+  width: 40%;
+}
+.ac_manage_notice .file_icon {
+  display: inline-block;
+  width: 20px;
+  height: 18px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_file.png);
+  margin-right: 5px;
+  margin-bottom: 4px;
+}
+.ac_manage_notice .save {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.ac_manage_notice td.td_expand .notice_contents {
+  padding: 10px 15px;
+  width: 100%;
+  height: 86px;
+  line-height: 24px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 5px 0px 10px 0px;
+}
+.ac_manage_notice .thumbnail_area .thumbnail {
+  margin-right: 10px;
+}
+.ac_manage_notice .btns_area {
+  text-align: right;
+  margin: 0px -10px -2px 0;
+}
+.ac_manage_notice .search_section .left_area {
+  width: 50%;
+}
+.ac_manage_notice .search_section .right_area {
+  width: 50%;
+}
+
+/* 공지사항-등록.html 페이지 */
+.notice_rigi .content {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
+  align-items: center;
+  text-align: right;
+  letter-spacing: -0.5px;
+  color: #A7A9AC;
+}
+.notice_rigi .file_area {
+  margin: 15px 0;
+}
+.notice_rigi .date_area {
+  display: flex;
+}
+.notice_rigi .target_area {
+  display: flex;
+  margin: 15px 0px;
+}
+.notice_rigi .box01 {
+  align-items: center;
+  padding: 3px 55px 10px 55px;
+  gap: 10px;
+  width: 230px;
+  height: 40px;
+  background: #E7EDFF;
+  border-radius: 5px;
+  line-height: 13px;
+  text-align: center;
+  margin-left: 10px;
+}
+.notice_rigi .box02 {
+  align-items: center;
+  padding: 11px 55px 10px 60px;
+  gap: 10px;
+  width: 230px;
+  height: 40px;
+  background: #E7EDFF;
+  border-radius: 5px;
+  line-height: 13px;
+  margin-left: 10px;
+}
+.notice_rigi .content02 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+}
+.notice_rigi .file_list {
+  margin-top: 0px !important;
+  max-width: 92%;
+  margin-left: 93px;
+}
+.notice_rigi .write_area {
+  margin-top: 15px !important;
+}
+
+/* 공지사항 등록 - 기한설정(팝업 M2) */
+#modalNoticeData .form-time {
+  width: 80px;
+}
+#modalNoticeData .title {
+  margin-right: 40px;
+}
+#modalNoticeData .form-control {
+  padding: 10px 20px;
+}
+#modalNoticeData .calendar_box {
+  width: 342px;
+  height: 280px;
+  background: #FFFFFF;
+  border: 0.4px solid #A7A9AC;
+  border-radius: 5px;
+  margin: -21px 0 21px 115px;
+}
+#modalNoticeData .calendar_text {
+  line-height: 276px;
+}
+#modalNoticeData .title02 {
+  margin: 15px 383px 0px 0;
+}
+#modalNoticeData .form-check {
+  text-align: left;
+}
+#modalNoticeData .check_sec {
+  text-align: left;
+  margin: 0 0px 0px 120px;
+}
+
+/* 공지사항 등록 - 대상설정(팝업 M2) */
+#modalNoticeTarget .notice_box {
+  width: 382px;
+  height: 100px;
+  border: 0.4px solid #A7A9AC;
+  border-radius: 5px;
+  margin: 0 auto;
+}
+#modalNoticeTarget .notice_first .form-check {
+  margin: 5px 30px;
+  text-align: left;
+}
+#modalNoticeTarget .notice_second .form-check {
+  margin: 5px 30px;
+  text-align: left;
+}
+#modalNoticeTarget .notice_first {
+  display: flex;
+  margin-top: 16px;
+}
+#modalNoticeTarget .notice_second {
+  display: flex;
+}
+#modalNoticeTarget .notice_first label,
+#modalNoticeTarget .notice_second label {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+}
+
+/* 공지사항 상세보기 (팝업 L) */
+#modalNoticeView .title_area {
+  text-align: left;
+  width: 109%;
+  margin-bottom: 40px;
+  margin-top: -15px;
+}
+#modalNoticeView .title_area .notice_day {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #FB5353;
+  margin: 0 0 0 31px;
+  width: 8%;
+}
+#modalNoticeView .title_area .notice_writer {
+  width: 15%;
+}
+#modalNoticeView .title_area .notice_day02,
+#modalNoticeView .title_area .notice_writer {
+  text-align: right;
+}
+#modalNoticeView .file_icon {
+  display: inline-block;
+  width: 20px;
+  height: 18px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_file.png);
+  margin: 0px 5px 2px 17px;
+}
+#modalNoticeView .save {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
+  margin-left: 10px;
+  cursor: pointer;
+}
+#modalNoticeView .file_name {
+  padding: 6px 12px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  width: 97%;
+  margin: 14px auto;
+}
+#modalNoticeView .file_info {
+  text-align: left;
+}
+#modalNoticeView .box {
+  width: 70%;
+  height: 350px;
+  background: #F9F9FC;
+  margin: 56px auto;
+}
+#modalNoticeView .content_area {
+  width: 97%;
+  height: 332px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  overflow-y: scroll;
+}
+#modalNoticeView .icons_thumbnail {
+  margin: 135px auto;
+}
+#modalNoticeView .notice_content {
+  text-align: left;
+  margin: 15px 15px;
+}
+
+/* 공지사항 컨펌체크 (팝업 L) */
+#modalNoticeConfirm .confirm_sub {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
+}
+#modalNoticeConfirm .title_area {
+  display: flex;
+}
+#modalNoticeConfirm .confirm_title {
+  margin-right: 20px;
+  line-height: 40px;
+}
+#modalNoticeConfirm .confirm_sub {
+  margin-right: auto;
+  line-height: 40px;
+}
+#modalNoticeConfirm .btn_filter {
+  margin-right: 5px;
+}
+#modalNoticeConfirm .btn_filter_off {
+  opacity: 0.3;
+}
+#modalNoticeConfirm .btn_filter_off.on {
+  opacity: 1;
+}
+#modalNoticeConfirm .modal-body {
+  text-align: center;
+  padding: 35px 30px;
+}
+#modalNoticeConfirm .box01 {
+  position: relative;
+  width: 100%;
+  height: 270px;
+  padding: 10px;
+  background: #F9F9FB;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  margin-top: 10px;
+  text-align: left;
+}
+@media (min-width: 992px) {
+  #modalNoticeConfirm .box01 .right_area {
+    text-align: right;
+    width: 50%;
+  }
+}
+#modalNoticeConfirm .keyword_area {
+  position: relative;
+  height: auto;
+  padding: 1px 8px;
+}
+#modalNoticeConfirm .keyword_area_01 {
+  position: relative;
+  max-height: 113px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 10px;
+  overflow-y: auto;
+  white-space: nowrap;
+}
+#modalNoticeConfirm .keyword01 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 88px;
+  height: 28px;
+  background: #D1DBFF;
+  border-radius: 3px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+#modalNoticeConfirm .keyword01-1 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+  margin: 0px 5px 0px 9px;
+}
+#modalNoticeConfirm .x {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_×.png);
+  margin-right: 8px;
+}
+#modalNoticeConfirm .filter_wrap {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  overflow-y: auto;
+  background-color: #fff;
+  padding: 12px 15px;
+  margin-top: 20px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+}
+#modalNoticeConfirm .filter_wrap .filter_section {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+}
+#modalNoticeConfirm .filter_wrap .filter_section .title_area {
+  width: 140px;
+}
+#modalNoticeConfirm .filter_wrap .filter_section .filter_area {
+  width: calc(100% - 140px);
+  display: flex;
+  flex-wrap: wrap;
+}
+#modalNoticeConfirm .filter_wrap .filter_section .filter_area .filter {
+  display: inline-block;
+  text-align: left;
+  width: 140px;
+  margin-bottom: 15px;
+}
+#modalNoticeConfirm .search_result {
+  position: relative;
+  margin-top: 10px;
+}
+#modalNoticeConfirm .search_result .tbl_overflow {
+  min-height: 250px;
+}
+#modalNoticeConfirm .search_result .table th {
+  color: #454545;
+}
+#modalNoticeConfirm .search_result .table tbody td {
+  padding: 15px 5px;
+  font-size: 16px;
+}
+#modalNoticeConfirm .search_result .table tbody tr:nth-child(even) {
+  background-color: #F9F9FC;
 }/*# sourceMappingURL=ac_manage2.css.map */

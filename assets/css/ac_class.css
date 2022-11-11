@@ -2282,6 +2282,24 @@ ol {
   line-height: 20px;
   color: #A7A9AC;
 }
+.ac_manage_note .title {
+  margin: 8px 0px 0px 15px;
+}
+.ac_manage_note .title02 {
+  margin-left: 20px;
+  width: 20%;
+}
+.ac_manage_note .thumbnail_view {
+  width: 100%;
+}
+.ac_manage_note .icons_fullscreen {
+  position: absolute;
+  right: 15px;
+  top: 108px !important;
+}
+.ac_manage_note .divide_section .btn_crud_danger {
+  margin-bottom: 10px;
+}
 
 #modalLessonView.ac_manage_note .thumb_box {
   height: 570px;

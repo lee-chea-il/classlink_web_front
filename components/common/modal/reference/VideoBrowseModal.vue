@@ -15,65 +15,40 @@
           <ModalHeader title="자료 열람" @close="$emit('close')" />
 
           <div class="modal-body">
-            <!-- [개발참조] 동영상 자료 열람 시 -->
-            <div v-if="selectData.uploadType === 'video'" class="video">
-              <div class="bar">
-                <span class="pdf_title">{{ selectData.name }}</span>
-              </div>
-              <video class="video" :src="selectData.savePath" controls />
-            </div>
+            <VideoView
+              :open="selectData.uploadType === 'video'"
+              :data="selectData"
+            />
 
-            <!-- [개발참조] 문서자료 열람 시 -->
-            <div v-else-if="selectData.uploadType === 'pdf'" class="pdf">
-              <div class="bar">
-                <span class="pdf_title">{{ selectData.name }}</span>
-                <span class="list"></span>
-                <span class="full"></span>
-              </div>
-              <embed
-                class="embed"
-                :src="selectData.savePath"
-                type="application/pdf"
-              />
-            </div>
+            <PdfView
+              :open="selectData.uploadType === 'pdf'"
+              :data="selectData"
+            />
+            <YoutubeView
+              :open="selectData.uploadType === 'youtube'"
+              :data="selectData"
+            />
 
-            <!-- [개발참조] 유튜브 열람 시 -->
-            <div v-else-if="selectData.uploadType === 'youtube'" class="pdf">
-              <div class="bar">
-                <span class="pdf_title">{{ selectData.name }}</span>
-              </div>
-              <iframe class="iframe" :src="selectData.savePath" />
-            </div>
-
-            <!-- [개발참조] url 열람 시 -->
-            <div v-else-if="selectData.uploadType === 'url'" class="pdf">
-              <div class="bar">
-                <span class="pdf_title">{{ selectData.name }}</span>
-              </div>
-              <iframe class="iframe" :src="selectData.savePath" />
-            </div>
+            <UrlView
+              :open="selectData.uploadType === 'url'"
+              :data="selectData"
+            />
 
             <div class="btnsec">
-              <button
-                class="btn btn_crud_default"
-                data-toggle="modal"
-                @click="$emit('open-save-path', 'isReferenceBrowseModal')"
-              >
-                이동
-              </button>
-              <button
-                class="btn btn_crud_default"
-                data-toggle="modal"
-                @click="
+              <ReferenceBtn
+                title="이동"
+                @click-event="$emit('open-save-path', 'isReferenceBrowseModal')"
+              />
+              <ReferenceBtn
+                title="공유"
+                @click-event="
                   $emit(
                     'view-url',
                     'isReferenceBrowseModal',
                     selectData.savePath
                   )
                 "
-              >
-                공유
-              </button>
+              />
               <button class="btn btn_crud_default">
                 <a
                   :href="selectData.savePath"
@@ -82,21 +57,14 @@
                   >다운로드</a
                 >
               </button>
-              <button
-                class="btn btn_crud_default"
-                data-dismiss="modal"
-                data-toggle="modal"
-                @click="$emit('reference-change')"
-              >
-                수정
-              </button>
-              <button
-                class="btn btn_crud_default"
-                data-toggle="modal"
-                @click="$emit('delete', 'isReferenceBrowseModal')"
-              >
-                삭제
-              </button>
+              <ReferenceBtn
+                title="수정"
+                @click-event="$emit('reference-change')"
+              />
+              <ReferenceBtn
+                title="삭제"
+                @click-event="$emit('delete', 'isReferenceBrowseModal')"
+              />
             </div>
 
             <!-- [개발참조] 하단 info_section 부분은 열람 팝업 공통 -->
@@ -111,9 +79,20 @@
 <script>
 import ModalHeader from '../../ModalHeader.vue'
 import FileInfoSection from '~/components/reference/FileInfoSection.vue'
+import VideoView from '~/components/reference/referenceBrowse/VideoView.vue'
+import PdfView from '~/components/reference/referenceBrowse/PdfView.vue'
+import YoutubeView from '~/components/reference/referenceBrowse/YoutubeView.vue'
+import UrlView from '~/components/reference/referenceBrowse/UrlView.vue'
 export default {
   name: 'VideoBrowseModal',
-  components: { FileInfoSection, ModalHeader },
+  components: {
+    FileInfoSection,
+    ModalHeader,
+    VideoView,
+    PdfView,
+    YoutubeView,
+    UrlView,
+  },
   props: {
     open: {
       type: Boolean,

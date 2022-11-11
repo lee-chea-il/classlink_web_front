@@ -24,13 +24,15 @@
                   >수업준비</nuxt-link
                 >
               </li>
-
               <li class="nav-item">
-                <a
+                <nuxt-link
                   class="nav-link"
-                  :class="{ active: $store.state.common.activeNavIdx === 2 }"
-                  href="#"
-                  >수업</a
+                  :class="{
+                    'nav-link': true,
+                    active: $route.matched[0].path === '/class',
+                  }"
+                  to="/class/lecturecourse"
+                  >수업</nuxt-link
                 >
               </li>
               <li class="nav-item">
@@ -131,11 +133,19 @@
         </ul>
       </div>
 
-      <div v-show="$store.state.common.activeNavIdx === 2" class="nav_sub">
+      <div v-show="$route.matched[0].path === '/class'" class="nav_sub">
         <ul class="nav nav_dapth02">
           <li class="nav-item">
             <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
-            <a class="nav-link" href="#">강의코스</a>
+            <NuxtLink
+              to="/class/lecturecourse"
+              :class="{
+                'nav-link': true,
+                active: $route.fullPath.includes('/class/lecturecourse'),
+              }"
+              href="#"
+              >강의 코스</NuxtLink
+            >
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">학습함</a>
@@ -482,7 +492,7 @@
 
 <script>
 export default {
-  name: 'EducationHeader',
+  name: 'EduHeader',
   methods: {
     ReloadPage() {
       location.reload()

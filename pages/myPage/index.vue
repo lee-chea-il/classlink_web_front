@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <EducationHeader />
+    <EduHeader />
     <div id="content" class="content">
       <div class="content_area">
         <div class="page_mypage edu_head_bef row">
@@ -461,9 +461,9 @@ export default {
         state: true,
         alarm: false,
         profile_image: require('@/assets/images/mypage/profile1.png'),
-        // profile_image: '',
+       
         profile_cw_image: require('@/assets/images/mypage/cwprofile1.png'),
-        // profile_cw_image: '',
+       
         password: '1234!',
         authNumber: '',
       },

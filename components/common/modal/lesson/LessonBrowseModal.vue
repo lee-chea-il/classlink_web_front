@@ -19,7 +19,7 @@
               <!-- 2단 분류 컨텐츠 -->
               <div class="divide_section">
                 <!-- 왼쪽 영역 -->
-                <LessonBrowseLeftField
+                <LessonBrowseLeftField  
                   :lessonItem="lessonItem"
                   @select-reference="$emit('select-reference', $event)"
                 />

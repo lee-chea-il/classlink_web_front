@@ -2,6 +2,19 @@
   <div>
     <PageHeader title="레슨" />
 
+    <!-- <LessonMain
+      ref="lesson"
+      :identity="identity"
+      :receiveInstitutionLessonData="receiveInstitutionLessonData"
+      :receiveFranchiseLessonData="receiveFranchiseLessonData"
+      :receiveLessonList="receiveLessonList"
+      @copy="copyData"
+      @paste="pasteData"
+      @del="delData"
+      @open-add="openLessonAdd"
+      @callback="copyDataCallBack"
+    /> -->
+
     <div class="tab-content depth03 ac_manage_dtr">
       <div class="tab-pane active">
         <!-- 컨트롤 버튼 영역 -->
@@ -639,7 +652,6 @@ export default {
                   { id: '', example: '<p>답 2임</p>' },
                   { id: '', example: '<p>답 3임</p>' },
                   { id: '', example: '<p>답 4임</p>' },
-                  { id: '', example: '<p>답 5임</p>' },
                 ],
                 dificultade: 0,
                 limitTime: '',
@@ -655,7 +667,6 @@ export default {
                   { id: '', example: '<p>답 6임</p>' },
                   { id: '', example: '<p>답 7임</p>' },
                   { id: '', example: '<p>답 8임</p>' },
-                  { id: '', example: '<p>답 9임</p>' },
                 ],
                 dificultade: 2,
                 limitTime: '',

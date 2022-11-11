@@ -43,4 +43,8 @@ export default {
 .thumbnail_view02 {
   padding: 12px !important;
 }
+
+#modalLessonView .notetest .left_area {
+  margin: 0;
+}
 </style>

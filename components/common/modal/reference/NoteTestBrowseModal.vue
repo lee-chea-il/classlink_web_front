@@ -24,35 +24,22 @@
               @preview="setPreview"
             />
             <!-- /.자료 열람 -->
-            
+
             <div class="btnsec">
-              <button
-                class="btn btn_crud_default"
-                data-toggle="modal"
-                data-target="#modalStoragepath"
-                @click="$emit('open-save-path', 'isNoteTestBrowseModal')"
-              >
-                이동
-              </button>
-              <button class="btn btn_crud_default" data-toggle="modal">
-                공유
-              </button>
-              <button class="btn btn_crud_default">다운로드</button>
-              <button
-                class="btn btn_crud_default"
-                data-dismiss="modal"
-                data-toggle="modal"
-                @click="$emit('change')"
-              >
-                수정
-              </button>
-              <button
-                class="btn btn_crud_default"
-                data-toggle="modal"
-                @click="$emit('delete', 'isNoteTestBrowseModal')"
-              >
-                삭제
-              </button>
+              <ReferenceBtn
+                title="이동"
+                @click-event="$emit('open-save-path', 'isNoteTestBrowseModal')"
+              />
+              <ReferenceBtn title="공유" @click-event="$emit('export-pdf')" />
+              <ReferenceBtn
+                title="다운로드"
+                @click-event="$emit('export-pdf')"
+              />
+              <ReferenceBtn title="수정" @click-event="$emit('change')" />
+              <ReferenceBtn
+                title="삭제"
+                @click-event="$emit('delete', 'isNoteTestBrowseModal')"
+              />
             </div>
 
             <!-- [개발참조] 하단 info_section 부분은 열람 팝업 공통 -->

@@ -528,6 +528,7 @@
 	}
 }
 
+
 // 레슨 - 레슨등록,열람 팝업, 커리큘럼 등록 공통 사용
 .modal_ac_manage_lesson,
 .modal_ac_manage_curi {
@@ -2895,7 +2896,14 @@
 		background: theme.$color_normal;
 		padding: 10px 0px;
 		margin-top: 10px;
+		width: 100%;
 	}
+
+	.title02 {
+		width: 20%;
+		margin-left: 15px;
+	}
+
 
 	.icons_fullscreen {
 		position: absolute;
@@ -2917,7 +2925,7 @@
 	}
 
 	.title {
-		margin: 8px 0 0 0;
+		margin: 8px 0 0 15px;
 	}
 
 	.name {
@@ -2942,6 +2950,8 @@
 			background: theme.$color_normal;
 			padding: 10px 0px;
 			margin-top: 10px;
+			width: 100%;
+			position: relative;
 		}
 
 		.active {
@@ -3007,13 +3017,48 @@
 			right: 15px;
 		}
 
-		// .icons_fullscreen {
-		// 	margin-left: 490px;
-		// }
-
 		.row {
 			padding: 4px 0px;
 		}
+
+		.left_area {
+			width: 42%;
+			margin-right: 10px;
+			margin-left: 15px
+		}
+
+		.right_area {
+			width: 42%;
+			margin-right: 10px;
+			margin-left: 15px;
+		}
+
+		.title02 {
+			width: 20%;
+			margin-left: 15px;
+		}
+
+		.title03 {
+			width: 40%;
+			margin-left: 15px;
+		}
+
+		.title04 {
+			width: 20%;
+			margin-left: 15px;
+		}
+
+		.title05 {
+			width: 50%;
+			margin-left: 15px;
+		}
+
+
+		.title06 {
+			width: 24%;
+			margin-left: 15px;
+		}
+
 	}
 
 	/* 오른쪽 영역 - 쪽지시험 컨텐츠  */
@@ -3163,9 +3208,74 @@
 			top: 15px;
 			right: 15px;
 		}
-	}
 
+		.left_area {
+			width: 64%;
+			margin-right: 10px;
+		}
+
+		.thumbnail_view01 {
+			width: 100%;
+			position: relative;
+		}
+
+		.thumbnail_view02 {
+			width: 100%;
+			position: relative;
+		}
+
+		.right_area01 {
+			width: 33%;
+		}
+
+		.left_area02 {
+			width: 45%;
+			margin-left: 15px;
+		}
+
+		.right_area02 {
+			width: 45%;
+			margin-left: 15px;
+		}
+
+		.title03 {
+			width: 40%;
+			margin-left: 15px;
+		}
+
+		.title04 {
+			width: 20%;
+			margin-left: 15px;
+		}
+
+		.quiz_sec02 {
+			.left_area {
+				width: 42%;
+				margin-right: 10px;
+				margin-left: 15px;
+			}
+
+			.right_area {
+				width: 42%;
+				margin-right: 10px;
+				margin-left: 15px;
+			}
+
+
+			.title05 {
+				width: 50%;
+				margin-left: 15px;
+			}
+		}
+
+		.title06 {
+			width: 24%;
+			margin-left: 15px;
+		}
+	}
 }
+
+
 
 /* 레슨등록 / 레슨수정 (팝업 L) */
 #modalLessonRegi {
@@ -3673,4 +3783,287 @@
 		padding-bottom: 0;
 	}
 
+}
+
+/* 페이지쿼리.html */
+/* [개발참조] 퀴즈, 쪽지시험 pdf 저장 관련 */
+
+.pdf_save {
+	@page a4sheet {
+		size: 21.0cm 29.7cm
+	}
+
+	.a4 {
+		range: a4sheet;
+		page-break-after: always
+	}
+
+	.question_area {
+		width: 810px;
+		margin: 0 auto;
+		margin-top: 30px;
+	}
+
+	.preview_quiz {
+		width: 100%;
+		display: flex;
+		flex-flow: row;
+		margin: 0 auto;
+		gap: 40px;
+	}
+
+	.answer_result {
+		width: 250px;
+		height: 512px;
+		background: #F9F9FC;
+		border: 0.4px solid #D1D3D4;
+		border-radius: 5px;
+		overflow-y: scroll
+	}
+
+	.qa_title {
+		width: 90%;
+		height: 50px;
+		background: #7391FA;
+		border-radius: 5px 5px 0px 0px;
+		margin: 0 auto;
+		border: 0.4px solid #D1D3D4;
+	}
+
+	.qa_title_font {
+		font-weight: 400;
+		font-size: 20px;
+		line-height: 50px;
+		color: #FFFFFF;
+		margin-left: 20px;
+	}
+
+	.question_area02 {
+		width: 90%;
+		height: 205px;
+		background: #E7EDFF;
+		margin: 0 auto;
+		border: 0.4px solid #D1D3D4;
+	}
+
+	.qa_title_font02 {
+		font-weight: 400;
+		font-size: 20px;
+		line-height: 50px;
+		color: #FFFFFF;
+		margin-left: auto;
+		padding-right: 20px;
+	}
+
+	.icon_timer {
+		display: inline-block;
+		width: 36px;
+		height: 36px;
+		text-align: center;
+		vertical-align: middle;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: contain;
+		background-image: url(../images/icon_timer.png);
+		margin-top: 15px;
+	}
+
+	.limit_time_font {
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 23px;
+		color: #2C51D7;
+	}
+
+	.limit_time {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		margin-right: 10px;
+		gap: 10px;
+	}
+
+	.qa_num {
+		width: 50px;
+		height: 50px;
+		background: #7391FA;
+		border-radius: 5px;
+	}
+
+	.qa_num_font {
+		font-weight: 700;
+		font-size: 20px;
+		line-height: 48px;
+		color: #FFFFFF;
+		margin: 0 20px;
+	}
+
+	.qusetion_area03 {
+		justify-content: center;
+		align-items: center;
+		gap: 20px;
+	}
+
+	.qa_cnts {
+		width: 70%;
+		text-align: left;
+	}
+
+	/* 쪽지시험 - 미리보기 - 답변 이미지 없는 경우 */
+	.answer_area04 {
+
+		width: 90%;
+		height: 257px;
+		background: #F9F9FC;
+		border: 0.4px solid #D1D3D4;
+		border-radius: 0px 0px 5px 5px;
+		border-top: none;
+		margin: 0 auto;
+		gap: 10px;
+		justify-content: center;
+		align-items: center;
+		flex-flow: column;
+		padding-top: 15px;
+
+		.aa_number_select {
+			width: 45px;
+			height: 45px;
+			background: #7391FA;
+			border-radius: 5px;
+			margin-right: 10px;
+		}
+
+		.aa_num_font01 {
+			font-weight: 400;
+			font-size: 20px;
+			line-height: 43px;
+			color: #FFFFFF;
+			padding: 0 17px;
+		}
+
+		.aa_result_select {
+			width: 70%;
+			height: 45px;
+			background: #FFFFFF;
+			border: 1px solid #7391FA;
+			border-radius: 5px;
+			padding: 0 10px;
+		}
+
+		.aa_number {
+			width: 45px;
+			height: 45px;
+			background: #A7A9AC;
+			border-radius: 5px;
+			margin-right: 10px;
+		}
+
+		.aa_result {
+			width: 70%;
+			height: 45px;
+			left: 448.98px;
+			top: 551px;
+			background: #FFFFFF;
+			border: 0.4px solid #A7A9AC;
+			border-radius: 5px;
+			padding: 0 10px;
+		}
+
+		.aa_wrong {
+			font-weight: 500;
+			font-size: 20px;
+			line-height: 43px;
+			color: #454545;
+		}
+
+		.aa_question {
+			justify-content: center;
+			margin: 10px 0;
+		}
+
+		.aa_correct {
+			font-weight: 700;
+			font-size: 20px;
+			line-height: 43px;
+			color: #7391FA;
+		}
+
+	}
+
+	/* 쪽지시험 - 미리보기 - 문제 이미지있는 경우 출력 */
+	.question_area04-1 {
+		width: 90%;
+		height: 205px;
+		background: #E7EDFF;
+		margin: 0 auto;
+		border: 0.4px solid #D1D3D4;
+		justify-content: center;
+		align-items: center;
+		gap: 15px;
+		flex-flow: row;
+
+
+		.qa_img {
+			width: 225px;
+			height: 135px;
+			background: #FFFFFF;
+			border: 0.4px solid #A7A9AC;
+			border-radius: 5px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-right: 20px;
+		}
+
+		.icons_thumbnail {
+			width: 72px;
+			height: 73px;
+		}
+
+		.qusetion_area04-2 {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.qa_num {
+			width: 50px;
+			height: 50px;
+			background: #7391FA;
+			border-radius: 5px;
+			margin: 0 20px;
+		}
+
+		.qa_cnts {
+			width: 50%;
+			text-align: left;
+			font-weight: 400;
+			font-size: 16px;
+			line-height: 27px;
+		}
+
+		.aa_correct {
+			font-weight: 700;
+			font-size: 20px;
+			line-height: 43px;
+			color: #7391FA;
+		}
+
+		@media (max-width: 1199.98px) {
+			.qa_img {
+				width: 140px;
+				height: 105px;
+			}
+
+			.qa_cnts {
+				width: 50%;
+				text-align: left;
+				font-weight: 400;
+				font-size: 15px;
+				line-height: 24px;
+			}
+
+		}
+
+	}
 }

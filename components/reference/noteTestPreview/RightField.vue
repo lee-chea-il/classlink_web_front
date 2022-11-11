@@ -25,9 +25,9 @@
 </template>
 
 <script>
+import ArrowBox from '../commom/ArrowBox.vue'
 import AnswerArea from './AnswerArea.vue'
 import AnswerField from './AnswerField.vue'
-import ArrowBox from './ArrowBox.vue'
 export default {
   name: 'NoteTestRightField',
   components: { AnswerArea, AnswerField, ArrowBox },
@@ -50,8 +50,8 @@ export default {
 </script>
 
 <style scoped>
-#modalPreviewQuiz .answer_area04,
+/* #modalPreviewQuiz .answer_area04,
 #modalPreviewTest .answer_area04 {
   height: 310px;
-}
+} */
 </style>

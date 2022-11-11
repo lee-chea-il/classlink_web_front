@@ -34,7 +34,11 @@
           </client-only>
         </div>
       </div>
-      <button v-if="idx !== 0" class="btn icons_x_circle_off"></button>
+      <button
+        v-if="idx !== 0"
+        class="btn icons_x_circle_off"
+        @click="$emit('delete-example', currentPageIdx, idx)"
+      ></button>
       <button
         v-else
         class="btn icons_x_circle_off"

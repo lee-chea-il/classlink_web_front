@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <EducationHeader />
+    <EduHeader />
     <div id="content" class="content">
       <div class="content_area">
         <Nuxt />
@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import EducationHeader from '@/components/education/EducationHeader.vue'
+import EduHeader from '@/components/education/EduHeader.vue'
 export default {
   name: 'EducationLayout',
-  components: { EducationHeader },
+  components: { EduHeader },
 }
 </script>
 

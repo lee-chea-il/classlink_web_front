@@ -7,9 +7,8 @@
         <div class="search_section">
           <div class="left_area">
             <div class="btn btn_crud_default" @click="copyData">복사</div>
-            <button class="btn btn_crud_default" @click="pasteData">
-              붙여넣기
-            </button>
+            <!-- <button class="btn btn_crud_default" @click="pasteData"> -->
+            <button class="btn btn_crud_default">붙여넣기</button>
             <button class="btn btn_crud_default" @click="delData">삭제</button>
           </div>
 
@@ -176,6 +175,19 @@
       </div>
     </div>
 
+    <!-- <ReferenceMain
+      ref="reference"
+      :identity="identity"
+      :receiveInstitutionData="receiveInstitutionData"
+      :receiveFranchiseData="receiveFranchiseData"
+      :receiveCurriculumData="receiveCurriculumData"
+      @copy="copyData"
+      @paste="pasteData"
+      @del="delData"
+      @callback="copyDataCallBack"
+      @click-tree="onClick"
+    /> -->
+
     <!-- 등록 파일 선택 -->
     <ReferenceSelectModal
       :uploadType="uploadType"
@@ -257,6 +269,8 @@
       @set-keyword="setKeyword"
       @delete-keyword="deleteKeyword"
       @open-save-path="onOpenSavePathModal"
+      @add-example="plusExampleList"
+      @delete-example="deleteExample"
     />
 
     <!-- 비디오 & 문서 & 유튜브 & url 보기 -->
@@ -283,6 +297,7 @@
       @view-url="onOpenShareViewModal"
       @delete="openSelectModal"
       @open-save-path="onOpenSavePathModal"
+      @export-pdf="exportQuizToPDF"
     />
 
     <!-- 퀴즈 미리보기 -->
@@ -307,6 +322,7 @@
       @view-url="onOpenShareViewModal"
       @delete="openSelectModal"
       @open-save-path="onOpenSavePathModal"
+      @export-pdf="exportNoteTestToPDF"
     />
 
     <!-- 쪽지시험 미리보기 -->
@@ -318,7 +334,6 @@
       :currentPageIdx="currentPageIdx"
       @close="onCloseNoteTestPreviewModal"
       @pagination="onClickQuizPagination"
-      @pdf="exportToPDF"
     />
 
     <!-- 자료 수정 -->
@@ -378,6 +393,8 @@
       @set-keyword="setSelectKeyword"
       @delete-keyword="deleteSelectKeyword"
       @open-save-path="onOpenSavePathModal"
+      @add-example="plusChangeExampleList"
+      @delete-example="deleteChangeExample"
     />
 
     <!-- 공유하기 -->
@@ -410,7 +427,14 @@
     <!-- 자료실 검색 성공 -->
     <SearchResultModal />
 
-    <!-- <button @click="exportToPDF">Export to PDF</button> -->
+    <!-- 퀴즈 프린트 영역 -->
+    <QuizPrintPage v-show="isQuizPrint" :quizList="selectQuizList" />
+
+    <!-- 쪽지시험 프린트 영역 -->
+    <NoteTestPrintPage
+      v-show="isNoteTestPrint"
+      :noteTestList="selectNoteTestList"
+    />
   </div>
 </template>
 
@@ -440,7 +464,8 @@ import { apiReference } from '~/services'
 import QuizPreviewModal from '~/components/common/modal/reference/QuizPreviewModal.vue'
 import NoteTestPreviewModal from '~/components/common/modal/reference/NoteTestPreviewModal.vue'
 import ReferenceTreeView from '~/components/common/custom/CustomReferenceTreeView.vue'
-// import NoteTestPrint from '~/components/reference/NoteTestPrint.vue'
+import QuizPrintPage from '~/components/reference/QuizPrintPage.vue'
+import NoteTestPrintPage from '~/components/reference/NoteTestPrintPage.vue'
 
 export default {
   name: 'ReferenceRoom',
@@ -468,7 +493,8 @@ export default {
     QuizPreviewModal,
     NoteTestPreviewModal,
     ReferenceTreeView,
-    // NoteTestPrint,
+    QuizPrintPage,
+    NoteTestPrintPage,
   },
   layout: 'EducationLayout',
   data() {
@@ -476,6 +502,8 @@ export default {
       identity: 'teacher',
       pushKeyword: '',
       // Modal Flag
+      isQuizPrint: false,
+      isNoteTestPrint: false,
       isReferenceAddModal: false,
       isQuizAddModal: false,
       isNoteTestAddModal: false,
@@ -702,7 +730,6 @@ export default {
                             { id: '', example: '<p>답 2임</p>' },
                             { id: '', example: '<p>답 3임</p>' },
                             { id: '', example: '<p>답 4임</p>' },
-                            { id: '', example: '<p>답 5임</p>' },
                           ],
                           dificultade: 0,
                           limitTime: '',
@@ -716,7 +743,6 @@ export default {
                             { id: '', example: '<p>답 6임</p>' },
                             { id: '', example: '<p>답 7임</p>' },
                             { id: '', example: '<p>답 8임</p>' },
-                            { id: '', example: '<p>답 9임</p>' },
                           ],
                           dificultade: 2,
                           limitTime: '',
@@ -930,6 +956,91 @@ export default {
       currentPageIdx: 0,
       uploadFile: {},
       selectData: {},
+      selectQuizList: [
+        {
+          id: 0,
+          problem: '<p>asdfaaaaasdf</p>',
+          oxAnswer: 0,
+          dificultade: 1,
+          limitTime: '3분',
+          quizType: 0,
+          shortAnswer: '123',
+          subjectiveAnswer: '123',
+          shortWrongAnswer: '123',
+        },
+        {
+          id: 2,
+          problem: '<p>asdggggg</p>',
+          dificultade: 0,
+          limitTime: '5분',
+          quizType: 0,
+          oxAnswer: 0,
+          shortAnswer: '234',
+          subjectiveAnswer: '234',
+          shortWrongAnswer: '234',
+        },
+        {
+          id: 3,
+          problem: '<p>234242242424</p>',
+          dificultade: 0,
+          limitTime: '2분',
+          quizType: 0,
+          oxAnswer: 0,
+          shortAnswer: '345',
+          subjectiveAnswer: '345',
+          shortWrongAnswer: '345',
+        },
+        {
+          id: 4,
+          problem: '<p>555555555</p>',
+          dificultade: 0,
+          limitTime: '4분',
+          quizType: 0,
+          oxAnswer: 0,
+          shortAnswer: '456',
+          subjectiveAnswer: '456',
+          shortWrongAnswer: '456',
+        },
+        {
+          id: 5,
+          problem: '<p>asx c</p>',
+          dificultade: 0,
+          limitTime: '5분',
+          quizType: 0,
+          oxAnswer: 0,
+          shortAnswer: '567',
+          subjectiveAnswer: '567',
+          shortWrongAnswer: '567',
+        },
+      ],
+      selectNoteTestList: [
+        {
+          id: 0,
+          problem: '<p>1번 문제</p>',
+          exampleList: [
+            { id: '', example: '<p>답 1임</p>' },
+            { id: '', example: '<p>답 2임</p>' },
+            { id: '', example: '<p>답 3임</p>' },
+            { id: '', example: '<p>답 4임</p>' },
+          ],
+          dificultade: 0,
+          limitTime: '',
+          answer: 0,
+        },
+        {
+          id: 1,
+          problem: '<p>2번 문제</p>',
+          exampleList: [
+            { id: '', example: '<p>답 5임</p>' },
+            { id: '', example: '<p>답 6임</p>' },
+            { id: '', example: '<p>답 7임</p>' },
+            { id: '', example: '<p>답 8임</p>' },
+          ],
+          dificultade: 2,
+          limitTime: '',
+          answer: 2,
+        },
+      ],
       referenceList: [
         {
           id: 0,
@@ -1178,7 +1289,6 @@ export default {
           id: 0,
           problem: '',
           exampleList: [
-            { id: '', example: '' },
             { id: '', example: '' },
             { id: '', example: '' },
             { id: '', example: '' },
@@ -1774,7 +1884,7 @@ export default {
     // 쪽지 시험
     // 퀴즈 변경 UI
     onClickNoteTestList(idx) {
-      this.currentPageIdx = idx
+      this.currentPageIdxio = idx
     },
 
     // 쪽지 시험 추가
@@ -1821,6 +1931,7 @@ export default {
       }
     },
 
+    // 정답 입력
     onSelectAnswer(idx, targetIdx) {
       this.noteTestList[idx].answer = targetIdx + 1
     },
@@ -1829,6 +1940,28 @@ export default {
     onSelectChangeAnswer(idx, targetIdx) {
       console.log(targetIdx)
       this.selectData.noteTestList[idx].answer = targetIdx + 1
+    },
+
+    // 쪽지시험 예제 추가
+    plusExampleList(idx) {
+      const example = { id: '', example: '' }
+      this.noteTestList[idx].exampleList.push(example)
+    },
+
+    // 쪽지시험 예제 제거
+    deleteExample(idx, targetIdx) {
+      this.noteTestList[idx].exampleList.splice(targetIdx, 1)
+    },
+
+    // 수정 페이지 쪽지시험 예제 추가
+    plusChangeExampleList(idx) {
+      const example = { id: '', example: '' }
+      this.selectData.noteTestList[idx].exampleList.push(example)
+    },
+
+    // 수정 페이지 쪽지시험 예제 제거
+    deleteChangeExample(idx, targetIdx) {
+      this.selectData.noteTestList[idx].exampleList.splice(targetIdx, 1)
     },
 
     // 자료 클릭 이벤트
@@ -1904,7 +2037,6 @@ export default {
           answer: 0,
         },
       ]
-
       // tree component
     },
 
@@ -1933,8 +2065,10 @@ export default {
         this.onOpenReferenceBrowseModal()
       } else if (params.uploadType === 'quiz') {
         this.onOpenQuizBrowseModal()
+        this.selectQuizList = params.quizList
       } else if (params.uploadType === 'test') {
         this.onOpenNoteTestBrowseModal()
+        this.selectNoteTestList = params.noteTestList
       }
     },
 
@@ -1960,18 +2094,18 @@ export default {
       console.log(this.copyCheckData)
     },
 
-    exportToPDF() {
+    exportQuizToPDF() {
       window.scrollTo(0, 0)
-      const targetElem = document.querySelector('#modalPreviewTest')
-
+      const targetElem = document.querySelector('#pdfSave')
       setTimeout(() => {
+        this.isQuizPrint = true
         html2pdf(targetElem, {
           margin: 0,
-          filename: 'document.pdf',
+          filename: 'quiz.pdf',
           image: { type: 'jpeg', quality: 0.95 },
           html2canvas: {
             scrollY: 0,
-            scale: 1,
+            scale: 2,
             dpi: 300,
             letterRendering: true,
             allowTaint: false,
@@ -1989,27 +2123,40 @@ export default {
             compressPDF: true,
           },
         })
+        this.isQuizPrint = false
       }, 1500)
-
-      // const pages = document.querySelector('#itemDiv')
-      // this.workspaceService.exportAllToPDF(pages)
-
-      /* eslint-disable new-cap */
-      // const doc = new jsPDF({
-      //   orientation: 'portrait',
-      //   unit: 'px',
-      //   format: 'a4',
-      //   compressPDF: true,
-      // })
-
-      // doc.html(pages, {
-      //   callback: (doc) => {
-      //     doc.deletePage(doc.getNumberOfPages())
-      //     doc.save('pdf-export')
-      //   },
-      // })
-
-      // doc.save('test.pdf')
+    },
+    exportNoteTestToPDF() {
+      window.scrollTo(0, 0)
+      const targetElem = document.querySelector('#pdfSaveNoteTest')
+      setTimeout(() => {
+        this.isNoteTestPrint = true
+        html2pdf(targetElem, {
+          margin: 0,
+          filename: 'noteTest.pdf',
+          image: { type: 'jpeg', quality: 0.95 },
+          html2canvas: {
+            scrollY: 0,
+            scale: 2,
+            dpi: 300,
+            letterRendering: true,
+            allowTaint: false,
+            ignoreElements(element) {
+              // pdf에 출력하지 않아야할 dom이 있다면 해당 옵션 사용
+              if (element.id === 'noneItem') {
+                return true
+              }
+            },
+          },
+          jsPDF: {
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4',
+            compressPDF: true,
+          },
+        })
+        this.isNoteTestPrint = false
+      }, 1500)
     },
   },
 }
@@ -2028,7 +2175,4 @@ export default {
 .main > ul {
   display: none;
 }
-/* .custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
-  margin-left: 0.15rem;
-} */
 </style>

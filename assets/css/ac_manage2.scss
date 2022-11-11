@@ -696,16 +696,21 @@
 
 		.left_section {
 			position: relative;
+
 			.subject_area {
 				position: relative;
-				input[type='text'] { 
-					width:calc(100% - 290px);
-					@-moz-document url-prefix() { 
-						width:calc(100% - 412px);
+
+				input[type='text'] {
+					width: calc(100% - 290px);
+
+					@-moz-document url-prefix() {
+						width: calc(100% - 412px);
 					}
+
 					min-width: 215px;
 				}
 			}
+
 			.title {
 				display: inline-block;
 				min-width: 90px;
@@ -767,27 +772,48 @@
 			vertical-align: middle;
 		}
 	}
+
 	.divide_section {
 		gap: 1%;
 		margin-top: 25px;
+
 		.divide_area.first {
 			width: 19%;
 		}
+
 		.divide_area.second {
 			width: 44%;
 			padding-top: 45px;
 		}
+
 		.divide_area.third {
 			width: 34%;
 			padding-top: 45px;
+
 			.search_result {
-				th, td { text-align: center; color: #454545;}
-				.tbl_overflow { height: 440px;}
-				.tbl_overflow td { padding: 15px 5px; font-size: 16px;}
-				.tbl_overflow tr:nth-child(even) {background: #F9F9FC;}
+
+				th,
+				td {
+					text-align: center;
+					color: #454545;
+				}
+
+				.tbl_overflow {
+					height: 440px;
+				}
+
+				.tbl_overflow td {
+					padding: 15px 5px;
+					font-size: 16px;
+				}
+
+				.tbl_overflow tr:nth-child(even) {
+					background: #F9F9FC;
+				}
 			}
 		}
 	}
+
 	.list_section {
 		width: 100%;
 
@@ -801,9 +827,13 @@
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
-				i { cursor: pointer;}
+
+				i {
+					cursor: pointer;
+				}
 			}
 		}
+
 		.sum_info {
 			width: 100%;
 			height: 39px;
@@ -812,8 +842,12 @@
 			margin-bottom: 5px;
 			font-size: 14px;
 		}
-		.nav-tabs .nav-item { padding: initial;}
-		.nav-tabs + .tab-content {
+
+		.nav-tabs .nav-item {
+			padding: initial;
+		}
+
+		.nav-tabs+.tab-content {
 			@include mixin.border_common;
 			border-top-left-radius: 0;
 			border-top-right-radius: 0;
@@ -821,35 +855,49 @@
 			height: 408px;
 		}
 	}
+
 	.list_section.selected {
 		li {
 			display: block;
-			.list, .list_sub li {
+
+			.list,
+			.list_sub li {
 				display: flex;
 				align-items: center;
 				padding-right: 0;
-				span + i {
+
+				span+i {
 					margin-left: auto;
 				}
-				i.btn { margin-right: 5px;}
+
+				i.btn {
+					margin-right: 5px;
+				}
+
 				.ss_txt {
 					margin-left: 10px;
 					font-size: 14px;
 					color: #A7A9AC;
 				}
 			}
+
 			.list_sub {
 				padding: 4px 0px;
-				li { padding-left: 20px;}
+
+				li {
+					padding-left: 20px;
+				}
 			}
 		}
 	}
+
 	.list_area {
 		.btn.btn_chceck {
 			height: 30px;
 			padding: 5px 10px;
 			font-size: 14px;
 		}
+
 		.btn_attend {
 			height: 20px;
 			line-height: 17px;
@@ -858,6 +906,7 @@
 			font-size: 14px;
 			color: #fff;
 		}
+
 		.btn_inout {
 			height: 20px;
 			line-height: 17px;
@@ -867,12 +916,14 @@
 			color: #fff;
 		}
 	}
+
 	.calendar {
 		.info_area {
 			position: relative;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+
 			.ss_txt {
 				margin-left: 10px;
 				font-size: 14px;
@@ -886,13 +937,18 @@
 .modal_batchattendance {
 	position: relative;
 	padding: 0 10px;
+
 	.date_area {
-		display: flex; 
+		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: 10px;
-		.date { margin-left: auto;}
+
+		.date {
+			margin-left: auto;
+		}
 	}
+
 	.cnts_section {
 		position: relative;
 		margin-top: 20px;
@@ -900,22 +956,30 @@
 		align-items: flex-start;
 		justify-content: space-between;
 		gap: 10px;
+
 		.list_section {
 			position: relative;
 			width: 50%;
 			text-align: left;
+
 			.all {
 				position: relative;
 				@include mixin.border_common;
 				padding: 10px;
 				margin-bottom: 15px;
-				.custom-control-label { font-size: 16px; line-height: 21px;}
+
+				.custom-control-label {
+					font-size: 16px;
+					line-height: 21px;
+				}
+
 				.ss_txt {
 					margin-left: 10px;
 					font-size: 14px;
 					color: #A7A9AC;
 				}
 			}
+
 			.list_area {
 				position: relative;
 				margin-top: 5px;
@@ -923,22 +987,812 @@
 				height: 225px;
 				overflow-y: auto;
 				@include mixin.border_common;
-				li { 
-					padding: 5px 0; 
+
+				li {
+					padding: 5px 0;
 					display: flex;
-					align-items:center;
+					align-items: center;
 					justify-content: space-between;
-					.custom-control-label { font-size: 16px; line-height: 21px;}
-					.times { font-size: 14px;}
+
+					.custom-control-label {
+						font-size: 16px;
+						line-height: 21px;
+					}
+
+					.times {
+						font-size: 14px;
+					}
 				}
 			}
+
 			.btn_area {
 				position: relative;
 				height: auto;
 				overflow: hidden;
 				margin-top: 20px;
-				.btn { width: 100%;}
+
+				.btn {
+					width: 100%;
+				}
 			}
 		}
+	}
+}
+
+/* ------------------ 프랜차이즈가입관리-가맹한리스트 ------------------ */
+/* 프랜차이즈가입관리 -가입요청(팝업 M2) */
+#modalFrcsignup {
+
+	.form-control {
+		width: 240px;
+	}
+
+	.title {
+		margin: 0px 0 15px 0;
+	}
+
+	.preview {
+		width: 236px;
+		height: 174px;
+		background: theme.$color_normal;
+		border-radius: 5px;
+		margin: 20px 0px 20px 116px
+	}
+
+	.icons_thumbnail {
+		margin: 48px 0 0 0;
+	}
+
+}
+
+/* 프랜차이즈가입관리-월별이용현황2 */
+/* 프랜차이즈가입관리 - 월별이용현황상세(팝업 M1) */
+#modalFrcdetail {
+	.table thead th {
+		padding-bottom: 20px;
+	}
+
+	.modal-body {
+		text-align: center;
+		padding-top: 22px;
+	}
+}
+
+/* ------------------ 결제관리 ------------------ */
+/* 관리 - 결제관리 */
+.ac_manage_pay {
+
+	.title {
+		font-weight: 500;
+		font-size: 20px;
+		line-height: 36px;
+		align-items: center;
+		text-align: center;
+		color: theme.$color_blue;
+		margin: 0 0px 36px 0px;
+	}
+
+	.check_circle {
+		display: inline-block;
+		width: 18px;
+		height: 18px;
+		text-align: center;
+		vertical-align: middle;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: auto;
+		background-image: url(../images/icon_check_circle.png);
+	}
+
+	.table td,
+	.table th {
+		padding: 0.5rem;
+	}
+
+	.table td {
+		font-weight: 500;
+		font-size: 16px;
+		line-height: 23px;
+	}
+
+	.unpay {
+		margin: 0px 0 -38px 674px;
+	}
+
+	.font01 {
+		font-weight: 400;
+		font-size: 12px;
+		line-height: 17px;
+	}
+
+	.font02 {
+		font-weight: 400;
+		font-size: 12px;
+		line-height: 17px;
+		color: theme.$color_light1;
+	}
+
+	/* 결제관리-카드정보 */
+	.info_box .info_area .form-group label,
+	.info_box .modify_area .form-group label {
+		width: 170px;
+	}
+
+	.info_box {
+		width: 65%;
+		margin: 0 auto;
+	}
+
+	.info_area .custom-control,
+	.info_area .form-check {
+		margin: 0 0 0 25px;
+	}
+
+	.first_name {
+		margin-top: 20px;
+	}
+
+	.credit {
+		width: 240px;
+		height: 80px;
+		background: theme.$color_white;
+		border: 1px solid theme.$color_light1;
+		border-radius: 10px;
+		cursor: pointer;
+	}
+
+	.font03 {
+		font-weight: 500;
+		font-size: 16px;
+		line-height: 75px;
+		margin: 25px 0px 0 90px;
+	}
+
+	.account {
+		width: 240px;
+		height: 80px;
+		background: theme.$color_white;
+		border: 0.4px solid theme.$text_unselected_color;
+		border-radius: 10px;
+		cursor: pointer;
+
+		&:hover,
+		&:focus,
+		&:active {
+			border: 1px solid theme.$color_light1;
+		}
+
+	}
+
+	.pay_choice {
+		display: flex;
+		justify-content: center;
+		gap: 10px;
+		margin: 20px 0px 20px 0px;
+	}
+
+	.address {
+		margin: 0 0px 0px -70px;
+	}
+
+	.custom-control-label::before,
+	.custom-control-label::after {
+		margin-top: -3px;
+		left: -11px;
+	}
+
+	.address02 {
+		margin: 0 0 0 -128px;
+	}
+
+	.font04 {
+		font-weight: 400;
+		font-size: 14px !important;
+		line-height: 20px;
+	}
+
+	.check01::before,
+	.check01::after {
+		margin-top: -3px;
+		left: -28px;
+	}
+
+	.address02::before,
+	.address02::after {
+		margin-top: -3px;
+		left: -3px;
+	}
+
+	.info_area .custom-control-label,
+	.info_area .form-check-label {
+		font-size: 14px;
+	}
+
+	/* 결제관리 - 결제내역 */
+	.icons_printer {
+		display: inline-block;
+		width: 24px;
+		height: 22px;
+		text-align: center;
+		vertical-align: middle;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: contain;
+		background-image: url(../images/icons/icon_printer.svg);
+
+		&:hover,
+		&:focus,
+		&:active {
+			background-image: url(../images/icons/icon_printer_on.svg);
+			cursor: pointer;
+		}
+	}
+}
+
+/* 팝업 S2- 결제 관리 - 현재 요금제 취소 팝업 */
+#modalCancleSub {
+	.modal-body {
+		padding-bottom: 25px;
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 30px;
+		text-align: left;
+		margin: -9px 0px -13px 10px;
+	}
+}
+
+/* 팝업 S2- 결제관리 - 카드정보 - 카드 등록 확인 팝업 */
+#modalServiceSub {
+	.title {
+		font-weight: 500;
+		font-size: 16px;
+		line-height: 23px;
+		margin-bottom: 20px;
+	}
+
+	.btn_crud_point {
+		width: 93px;
+	}
+}
+
+/* 결제관리 - 요금제.html */
+.ac_manage_pay {
+
+	.plan_card.color02 .btn_signup,
+	.color02.rateplan_section .btn_signup,
+	.color02.select_plan .btn_signup {
+		border: none;
+		background: theme.$color_light3;
+
+		&:hover,
+		&:focus,
+		&:active {
+			background: theme.$color_light1;
+			cursor: pointer;
+			color: theme.$color_white;
+		}
+	}
+
+	.plan_card.color03 .btn_signup,
+	.color03.rateplan_section .btn_signup,
+	.color03.select_plan .btn_signup {
+		border: none;
+		background: theme.$color_light1;
+		color: theme.$color_white;
+
+		&:hover,
+		&:focus,
+		&:active {
+			background: theme.$color_blue;
+			cursor: pointer;
+		}
+	}
+
+	.plan_card.color04 .btn_signup,
+	.color04.rateplan_section .btn_signup,
+	.color04.select_plan .btn_signup {
+		border: none;
+		background: theme.$color_emerald;
+		color: theme.$color_white;
+
+		&:hover,
+		&:focus,
+		&:active {
+			background: theme.$color_light2;
+			cursor: pointer;
+		}
+	}
+
+	.plan_card.service .btn_signup,
+	.service.rateplan_section .btn_signup,
+	.service.select_plan .btn_signup {
+		width: 140px;
+		border: none;
+		background: theme.$color_light1;
+		color: theme.$color_white;
+		margin-bottom: 20px;
+
+		&:hover,
+		&:focus,
+		&:active {
+			background: theme.$color_blue;
+			cursor: pointer;
+		}
+
+	}
+
+}
+
+
+/* ------------------ 공지사항 ------------------ */
+/* 공지사항.html 페이지 */
+.ac_manage_notice {
+
+	.dropdown .dropdown-toggle {
+		height: 40px;
+		/* margin-right: 10px; */
+	}
+
+	.form-search {
+		height: 40px;
+		/* margin-right: 10px; */
+		width: 40%;
+	}
+
+	.file_icon {
+		display: inline-block;
+		width: 20px;
+		height: 18px;
+		text-align: center;
+		vertical-align: middle;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: contain;
+		background-image: url(../images/icon_file.png);
+		margin-right: 5px;
+		margin-bottom: 4px;
+	}
+
+	.save {
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 20px;
+		color: theme.$text_unselected_color;
+		margin-left: 10px;
+		cursor: pointer;
+	}
+
+	td.td_expand .notice_contents {
+		padding: 10px 15px;
+		width: 100%;
+		height: 86px;
+		line-height: 24px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		margin: 5px 0px 10px 0px;
+	}
+
+	.thumbnail_area .thumbnail {
+		margin-right: 10px;
+	}
+
+	/* .btn {
+    margin-right: 10px;
+  } */
+
+	.btns_area {
+		text-align: right;
+		margin: 0px -10px -2px 0;
+	}
+
+	.search_section .left_area {
+		width: 50%;
+	}
+
+	.search_section .right_area {
+		width: 50%;
+	}
+}
+
+/* 공지사항-등록.html 페이지 */
+.notice_rigi {
+
+	.content {
+		font-weight: 400;
+		font-size: 13px;
+		line-height: 20px;
+		align-items: center;
+		text-align: right;
+		letter-spacing: -.5px;
+		color: theme.$text_unselected_color;
+	}
+
+	.file_area {
+		margin: 15px 0;
+	}
+
+	.date_area {
+		display: flex;
+	}
+
+	.target_area {
+		display: flex;
+		margin: 15px 0px;
+	}
+
+	.box01 {
+		align-items: center;
+		padding: 3px 55px 10px 55px;
+		gap: 10px;
+		width: 230px;
+		height: 40px;
+		background: #E7EDFF;
+		border-radius: 5px;
+		line-height: 13px;
+		text-align: center;
+		margin-left: 10px;
+	}
+
+	.box02 {
+		align-items: center;
+		padding: 11px 55px 10px 60px;
+		gap: 10px;
+		width: 230px;
+		height: 40px;
+		background: #E7EDFF;
+		border-radius: 5px;
+		line-height: 13px;
+		margin-left: 10px;
+	}
+
+	.content02 {
+		font-weight: 400;
+		font-size: 12px;
+		line-height: 17px;
+	}
+
+	.file_list {
+		margin-top: 0px !important;
+		max-width: 92%;
+		margin-left: 93px;
+	}
+
+	.write_area {
+		margin-top: 15px !important;
+	}
+}
+
+/* 공지사항 등록 - 기한설정(팝업 M2) */
+#modalNoticeData {
+
+	.form-time {
+		width: 80px;
+	}
+
+	.title {
+		margin-right: 40px;
+	}
+
+	.form-control {
+		padding: 10px 20px;
+	}
+
+	.calendar_box {
+		width: 342px;
+		height: 280px;
+		background: #FFFFFF;
+		border: 0.4px solid #A7A9AC;
+		border-radius: 5px;
+		margin: -21px 0 21px 115px;
+	}
+
+	.calendar_text {
+		line-height: 276px;
+	}
+
+	.title02 {
+		margin: 15px 383px 0px 0;
+	}
+
+	.form-check {
+		text-align: left;
+	}
+
+	.check_sec {
+		text-align: left;
+		margin: 0 0px 0px 120px;
+	}
+}
+
+/* 공지사항 등록 - 대상설정(팝업 M2) */
+#modalNoticeTarget {
+
+	.notice_box {
+		width: 382px;
+		height: 100px;
+		border: 0.4px solid #A7A9AC;
+		border-radius: 5px;
+		margin: 0 auto;
+	}
+
+	.notice_first .form-check {
+		margin: 5px 30px;
+		text-align: left;
+	}
+
+	.notice_second .form-check {
+		margin: 5px 30px;
+		text-align: left;
+	}
+
+	.notice_first {
+		display: flex;
+		margin-top: 16px;
+	}
+
+	.notice_second {
+		display: flex;
+	}
+
+	.notice_first label,
+	.notice_second label {
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 23px;
+	}
+
+}
+
+/* 공지사항 상세보기 (팝업 L) */
+#modalNoticeView {
+
+	.title_area {
+		text-align: left;
+		width: 109%;
+		margin-bottom: 40px;
+		margin-top: -15px;
+
+		.notice_day {
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 20px;
+			color: #FB5353;
+			margin: 0 0 0 31px;
+			width: 8%;
+		}
+
+		.notice_writer {
+			width: 15%;
+		}
+	}
+
+
+	.title_area .notice_day02,
+	.title_area .notice_writer {
+		text-align: right;
+	}
+
+	.file_icon {
+		display: inline-block;
+		width: 20px;
+		height: 18px;
+		text-align: center;
+		vertical-align: middle;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: contain;
+		background-image: url(../images/icon_file.png);
+		margin: 0px 5px 2px 17px;
+	}
+
+	.save {
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 20px;
+		color: #A7A9AC;
+		margin-left: 10px;
+		cursor: pointer;
+	}
+
+	.file_name {
+		padding: 6px 12px;
+		border: 0.4px solid rgba(167, 169, 172, 0.4);
+		border-radius: 5px;
+		width: 97%;
+		margin: 14px auto;
+	}
+
+	.file_info {
+		text-align: left;
+	}
+
+	.box {
+		width: 70%;
+		height: 350px;
+		background: theme.$color_background;
+		margin: 56px auto;
+	}
+
+	.content_area {
+		width: 97%;
+		height: 332px;
+		border: 0.4px solid rgba(167, 169, 172, 0.4);
+		border-radius: 5px;
+		overflow-y: scroll;
+	}
+
+	.icons_thumbnail {
+		margin: 135px auto;
+	}
+
+	.notice_content {
+		text-align: left;
+		margin: 15px 15px;
+	}
+
+}
+
+/* 공지사항 컨펌체크 (팝업 L) */
+#modalNoticeConfirm {
+
+	.confirm_sub {
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 20px;
+		color: theme.$text_unselected_color;
+	}
+
+	.title_area {
+		display: flex;
+	}
+
+	.confirm_title {
+		margin-right: 20px;
+		line-height: 40px;
+	}
+
+	.confirm_sub {
+		margin-right: auto;
+		line-height: 40px;
+	}
+
+	.btn_filter {
+		margin-right: 5px;
+	}
+
+	.btn_filter_off {
+		opacity: .3;
+	}
+
+	.btn_filter_off.on {
+		opacity: 1;
+	}
+
+	.modal-body {
+		text-align: center;
+		padding: 35px 30px;
+	}
+
+	.box01 {
+		position: relative;
+		width: 100%;
+		height: 270px;
+		padding: 10px;
+		background: #F9F9FB;
+		@include mixin.border_common;
+		margin-top: 10px;
+		text-align: left;
+
+		@media (min-width: 992px) {
+			.right_area {
+				text-align: right;
+				width: 50%;
+			}
+		}
+	}
+
+	.keyword_area {
+		position: relative;
+		height: auto;
+		padding: 1px 8px;
+	}
+
+	.keyword_area_01 {
+		position: relative;
+		max-height: 113px;
+		display: flex;
+		flex-wrap: wrap;
+		padding: 0 10px;
+		overflow-y: auto;
+		white-space: nowrap;
+	}
+
+	.keyword01 {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 88px;
+		height: 28px;
+		background: #D1DBFF;
+		border-radius: 3px;
+		margin-right: 10px;
+		margin-bottom: 10px;
+	}
+
+	.keyword01-1 {
+		font-weight: 400;
+		font-size: 12px;
+		line-height: 17px;
+		margin: 0px 5px 0px 9px;
+	}
+
+	.x {
+		display: inline-block;
+		width: 10px;
+		height: 10px;
+		text-align: center;
+		vertical-align: middle;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: contain;
+		background-image: url(../images/icon_×.png);
+		margin-right: 8px;
+	}
+
+	.filter_wrap {
+		position: relative;
+		width: 100%;
+		height: 150px;
+		overflow-y: auto;
+		background-color: #fff;
+		padding: 12px 15px;
+		margin-top: 20px;
+		@include mixin.border_common;
+
+		.filter_section {
+			position: relative;
+			display: flex;
+			align-items: flex-start;
+
+			.title_area {
+				width: 140px;
+			}
+
+			.filter_area {
+				width: calc(100% - 140px);
+				display: flex;
+				flex-wrap: wrap;
+
+				.filter {
+					display: inline-block;
+					text-align: left;
+					width: 140px;
+					margin-bottom: 15px;
+				}
+			}
+		}
+	}
+
+	.search_result {
+		position: relative;
+		margin-top: 10px;
+
+		.tbl_overflow {
+			min-height: 250px;
+		}
+
+		.table th {
+			color: #454545;
+		}
+
+		.table tbody td {
+			padding: 15px 5px;
+			font-size: 16px;
+		}
+
+		.table tbody tr:nth-child(even) {
+			background-color: theme.$color_background;
+		}
+
 	}
 }
