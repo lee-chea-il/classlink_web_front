@@ -8338,6 +8338,7 @@ a {
 .modal_ac_manage_lesson .divide_area {
   width: 48%;
 }
+#modalCuriRegi .icon_institute,
 .ac_manage_dtr .divide_area .icon_institute,
 .modal_ac_manage_lesson .divide_area .icon_institute {
   display: inline-block;
@@ -8350,6 +8351,7 @@ a {
   background-size: contain;
   background-image: url(../images/icon_institute.png);
 }
+#modalCuriRegi .icon_fran,
 .ac_manage_dtr .divide_area .icon_fran,
 .modal_ac_manage_lesson .divide_area .icon_fran {
   display: inline-block;
@@ -14763,6 +14765,20 @@ a {
   margin-right: 10px;
   margin-left: 20px;
 }
+#modalCuriRegi .divide_area .icon_mydata{
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_mydata.png);
+  margin-right: initial;
+  margin-left: initial;
+}
+.modal_Lessonregi .icon_youtube_sm,
 #modalCuriRegi .icon_youtube_sm {
   display: inline-block;
   width: 20px;
@@ -14776,6 +14792,7 @@ a {
   margin-right: -10px;
   margin-left: 10px;
 }
+.modal_Lessonregi .icon_exam_sm,
 #modalCuriRegi .icon_exam_sm {
   display: inline-block;
   width: 20px;
@@ -14789,6 +14806,7 @@ a {
   margin-right: -10px;
   margin-left: 10px;
 }
+.modal_Lessonregi .icon_link_sm,
 #modalCuriRegi .icon_link_sm {
   display: inline-block;
   width: 20px;
@@ -14802,6 +14820,7 @@ a {
   margin-right: -10px;
   margin-left: 10px;
 }
+.modal_Lessonregi .icon_mp4_sm,
 #modalCuriRegi .icon_mp4_sm {
   display: inline-block;
   width: 20px;
@@ -14815,6 +14834,7 @@ a {
   margin-right: -10px;
   margin-left: 10px;
 }
+.modal_Lessonregi .icon_pdf_sm,
 #modalCuriRegi .icon_pdf_sm {
   display: inline-block;
   width: 20px;
@@ -14828,6 +14848,7 @@ a {
   margin-right: -10px;
   margin-left: 10px;
 }
+.modal_Lessonregi .icon_quiz_sm,
 #modalCuriRegi .icon_quiz_sm {
   display: inline-block;
   width: 20px;

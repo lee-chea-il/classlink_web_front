@@ -5,6 +5,8 @@
     default-tree-node-name="새 폴더"
     :is-drop="identity == 'master' ? true : false"
     :is-show-option="identity == 'master' ? true : false"
+    :list-type="listType"
+    @more-show-click="moreShowClick"
     @click="onClick"
     @change-name="onChangeName"
     @more-menu="moreMenu"
@@ -50,6 +52,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    listType: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -60,6 +66,10 @@ export default {
   mounted() {
     const dataMapping = (item, isReadOnly) => {
       const result = []
+      let isDragDisable=false
+      if(this.listType==='lesson'){
+        isDragDisable=true
+      }
       const len = item.length
       for (let i = 0; i < len; i++) {
         if (item[i].children !== undefined) {
@@ -72,6 +82,7 @@ export default {
             readOnly: isReadOnly,
             isChecked: false,
 
+            dragDisabled: isDragDisable,
             subject: item[i].subject,
             desc: item[i].desc,
             keyword: item[i].keyword,
@@ -329,6 +340,9 @@ export default {
     moreMenuCopy(node) {
       console.log(`copy ${node}`)
     },
+    moreShowClick(node){
+      console.log(`moreShowClick ${node}`)
+    }
   },
 }
 </script>

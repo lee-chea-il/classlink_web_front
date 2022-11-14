@@ -83,6 +83,7 @@
                     >
                       <TreeView
                         ref="institution"
+                        listType="lesson"
                         :dataList="receiveInstitutionLessonData"
                         :editable="identity == 'master' ? true : false"
                         :identity="identity"
@@ -100,6 +101,7 @@
                     >
                       <TreeView
                         ref="franchise"
+                        listType="lesson"
                         :dataList="receiveFranchiseLessonData"
                         :editable="identity == 'master' ? true : false"
                         :identity="identity"
@@ -118,11 +120,12 @@
                       aria-labelledby="grade-tab"
                     >
                       <TreeView
-                        ref="institution"
+                        ref="myLesson"
+                        listType="lesson"
                         :dataList="receiveInstitutionData"
                         :editable="identity == 'master' ? true : false"
                         :identity="identity"
-                        :pidNum="0"
+                        :pidNum="2000"
                         @copyDataCallBack="$emit('call-back')"
                       />
                     </div>
@@ -136,6 +139,7 @@
                     >
                       <TreeView
                         ref="franchise"
+                        listType="lesson"
                         :dataList="receiveFranchiseData"
                         :editable="identity == 'master' ? true : false"
                         :identity="identity"
@@ -179,17 +183,21 @@
                       />
                     </div>
                   </div>
-                  <div id="myTabContent" class="tab-content">
-                    <div id="myDataPap">
-                      <LessonTreeView
-                        ref="franchise"
-                        :dataList="receiveAddLessonData"
-                        :editable="false"
-                        :expanded="false"
-                        identity="master"
-                        :pidNum="2000"
-                        @copyDataCallBack="$emit('call-back')"
-                      />
+                  <div class="form-group">
+                    <label for="">레슨 자료</label>
+                    <div class="col">
+                      <div class="list_box">
+                        <div class="sum">등록 개수: 5개</div>
+                        <div class="list_area">
+                          <LessonTreeView
+                            ref="myLessonTreevie"
+                            list-type="lessonList"
+                            :dataList="receiveAddLessonData"
+                            :expanded="false"
+                            :pidNum="2000"
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="form-group">
@@ -323,6 +331,9 @@ export default {
 </script>
 
 <style scoped>
+.divide_area.right .custom-control{
+  display: none;
+}
 #institutePop > .vtl,
 #institutePop1 > .vtl {
   height: 349px;
@@ -351,5 +362,19 @@ export default {
   padding: 30px 15px;
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
+}
+
+#myTabContent{
+  height: 550px !important;
+}
+</style>
+<style>
+#myTabContent .icon_mp4_sm,
+#myTabContent .icon_pdf_sm,
+#myTabContent .icon_quiz_sm,
+#myTabContent .icon_exam_sm,
+#myTabContent .icon_youtube_sm,
+#myTabContent .icon_link_sm{
+  display: none;
 }
 </style>

@@ -50,7 +50,13 @@ export default {
           result[i] = {
             name: item[i].name,
             id: 'imgListView_'+this.pid,
-            isLink: false
+            isLink: false,
+            linkListIdx: -1,
+            imgIdx: item[i].imgIdx,
+            nomal_url: item[i].nomal_url,
+            over_url: item[i].over_url,
+            icon_nomal_url: item[i].icon_nomal_url,
+            icon_dim_url: item[i].icon_dim_url
           }
           this.pid++
         }
@@ -81,21 +87,32 @@ export default {
       if(!node.isLink){
         $('#'+node.id).find('img').css('opacity',1)
       }
-      console.log('dragImgEnter', node.id)
     },
     dragImgLeave(node) {
-      console.log('dragImgLeave', node.id)
       if(!node.isLink){
         $('#'+node.id).find('img').css('opacity',0.5)
       }
     },
-    dragImgDrop(node) {
+    dragImgDrop(node,dragTaget) {
+      $('#'+node.id).find('img').css('opacity',1)
+      if(node.isLink){
+        this.$emit('unlink-data-to-list', node.linkListIdx)
+      }
+      if(dragTaget.model.isLink){
+        this.$emit('unlink-data-to-img', dragTaget.model.linkIdx)
+        this.unLinkData(dragTaget.model.linkIdx)
+      }
       node.isLink=true
-      console.log('dragImgDrop', node.id)
+      node.linkListIdx=dragTaget.model.id
+      this.$emit('link-data', node.linkListIdx, node.imgIdx)
     },
     dragImgClick(node) {
       console.log('dragImgClick', node.id)
     },
+    unLinkData(imgIdx){
+      this.datas.children[imgIdx].isLink=false
+      $('#imgListView_'+imgIdx).find('img').css('opacity',0.5)
+    }
   }
 }
 </script>
@@ -132,6 +149,7 @@ export default {
 #modalCuriRegi .modal_curiregi .divide_area.right .list_box .vtl-node-main .custom-control-label::after{
   margin: -8px 0px 0px 12px;
 }
+#modalCuriRegi .modal_curiregi .divide_area.right .icons_unlink,
 #modalCuriRegi .modal_curiregi .divide_area.right .icons_link{
   margin-left: auto;
   margin-right:10px;
