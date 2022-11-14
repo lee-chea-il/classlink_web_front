@@ -2221,6 +2221,13 @@ ol {
   cursor: pointer;
   right: 10px;
 }
+.page_login #form04 {
+  margin-top: 7px;
+}
+.page_login .invalid_text {
+  visibility: visible;
+  margin-top: 3px;
+}
 
 .modal.modal_login .modal-body {
   padding-left: 60px;

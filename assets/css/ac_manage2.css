@@ -2571,6 +2571,7 @@ ol {
 }
 .ac_manage_notice.notice_rigi .search_result {
   overflow-x: auto;
+  height: 138px;
 }
 .ac_manage_notice.notice_rigi .search_result .exp_txt {
   padding: 25px 0;
@@ -2614,6 +2615,18 @@ ol {
 }
 .ac_manage_atd .divide_section .divide_area.third .search_result .tbl_overflow tr:nth-child(even) {
   background: #F9F9FC;
+}
+.ac_manage_atd .divide_section .divide_area.third .search_result .th01 {
+  width: 17%;
+}
+.ac_manage_atd .divide_section .divide_area.third .search_result .th02 {
+  width: 38%;
+}
+.ac_manage_atd .divide_section .divide_area.third .search_result .th03 {
+  width: 17%;
+}
+.ac_manage_atd .divide_section .divide_area.third .search_result .td01 {
+  width: 17%;
 }
 .ac_manage_atd .list_section {
   width: 100%;
@@ -3167,6 +3180,13 @@ ol {
 .notice_rigi .write_area {
   margin-top: 15px !important;
 }
+.notice_rigi .table td,
+.notice_rigi .table th {
+  text-align: center;
+}
+.notice_rigi .table001 {
+  width: 13%;
+}
 
 /* 공지사항 등록 - 기한설정(팝업 M2) */
 #modalNoticeData .form-time {
@@ -3348,13 +3368,14 @@ ol {
 @media (min-width: 992px) {
   #modalNoticeConfirm .box01 .right_area {
     text-align: right;
-    width: 50%;
+    width: 48%;
   }
 }
 #modalNoticeConfirm .keyword_area {
   position: relative;
   height: auto;
   padding: 1px 8px;
+  width: 50%;
 }
 #modalNoticeConfirm .keyword_area_01 {
   position: relative;
@@ -3440,4 +3461,23 @@ ol {
 }
 #modalNoticeConfirm .search_result .table tbody tr:nth-child(even) {
   background-color: #F9F9FC;
+}
+#modalNoticeConfirm .search_result .table01 {
+  width: 13%;
+}
+#modalNoticeConfirm .search_result .table02 {
+  width: 11%;
+}
+#modalNoticeConfirm .search_result .table03 {
+  width: 11%;
+}
+#modalNoticeConfirm .search_result .table04 {
+  width: 14%;
+}
+#modalNoticeConfirm .search_result .table05 {
+  width: 26%;
+}
+#modalNoticeConfirm .search_result .table th,
+#modalNoticeConfirm .search_result .table td {
+  text-align: center;
 }/*# sourceMappingURL=ac_manage2.css.map */

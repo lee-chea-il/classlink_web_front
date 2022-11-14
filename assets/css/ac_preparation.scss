@@ -710,6 +710,8 @@
 		text-align: left;
 		padding-left: 50px;
 		padding-right: 50px;
+		height: 490px;
+		overflow-y: scroll;
 	}
 
 	.search_class label {
@@ -1069,7 +1071,7 @@
 		.list_area02 {
 			border: 0.4px solid rgba(167, 169, 172, 0.4);
 			border-radius: 5px;
-			height: 405px;
+			height: 489px;
 			overflow-y: auto;
 			padding: 20px 15px;
 		}
@@ -1081,6 +1083,18 @@
 
 	.class_section.right {
 		width: 70%;
+	}
+
+	#list_sub01_sub .text {
+
+		&:hover,
+		&:focus,
+		&:active {
+			color: #7391FA;
+			text-decoration: underline;
+			cursor: pointer;
+			text-underline-position: under
+		}
 	}
 }
 
@@ -1928,14 +1942,6 @@
 		color: #FFFFFF;
 	}
 
-	.aa_result_select {
-		width: 187px;
-		height: 67px;
-		background: #FFFFFF;
-		border: 1px solid #7391FA;
-		border-radius: 5px;
-	}
-
 	.answer_area02 .aa_correct {
 		font-weight: 700;
 		font-size: 20px;
@@ -1984,27 +1990,11 @@
 			border-radius: 5px;
 		}
 
-		.aa_number_select {
-			width: 120px;
-			height: 67px;
-			background: #7391FA;
-			border-radius: 5px;
-			margin-right: 5px;
-		}
-
 		.aa_num_font01 {
 			font-weight: 500;
 			font-size: 20px;
 			line-height: 65px;
 			color: #FFFFFF;
-		}
-
-		.aa_result_select {
-			width: 240px;
-			height: 67px;
-			background: #FFFFFF;
-			border: 1px solid #7391FA;
-			border-radius: 5px;
 		}
 
 		.aa_correct {
@@ -3692,11 +3682,21 @@
 
 	.sum_info {
 		width: 100%;
-		height: 39px;
+		height: 59px;
 		line-height: 39px;
 		text-align: right;
 		margin-bottom: 5px;
-		margin-top: 74px;
+		margin-top: 53px;
+		font-size: 14px;
+	}
+
+	.sum_info02 {
+		width: 100%;
+		height: 59px;
+		line-height: 39px;
+		text-align: right;
+		margin-bottom: 5px;
+		margin-top: 15px;
 		font-size: 14px;
 	}
 
@@ -3785,7 +3785,7 @@
 
 }
 
-/* 페이지쿼리.html */
+/* 페이지쿼리-쪽지시험.html */
 /* [개발참조] 퀴즈, 쪽지시험 pdf 저장 관련 */
 
 .pdf_save {
@@ -4066,4 +4066,86 @@
 		}
 
 	}
+}
+
+/* 페이지쿼리-쪽지시험.html */
+
+.pdf_save {
+
+	.answer_area02 {
+		width: 90%;
+		height: 257px;
+		background: #F9F9FC;
+		border: 0.4px solid #D1D3D4;
+		border-radius: 0px 0px 5px 5px;
+		border-top: none;
+		margin: 0 auto;
+		gap: 100px;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.aa_number_select {
+		width: 67px;
+		height: 67px;
+		background: #7391FA;
+		border-radius: 5px;
+		margin-right: 5px;
+	}
+
+	.aa_result_select {
+		width: 187px;
+		height: 67px;
+		background: #FFFFFF;
+		border: 1px solid #7391FA;
+		border-radius: 5px;
+	}
+
+	.aa_num_font01 {
+		font-weight: 400;
+		font-size: 20px;
+		line-height: 63px;
+		color: #FFFFFF;
+		text-align: center;
+	}
+
+	.aa_wrong {
+		font-weight: 500;
+		font-size: 20px;
+		line-height: 63px;
+		color: #454545;
+		text-align: center;
+	}
+
+	.aa_question {
+		display: flex;
+		flex-flow: row;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.aa_correct {
+		font-weight: 700;
+		font-size: 20px;
+		line-height: 63px;
+		color: #7391FA;
+		text-align: center;
+	}
+
+	.aa_number {
+		width: 67px;
+		height: 67px;
+		background: #A7A9AC;
+		border-radius: 5px;
+		margin-right: 5px;
+	}
+
+	.aa_result {
+		width: 187px;
+		height: 67px;
+		background: #FFFFFF;
+		border: 0.4px solid #A7A9AC;
+		border-radius: 5px;
+	}
+
 }

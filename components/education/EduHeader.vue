@@ -73,7 +73,7 @@
               to="/mypage"
               class="btn btn_nav_user"
               :class="{
-                active: $route.fullPath === '/mypage',
+                active: $route.fullPath !== '/',
               }"
               >홍길동 선생님</nuxt-link
             >

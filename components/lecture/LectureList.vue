@@ -4,7 +4,7 @@
     <SearchSection />
     <!-- 검색 영역 -->
     <!-- 테이블 영역 -->
-    <TableSection />
+    <TableSection :lectureList="lectureList" />
     <!-- /.테이블 영역 -->
     <!-- 페이징 영역 -->
     <PaginationSection />
@@ -20,6 +20,12 @@ import TableSection from './TableSection.vue'
 export default {
   name: 'LectureList',
   components: { SearchSection, TableSection, PaginationSection },
+  props: {
+    lectureList: {
+      type: Array,
+      default: () => [],
+    },
+  },
 }
 </script>
 

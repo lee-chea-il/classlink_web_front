@@ -3,187 +3,486 @@
     <div class="content_area">
       <!--  3Depth -->
       <ul class="nav nav-tabs depth03">
-        <li class="nav-item">
-          <a class="nav-link active" href="(완)강의코스-강의계획서.html">
+        <li class="nav-item cursor">
+          <div
+            class="nav-link"
+            :class="courseFlag === 0 ? 'active' : true"
+            @click="onClickLecturePlan"
+          >
             강의계획서
-          </a>
+          </div>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="(완)강의코스-과제함.html"> 과제함 </a>
+        <li class="nav-item cursor">
+          <div
+            class="nav-link"
+            :class="courseFlag === 1 ? 'active' : true"
+            @click="onClickHomeWorkBox"
+          >
+            과제함
+          </div>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="(완)강의코스-노트함.html"> 노트함 </a>
+        <li class="nav-item cursor">
+          <div
+            class="nav-link"
+            :class="courseFlag === 2 ? 'active' : true"
+            @click="onClickNoteBox"
+          >
+            노트함
+          </div>
         </li>
       </ul>
-      <div class="tab-content depth03 ac_manage_notice ac_manage_classplan">
-        <div class="tab-pane active">
-          <!-- 검색 영역 -->
-          <div class="search_section">
-            <div class="left_area">
-              <span class="course_tit">영어리딩심화</span>
-              <span class="course_con">영어 / 심화 A반 / 홍길동 선생님</span>
-            </div>
-            <!-- [개발참조] 데이터 없을 경우 출력됨 -->
-            <!-- <div class="right_area">
-							<a href="(완)강의코스.html" class="btn btn_crud_default">강의목록 보기</a>
-							<div class="input-group input-search form-inline form-search">
-								<input type="text" class="form-control" placeholder="키워드 검색">
-								<div class="input-group-append">
-									<button class="btn icons_search_off" type="button"></button>
-								</div>
-							</div>
-						</div> -->
-            <div class="right_area">
-              <nuxt-link to="/class/lecturecourse" class="btn btn_crud_default"
-                >강의목록 보기</nuxt-link
-              >
-              <button
-                class="btn btn_crud_default"
-                data-toggle="modal"
-                data-target="#modalDataDelete"
-                data-dismiss="modal"
-              >
-                삭제
-              </button>
-              <div class="input-group input-search form-inline form-search">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="키워드 검색"
-                />
-                <div class="input-group-append">
-                  <button class="btn icons_search_off" type="button"></button>
-                </div>
-              </div>
-              <a
-                href="(완)강의코스-강의계획서-과제 등록.html"
-                class="btn btn_crud_point"
-                >등록</a
-              >
-            </div>
-          </div>
-          <!-- /.검색 영역 -->
-          <!-- 테이블 영역 -->
-          <!-- [개발참조] 데이터 없을 경우 
-					<div class="page_nodata">
-						등록된 강의계획서가 없습니다.
-					</div>
-					-->
-          <div class="table_section">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>
-                    <div class="custom-control custom-checkbox form-inline">
-                      <input
-                        id="chkAll"
-                        type="checkbox"
-                        class="custom-control-input"
-                      />
-                      <label class="custom-control-label" for="chkAll"></label>
-                    </div>
-                  </th>
-                  <th>제목</th>
-                  <th>작성자</th>
-                  <th>작성일</th>
-                  <th>공개여부</th>
-                  <th>읽은 수/전체</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <div class="custom-control custom-checkbox form-inline">
-                      <input
-                        id="chk01"
-                        type="checkbox"
-                        class="custom-control-input"
-                      />
-                      <label class="custom-control-label" for="chk01"></label>
-                    </div>
-                  </td>
-                  <td>
-                    <div
-                      class="classplan_tit"
-                      data-toggle="modal"
-                      data-target="#modalNoticeView"
-                      data-dismiss="modal"
-                    >
-                      성격심리학 레슨1 강의계획서
-                    </div>
-                  </td>
-                  <td>김지원 선생님</td>
-                  <td>2022.07.10</td>
-                  <td>공개</td>
-                  <td>4/10</td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="custom-control custom-checkbox form-inline">
-                      <input
-                        id="chk01"
-                        type="checkbox"
-                        class="custom-control-input"
-                      />
-                      <label class="custom-control-label" for="chk01"></label>
-                    </div>
-                  </td>
-                  <td>
-                    <div
-                      class="classplan_tit"
-                      data-toggle="modal"
-                      data-target="#modalNoticeView"
-                      data-dismiss="modal"
-                    >
-                      성격심리학 레슨1 강의계획서
-                    </div>
-                  </td>
-                  <td>김지원 선생님</td>
-                  <td>2022.07.10</td>
-                  <td>공개</td>
-                  <td>4/10</td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- /.테이블 영역 -->
-          <!-- 페이징 영역 -->
-          <div class="pagination_section">
-            <nav aria-label="Page navigation example">
-              <ul class="pagination">
-                <li class="page-item">
-                  <a class="page-link" href="#">
-                    <span class="previous"></span>
-                  </a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link active" href="#">1</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                  <a class="page-link" href="#">
-                    <span class="next"></span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-          <!-- /.페이징 영역 -->
-          <!-- [개발참조] 데이터 없을 경우 출력됨
-					<div class="btn_sec">
-						<button class="btn btn_crud_point">등록</button>
-						<button class="btn btn_crud_default">취소</button>
-					</div> -->
-        </div>
-      </div>
+      <LecturePlan
+        v-if="courseFlag === 0"
+        :lectureCourse="lectureCourse"
+        :lecturePlanList="lecturePlanList"
+        :searchFlag="searchFlag"
+        :searchList="searchList"
+        :allCheckBoxFlag="allCheckBoxFlag"
+        @change-input="onChangeInput"
+        @search-plan="searchLecturePlan"
+        @selete-plan="onClickCheckBox"
+        @delete-plan="deletePlan"
+        @checked-all="selectAll"
+      />
+      <HomeWorkBox
+        v-if="courseFlag === 1"
+        :lectureCourse="lectureCourse"
+        :homeWorkList="homeWorkList"
+        :searchFlag="searchFlag"
+        :searchList="searchList"
+        :allCheckBoxFlag="allCheckBoxFlag"
+        @checked-all="selectAll"
+        @change-input="onChangeInput"
+        @search-homework="searchHomeWork"
+        @selete-homework="onClickCheckBox"
+        @delete-homework="deleteHomeWork"
+      />
+      <NoteBox v-if="courseFlag === 2" />
     </div>
+    <!-- 설명 모달 -->
+    <ModalDesc
+      :open="modalDesc.open"
+      :title="modalDesc.title"
+      :desc="modalDesc.desc"
+      @close="onCloseModalDesc"
+    />
+    <!-- 삭제 모달 -->
+    <DeletePlanModal
+      :open="deleteModalDesc.open"
+      :title="deleteModalDesc.title"
+      @close="onCloseDeleteModalDesc"
+    />
   </div>
 </template>
 <script>
-export default {}
+import DeletePlanModal from '@/components/lecturecourse/DeletePlanModal.vue'
+import ModalDesc from '@/components/common/modal/ModalDesc.vue'
+import LecturePlan from '@/components/lecturecourse/LecturePlan.vue'
+import HomeWorkBox from '@/components/lecturecourse/HomeWorkBox.vue'
+import NoteBox from '@/components/lecturecourse/NoteBox.vue'
+export default {
+  name: 'LectureDetail',
+  components: { LecturePlan, HomeWorkBox, NoteBox, ModalDesc, DeletePlanModal },
+  data() {
+    return {
+      modalDesc: {
+        open: false,
+        title: '',
+        desc: '',
+      },
+      deleteModalDesc: {
+        open: false,
+        title: '',
+      },
+      courseFlag: 0,
+      searchFlag: 0,
+      lectureCourse: {
+        id: 0,
+        academy: '일산어학원',
+        time: '월수금 09:00 ~ 12:00',
+        subject: '영어심화리딩',
+        lessonTitle: '영어',
+        lessonClass: '심화 A반',
+        teacher: '홍길동 선생님',
+        state: true,
+        students: 12,
+      },
+      lecturePlanList: [
+        {
+          id: 0,
+          course_id: 0,
+          title: '성격심리학 레슨1 강의계획서0',
+          writer: '홍길동 선생님',
+          created_at: '2022.07.10',
+          open: false,
+          views: 3,
+          contents: '성격심리학 레슨1 강의계획서입니다. 수업에 참고해 주세요',
+        },
+        {
+          id: 1,
+          course_id: 0,
+          title: '성격심리학 레슨1 강의계획서1',
+          writer: '김지원 선생님',
+          created_at: '2022.07.10',
+          open: true,
+          views: 4,
+          contents: '성격심리학 레슨1 강의계획서입니다. 수업에 참고해 주세요',
+        },
+        {
+          id: 2,
+          course_id: 0,
+          title: '성격심리학 레슨1 강의계획서2',
+          writer: '임꺽정 선생님',
+          created_at: '2022.07.10',
+          open: false,
+          views: 0,
+          contents: '성격심리학 레슨1 강의계획서입니다. 수업에 참고해 주세요',
+        },
+        {
+          id: 3,
+          course_id: 0,
+          title: '성격심리학 레슨1 강의계획서3',
+          writer: '임꺽정 선생님',
+          created_at: '2022.07.10',
+          open: true,
+          views: 2,
+          contents: '성격심리학 레슨1 강의계획서입니다. 수업에 참고해 주세요',
+        },
+        {
+          id: 4,
+          course_id: 0,
+          title: '성격심리학 레슨1 강의계획서4',
+          writer: '임창정 선생님',
+          created_at: '2022.07.10',
+          open: true,
+          views: 7,
+          contents: '성격심리학 레슨1 강의계획서입니다. 수업에 참고 필수',
+        },
+        {
+          id: 5,
+          course_id: 0,
+          title: '성격심리학 레슨1 강의계획서',
+          writer: '임창정 선생님',
+          created_at: '2022.07.10',
+          open: false,
+          views: 7,
+          contents: '성격심리학 레슨1 강의계획서입니다 수업에 참고 필수',
+        },
+        {
+          id: 6,
+          course_id: 0,
+          title: '성격심리학 레슨1 강의계획서',
+          writer: '임창정 선생님',
+          created_at: '2022.07.10',
+          open: false,
+          views: 8,
+          contents: '성격심리학 레슨1 강의계획서입니다.  수업에 참고 필수',
+        },
+        {
+          id: 7,
+          course_id: 0,
+          title: '성격심리학 레슨1 강의계획서',
+          writer: '임창정 선생님',
+          created_at: '2022.07.10',
+          open: true,
+          views: 0,
+          contents: '성격심리학 레슨1 강의계획서입니다.  수업에 참고 필수',
+        },
+        {
+          id: 8,
+          course_id: 0,
+          title: '성격심리학 레슨1 강의계획서',
+          writer: '임창정 선생님',
+          created_at: '2022.07.10',
+          open: true,
+          views: 0,
+          contents: '성격심리학 레슨1 강의계획서입니다.  수업에 참고 필수',
+        },
+        {
+          id: 9,
+          course_id: 0,
+          title: '성격심리학 레슨1 강의계획서',
+          writer: '김지원 선생님',
+          created_at: '2022.07.10',
+          open: true,
+          views: 0,
+          contents: '성격심리학 레슨1 강의계획서입니다.  수업에 참고 필수',
+        },
+      ],
+      homeWorkList: [
+        {
+          id: 0,
+          course_id: 0,
+          title: '성격심리학 레슨1 과제',
+          writer: '홍길동 선생님',
+          created_at: '2022.07.10',
+          open: false,
+          views: 3,
+          submited: 3,
+          contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
+        },
+        {
+          id: 1,
+          course_id: 0,
+          title: '성격심리학 레슨1 과제',
+          writer: '김지원 선생님',
+          created_at: '2022.07.10',
+          open: true,
+          views: 4,
+          submited: 3,
+          contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
+        },
+        {
+          id: 2,
+          course_id: 0,
+          title: '성격심리학 레슨1 과제',
+          writer: '임꺽정 선생님',
+          created_at: '2022.07.10',
+          open: false,
+          views: 0,
+          submited: 3,
+          contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
+        },
+        {
+          id: 3,
+          course_id: 0,
+          title: '성격심리학 레슨1 과제',
+          writer: '임꺽정 선생님',
+          created_at: '2022.07.10',
+          open: true,
+          views: 2,
+          submited: 3,
+          contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
+        },
+        {
+          id: 4,
+          course_id: 0,
+          title: '성격심리학 레슨1 과제',
+          writer: '임창정 선생님',
+          created_at: '2022.07.10',
+          open: true,
+          views: 7,
+          submited: 3,
+          contents: '성격심리학 레슨1 과제입니다. 수업에 참고 필수',
+        },
+        {
+          id: 5,
+          course_id: 0,
+          title: '성격심리학 레슨1 과제',
+          writer: '임창정 선생님',
+          created_at: '2022.07.10',
+          open: false,
+          views: 7,
+          submited: 3,
+          contents: '성격심리학 레슨1 과제입니다 수업에 참고 필수',
+        },
+        {
+          id: 6,
+          course_id: 0,
+          title: '성격심리학 레슨1 강의계획서',
+          writer: '임창정 선생님',
+          created_at: '2022.07.10',
+          open: false,
+          views: 8,
+          submited: 3,
+          contents: '성격심리학 레슨1 강의계획서입니다.  수업에 참고 필수',
+        },
+        {
+          id: 7,
+          course_id: 0,
+          title: '성격심리학 레슨1 강의계획서',
+          writer: '임창정 선생님',
+          created_at: '2022.07.10',
+          open: true,
+          views: 0,
+          submited: 3,
+          contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
+        },
+        {
+          id: 8,
+          course_id: 0,
+          title: '성격심리학 레슨1 강의계획서',
+          writer: '임창정 선생님',
+          created_at: '2022.07.10',
+          open: true,
+          views: 0,
+          submited: 3,
+          contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
+        },
+        {
+          id: 9,
+          course_id: 0,
+          title: '성격심리학 레슨1 강의계획서',
+          writer: '김지원 선생님',
+          created_at: '2022.07.10',
+          open: true,
+          views: 0,
+          submited: 3,
+          contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
+        },
+      ],
+      searchText: '',
+      searchList: [],
+      deleteIdxList: [],
+      allCheckBoxFlag: false,
+    }
+  },
+  created() {},
+  methods: {
+    // 탭 메뉴 클릭 이벤트
+    onClickLecturePlan() {
+      this.courseFlag = 0
+      this.searchFlag = 0
+      this.allCheckBoxFlag = false
+      this.searchText = ''
+      this.deleteIdxList = []
+      this.searchList = []
+    },
+    onClickHomeWorkBox() {
+      this.courseFlag = 1
+      this.searchFlag = 0
+      this.allCheckBoxFlag = false
+      this.searchText = ''
+      this.deleteIdxList = []
+      this.searchList = []
+    },
+    onClickNoteBox() {
+      this.courseFlag = 2
+    },
+
+    // 모달 이벤트
+    openModalDesc(tit, msg) {
+      this.modalDesc = {
+        open: true,
+        title: tit,
+        desc: msg,
+      }
+    },
+    onCloseModalDesc() {
+      this.modalDesc.open = false
+    },
+    openDeleteModalDesc(tit) {
+      this.deleteModalDesc = {
+        open: true,
+        title: tit,
+      }
+    },
+    onCloseDeleteModalDesc() {
+      this.deleteModalDesc.open = false
+    },
+
+    // 검색 기능
+    onChangeInput({ target: { value } }) {
+      this.searchText = value
+      console.log(this.searchText)
+    },
+
+    //  강의계획서 검색
+    searchLecturePlan() {
+      if (this.searchText.length < 2) {
+        this.openModalDesc(
+          '강의계획서 검색',
+          '검색어는 2글자 이상 입력해주세요.'
+        )
+        return false
+      }
+
+      const result = this.lecturePlanList.filter((elem) => {
+        return (
+          elem.title.includes(this.searchText) ||
+          elem.writer.includes(this.searchText) ||
+          elem.contents.includes(this.searchText)
+        )
+      })
+      if (result.length === 0) {
+        this.openModalDesc('강의계획서 검색', '일치하는 강의계획서가 없습니다.')
+        return false
+      } else {
+        this.searchFlag = 1
+        this.searchList = result
+        console.log(this.searchList)
+      }
+    },
+
+    // 강의계획서 삭제
+    onClickCheckBox({ target: { id, checked } }) {
+      if (checked) {
+        console.log(id)
+        this.deleteIdxList.push(id)
+      } else {
+        this.allCheckBoxFlag = false
+        for (let i = 0; i < this.deleteIdxList.length; i++) {
+          if (this.deleteIdxList[i] === id) {
+            this.deleteIdxList.splice(i, 1)
+          }
+        }
+      }
+    },
+    deletePlan() {
+      if (this.deleteIdxList.length === 0) {
+        this.openModalDesc(
+          '강의 계획서 삭제',
+          '삭제할 강의 계획서를 선택해주세요.'
+        )
+        return false
+      } else {
+        console.log(this.deleteIdxList)
+        this.openDeleteModalDesc('강의계획서')
+      }
+    },
+    selectAll({ target: { checked } }) {
+      const checkboxes = document.getElementsByName('chk')
+      if (checked) {
+        this.allCheckBoxFlag = true
+        for (let i = 0; i < checkboxes.length; i++) {
+          checkboxes[i].checked = true
+        }
+      } else {
+        this.allCheckBoxFlag = false
+        for (let i = 0; i < checkboxes.length; i++) {
+          checkboxes[i].checked = false
+        }
+      }
+    },
+
+    //  과제 검색
+    searchHomeWork() {
+      if (this.searchText.length < 2) {
+        this.openModalDesc('과제 검색', '검색어는 2글자 이상 입력해주세요.')
+        return false
+      }
+      const result = this.homeWorkList.filter((elem) => {
+        return (
+          elem.title.includes(this.searchText) ||
+          elem.writer.includes(this.searchText) ||
+          elem.contents.includes(this.searchText)
+        )
+      })
+      if (result.length === 0) {
+        this.openModalDesc('과제 검색', '일치하는 과제가 없습니다.')
+        return false
+      } else {
+        this.searchFlag = 1
+        this.searchList = result
+        console.log(this.searchList)
+      }
+    },
+
+    // 과제 삭제
+    deleteHomeWork() {
+      if (this.deleteIdxList.length === 0) {
+        this.openModalDesc('과제 삭제', '삭제할 과제를 선택해주세요.')
+        return false
+      } else {
+        console.log(this.deleteIdxList)
+        this.openDeleteModalDesc('과제')
+      }
+    },
+  },
+}
 </script>
-<style lang=""></style>
+<style scoped>
+.cursor {
+  cursor: pointer;
+}
+</style>
