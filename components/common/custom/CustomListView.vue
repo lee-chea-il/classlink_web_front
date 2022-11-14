@@ -15,107 +15,55 @@
 </template>
 
 <script>
-import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
+import { VueTreeList, Tree } from 'vue-tree-list'
 export default {
   name: 'CustomListView',
   components: {
     VueTreeList,
   },
   props: {
-    dataList: {
-      type: Array,
-      default: () => [],
-    },
-    editable: {
-      type: Boolean,
-      default: false,
-    },
-    identity: {
-      type: String,
-      default: 'teacher',
-    },
     pidNum: {
       type: Number,
       default: 0,
-    },
-    expanded: {
-      type: Boolean,
-      default: true,
     },
   },
   data() {
     return {
       datas: new Tree(false, []),
       pid: this.pidNum,
-      receiveDataList: this.dataList
+      receiveDataList: []
     }
-  },
-  mounted() {
-    const dataMapping = (item, isReadOnly) => {
-      const result = []
-      const len = item.length
-      let sp = []
-      let dType = ''
-      for (let i = 0; i < len; i++) {
-        sp = item[i].name.split('.')
-        dType = sp[sp.length - 1]
-        if (
-          dType === 'mp4' ||
-          dType === 'mp3' ||
-          dType === 'avi' ||
-          dType === 'mov' ||
-          dType === 'flv'
-        ) {
-          dType = 'video'
-        } else if (
-          dType === 'pdf' ||
-          dType === 'ppt' ||
-          dType === 'doc' ||
-          dType === 'xls' ||
-          dType === 'hwp' ||
-          dType === 'txt'
-        ) {
-          dType = 'document'
-        } else if (dType === 'quiz') {
-          dType = 'quiz'
-        } else if (dType === 'exam') {
-          dType = 'exam'
-        } else if (dType === 'utobe') {
-          dType = 'utobe'
-        } else if (dType === 'utobe') {
-          dType = 'url'
-        }
-        result[i] = {
-          name: item[i].name,
-          id: this.pid,
-          pid: this.pid,
-          isLeaf: true,
-          dataType: dType,
-          readOnly: isReadOnly,
-          isChecked: false,
-          type: item[i].type,
-          dbIdx: item[i].dbIdx,
-          exp: item[i].exp,
-          title: item[i].title,
-          goal: item[i].goal,
-          isLink: false,
-          linkIdx: -1,
-          addTreeNodeDisabled: true,
-          addLeafNodeDisabled: true,
-          editNodeDisabled: true,
-          delNodeDisabled: true,
-        }
-        this.pid++
-      }
-      return result
-    }
-    this.datas = new Tree(false, dataMapping(this.receiveDataList, false))
   },
   methods: {
-    addNode() {
-      const node = new TreeNode({ name: 'new node', isLeaf: false })
-      if (!this.data.children) this.data.children = []
-      this.data.addChildren(node)
+    setDataList(listData) {
+      this.receiveDataList=listData
+      const copyData = (data) => {
+        const nObj={}
+        for(const item in data){
+          nObj[item]=data[item]
+        }
+        nObj.id=this.pid
+        nObj.isLeaf=true
+        nObj.readOnly=false
+        nObj.isChecked=false
+        nObj.isLink=false
+        nObj.linkIdx=-1
+        nObj.addTreeNodeDisabled=true
+        nObj.addLeafNodeDisabled=true
+        nObj.editNodeDisabled=true
+        nObj.delNodeDisabled=true
+        return nObj
+      }
+      const dataMapping = (datas) => {
+        const result = []
+        const len = datas.length
+        for (let i = 0; i < len; i++) {
+          result[i] = copyData(datas[i])
+          this.pid++
+        }
+        return result
+      }
+      this.datas = new Tree(false, dataMapping(this.receiveDataList.referenceList))
     },
     linkData(listIdx,imgIdx){
       for(let i=0;i<this.datas.children.length;i++){
@@ -138,8 +86,11 @@ export default {
   },
 }
 </script>
-<style scoped>
+<style>
 .custom-control-input:checked ~ .custom-control-label::after {
   margin-left: 0.15rem;
+}
+#modalCuriRegi .form-inline{
+  width:initial;
 }
 </style>

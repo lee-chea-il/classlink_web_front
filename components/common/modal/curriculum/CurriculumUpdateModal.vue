@@ -87,7 +87,7 @@
                     <div class="col">
                       <div class="input_file">
                         <input id="fileName" type="text" class="file_input_textbox" readonly >
-                        <div class="file_input_div">
+                        <div class="file_input_div" @click.stop.prevent="selectLessonData">
                           <button class="btn btn_crud_default">찾아보기</button>
                           <input type="file" name="file_1" class="file_input_hidden" onchange="javascript: document.getElementById('fileName').value = this.value"/>
                         </div>
@@ -97,19 +97,19 @@
                   <div class="form-group">
                     <label for="">제목</label>
                     <div class="col">
-                      찾아온 레슨 제목
+                      {{lessonDataList.title}}
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="">설명</label>
                     <div class="col">
-                      찾아온 레슨에 대한 설명
+                      {{lessonDataList.desc}}
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="">교육 목표</label>
                     <div class="col">
-                      입력했던 교육 목표
+                      {{lessonDataList.role}}
                     </div>
                   </div>
                   <div class="form-group">
@@ -135,7 +135,6 @@
                         <div class="list_area">
                           <CustomListView
                             ref="listView"
-                            :dataList="lessonDataList"
                             :pidNum="3000"
                           />
                         </div>
@@ -207,89 +206,8 @@ export default {
     return {
       dropMenuList: [],
       dropMenuListData: [],
-      lessonDataList: [
-        {
-          name: '화법과 작문111.mp4',
-          type: 'institution',
-          dbIdx: 1,
-          exp: '레슨 설명1',
-          title: "레슨 데이터 1",
-          goal: '교육 목표 1'
-        },
-        {
-          name: '화법과 작문222.txt',
-          type: 'curriculum',
-          dbIdx: 2,
-          exp: '레슨 설명2',
-          title: "레슨 데이터 2",
-          goal: '교육 목표 2'
-        },
-        {
-          name: '화법과 작문333.pdf',
-          type: 'institution',
-          dbIdx: 3,
-          exp: '레슨 설명3',
-          title: "레슨 데이터 3",
-          goal: '교육 목표 3'
-        },
-        {
-          name: '화법과 작문444.mp3',
-          type: 'franchise',
-          dbIdx: 4,
-          exp: '레슨 설명4',
-          title: "레슨 데이터 4",
-          goal: '교육 목표 4'
-        },
-        {
-          name: '화법과 작문555.quiz',
-          type: 'institution',
-          dbIdx: 5,
-          exp: '레슨 설명5',
-          title: "레슨 데이터 5",
-          goal: '교육 목표 5'
-        },
-        {
-          name: '화법과 작문111.mp4',
-          type: 'institution',
-          dbIdx: 6,
-          exp: '레슨 설명6',
-          title: "레슨 데이터 6",
-          goal: '교육 목표 6'
-        },
-        {
-          name: '화법과 작문222.txt',
-          type: 'institution',
-          dbIdx: 7,
-          exp: '레슨 설명7',
-          title: "레슨 데이터 7",
-          goal: '교육 목표 7'
-        },
-        {
-          name: '화법과 작문333.pdf',
-          type: 'institution',
-          dbIdx: 8,
-          exp: '레슨 설명8',
-          title: "레슨 데이터 8",
-          goal: '교육 목표 8'
-        },
-        {
-          name: '화법과 작문444.mp3',
-          type: 'institution',
-          dbIdx: 9,
-          exp: '레슨 설명9',
-          title: "레슨 데이터 9",
-          goal: '교육 목표 9'
-        },
-        {
-          name: '화법과 작문555.quiz',
-          type: 'institution',
-          dbIdx: 10,
-          exp: '레슨 설명10',
-          title: "레슨 데이터 10",
-          goal: '교육 목표 10'
-        },
-      ],
-      cwData: null
+      cwData: null,
+      lessonDataList:{}
     }
   },
   mounted() {
@@ -1387,6 +1305,120 @@ export default {
     unLinkEvent(listIdx,imgIdx){
       this.$refs.listView.unLinkData(listIdx)
       this.$refs.imgListView.unLinkData(imgIdx)
+    },
+    selectLessonData(){
+      this.lessonDataList={
+        title: '3-1반 수업',
+        desc: '3-1반 전체 수업 내용',
+        role: '3-1반 학생들의 평균적인 이해를 도와줄 수 있다.',
+        keyword: ['국어', '수학', '영어', '사회'],
+        isOpen: true,
+        type: '프랜차이즈',
+        savePath: '수학>대단원>피타고라스',
+        createAt: '2022.05.03',
+        ragistrant: '홍길남',
+        subject: '수학',
+        referenceList: [
+          {
+            id: 0,
+            name: '국어학습자료 애니메이션.mp4',
+            subject: '국어',
+            desc: '등록한 자료 1',
+            keyword: ['국어', '수학'],
+            registrant: '등록인',
+            savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+            isOpenEducation: true,
+            inOpenReferenceRoom: true,
+            fileName: '',
+            fileDivision: '교육기관',
+            fileType: 'video/mp4',
+            uploadType: 'video',
+            fileVolume: '',
+            createAt: '',
+            dbIdx: 1,
+            type: 'institution',
+          },
+          {
+            id: 1,
+            name: '수학 학습자료.pdf',
+            subject: '수학',
+            desc: '등록한 자료 2',
+            keyword: ['국어', '수학'],
+            registrant: '등록인',
+            savePath:
+              'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
+            isOpenEducation: true,
+            inOpenReferenceRoom: true,
+            fileName: '',
+            fileDivision: '교육기관',
+            fileType: 'application/pdf',
+            uploadType: 'pdf',
+            fileVolume: '',
+            createAt: '',
+            isLeaf: false,
+            dbIdx: 2,
+            type: 'franchise',
+          },
+          {
+            id: 2,
+            name: '국어 애니메이션.mp4',
+            subject: '국어',
+            desc: '등록한 자료 222',
+            keyword: ['국어', '수학'],
+            registrant: '등록인',
+            savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+            isOpenEducation: true,
+            inOpenReferenceRoom: true,
+            fileName: '',
+            fileDivision: '교육기관',
+            fileType: 'video/mp4',
+            uploadType: 'video',
+            fileVolume: '',
+            createAt: '',
+            dbIdx: 1,
+            type: 'institution',
+          },
+          {
+            id: 3,
+            name: '수학 애니메이션.mp4',
+            subject: '국어',
+            desc: '등록한 자료 222',
+            keyword: ['국어', '수학'],
+            registrant: '등록인',
+            savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+            isOpenEducation: true,
+            inOpenReferenceRoom: true,
+            fileName: '',
+            fileDivision: '교육기관',
+            fileType: 'video/mp4',
+            uploadType: 'video',
+            fileVolume: '',
+            createAt: '',
+            dbIdx: 1,
+            type: 'institution',
+          },
+          {
+            id: 4,
+            name: '영어 애니메이션.mp4',
+            subject: '국어',
+            desc: '등록한 자료 222',
+            keyword: ['국어', '수학'],
+            registrant: '등록인',
+            savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+            isOpenEducation: true,
+            inOpenReferenceRoom: true,
+            fileName: '',
+            fileDivision: '교육기관',
+            fileType: 'video/mp4',
+            uploadType: 'video',
+            fileVolume: '',
+            createAt: '',
+            dbIdx: 1,
+            type: 'institution',
+          }
+        ],
+      }
+      this.$refs.listView.setDataList(this.lessonDataList)
     }
   }
 }
