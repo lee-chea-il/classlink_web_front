@@ -2606,6 +2606,13 @@ ol {
     padding: 0px 30px;
   }
 }
+#modalInstinfo01 #form04 {
+  margin-top: 7px;
+}
+#modalInstinfo01 .invalid_text {
+  visibility: visible;
+  margin-top: 3px;
+}
 
 /* 팝업 M2-교육기관정보수정2 - 로고업로드1 */
 #modalInstinfo02 .explainType01 {
@@ -3793,4 +3800,14 @@ ol {
   font-size: 14px;
   margin-top: 15px;
   text-align: center;
+}
+#modalInstRegi #form04 {
+  margin-top: 7px;
+}
+#modalInstRegi .invalid_text {
+  visibility: visible;
+  margin-top: 3px;
+}
+#modalInstRegi .form-inlinebox label {
+  width: 100%;
 }/*# sourceMappingURL=mypage.css.map */

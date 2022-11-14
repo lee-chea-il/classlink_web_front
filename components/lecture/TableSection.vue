@@ -1,7 +1,7 @@
 <template>
   <div class="table_section">
     <table class="table">
-      <colgroup>
+      <!-- <colgroup>
         <col />
         <col />
         <col />
@@ -11,7 +11,7 @@
         <col width="120" />
         <col />
         <col />
-      </colgroup>
+      </colgroup> -->
       <thead>
         <tr>
           <th>
@@ -31,61 +31,29 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr v-for="(lecture, idx) in lectureList" :key="idx">
           <td>
             <div class="custom-control custom-checkbox form-inline">
-              <input id="chk01" type="checkbox" class="custom-control-input" />
-              <label class="custom-control-label" for="chk01"></label>
+              <input
+                :id="`check${idx}`"
+                type="checkbox"
+                class="custom-control-input"
+              />
+              <label class="custom-control-label" :for="`check${idx}`"></label>
             </div>
           </td>
-          <td>2022.07.10</td>
-          <td>영어 심화 1</td>
-          <td>홍길동/김지원</td>
-          <td>1-1A</td>
+          <td>{{ lecture.createdAt }}</td>
+          <td>{{ lecture.name }}</td>
+          <td>{{ lecture.teacher }}</td>
+          <td>{{ lecture.class }}</td>
           <td>
             <div class="lec_curi">
-              영어 심화1A <br />
-              리딩 교재 리딩 교재 리딩 교재 리딩 교재 리딩 교재
+              {{ lecture.curriculum }}
             </div>
           </td>
           <td>
             <div class="lec_time">
-              화, 목, 금 <br />
-              13~15시 13~15시 13~15시
-            </div>
-          </td>
-          <td>
-            <i
-              class="btn icons_pencil_off"
-              data-toggle="modal"
-              data-target="#modalLectureRegi"
-            ></i>
-          </td>
-          <td>
-            <i class="icons_x_circle_off"></i>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="custom-control custom-checkbox form-inline">
-              <input id="chk02" type="checkbox" class="custom-control-input" />
-              <label class="custom-control-label" for="chk02"></label>
-            </div>
-          </td>
-          <td>2022.07.10</td>
-          <td>영어 심화 1</td>
-          <td>홍길동/김지원</td>
-          <td>1-1A</td>
-          <td>
-            <div class="lec_curi">
-              영어 심화1A <br />
-              리딩 교재 리딩 교재 리딩 교재
-            </div>
-          </td>
-          <td>
-            <div class="lec_time">
-              화, 목, 금 <br />
-              13~15시 13~15시 13~15시
+              {{ lecture.classTime }}
             </div>
           </td>
           <td>
@@ -107,6 +75,12 @@
 <script>
 export default {
   name: 'TableSection',
+  props: {
+    lectureList: {
+      type: Array,
+      default: () => [],
+    },
+  },
 }
 </script>
 

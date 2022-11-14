@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="calendar_section">
+      <!-- 일주일 기준(일~토)달력 -->
+      <div class="calendar_area">
+        <!-- 왼쪽 시간표시 부분 -->
+        <div class="tit_time">
+          <div class="tit_week">
+            <span>시간<br />요일</span>
+          </div>
+          <!-- 00:00 -->
+          <div class="half-hour">
+            <div class="time">00<span class="sm_hidden">:00</span></div>
+          </div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <!-- 00:00 -->
+          <div class="half-hour">
+            <div class="time">03<span class="sm_hidden">:00</span></div>
+          </div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <!-- 03:00 -->
+          <div class="half-hour">
+            <div class="time">06<span class="sm_hidden">:00</span></div>
+          </div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <!-- 09:00 -->
+          <div class="half-hour">
+            <div class="time">09<span class="sm_hidden">:00</span></div>
+          </div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <!-- 12:00 -->
+          <div class="half-hour">
+            <div class="time">12<span class="sm_hidden">:00</span></div>
+          </div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <!-- 15:00 -->
+          <div class="half-hour">
+            <div class="time">15<span class="sm_hidden">:00</span></div>
+          </div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <!-- 18:00 -->
+          <div class="half-hour">
+            <div class="time">18<span class="sm_hidden">:00</span></div>
+          </div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <!-- 21:00 -->
+          <div class="half-hour">
+            <div class="time">21<span class="sm_hidden">:00</span></div>
+          </div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <div class="half-hour"></div>
+          <!-- /.30분 단위 블럭 -->
+        </div>
+        <!-- /.왼쪽 시간표시 부분 -->
+        <!-- 일요일 -->
+        <div class="weeks sun">
+          <!-- [개발참조] : 날짜는 0포함 숫자로 표기 01,02,03,04 ... -->
+          <div class="tit_week">일<br />07</div>
+          <div
+            v-for="(item, idx) in hourData"
+            :key="idx"
+            class="half-hour"
+            :class="{ lined: idx === 0 || idx % 6 === 0 }"
+          ></div>
+        </div>
+        <!-- /.일요일 -->
+        <!-- 월요일 -->
+        <div class="weeks mon">
+          <div class="tit_week">월<br />08</div>
+          <div
+            v-for="(item, idx) in hourData"
+            :key="idx"
+            class="half-hour"
+            :class="{ lined: idx === 0 || idx % 6 === 0 }"
+          ></div>
+        </div>
+        <!-- /.월요일 -->
+        <!-- 화요일 -->
+        <div class="weeks tue">
+          <div class="tit_week">화<br />09</div>
+          <div
+            v-for="(item, idx) in hourData"
+            :key="idx"
+            class="half-hour"
+            :class="{ lined: idx === 0 || idx % 6 === 0 }"
+          ></div>
+        </div>
+        <!-- /.수요일 -->
+        <!-- 목요일 -->
+        <div class="weeks thu">
+          <div class="tit_week">목<br />11</div>
+          <div
+            v-for="(item, idx) in hourData"
+            :key="idx"
+            class="half-hour"
+            :class="{ lined: idx === 0 || idx % 6 === 0 }"
+          ></div>
+        </div>
+        <!-- /.목요일 -->
+        <!-- 금요일 -->
+        <div class="weeks fri">
+          <div class="tit_week">금<br />12</div>
+          <div
+            v-for="(item, idx) in hourData"
+            :key="idx"
+            class="half-hour"
+            :class="{ lined: idx === 0 || idx % 6 === 0 }"
+          ></div>
+        </div>
+        <!-- /.금요일 -->
+        <!-- 토요일 -->
+        <div class="weeks sat">
+          <div class="tit_week">토<br />13</div>
+          <div
+            v-for="(item, idx) in hourData"
+            :key="idx"
+            class="half-hour"
+            :class="{ lined: idx === 0 || idx % 6 === 0 }"
+          ></div>
+        </div>
+        <!-- /.토요일 -->
+      </div>
+      <!-- /.일주일 기준(일~토)달력 -->
+    </div>
+  </body>
+</html>

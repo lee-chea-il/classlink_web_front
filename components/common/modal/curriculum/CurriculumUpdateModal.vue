@@ -1272,7 +1272,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .modal-wrapper {
   display: table-cell;
   vertical-align: middle;

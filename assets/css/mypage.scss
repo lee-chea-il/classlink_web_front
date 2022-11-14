@@ -772,6 +772,15 @@
 		}
 	}
 
+	#form04 {
+		margin-top: 7px;
+	}
+
+	.invalid_text {
+		visibility: visible;
+		margin-top: 3px;
+	}
+
 }
 
 /* 팝업 M2-교육기관정보수정2 - 로고업로드1 */
@@ -2196,5 +2205,18 @@
 		font-size: 14px;
 		margin-top: 15px;
 		text-align: center;
+	}
+
+	#form04 {
+		margin-top: 7px;
+	}
+
+	.invalid_text {
+		visibility: visible;
+		margin-top: 3px;
+	}
+
+	.form-inlinebox label {
+		width: 100%;
 	}
 }
