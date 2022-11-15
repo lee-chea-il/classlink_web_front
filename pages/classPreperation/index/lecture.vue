@@ -35,11 +35,35 @@
     <SelectCurriculumModal />
 
     <!-- 수업시간 선택 -->
-    <SelectScheduleModal :hourData="hourData" />
+    <SelectScheduleModal
+      :hourData="hourData"
+      :scheduleItem="scheduleItem"
+      :scheduleWeekList="scheduleWeekList"
+      :timeList="timeList"
+      @select-day="onSelectWeekDay"
+      @change-time="onChangeSchedule"
+      @open-calendar="openModalCalendar"
+      @add-schedule="addSchedule"
+      @delete-schedule="deleteSchedule"
+    />
 
     <!-- 커리큘럼 리스트 상세 -->
     <SelectCurriculumListModal />
-    {{ hourData }}
+
+    <CustomDataPicker
+      :open="isCalendar"
+      :scheduleItem="scheduleItem"
+      @select-date="onChangeDate"
+      @close="closeModalCalendar"
+    />
+
+    <!-- 설명 모달 -->
+    <ModalDesc
+      :open="isOpenModalDesc.open"
+      :title="isOpenModalDesc.title"
+      :desc="isOpenModalDesc.desc"
+      @close="closeModalDesc"
+    />
   </div>
 </template>
 
@@ -50,7 +74,9 @@ import CurriculumAssignmentModal from '~/components/common/modal/lecture/Curricu
 import SelectCurriculumListModal from '~/components/common/modal/lecture/SelectCurriculumListModal.vue'
 import SelectCurriculumModal from '~/components/common/modal/lecture/SelectCurriculumModal.vue'
 import SelectScheduleModal from '~/components/common/modal/lecture/SelectScheduleModal.vue'
+import ModalDesc from '~/components/common/modal/ModalDesc.vue'
 import PageHeader from '~/components/common/PageHeader.vue'
+import CustomDataPicker from '~/components/lecture/custom/CustomDataPicker.vue'
 import LectureList from '~/components/lecture/LectureList.vue'
 import NoListSection from '~/components/lecture/NoListSection.vue'
 
@@ -66,9 +92,18 @@ export default {
     NoListSection,
     LectureList,
     ChangeLectureModal,
+    CustomDataPicker,
+    ModalDesc,
   },
   data() {
     return {
+      isCalendar: false,
+      isOpenModalDesc: {
+        open: false,
+        title: '',
+        desc: '',
+      },
+      bgCnt: 0,
       lectureInfo: {
         name: '',
         teacher: [],
@@ -124,19 +159,80 @@ export default {
         { id: 4, name: '1-1D' },
         { id: 5, name: '1-1E' },
       ],
+      scheduleItem: {
+        startTime: '',
+        endTime: '',
+        startDay: '',
+        endDay: '',
+        selectWeekDay: [],
+        isRepeat: false,
+        bgColor: '#8fa7fb',
+      },
+      scheduleWeekList: {
+        sun: [],
+        mon: [],
+        tue: [],
+        wed: [],
+        thu: [],
+        fri: [],
+        set: [],
+      },
     }
   },
   computed: {
     hourData() {
       return Array.from({ length: 48 }, (i, j) => j / 2 + 0)
     },
+    timeList() {
+      const timeArr = this.hourData.map((item) => {
+        const time = item.toString()
+        const timeLen = time.length
+        const isOnTime = time.includes('.5')
+        const timeSet = (a, b) => {
+          return time.replace(a, b)
+        }
+        if (isOnTime) {
+          if (timeLen === 3) {
+            return timeSet(/(\d)(.5)/, '0$130')
+          } else {
+            return timeSet(/(\d)(.5)/, '$130')
+          }
+        } else if (timeLen === 1) {
+          return timeSet(/(\d)/, '0$100')
+        } else {
+          return timeSet(/(\d\d)/, '$100')
+        }
+      })
+      return timeArr
+    },
   },
   methods: {
+    // 달력 모달
+    openModalCalendar() {
+      this.isCalendar = true
+    },
+    closeModalCalendar() {
+      this.isCalendar = false
+    },
+
+    openModalDesc(tit, msg) {
+      this.isOpenModalDesc = {
+        open: true,
+        title: tit,
+        desc: msg,
+      }
+    },
+
+    closeModalDesc() {
+      this.isOpenModalDesc.open = false
+    },
+
+    // 강좌 변경 Event
     changeLecture({ target: { name, value } }) {
       this.lectureInfo[name] = value
     },
 
-    // 선생님 배정
+    // 선생님 배정 메뉴 보여주기
     showTeacherMenu(idx) {
       const target = document.getElementById(`teacher_list${idx}`)
       const isNone = target.style.display === 'none'
@@ -151,6 +247,7 @@ export default {
       }
     },
 
+    // 담임 추가
     addTeacher(payload) {
       const selectTeacherList = [payload]
       const teacherType = payload.selectType
@@ -170,6 +267,7 @@ export default {
       }
     },
 
+    // 부담임 추가
     addSpareTeacher(payload) {
       const selectSpareList = [...this.lectureInfo.spareTeacher]
       const teacherType = payload.selectType
@@ -190,21 +288,153 @@ export default {
         this.lectureInfo.spareTeacher = Array.from(new Set(selectSpareList))
       }
     },
+
+    // 반 추가
     addClassData(payload) {
       const selectClassList = [...this.lectureInfo.className]
       selectClassList.push(payload)
       this.lectureInfo.className = Array.from(new Set(selectClassList))
     },
+
+    // 담임 삭제
     deleteTeacher(selectIdx) {
       this.teacherList[selectIdx].selectType = 0
       this.lectureInfo.teacher.splice(selectIdx, 1)
     },
+
+    // 부담임 삭제
     deleteSpareTeacher(selectIdx) {
       this.teacherList[selectIdx].selectType = 0
       this.lectureInfo.spareTeacher.splice(selectIdx, 1)
     },
+
+    // 반 삭제
     deleteClassData(selectIdx) {
       this.lectureInfo.className.splice(selectIdx, 1)
+    },
+
+    // 스케줄
+    // 스케줄 요일 토글 이벤트
+    onSelectWeekDay({ target: { classList, innerHTML } }) {
+      let newArr = []
+      const isClass = classList.contains('active')
+      const filter = (item) => item?.filter((data) => data !== innerHTML)
+      const setArr = (arr) => Array.from(new Set(arr))
+      const settingTarget = this.scheduleItem.selectWeekDay
+
+      if (isClass) {
+        newArr = filter(settingTarget)
+        classList.remove('active')
+      } else {
+        newArr = [...settingTarget, innerHTML]
+        classList.add('active')
+      }
+      this.scheduleItem.selectWeekDay = setArr(newArr)
+    },
+
+    // 달력 날자 설정
+    onChangeDate({ start, end }) {
+      const setDate = (date) =>
+        `${date?.getFullYear()}.${date?.getMonth() + 1}.${date?.getDate()}`
+      this.scheduleItem.startDay = setDate(start)
+      this.scheduleItem.endDay = setDate(end)
+      this.isCalendar = false
+    },
+
+    // 달력 시간 변경
+    onChangeSchedule({ target: { name, value, checked } }) {
+      if (name === 'isRepeat') {
+        this.scheduleItem[name] = checked
+      } else {
+        this.scheduleItem[name] = value
+      }
+    },
+
+    getColor() {
+      if (this.bgCnt === 0) return '#8fa7fb'
+      else if (this.bgCnt === 1) return '#72d8d9'
+      else if (this.bgCnt === 2) {
+        this.bgCnt = 0
+        return '#bff0f1'
+      }
+    },
+
+    addSchedule(schedule) {
+      const { startDay, endDay, startTime, endTime, selectWeekDay } = schedule
+      const weekIdx = {
+        일: 'sun',
+        월: 'mon',
+        화: 'tue',
+        수: 'wed',
+        목: 'thu',
+        금: 'fri',
+        토: 'set',
+      }
+      if (startDay === '') {
+        this.openModalDesc('실패', '시작 날짜를 입력해주세요')
+        return false
+      }
+      if (endDay === '') {
+        this.openModalDesc('실패', '종료 날짜를 입력해주세요')
+        return false
+      }
+      if (startTime === '') {
+        this.openModalDesc('실패', '시작 시간을 입력해주세요')
+        return false
+      }
+      if (endTime === '') {
+        this.openModalDesc('실패', '종료 시간을 입력해주세요')
+        return false
+      }
+      if (selectWeekDay.length === 0) {
+        this.openModalDesc('실패', '요일을 입력해주세요')
+        return false
+      }
+
+      if (
+        startDay !== '' &&
+        endDay !== '' &&
+        startTime !== '' &&
+        endTime !== '' &&
+        selectWeekDay.length !== 0
+      ) {
+        for (const i of selectWeekDay) {
+          const newArr = this.scheduleWeekList[weekIdx[i]].filter(
+            (item) => item.startTime <= startTime && item.endTime >= startTime
+          )
+          if (newArr.length) {
+            this.openModalDesc('실패', '해당하는 날짜의 강의가 이미 있습니다.')
+            return false
+          } else {
+            console.log(newArr)
+            this.scheduleWeekList[weekIdx[i]].push(schedule)
+            for (let j = 0; j < 7; j++) {
+              document
+                .getElementById(`week_btn_${j}`)
+                .classList.remove('active')
+            }
+
+            this.scheduleItem = {
+              startTime: '',
+              endTime: '',
+              startDay: '',
+              endDay: '',
+              selectWeekDay: [],
+              bgColor: this.getColor(),
+              isRepeat: false,
+            }
+            this.bgCnt = this.bgCnt + 1
+          }
+        }
+      }
+    },
+
+    deleteSchedule(week, data) {
+      console.log(week, data, this.scheduleWeekList[week])
+      const newItem = this.scheduleWeekList[week].filter(
+        (item) => item.startDay !== data.startDay
+      )
+      this.scheduleWeekList[week] = newItem
     },
   },
 }

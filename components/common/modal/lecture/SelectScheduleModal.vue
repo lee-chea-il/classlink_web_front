@@ -41,47 +41,54 @@
                         class="custom-control custom-checkbox form-inline mr-3"
                       >
                         <input
-                          id="checkbox01"
+                          id="isRepeat"
+                          name="isRepeat"
                           type="checkbox"
                           class="custom-control-input"
-                          checked
+                          :checked="scheduleItem.isRepeat"
+                          @input="$emit('change-time', $event)"
                         />
-                        <label class="custom-control-label" for="checkbox01"
+                        <label class="custom-control-label" for="isRepeat"
                           >반복</label
                         >
                       </div>
                       <div class="calendar_date_bluebox">
-                        2022.08.07 - 2022.08.13
+                        {{ scheduleItem.startDay }} - {{ scheduleItem.endDay }}
                       </div>
-                      <i class="icons_calendar_off"></i>
+                      <i
+                        class="icons_calendar_off"
+                        @click="$emit('open-calendar')"
+                      ></i>
                     </div>
-                    <div class="section weeks">
-                      <span class="week">일</span>
-                      <span class="week active">월</span>
-                      <span class="week">화</span>
-                      <span class="week">수</span>
-                      <span class="week">목</span>
-                      <span class="week">금</span>
-                      <span class="week">토</span>
-                    </div>
+
+                    <WeekDaySelectField
+                      @select-day="$emit('select-day', $event)"
+                    />
+
                     <div class="section times">
-                      <input
-                        type="text"
-                        placeholder=""
-                        class="form-control form-inline time"
-                        value="09:30"
+                      <!-- <input /> -->
+                      <TimeSelectBox
+                        name="startTime"
+                        :value="scheduleItem.startTime"
+                        :timeList="timeList"
+                        :targetDate="scheduleItem.endTime"
+                        @change-time="$emit('change-time', $event)"
                       />
                       -
-                      <input
-                        type="text"
-                        placeholder=""
-                        class="form-control form-inline time"
-                        value="11:30"
+                      <TimeSelectBox
+                        name="endTime"
+                        :value="scheduleItem.endTime"
+                        :timeList="timeList"
+                        :targetDate="scheduleItem.startTime"
+                        @change-time="$emit('change-time', $event)"
                       />
                     </div>
                   </div>
                   <div class="btn_area">
-                    <button class="btn btn_crud_default">
+                    <button
+                      class="btn btn_crud_default"
+                      @click="$emit('add-schedule', scheduleItem)"
+                    >
                       시간표에<br />추가
                     </button>
                   </div>
@@ -93,7 +100,13 @@
                 <div class="calendar_area">
                   <!-- 왼쪽 시간표시 부분 -->
 
-                  <ScheduleTable :hourData="hourData" />
+                  <ScheduleTable
+                    :hourData="hourData"
+                    :scheduleItem="scheduleItem"
+                    :scheduleWeekList="scheduleWeekList"
+                    @set-time="$emit('set-time', $event)"
+                    @delete-schedule="setDeleteSchedule"
+                  />
 
                   <!-- /.왼쪽 시간표시 부분 -->
                 </div>
@@ -127,15 +140,33 @@
 </template>
 
 <script>
-import ScheduleTable from './schedule/ScheduleTable.vue'
+import WeekDaySelectField from '~/components/lecture/schedule/WeekDaySelectField.vue'
+import ScheduleTable from '~/components/lecture/schedule/ScheduleTable.vue'
+import TimeSelectBox from '~/components/lecture/custom/TimeSelectBox.vue'
 export default {
   name: 'SelectScheduleModal',
-  components: { ScheduleTable },
+  components: { ScheduleTable, WeekDaySelectField, TimeSelectBox },
   props: {
-    hourData: {
-      type: Array,
-      default: () => [],
+    hourData: { type: Array, default: () => [] },
+    scheduleItem: { type: Object, default: () => {} },
+    timeList: { type: Array, default: () => [] },
+    scheduleWeekList: { type: Object, default: () => {} },
+  },
+  methods: {
+    setDeleteSchedule(e, idx) {
+      this.$emit('delete-schedule', e, idx)
     },
   },
 }
 </script>
+
+<style scoped>
+.modal_ac_manage_lec.time_selection
+  .calendar_type01
+  .search_section
+  .right_area
+  .times
+  select.time {
+  width: 140px;
+}
+</style>

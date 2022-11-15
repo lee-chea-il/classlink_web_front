@@ -411,7 +411,7 @@
     <DeleteModal :open="isSelectModal.open" @close="onCloseSelectModal" />
 
     <!-- 설명 모달 -->
-    <ModalDeac
+    <ModalDesc
       :open="modalDesc.open"
       :title="modalDesc.title"
       :desc="modalDesc.desc"
@@ -441,7 +441,7 @@
 <script>
 import html2pdf from 'html2pdf.js'
 import PageHeader from '~/components/common/PageHeader.vue'
-import ModalDeac from '~/components/common/modal/ModalDesc.vue'
+import ModalDesc from '~/components/common/modal/ModalDesc.vue'
 import SavePathModal from '~/components/common/modal/reference/SavePathModal.vue'
 import ReferenceSelectModal from '~/components/common/modal/reference/ReferenceSelectModal.vue'
 import ReferenceAddModal from '~/components/common/modal/reference/ReferenceAddModal.vue'
@@ -475,7 +475,7 @@ export default {
     ReferenceAddModal,
     VideoFileUploadModal,
     YoutubeUploadModal,
-    ModalDeac,
+    ModalDesc,
     QuizAddModal,
     NoteTestAddModal,
     SavePathModal,

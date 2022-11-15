@@ -41,10 +41,10 @@
 </template>
 
 <script>
-import CreateLectureBtn from './createLecture/CreateLectureBtn.vue'
-import CreateLectureHeader from './createLecture/CreateLectureHeader.vue'
-import LeftSection from './createLecture/LeftSection.vue'
-import RightSection from './createLecture/RightSection.vue'
+import CreateLectureHeader from '~/components/lecture/createLecture/CreateLectureHeader.vue'
+import LeftSection from '~/components/lecture/createLecture/LeftSection.vue'
+import RightSection from '~/components/lecture/createLecture/RightSection.vue'
+import CreateLectureBtn from '~/components/lecture/createLecture/CreateLectureBtn.vue'
 
 export default {
   name: 'CreateLectureModal',
