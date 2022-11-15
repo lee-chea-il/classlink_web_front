@@ -87,7 +87,8 @@
                         :dataList="receiveInstitutionLessonData"
                         :editable="identity == 'master' ? true : false"
                         :identity="identity"
-                        :pidNum="0"
+                        :pidNum="10000"
+                        @moreShowClick="moreShowClick"
                         @copyDataCallBack="$emit('call-back')"
                       />
                     </div>
@@ -105,7 +106,8 @@
                         :dataList="receiveFranchiseLessonData"
                         :editable="identity == 'master' ? true : false"
                         :identity="identity"
-                        :pidNum="1000"
+                        :pidNum="11000"
+                        @moreShowClick="moreShowClick"
                         @copyDataCallBack="$emit('call-back')"
                       />
                     </div>
@@ -125,7 +127,8 @@
                         :dataList="receiveInstitutionData"
                         :editable="identity == 'master' ? true : false"
                         :identity="identity"
-                        :pidNum="2000"
+                        :pidNum="12000"
+                        @moreShowClick="moreShowClick"
                         @copyDataCallBack="$emit('call-back')"
                       />
                     </div>
@@ -143,7 +146,8 @@
                         :dataList="receiveFranchiseData"
                         :editable="identity == 'master' ? true : false"
                         :identity="identity"
-                        :pidNum="1000"
+                        :pidNum="13000"
+                        @moreShowClick="moreShowClick"
                         @copyDataCallBack="$emit('call-back')"
                       />
                     </div>
@@ -194,7 +198,7 @@
                             list-type="lessonList"
                             :dataList="receiveAddLessonData"
                             :expanded="false"
-                            :pidNum="2000"
+                            :pidNum="20000"
                           />
                         </div>
                       </div>
@@ -327,6 +331,11 @@ export default {
       default: () => [],
     },
   },
+  methods:{
+    moreShowClick(node){
+      console.log(`moreShowClick ${node}`)
+    }
+  }
 }
 </script>
 

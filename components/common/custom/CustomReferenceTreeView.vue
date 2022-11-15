@@ -16,11 +16,11 @@
     @more-menu-dell="moreMenuDell"
     @more-menu-copy="moreMenuCopy"
   >
-    <!-- <span slot="addTreeNodeIcon" class="icon">＋</span>
+    <span slot="addTreeNodeIcon" class="icon">＋</span>
     <span slot="addLeafNodeIcon" class="icon"></span>
 
     <span slot="addTreeNodeIcon" class="icon"></span>
-    <span slot="delNodeIcon" class="icon"></span> -->
+    <span slot="delNodeIcon" class="icon"></span>
   </vue-tree-list>
 </template>
 
@@ -340,8 +340,26 @@ export default {
     moreMenuCopy(node) {
       console.log(`copy ${node}`)
     },
+    getCheckDataList(){
+      const checkList = []
+      function _checkData(oldNode) {
+        if (
+          oldNode.children &&
+          oldNode.children.length > 0
+        ) {
+          for (let i = 0, len = oldNode.children.length; i < len; i++) {
+            _checkData(oldNode.children[len - i - 1])
+          }
+        }
+        if (oldNode.isLeaf && oldNode.isChecked) {
+          checkList.push(oldNode.savePath)
+        }
+      }
+      _checkData(this.datas)
+      return checkList
+    },
     moreShowClick(node){
-      console.log(`moreShowClick ${node}`)
+      this.$emit('moreShowClick', node)
     }
   },
 }

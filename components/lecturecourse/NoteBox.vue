@@ -22,13 +22,16 @@
         <!-- 왼쪽 영역 -->
         <div class="divide_area left_area">
           <!-- 탭 컨텐츠 -->
-          <button class="btn btn_crud_default">다운로드</button>
+          <button
+            class="btn btn_crud_default"
+            @click="getCheckboxData"
+          >다운로드</button>
           <button
             class="btn btn_crud_danger"
             data-toggle="modal"
-            data-target="#modalDataDelete
-								"
+            data-target="#modalDataDelete"
             data-dismiss="modal"
+            @click="checkboxDel"
           >
             삭제
           </button>
@@ -57,145 +60,14 @@
               role="tabpanel"
               aria-labelledby="grade-tab"
             >
-              <ul>
-                <li>
-                  <!-- 리스트01 -->
-                  <div class="list">
-                    <div class="custom-control custom-checkbox form-inline">
-                      <input
-                        id="chkA01"
-                        type="checkbox"
-                        class="custom-control-input"
-                      />
-                      <label class="custom-control-label" for="chkA01"></label>
-                    </div>
-                    <i id="show_sublist01" class="btn icons_arrow_r"></i>
-                    <span class="text">영어리딩심화</span>
-                    <i class="icons_plus_circle_off"></i>
-                  </div>
-                  <!-- 리스트01_sub-->
-                  <div id="list_sub01" class="list_sub" style="display: none">
-                    <ul>
-                      <li>
-                        <div class="custom-control custom-checkbox form-inline">
-                          <input
-                            id="chkB01"
-                            type="checkbox"
-                            class="custom-control-input"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="chkB01"
-                          ></label>
-                        </div>
-                        <i
-                          id="show_sublist01_sub"
-                          class="btn icons_arrow_r"
-                        ></i>
-                        <span class="text">1강</span>
-                        <i class="icons_plus_circle_off"></i>
-                      </li>
-                    </ul>
-                  </div>
-                  <!-- /.리스트01_sub-->
-                  <!-- 리스트01_sub_sub-->
-                  <div
-                    id="list_sub01_sub"
-                    class="list_sub_sub"
-                    style="display: none"
-                  >
-                    <ul>
-                      <li>
-                        <div class="custom-control custom-checkbox form-inline">
-                          <input
-                            id="chkC01"
-                            type="checkbox"
-                            class="custom-control-input"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="chkC01"
-                          ></label>
-                        </div>
-                        <span class="text">커리큘럼01_20220801015959.pdf</span>
-                        <i class="icons_zoom_off"></i>
-                      </li>
-                      <li>
-                        <div class="custom-control custom-checkbox form-inline">
-                          <input
-                            id="chkC02"
-                            type="checkbox"
-                            class="custom-control-input"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="chkC02"
-                          ></label>
-                        </div>
-                        <span class="text">커리큘럼01_20220801015959.pdf</span>
-                        <i class="icons_zoom_off"></i>
-                      </li>
-                      <li>
-                        <div class="custom-control custom-checkbox form-inline">
-                          <input
-                            id="chkC03"
-                            type="checkbox"
-                            class="custom-control-input"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="chkC03"
-                          ></label>
-                        </div>
-                        <span class="text">커리큘럼01_20220801015959.pdf</span>
-                        <i class="icons_zoom_off"></i>
-                      </li>
-                    </ul>
-                  </div>
-                  <!-- /.리스트01_sub_sub-->
-                  <!-- /.리스트01 -->
-                </li>
-                <li>
-                  <!-- 리스트02 -->
-                  <div class="list">
-                    <div class="custom-control custom-checkbox form-inline">
-                      <input
-                        id="chkA02"
-                        type="checkbox"
-                        class="custom-control-input"
-                      />
-                      <label class="custom-control-label" for="chkA02"></label>
-                    </div>
-                    <i id="show_sublist02" class="btn icons_arrow_r"></i>
-                    <span class="text">수학</span>
-                    <i class="icons_plus_circle_off"></i>
-                  </div>
-                  <div id="list_sub02" class="list_sub" style="display: none">
-                    <ul>
-                      <li>
-                        <div class="custom-control custom-checkbox form-inline">
-                          <input
-                            id="chkB02"
-                            type="checkbox"
-                            class="custom-control-input"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="chkB02"
-                          ></label>
-                        </div>
-                        <i
-                          id="show_sublist02_sub"
-                          class="btn icons_arrow_r"
-                        ></i>
-                        <span class="text">자연수 I</span>
-                        <i class="icons_plus_circle_off"></i>
-                      </li>
-                    </ul>
-                  </div>
-                  <!-- /.리스트02 -->
-                </li>
-              </ul>
+              <TreeView
+                ref="noteBox"
+                listType="lesson"
+                :dataList="noteBoxData"
+                :editable="false"
+                :pidNum="3000"
+                @moreShowClick="moreShowClick"
+              />
             </div>
             <!-- /.탭 내용01 -->
           </div>
@@ -264,8 +136,119 @@
   </div>
 </template>
 <script>
+import TreeView from '~/components/common/custom/CustomReferenceTreeView.vue'
 export default {
   name: 'NoteBox',
+  components: { TreeView },
+  data() {
+    return {
+      noteBoxData: [
+      {
+          name: '마포 학원',
+          children: [
+            {
+              name: '국어',
+              children: [
+                {
+                  name: '1단원',
+                  children: [
+                    {
+                      id: 0,
+                      name: '국어학습자료 애니메이션.mp4',
+                      subject: '국어',
+                      desc: '등록한 자료 1',
+                      keyword: ['국어', '수학'],
+                      registrant: '등록인',
+                      savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                      isOpenEducation: true,
+                      inOpenReferenceRoom: true,
+                      fileName: '',
+                      fileDivision: '교육기관',
+                      fileType: 'video/mp4',
+                      uploadType: 'video',
+                      fileVolume: '',
+                      createAt: '',
+                      dbIdx: 1,
+                      type: 'institution',
+                    },
+                    {
+                      id: 0,
+                      name: '국어학습자료 애니메이션2.mp4',
+                      subject: '국어',
+                      desc: '등록한 자료 2',
+                      keyword: ['국어', '수학'],
+                      registrant: '등록인',
+                      savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                      isOpenEducation: true,
+                      inOpenReferenceRoom: true,
+                      fileName: '',
+                      fileDivision: '교육기관',
+                      fileType: 'video/mp4',
+                      uploadType: 'video',
+                      fileVolume: '',
+                      createAt: '',
+                      dbIdx: 2,
+                      type: 'institution',
+                    },
+                    {
+                      id: 0,
+                      name: '국어학습자료 애니메이션3.mp4',
+                      subject: '국어',
+                      desc: '등록한 자료 3',
+                      keyword: ['국어', '수학'],
+                      registrant: '등록인',
+                      savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                      isOpenEducation: true,
+                      inOpenReferenceRoom: true,
+                      fileName: '',
+                      fileDivision: '교육기관',
+                      fileType: 'video/mp4',
+                      uploadType: 'video',
+                      fileVolume: '',
+                      createAt: '',
+                      dbIdx: 3,
+                      type: 'institution',
+                    },
+                    {
+                      id: 0,
+                      name: '국어학습자료 애니메이션4.mp4',
+                      subject: '국어',
+                      desc: '등록한 자료 4',
+                      keyword: ['국어', '수학'],
+                      registrant: '등록인',
+                      savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                      isOpenEducation: true,
+                      inOpenReferenceRoom: true,
+                      fileName: '',
+                      fileDivision: '교육기관',
+                      fileType: 'video/mp4',
+                      uploadType: 'video',
+                      fileVolume: '',
+                      createAt: '',
+                      dbIdx: 4,
+                      type: 'institution',
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ]
+    }
+  },
+  methods:{
+    moreShowClick(node){
+      console.log(`moreShowClick ${node}`)
+    },
+    checkboxDel(){
+      this.$refs.noteBox.delData()
+    },
+    getCheckboxData(){
+      const checkDatas=this.$refs.noteBox.getCheckDataList()
+      console.log(checkDatas)
+    }
+  }
 }
 </script>
 <style></style>
