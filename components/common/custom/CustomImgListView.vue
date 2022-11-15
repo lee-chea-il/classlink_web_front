@@ -85,16 +85,16 @@ export default {
     },
     dragImgEnter(node) {
       if(!node.isLink){
-        $('#'+node.id).find('img').css('opacity',1)
+        $('#'+node.id).find('img').css('opacity',1).attr("src",node.over_url)
       }
     },
     dragImgLeave(node) {
       if(!node.isLink){
-        $('#'+node.id).find('img').css('opacity',0.5)
+        $('#'+node.id).find('img').css('opacity',0.3).attr("src",node.nomal_url)
       }
     },
     dragImgDrop(node,dragTaget) {
-      $('#'+node.id).find('img').css('opacity',1)
+      $('#'+node.id).find('img').css('opacity',1).attr("src",node.nomal_url)
       if(node.isLink){
         this.$emit('unlink-data-to-list', node.linkListIdx)
       }
@@ -111,7 +111,7 @@ export default {
     },
     unLinkData(imgIdx){
       this.datas.children[imgIdx].isLink=false
-      $('#imgListView_'+imgIdx).find('img').css('opacity',0.5)
+      $('#imgListView_'+imgIdx).find('img').css('opacity',0.3)
     }
   }
 }
@@ -129,7 +129,7 @@ export default {
 }
 .inter_action_object{
   position: absolute;
-  opacity: 0.5;
+  opacity: 0.3;
 }
 .cw_box .vtl-node-main{
   padding: 0;

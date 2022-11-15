@@ -122,19 +122,19 @@
 
 <style>
 .modal_curiregi .item_list .swiper-container{
-  min-height: 70px;
+  min-height: 75px;
 }
 .modal_curiregi .item_list .swiper-container-horizontal > .swiper-scrollbar{
   bottom: 0;
 }
 .modal_curiregi .swiper-slide{
-  width:56px !important;
+  width:70px !important;
 }
 .modal_curiregi .divide_area.left .cw_box + .item_list_wrap .item {
   position: relative;
   display: inline-block;
-  width: 40px;
-  height: 40px;
+  width: 52px;
+  height: 52px;
   margin-top: 15px;
   background-repeat: no-repeat;
   background-size: contain;
