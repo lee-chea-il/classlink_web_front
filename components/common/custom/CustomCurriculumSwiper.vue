@@ -121,13 +121,13 @@
 </script>
 
 <style>
-.item_list .swiper-container{
+.modal_curiregi .item_list .swiper-container{
   min-height: 70px;
 }
-.item_list .swiper-container-horizontal > .swiper-scrollbar{
+.modal_curiregi .item_list .swiper-container-horizontal > .swiper-scrollbar{
   bottom: 0;
 }
-.swiper-slide{
+.modal_curiregi .swiper-slide{
   width:56px !important;
 }
 .modal_curiregi .divide_area.left .cw_box + .item_list_wrap .item {
@@ -142,7 +142,7 @@
   margin-right:initial;
   background-image:initial;
 }
-.swiper-scrollbar{
+.modal_curiregi .swiper-scrollbar{
   opacity: 1 !important;
 }
 </style>
