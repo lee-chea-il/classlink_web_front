@@ -36,11 +36,11 @@
                 >
               </li>
               <li class="nav-item">
-                <a
+                <NuxtLink
                   class="nav-link"
-                  :class="{ active: $store.state.common.activeNavIdx === 3 }"
-                  href="#"
-                  >관리</a
+                  :class="{ active: $route.matched[0].path === '/management' }"
+                  to="/management/notice/all"
+                  >관리</NuxtLink
                 >
               </li>
               <li class="nav-item">
@@ -153,7 +153,7 @@
         </ul>
       </div>
 
-      <div v-show="$store.state.common.activeNavIdx === 3" class="nav_sub">
+      <div v-show="$route.matched[0].path === '/management'" class="nav_sub">
         <ul class="nav nav_dapth02">
           <li class="nav-item">
             <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
@@ -169,7 +169,21 @@
             <a class="nav-link" href="#">결제관리</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">공지사항</a>
+            <NuxtLink
+              class="nav-link"
+              :class="{
+                'nav-link': true,
+                active:
+                  $route.fullPath === '/management/notice/all' ||
+                  $route.fullPath === '/management/notice/class' ||
+                  $route.fullPath === '/management/notice/individual' ||
+                  $route.fullPath === '/management/notice/regist/all' ||
+                  $route.fullPath === '/management/notice/regist/class' ||
+                  $route.fullPath === '/management/notice/regist/individual',
+              }"
+              to="/management/notice/all"
+              >공지사항</NuxtLink
+            >
           </li>
         </ul>
       </div>
