@@ -1453,9 +1453,6 @@ export default {
 #modalCuriRegi .form-inline{
   width: initial;
 }
-.custom-control-input:checked ~ .custom-control-label::after {
-  margin-left: 0.15rem;
-}
 #modalCuriRegi .modal_curiregi .divide_area.right .list_box .vtl-node-main .custom-control-label::after{
   margin: -8px 0px 0px 15px;
 }

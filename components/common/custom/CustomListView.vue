@@ -88,9 +88,7 @@ export default {
 </script>
 
 <style>
-.custom-control-input:checked ~ .custom-control-label::after {
-  margin-left: 0.15rem;
-}
+
 #modalCuriRegi .form-inline{
   width:initial;
 }

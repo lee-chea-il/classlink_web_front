@@ -297,7 +297,4 @@ export default {
 }
 </script>
 <style scoped>
-.custom-control-input:checked ~ .custom-control-label::after {
-  margin-left: 0.15rem;
-}
 </style>

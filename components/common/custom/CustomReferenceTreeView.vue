@@ -347,7 +347,4 @@ export default {
 }
 </script>
 <style scoped>
-.custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
-  margin-left: 0.15rem;
-}
 </style>
