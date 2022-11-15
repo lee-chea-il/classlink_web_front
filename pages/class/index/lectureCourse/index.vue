@@ -66,11 +66,7 @@
                 >
                   <div
                     class="card"
-                    :class="
-                      !item.state
-                        ? 'standby'
-                        : `course_bgcolor0${bgColorList[idx]}`
-                    "
+                    :class="!item.state ? 'standby' : bgColorList[idx]"
                   >
                     <div class="course_tit">{{ item.subject }}</div>
                     <div class="course_time">{{ item.time }}</div>
@@ -283,15 +279,14 @@ export default {
   },
   created() {
     const array = []
-    for (let i = 0; i < this.lectureCourseList.length; i++) {
-      if (i < 4) {
-        array.push(1)
-      } else if (i >= 4 && i < 8) {
-        array.push(2)
-      } else if (i >= 8 && i < 12) {
-        array.push(3)
-      } else if (i >= 12 && i < 16) {
-        array.push(1)
+    for (let i = 0; i <= this.lectureCourseList.length; i++) {
+      const num = parseInt(i / 4)
+      if (array.length === this.lectureCourseList.length) {
+        break
+      } else if (num === this.bgColors.length) {
+        i = -1
+      } else {
+        array.push(this.bgColors[num])
       }
     }
     this.bgColorList = array
@@ -351,7 +346,7 @@ export default {
     // router event
     onClickLecture(id) {
       console.log(id)
-      this.$router.push(`lecturecourse/lecturedetail/${id}`)
+      this.$router.push(`lecturecourse/lectureplan/${id}`)
     },
 
     // 모달 이벤트

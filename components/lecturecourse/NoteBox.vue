@@ -11,8 +11,8 @@
           <span class="course_con">영어 / 심화 A반 / 홍길동 선생님</span>
         </div>
         <div class="right_area">
-          <a href="(완)강의코스.html" class="btn btn_crud_default"
-            >강의목록 보기</a
+          <nuxt-link to="/class/lecturecourse" class="btn btn_crud_default"
+            >강의목록 보기</nuxt-link
           >
         </div>
       </div>

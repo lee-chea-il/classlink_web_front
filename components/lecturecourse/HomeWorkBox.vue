@@ -36,7 +36,9 @@
               ></button>
             </div>
           </div>
-          <a href="#" class="btn btn_crud_point">등록</a>
+          <a class="btn btn_crud_point" @click="$emit('click-register')"
+            >등록</a
+          >
         </div>
       </div>
       <!-- /.검색 영역 -->
@@ -81,18 +83,13 @@
                     name="chk"
                     type="checkbox"
                     class="custom-control-input"
-                    @input="$emit('selete-homework', $event)"
+                    @input="$emit('select-homework', $event)"
                   />
                   <label class="custom-control-label" :for="item.id"></label>
                 </div>
               </td>
               <td>
-                <div
-                  class="classplan_tit"
-                  data-toggle="modal"
-                  data-target="#modalTaskDetail"
-                  data-dismiss="modal"
-                >
+                <div class="classplan_tit" @click="$emit('open-detail')">
                   성격심리학 레슨1 과제입니다
                 </div>
               </td>
@@ -121,7 +118,7 @@
                     name="chk-homework"
                     type="checkbox"
                     class="custom-control-input"
-                    @input="$emit('selete-plan', $event)"
+                    @input="$emit('select-plan', $event)"
                   />
                   <label class="custom-control-label" :for="item.id"></label>
                 </div>

@@ -1,7 +1,7 @@
 <template>
   <ValidationProvider v-slot="{ errors, classes }" :rules="rules">
     <div
-      class="form-group"
+      class="form-group form-mb"
       :class="
         isBtn || isIdCheckBtn || isCheckBox
           ? 'form-inlinebox'
@@ -172,7 +172,7 @@ button {
   padding: 0 60px;
 }
 .form-mb {
-  margin-bottom: 1rem;
+  margin-bottom: 0 !important;
 }
 .custom-control-label::after {
   left: -1.65rem !important;

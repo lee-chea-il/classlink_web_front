@@ -41,7 +41,6 @@
 </template>
 <script>
 import DatePicker from 'v-calendar/lib/components/date-picker.umd'
-import { computed } from 'vue'
 export default {
   name: 'Calendar',
   components: {
@@ -63,14 +62,6 @@ export default {
       type: Array,
       default: () => [],
     },
-  },
-  setup(props, { emit }) {
-    const date = computed({
-      get: () => props.selectedDate,
-      set: (value) => emit('update:selectedDate', value),
-    })
-
-    return { date }
   },
 }
 </script>

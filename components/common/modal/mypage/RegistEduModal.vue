@@ -67,7 +67,7 @@
                       @click-address="$emit('click-address', $event)"
                     />
                     <CustomInput
-                      id="address"
+                      id="address_detail"
                       name="교육기관 상세 주소"
                       placeholder="교육기관 상세 주소 입력"
                       rules="required"

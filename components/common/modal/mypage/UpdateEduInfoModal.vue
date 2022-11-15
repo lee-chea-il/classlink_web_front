@@ -79,6 +79,7 @@
                   rules="min:2|required"
                   type="text"
                   :inputValue="eduInfo.tel"
+                  :isEduInfo="true"
                   @change-input="$emit('change-input', $event)"
                 />
 
@@ -90,15 +91,17 @@
                   type="text"
                   :isAddressBtn="true"
                   :inputValue="eduInfo.address"
+                  :isEduInfo="true"
                   @change-input="$emit('change-input', $event)"
                   @click-address="$emit('click-address', $event)"
                 />
                 <CustomInput
-                  id="address"
+                  id="address_detail"
                   name="교육기관 상세 주소"
                   placeholder="교육기관 상세 주소 입력"
                   rules="min:2|required"
                   type="text"
+                  :isEduInfo="true"
                   :inputValue="eduInfo.address_detail"
                   @change-input="$emit('change-input', $event)"
                 />
@@ -108,6 +111,7 @@
                   name="교육기관 설명"
                   placeholder="교육기관 설명 입력"
                   type="text"
+                  :isEduInfo="true"
                   :inputValue="eduInfo.description"
                   @change-input="$emit('change-input', $event)"
                 />
