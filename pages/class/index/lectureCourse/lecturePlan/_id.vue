@@ -64,7 +64,6 @@ export default {
   },
   data() {
     return {
-      courseFlag: 0,
       searchFlag: 0,
       allCheckBoxFlag: false,
       // modal
@@ -232,6 +231,11 @@ export default {
         `/class/lecturecourse/registerlectureplan/${this.$route.params.id}`
       )
     },
+    onClickUpdateLecturePlan() {
+      this.$router.push(
+        `/class/lecturecourse/updatelectureplan/${this.$route.params.id}`
+      )
+    },
     // modal event
     openModalDesc(tit, msg) {
       this.modalDesc = {
@@ -295,10 +299,10 @@ export default {
       }
     },
 
-    // 강의계획서 등록/수정
+    // 강의계획서 수정
     onClickUpdatePlanBtn() {
       this.LecturePlanDetailModalDesc.open = false
-      this.onClickRegisterLecturePlan()
+      this.onClickUpdateLecturePlan()
     },
     onChangePlanInput({ target: { value, id } }) {
       this.lecturePlan[id] = value
@@ -351,57 +355,6 @@ export default {
         }
       }
     },
-
-    // 과제함
-    // 과제 상세/미리보기 모달
-    openHomeWorkDetailModal() {
-      this.HomeWorkDetailModalDesc.open = true
-    },
-    onCloseHomeWorkDetailModal() {
-      this.HomeWorkDetailModalDesc.open = false
-    },
-
-    // 과제 수정
-    onClickUpdateHomeWorkBtn() {
-      this.HomeWorkDetailModalDesc.open = true
-      this.onClickRegisterHomeWork()
-    },
-
-    //  과제 검색
-    searchHomeWork() {
-      if (this.searchText.length < 2) {
-        this.openModalDesc('과제 검색', '검색어는 2글자 이상 입력해주세요.')
-        return false
-      }
-      const result = this.homeWorkList.filter((elem) => {
-        return (
-          elem.title.includes(this.searchText) ||
-          elem.writer.includes(this.searchText) ||
-          elem.contents.includes(this.searchText)
-        )
-      })
-      if (result.length === 0) {
-        this.openModalDesc('과제 검색', '일치하는 과제가 없습니다.')
-        return false
-      } else {
-        this.searchFlag = 1
-        this.searchList = result
-        console.log(this.searchList)
-      }
-    },
-
-    // 과제 삭제
-    deleteHomeWork() {
-      if (this.deleteIdxList.length === 0) {
-        this.openModalDesc('과제 삭제', '삭제할 과제를 선택해주세요.')
-        return false
-      } else {
-        console.log(this.deleteIdxList)
-        this.openDeleteModalDesc('과제')
-      }
-    },
-
-    //
   },
 }
 </script>

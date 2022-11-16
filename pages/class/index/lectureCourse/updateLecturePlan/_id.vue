@@ -4,10 +4,12 @@
       <!--  3Depth -->
       <ul class="nav nav-tabs depth03">
         <li class="nav-item cursor">
-          <div class="nav-link" @click="onClickLecturePlan">강의계획서</div>
+          <div class="nav-link active" @click="onClickLecturePlan">
+            강의계획서
+          </div>
         </li>
         <li class="nav-item cursor">
-          <div class="nav-link active" @click="onClickHomeWorkBox">과제함</div>
+          <div class="nav-link" @click="onClickHomeWorkBox">과제함</div>
         </li>
         <li class="nav-item cursor">
           <div class="nav-link" @click="onClickNoteBox">노트함</div>
@@ -36,8 +38,8 @@
                   type="text"
                   placeholder="제목을 입력해주세요."
                   class="form-control form-inline"
-                  :value="homeWork.title"
-                  @input="onChangeHomeWorkInput"
+                  :value="lecturePlan.title"
+                  @input="onChangePlanInput"
                 />
                 <span class="content">작성자는 자동으로 기록에 남습니다.</span>
               </div>
@@ -63,18 +65,14 @@
                   기한 설정
                 </button>
                 <span class="box01">
-                  <span
-                    v-if="homeWork.date_range_start !== ''"
-                    class="content02"
-                  >
-                    {{ homeWork.date_range_start }} -
-                    {{ homeWork.date_range_end }}
-                    {{ homeWork.time_range_start_m === 0 ? '오전' : '오후' }}
-                    {{ homeWork.time_range_start }} -
-                    {{ homeWork.time_range_end_m === 0 ? '오전' : '오후' }}
-                    {{ homeWork.time_range_end }}
+                  <span class="content02">
+                    {{ lecturePlan.date_range_start }} -
+                    {{ lecturePlan.date_range_end }}
+                    {{ lecturePlan.time_range_start_m === 0 ? '오전' : '오후' }}
+                    {{ lecturePlan.time_range_start }} -
+                    {{ lecturePlan.time_range_end_m === 0 ? '오전' : '오후' }}
+                    {{ lecturePlan.time_range_end }}
                   </span>
-                  <span v-else class="content02"> 기한을 설정해주세요. </span>
                 </span>
               </div>
             </div>
@@ -207,25 +205,28 @@
             </div>
           </div>
           <VueEditor
-            v-model="homeWork.contents"
+            v-model="lecturePlan.contents"
             :editorOptions="editorOptions"
             :editorToolbar="editorToolbar"
           />
+          <!-- <div class="write_area">
+            <div class="page_nodata">글쓰기 공간입니다.</div>
+          </div> -->
           <div class="custom-control custom-checkbox form-inline open_regi">
             <input
               id="open"
               type="checkbox"
               class="custom-control-input"
-              :checked="homeWork.open"
-              @input="onChangeHomeWorkInput"
+              :checked="lecturePlan.open"
+              @input="onChangePlanInput"
             />
             <label class="custom-control-label" for="open"
               >글을 공개 상태로 등록합니다.</label
             >
           </div>
           <div class="btn_area">
-            <button class="btn btn_crud_point" @click="registerHomeWork">
-              등록
+            <button class="btn btn_crud_point" @click="updateLecturePlan">
+              수정
             </button>
             <a class="btn btn_crud_default" @click="openPreviousPageModal"
               >취소</a
@@ -237,20 +238,20 @@
         </div>
       </div>
     </div>
-    <!-- 과제 미리보기 -->
+    <!-- 강의계획서 미리보기 -->
     <PreviewModal
-      title="과제"
-      :homeWork="homeWork"
+      title="강의계획서"
+      :lecturePlan="lecturePlan"
       :open="previewModalDesc.open"
       @close="onClosePreviewModal"
     />
     <!-- 기간선택 모달 -->
     <DateRangeModal
-      :rangeInfo="homeWork"
+      :rangeInfo="lecturePlan"
       :range="range"
       @select-range="selectRange"
       @click-confirmBtn="onClickConfirmBtn"
-      @change-input="onChangeHomeWorkInput"
+      @change-input="onChangePlanInput"
       @start-time="onClickStartTimeSelect"
       @end-time="onClickEndTimeSelect"
     />
@@ -275,8 +276,8 @@ import PreviewModal from '@/components/common/modal/lecturecourse/PreviewModal.v
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 import PreviousPageModal from '@/components/common/modal/lecturecourse/PreviousPageModal.vue'
 export default {
-  name: 'RegisterHomeWork',
-  components: { PreviewModal, DateRangeModal, ModalDesc, PreviousPageModal },
+  name: 'UpdateLecturePlan',
+  components: { DateRangeModal, PreviewModal, ModalDesc, PreviousPageModal },
   props: {},
   data() {
     return {
@@ -291,21 +292,21 @@ export default {
         state: true,
         students: 12,
       },
-      homeWork: {
+      lecturePlan: {
         id: 0,
         course_id: 0,
-        title: '',
-        writer: '',
-        created_at: '',
-        date_range_start: '',
-        date_range_end: '',
-        time_range_start: '',
-        time_range_end: '',
-        time_range_start_m: 0,
-        time_range_end_m: 0,
+        title: '성격심리학 레슨1 강의계획서0',
+        writer: '홍길동 선생님',
+        created_at: '2022.07.10',
+        date_range_start: '2022.08.05',
+        date_range_end: '2022.08.07',
+        time_range_start: '09:00',
+        time_range_end: '11:59',
+        time_range_start_m: 1,
+        time_range_end_m: 1,
         open: true,
-        views: 0,
-        contents: '',
+        views: 3,
+        contents: '성격심리학 레슨1 강의계획서입니다. 수업에 참고해 주세요',
       },
       // modal
       previewModalDesc: {
@@ -363,16 +364,16 @@ export default {
     onClickNoteBox() {
       this.$router.push(`/class/lecturecourse/notebox/${this.$route.params.id}`)
     },
-    // 과제 수정
-    onChangeHomeWorkInput({ target: { value, id, checked } }) {
-      this.homeWork[id] = value
+    // 강의계획서 등록/수정
+    onChangePlanInput({ target: { value, id, checked } }) {
+      this.lecturePlan[id] = value
       if (id === 'open') {
-        this.homeWork[id] = checked
+        this.lecturePlan[id] = checked
       } else {
-        this.homeWork[id] = value
+        this.lecturePlan[id] = value
       }
       if (id === 'time_range_start' || id === 'time_range_end') {
-        this.homeWork[id] = value
+        this.lecturePlan[id] = value
           .replace(/[^0-9]/g, '')
           .replace(/^(\d{0,2})(\d{0,2})$/g, '$1:$2')
           .replace(/(:{1})$/g, '')
@@ -385,17 +386,17 @@ export default {
       inputBtn.click()
     },
     onClickStartTimeSelect() {
-      if (this.homeWork.time_range_start_m === 0) {
-        this.homeWork.time_range_start_m = 1
+      if (this.lecturePlan.time_range_start_m === 0) {
+        this.lecturePlan.time_range_start_m = 1
       } else {
-        this.homeWork.time_range_start_m = 0
+        this.lecturePlan.time_range_start_m = 0
       }
     },
     onClickEndTimeSelect() {
-      if (this.homeWork.time_range_end_m === 0) {
-        this.homeWork.time_range_end_m = 1
+      if (this.lecturePlan.time_range_end_m === 0) {
+        this.lecturePlan.time_range_end_m = 1
       } else {
-        this.homeWork.time_range_end_m = 0
+        this.lecturePlan.time_range_end_m = 0
       }
     },
     // 미리보기 모달
@@ -423,15 +424,15 @@ export default {
       this.previousPageModalDesc.open = false
     },
     //
-    registerHomeWork() {
-      this.openModalDesc('과제 등록', '과제가 등록되었습니다.')
+    updateLecturePlan() {
+      this.openModalDesc('강의계획서 수정', '강의계획서가 수정되었습니다.')
     },
     goPreviousPage() {
       this.$router.push(
-        `/class/lecturecourse/homeworkbox/${this.$route.params.id}`
+        `/class/lecturecourse/lectureplan/${this.$route.params.id}`
       )
     },
-    // 기간 설정
+    // 캘린더
     selectRange(e) {
       this.range.start = e.start
       this.range.end = e.end
@@ -445,9 +446,14 @@ export default {
       return dateString
     },
     onClickConfirmBtn() {
-      this.homeWork.date_range_start = this.changeDateFormat(this.range.start)
-      this.homeWork.date_range_end = this.changeDateFormat(this.range.end)
-      console.log(this.homeWork.date_range_start, this.homeWork.date_range_end)
+      this.lecturePlan.date_range_start = this.changeDateFormat(
+        this.range.start
+      )
+      this.lecturePlan.date_range_end = this.changeDateFormat(this.range.end)
+      console.log(
+        this.lecturePlan.date_range_start,
+        this.lecturePlan.date_range_end
+      )
     },
   },
 }

@@ -65,7 +65,10 @@
                   기한 설정
                 </button>
                 <span class="box01">
-                  <span class="content02">
+                  <span
+                    v-if="lecturePlan.date_range_start !== ''"
+                    class="content02"
+                  >
                     {{ lecturePlan.date_range_start }} -
                     {{ lecturePlan.date_range_end }}
                     {{ lecturePlan.time_range_start_m === 0 ? '오전' : '오후' }}
@@ -73,6 +76,7 @@
                     {{ lecturePlan.time_range_end_m === 0 ? '오전' : '오후' }}
                     {{ lecturePlan.time_range_end }}
                   </span>
+                  <span v-else class="content02"> 기한을 설정해주세요. </span>
                 </span>
               </div>
             </div>
@@ -247,7 +251,7 @@
     />
     <!-- 기간선택 모달 -->
     <DateRangeModal
-      :lecturePlan="lecturePlan"
+      :rangeInfo="lecturePlan"
       :range="range"
       @select-range="selectRange"
       @click-confirmBtn="onClickConfirmBtn"
@@ -278,7 +282,6 @@ import PreviousPageModal from '@/components/common/modal/lecturecourse/PreviousP
 export default {
   name: 'RegisterLecturePlan',
   components: { DateRangeModal, PreviewModal, ModalDesc, PreviousPageModal },
-  props: {},
   data() {
     return {
       lectureCourse: {
@@ -295,18 +298,18 @@ export default {
       lecturePlan: {
         id: 0,
         course_id: 0,
-        title: '성격심리학 레슨1 강의계획서0',
-        writer: '홍길동 선생님',
-        created_at: '2022.07.10',
-        date_range_start: '2022.08.05',
-        date_range_end: '2022.08.07',
-        time_range_start: '09:00',
-        time_range_end: '11:59',
-        time_range_start_m: 1,
-        time_range_end_m: 1,
+        title: '',
+        writer: '',
+        created_at: '',
+        date_range_start: '',
+        date_range_end: '',
+        time_range_start: '',
+        time_range_end: '',
+        time_range_start_m: 0,
+        time_range_end_m: 0,
         open: true,
-        views: 3,
-        contents: '성격심리학 레슨1 강의계획서입니다. 수업에 참고해 주세요',
+        views: 0,
+        contents: '',
       },
       // modal
       previewModalDesc: {

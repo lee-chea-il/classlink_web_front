@@ -26,24 +26,14 @@
               <span class="file_icon"></span>
               일반 첨부파일 1개(10KB)
               <span class="save">모두 저장</span>
-              <div class="file_name">성격심리학 강의계획서.hwp</div>
+              <div class="file_name">성격심리학 과제파일.hwp</div>
             </div>
-
-            <div class="content_area">
-              <!-- <input type="textarea" class="content_area" /> -->
-              <div class="notice_content">
-                {{ homeWork.contents }}
-              </div>
-              <div class="box">
-                <div class="thumbnail">
-                  <i class="icons_thumbnail"></i>
-                </div>
-              </div>
-            </div>
+            <VueEditor
+              :value="homeWork.contents"
+              :editorOptions="editorOptions"
+              disabled
+            />
           </div>
-          <!-- div class="modal-body" -->
-          <!-- [개발참조] 강의계획서 열람 시 출력되는 버튼
-					미리보기에는 출력되지않음 -->
           <div class="modal-footer">
             <button class="btn btn_crud_point" @click="$emit('update')">
               수정
@@ -80,9 +70,37 @@ export default {
         views: 3,
         contents: '성격심리학 레슨1 과제입니다. 지금 당장 제출하세요.',
       },
+      editorOptions: {
+        modules: {
+          toolbar: false,
+          imageDrop: false,
+          imageEdit: false,
+        },
+      },
     }
   },
   created() {},
 }
 </script>
-<style scoped></style>
+<style lang="postcss" scoped>
+/deep/.quillWrapper {
+  margin-top: 15px !important;
+  width: 97% !important;
+  height: 100%;
+  margin: 0 auto;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px !important;
+}
+/deep/.ql-toolbar,
+/deep/.ql-container {
+  border-width: 0 !important;
+}
+/deep/.ql-toolbar {
+  border-bottom: 0.4px solid rgba(167, 169, 172, 0.4) !important;
+}
+/deep/.ql-editor {
+  max-height: 400px;
+  min-height: 400px;
+  font-size: 15px;
+}
+</style>

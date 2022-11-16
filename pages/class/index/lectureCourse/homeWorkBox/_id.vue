@@ -26,6 +26,7 @@
         @delete-homework="deleteHomeWork"
         @click-register="onClickRegisterHomeWork"
         @open-detail="openHomeWorkDetailModal"
+        @click-submission="openSubmissionStatusModal"
       />
     </div>
     <!-- 설명 모달 -->
@@ -44,11 +45,17 @@
     <!-- 과제 상세 모달 -->
     <HomeWorkDetailModal
       :open="HomeWorkDetailModalDesc.open"
-      @update="onClickUpdatePlanBtn"
+      @update="onClickUpdateHomeWorkBtn"
       @close="onCloseHomeWorkDetailModal"
     />
-    <!-- 기간 설정 모달-->
-    <DateRangeModal />
+    <!-- 제출 현황 모달 -->
+    <SubmissionStatusModal
+      :open="submissionStatusModalDesc.open"
+      :homeWork="homeWork"
+      :submissionList="submissionList"
+      @close="onCloseSubmissionStatusModal"
+      @click-expand="onClickExpandBtn"
+    />
   </div>
 </template>
 <script>
@@ -56,7 +63,8 @@ import DeletePlanModal from '@/components/lecturecourse/DeletePlanModal.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 import HomeWorkBox from '@/components/lecturecourse/HomeWorkBox.vue'
 import HomeWorkDetailModal from '@/components/common/modal/lecturecourse/HomeWorkDetailModal.vue'
-import DateRangeModal from '@/components/common/modal/lecturecourse/DateRangeModal.vue'
+import SubmissionStatusModal from '@/components/common/modal/lecturecourse/SubmissionStatusModal.vue'
+
 export default {
   name: 'LectureDetail',
   components: {
@@ -64,19 +72,18 @@ export default {
     ModalDesc,
     DeletePlanModal,
     HomeWorkDetailModal,
-    DateRangeModal,
+    SubmissionStatusModal,
   },
   data() {
     return {
-      courseFlag: 0,
       // Flag
       searchFlag: 0,
       allCheckBoxFlag: false,
       // modal
-      LecturePlanDetailModalDesc: {
+      HomeWorkDetailModalDesc: {
         open: false,
       },
-      HomeWorkDetailModalDesc: {
+      submissionStatusModalDesc: {
         open: false,
       },
       modalDesc: {
@@ -114,6 +121,58 @@ export default {
         views: 3,
         contents: '성격심리학 레슨1 과제입니다. 지금 당장 제출하세요.',
       },
+      submissionList: [
+        {
+          id: 0,
+          grade: '1학년',
+          student_name: '김지원',
+          student_phone: '010-3566-1888',
+          progress: '100',
+          submission_time: '22.08.13 오후 11:00',
+          submission_file: '성격심리학.docx',
+          contents: '과제를 제출합니다 과제를 제출합니다요',
+        },
+        {
+          id: 0,
+          grade: '1학년',
+          student_name: '김지원',
+          student_phone: '010-3566-1888',
+          progress: '100',
+          submission_time: '22.08.13 오후 11:00',
+          submission_file: '성격심리학.docx',
+          contents: '과제를 제출합니다 과제를 제출합니다요',
+        },
+        {
+          id: 0,
+          grade: '1학년',
+          student_name: '김지원',
+          student_phone: '010-3566-1888',
+          progress: '100',
+          submission_time: '22.08.13 오후 11:00',
+          submission_file: '성격심리학.docx',
+          contents: '과제를 제출합니다 과제를 제출합니다요',
+        },
+        {
+          id: 0,
+          grade: '1학년',
+          student_name: '김지원',
+          student_phone: '010-3566-1888',
+          progress: '100',
+          submission_time: '22.08.13 오후 11:00',
+          submission_file: '성격심리학.docx',
+          contents: '과제를 제출합니다 과제를 제출합니다요',
+        },
+        {
+          id: 0,
+          grade: '1학년',
+          student_name: '김지원',
+          student_phone: '010-3566-1888',
+          progress: '100',
+          submission_time: '22.08.13 오후 11:00',
+          submission_file: '성격심리학.docx',
+          contents: '과제를 제출합니다 과제를 제출합니다요',
+        },
+      ],
       homeWorkList: [
         {
           id: 0,
@@ -123,7 +182,7 @@ export default {
           created_at: '2022.07.10',
           open: false,
           views: 3,
-          submited: 3,
+          submitted: 3,
           contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
         },
         {
@@ -134,7 +193,7 @@ export default {
           created_at: '2022.07.10',
           open: true,
           views: 4,
-          submited: 3,
+          submitted: 3,
           contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
         },
         {
@@ -145,7 +204,7 @@ export default {
           created_at: '2022.07.10',
           open: false,
           views: 0,
-          submited: 3,
+          submitted: 3,
           contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
         },
         {
@@ -156,7 +215,7 @@ export default {
           created_at: '2022.07.10',
           open: true,
           views: 2,
-          submited: 3,
+          submitted: 3,
           contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
         },
         {
@@ -167,7 +226,7 @@ export default {
           created_at: '2022.07.10',
           open: true,
           views: 7,
-          submited: 3,
+          submitted: 3,
           contents: '성격심리학 레슨1 과제입니다. 수업에 참고 필수',
         },
         {
@@ -178,7 +237,7 @@ export default {
           created_at: '2022.07.10',
           open: false,
           views: 7,
-          submited: 3,
+          submitted: 3,
           contents: '성격심리학 레슨1 과제입니다 수업에 참고 필수',
         },
         {
@@ -189,7 +248,7 @@ export default {
           created_at: '2022.07.10',
           open: false,
           views: 8,
-          submited: 3,
+          submitted: 3,
           contents: '성격심리학 레슨1 강의계획서입니다.  수업에 참고 필수',
         },
         {
@@ -200,7 +259,7 @@ export default {
           created_at: '2022.07.10',
           open: true,
           views: 0,
-          submited: 3,
+          submitted: 3,
           contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
         },
         {
@@ -211,7 +270,7 @@ export default {
           created_at: '2022.07.10',
           open: true,
           views: 0,
-          submited: 3,
+          submitted: 3,
           contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
         },
         {
@@ -222,7 +281,7 @@ export default {
           created_at: '2022.07.10',
           open: true,
           views: 0,
-          submited: 3,
+          submitted: 3,
           contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
         },
       ],
@@ -242,6 +301,11 @@ export default {
     onClickRegisterHomeWork() {
       this.$router.push(
         `/class/lecturecourse/registerhomework/${this.$route.params.id}`
+      )
+    },
+    onClickUpdateHomeWork() {
+      this.$router.push(
+        `/class/lecturecourse/Updatehomework/${this.$route.params.id}`
       )
     },
 
@@ -272,82 +336,11 @@ export default {
       console.log(this.searchText)
     },
 
-    // 강의계획서
-    // 강의계획서 상세/미리보기
-    openLecturePlanDetailModal() {
-      this.LecturePlanDetailModalDesc.open = true
-    },
-    onCloseLecturePlanDetailModal() {
-      this.LecturePlanDetailModalDesc.open = false
-    },
-
-    //  강의계획서 검색
-    searchLecturePlan() {
-      if (this.searchText.length < 2) {
-        this.openModalDesc(
-          '강의계획서 검색',
-          '검색어는 2글자 이상 입력해주세요.'
-        )
-        return false
-      }
-
-      const result = this.lecturePlanList.filter((elem) => {
-        return (
-          elem.title.includes(this.searchText) ||
-          elem.writer.includes(this.searchText) ||
-          elem.contents.includes(this.searchText)
-        )
-      })
-      if (result.length === 0) {
-        this.openModalDesc('강의계획서 검색', '일치하는 강의계획서가 없습니다.')
-        return false
-      } else {
-        this.searchFlag = 1
-        this.searchList = result
-        console.log(this.searchList)
-      }
-    },
-
-    // 강의계획서 등록/수정
-    onClickUpdatePlanBtn() {
-      this.LecturePlanDetailModalDesc.open = false
-      this.onClickRegisterLecturePlan()
-    },
-    onChangePlanInput({ target: { value, id } }) {
-      this.lecturePlan[id] = value
-      console.log(this.lecturePlan[id])
-    },
     onClickFileInputBtn() {
       const inputBtn = document.getElementById('upload-input')
       inputBtn.click()
     },
 
-    // 강의계획서 삭제
-    onClickCheckBox({ target: { id, checked } }) {
-      if (checked) {
-        console.log(id)
-        this.deleteIdxList.push(id)
-      } else {
-        this.allCheckBoxFlag = false
-        for (let i = 0; i < this.deleteIdxList.length; i++) {
-          if (this.deleteIdxList[i] === id) {
-            this.deleteIdxList.splice(i, 1)
-          }
-        }
-      }
-    },
-    deletePlan() {
-      if (this.deleteIdxList.length === 0) {
-        this.openModalDesc(
-          '강의 계획서 삭제',
-          '삭제할 강의 계획서를 선택해주세요.'
-        )
-        return false
-      } else {
-        console.log(this.deleteIdxList)
-        this.openDeleteModalDesc('강의계획서')
-      }
-    },
     selectAll({ target: { checked } }) {
       const checkboxes = document.getElementsByName('chk')
       if (checked) {
@@ -377,7 +370,7 @@ export default {
     // 과제 수정
     onClickUpdateHomeWorkBtn() {
       this.HomeWorkDetailModalDesc.open = true
-      this.onClickRegisterHomeWork()
+      this.onClickUpdateHomeWork()
     },
 
     //  과제 검색
@@ -404,6 +397,19 @@ export default {
     },
 
     // 과제 삭제
+    onClickCheckBox({ target: { id, checked } }) {
+      if (checked) {
+        console.log(id)
+        this.deleteIdxList.push(id)
+      } else {
+        this.allCheckBoxFlag = false
+        for (let i = 0; i < this.deleteIdxList.length; i++) {
+          if (this.deleteIdxList[i] === id) {
+            this.deleteIdxList.splice(i, 1)
+          }
+        }
+      }
+    },
     deleteHomeWork() {
       if (this.deleteIdxList.length === 0) {
         this.openModalDesc('과제 삭제', '삭제할 과제를 선택해주세요.')
@@ -414,7 +420,16 @@ export default {
       }
     },
 
-    //
+    // 과제 제출 현황
+    openSubmissionStatusModal() {
+      this.submissionStatusModalDesc.open = true
+    },
+    onCloseSubmissionStatusModal() {
+      this.submissionStatusModalDesc.open = false
+    },
+    onClickExpandBtn(idx) {
+      console.log(idx)
+    },
   },
 }
 </script>

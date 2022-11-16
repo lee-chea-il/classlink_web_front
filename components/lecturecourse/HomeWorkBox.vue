@@ -97,13 +97,11 @@
               <td>{{ item.created_at }}</td>
               <td>{{ item.open ? '공개' : '비공개' }}</td>
               <td>{{ item.views }}</td>
-              <td>{{ item.submited }}/{{ lectureCourse.students }}</td>
+              <td>{{ item.submitted }}/{{ lectureCourse.students }}</td>
               <td>
                 <i
                   class="icons_zoom_off"
-                  data-toggle="modal"
-                  data-target="#modalTaskView"
-                  data-dismiss="modal"
+                  @click="$emit('click-submission')"
                 ></i>
               </td>
               <td></td>
@@ -124,12 +122,7 @@
                 </div>
               </td>
               <td>
-                <div
-                  class="classplan_tit"
-                  data-toggle="modal"
-                  data-target="#modalNoticeView"
-                  data-dismiss="modal"
-                >
+                <div class="classplan_tit" @click="$emit('open-detail')">
                   {{ item.title }}
                 </div>
               </td>
@@ -137,13 +130,11 @@
               <td>{{ item.created_at }}</td>
               <td>{{ item.open ? '공개' : '비공개' }}</td>
               <td>{{ item.views }}/{{ lectureCourse.students }}</td>
-              <td>{{ item.submited }}/{{ lectureCourse.students }}</td>
+              <td>{{ item.submitted }}/{{ lectureCourse.students }}</td>
               <td>
                 <i
                   class="icons_zoom_off"
-                  data-toggle="modal"
-                  data-target="#modalTaskView"
-                  data-dismiss="modal"
+                  @click="$emit('click-submission')"
                 ></i>
               </td>
               <td></td>
@@ -210,5 +201,4 @@ export default {
   },
 }
 </script>
-<style scoped>
-</style>
+<style scoped></style>

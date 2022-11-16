@@ -7,8 +7,11 @@
       <!-- 검색 영역 -->
       <div class="search_section">
         <div class="left_area">
-          <span class="course_tit">영어리딩심화</span>
-          <span class="course_con">영어 / 심화 A반 / 홍길동 선생님</span>
+          <span class="course_tit">{{ lectureCourse.subject }}</span>
+          <span class="course_con"
+            >{{ lectureCourse.lessonTitle }} / {{ lectureCourse.lessonClass }} /
+            {{ lectureCourse.teacher }}</span
+          >
         </div>
         <div class="right_area">
           <nuxt-link to="/class/lecturecourse" class="btn btn_crud_default"
@@ -22,10 +25,9 @@
         <!-- 왼쪽 영역 -->
         <div class="divide_area left_area">
           <!-- 탭 컨텐츠 -->
-          <button
-            class="btn btn_crud_default"
-            @click="getCheckboxData"
-          >다운로드</button>
+          <button class="btn btn_crud_default" @click="getCheckboxData">
+            다운로드
+          </button>
           <button
             class="btn btn_crud_danger"
             data-toggle="modal"
@@ -140,10 +142,16 @@ import TreeView from '~/components/common/custom/CustomReferenceTreeView.vue'
 export default {
   name: 'NoteBox',
   components: { TreeView },
+  props: {
+    lectureCourse: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
       noteBoxData: [
-      {
+        {
           name: '마포 학원',
           children: [
             {
@@ -159,7 +167,8 @@ export default {
                       desc: '등록한 자료 1',
                       keyword: ['국어', '수학'],
                       registrant: '등록인',
-                      savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                      savePath:
+                        'https://media.w3.org/2010/05/sintel/trailer.mp4',
                       isOpenEducation: true,
                       inOpenReferenceRoom: true,
                       fileName: '',
@@ -178,7 +187,8 @@ export default {
                       desc: '등록한 자료 2',
                       keyword: ['국어', '수학'],
                       registrant: '등록인',
-                      savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                      savePath:
+                        'https://media.w3.org/2010/05/sintel/trailer.mp4',
                       isOpenEducation: true,
                       inOpenReferenceRoom: true,
                       fileName: '',
@@ -197,7 +207,8 @@ export default {
                       desc: '등록한 자료 3',
                       keyword: ['국어', '수학'],
                       registrant: '등록인',
-                      savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                      savePath:
+                        'https://media.w3.org/2010/05/sintel/trailer.mp4',
                       isOpenEducation: true,
                       inOpenReferenceRoom: true,
                       fileName: '',
@@ -216,7 +227,8 @@ export default {
                       desc: '등록한 자료 4',
                       keyword: ['국어', '수학'],
                       registrant: '등록인',
-                      savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                      savePath:
+                        'https://media.w3.org/2010/05/sintel/trailer.mp4',
                       isOpenEducation: true,
                       inOpenReferenceRoom: true,
                       fileName: '',
@@ -234,21 +246,21 @@ export default {
             },
           ],
         },
-      ]
+      ],
     }
   },
-  methods:{
-    moreShowClick(node){
+  methods: {
+    moreShowClick(node) {
       console.log(`moreShowClick ${node}`)
     },
-    checkboxDel(){
+    checkboxDel() {
       this.$refs.noteBox.delData()
     },
-    getCheckboxData(){
-      const checkDatas=this.$refs.noteBox.getCheckDataList()
+    getCheckboxData() {
+      const checkDatas = this.$refs.noteBox.getCheckDataList()
       console.log(checkDatas)
-    }
-  }
+    },
+  },
 }
 </script>
 <style></style>

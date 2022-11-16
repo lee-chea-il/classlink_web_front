@@ -37,7 +37,7 @@
                   placeholder="제목을 입력해주세요."
                   class="form-control form-inline"
                   :value="homeWork.title"
-                  @input="onChangeHomeWorkInput"
+                  @input="onChangePlanInput"
                 />
                 <span class="content">작성자는 자동으로 기록에 남습니다.</span>
               </div>
@@ -63,10 +63,7 @@
                   기한 설정
                 </button>
                 <span class="box01">
-                  <span
-                    v-if="homeWork.date_range_start !== ''"
-                    class="content02"
-                  >
+                  <span class="content02">
                     {{ homeWork.date_range_start }} -
                     {{ homeWork.date_range_end }}
                     {{ homeWork.time_range_start_m === 0 ? '오전' : '오후' }}
@@ -74,7 +71,6 @@
                     {{ homeWork.time_range_end_m === 0 ? '오전' : '오후' }}
                     {{ homeWork.time_range_end }}
                   </span>
-                  <span v-else class="content02"> 기한을 설정해주세요. </span>
                 </span>
               </div>
             </div>
@@ -211,21 +207,24 @@
             :editorOptions="editorOptions"
             :editorToolbar="editorToolbar"
           />
+          <!-- <div class="write_area">
+            <div class="page_nodata">글쓰기 공간입니다.</div>
+          </div> -->
           <div class="custom-control custom-checkbox form-inline open_regi">
             <input
               id="open"
               type="checkbox"
               class="custom-control-input"
               :checked="homeWork.open"
-              @input="onChangeHomeWorkInput"
+              @input="onChangePlanInput"
             />
             <label class="custom-control-label" for="open"
               >글을 공개 상태로 등록합니다.</label
             >
           </div>
           <div class="btn_area">
-            <button class="btn btn_crud_point" @click="registerHomeWork">
-              등록
+            <button class="btn btn_crud_point" @click="UpdateHomeWork">
+              수정
             </button>
             <a class="btn btn_crud_default" @click="openPreviousPageModal"
               >취소</a
@@ -237,7 +236,7 @@
         </div>
       </div>
     </div>
-    <!-- 과제 미리보기 -->
+    <!-- 강의계획서 미리보기 -->
     <PreviewModal
       title="과제"
       :homeWork="homeWork"
@@ -250,7 +249,7 @@
       :range="range"
       @select-range="selectRange"
       @click-confirmBtn="onClickConfirmBtn"
-      @change-input="onChangeHomeWorkInput"
+      @change-input="onChangePlanInput"
       @start-time="onClickStartTimeSelect"
       @end-time="onClickEndTimeSelect"
     />
@@ -275,8 +274,8 @@ import PreviewModal from '@/components/common/modal/lecturecourse/PreviewModal.v
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 import PreviousPageModal from '@/components/common/modal/lecturecourse/PreviousPageModal.vue'
 export default {
-  name: 'RegisterHomeWork',
-  components: { PreviewModal, DateRangeModal, ModalDesc, PreviousPageModal },
+  name: 'UpdateHomeWork',
+  components: { DateRangeModal, PreviewModal, ModalDesc, PreviousPageModal },
   props: {},
   data() {
     return {
@@ -294,18 +293,18 @@ export default {
       homeWork: {
         id: 0,
         course_id: 0,
-        title: '',
-        writer: '',
-        created_at: '',
-        date_range_start: '',
-        date_range_end: '',
-        time_range_start: '',
-        time_range_end: '',
-        time_range_start_m: 0,
-        time_range_end_m: 0,
+        title: '성격심리학 레슨1 과제입니다요',
+        writer: '홍길동 선생님',
+        created_at: '2022.07.10',
+        date_range_start: '2022.08.05',
+        date_range_end: '2022.08.07',
+        time_range_start: '09:00',
+        time_range_end: '11:59',
+        time_range_start_m: 1,
+        time_range_end_m: 1,
         open: true,
-        views: 0,
-        contents: '',
+        views: 3,
+        contents: '성격심리학 레슨1 과제입니다. 지금 당장 제출하세요.!',
       },
       // modal
       previewModalDesc: {
@@ -364,7 +363,7 @@ export default {
       this.$router.push(`/class/lecturecourse/notebox/${this.$route.params.id}`)
     },
     // 과제 수정
-    onChangeHomeWorkInput({ target: { value, id, checked } }) {
+    onChangePlanInput({ target: { value, id, checked } }) {
       this.homeWork[id] = value
       if (id === 'open') {
         this.homeWork[id] = checked
@@ -423,15 +422,15 @@ export default {
       this.previousPageModalDesc.open = false
     },
     //
-    registerHomeWork() {
-      this.openModalDesc('과제 등록', '과제가 등록되었습니다.')
+    UpdateHomeWork() {
+      this.openModalDesc('과제 수정', '과제가 수정되었습니다.')
     },
     goPreviousPage() {
       this.$router.push(
         `/class/lecturecourse/homeworkbox/${this.$route.params.id}`
       )
     },
-    // 기간 설정
+    // 캘린더
     selectRange(e) {
       this.range.start = e.start
       this.range.end = e.end

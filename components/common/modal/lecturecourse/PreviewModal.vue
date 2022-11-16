@@ -43,9 +43,9 @@
           <div v-if="homeWork !== undefined" class="modal-body">
             <div class="title_area row">
               <span class="notice_tit">제목</span>
-              <span class="notice_title">{{ lecturePlan.title }}</span>
-              <span class="notice_day02">{{ lecturePlan.created_at }}</span>
-              <span class="notice_writer">{{ lecturePlan.writer }}</span>
+              <span class="notice_title">{{ homeWork.title }}</span>
+              <span class="notice_day02">{{ homeWork.created_at }}</span>
+              <span class="notice_writer">{{ homeWork.writer }}</span>
             </div>
 
             <div class="file_info">
@@ -54,17 +54,11 @@
               <span class="save">모두 저장</span>
               <div class="file_name">성격심리학 강의계획서.hwp</div>
             </div>
-
-            <div class="content_area">
-              <div class="notice_content">
-                {{ lecturePlan.contents }}
-              </div>
-              <div class="box">
-                <div class="thumbnail">
-                  <i class="icons_thumbnail"></i>
-                </div>
-              </div>
-            </div>
+            <VueEditor
+              :value="homeWork.contents"
+              :editorOptions="editorOptions"
+              disabled
+            />
           </div>
         </div>
       </div>

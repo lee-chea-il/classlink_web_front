@@ -31,11 +31,11 @@
                 data-toggle="dropdown"
                 aria-expanded="false"
               >
-                {{ lecturePlan.time_range_start_m === 0 ? '오전' : '오후' }}
+                {{ rangeInfo.time_range_start_m === 0 ? '오전' : '오후' }}
               </button>
               <span class="dropdown-menu">
                 <a class="dropdown-item cursor" @click="$emit('start-time')">{{
-                  lecturePlan.time_range_start_m === 0 ? '오후' : '오전'
+                  rangeInfo.time_range_start_m === 0 ? '오후' : '오전'
                 }}</a>
               </span>
             </span>
@@ -44,7 +44,7 @@
               type="text"
               placeholder="09:00"
               maxlength="5"
-              :value="lecturePlan.time_range_start"
+              :value="rangeInfo.time_range_start"
               class="form-control form-inline form-time"
               @input="$emit('change-input', $event)"
             />
@@ -56,11 +56,11 @@
                 data-toggle="dropdown"
                 aria-expanded="false"
               >
-                {{ lecturePlan.time_range_end_m === 0 ? '오전' : '오후' }}
+                {{ rangeInfo.time_range_end_m === 0 ? '오전' : '오후' }}
               </button>
               <div class="dropdown-menu">
                 <a class="dropdown-item cursor" @click="$emit('end-time')">{{
-                  lecturePlan.time_range_end_m === 0 ? '오후' : '오전'
+                  rangeInfo.time_range_end_m === 0 ? '오후' : '오전'
                 }}</a>
               </div>
             </div>
@@ -69,7 +69,7 @@
               type="text"
               placeholder="11:59"
               max-length="5"
-              :value="lecturePlan.time_range_end"
+              :value="rangeInfo.time_range_end"
               class="form-control form-inline form-time"
               @input="$emit('change-input', $event)"
             />
@@ -114,7 +114,7 @@ export default {
     DatePicker,
   },
   props: {
-    lecturePlan: {
+    rangeInfo: {
       type: Object,
       default: () => {},
     },
@@ -122,9 +122,6 @@ export default {
       type: Object,
       default: () => {},
     },
-  },
-  created() {
-    console.log(this.lecturePlan)
   },
 }
 </script>

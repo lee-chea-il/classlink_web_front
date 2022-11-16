@@ -13,7 +13,7 @@
           <div class="nav-link active">노트함</div>
         </li>
       </ul>
-      <NoteBox />
+      <NoteBox :lectureCourse="lectureCourse" />
     </div>
     <!-- 설명 모달 -->
     <ModalDesc
@@ -43,7 +43,7 @@ export default {
   },
   data() {
     return {
-    courseFlag : 0,
+      courseFlag: 0,
       // modal
       LecturePlanDetailModalDesc: {
         open: false,

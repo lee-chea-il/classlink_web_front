@@ -3,9 +3,9 @@
     <div class="title_area">
       <h4 class="title">공지사항</h4>
       <!-- <span class="num">999+</span> 필요시 사용 -->
-      <a href="javascript:;" class="more">
+      <nuxt-link to="/management/notice/all" class="more">
         <i class="icons_plus_circle_on"></i> 더보기
-      </a>
+      </nuxt-link>
     </div>
     <div class="cnts">
       <ul id="pills-tab" class="nav nav-pills" role="tablist">
