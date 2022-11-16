@@ -24,19 +24,12 @@
         <div class="modal-body">
           <div class="notice_time">
             <span class="title">시간 설정</span>
-            <span class="dropdown form-inline">
-              <button
-                class="btn dropdown-toggle"
-                type="button"
-                data-toggle="dropdown"
-                aria-expanded="false"
-              >
-                오전
-              </button>
-              <span class="dropdown-menu">
-                <a class="dropdown-item" href="#">오후</a>
-              </span>
-            </span>
+            <div class="dropdown form-inline">
+              <select class="btn dropdown-toggle">
+                <option class="dropdown-item" value="오전">오전</option>
+                <option class="dropdown-item" value="오후">오후</option>
+              </select>
+            </div>
             <input
               type="text"
               placeholder="09:00"
@@ -45,17 +38,10 @@
             />
             -
             <div class="dropdown form-inline">
-              <button
-                class="btn dropdown-toggle"
-                type="button"
-                data-toggle="dropdown"
-                aria-expanded="false"
-              >
-                오전
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">오후</a>
-              </div>
+              <select class="btn dropdown-toggle">
+                <option class="dropdown-item" value="오전">오전</option>
+                <option class="dropdown-item" value="오후">오후</option>
+              </select>
             </div>
             <input
               type="text"
@@ -67,8 +53,16 @@
           <div class="notice_date">
             <div class="title02">날짜 설정</div>
             <div class="calendar">
-              <div class="calendar_box">
-                <span class="calendar_text">캘린더 자리</span>
+              <div class="calendar_box border-0">
+                <!-- <span class="calendar_text">캘린더 자리</span> -->
+                <DatePicker
+                  :value="selectedDate"
+                  :masks="masks"
+                  :model-config="modelConfig"
+                  mode="date"
+                  is-range
+                />
+                <!-- mode="dateTime" -->
               </div>
             </div>
           </div>
@@ -98,7 +92,9 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn_crud_point">완료</button>
+          <button class="btn btn_crud_point" @click="$emit('onClickSuccess')">
+            완료
+          </button>
           <button class="btn btn_crud_default" data-dismiss="modal">
             취소
           </button>
@@ -109,8 +105,22 @@
 </template>
 
 <script>
+import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 export default {
   name: 'SettingNoticeDeadline',
+  components: {
+    DatePicker,
+  },
+  props: {
+    selectedDate: {
+      type: Object,
+      default: () => {},
+    },
+    masks: {
+      type: Object,
+      default: () => {},
+    },
+  },
 }
 </script>
 

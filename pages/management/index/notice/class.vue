@@ -16,20 +16,13 @@
           <div class="search_section">
             <div class="left_area">
               <div class="dropdown form-inline">
-                <button
-                  class="btn dropdown-toggle"
-                  type="button"
-                  data-toggle="dropdown"
-                >
-                  조회 높은 순
-                </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" @click="onClickSortViewCount"
-                    >조회 높은 순</a
-                  >
-                  <a class="dropdown-item" @click="onClickSortLatest">최신순</a>
-                  <a class="dropdown-item" @click="onClickSortName">이름순</a>
-                </div>
+                <select class="btn dropdown-toggle" @change="onSelectSort">
+                  <option class="dropdown-item" value="조회수 높은 순">
+                    조회수 높은 순
+                  </option>
+                  <option class="dropdown-item" value="최신순">최신순</option>
+                  <option class="dropdown-item" value="이름순">이름순</option>
+                </select>
               </div>
               <button class="btn btn_crud_default">삭제</button>
             </div>
@@ -52,7 +45,7 @@
               </div>
               <NuxtLink
                 class="btn btn_crud_point"
-                to="/management/notice/regist/all"
+                to="/management/notice/regist/class"
                 >등록</NuxtLink
               >
             </div>
@@ -187,13 +180,14 @@
                       <div class="btns_area">
                         <NuxtLink
                           class="btn btn_crud_default"
-                          to="/management/notice/all"
+                          :to="`/management/notice/modify/${item.id}`"
                           >수정</NuxtLink
                         >
                         <button
                           class="btn btn_crud_default"
                           data-toggle="modal"
-                          :data-target="`.modalNoticeView${item.id}`"
+                          data-target="#modalNoticeView"
+                          @click="onOpenNoticeDetailModal(item.attributes)"
                         >
                           상세
                         </button>
@@ -268,11 +262,12 @@
       </div>
     </div>
 
+    <ShowNoticeDetailModal
+      :show="openNoticeDetailModal.open"
+      :data="openNoticeDetailModal.data"
+      @close="onCloseNoticeDetailModal"
+    />
     <div v-for="(item, idx) in noticeList" :key="idx">
-      <ShowNoticeDetailModal
-        :idx="item.id"
-        :content="item.attributes.content"
-      />
       <ShowNoticeConfirmCheck
         :id="item.id"
         :confirmFilter="item.attributes.confirmFilter"
@@ -503,6 +498,11 @@ export default {
       searchText: '',
       searchKeyword: '',
       allCheck: false,
+
+      openNoticeDetailModal: {
+        open: false,
+        data: {},
+      },
     }
   },
   watch: {
@@ -512,6 +512,17 @@ export default {
     this.noticeList = this.notice
   },
   methods: {
+    // 공지사항 상세 열기
+    onOpenNoticeDetailModal(data) {
+      this.openNoticeDetailModal.open = true
+      this.openNoticeDetailModal.data = data
+    },
+    onCloseNoticeDetailModal() {
+      console.log('asdf')
+      this.openNoticeDetailModal.open = false
+      this.openNoticeDetailModal.data = {}
+    },
+
     onClickShowContent(idx) {
       if (this.noticeList[idx].attributes.showContent === false) {
         this.noticeList[idx].attributes.showContent = true
@@ -530,27 +541,28 @@ export default {
     },
 
     // 정렬
-    onClickSortViewCount() {
-      this.noticeList = this.noticeList.sort((a, b) => {
-        return b.attributes.view_count - a.attributes.view_count
-      })
-    },
-    onClickSortLatest() {
-      this.noticeList = this.noticeList.sort(
-        (a, b) =>
-          new Date(b.attributes.createdAt) - new Date(a.attributes.createdAt)
-      )
-    },
-    onClickSortName() {
-      this.noticeList = this.noticeList.sort((a, b) => {
-        if (a.attributes.writer > b.attributes.writer) return 1
-        if (a.attributes.writer < b.attributes.writer) return -1
-        return 0
-      })
+    onSelectSort(e) {
+      if (e.target.value === '조회수 높은 순') {
+        this.noticeList = this.noticeList.sort((a, b) => {
+          return b.attributes.view_count - a.attributes.view_count
+        })
+      } else if (e.target.value === '최신순') {
+        this.noticeList = this.noticeList.sort(
+          (a, b) =>
+            new Date(b.attributes.createdAt) - new Date(a.attributes.createdAt)
+        )
+      } else {
+        this.noticeList = this.noticeList.sort((a, b) => {
+          if (a.attributes.writer > b.attributes.writer) return 1
+          if (a.attributes.writer < b.attributes.writer) return -1
+          return 0
+        })
+      }
     },
 
     // 공지사항 검색
     onClickSearchNotice() {
+      console.log(this.openNoticeDetailModal)
       if (this.searchText === '') {
         this.noticeList = this.notice
       } else if (this.searchText.length === 1) {

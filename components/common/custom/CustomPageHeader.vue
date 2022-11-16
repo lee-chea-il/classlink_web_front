@@ -6,7 +6,7 @@
         :to="url1"
         :class="{ active: $route.fullPath === url1 }"
       >
-        전체
+        {{ title1 }}
       </NuxtLink>
     </li>
     <li class="nav-item">
@@ -15,7 +15,7 @@
         :to="url2"
         :class="{ active: $route.fullPath === url2 }"
       >
-        반
+        {{ title2 }}
       </NuxtLink>
     </li>
     <li class="nav-item">

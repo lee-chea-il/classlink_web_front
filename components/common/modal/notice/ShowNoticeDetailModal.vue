@@ -1,8 +1,8 @@
 <template>
   <div
     id="modalNoticeView"
-    :class="`modalNoticeView${idx}`"
     class="modal fade"
+    :class="{ show: show }"
     tabindex="-1"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
@@ -22,10 +22,10 @@
         </div>
         <div class="modal-body">
           <div class="title_area row">
-            <span class="notice_day">D-3</span>
-            <span class="notice_title">컴플레인 이슈사항 공지드립니다.</span>
-            <span class="notice_day02">2022.08.02</span>
-            <span class="notice_writer">서유진</span>
+            <span class="notice_day">{{ data.state }}</span>
+            <span class="notice_title">{{ data.title }}</span>
+            <span class="notice_day02">{{ data.createdAt }}</span>
+            <span class="notice_writer">{{ data.writer }}</span>
           </div>
 
           <div class="file_info">
@@ -36,7 +36,7 @@
           </div>
 
           <div class="content_area">
-            <div class="notice_content">{{ content }}</div>
+            <div class="notice_content">{{ data.content }}</div>
             <div class="box">
               <div class="thumbnail">
                 <i class="icons_thumbnail"></i>
@@ -46,7 +46,11 @@
         </div>
         <!-- div class="modal-body" -->
         <div class="modal-footer">
-          <button class="btn btn_crud_default" data-dismiss="modal">
+          <button
+            class="btn btn_crud_default"
+            data-dismiss="modal"
+            @click="$emit('close')"
+          >
             닫기
           </button>
         </div>
@@ -59,13 +63,13 @@
 export default {
   name: 'ShowNoticeDetailModal',
   props: {
-    content: {
-      type: String,
-      default: '',
+    show: {
+      type: Boolean,
+      default: false,
     },
-    idx: {
-      type: Number,
-      default: 0,
+    data: {
+      type: Object,
+      default: () => {},
     },
   },
 }

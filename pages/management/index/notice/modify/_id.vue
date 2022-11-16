@@ -2,14 +2,35 @@
   <div id="content" class="content">
     <div class="content_area">
       <!--  3Depth -->
-      <CustomPageHeader
-        title1="전체"
-        title2="반"
-        title3="개인"
-        url1="/management/notice/regist/all"
-        url2="/management/notice/regist/class"
-        url3="/management/notice/regist/individual"
-      />
+      <ul class="nav nav-tabs depth03">
+        <li class="nav-item cursor">
+          <div
+            class="nav-link"
+            :class="courseFlag === 0 ? 'active' : true"
+            @click="onClickChangeAll"
+          >
+            전체
+          </div>
+        </li>
+        <li class="nav-item cursor">
+          <div
+            class="nav-link"
+            :class="courseFlag === 1 ? 'active' : true"
+            @click="onClickChangeClass"
+          >
+            반
+          </div>
+        </li>
+        <li class="nav-item cursor">
+          <div
+            class="nav-link"
+            :class="courseFlag === 2 ? 'active' : true"
+            @click="onClickChangeIndividual"
+          >
+            개인
+          </div>
+        </li>
+      </ul>
       <div class="tab-content depth03 ac_manage_notice notice_rigi">
         <div class="tab-pane active">
           <div class="setting_section">
@@ -61,7 +82,7 @@
                   대상 설정
                 </button>
                 <span class="box02">
-                  <span class="content02"> 홍길동 | 김미정 | 강학정</span>
+                  <span class="content02"> 선생님 | 학부모 | 학생</span>
                 </span>
               </div>
             </div>
@@ -123,9 +144,7 @@
           </div>
           <div class="btn_area">
             <button class="btn btn_crud_point">등록</button>
-            <NuxtLink
-              to="/management/notice/individual"
-              class="btn btn_crud_default"
+            <NuxtLink to="/management/notice/all" class="btn btn_crud_default"
               >취소</NuxtLink
             >
           </div>
@@ -144,14 +163,12 @@
 
 <script>
 // import PageHeader from '~/components/common/PageHeader.vue'
-import CustomPageHeader from '~/components/common/custom/CustomPageHeader.vue'
 import SettingNoticeDeadline from '~/components/common/modal/notice/SettingNoticeDeadline.vue'
 import SettingNoticeTarget from '~/components/common/modal/notice/SettingNoticeTarget.vue'
 
 export default {
   name: 'All',
   components: {
-    CustomPageHeader,
     SettingNoticeDeadline,
     SettingNoticeTarget,
   },
@@ -188,6 +205,7 @@ export default {
         end: new Date(),
       },
       selectedDateTitle: '',
+      courseFlag: 0,
       // deadline: {
       //   startAmPm: '',
       //   startTime: '',
@@ -206,6 +224,16 @@ export default {
       console.log(
         this.selectedDate && this.selectedDate.end.toISOString().substr(0, 10)
       )
+    },
+
+    onClickChangeAll() {
+      this.courseFlag = 0
+    },
+    onClickChangeClass() {
+      this.courseFlag = 1
+    },
+    onClickChangeIndividual() {
+      this.courseFlag = 2
     },
   },
 }

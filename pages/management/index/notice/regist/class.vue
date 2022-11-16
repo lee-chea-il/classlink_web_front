@@ -94,7 +94,7 @@
 										</td>
 									</tr> -->
 
-                  <tr v-for="(item, idx) in 3" :key="idx">
+                  <tr v-for="(item, idx) in 5" :key="idx">
                     <td>
                       <div class="custom-control custom-checkbox form-inline">
                         <input
@@ -130,7 +130,12 @@
         </div>
       </div>
     </div>
-    <SettingNoticeDeadline />
+    <SettingNoticeDeadline
+      :selectedDate="selectedDate"
+      :masks="masks"
+      @onClickSuccess="onClickSuccess"
+    />
+    <!-- @click-date="onDayClick" -->
     <SettingNoticeTarget />
   </div>
 </template>
@@ -150,10 +155,57 @@ export default {
   },
   data() {
     return {
-      targetSetting: ['선생님', '학부모', '학생'],
+      regist: {
+        title: '',
+        deadline: {
+          startAmPm: '',
+          startTime: '',
+          endAmPm: '',
+          endTime: '',
+          startDate: '',
+          endDate: '',
+        },
+      },
+      targetSetting: ['심화A', '심화B', '심화C'],
+      attributes: [
+        {
+          key: 'today',
+          highlight: 'blue', // Boolean, String, Object
+          bar: 'blue',
+          content: '#2c51d7', // Boolean, String, Object
+          dates: new Date(),
+          excludeDates: null,
+          order: 1,
+        },
+      ],
+      masks: {
+        input: 'YYYY-MM-DD h:mm A',
+      },
+      selectedDate: {
+        start: new Date(),
+        end: new Date(),
+      },
+      selectedDateTitle: '',
+      // deadline: {
+      //   startAmPm: '',
+      //   startTime: '',
+      //   endAmPm: '',
+      //   endTime: '',
+      //   startdate: '',
+      // },
+      // selectedDateTaskList: [],
     }
   },
-  methods: {},
+  methods: {
+    onClickSuccess() {
+      console.log(
+        this.selectedDate && this.selectedDate.start.toISOString().substr(0, 10)
+      )
+      console.log(
+        this.selectedDate && this.selectedDate.end.toISOString().substr(0, 10)
+      )
+    },
+  },
 }
 </script>
 

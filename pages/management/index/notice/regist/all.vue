@@ -130,7 +130,12 @@
         </div>
       </div>
     </div>
-    <SettingNoticeDeadline />
+    <SettingNoticeDeadline
+      :selectedDate="selectedDate"
+      :masks="masks"
+      @onClickSuccess="onClickSuccess"
+    />
+    <!-- @click-date="onDayClick" -->
     <SettingNoticeTarget />
   </div>
 </template>
@@ -151,9 +156,22 @@ export default {
   data() {
     return {
       targetSetting: ['선생님', '학부모', '학생'],
+      masks: {
+        input: 'YYYY-MM-DD h:mm A',
+      },
+      selectedDate: {
+        start: new Date(),
+        end: new Date(),
+      },
+      selectedDateTitle: '',
     }
   },
-  methods: {},
+  methods: {
+    onClickSuccess() {
+      console.log(this.selectedDate && this.selectedDate.start.toISOString())
+      console.log(this.selectedDate && this.selectedDate.end.toISOString())
+    },
+  },
 }
 </script>
 

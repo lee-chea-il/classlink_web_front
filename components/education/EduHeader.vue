@@ -179,7 +179,9 @@
                   $route.fullPath === '/management/notice/individual' ||
                   $route.fullPath === '/management/notice/regist/all' ||
                   $route.fullPath === '/management/notice/regist/class' ||
-                  $route.fullPath === '/management/notice/regist/individual',
+                  $route.fullPath === '/management/notice/regist/individual' ||
+                  $route.fullPath ===
+                    `/management/notice/modify/${$route.params.id}`,
               }"
               to="/management/notice/all"
               >공지사항</NuxtLink
