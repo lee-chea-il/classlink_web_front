@@ -182,7 +182,7 @@ export default {
     },
     allCheckBoxFlag: {
       type: Boolean,
-      dafault: false,
+      default: false,
     },
   },
   methods: {
@@ -192,8 +192,4 @@ export default {
   },
 }
 </script>
-<style scoped>
-.custom-control-label::after {
-  left: -1.65rem !important;
-}
-</style>
+<style scoped></style>

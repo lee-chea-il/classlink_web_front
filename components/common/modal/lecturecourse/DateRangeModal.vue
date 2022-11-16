@@ -31,20 +31,22 @@
                 data-toggle="dropdown"
                 aria-expanded="false"
               >
-                오전
+                {{ lecturePlan.time_range_start_m === 0 ? '오전' : '오후' }}
               </button>
               <span class="dropdown-menu">
-                <a class="dropdown-item cursor" @click="$emit('start-time')"
-                  >오후</a
-                >
+                <a class="dropdown-item cursor" @click="$emit('start-time')">{{
+                  lecturePlan.time_range_start_m === 0 ? '오후' : '오전'
+                }}</a>
               </span>
             </span>
             <input
               id="time_range_start"
               type="text"
               placeholder="09:00"
-              value="09:00"
+              maxlength="5"
+              :value="lecturePlan.time_range_start"
               class="form-control form-inline form-time"
+              @input="$emit('change-input', $event)"
             />
             -
             <div class="dropdown form-inline">
@@ -54,20 +56,22 @@
                 data-toggle="dropdown"
                 aria-expanded="false"
               >
-                오전
+                {{ lecturePlan.time_range_end_m === 0 ? '오전' : '오후' }}
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item cursor" @click="$emit('end-time')"
-                  >오후</a
-                >
+                <a class="dropdown-item cursor" @click="$emit('end-time')">{{
+                  lecturePlan.time_range_end_m === 0 ? '오후' : '오전'
+                }}</a>
               </div>
             </div>
             <input
               id="time_range_end"
               type="text"
               placeholder="11:59"
-              value="11:59"
+              max-length="5"
+              :value="lecturePlan.time_range_end"
               class="form-control form-inline form-time"
+              @input="$emit('change-input', $event)"
             />
           </div>
           <div class="notice_date">
@@ -75,19 +79,25 @@
             <div class="calendar">
               <div class="calendar_box">
                 <DatePicker
-                  v-model="dateRange"
-                  :value="dateRange"
+                  :value="range"
+                  :masks="{ title: 'YYYY MMM' }"
                   trim-weeks
                   is-expanded
                   is-range
-                  @dayclick="$emit('click-date', $event)"
+                  @input="$emit('select-range', $event)"
                 />
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn_crud_point">완료</button>
+          <button
+            class="btn btn_crud_point"
+            data-dismiss="modal"
+            @click="$emit('click-confirmBtn')"
+          >
+            완료
+          </button>
           <button class="btn btn_crud_default" data-dismiss="modal">
             취소
           </button>
@@ -108,29 +118,13 @@ export default {
       type: Object,
       default: () => {},
     },
-  },
-  data() {
-    return {
-      today: new Date(),
-    }
-  },
-  computed: {
-    dateRange: {
-      set(val) {
-        console.log(val)
-        console.log(val.start)
-        console.log(val.end)
-        // action after date change here
-      },
-      get() {
-        const range = {
-          start: new Date(),
-          end: new Date(),
-        }
-        // action after receives date from props
-        return range
-      },
+    range: {
+      type: Object,
+      default: () => {},
     },
+  },
+  created() {
+    console.log(this.lecturePlan)
   },
 }
 </script>

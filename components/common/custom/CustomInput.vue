@@ -174,9 +174,6 @@ button {
 .form-mb {
   margin-bottom: 0 !important;
 }
-.custom-control-label::after {
-  left: -1.65rem !important;
-}
 .check-ml {
   margin-left: 3px !important;
 }

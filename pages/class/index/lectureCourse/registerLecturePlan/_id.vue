@@ -25,7 +25,7 @@
               <span class="course_con"
                 >{{ lectureCourse.lessonTitle }} /
                 {{ lectureCourse.lessonClass }} /
-                {{ lectureCourse.lessonClass }}</span
+                {{ lectureCourse.teacher }}</span
               >
             </div>
           </div>
@@ -248,10 +248,12 @@
     <!-- 기간선택 모달 -->
     <DateRangeModal
       :lecturePlan="lecturePlan"
-      :attributes="attributes"
+      :range="range"
+      @select-range="selectRange"
+      @click-confirmBtn="onClickConfirmBtn"
+      @change-input="onChangePlanInput"
       @start-time="onClickStartTimeSelect"
       @end-time="onClickEndTimeSelect"
-      @click-date="onDayClick"
     />
     <!-- 설명 모달 -->
     <ModalDesc
@@ -341,17 +343,10 @@ export default {
         ['image'],
       ],
       // calendar
-      attributes: [
-        {
-          key: 'today',
-          highlight: 'blue', // Boolean, String, Object
-          bar: 'blue',
-          content: '#2c51d7', // Boolean, String, Object
-          dates: new Date(),
-          excludeDates: null,
-          order: 1,
-        },
-      ],
+      range: {
+        start: new Date(),
+        end: new Date(),
+      },
     }
   },
   methods: {
@@ -376,6 +371,14 @@ export default {
         this.lecturePlan[id] = checked
       } else {
         this.lecturePlan[id] = value
+      }
+      if (id === 'time_range_start' || id === 'time_range_end') {
+        this.lecturePlan[id] = value
+          .replace(/[^0-9]/g, '')
+          .replace(/^(\d{0,2})(\d{0,2})$/g, '$1:$2')
+          .replace(/(:{1})$/g, '')
+          .replace(/ /g, '')
+          .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
       }
     },
     onClickFileInputBtn() {
@@ -430,7 +433,28 @@ export default {
       )
     },
     // 캘린더
-    onDayClick(day) {},
+    selectRange(e) {
+      this.range.start = e.start
+      this.range.end = e.end
+      console.log(this.range)
+    },
+    changeDateFormat(date) {
+      const year = date.getFullYear()
+      const month = ('0' + (date.getMonth() + 1)).slice(-2)
+      const day = ('0' + date.getDate()).slice(-2)
+      const dateString = year + '.' + month + '.' + day
+      return dateString
+    },
+    onClickConfirmBtn() {
+      this.lecturePlan.date_range_start = this.changeDateFormat(
+        this.range.start
+      )
+      this.lecturePlan.date_range_end = this.changeDateFormat(this.range.end)
+      console.log(
+        this.lecturePlan.date_range_start,
+        this.lecturePlan.date_range_end
+      )
+    },
   },
 }
 </script>
@@ -461,8 +485,5 @@ export default {
 }
 .cursor {
   cursor: pointer;
-}
-.custom-control-label::after {
-  left: -1.65rem !important;
 }
 </style>

@@ -47,8 +47,6 @@
       @update="onClickUpdatePlanBtn"
       @close="onCloseLecturePlanDetailModal"
     />
-    <!-- 기간 설정 모달-->
-    <DateRangeModal />
   </div>
 </template>
 <script>
@@ -56,7 +54,6 @@ import DeletePlanModal from '@/components/lecturecourse/DeletePlanModal.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 import LecturePlan from '@/components/lecturecourse/LecturePlan.vue'
 import LecturePlanDetailModal from '@/components/common/modal/lecturecourse/LecturePlanDetailModal.vue'
-import DateRangeModal from '@/components/common/modal/lecturecourse/DateRangeModal.vue'
 export default {
   name: 'LectureDetail',
   components: {
@@ -64,7 +61,6 @@ export default {
     ModalDesc,
     DeletePlanModal,
     LecturePlanDetailModal,
-    DateRangeModal,
   },
   data() {
     return {

@@ -63,7 +63,4 @@ export default {
 </script>
 
 <style scoped>
-.custom-control-label::after {
-  left: -1.65rem !important;
-}
 </style>
