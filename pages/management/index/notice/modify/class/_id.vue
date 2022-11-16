@@ -187,6 +187,7 @@ export default {
         time_range_end: '11:59',
         time_range_start_m: 0,
         time_range_end_m: 0,
+        notice_alarm: true,
       },
 
       targetSetting: ['선생님', '학부모', '학생'],
@@ -245,9 +246,11 @@ export default {
     onClickConfirmBtn() {
       this.noticeList.date_range_start = this.changeDateFormat(this.range.start)
       this.noticeList.date_range_end = this.changeDateFormat(this.range.end)
+
       console.log(
         this.noticeList.date_range_start,
-        this.noticeList.date_range_end
+        this.noticeList.date_range_end,
+        this.noticeList.notice_alarm
       )
     },
     onChangePlanInput({ target: { value, id, checked } }) {

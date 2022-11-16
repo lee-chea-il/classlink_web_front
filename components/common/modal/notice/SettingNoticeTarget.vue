@@ -24,7 +24,7 @@
             v-if="$route.fullPath === '/management/notice/regist/all'"
             class="notice_box"
           >
-            <div class="notice_first">
+            <div class="notice_first flex-wrap">
               <div
                 class="custom-control custom-checkbox form-inline form-check"
               >
@@ -40,44 +40,19 @@
               </div>
 
               <div
+                v-for="(item, idx) in target"
+                :key="idx"
                 class="custom-control custom-checkbox form-inline form-check"
               >
                 <input
-                  id="checkbox05"
+                  :id="idx"
                   type="checkbox"
                   class="custom-control-input"
+                  @input="$emit('target-setting', $event)"
                 />
-                <label class="custom-control-label" for="checkbox05"
-                  >선생님</label
-                >
-              </div>
-
-              <div
-                class="custom-control custom-checkbox form-inline form-check"
-              >
-                <input
-                  id="checkbox03"
-                  type="checkbox"
-                  class="custom-control-input"
-                />
-                <label class="custom-control-label" for="checkbox03"
-                  >학부모</label
-                >
-              </div>
-            </div>
-
-            <div class="notice_second">
-              <div
-                class="custom-control custom-checkbox form-inline form-check"
-              >
-                <input
-                  id="checkbox04"
-                  type="checkbox"
-                  class="custom-control-input"
-                />
-                <label class="custom-control-label" for="checkbox04"
-                  >학생</label
-                >
+                <label class="custom-control-label" :for="idx">{{
+                  item
+                }}</label>
               </div>
             </div>
           </div>
@@ -116,7 +91,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn_crud_point">완료</button>
+          <button class="btn btn_crud_point" data-dismiss="modal">완료</button>
           <button class="btn btn_crud_default" data-dismiss="modal">
             취소
           </button>
@@ -129,6 +104,16 @@
 <script>
 export default {
   name: 'SettingNoticeTarget',
+  props: {
+    noticeList: {
+      type: Object,
+      default: () => {},
+    },
+    target: {
+      type: Array,
+      default: () => [],
+    },
+  },
 }
 </script>
 

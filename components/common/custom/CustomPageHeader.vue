@@ -4,7 +4,7 @@
       <NuxtLink
         class="nav-link"
         :to="url1"
-        :class="{ active: $route.fullPath === url1 }"
+        :class="{ active: $route.fullPath.includes('/all') }"
       >
         {{ title1 }}
       </NuxtLink>
@@ -13,7 +13,7 @@
       <NuxtLink
         class="nav-link"
         :to="url2"
-        :class="{ active: $route.fullPath === url2 }"
+        :class="{ active: $route.fullPath.includes('/class') }"
       >
         {{ title2 }}
       </NuxtLink>
@@ -22,7 +22,7 @@
       <NuxtLink
         class="nav-link"
         :to="url3"
-        :class="{ active: $route.fullPath === url3 }"
+        :class="{ active: $route.fullPath.includes('/individual') }"
       >
         {{ title3 }}
       </NuxtLink>

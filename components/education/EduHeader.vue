@@ -173,15 +173,7 @@
               class="nav-link"
               :class="{
                 'nav-link': true,
-                active:
-                  $route.fullPath === '/management/notice/all' ||
-                  $route.fullPath === '/management/notice/class' ||
-                  $route.fullPath === '/management/notice/individual' ||
-                  $route.fullPath === '/management/notice/regist/all' ||
-                  $route.fullPath === '/management/notice/regist/class' ||
-                  $route.fullPath === '/management/notice/regist/individual' ||
-                  $route.fullPath ===
-                    `/management/notice/modify/${$route.params.id}`,
+                active: $route.fullPath.includes('/management/notice'),
               }"
               to="/management/notice/all"
               >공지사항</NuxtLink

@@ -24,7 +24,9 @@
                   <option class="dropdown-item" value="이름순">이름순</option>
                 </select>
               </div>
-              <button class="btn btn_crud_default">삭제</button>
+              <button class="btn btn_crud_default" @click="onClickDelete">
+                삭제
+              </button>
             </div>
             <div class="right_area">
               <div class="input-group input-search form-inline form-search">
@@ -95,14 +97,15 @@
                   <td>
                     <div class="custom-control custom-checkbox form-inline">
                       <input
-                        :id="`chk${item.id}`"
+                        :id="`${item.id}`"
                         v-model="item.attributes.check"
                         type="checkbox"
                         class="custom-control-input"
+                        @input="onClickCheckBox($event)"
                       />
                       <label
                         class="custom-control-label"
-                        :for="`chk${item.id}`"
+                        :for="`${item.id}`"
                       ></label>
                     </div>
                   </td>
@@ -180,21 +183,20 @@
                       <div class="btns_area">
                         <NuxtLink
                           class="btn btn_crud_default"
-                          :to="`/management/notice/modify/${item.id}`"
+                          :to="`/management/notice/modify/individual/${item.id}`"
                           >수정</NuxtLink
                         >
                         <button
                           class="btn btn_crud_default"
-                          data-toggle="modal"
-                          data-target="#modalNoticeView"
                           @click="onOpenNoticeDetailModal(item.attributes)"
                         >
                           상세
                         </button>
                         <button
                           class="btn btn_crud_default"
-                          data-toggle="modal"
-                          :data-target="`.modalNoticeConfirm${item.id}`"
+                          @click="
+                            onOpenNoticeConfirmCheckModal(item.attributes)
+                          "
                         >
                           컨펌체크
                         </button>
@@ -262,19 +264,23 @@
       </div>
     </div>
 
+    <ShowNoticeConfirmCheck
+      :show="openNoticeConfirmCheckModal.open"
+      :data="openNoticeConfirmCheckModal.data"
+      @onClickConfirm="onClickConfirm"
+      @close="onCloseNoticeConfirmCheckModal"
+    />
     <ShowNoticeDetailModal
       :show="openNoticeDetailModal.open"
       :data="openNoticeDetailModal.data"
       @close="onCloseNoticeDetailModal"
     />
-    <div v-for="(item, idx) in noticeList" :key="idx">
-      <ShowNoticeConfirmCheck
-        :id="item.id"
-        :confirmFilter="item.attributes.confirmFilter"
-        :student="item.attributes.student"
-        @onClickConfirm="onClickConfirm"
-      />
-    </div>
+    <ModalDesc
+      :open="modalDesc.open"
+      :title="modalDesc.title"
+      :desc="modalDesc.desc"
+      @close="onCloseModalDesc"
+    />
   </div>
 </template>
 
@@ -283,6 +289,7 @@
 import CustomPageHeader from '~/components/common/custom/CustomPageHeader.vue'
 import ShowNoticeDetailModal from '~/components/common/modal/notice/ShowNoticeDetailModal.vue'
 import ShowNoticeConfirmCheck from '~/components/common/modal/notice/ShowNoticeConfirmCheck.vue'
+import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 
 export default {
   name: 'All',
@@ -290,6 +297,7 @@ export default {
     CustomPageHeader,
     ShowNoticeDetailModal,
     ShowNoticeConfirmCheck,
+    ModalDesc,
   },
   data() {
     return {
@@ -300,7 +308,7 @@ export default {
           id: 1,
           attributes: {
             title: '컴플레인 이슈사항 공지드립니다.',
-            state: '준비중',
+            state: 'D-1',
             deadline: {
               startDate: '2022.06.06',
               startTime: '오전 09:00',
@@ -340,7 +348,7 @@ export default {
           id: 2,
           attributes: {
             title: '지속적인 컴플레인이 공유드립니다.​',
-            state: 'D-1',
+            state: 'D-2',
             deadline: {
               startDate: '2022.06.06',
               startTime: '오전 09:00',
@@ -379,7 +387,7 @@ export default {
           id: 3,
           attributes: {
             title: '컴플레인 이슈사항 공지드립니다.',
-            state: 'D-2',
+            state: 'D-1',
             deadline: {
               startDate: '2022.06.06',
               startTime: '오전 09:00',
@@ -389,7 +397,7 @@ export default {
             writer: '홍길동',
             target: '개인',
             content: '안녕하십니까? 홍길동 학원장입니다.',
-            createdAt: '2022-12-01',
+            createdAt: '2022-08-15',
             view_count: 57,
             showContent: false,
             confirmFilter: false,
@@ -418,7 +426,7 @@ export default {
           id: 4,
           attributes: {
             title: '지속적인 컴플레인이 공유드립니다.​',
-            state: 'D-1',
+            state: 'D-3',
             deadline: {
               startDate: '2022.06.06',
               startTime: '오전 09:00',
@@ -428,7 +436,7 @@ export default {
             writer: '전미진',
             target: '개인',
             content: '안녕하십니까? 홍길동 학원장입니다.',
-            createdAt: '2022-08-01',
+            createdAt: '2022-09-24',
             view_count: 3,
             showContent: false,
             confirmFilter: false,
@@ -457,7 +465,7 @@ export default {
           id: 5,
           attributes: {
             title: '컴플레인 이슈사항 공지드립니다.',
-            state: 'D-3',
+            state: '준비중',
             deadline: {
               startDate: '2022.06.06',
               startTime: '오전 09:00',
@@ -495,34 +503,76 @@ export default {
       ],
 
       noticeList: [],
+      selectNoticeList: [],
       searchText: '',
       searchKeyword: '',
       allCheck: false,
 
+      openNoticeConfirmCheckModal: {
+        open: false,
+        data: {
+          confirmFilter: false,
+        },
+      },
       openNoticeDetailModal: {
         open: false,
         data: {},
+      },
+      modalDesc: {
+        open: false,
+        title: '',
+        desc: '',
       },
     }
   },
   watch: {
     allCheck: 'onClickAllCheck',
+    check() {
+      if (this.selectNoticeList.length === 5) {
+        this.allCheck = true
+      } else {
+        this.allCheck = false
+      }
+    },
   },
   mounted() {
     this.noticeList = this.notice
   },
   methods: {
+    // 모달
+    openModalDesc(tit, msg) {
+      this.modalDesc = {
+        open: true,
+        title: tit,
+        desc: msg,
+      }
+    },
+    onCloseModalDesc() {
+      this.modalDesc.open = false
+    },
+
+    // 공지사항 컨펌체크 열기
+    onOpenNoticeConfirmCheckModal(data) {
+      this.openNoticeConfirmCheckModal.open = true
+      this.openNoticeConfirmCheckModal.data = data
+      console.log(this.openNoticeConfirmCheckModal.data)
+    },
+    onCloseNoticeConfirmCheckModal() {
+      this.openNoticeConfirmCheckModal.open = false
+      this.openNoticeConfirmCheckModal.data = {}
+    },
+
     // 공지사항 상세 열기
     onOpenNoticeDetailModal(data) {
       this.openNoticeDetailModal.open = true
       this.openNoticeDetailModal.data = data
     },
     onCloseNoticeDetailModal() {
-      console.log('asdf')
       this.openNoticeDetailModal.open = false
       this.openNoticeDetailModal.data = {}
     },
 
+    // 자세히보기 열기 닫기
     onClickShowContent(idx) {
       if (this.noticeList[idx].attributes.showContent === false) {
         this.noticeList[idx].attributes.showContent = true
@@ -531,12 +581,12 @@ export default {
       }
     },
 
-    // 더보기 열기 닫기
-    onClickConfirm(idx) {
-      if (this.noticeList[idx - 1].attributes.confirmFilter === false) {
-        this.noticeList[idx - 1].attributes.confirmFilter = true
+    // 컨펌체크 필터 열기 닫기
+    onClickConfirm() {
+      if (this.openNoticeConfirmCheckModal.data.confirmFilter === false) {
+        this.openNoticeConfirmCheckModal.data.confirmFilter = true
       } else {
-        this.noticeList[idx - 1].attributes.confirmFilter = false
+        this.openNoticeConfirmCheckModal.data.confirmFilter = false
       }
     },
 
@@ -562,22 +612,26 @@ export default {
 
     // 공지사항 검색
     onClickSearchNotice() {
-      console.log(this.openNoticeDetailModal)
-      if (this.searchText === '') {
-        this.noticeList = this.notice
-      } else if (this.searchText.length === 1) {
-        console.log('error')
+      if (this.searchText.length < 2) {
+        this.openModalDesc('검색 실패', '검색어는 2글자 이상 입력해주세요.')
       } else {
-        this.noticeList = this.notice.filter((elem) => {
+        const result = this.notice.filter((elem) => {
           return (
             elem.attributes.title.includes(this.searchText) ||
             elem.attributes.content.includes(this.searchText) ||
             elem.attributes.writer.includes(this.searchText)
           )
         })
+        if (result.length === 0) {
+          this.openModalDesc('검색 실패', '일치하는 공지사항이 없습니다.')
+          return false
+        } else {
+          this.noticeList = result
+        }
       }
     },
 
+    // 컨펌체크 필터 검색
     onClickSearchKeyword() {
       if (this.student.name === '') {
         this.noticeList.student = this.notice.student
@@ -590,15 +644,36 @@ export default {
       }
     },
 
+    // 체크박스 모두 선택
     onClickAllCheck() {
       if (this.allCheck === true) {
         for (let i = 0; i < this.noticeList.length; i++) {
           this.noticeList[i].attributes.check = true
+          this.selectNoticeList.push(i)
         }
       } else {
         for (let i = 0; i < this.noticeList.length; i++) {
           this.noticeList[i].attributes.check = false
+          this.selectNoticeList.pop()
         }
+      }
+      console.log(this.selectNoticeList)
+    },
+    // 공지사항 삭제
+    onClickCheckBox({ target: { id } }) {
+      if (this.noticeList[id - 1].attributes.check) {
+        this.noticeList[id - 1].attributes.check = false
+        this.selectNoticeList.splice(id - 1, 1)
+      } else {
+        this.noticeList[id - 1].attributes.check = true
+        this.selectNoticeList.push(id - 1)
+      }
+    },
+
+    onClickDelete() {
+      console.log(this.selectNoticeList.length)
+      if (this.selectNoticeList.length === 0) {
+        this.openModalDesc('공지사항 삭제', '삭제할 공지사항을 선택해주세요.')
       }
     },
   },

@@ -66,7 +66,7 @@
                   대상 설정
                 </button>
                 <span class="box02">
-                  <span class="content02"> 심화A | 심화B | 심화C</span>
+                  <span class="content02"> 선생님 | 학부모 | 학생</span>
                 </span>
               </div>
             </div>
@@ -132,7 +132,7 @@
             <button class="btn btn_crud_point" @click="onClickNoticeRegist">
               등록
             </button>
-            <NuxtLink to="/management/notice/class" class="btn btn_crud_default"
+            <NuxtLink to="/management/notice/all" class="btn btn_crud_default"
               >취소</NuxtLink
             >
           </div>
@@ -187,6 +187,7 @@ export default {
         time_range_end: '11:59',
         time_range_start_m: 0,
         time_range_end_m: 0,
+        notice_alarm: true,
       },
 
       targetSetting: ['선생님', '학부모', '학생'],
@@ -245,9 +246,11 @@ export default {
     onClickConfirmBtn() {
       this.noticeList.date_range_start = this.changeDateFormat(this.range.start)
       this.noticeList.date_range_end = this.changeDateFormat(this.range.end)
+
       console.log(
         this.noticeList.date_range_start,
-        this.noticeList.date_range_end
+        this.noticeList.date_range_end,
+        this.noticeList.notice_alarm
       )
     },
     onChangePlanInput({ target: { value, id, checked } }) {
