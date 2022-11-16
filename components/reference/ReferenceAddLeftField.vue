@@ -120,9 +120,9 @@
             :id="setTargetTwo"
             type="checkbox"
             class="custom-control-input"
-            name="inOpenReferenceRoom"
-            :value="reference.inOpenReferenceRoom"
-            :checked="reference.inOpenReferenceRoom"
+            name="isContinueRegister"
+            :value="reference.isContinueRegister"
+            :checked="reference.isContinueRegister"
             @input="$emit('change-input', $event)"
           />
           <label class="custom-control-label checkbox07" :for="setTargetTwo"
@@ -146,7 +146,6 @@ export default {
       type: Object,
       default: () => {},
     },
-
     pushKeyword: {
       type: String,
       default: '',

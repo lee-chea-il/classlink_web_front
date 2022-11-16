@@ -45,7 +45,10 @@ export default {
   },
   data() {
     return {
-      range: 'value',
+      range: {
+        start: '2022-11-01',
+        end: '2022-11-02',
+      },
     }
   },
 }

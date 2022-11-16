@@ -950,6 +950,10 @@ $navtopHeight: 60px;
 		@include alert_label(theme.$color_light1);
 	}
 
+	label.type_read {
+		@include alert_label(theme.$text_caption_color);
+	}
+
 	.btn_del {
 		position: absolute;
 		right: 2px;
@@ -970,6 +974,13 @@ $navtopHeight: 60px;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		cursor: pointer;
+	}
+
+	.tit_read {
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 20px;
+		color: #A7A9AC;
 	}
 
 	.info_area {
@@ -1024,6 +1035,13 @@ $navtopHeight: 60px;
 		margin-left: auto;
 		padding-top: 2px;
 		color: theme.$text_unselected_color;
+	}
+
+	.cat_read {
+		font-weight: 400;
+		font-size: 12px;
+		line-height: 17px;
+		color: #A7A9AC;
 	}
 }
 

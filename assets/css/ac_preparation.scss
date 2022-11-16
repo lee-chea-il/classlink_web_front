@@ -632,6 +632,11 @@
 		flex-direction: column;
 		font-size: 16px;
 	}
+
+	.list_area li.found {
+		background-color: #E7EDFF;
+	}
+
 }
 
 //커리큘럼
@@ -1190,6 +1195,40 @@
 	//     width: 16%;
 	//   }
 
+	.th01 {
+		width: 10%;
+	}
+
+	.th02 {
+		width: 19%;
+	}
+
+	.th03 {
+		width: 26%;
+	}
+
+	.th05 {
+		width: 21%;
+	}
+
+	.th06 {
+		width: 8%;
+	}
+
+	.th07 {
+		width: 10%;
+	}
+
+	.td03 {
+		width: 10%;
+	}
+
+	.td04 {
+		width: 12%;
+	}
+
+
+
 	.table_area {
 		position: relative;
 		height: auto;
@@ -1304,9 +1343,9 @@
 		background-color: theme.$color_background;
 	}
 
-	.th01 {
+	/* 	.th01 {
 		padding: 0 35px 0 0;
-	}
+	} */
 
 	.pagination {
 		justify-content: center;

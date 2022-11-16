@@ -34,7 +34,7 @@
             <!-- /.오른쪽 SECTION -->
           </div>
         </div>
-        <CreateLectureBtn />
+        <CreateLectureBtn @next-btn="$emit('next-btn')" />
       </div>
     </div>
   </div>

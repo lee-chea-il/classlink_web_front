@@ -408,9 +408,9 @@
   .box07 {
     @include mixin.border_common;
     display: inline-block;
-    width: 290px;
+    width: 250px;
     height: 190px;
-    margin: 15px 15px;
+    margin: 20px 15px;
 
     &:hover,
     &:focus,
@@ -427,12 +427,11 @@
 
     .regi_icon07 {
       background-image: url(../images/icon_music_off.png);
-      height: 100%;
       background-size: cover;
       display: block;
       width: 36px;
       height: 36px;
-      margin: 40px 0 28px 126px;
+      margin: 40px 0 28px 105px;
     }
 
     div:last-child {

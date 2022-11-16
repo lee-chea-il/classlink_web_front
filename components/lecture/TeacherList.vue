@@ -20,7 +20,7 @@ export default {
   name: 'TeacherList',
   props: {
     teacherList: {
-      type: Array,
+      type: [Array, Object],
       default: () => [],
     },
   },

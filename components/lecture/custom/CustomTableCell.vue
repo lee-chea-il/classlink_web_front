@@ -54,7 +54,6 @@ export default {
         isTime = currentTime === Number(start)
         isWeekNoTime = currentTime > start && currentTime < end
       }
-
       if (isWeekNoTime) return 2
       else if (isTime) return 1
       else return 3
@@ -62,9 +61,13 @@ export default {
     rowSpanIdx() {
       const { startTime, endTime } = this.weekData
       const setNum = (item) => Number(item.replace(':', '').substr(0, 2))
-      if (setNum(endTime) === setNum(startTime)) {
-        return 1
-      } else return (setNum(endTime) - setNum(startTime)) * 2
+      const endNum = (item) => Number(item.replace(':', '').substr(2, 4))
+      const isHarf = (item) => endNum(item) === 30
+      const result = (setNum(endTime) - setNum(startTime)) * 2
+      if (setNum(endTime) === setNum(startTime)) return 1
+      else if (isHarf(startTime) && isHarf(endTime)) return result + 2
+      else if (!isHarf(startTime) && !isHarf(endTime)) return result + 1
+      else return result
     },
   },
   methods: {

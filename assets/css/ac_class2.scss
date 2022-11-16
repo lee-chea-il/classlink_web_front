@@ -8,6 +8,19 @@
 /* 학습함-질문함(기관장).html */
 
 .ac_manage_que {
+
+  .left_area {
+    width: 50%;
+  }
+
+  .right_area {
+    width: 50%;
+
+    @media (max-width: 1199.98px) {
+      width: 33%;
+    }
+  }
+
   .keyword_area {
     position: relative;
     height: auto;
@@ -191,6 +204,30 @@
 /* 수업 - 학습함 - 질문함 - 답변열람 (팝업 L) */
 
 #modalReplyView {
+  .notice_tit {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0 0px 0 30px;
+    width: 8%;
+  }
+
+  .notice_title {
+    width: 32%;
+  }
+
+  .notice_day02 {
+    width: 16%;
+  }
+
+  .notice_writer {
+    width: 16%;
+  }
+
+  .keyword01 {
+    margin-left: 10px;
+  }
+
   .title_area {
     text-align: left;
     width: 106%;
@@ -201,13 +238,6 @@
     .notice_writer {
       text-align: right;
     }
-  }
-
-  .notice_tit {
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 20px;
-    margin: 0 0 0 18px;
   }
 
   .file_info {
@@ -272,7 +302,7 @@
     font-weight: 400;
     font-size: 12px;
     line-height: 17px;
-    margin: 0px 5px 0px 7px;
+    margin: 0 auto;
   }
 
   .keyword01 {
@@ -283,7 +313,6 @@
     height: 28px;
     background: #D1DBFF;
     border-radius: 3px;
-    margin-right: 10px;
     margin-bottom: 10px;
   }
 

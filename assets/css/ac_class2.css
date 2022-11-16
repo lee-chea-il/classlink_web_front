@@ -1943,6 +1943,17 @@ ol {
 /*---------------------------------------*/
 /* 학원관리-2.수업-(1)강의코스:질문함,리포트 */
 /* 학습함-질문함(기관장).html */
+.ac_manage_que .left_area {
+  width: 50%;
+}
+.ac_manage_que .right_area {
+  width: 50%;
+}
+@media (max-width: 1199.98px) {
+  .ac_manage_que .right_area {
+    width: 33%;
+  }
+}
 .ac_manage_que .keyword_area {
   position: relative;
   height: auto;
@@ -2084,6 +2095,25 @@ ol {
 }
 
 /* 수업 - 학습함 - 질문함 - 답변열람 (팝업 L) */
+#modalReplyView .notice_tit {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0 0px 0 30px;
+  width: 8%;
+}
+#modalReplyView .notice_title {
+  width: 32%;
+}
+#modalReplyView .notice_day02 {
+  width: 16%;
+}
+#modalReplyView .notice_writer {
+  width: 16%;
+}
+#modalReplyView .keyword01 {
+  margin-left: 10px;
+}
 #modalReplyView .title_area {
   text-align: left;
   width: 106%;
@@ -2093,12 +2123,6 @@ ol {
 #modalReplyView .title_area .notice_day02,
 #modalReplyView .title_area .notice_writer {
   text-align: right;
-}
-#modalReplyView .notice_tit {
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  margin: 0 0 0 18px;
 }
 #modalReplyView .file_info {
   text-align: left;
@@ -2154,7 +2178,7 @@ ol {
   font-weight: 400;
   font-size: 12px;
   line-height: 17px;
-  margin: 0px 5px 0px 7px;
+  margin: 0 auto;
 }
 #modalReplyView .keyword01 {
   display: flex;
@@ -2164,7 +2188,6 @@ ol {
   height: 28px;
   background: #D1DBFF;
   border-radius: 3px;
-  margin-right: 10px;
   margin-bottom: 10px;
 }
 

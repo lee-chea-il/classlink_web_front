@@ -175,19 +175,6 @@
       </div>
     </div>
 
-    <!-- <ReferenceMain
-      ref="reference"
-      :identity="identity"
-      :receiveInstitutionData="receiveInstitutionData"
-      :receiveFranchiseData="receiveFranchiseData"
-      :receiveCurriculumData="receiveCurriculumData"
-      @copy="copyData"
-      @paste="pasteData"
-      @del="delData"
-      @callback="copyDataCallBack"
-      @click-tree="onClick"
-    /> -->
-
     <!-- 등록 파일 선택 -->
     <ReferenceSelectModal
       :uploadType="uploadType"
@@ -428,6 +415,7 @@
     <SearchResultModal />
 
     <!-- 퀴즈 프린트 영역 -->
+    <!-- isQuizPrint -->
     <QuizPrintPage v-show="isQuizPrint" :quizList="selectQuizList" />
 
     <!-- 쪽지시험 프린트 영역 -->
@@ -556,7 +544,7 @@ export default {
                       savePath:
                         'https://media.w3.org/2010/05/sintel/trailer.mp4',
                       isOpenEducation: true,
-                      inOpenReferenceRoom: true,
+                      isContinueRegister: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'video/mp4',
@@ -576,7 +564,7 @@ export default {
                       savePath:
                         'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
                       isOpenEducation: true,
-                      inOpenReferenceRoom: true,
+                      isContinueRegister: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'application/pdf',
@@ -597,7 +585,7 @@ export default {
                       savePath:
                         'https://media.w3.org/2010/05/sintel/trailer.mp4',
                       isOpenEducation: true,
-                      inOpenReferenceRoom: true,
+                      isContinueRegister: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'quiz',
@@ -674,7 +662,7 @@ export default {
                       registrant: '등록인',
                       savePath: 'https://www.youtube.com/embed/1CYbySbtyF0',
                       isOpenEducation: true,
-                      inOpenReferenceRoom: true,
+                      isContinueRegister: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'youtube',
@@ -694,7 +682,7 @@ export default {
                       registrant: '등록인',
                       savePath: 'https://sciencelove.com/725',
                       isOpenEducation: true,
-                      inOpenReferenceRoom: true,
+                      isContinueRegister: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'test',
@@ -714,7 +702,7 @@ export default {
                       registrant: '등록인',
                       savePath: 'https://sciencelove.com/725',
                       isOpenEducation: true,
-                      inOpenReferenceRoom: true,
+                      isContinueRegister: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'test',
@@ -951,7 +939,6 @@ export default {
           ],
         },
       ],
-
       uploadType: '',
       currentPageIdx: 0,
       uploadFile: {},
@@ -1051,7 +1038,7 @@ export default {
           registrant: '등록인',
           savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
           isOpenEducation: true,
-          inOpenReferenceRoom: true,
+          isContinueRegister: true,
           fileName: '',
           fileDivision: '교육기관',
           fileType: 'video/mp4',
@@ -1070,7 +1057,7 @@ export default {
           savePath:
             'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
           isOpenEducation: true,
-          inOpenReferenceRoom: true,
+          isContinueRegister: true,
           fileName: '',
           fileDivision: '교육기관',
           fileType: 'application/pdf',
@@ -1088,7 +1075,7 @@ export default {
           registrant: '등록인',
           savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
           isOpenEducation: true,
-          inOpenReferenceRoom: true,
+          isContinueRegister: true,
           fileName: '',
           fileDivision: '교육기관',
           fileType: 'quiz',
@@ -1163,7 +1150,7 @@ export default {
           registrant: '등록인',
           savePath: 'https://www.youtube.com/embed/1CYbySbtyF0',
           isOpenEducation: true,
-          inOpenReferenceRoom: true,
+          isContinueRegister: true,
           fileName: '',
           fileDivision: '교육기관',
           fileType: 'youtube',
@@ -1181,7 +1168,7 @@ export default {
           registrant: '등록인',
           savePath: 'https://sciencelove.com/725',
           isOpenEducation: true,
-          inOpenReferenceRoom: true,
+          isContinueRegister: true,
           fileName: '',
           fileDivision: '교육기관',
           fileType: 'test',
@@ -1199,7 +1186,7 @@ export default {
           registrant: '등록인',
           savePath: 'https://sciencelove.com/725',
           isOpenEducation: true,
-          inOpenReferenceRoom: true,
+          isContinueRegister: true,
           fileName: '',
           fileDivision: '교육기관',
           fileType: 'test',
@@ -1243,11 +1230,11 @@ export default {
         name: '',
         subject: '',
         desc: '',
-        keyword: ['수학', '과학'],
+        keyword: [],
         registrant: '',
         savePath: '',
         isOpenEducation: true,
-        inOpenReferenceRoom: true,
+        isContinueRegister: true,
         fileName: '',
         fileDivision: '',
         fileType: '',
@@ -1264,13 +1251,6 @@ export default {
         youtube: '',
         page: '',
       },
-      keywordList: [
-        { value: '국어', code: 'im' },
-        { value: '수학', code: 'am' },
-        { value: '사회', code: 'ca' },
-        { value: '과학', code: 'th' },
-        { value: '영어', code: 'sm' },
-      ],
       quizList: [
         {
           id: 0,
@@ -1525,7 +1505,7 @@ export default {
         } else {
           this.reference[id] = false
         }
-      } else if (name === 'inOpenReferenceRoom' || name === 'isOpenEducation') {
+      } else if (name === 'isContinueRegister' || name === 'isOpenEducation') {
         this.reference[name] = value
       } else {
         this.reference[id] = value
@@ -1539,7 +1519,7 @@ export default {
         } else {
           this.selectData[id] = false
         }
-      } else if (name === 'inOpenReferenceRoom' || name === 'isOpenEducation') {
+      } else if (name === 'isContinueRegister' || name === 'isOpenEducation') {
         this.selectData[name] = value
       } else {
         this.selectData[id] = value
@@ -1994,7 +1974,7 @@ export default {
         registrant: '',
         savePath: '',
         isOpenEducation: true,
-        inOpenReferenceRoom: true,
+        isContinueRegister: true,
         fileName: '',
         fileDivision: '',
         fileType: '',

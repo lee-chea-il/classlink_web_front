@@ -23,6 +23,7 @@
       @delete-spare-teacher="deleteSpareTeacher"
       @add-class="addClassData"
       @delete-class="deleteClassData"
+      @next-btn="onSubmitCreateClass"
     />
 
     <!-- 강좌 변경 -->
@@ -113,8 +114,8 @@ export default {
         curriculum: '',
         createdAt: '',
         image: '',
-        startAlarmTime: '',
-        endAlarmTime: '',
+        startAlarmTime: '5분',
+        endAlarmTime: '5분',
       },
       lectureList: [
         {
@@ -160,10 +161,10 @@ export default {
         { id: 5, name: '1-1E' },
       ],
       scheduleItem: {
-        startTime: '',
-        endTime: '',
-        startDay: '',
-        endDay: '',
+        startTime: '0000',
+        endTime: '0030',
+        startDay: '2022-11-01',
+        endDay: '2022-11-02',
         selectWeekDay: [],
         isRepeat: false,
         bgColor: '#8fa7fb',
@@ -176,6 +177,15 @@ export default {
         thu: [],
         fri: [],
         set: [],
+      },
+      weekIdx: {
+        일: 'sun',
+        월: 'mon',
+        화: 'tue',
+        수: 'wed',
+        목: 'thu',
+        금: 'fri',
+        토: 'set',
       },
     }
   },
@@ -205,6 +215,13 @@ export default {
       })
       return timeArr
     },
+    getToday() {
+      const year = new Date().getFullYear()
+      const month = new Date().getMonth() + 1
+      const day = new Date().getDate()
+
+      return { year, month, day }
+    },
   },
   methods: {
     // 달력 모달
@@ -227,90 +244,149 @@ export default {
       this.isOpenModalDesc.open = false
     },
 
+    // 배열 만들기
+    setNewArray(arr) {
+      return Array.from(new Set(arr))
+    },
+
     // 강좌 변경 Event
     changeLecture({ target: { name, value } }) {
       this.lectureInfo[name] = value
     },
 
+    // 배정 메뉴 보여줄때 다른 메뉴 닫기
+    closeTeacherMenu() {
+      for (const index in this.teacherList) {
+        const allTarget = document.getElementById(`teacher_list${index}`)
+        allTarget.style.display = 'none'
+      }
+    },
+
     // 선생님 배정 메뉴 보여주기
     showTeacherMenu(idx) {
-      const target = document.getElementById(`teacher_list${idx}`)
-      const isNone = target.style.display === 'none'
+      const targetStyle = document.getElementById(`teacher_list${idx}`).style
+      const isNone = targetStyle.display === 'none'
       if (isNone) {
-        for (const idx in this.teacherList) {
-          const allTarget = document.getElementById(`teacher_list${idx}`)
-          allTarget.style.display = 'none'
-        }
-        target.style.display = 'block'
+        this.closeTeacherMenu()
+        return (targetStyle.display = 'block')
       } else {
-        target.style.display = 'none'
+        return (targetStyle.display = 'none')
       }
+    },
+
+    // 선생님 배정 시 원래 선생님 번호 초기화
+    resetTeacherIdx() {
+      const selectIdx = this.lectureInfo.teacher.findIndex(
+        (teacher) => teacher?.selectType === 1
+      )
+      const target = this.lectureInfo.teacher[selectIdx]
+      return selectIdx >= 0 && (target.selectType = 0)
+    },
+
+    // 선생님 타입 지정
+    setTeacherType(id) {
+      const number = this.teacherList.findIndex((item) => item.id === id)
+      const target = this.teacherList[number]
+      return (target.selectType = 1)
+    },
+
+    // 담임 배정시 부담임이였으면 지우기
+    resetSpareTeacherIdx(id) {
+      const spareNumber = this.lectureInfo.spareTeacher.findIndex(
+        (item) => item.id === id
+      )
+      return this.lectureInfo.spareTeacher.splice(spareNumber, 1)
     },
 
     // 담임 추가
     addTeacher(payload) {
-      const selectTeacherList = [payload]
-      const teacherType = payload.selectType
-      const number = this.teacherList.findIndex(
-        (item) => item.id === payload.id
-      )
-      const spareNumber = this.lectureInfo.spareTeacher.findIndex(
-        (item) => item.id === payload.id
-      )
-      if (teacherType === 0) {
-        this.teacherList[number].selectType = 1
-        this.lectureInfo.teacher = selectTeacherList
-      } else if (teacherType === 2) {
-        this.teacherList[number].selectType = 1
-        this.lectureInfo.spareTeacher.splice(spareNumber, 1)
-        this.lectureInfo.teacher = selectTeacherList
+      const { id, selectType } = payload
+      this.resetTeacherIdx()
+      if (selectType === 0) {
+        this.setTeacherType(id)
+        this.lectureInfo.teacher = [payload]
+      } else if (selectType === 2) {
+        this.setTeacherType(id)
+        this.resetSpareTeacherIdx(id)
+        this.lectureInfo.teacher = [payload]
       }
+    },
+
+    // 부담임 번호 지정
+    setSpareTeacherIdx(id) {
+      const number = this.teacherList.findIndex((item) => item.id === id)
+      return (this.teacherList[number].selectType = 2)
+    },
+
+    // 부담임 지정시 담임이였으면 지우기
+    resetIfTeacherIdx(id) {
+      const teacherNum = this.lectureInfo.teacher.findIndex(
+        (item) => item.id === id
+      )
+      return this.lectureInfo.teacher.splice(teacherNum, 1)
     },
 
     // 부담임 추가
     addSpareTeacher(payload) {
-      const selectSpareList = [...this.lectureInfo.spareTeacher]
-      const teacherType = payload.selectType
-      const number = this.teacherList.findIndex(
-        (item) => item.id === payload.id
-      )
-      const teacherNum = this.lectureInfo.teacher.findIndex(
-        (item) => item.id === payload.id
-      )
-      if (teacherType === 0) {
-        this.teacherList[number].selectType = 2
-        selectSpareList.push(payload)
-        this.lectureInfo.spareTeacher = Array.from(new Set(selectSpareList))
-      } else if (teacherType === 1) {
-        selectSpareList.push(payload)
-        this.teacherList[number].selectType = 2
-        this.lectureInfo.teacher.splice(teacherNum, 1)
-        this.lectureInfo.spareTeacher = Array.from(new Set(selectSpareList))
+      const { id, selectType } = payload
+      const target = this.lectureInfo
+      const selectSpareList = [...target.spareTeacher, payload]
+      if (selectType === 0) {
+        this.setSpareTeacherIdx(id)
+        return (target.spareTeacher = this.setNewArray(selectSpareList))
+      } else if (selectType === 1) {
+        this.setSpareTeacherIdx(id)
+        this.resetIfTeacherIdx(id)
+        return (target.spareTeacher = this.setNewArray(selectSpareList))
       }
     },
 
     // 반 추가
     addClassData(payload) {
-      const selectClassList = [...this.lectureInfo.className]
-      selectClassList.push(payload)
-      this.lectureInfo.className = Array.from(new Set(selectClassList))
+      const selectClassList = [...this.lectureInfo.className, payload]
+      return (this.lectureInfo.className = this.setNewArray(selectClassList))
     },
 
     // 담임 삭제
     deleteTeacher(selectIdx) {
       this.teacherList[selectIdx].selectType = 0
-      this.lectureInfo.teacher.splice(selectIdx, 1)
+      return this.lectureInfo.teacher.splice(selectIdx, 1)
     },
 
     // 부담임 삭제
     deleteSpareTeacher(selectIdx) {
       this.teacherList[selectIdx].selectType = 0
-      this.lectureInfo.spareTeacher.splice(selectIdx, 1)
+      return this.lectureInfo.spareTeacher.splice(selectIdx, 1)
     },
 
     // 반 삭제
     deleteClassData(selectIdx) {
-      this.lectureInfo.className.splice(selectIdx, 1)
+      return this.lectureInfo.className.splice(selectIdx, 1)
+    },
+
+    // 강좌 만들기 Submit
+    onSubmitCreateClass() {
+      const nextBtnTarget = document.getElementById('create_chapter_1')
+      if (this.lectureInfo.name === '') {
+        this.openModalDesc('실패', '강좌 이름을 입력해주세요.')
+        return false
+      }
+      if (this.lectureInfo.teacher.length === 0) {
+        this.openModalDesc('실패', '담임 선생님을 배정해주세요.')
+        return false
+      }
+      if (this.lectureInfo.className.length === 0) {
+        this.openModalDesc('실패', '반을 배정해주세요.')
+        return false
+      }
+
+      if (
+        this.lectureInfo.name !== '' &&
+        this.lectureInfo.teacher.length > 0 &&
+        this.lectureInfo.className.length > 0
+      ) {
+        nextBtnTarget.click()
+      }
     },
 
     // 스케줄
@@ -319,7 +395,6 @@ export default {
       let newArr = []
       const isClass = classList.contains('active')
       const filter = (item) => item?.filter((data) => data !== innerHTML)
-      const setArr = (arr) => Array.from(new Set(arr))
       const settingTarget = this.scheduleItem.selectWeekDay
 
       if (isClass) {
@@ -329,7 +404,7 @@ export default {
         newArr = [...settingTarget, innerHTML]
         classList.add('active')
       }
-      this.scheduleItem.selectWeekDay = setArr(newArr)
+      return (this.scheduleItem.selectWeekDay = this.setNewArray(newArr))
     },
 
     // 달력 날자 설정
@@ -350,6 +425,7 @@ export default {
       }
     },
 
+    // 색 바꾸기
     getColor() {
       if (this.bgCnt === 0) return '#8fa7fb'
       else if (this.bgCnt === 1) return '#72d8d9'
@@ -359,17 +435,48 @@ export default {
       }
     },
 
+    // 검색 내용 초기화
+    resetSearchShedule() {
+      const now = this.getToday
+      return (this.scheduleItem = {
+        startTime: '',
+        endTime: '',
+        startDay: `${now.year}.${now.month}.${now.day}`,
+        endDay: `${now.year}.${now.month}.${now.day + 1}`,
+        selectWeekDay: [],
+        bgColor: this.getColor(),
+        isRepeat: false,
+      })
+    },
+
+    // 검색 완료시 버튼 초기화
+    resetBtn() {
+      for (let j = 0; j < 7; j++) {
+        document.getElementById(`week_btn_${j}`).classList.remove('active')
+      }
+    },
+
+    // 검색완료시 시간표 데이터 보여주기
+    addScheduleWeekList(idx, schedule) {
+      const weekList = this.weekIdx
+      this.scheduleWeekList[weekList[idx]] = [
+        ...this.scheduleWeekList[weekList[idx]],
+        schedule,
+      ]
+    },
+
+    // 동일한 시간 체크
+    selectArrayLength(i, startTime) {
+      const weekList = this.weekIdx
+      const array = this.scheduleWeekList[weekList[i]].filter(
+        (item) => item.startTime <= startTime && item.endTime >= startTime
+      )
+      return array
+    },
+
+    // 시간표 추가
     addSchedule(schedule) {
       const { startDay, endDay, startTime, endTime, selectWeekDay } = schedule
-      const weekIdx = {
-        일: 'sun',
-        월: 'mon',
-        화: 'tue',
-        수: 'wed',
-        목: 'thu',
-        금: 'fri',
-        토: 'set',
-      }
       if (startDay === '') {
         this.openModalDesc('실패', '시작 날짜를 입력해주세요')
         return false
@@ -399,42 +506,24 @@ export default {
         selectWeekDay.length !== 0
       ) {
         for (const i of selectWeekDay) {
-          const newArr = this.scheduleWeekList[weekIdx[i]].filter(
-            (item) => item.startTime <= startTime && item.endTime >= startTime
-          )
-          if (newArr.length) {
+          if (this.selectArrayLength(i, startTime).length) {
             this.openModalDesc('실패', '해당하는 날짜의 강의가 이미 있습니다.')
             return false
           } else {
-            console.log(newArr)
-            this.scheduleWeekList[weekIdx[i]].push(schedule)
-            for (let j = 0; j < 7; j++) {
-              document
-                .getElementById(`week_btn_${j}`)
-                .classList.remove('active')
-            }
-
-            this.scheduleItem = {
-              startTime: '',
-              endTime: '',
-              startDay: '',
-              endDay: '',
-              selectWeekDay: [],
-              bgColor: this.getColor(),
-              isRepeat: false,
-            }
-            this.bgCnt = this.bgCnt + 1
+            this.addScheduleWeekList(i, schedule)
+            this.resetBtn()
+            this.resetSearchShedule()
           }
         }
+        return (this.bgCnt = this.bgCnt + 1)
       }
     },
 
+    // 시간표 삭제
     deleteSchedule(week, data) {
-      console.log(week, data, this.scheduleWeekList[week])
-      const newItem = this.scheduleWeekList[week].filter(
+      return (this.scheduleWeekList[week] = this.scheduleWeekList[week].filter(
         (item) => item.startDay !== data.startDay
-      )
-      this.scheduleWeekList[week] = newItem
+      ))
     },
   },
 }

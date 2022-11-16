@@ -170,7 +170,7 @@ export default {
                       savePath:
                         'https://media.w3.org/2010/05/sintel/trailer.mp4',
                       isOpenEducation: true,
-                      inOpenReferenceRoom: true,
+                      isContinueRegister: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'video/mp4',
@@ -190,7 +190,7 @@ export default {
                       savePath:
                         'https://media.w3.org/2010/05/sintel/trailer.mp4',
                       isOpenEducation: true,
-                      inOpenReferenceRoom: true,
+                      isContinueRegister: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'video/mp4',
@@ -210,7 +210,7 @@ export default {
                       savePath:
                         'https://media.w3.org/2010/05/sintel/trailer.mp4',
                       isOpenEducation: true,
-                      inOpenReferenceRoom: true,
+                      isContinueRegister: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'video/mp4',
@@ -230,7 +230,7 @@ export default {
                       savePath:
                         'https://media.w3.org/2010/05/sintel/trailer.mp4',
                       isOpenEducation: true,
-                      inOpenReferenceRoom: true,
+                      isContinueRegister: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'video/mp4',

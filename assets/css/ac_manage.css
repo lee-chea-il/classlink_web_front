@@ -1978,6 +1978,46 @@ ol {
 .modal.ac_manage_std .btn_section.regi .btn_crud_point {
   margin-left: 15px;
 }
+.modal.ac_manage_std .left_area {
+  width: 50%;
+}
+.modal.ac_manage_std .right_area {
+  width: 50%;
+}
+.modal.ac_manage_std .info_area {
+  width: 85%;
+  margin: 0 auto;
+}
+.modal.ac_manage_std .lacture_info .list_area {
+  padding: 15px 36px;
+}
+.modal.ac_manage_std .st_title00 {
+  width: 33%;
+}
+.modal.ac_manage_std .st_title01 {
+  width: 100%;
+}
+.modal.ac_manage_std .right_area .info_area .dropdown {
+  width: auto;
+}
+.modal.ac_manage_std .exp_txt02 {
+  position: absolute;
+  padding-left: 15px;
+  left: 0px;
+  width: 100%;
+  font-size: 12px;
+  color: #A7A9AC;
+  line-height: initial;
+  bottom: 6px;
+}
+.modal.ac_manage_std .form-inlinebox .overlap_btn {
+  display: block;
+  float: right;
+  width: 58px !important;
+  font-size: 12px;
+  line-height: 14px;
+  margin-top: 12px;
+}
 
 .modal_ac_manage_tch .info_area .form-group.row .readonly_txt {
   font-weight: 400;
@@ -2027,6 +2067,30 @@ ol {
   font-size: 12px;
 }
 
+.modal_ac_manage_cls .th01 {
+  width: 12%;
+}
+.modal_ac_manage_cls .td01 {
+  width: 12%;
+}
+.modal_ac_manage_cls .td04 {
+  width: 39%;
+}
+.modal_ac_manage_cls .btn_arrow_square2_r {
+  display: inline-block;
+  width: 55px;
+  height: 55px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icons/icon_arrow_square2_right.svg);
+}
+.modal_ac_manage_cls .btn_arrow_square2_r:hover, .modal_ac_manage_cls .btn_arrow_square2_r:focus, .modal_ac_manage_cls .btn_arrow_square2_r:active {
+  background-image: url(../images/icons/icon_arrow_square2_right_on.svg);
+  cursor: pointer;
+}
 .modal_ac_manage_cls .modal-body {
   text-align: left;
   padding-left: 50px;
@@ -2462,6 +2526,49 @@ ol {
   top: 45%;
 }
 
+.ac_manage_exam .left_area {
+  width: 50%;
+}
+.ac_manage_exam .right_area {
+  width: 48%;
+  margin-right: 10px;
+}
+.ac_manage_exam .th01 {
+  width: 11%;
+}
+.ac_manage_exam .th02 {
+  width: 9%;
+}
+.ac_manage_exam .th03 {
+  width: 12%;
+}
+.ac_manage_exam .th04 {
+  width: 8%;
+}
+.ac_manage_exam .th05 {
+  width: 13%;
+}
+.ac_manage_exam .th06 {
+  width: 6%;
+}
+.ac_manage_exam .th07 {
+  width: 7%;
+}
+.ac_manage_exam .th08 {
+  width: 23%;
+}
+.ac_manage_exam .th09 {
+  width: 8%;
+}
+.ac_manage_exam .td03 {
+  width: 11%;
+}
+.ac_manage_exam .td04 {
+  width: 10%;
+}
+.ac_manage_exam .td08 {
+  width: 26%;
+}
 .ac_manage_exam .confirm_sub {
   font-weight: 400;
   font-size: 14px;
@@ -2680,6 +2787,15 @@ ol {
   align-items: flex-start;
   justify-content: space-between;
   text-align: left;
+}
+.modal_ac_manage_exam .exam_result .td01 {
+  width: 23%;
+}
+.modal_ac_manage_exam .exam_result .td03 {
+  width: 40%;
+}
+.modal_ac_manage_exam .exam_result .td011 {
+  width: 50%;
 }
 .modal_ac_manage_exam .exam_result .left_area {
   position: relative;
@@ -3136,6 +3252,21 @@ ol {
 #modalFriendsregi .btn_crud_point {
   min-width: 70px;
 }
+#modalFriendsregi .th01 {
+  width: 47px;
+}
+#modalFriendsregi .th02 {
+  width: 161px;
+}
+#modalFriendsregi .th03 {
+  width: 85px;
+}
+#modalFriendsregi .th04 {
+  width: 50px;
+}
+#modalFriendsregi .th05 {
+  width: 58px;
+}
 
 /* 학생재배정 - 팝업 M1 */
 #modalReassignstudent .class_first {
@@ -3179,6 +3310,45 @@ ol {
 .modal_ac_manage_tch .divid_section {
   margin: 0 10px;
 }
+.modal_ac_manage_tch .info_area {
+  width: 90%;
+  margin: 0 auto;
+}
+.modal_ac_manage_tch .left_section {
+  width: 40%;
+  margin-left: 15px;
+}
+.modal_ac_manage_tch .right_section {
+  width: 58%;
+}
+.modal_ac_manage_tch .title00 {
+  width: 33%;
+}
+.modal_ac_manage_tch .title01 {
+  width: 100%;
+  margin-left: 15px;
+}
+.modal_ac_manage_tch .title02 {
+  width: 21%;
+  margin-left: 15px;
+}
+.modal_ac_manage_tch .title03 {
+  width: 21%;
+  margin-left: 15px;
+  margin-top: 17px;
+}
+.modal_ac_manage_tch .title04 {
+  width: 37%;
+  margin-top: 16px;
+  margin-left: 14px;
+}
+.modal_ac_manage_tch .title05 {
+  width: 75%;
+  margin-left: 115px;
+}
+.modal_ac_manage_tch .btn_right {
+  margin-left: auto;
+}
 .modal_ac_manage_tch .box_area {
   box-sizing: border-box;
   height: 70px;
@@ -3194,7 +3364,7 @@ ol {
   line-height: 17px;
   position: absolute;
   top: 2px;
-  left: 75px;
+  left: 80px;
 }
 .modal_ac_manage_tch .authority div[class^=col-] {
   margin: 10px 0px;
@@ -3215,6 +3385,32 @@ ol {
 /* jeh-2022.09.08 끝 */
 /* jeh-2022.09.13 시작 */
 /* 수강정보 -팝업 */
+#modalMoreCourse .th01 {
+  width: 22%;
+}
+#modalMoreCourse .th02 {
+  width: 57%;
+}
+#modalMoreCourse .th03 {
+  width: 9%;
+}
+#modalMoreCourse .th04 {
+  width: 16%;
+}
+#modalMoreCourse .td01 {
+  width: 23%;
+}
+#modalMoreCourse .td02 {
+  width: 60%;
+}
+#modalMoreCourse .td04 {
+  width: 11%;
+}
+#modalMoreCourse .more_mu {
+  position: absolute;
+  top: 249px;
+  left: 706px;
+}
 #modalMoreCourse .input-search {
   width: 65%;
 }
@@ -3362,18 +3558,48 @@ ol {
 #modalMoreCourse .box02 {
   overflow: hidden;
   white-space: normal;
-  width: 720px;
+  width: 670px;
   height: 88px;
   position: relative;
   background: #FFFFFF;
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
   padding: 15px 5px;
-  margin: 0 auto;
+  margin-left: 14px;
 }
 
 /* jeh-2022.09.13 끝 */
 /* jeh-2022.09.14 시작 */
+/* 메모-팝업 L */
+#modalMoreMemo .th01 {
+  width: 10%;
+}
+#modalMoreMemo .th02 {
+  width: 13%;
+}
+#modalMoreMemo .th04 {
+  width: 51%;
+}
+#modalMoreMemo .th05 {
+  width: 13%;
+}
+#modalMoreMemo .td01 {
+  width: 10%;
+}
+#modalMoreMemo .td02 {
+  width: 13%;
+}
+#modalMoreMemo .td03 {
+  width: 12%;
+}
+#modalMoreMemo .td04 {
+  width: 50%;
+}
+#modalMoreMemo .more_mu {
+  position: absolute;
+  right: 6%;
+  margin-top: -6px;
+}
 #modalMoreMemo .input-search {
   width: 65%;
 }

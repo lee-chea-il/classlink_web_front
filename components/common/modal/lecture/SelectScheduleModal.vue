@@ -116,24 +116,10 @@
             <!-- /.달력 전체 영역 -->
           </div>
         </div>
-        <div class="modal-footer">
-          <button
-            class="btn btn_crud_default"
-            data-dismiss="modal"
-            data-toggle="modal"
-            data-target="#modalLectureRegi02"
-          >
-            이전
-          </button>
-          <button
-            class="btn btn_crud_point"
-            data-dismiss="modal"
-            data-toggle="modal"
-            data-target="#modalLectureRegi04"
-          >
-            다음
-          </button>
-        </div>
+        <CustomModalBtn
+          prevTarget="#modalLectureRegi02"
+          nextTarget="#modalLectureRegi04"
+        />
       </div>
     </div>
   </div>
@@ -143,9 +129,15 @@
 import WeekDaySelectField from '~/components/lecture/schedule/WeekDaySelectField.vue'
 import ScheduleTable from '~/components/lecture/schedule/ScheduleTable.vue'
 import TimeSelectBox from '~/components/lecture/custom/TimeSelectBox.vue'
+import CustomModalBtn from '~/components/lecture/custom/CustomModalBtn.vue'
 export default {
   name: 'SelectScheduleModal',
-  components: { ScheduleTable, WeekDaySelectField, TimeSelectBox },
+  components: {
+    ScheduleTable,
+    WeekDaySelectField,
+    TimeSelectBox,
+    CustomModalBtn,
+  },
   props: {
     hourData: { type: Array, default: () => [] },
     scheduleItem: { type: Object, default: () => {} },

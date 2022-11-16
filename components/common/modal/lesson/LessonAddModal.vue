@@ -21,22 +21,10 @@
                 <!-- 왼쪽 영역 -->
                 <div class="divide_area left">
                   <!-- 컨트롤 버튼 영역 [개발참조] 활성화 : active -->
-                  <div class="button_tab">
-                    <button
-                      class="btn btn_activated"
-                      :class="{ active: !isLesson }"
-                      @click="$emit('set-lesson', false)"
-                    >
-                      자료실
-                    </button>
-                    <button
-                      class="btn btn_activated"
-                      :class="{ active: isLesson }"
-                      @click="$emit('set-lesson', true)"
-                    >
-                      레슨
-                    </button>
-                  </div>
+                  <TopNavigation
+                    :isLesson="isLesson"
+                    @set-lesson="$emit('set-lesson', $event)"
+                  />
                   <!-- /.컨트롤 버튼 영역 -->
                   <!-- 탭 컨텐츠 -->
                   <ul id="myTab" class="nav nav-tabs" role="tablist">
@@ -90,6 +78,7 @@
                         :pidNum="10000"
                         @moreShowClick="moreShowClick"
                         @copyDataCallBack="$emit('call-back')"
+                        @open-reference="open - reference"
                       />
                     </div>
                     <!-- /.탭 내용01 -->
@@ -142,7 +131,7 @@
                     >
                       <TreeView
                         ref="franchise"
-                        listType="lesson"
+                        listType="listType"
                         :dataList="receiveFranchiseData"
                         :editable="identity == 'master' ? true : false"
                         :identity="identity"
@@ -156,114 +145,19 @@
                   <!-- /.탭 컨텐츠 -->
                 </div>
                 <!-- /.왼쪽 영역 -->
+                
                 <!-- 오른쪽 영역 -->
-                <div class="divide_area right">
-                  <div class="form-group">
-                    <label for="">제목</label>
-                    <div class="col">
-                      <input
-                        type="text"
-                        placeholder="입력해 주세요"
-                        class="form-control"
-                        value=""
-                      />
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="">설명</label>
-                    <div class="col">
-                      <textarea placeholder="메모입력"></textarea>
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="">교육 목표</label>
-                    <div class="col">
-                      <input
-                        type="text"
-                        placeholder="입력해 주세요"
-                        class="form-control"
-                        value=""
-                      />
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="">레슨 자료</label>
-                    <div class="col">
-                      <div class="list_box">
-                        <div class="sum">등록 개수: 5개</div>
-                        <div class="list_area">
-                          <LessonTreeView
-                            ref="myLessonTreevie"
-                            list-type="lessonList"
-                            :dataList="receiveAddLessonData"
-                            :expanded="false"
-                            :pidNum="20000"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="">저장 경로</label>
-                    <div class="col">
-                      <input
-                        type="text"
-                        placeholder="저장할 폴더를 선택해 주세요"
-                        class="form-control form-inline front_button"
-                      />
-                      <button
-                        class="btn btn_crud_default"
-                        data-toggle="modal"
-                        data-target="#modalStoragepath"
-                      >
-                        찾아보기
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="">키워드</label>
-                    <div class="col">
-                      <input
-                        type="text"
-                        placeholder="키워드 입력 후 Enter 키를 입력해 주세요."
-                        class="form-control"
-                        value=""
-                      />
-                    </div>
-                  </div>
-
-                  <div class="check_sec">
-                    <span class="custom-control custom-checkbox form-inline">
-                      <input
-                        id="checkbox06"
-                        type="checkbox"
-                        class="custom-control-input"
-                        checked
-                      />
-                      <label
-                        class="custom-control-label checkbox06"
-                        for="checkbox06"
-                        >교육기관에 해당 자료를 공개합니다.</label
-                      >
-                    </span>
-                    <!-- [개발참조] 레슨수정시에는 미출력 -->
-                    <span class="custom-control custom-checkbox form-inline">
-                      <input
-                        id="checkbox07"
-                        type="checkbox"
-                        class="custom-control-input"
-                        checked
-                      />
-                      <label
-                        class="custom-control-label checkbox07"
-                        for="checkbox07"
-                        >계속 등록하기</label
-                      >
-                    </span>
-                  </div>
-                </div>
+                <RightSection
+                  :lessonData="createLessonData"
+                  :pushKeyword="pushKeyword"
+                  @change-lesson="$emit('change-lesson', $event)"
+                  @add-lesson="$emit('add-lesson', $event)"
+                  @remove-lesson="$emit('remove-lesson', $event)"
+                  @changePushKeyword="$emit('changePushKeyword', $event)"
+                  @set-keyword="$emit('set-keyword', $event)"
+                  @delete-keyword="$emit('delete-keyword', $event)"
+                  @moreShowClick="$emit('open-reference', $event)"
+                />
                 <!-- /.오른쪽 영역 -->
               </div>
               <!-- /.2단 분류 컨텐츠 -->
@@ -279,10 +173,6 @@
             >
               취소
             </button>
-
-            <!-- [개발참조] 레슨수정 시 출력되는 버튼 -->
-            <!-- <button class="btn btn_crud_point">수정</button>
-					<button class="btn btn_crud_default" data-dismiss="modal">취소</button> -->
           </div>
         </div>
       </div>
@@ -292,11 +182,17 @@
 
 <script>
 import ModalHeader from '../../ModalHeader.vue'
+import TopNavigation from '~/components/lesson/lessonAdd/TopNavigaion.vue'
 import TreeView from '~/components/common/custom/CustomReferenceTreeView.vue'
-import LessonTreeView from '~/components/common/custom/CustomLessonTreeView.vue'
+import RightSection from '~/components/lesson/lessonAdd/RightSection.vue'
 export default {
   name: 'LessonAddModal',
-  components: { ModalHeader, TreeView, LessonTreeView },
+  components: {
+    ModalHeader,
+    TreeView,
+    RightSection,
+    TopNavigation,
+  },
   props: {
     open: {
       type: Boolean,
@@ -318,9 +214,9 @@ export default {
       type: Array,
       default: () => [],
     },
-    receiveAddLessonData: {
-      type: Array,
-      default: () => [],
+    createLessonData: {
+      type: Object,
+      default: () => {},
     },
     receiveInstitutionData: {
       type: Array,
@@ -330,17 +226,22 @@ export default {
       type: Array,
       default: () => [],
     },
+    pushKeyword: {
+      type: String,
+      default: '',
+    },
   },
-  methods:{
-    moreShowClick(node){
-      console.log(`moreShowClick ${node}`)
-    }
-  }
+  methods: {
+    moreShowClick(node) {
+      // console.log(`moreShowClick ${node}`)
+      this.$emit('open-reference', node)
+    },
+  },
 }
 </script>
 
 <style scoped>
-.divide_area.right .custom-control{
+.divide_area.right .custom-control {
   display: none;
 }
 #institutePop > .vtl,
@@ -373,17 +274,19 @@ export default {
   border-radius: 5px;
 }
 
-#myTabContent{
+#myTabContent {
   height: 550px !important;
 }
 </style>
+
 <style>
 #myTabContent .icon_mp4_sm,
 #myTabContent .icon_pdf_sm,
 #myTabContent .icon_quiz_sm,
 #myTabContent .icon_exam_sm,
 #myTabContent .icon_youtube_sm,
-#myTabContent .icon_link_sm{
+#myTabContent .icon_link_sm {
   display: none;
 }
 </style>
+<!--  -->

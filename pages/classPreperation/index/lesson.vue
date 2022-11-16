@@ -2,19 +2,6 @@
   <div>
     <PageHeader title="레슨" />
 
-    <!-- <LessonMain
-      ref="lesson"
-      :identity="identity"
-      :receiveInstitutionLessonData="receiveInstitutionLessonData"
-      :receiveFranchiseLessonData="receiveFranchiseLessonData"
-      :receiveLessonList="receiveLessonList"
-      @copy="copyData"
-      @paste="pasteData"
-      @del="delData"
-      @open-add="openLessonAdd"
-      @callback="copyDataCallBack"
-    /> -->
-
     <div class="tab-content depth03 ac_manage_dtr">
       <div class="tab-pane active">
         <!-- 컨트롤 버튼 영역 -->
@@ -168,15 +155,23 @@
     <LessonAddModal
       :open="isLessonAdd"
       :identity="identity"
+      :isLesson="isLesson"
       :receiveInstitutionLessonData="receiveInstitutionLessonData"
       :receiveFranchiseLessonData="receiveFranchiseLessonData"
-      :receiveAddLessonData="receiveAddLessonData"
+      :createLessonData="createLessonData"
       :receiveInstitutionData="receiveInstitutionData"
       :receiveFranchiseData="receiveFranchiseData"
-      :isLesson="isLesson"
+      :pushKeyword="pushKeyword"
+      @add-lesson="addLessonList"
+      @change-lesson="changeCreateLesson"
       @set-lesson="setLessonFlag"
+      @remove-lesson="removeLessonItem"
       @call-back="copyDataCallBack"
       @close="isLessonAdd = false"
+      @change-keyword="changePushKeyword"
+      @set-keyword="setKeyword"
+      @delete-keyword="deleteKeyword"
+      @open-reference="openReferenceDetail"
     />
 
     <!-- 레슨 변경 -->
@@ -184,7 +179,7 @@
 
     <!-- 레슨 열람 -->
     <LessonBrowseModal
-      :open="isLessonBrowse"
+      :open="isLessonBrowse.open"
       :lessonItem="lessonItem"
       :selectReference="selectReference"
       :currentIdx="currentIdx"
@@ -245,7 +240,9 @@ export default {
       isLesson: false,
       isLessonAdd: false,
       isLessonChange: false,
-      isLessonBrowse: false,
+      isLessonBrowse: { open: false, prevPage: '' },
+      pushKeyword: '',
+      copyCheckData: [],
       isQuizPreviewModal: {
         open: false,
         prevPage: '',
@@ -254,7 +251,6 @@ export default {
         open: false,
         prevPage: '',
       },
-      copyCheckData: [],
       receiveInstitutionLessonData: [
         {
           name: '마포 학원',
@@ -285,7 +281,6 @@ export default {
                       type: 'institution',
                       dbIdx: 4,
                     },
-                    
                   ],
                 },
               ],
@@ -379,9 +374,17 @@ export default {
           ],
         },
       ],
-      receiveAddLessonData: [
-        
-      ],
+      createLessonData: {
+        name: '',
+        educationalGoals: '',
+        desc: '',
+        savePath: '',
+        keyword: [],
+        isOpenEducation: false,
+        isContinuedRegist: false,
+        createAt: '',
+        referenceList: [],
+      },
       receiveInstitutionData: [
         {
           name: '마포 학원',
@@ -399,9 +402,10 @@ export default {
                       desc: '등록한 자료 1',
                       keyword: ['국어', '수학'],
                       registrant: '등록인',
-                      savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                      savePath:
+                        'https://media.w3.org/2010/05/sintel/trailer.mp4',
                       isOpenEducation: true,
-                      inOpenReferenceRoom: true,
+                      isContinueRegister: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'video/mp4',
@@ -418,9 +422,10 @@ export default {
                       desc: '등록한 자료 2',
                       keyword: ['국어', '수학'],
                       registrant: '등록인',
-                      savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                      savePath:
+                        'https://media.w3.org/2010/05/sintel/trailer.mp4',
                       isOpenEducation: true,
-                      inOpenReferenceRoom: true,
+                      isContinueRegister: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'video/mp4',
@@ -437,9 +442,10 @@ export default {
                       desc: '등록한 자료 3',
                       keyword: ['국어', '수학'],
                       registrant: '등록인',
-                      savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                      savePath:
+                        'https://media.w3.org/2010/05/sintel/trailer.mp4',
                       isOpenEducation: true,
-                      inOpenReferenceRoom: true,
+                      isContinueRegister: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'video/mp4',
@@ -456,9 +462,10 @@ export default {
                       desc: '등록한 자료 4',
                       keyword: ['국어', '수학'],
                       registrant: '등록인',
-                      savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                      savePath:
+                        'https://media.w3.org/2010/05/sintel/trailer.mp4',
                       isOpenEducation: true,
-                      inOpenReferenceRoom: true,
+                      isContinueRegister: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'video/mp4',
@@ -533,7 +540,7 @@ export default {
             registrant: '등록인',
             savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
             isOpenEducation: true,
-            inOpenReferenceRoom: true,
+            isContinueRegister: true,
             fileName: '',
             fileDivision: '교육기관',
             fileType: 'video/mp4',
@@ -553,7 +560,7 @@ export default {
             savePath:
               'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
             isOpenEducation: true,
-            inOpenReferenceRoom: true,
+            isContinueRegister: true,
             fileName: '',
             fileDivision: '교육기관',
             fileType: 'application/pdf',
@@ -573,7 +580,7 @@ export default {
             registrant: '등록인',
             savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
             isOpenEducation: true,
-            inOpenReferenceRoom: true,
+            isContinueRegister: true,
             fileName: '',
             fileDivision: '교육기관',
             fileType: 'quiz',
@@ -650,7 +657,7 @@ export default {
             registrant: '등록인',
             savePath: 'https://www.youtube.com/embed/1CYbySbtyF0',
             isOpenEducation: true,
-            inOpenReferenceRoom: true,
+            isContinueRegister: true,
             fileName: '',
             fileDivision: '교육기관',
             fileType: 'youtube',
@@ -670,7 +677,7 @@ export default {
             registrant: '등록인',
             savePath: 'https://sciencelove.com/725',
             isOpenEducation: true,
-            inOpenReferenceRoom: true,
+            isContinueRegister: true,
             fileName: '',
             fileDivision: '교육기관',
             fileType: 'test',
@@ -690,7 +697,7 @@ export default {
             registrant: '등록인',
             savePath: 'https://sciencelove.com/725',
             isOpenEducation: true,
-            inOpenReferenceRoom: true,
+            isContinueRegister: true,
             fileName: '',
             fileDivision: '교육기관',
             fileType: 'test',
@@ -752,13 +759,28 @@ export default {
       this.isLessonChange = false
     },
 
-    openLessonBrowseModal() {
-      this.isLessonBrowse = true
-      this.selectReference = this.lessonItem.referenceList[0]
+    // 열람 데이터 초기 설정
+    setSelectAndFirstReference(item) {
+      if (item) {
+        return (this.selectReference = item)
+      } else {
+        return (this.selectReference = this.lessonItem.referenceList[0])
+      }
+    },
+
+    openLessonBrowseModal(prev, item) {
+      this.setSelectAndFirstReference(item)
+      return (this.isLessonBrowse = {
+        open: true,
+        prevPage: prev,
+      })
     },
 
     closeLessonBrowseModal() {
-      this.isLessonBrowse = false
+      this.isLessonBrowse.open = false
+      if (this.isLessonBrowse.prevPage !== '') {
+        this[this.isLessonBrowse.prevPage] = true
+      }
     },
 
     openQuizPreview(page) {
@@ -817,11 +839,13 @@ export default {
       console.log(this.copyCheckData)
     },
 
+    // 자료 보기 페이지
     setSelectReference(reference) {
       this.selectReference = reference
       this.currentIdx = 0
     },
 
+    // 페이지 네이션
     setPagination(direction, maxLength) {
       if (direction === 'plus') {
         if (this.currentIdx + 1 < maxLength) {
@@ -834,6 +858,71 @@ export default {
       } else {
         return null
       }
+    },
+
+    // 순환 구조를 Json으로 변환
+    getCircularReplacer() {
+      const seen = new WeakSet()
+      return (key, value) => {
+        if (typeof value === 'object' && value !== null) {
+          if (seen.has(value)) {
+            return
+          }
+          seen.add(value)
+        }
+        return value
+      }
+    },
+
+    // 레슨 추가
+    addLessonList({ children }) {
+      const str = JSON.stringify(children, this.getCircularReplacer())
+      const list = JSON.parse(str)
+      const filterItem = list.filter((item) => item.dbIdx !== -1)
+      return (this.createLessonData.referenceList = filterItem)
+    },
+
+    // 레슨 지우기
+    removeLessonItem({ id }) {
+      const newArray = this.createLessonData.referenceList
+      const filterItem = newArray.filter((data) => data.id !== id)
+      return (this.createLessonData.referenceList = filterItem)
+    },
+
+    // 레슨 수정
+    changeCreateLesson({ target: { id, name, value, checked } }) {
+      const isCheckbox =
+        name === 'isOpenEducation' || name === 'isContinuedRegist'
+      if (isCheckbox) return (this.createLessonData[name] = checked)
+      else return (this.createLessonData[id] = value)
+    },
+
+    // 레슨 자료 보기
+    openReferenceDetail(reference) {
+      console.log(reference)
+      const str = JSON.stringify(reference, this.getCircularReplacer())
+      const list = JSON.parse(str)
+      console.log(list)
+      this.openLessonBrowseModal('isLessonAdd')
+      this.selectReference = list
+      this.isLessonAdd = false
+    },
+
+    // 키워드 변경
+    setKeyword({ target: { value } }) {
+      const keywordList = [...this.createLessonData.keyword, value]
+      this.pushKeyword = ''
+      this.createLessonData.keyword = Array.from(new Set(keywordList))
+    },
+
+    // 키워드 삭제
+    deleteKeyword(idx) {
+      this.createLessonData.keyword.splice(idx, 1)
+    },
+
+    // 키워드 내용 변경
+    changePushKeyword({ target: { value } }) {
+      this.pushKeyword = value
     },
   },
 }

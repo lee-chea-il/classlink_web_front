@@ -2805,6 +2805,17 @@ i.btn {
   padding: 2px 12px 3px;
   background-color: #7391FA;
 }
+.alert_box label.type_read {
+  display: inline-block;
+  margin-right: 5px;
+  border-radius: 25px;
+  background: #333;
+  font-size: 14px;
+  color: #fff;
+  font-weight: 500;
+  padding: 2px 12px 3px;
+  background-color: #D1D3D4;
+}
 .alert_box .btn_del {
   position: absolute;
   right: 2px;
@@ -2824,6 +2835,12 @@ i.btn {
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
+}
+.alert_box .tit_read {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A7A9AC;
 }
 .alert_box .info_area {
   position: relative;
@@ -2886,6 +2903,12 @@ i.btn {
 .alert_box .info_area .date {
   margin-left: auto;
   padding-top: 2px;
+  color: #A7A9AC;
+}
+.alert_box .cat_read {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
   color: #A7A9AC;
 }
 

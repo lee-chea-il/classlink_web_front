@@ -46,6 +46,55 @@
 	.btn_section.regi .btn_crud_point {
 		margin-left: 15px;
 	}
+
+	.left_area {
+		width: 50%;
+	}
+
+	.right_area {
+		width: 50%;
+	}
+
+	.info_area {
+		width: 85%;
+		margin: 0 auto;
+	}
+
+	.lacture_info .list_area {
+		padding: 15px 36px;
+	}
+
+	.st_title00 {
+		width: 33%;
+	}
+
+	.st_title01 {
+		width: 100%;
+	}
+
+	.right_area .info_area .dropdown {
+		width: auto;
+	}
+
+	.exp_txt02 {
+		position: absolute;
+		padding-left: 15px;
+		left: 0px;
+		width: 100%;
+		font-size: 12px;
+		color: #A7A9AC;
+		line-height: initial;
+		bottom: 6px;
+	}
+
+	.form-inlinebox .overlap_btn {
+		display: block;
+		float: right;
+		width: 58px !important;
+		font-size: 12px;
+		line-height: 14px;
+		margin-top: 12px;
+	}
 }
 
 //선생님관리 모달
@@ -115,6 +164,38 @@
 
 //반관리 모달
 .modal_ac_manage_cls {
+
+	.th01 {
+		width: 12%;
+	}
+
+	.td01 {
+		width: 12%;
+	}
+
+	.td04 {
+		width: 39%;
+	}
+
+	.btn_arrow_square2_r {
+		display: inline-block;
+		width: 55px;
+		height: 55px;
+		text-align: center;
+		vertical-align: middle;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: contain;
+		background-image: url(../images/icons/icon_arrow_square2_right.svg);
+
+		&:hover,
+		&:focus,
+		&:active {
+			background-image: url(../images/icons/icon_arrow_square2_right_on.svg);
+			cursor: pointer;
+		}
+	}
+
 	.modal-body {
 		text-align: left;
 		padding-left: 50px;
@@ -618,6 +699,64 @@
 
 // 시험관리
 .ac_manage_exam {
+
+	.left_area {
+		width: 50%;
+	}
+
+	.right_area {
+		width: 48%;
+		margin-right: 10px;
+	}
+
+	.th01 {
+		width: 11%;
+	}
+
+	.th02 {
+		width: 9%;
+	}
+
+	.th03 {
+		width: 12%;
+	}
+
+	.th04 {
+		width: 8%;
+	}
+
+	.th05 {
+		width: 13%;
+	}
+
+	.th06 {
+		width: 6%;
+	}
+
+	.th07 {
+		width: 7%;
+	}
+
+	.th08 {
+		width: 23%;
+	}
+
+	.th09 {
+		width: 8%;
+	}
+
+	.td03 {
+		width: 11%;
+	}
+
+	.td04 {
+		width: 10%;
+	}
+
+	.td08 {
+		width: 26%;
+	}
+
 	.confirm_sub {
 		font-weight: 400;
 		font-size: 14px;
@@ -882,6 +1021,18 @@
 	align-items: flex-start;
 	justify-content: space-between;
 	text-align: left;
+
+	.td01 {
+		width: 23%;
+	}
+
+	.td03 {
+		width: 40%;
+	}
+
+	.td011 {
+		width: 50%;
+	}
 
 	.left_area {
 		position: relative;
@@ -1423,6 +1574,26 @@
 	.btn_crud_point {
 		min-width: 70px;
 	}
+
+	.th01 {
+		width: 47px;
+	}
+
+	.th02 {
+		width: 161px;
+	}
+
+	.th03 {
+		width: 85px;
+	}
+
+	.th04 {
+		width: 50px;
+	}
+
+	.th05 {
+		width: 58px;
+	}
 }
 
 /* 학생재배정 - 팝업 M1 */
@@ -1476,6 +1647,55 @@
 		margin: 0 10px;
 	}
 
+	.info_area {
+		width: 90%;
+		margin: 0 auto;
+	}
+
+	.left_section {
+		width: 40%;
+		margin-left: 15px;
+	}
+
+	.right_section {
+		width: 58%;
+	}
+
+	.title00 {
+		width: 33%;
+	}
+
+	.title01 {
+		width: 100%;
+		margin-left: 15px;
+	}
+
+	.title02 {
+		width: 21%;
+		margin-left: 15px;
+	}
+
+	.title03 {
+		width: 21%;
+		margin-left: 15px;
+		margin-top: 17px;
+	}
+
+	.title04 {
+		width: 37%;
+		margin-top: 16px;
+		margin-left: 14px;
+	}
+
+	.title05 {
+		width: 75%;
+		margin-left: 115px;
+	}
+
+	.btn_right {
+		margin-left: auto;
+	}
+
 	.box_area {
 		box-sizing: border-box;
 		// width: 350px;
@@ -1493,7 +1713,7 @@
 		line-height: 17px;
 		position: absolute;
 		top: 2px;
-		left: 75px;
+		left: 80px;
 	}
 
 	.authority div[class^="col-"] {
@@ -1522,6 +1742,41 @@
 /* jeh-2022.09.13 시작 */
 /* 수강정보 -팝업 */
 #modalMoreCourse {
+
+	.th01 {
+		width: 22%;
+	}
+
+	.th02 {
+		width: 57%;
+	}
+
+	.th03 {
+		width: 9%;
+	}
+
+	.th04 {
+		width: 16%;
+	}
+
+	.td01 {
+		width: 23%;
+	}
+
+	.td02 {
+		width: 60%;
+	}
+
+	.td04 {
+		width: 11%;
+	}
+
+	.more_mu {
+		position: absolute;
+		top: 249px;
+		left: 706px;
+	}
+
 	.input-search {
 		width: 65%;
 	}
@@ -1702,20 +1957,62 @@
 	.box02 {
 		overflow: hidden;
 		white-space: normal;
-		width: 720px;
+		width: 670px;
 		height: 88px;
 		position: relative;
 		background: #FFFFFF;
-		@include mixin.border_common;
+		border: 0.4px solid rgba(167, 169, 172, 0.4);
+		border-radius: 5px;
 		padding: 15px 5px;
-		margin: 0 auto;
+		margin-left: 14px;
 	}
 }
 
 /* jeh-2022.09.13 끝 */
 
 /* jeh-2022.09.14 시작 */
+
+/* 메모-팝업 L */
 #modalMoreMemo {
+
+	.th01 {
+		width: 10%;
+	}
+
+	.th02 {
+		width: 13%;
+	}
+
+	.th04 {
+		width: 51%;
+	}
+
+	.th05 {
+		width: 13%;
+	}
+
+	.td01 {
+		width: 10%;
+	}
+
+	.td02 {
+		width: 13%;
+	}
+
+	.td03 {
+		width: 12%;
+	}
+
+	.td04 {
+		width: 50%;
+	}
+
+	.more_mu {
+		position: absolute;
+		right: 6%;
+		margin-top: -6px;
+	}
+
 	.input-search {
 		width: 65%;
 	}

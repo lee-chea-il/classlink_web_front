@@ -5,6 +5,7 @@
         <label for="name">강좌 이름</label>
         <input
           id="name"
+          name="name"
           type="text"
           class="form-control form-inline lec_regi01"
           placeholder="강좌 이름을 입력해주세요."
