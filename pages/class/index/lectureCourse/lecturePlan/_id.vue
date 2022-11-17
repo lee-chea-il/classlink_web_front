@@ -347,12 +347,14 @@ export default {
           checkboxes[i].checked = true
           this.deleteIdxList.push(checkboxes[i].id)
         }
+        console.log(this.deleteIdxList)
       } else {
         this.allCheckBoxFlag = false
         for (let i = 0; i < checkboxes.length; i++) {
           checkboxes[i].checked = false
           this.deleteIdxList.pop()
         }
+        console.log(this.deleteIdxList)
       }
     },
   },

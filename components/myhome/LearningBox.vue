@@ -3,9 +3,13 @@
     <div class="title_area">
       <h4 class="title">학습함</h4>
       <!-- <span class="num">999+</span> -->
-      <a v-if="selectedLearningTab !== 0" href="javascript:;" class="more">
+      <nuxt-link
+        v-if="selectedLearningTab !== 0"
+        :to="selectedLearningTab === 2 ? '/class/lecturecourse' : ''"
+        class="more"
+      >
         <i class="icons_plus_circle_on"></i> 더보기
-      </a>
+      </nuxt-link>
     </div>
     <div class="cnts">
       <ul id="pills-tab" class="nav nav-pills" role="tablist">
@@ -47,20 +51,24 @@
             <div v-else>
               <ul v-if="selectedLearningTab === 0">
                 <li v-for="(item, idx) in learningList" :key="idx">
-                  <span class="type">{{
-                    learningBoxTabMenuList[item.category].title
-                  }}</span>
-                  <span class="subject">{{ item.subject }}</span>
+                  <span class="type">{{ item.type }}</span>
+                  <span
+                    class="subject cursor"
+                    @click="onClickDetail(item.type)"
+                    >{{ item.subject }}</span
+                  >
                   <i class="icons_new"></i>
                   <span class="date">{{ item.date }}</span>
                 </li>
               </ul>
               <ul v-else>
                 <li v-for="(item, idx) in selectedLearningList" :key="idx">
-                  <span class="type">{{
-                    learningBoxTabMenuList[item.category].title
-                  }}</span>
-                  <span class="subject">{{ item.subject }}</span>
+                  <span class="type">{{ item.type }}</span>
+                  <span
+                    class="subject cursor"
+                    @click="onClickDetail(item.type)"
+                    >{{ item.subject }}</span
+                  >
                   <i class="icons_new"></i>
                   <span class="date">{{ item.date }}</span>
                 </li>
@@ -93,11 +101,23 @@ export default {
       default: () => [],
     },
   },
+  methods: {
+    onClickDetail(type) {
+      if (type === '과제') {
+        this.$emit('click-homework')
+      } else if (type === '노트') {
+        this.$emit('click-note')
+      }
+    },
+  },
 }
 </script>
 <style scoped>
 .nothing_txt {
   justify-content: flex-start;
   top: 35px;
+}
+.cursor {
+  cursor: pointer;
 }
 </style>

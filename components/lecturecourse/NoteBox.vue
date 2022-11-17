@@ -28,33 +28,10 @@
           <button class="btn btn_crud_default" @click="getCheckboxData">
             다운로드
           </button>
-          <button
-            class="btn btn_crud_danger"
-            data-toggle="modal"
-            data-target="#modalDataDelete"
-            data-dismiss="modal"
-            @click="checkboxDel"
-          >
+          <button class="btn btn_crud_danger" @click="onClickDeleteBtn">
             삭제
           </button>
-          <ul id="myTab" class="nav nav-tabs" role="tablist">
-            <!-- <li class="nav-item" role="presentation">
-									<button class="nav-link active" id="grade-tab" data-toggle="tab" data-target="#institute" type="button" role="tab" aria-controls="home" aria-selected="true">
-										교육기관
-									</button>
-								</li>
-								<li class="nav-item" role="presentation">
-									<button class="nav-link" id="class-tab" data-toggle="tab" data-target="#franchise" type="button" role="tab" aria-controls="profile" aria-selected="false">
-										프랜차이즈
-									</button>
-								</li>
-								<li class="nav-item" role="presentation">
-									<button class="nav-link" id="class-tab" data-toggle="tab" data-target="#open" type="button" role="tab" aria-controls="profile" aria-selected="false">
-										공개자료실
-									</button>
-								</li> -->
-          </ul>
-          <div id="myTabContent" class="tab-content">
+          <div id="myTabContent" class="tab-content border">
             <!-- 탭 내용01 -->
             <div
               id="institute"
@@ -77,19 +54,35 @@
         </div>
         <!-- /.왼쪽 영역 -->
         <!-- 오른쪽 영역 -->
+
         <div class="divide_area right_area">
-          <div class="thumb_box">
+          <div v-if="!isMoreBtn" class="nodata">
+            자료를 확인하는 공간입니다. <br />
+            자료의 <i class="icons_zoom_off"></i> 버튼을 누르면 해당 자료를 볼
+            수 있습니다.
+          </div>
+          <div v-else class="thumb_box">
             <div class="row">
               <div class="title">자료 열람</div>
+
               <div class="thumbnail_view">
-                <button class="btn icons_fullscreen"></button>
+                <NoteView
+                  :open="noteDetail.uploadType === 'pdf'"
+                  :data="noteDetail"
+                />
+                <!-- <button class="btn icons_fullscreen"></button> -->
+                <a
+                  class="btn icons_fullscreen"
+                  :href="noteDetail.savePath"
+                  target="_blank"
+                ></a>
               </div>
             </div>
 
             <div class="row name">
               <label for="" class="title02">파일 이름</label>
               <div class="col">
-                <span>등록한 자료 이름</span>
+                <span>{{ noteDetail.name }}</span>
               </div>
             </div>
 
@@ -106,42 +99,36 @@
               <div class="row">
                 <label for="" class="title02 cont">공개 여부</label>
                 <div class="col cont">
-                  <span>ON</span>
+                  <span>{{ noteDetail.isOpenEducation ? 'ON' : 'OFF' }}</span>
                 </div>
               </div>
 
               <div class="row">
                 <label for="" class="title02 cont">과목</label>
                 <div class="col cont">
-                  <span>수학</span>
+                  <span>{{ noteDetail.subject }}</span>
                 </div>
               </div>
 
               <div class="row">
                 <label for="" class="title02 cont">경로</label>
                 <div class="col cont">
-                  <span>저장 경로가 입력되는 공간입니다.</span>
+                  <span>{{ noteDetail.savePath }}</span>
                 </div>
               </div>
             </div>
-
-            <!-- [개발참조] 자료열람 - 선택 안 했을 때 출력되는 문구 -->
-            <!-- <div class="nodata">
-									자료를 확인하는 공간입니다. <br>
-									자료의 <i class="icons_zoom_off"></i> 버튼을 누르면 해당 자료를 볼 수 있습니다.
-								</div> -->
           </div>
-          <!-- div class="thumb_box" -->
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import TreeView from '~/components/common/custom/CustomReferenceTreeView.vue'
+import TreeView from '@/components/common/custom/CustomReferenceTreeView.vue'
+import NoteView from '@/components/lecturecourse/NoteView.vue'
 export default {
   name: 'NoteBox',
-  components: { TreeView },
+  components: { TreeView, NoteView },
   props: {
     lectureCourse: {
       type: Object,
@@ -150,6 +137,8 @@ export default {
   },
   data() {
     return {
+      isMoreBtn: false,
+      noteDetail: {},
       noteBoxData: [
         {
           name: '마포 학원',
@@ -162,19 +151,19 @@ export default {
                   children: [
                     {
                       id: 0,
-                      name: '국어학습자료 애니메이션.mp4',
+                      name: '국어학습노트_221117.pdf',
                       subject: '국어',
                       desc: '등록한 자료 1',
                       keyword: ['국어', '수학'],
                       registrant: '등록인',
                       savePath:
-                        'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                        'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
                       isOpenEducation: true,
                       isContinueRegister: true,
                       fileName: '',
                       fileDivision: '교육기관',
-                      fileType: 'video/mp4',
-                      uploadType: 'video',
+                      fileType: 'pdf',
+                      uploadType: 'pdf',
                       fileVolume: '',
                       createAt: '',
                       dbIdx: 1,
@@ -182,19 +171,19 @@ export default {
                     },
                     {
                       id: 0,
-                      name: '국어학습자료 애니메이션2.mp4',
+                      name: '국어학습노트_221117_1.pdf',
                       subject: '국어',
                       desc: '등록한 자료 2',
                       keyword: ['국어', '수학'],
                       registrant: '등록인',
                       savePath:
-                        'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                        'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
                       isOpenEducation: true,
                       isContinueRegister: true,
                       fileName: '',
                       fileDivision: '교육기관',
-                      fileType: 'video/mp4',
-                      uploadType: 'video',
+                      fileType: 'pdf',
+                      uploadType: 'pdf',
                       fileVolume: '',
                       createAt: '',
                       dbIdx: 2,
@@ -202,19 +191,19 @@ export default {
                     },
                     {
                       id: 0,
-                      name: '국어학습자료 애니메이션3.mp4',
+                      name: '국어학습노트_221117_2.pdf',
                       subject: '국어',
                       desc: '등록한 자료 3',
                       keyword: ['국어', '수학'],
                       registrant: '등록인',
                       savePath:
-                        'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                        'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
                       isOpenEducation: true,
                       isContinueRegister: true,
                       fileName: '',
                       fileDivision: '교육기관',
-                      fileType: 'video/mp4',
-                      uploadType: 'video',
+                      fileType: 'pdf',
+                      uploadType: 'pdf',
                       fileVolume: '',
                       createAt: '',
                       dbIdx: 3,
@@ -222,19 +211,19 @@ export default {
                     },
                     {
                       id: 0,
-                      name: '국어학습자료 애니메이션4.mp4',
+                      name: '국어학습노트_221117_3.pdf',
                       subject: '국어',
                       desc: '등록한 자료 4',
                       keyword: ['국어', '수학'],
                       registrant: '등록인',
                       savePath:
-                        'https://media.w3.org/2010/05/sintel/trailer.mp4',
-                      isOpenEducation: true,
-                      isContinueRegister: true,
+                        'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
+                      isOpenEducation: false,
+                      isContinueRegister: false,
                       fileName: '',
                       fileDivision: '교육기관',
-                      fileType: 'video/mp4',
-                      uploadType: 'video',
+                      fileType: 'pdf',
+                      uploadType: 'pdf',
                       fileVolume: '',
                       createAt: '',
                       dbIdx: 4,
@@ -250,17 +239,56 @@ export default {
     }
   },
   methods: {
-    moreShowClick(node) {
-      console.log(`moreShowClick ${node}`)
+    // 순환 구조를 Json으로 변환
+    getCircularReplacer() {
+      const seen = new WeakSet()
+      return (key, value) => {
+        if (typeof value === 'object' && value !== null) {
+          if (seen.has(value)) {
+            return
+          }
+          seen.add(value)
+        }
+        return value
+      }
     },
+
+    // 노트 자료 보기
+    moreShowClick(note) {
+      this.isMoreBtn = true
+      const str = JSON.stringify(note, this.getCircularReplacer())
+      this.noteDetail = JSON.parse(str)
+    },
+
     checkboxDel() {
+      console.log(this.$refs.noteBox)
       this.$refs.noteBox.delData()
     },
+
     getCheckboxData() {
       const checkDatas = this.$refs.noteBox.getCheckDataList()
       console.log(checkDatas)
     },
+
+    onClickDeleteBtn() {
+      const checkDatas = this.$refs.noteBox.getCheckDataList()
+      if (checkDatas.length === 0) {
+        console.log('삭제할 노트를 선택해주세요.')
+      } else {
+        console.log('삭제하시겠습니까')
+        this.checkboxDel()
+      }
+    },
   },
 }
 </script>
-<style></style>
+<style scoped>
+.border {
+  border-radius: 5px !important;
+  padding: 30px 15px;
+}
+.icons_fullscreen {
+  right: 27px !important;
+  top: 168px !important;
+}
+</style>

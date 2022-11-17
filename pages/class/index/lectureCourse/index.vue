@@ -86,11 +86,7 @@
                 >
                   <div
                     class="card"
-                    :class="
-                      !item.state
-                        ? 'standby'
-                        : `course_bgcolor0${bgColorList[idx]}`
-                    "
+                    :class="!item.state ? 'standby' : bgColorList[idx]"
                   >
                     <div class="course_tit">{{ item.subject }}</div>
                     <div class="course_time">{{ item.time }}</div>

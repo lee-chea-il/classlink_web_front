@@ -19,7 +19,9 @@
             삭제를 클릭하면 복구할 수 없습니다.
           </div>
           <div class="modal-footer">
-            <button class="btn btn_crud_danger">삭제</button>
+            <button class="btn btn_crud_danger" @click="$emit('delete')">
+              삭제
+            </button>
             <button
               class="btn btn_crud_default"
               data-dismiss="modal"

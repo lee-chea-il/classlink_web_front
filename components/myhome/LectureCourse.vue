@@ -7,7 +7,11 @@
           새로운 소식이 없습니다.
         </div>
         <!-- Swiper -->
-        <CustomSwiper v-else :dataList="lectureCourseList" />
+        <CustomSwiper
+          v-else
+          :dataList="lectureCourseList"
+          @click-lecture="onClickLecture"
+        />
       </div>
     </div>
   </div>
@@ -21,6 +25,11 @@ export default {
     lectureCourseList: {
       type: Array,
       default: () => [],
+    },
+  },
+  methods: {
+    onClickLecture(idx) {
+      this.$emit('click-lecture', idx)
     },
   },
 }

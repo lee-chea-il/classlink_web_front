@@ -6,7 +6,12 @@
         새로운 소식이 없습니다.
       </div>
       <!-- Swiper -->
-      <CustomSwiper v-else :dataList="todayLectureList" :isHorizontal="false" />
+      <CustomSwiper
+        v-else
+        :dataList="todayLectureList"
+        :isHorizontal="false"
+        @click-lecture="onClickLecture"
+      />
     </div>
   </div>
 </template>
@@ -19,6 +24,11 @@ export default {
     todayLectureList: {
       type: Array,
       default: null,
+    },
+  },
+  methods: {
+    onClickLecture(idx) {
+      this.$emit('click-lecture', idx)
     },
   },
 }

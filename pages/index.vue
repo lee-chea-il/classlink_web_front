@@ -6,7 +6,10 @@
         <div class="row">
           <div class="left_side02">
             <!-- 오늘의 강의 -->
-            <Todayslecture :todayLectureList="todayLectureList" />
+            <Todayslecture
+              :todayLectureList="todayLectureList"
+              @click-lecture="onClickLecture"
+            />
             <!-- /.오늘의 강의 -->
           </div>
           <div class="right_side">
@@ -21,6 +24,8 @@
                       :learningList="learningList"
                       :selectedLearningList="selectedLearningList"
                       @selected-tab="selectedLearningTabMenu"
+                      @click-homework="openHomeWorkDetailModal"
+                      @click-note="openNoteDetailModal"
                     />
                     <!-- /.학습함 -->
                   </div>
@@ -51,7 +56,10 @@
               </div>
               <div class="right_down03">
                 <!-- 강의코스 -->
-                <LectureCourse :lectureCourseList="lectureCourseList" />
+                <LectureCourse
+                  :lectureCourseList="lectureCourseList"
+                  @click-lecture="onClickLecture"
+                />
                 <!-- /.강의코스 -->
               </div>
             </div>
@@ -59,6 +67,18 @@
         </div>
       </div>
     </div>
+    <!-- 과제 상세 모달 -->
+    <HomeWorkDetailModal
+      :open="HomeWorkDetailModalDesc.open"
+      @update="onClickUpdateHomeWorkBtn"
+      @close="onCloseHomeWorkDetailModal"
+    />
+    <!-- 노트 상세 모달 -->
+    <NoteDetailModal
+      :open="NoteDetailModalDesc.open"
+      :selectData="note"
+      @close="onCloseNoteDetailModal"
+    />
   </div>
   <!-- //container -->
 </template>
@@ -68,6 +88,8 @@ import LearningBox from '@/components/myhome/LearningBox.vue'
 import Notice from '@/components/myhome/Notice.vue'
 import Calendar from '@/components/myhome/Calendar.vue'
 import LectureCourse from '@/components/myhome/LectureCourse.vue'
+import HomeWorkDetailModal from '@/components/common/modal/lecturecourse/HomeWorkDetailModal.vue'
+import NoteDetailModal from '@/components/common/modal/myhome/NoteDetailModal.vue'
 export default {
   name: 'IndexPage',
   components: {
@@ -76,6 +98,8 @@ export default {
     Notice,
     Calendar,
     LectureCourse,
+    HomeWorkDetailModal,
+    NoteDetailModal,
   },
   layout: 'EducationLayout',
   data() {
@@ -83,7 +107,6 @@ export default {
       // 오늘의 강의
       todayLectureList: [
         {
-        
           academy: '일산어학원',
           time: '09:00 ~ 12:00',
           time_start: '09:00',
@@ -219,22 +242,63 @@ export default {
       learningBoxTabMenuList: [
         { id: 0, title: '전체' },
         { id: 1, title: '질문' },
-        { id: 2, title: '과제' },
-        { id: 3, title: '노트' },
+        { id: 2, title: '강의코스(과제/노트)' },
       ],
       selectedLearningTab: 0,
       learningList: [
-        { category: 1, subject: '영어심화 질문드려요', date: '2022.11.08' },
+        {
+          category: 1,
+          subject: '영어심화 질문드려요',
+          date: '2022.11.08',
+          type: '질문',
+        },
         {
           category: 1,
           subject:
             '영어기초 질문드려요 영어심화 질문드려요 영어심화 질문드려요',
           date: '2022.11.08',
+          type: '질문',
         },
-        { category: 2, subject: '영어심화 과제입니다', date: '2022.11.08' },
-        { category: 3, subject: '영어기초 노트', date: '2022.11.08' },
+        {
+          category: 2,
+          subject: '영어심화 과제입니다',
+          date: '2022.11.08',
+          type: '과제',
+        },
+        {
+          category: 2,
+          subject: '영어기초 노트',
+          date: '2022.11.08',
+          type: '노트',
+        },
       ],
       selectedLearningList: [],
+      HomeWorkDetailModalDesc: {
+        open: false,
+      },
+      note: {
+        id: 0,
+        name: '국어학습노트_221117.pdf',
+        subject: '국어',
+        desc: '등록한 자료 1',
+        keyword: ['국어', '수학'],
+        registrant: '등록인',
+        savePath:
+          'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
+        isOpenEducation: true,
+        isContinueRegister: true,
+        fileName: '',
+        fileDivision: '교육기관',
+        fileType: 'pdf',
+        uploadType: 'pdf',
+        fileVolume: '',
+        createAt: '',
+        dbIdx: 1,
+        type: 'institution',
+      },
+      NoteDetailModalDesc: {
+        open: false,
+      },
 
       // 공지사항
       noticeTabMenuList: [
@@ -300,6 +364,12 @@ export default {
     this.selectedDateTaskList = array
   },
   methods: {
+    // 오늘의 강의 & 강의코스
+    onClickLecture(idx) {
+      console.log(idx)
+      this.$router.push('/class/lecturecourse/lectureplan/')
+    },
+
     // 학습함
     selectedLearningTabMenu(idx) {
       this.selectedLearningTab = idx
@@ -311,6 +381,28 @@ export default {
       }
       this.selectedLearningList = array
     },
+    // 과제 상세/미리보기 모달
+    openHomeWorkDetailModal() {
+      this.HomeWorkDetailModalDesc.open = true
+    },
+    onCloseHomeWorkDetailModal() {
+      this.HomeWorkDetailModalDesc.open = false
+    },
+    // 과제 수정
+    onClickUpdateHomeWorkBtn() {
+      this.HomeWorkDetailModalDesc.open = true
+      this.$router.push(
+        `/class/lecturecourse/Updatehomework/${this.$route.params.id}`
+      )
+    },
+    // 노트 상세 모달
+    openNoteDetailModal() {
+      this.NoteDetailModalDesc.open = true
+    },
+    onCloseNoteDetailModal() {
+      this.NoteDetailModalDesc.open = false
+    },
+
     // 공지사항
     selectedNoticeTabMenu(idx) {
       this.selectedNoticeTab = idx
@@ -322,6 +414,7 @@ export default {
       }
       this.selectedNoticeList = array
     },
+
     // 캘린더
     onDayClick(day) {
       this.selectedDate = new Date(day.id)
