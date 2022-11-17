@@ -1877,6 +1877,8 @@ ol {
 .modal .modal-body {
   text-align: center;
   padding-top: 35px;
+  overflow-y: scroll;
+  height: 500px;
 }
 .modal .modal-body .text_type01 {
   font-size: 16px;
@@ -2011,4 +2013,7 @@ ol {
 /* 공지사항-등록.html */
 .notice_rigi .cl_manage_notice .box02 {
   padding: 11px 20px 10px 25px;
-}/*# sourceMappingURL=cl_manage.css.map */
+}
+
+/* 결제관리-결제내역.html */
+/* 관리 - 결제관리 - 결제내역 - 기관장상세 팝업 M2 *//*# sourceMappingURL=cl_manage.css.map */

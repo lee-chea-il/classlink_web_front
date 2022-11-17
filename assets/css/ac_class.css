@@ -1877,6 +1877,8 @@ ol {
 .modal .modal-body {
   text-align: center;
   padding-top: 35px;
+  overflow-y: scroll;
+  height: 500px;
 }
 .modal .modal-body .text_type01 {
   font-size: 16px;
@@ -2231,6 +2233,12 @@ ol {
 }
 
 /* 수업-강의코스-과제함-제출 현황 (팝업 L) */
+#modalTaskView .modal-body {
+  overflow-y: scroll;
+}
+#modalTaskView .th01 {
+  width: 10%;
+}
 #modalTaskView .tab-content.depth03 {
   border: none;
 }

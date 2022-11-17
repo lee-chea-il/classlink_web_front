@@ -1877,6 +1877,7 @@ ol {
 .modal .modal-body {
   text-align: center;
   padding-top: 35px;
+  height: 500px;
 }
 .modal .modal-body .text_type01 {
   font-size: 16px;
@@ -2257,9 +2258,9 @@ ol {
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
   display: inline-block;
-  width: 290px;
+  width: 250px;
   height: 190px;
-  margin: 15px 15px;
+  margin: 20px 15px;
 }
 #modalDataregi .box07:hover, #modalDataregi .box07:focus, #modalDataregi .box07:active {
   border: 1px solid #7391FA;
@@ -2271,12 +2272,11 @@ ol {
 }
 #modalDataregi .box07 .regi_icon07 {
   background-image: url(../images/icon_music_off.png);
-  height: 100%;
   background-size: cover;
   display: block;
   width: 36px;
   height: 36px;
-  margin: 40px 0 28px 126px;
+  margin: 40px 0 28px 105px;
 }
 #modalDataregi .box07 div:last-child {
   font-weight: 400;
@@ -2286,15 +2286,73 @@ ol {
 }
 
 /* 자료실-자료등록/수정-동영상/문서 & 유튜브,URL & 배경음 동일 형식 이용 (팝업 L) */
-#modalDataRegiModi .data_explain input {
-  height: 110px;
-  padding: 10px 10px 70px 10px;
+#modalDataRegiModi {
+  /* .line {
+    width: 100%;
+    height: 0px;
+    border: 0.4px solid rgba(167, 169, 172, 0.4);
+    margin-top: -20px;
+    margin-bottom: 30px;
+  } */
+}
+#modalDataRegiModi .form-group label {
+  line-height: 22px;
+}
+#modalDataRegiModi .exp_txt02 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+  color: #A7A9AC;
 }
 #modalDataRegiModi .building_check {
-  padding: 0px 80px;
+  margin-left: 25%;
+  margin-bottom: -27px;
+  margin-top: -53px;
+}
+#modalDataRegiModi .building_check02 {
+  margin-left: 25%;
+  margin-top: -18px;
+}
+#modalDataRegiModi .place_box {
+  position: relative;
+  width: 177px;
+  min-height: 115px;
+  margin-bottom: 20px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  margin-left: 26%;
+  margin-top: -8px;
+}
+@media (max-width: 1199.98px) {
+  #modalDataRegiModi .place_box {
+    margin-left: 28%;
+  }
+}
+#modalDataRegiModi .btn_close {
+  position: absolute;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+  top: -10px;
+  right: -10px;
+}
+#modalDataRegiModi .space {
+  display: inline-block;
+  height: 115px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/sample_building_frc_noimg.jpg);
+  width: 100%;
+}
+#modalDataRegiModi .data_explain input {
+  height: 39px;
 }
 #modalDataRegiModi .building_RegiModi_box {
-  height: 480px;
+  height: 440px;
+  margin-top: 5px;
 }
 
 /* 자료실-자료등록/퀴즈 (팝업 L) */

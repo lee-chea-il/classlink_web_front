@@ -1,6 +1,7 @@
 <template>
   <div>
     <PageHeader title="자료실" />
+
     <div class="tab-content depth03 ac_manage_dtr">
       <div class="tab-pane active">
         <!-- 컨트롤 버튼 영역 -->
@@ -8,14 +9,25 @@
           <div class="left_area">
             <div class="btn btn_crud_default" @click="copyData">복사</div>
             <!-- <button class="btn btn_crud_default" @click="pasteData"> -->
-            <button class="btn btn_crud_default">붙여넣기</button>
+            <button class="btn btn_crud_default" @click="pasteData">
+              붙여넣기
+            </button>
             <button class="btn btn_crud_default" @click="delData">삭제</button>
           </div>
 
           <div class="right_area">
             <div class="input-group input-search form-inline">
               <input
+                v-show="!isSearchListModal"
+                id="word"
+                v-model="searchData.word"
+                name="word"
                 type="text"
+                placeholder="검색어 입력"
+                class="form-control"
+              />
+              <input
+                v-show="isSearchListModal"
                 placeholder="검색어 입력"
                 class="form-control"
               />
@@ -23,17 +35,11 @@
                 <button
                   class="btn icons_search_off"
                   type="button"
-                  data-toggle="modal"
-                  data-target="#modalDatafilterResult"
-                  data-dismiss="modal"
+                  @click="openSearchListModal"
                 ></button>
               </div>
             </div>
-            <button
-              class="btn btn_filter"
-              data-toggle="modal"
-              data-target="#modalDatafilter"
-            >
+            <button class="btn btn_filter" @click="openFilterModal">
               필터
             </button>
             <button
@@ -52,38 +58,7 @@
           <!-- 왼쪽 영역 -->
           <div class="divide_area left">
             <!-- 탭 컨텐츠 -->
-            <ul id="myTab" class="nav nav-tabs" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button
-                  id="grade-tab"
-                  class="nav-link active"
-                  data-toggle="tab"
-                  data-target="#institute"
-                  type="button"
-                  role="tab"
-                  aria-controls="home"
-                  aria-selected="true"
-                >
-                  <span class="icon_institute"></span>
-                  교육기관
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button
-                  id="class-tab"
-                  class="nav-link"
-                  data-toggle="tab"
-                  data-target="#franchise"
-                  type="button"
-                  role="tab"
-                  aria-controls="profile"
-                  aria-selected="false"
-                >
-                  <span class="icon_fran"></span>
-                  프랜차이즈
-                </button>
-              </li>
-            </ul>
+            <TopNavigation />
 
             <div id="myTabContent" class="tab-content">
               <!-- 탭 내용01 -->
@@ -101,6 +76,9 @@
                   :pidNum="0"
                   @file-view="onClick"
                   @copyDataCallBack="copyDataCallBack"
+                  @download-data="downloadSelectData"
+                  @update-data="updateSelectData"
+                  @drop="dropItem"
                 />
               </div>
               <!-- /.탭 내용01 -->
@@ -117,7 +95,10 @@
                   :editable="identity == 'master' ? true : false"
                   :identity="identity"
                   :pidNum="1000"
+                  @file-view="onClick"
                   @copyDataCallBack="copyDataCallBack"
+                  @download-data="downloadSelectData"
+                  @update-data="updateSelectData"
                 />
               </div>
               <!-- /.탭 내용02 -->
@@ -161,6 +142,11 @@
                   :dataList="receiveCurriculumData"
                   identity="master"
                   :pidNum="2000"
+                  @file-view="onClick"
+                  @copyDataCallBack="copyDataCallBack"
+                  @download-data="downloadSelectData"
+                  @update-data="updateSelectData"
+                  @drop="dropItem"
                 />
                 <br />
                 <br />
@@ -284,7 +270,7 @@
       @view-url="onOpenShareViewModal"
       @delete="openSelectModal"
       @open-save-path="onOpenSavePathModal"
-      @export-pdf="exportQuizToPDF"
+      @export-pdf="exportPdf"
     />
 
     <!-- 퀴즈 미리보기 -->
@@ -309,7 +295,7 @@
       @view-url="onOpenShareViewModal"
       @delete="openSelectModal"
       @open-save-path="onOpenSavePathModal"
-      @export-pdf="exportNoteTestToPDF"
+      @export-pdf="exportPdf"
     />
 
     <!-- 쪽지시험 미리보기 -->
@@ -322,8 +308,8 @@
       @close="onCloseNoteTestPreviewModal"
       @pagination="onClickQuizPagination"
     />
-
     <!-- 자료 수정 -->
+
     <ReferenceChangeModal
       :open="isReferenceChangeModal"
       :reference="selectData"
@@ -335,8 +321,8 @@
       @delete-keyword="deleteSelectKeyword"
       @open-save-path="onOpenSavePathModal"
     />
-
     <!-- 퀴즈 수정 -->
+
     <QuizChangeModal
       :open="isQuizChangeModal"
       :quiz="selectData"
@@ -358,8 +344,8 @@
       @delete-keyword="deleteSelectKeyword"
       @open-save-path="onOpenSavePathModal"
     />
-
     <!-- 쪽지시험 수정 -->
+
     <NoteTestChangeModal
       :open="isNoteTestChangeModal"
       :reference="selectData"
@@ -409,13 +395,27 @@
     <SavePathModal :open="isSavePathModal.open" @close="onCloseSavePathModal" />
 
     <!-- 자료실 검색 필터 -->
-    <ReferenceFilterModal />
+    <ReferenceFilterModal
+      :open="isFilterModal.open"
+      :searchData="searchData"
+      @change-data="changeSearchData"
+      @close="closeFilterModal"
+      @search-list-view="openSearchListModal"
+      @click-item="changeSearchData"
+    />
 
     <!-- 자료실 검색 성공 -->
-    <SearchResultModal />
+    <SearchResultModal
+      :open="isSearchListModal"
+      :searchData="searchData"
+      :resultSearchList="resultSearchList"
+      @change-word="changeSearchData"
+      @close="closeSearchListModal"
+      @open-filter="openFilterModal"
+      @copy="copyData"
+    />
 
     <!-- 퀴즈 프린트 영역 -->
-    <!-- isQuizPrint -->
     <QuizPrintPage v-show="isQuizPrint" :quizList="selectQuizList" />
 
     <!-- 쪽지시험 프린트 영역 -->
@@ -454,6 +454,8 @@ import NoteTestPreviewModal from '~/components/common/modal/reference/NoteTestPr
 import ReferenceTreeView from '~/components/common/custom/CustomReferenceTreeView.vue'
 import QuizPrintPage from '~/components/reference/QuizPrintPage.vue'
 import NoteTestPrintPage from '~/components/reference/NoteTestPrintPage.vue'
+import TopNavigation from '~/components/reference/main/TopNavigation.vue'
+import initialState from '~/data/reference/initialState'
 
 export default {
   name: 'ReferenceRoom',
@@ -483,805 +485,11 @@ export default {
     ReferenceTreeView,
     QuizPrintPage,
     NoteTestPrintPage,
+    TopNavigation,
   },
   layout: 'EducationLayout',
   data() {
-    return {
-      identity: 'teacher',
-      pushKeyword: '',
-      // Modal Flag
-      isQuizPrint: false,
-      isNoteTestPrint: false,
-      isReferenceAddModal: false,
-      isQuizAddModal: false,
-      isNoteTestAddModal: false,
-      isReferenceBrowseModal: false,
-      isQuizBrowseModal: false,
-      isNoteTestBrowseModal: false,
-      isReferenceChangeModal: false,
-      isQuizChangeModal: false,
-      isNoteTestChangeModal: false,
-      isQuizPreviewModal: {
-        open: false,
-        previewPage: '',
-        select: false,
-      },
-      isNoteTestPreviewModal: {
-        open: false,
-        previewPage: '',
-        select: false,
-      },
-      isShareViewModal: {
-        open: false,
-        path: '',
-        url: '',
-      },
-      isSelectModal: {
-        open: false,
-        previewPage: '',
-      },
-      isSavePathModal: {
-        open: false,
-        previewPage: '',
-      },
-      receiveInstitutionData: [
-        {
-          name: '마포 학원',
-          children: [
-            {
-              name: '국어',
-              children: [
-                {
-                  name: '1단원',
-                  children: [
-                    {
-                      id: 0,
-                      name: '국어학습자료 애니메이션.mp4',
-                      subject: '국어',
-                      desc: '등록한 자료 1',
-                      keyword: ['국어', '수학'],
-                      registrant: '등록인',
-                      savePath:
-                        'https://media.w3.org/2010/05/sintel/trailer.mp4',
-                      isOpenEducation: true,
-                      isContinueRegister: true,
-                      fileName: '',
-                      fileDivision: '교육기관',
-                      fileType: 'video/mp4',
-                      uploadType: 'video',
-                      fileVolume: '',
-                      createAt: '',
-                      dbIdx: 1,
-                      type: 'institution',
-                    },
-                    {
-                      id: 1,
-                      name: '수학 학습자료.pdf',
-                      subject: '수학',
-                      desc: '등록한 자료 2',
-                      keyword: ['국어', '수학'],
-                      registrant: '등록인',
-                      savePath:
-                        'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
-                      isOpenEducation: true,
-                      isContinueRegister: true,
-                      fileName: '',
-                      fileDivision: '교육기관',
-                      fileType: 'application/pdf',
-                      uploadType: 'pdf',
-                      fileVolume: '',
-                      createAt: '',
-                      isLeaf: false,
-                      dbIdx: 2,
-                      type: 'institution',
-                    },
-                    {
-                      id: 2,
-                      name: '영어 단어 퀴즈.quiz',
-                      subject: '영어',
-                      desc: '등록한 자료 1',
-                      keyword: ['국어', '수학'],
-                      registrant: '등록인',
-                      savePath:
-                        'https://media.w3.org/2010/05/sintel/trailer.mp4',
-                      isOpenEducation: true,
-                      isContinueRegister: true,
-                      fileName: '',
-                      fileDivision: '교육기관',
-                      fileType: 'quiz',
-                      uploadType: 'quiz',
-                      fileVolume: '',
-                      createAt: '',
-                      quizList: [
-                        {
-                          id: 0,
-                          problem: '<p>asdfaaaaasdf</p>',
-                          oxAnswer: 0,
-                          dificultade: 1,
-                          limitTime: '3분',
-                          quizType: 0,
-                          shortAnswer: '123',
-                          subjectiveAnswer: '123',
-                          shortWrongAnswer: '123',
-                        },
-                        {
-                          id: 2,
-                          problem: '<p>asdggggg</p>',
-                          dificultade: 0,
-                          limitTime: '5분',
-                          quizType: 0,
-                          oxAnswer: 0,
-                          shortAnswer: '234',
-                          subjectiveAnswer: '234',
-                          shortWrongAnswer: '234',
-                        },
-                        {
-                          id: 3,
-                          problem: '<p>234242242424</p>',
-                          dificultade: 0,
-                          limitTime: '2분',
-                          quizType: 0,
-                          oxAnswer: 0,
-                          shortAnswer: '345',
-                          subjectiveAnswer: '345',
-                          shortWrongAnswer: '345',
-                        },
-                        {
-                          id: 4,
-                          problem: '<p>555555555</p>',
-                          dificultade: 0,
-                          limitTime: '4분',
-                          quizType: 0,
-                          oxAnswer: 0,
-                          shortAnswer: '456',
-                          subjectiveAnswer: '456',
-                          shortWrongAnswer: '456',
-                        },
-                        {
-                          id: 5,
-                          problem: '<p>asx c</p>',
-                          dificultade: 0,
-                          limitTime: '5분',
-                          quizType: 0,
-                          oxAnswer: 0,
-                          shortAnswer: '567',
-                          subjectiveAnswer: '567',
-                          shortWrongAnswer: '567',
-                        },
-                      ],
-                      isLeaf: false,
-                      dbIdx: 3,
-                      type: 'institution',
-                    },
-                    {
-                      id: 3,
-                      name: '사회 쪽지시험 영상.youtube',
-                      subject: '사회',
-                      desc: '등록한 자료 1',
-                      keyword: ['국어', '수학'],
-                      registrant: '등록인',
-                      savePath: 'https://www.youtube.com/embed/1CYbySbtyF0',
-                      isOpenEducation: true,
-                      isContinueRegister: true,
-                      fileName: '',
-                      fileDivision: '교육기관',
-                      fileType: 'youtube',
-                      uploadType: 'youtube',
-                      fileVolume: '',
-                      createAt: '',
-                      isLeaf: false,
-                      dbIdx: 4,
-                      type: 'institution',
-                    },
-                    {
-                      id: 4,
-                      name: '과학 사이트 참고용.url',
-                      subject: '과학',
-                      desc: '등록한 자료 1',
-                      keyword: ['국어', '수학'],
-                      registrant: '등록인',
-                      savePath: 'https://sciencelove.com/725',
-                      isOpenEducation: true,
-                      isContinueRegister: true,
-                      fileName: '',
-                      fileDivision: '교육기관',
-                      fileType: 'test',
-                      uploadType: 'url',
-                      fileVolume: '',
-                      createAt: '',
-                      isLeaf: false,
-                      dbIdx: 5,
-                      type: 'institution',
-                    },
-                    {
-                      id: 5,
-                      name: '수학 쪽지시험.test',
-                      subject: '수학',
-                      desc: '등록한 자료 1',
-                      keyword: ['국어', '수학'],
-                      registrant: '등록인',
-                      savePath: 'https://sciencelove.com/725',
-                      isOpenEducation: true,
-                      isContinueRegister: true,
-                      fileName: '',
-                      fileDivision: '교육기관',
-                      fileType: 'test',
-                      uploadType: 'test',
-                      fileVolume: '',
-                      createAt: '',
-                      noteTestList: [
-                        {
-                          id: 0,
-                          problem: '<p>1번 문제</p>',
-                          exampleList: [
-                            { id: '', example: '<p>답 1임</p>' },
-                            { id: '', example: '<p>답 2임</p>' },
-                            { id: '', example: '<p>답 3임</p>' },
-                            { id: '', example: '<p>답 4임</p>' },
-                          ],
-                          dificultade: 0,
-                          limitTime: '',
-                          answer: 0,
-                        },
-                        {
-                          id: 1,
-                          problem: '<p>2번 문제</p>',
-                          exampleList: [
-                            { id: '', example: '<p>답 5임</p>' },
-                            { id: '', example: '<p>답 6임</p>' },
-                            { id: '', example: '<p>답 7임</p>' },
-                            { id: '', example: '<p>답 8임</p>' },
-                          ],
-                          dificultade: 2,
-                          limitTime: '',
-                          answer: 2,
-                        },
-                      ],
-                      isLeaf: false,
-                      dbIdx: 6,
-                      type: 'institution',
-                    },
-                  ],
-                },
-                {
-                  name: '2단원',
-                  children: [
-                    {
-                      name: '법과 작문1.link',
-                      type: 'institution',
-                      dbIdx: 5,
-                    },
-                    {
-                      name: '법과 작문2.link',
-                      type: 'institution',
-                      dbIdx: 6,
-                    },
-                    {
-                      name: '법과 작문3.link',
-                      type: 'institution',
-                      dbIdx: 7,
-                    },
-                    {
-                      name: '법과 작문4.link',
-                      type: 'institution',
-                      dbIdx: 8,
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              name: '수학',
-              children: [
-                {
-                  name: '1단원',
-                  children: [
-                    {
-                      name: '삼각함수1.link',
-                      type: 'institution',
-                      dbIdx: 1,
-                    },
-                    {
-                      name: '삼각함수2.link',
-                      type: 'institution',
-                      dbIdx: 2,
-                    },
-                    {
-                      name: '삼각함수3.link',
-                      type: 'institution',
-                      dbIdx: 3,
-                    },
-                    {
-                      name: '삼각함수4.link',
-                      type: 'institution',
-                      dbIdx: 4,
-                    },
-                  ],
-                },
-                {
-                  name: '2단원',
-                  children: [
-                    {
-                      name: '2차 방정식1.link',
-                      type: 'institution',
-                      dbIdx: 5,
-                    },
-                    {
-                      name: '2차 방정식2.link',
-                      type: 'institution',
-                      dbIdx: 6,
-                    },
-                    {
-                      name: '2차 방정식3.link',
-                      type: 'institution',
-                      dbIdx: 7,
-                    },
-                    {
-                      name: '2차 방정식4.link',
-                      type: 'institution',
-                      dbIdx: 8,
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      receiveFranchiseData: [
-        {
-          name: '서울 학원',
-          children: [
-            {
-              name: '과학',
-              children: [
-                {
-                  name: '1단원',
-                  children: [
-                    {
-                      name: '일산화탄소1.link',
-                      type: 'franchise',
-                      dbIdx: 1,
-                    },
-                    {
-                      name: '일산화탄소2.link',
-                      type: 'franchise',
-                      dbIdx: 2,
-                    },
-                    {
-                      name: '일산화탄소3.link',
-                      type: 'franchise',
-                      dbIdx: 3,
-                    },
-                    {
-                      name: '일산화탄소4.link',
-                      type: 'franchise',
-                      dbIdx: 4,
-                    },
-                  ],
-                },
-                {
-                  name: '2단원',
-                  children: [
-                    {
-                      name: '이산화탄소1.link',
-                      type: 'franchise',
-                      dbIdx: 5,
-                    },
-                    {
-                      name: '이산화탄소2.link',
-                      type: 'franchise',
-                      dbIdx: 6,
-                    },
-                    {
-                      name: '이산화탄소3.link',
-                      type: 'franchise',
-                      dbIdx: 7,
-                    },
-                    {
-                      name: '이산화탄소4.link',
-                      type: 'franchise',
-                      dbIdx: 8,
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      receiveCurriculumData: [
-        {
-          name: '국어',
-          children: [
-            {
-              name: '1단원',
-              children: [
-                {
-                  name: '사투리 작문1.link',
-                  type: 'institution',
-                },
-                {
-                  name: '사투리 작문2.link',
-                  type: 'franchise',
-                },
-              ],
-            },
-            {
-              name: '2단원',
-              children: [
-                {
-                  name: '부산 사투리 작문1.link',
-                  type: 'curriculum',
-                },
-                {
-                  name: '부산 사투리 작문2.link',
-                  type: 'institution',
-                },
-                {
-                  name: '부산 사투리 작문2.link',
-                  type: 'franchise',
-                },
-                {
-                  name: '부산 사투리 작문2.link',
-                  type: 'institution',
-                },
-                {
-                  name: '부산 사투리 작문2.link',
-                  type: 'franchise',
-                },
-                {
-                  name: '네이버란.link',
-                  type: 'curriculum',
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      uploadType: '',
-      currentPageIdx: 0,
-      uploadFile: {},
-      selectData: {},
-      selectQuizList: [
-        {
-          id: 0,
-          problem: '<p>asdfaaaaasdf</p>',
-          oxAnswer: 0,
-          dificultade: 1,
-          limitTime: '3분',
-          quizType: 0,
-          shortAnswer: '123',
-          subjectiveAnswer: '123',
-          shortWrongAnswer: '123',
-        },
-        {
-          id: 2,
-          problem: '<p>asdggggg</p>',
-          dificultade: 0,
-          limitTime: '5분',
-          quizType: 0,
-          oxAnswer: 0,
-          shortAnswer: '234',
-          subjectiveAnswer: '234',
-          shortWrongAnswer: '234',
-        },
-        {
-          id: 3,
-          problem: '<p>234242242424</p>',
-          dificultade: 0,
-          limitTime: '2분',
-          quizType: 0,
-          oxAnswer: 0,
-          shortAnswer: '345',
-          subjectiveAnswer: '345',
-          shortWrongAnswer: '345',
-        },
-        {
-          id: 4,
-          problem: '<p>555555555</p>',
-          dificultade: 0,
-          limitTime: '4분',
-          quizType: 0,
-          oxAnswer: 0,
-          shortAnswer: '456',
-          subjectiveAnswer: '456',
-          shortWrongAnswer: '456',
-        },
-        {
-          id: 5,
-          problem: '<p>asx c</p>',
-          dificultade: 0,
-          limitTime: '5분',
-          quizType: 0,
-          oxAnswer: 0,
-          shortAnswer: '567',
-          subjectiveAnswer: '567',
-          shortWrongAnswer: '567',
-        },
-      ],
-      selectNoteTestList: [
-        {
-          id: 0,
-          problem: '<p>1번 문제</p>',
-          exampleList: [
-            { id: '', example: '<p>답 1임</p>' },
-            { id: '', example: '<p>답 2임</p>' },
-            { id: '', example: '<p>답 3임</p>' },
-            { id: '', example: '<p>답 4임</p>' },
-          ],
-          dificultade: 0,
-          limitTime: '',
-          answer: 0,
-        },
-        {
-          id: 1,
-          problem: '<p>2번 문제</p>',
-          exampleList: [
-            { id: '', example: '<p>답 5임</p>' },
-            { id: '', example: '<p>답 6임</p>' },
-            { id: '', example: '<p>답 7임</p>' },
-            { id: '', example: '<p>답 8임</p>' },
-          ],
-          dificultade: 2,
-          limitTime: '',
-          answer: 2,
-        },
-      ],
-      referenceList: [
-        {
-          id: 0,
-          name: '국어학습자료 애니메이션.mp4',
-          subject: '국어',
-          desc: '등록한 자료 1',
-          keyword: [{ title: '국어' }, { title: '수학' }, { title: '과학' }],
-          registrant: '등록인',
-          savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
-          isOpenEducation: true,
-          isContinueRegister: true,
-          fileName: '',
-          fileDivision: '교육기관',
-          fileType: 'video/mp4',
-          uploadType: 'video',
-          fileVolume: '',
-          createAt: '',
-          children: [],
-        },
-        {
-          id: 1,
-          name: '수학 학습자료.pdf',
-          subject: '수학',
-          desc: '등록한 자료 2',
-          keyword: [{ title: '국어' }, { title: '수학' }, { title: '과학' }],
-          registrant: '등록인',
-          savePath:
-            'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
-          isOpenEducation: true,
-          isContinueRegister: true,
-          fileName: '',
-          fileDivision: '교육기관',
-          fileType: 'application/pdf',
-          uploadType: 'pdf',
-          fileVolume: '',
-          createAt: '',
-          isLeaf: false,
-        },
-        {
-          id: 2,
-          name: '영어 단어 퀴즈.quiz',
-          subject: '영어',
-          desc: '등록한 자료 1',
-          keyword: [{ title: '국어' }, { title: '수학' }, { title: '과학' }],
-          registrant: '등록인',
-          savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
-          isOpenEducation: true,
-          isContinueRegister: true,
-          fileName: '',
-          fileDivision: '교육기관',
-          fileType: 'quiz',
-          uploadType: 'quiz',
-          fileVolume: '',
-          createAt: '',
-          quizList: [
-            {
-              id: 0,
-              problem: '<p>asdfaaaaasdf</p>',
-              oxAnswer: 0,
-              dificultade: 1,
-              limitTime: '3분',
-              quizType: 0,
-              shortAnswer: '123',
-              subjectiveAnswer: '123',
-              shortWrongAnswer: '123',
-            },
-            {
-              id: 2,
-              problem: '<p>asdggggg</p>',
-              dificultade: 0,
-              limitTime: '5분',
-              quizType: 0,
-              oxAnswer: 0,
-              shortAnswer: '234',
-              subjectiveAnswer: '234',
-              shortWrongAnswer: '234',
-            },
-            {
-              id: 3,
-              problem: '<p>234242242424</p>',
-              dificultade: 0,
-              limitTime: '2분',
-              quizType: 0,
-              oxAnswer: 0,
-              shortAnswer: '345',
-              subjectiveAnswer: '345',
-              shortWrongAnswer: '345',
-            },
-            {
-              id: 4,
-              problem: '<p>555555555</p>',
-              dificultade: 0,
-              limitTime: '4분',
-              quizType: 0,
-              oxAnswer: 0,
-              shortAnswer: '456',
-              subjectiveAnswer: '456',
-              shortWrongAnswer: '456',
-            },
-            {
-              id: 5,
-              problem: '<p>asx c</p>',
-              dificultade: 0,
-              limitTime: '5분',
-              quizType: 0,
-              oxAnswer: 0,
-              shortAnswer: '567',
-              subjectiveAnswer: '567',
-              shortWrongAnswer: '567',
-            },
-          ],
-          isLeaf: false,
-        },
-        {
-          id: 3,
-          name: '사회 쪽지시험 영상.youtube',
-          subject: '사회',
-          desc: '등록한 자료 1',
-          keyword: [{ title: '국어' }, { title: '수학' }, { title: '과학' }],
-          registrant: '등록인',
-          savePath: 'https://www.youtube.com/embed/1CYbySbtyF0',
-          isOpenEducation: true,
-          isContinueRegister: true,
-          fileName: '',
-          fileDivision: '교육기관',
-          fileType: 'youtube',
-          uploadType: 'youtube',
-          fileVolume: '',
-          createAt: '',
-          isLeaf: false,
-        },
-        {
-          id: 4,
-          name: '과학 사이트 참고용.url',
-          subject: '과학',
-          desc: '등록한 자료 1',
-          keyword: [{ title: '국어' }, { title: '수학' }, { title: '과학' }],
-          registrant: '등록인',
-          savePath: 'https://sciencelove.com/725',
-          isOpenEducation: true,
-          isContinueRegister: true,
-          fileName: '',
-          fileDivision: '교육기관',
-          fileType: 'test',
-          uploadType: 'url',
-          fileVolume: '',
-          createAt: '',
-          isLeaf: false,
-        },
-        {
-          id: 5,
-          name: '수학 쪽지시험.test',
-          subject: '수학',
-          desc: '등록한 자료 1',
-          keyword: [{ title: '국어' }, { title: '수학' }, { title: '과학' }],
-          registrant: '등록인',
-          savePath: 'https://sciencelove.com/725',
-          isOpenEducation: true,
-          isContinueRegister: true,
-          fileName: '',
-          fileDivision: '교육기관',
-          fileType: 'test',
-          uploadType: 'test',
-          fileVolume: '',
-          createAt: '',
-          noteTestList: [
-            {
-              id: 0,
-              problem: '<p>1번 문제</p>',
-              exampleList: [
-                { id: '', example: '<p>답 1임</p>' },
-                { id: '', example: '<p>답 2임</p>' },
-                { id: '', example: '<p>답 3임</p>' },
-                { id: '', example: '<p>답 4임</p>' },
-                { id: '', example: '<p>답 5임</p>' },
-              ],
-              dificultade: 0,
-              limitTime: '',
-              answer: 0,
-            },
-            {
-              id: 1,
-              problem: '<p>2번 문제</p>',
-              exampleList: [
-                { id: '', example: '<p>답 5임</p>' },
-                { id: '', example: '<p>답 6임</p>' },
-                { id: '', example: '<p>답 7임</p>' },
-                { id: '', example: '<p>답 8임</p>' },
-                { id: '', example: '<p>답 9임</p>' },
-              ],
-              dificultade: 2,
-              limitTime: '',
-              answer: 2,
-            },
-          ],
-          isLeaf: false,
-        },
-      ],
-      reference: {
-        name: '',
-        subject: '',
-        desc: '',
-        keyword: [],
-        registrant: '',
-        savePath: '',
-        isOpenEducation: true,
-        isContinueRegister: true,
-        fileName: '',
-        fileDivision: '',
-        fileType: '',
-        uploadType: '',
-        fileVolume: '',
-        createAt: '',
-      },
-      modalDesc: {
-        open: false,
-        title: '',
-        desc: '',
-      },
-      urlData: {
-        youtube: '',
-        page: '',
-      },
-      quizList: [
-        {
-          id: 0,
-          problem: '',
-          oxAnswer: 0,
-          dificultade: 1,
-          limitTime: 0,
-          quizType: 0,
-          subjectiveAnswer: '',
-          shortAnswer: '',
-          shortWrongAnswer: '',
-        },
-      ],
-      noteTestList: [
-        {
-          id: 0,
-          problem: '',
-          exampleList: [
-            { id: '', example: '' },
-            { id: '', example: '' },
-            { id: '', example: '' },
-            { id: '', example: '' },
-          ],
-          dificultade: 0,
-          limitTime: '',
-          answer: 0,
-          isCommentary: true,
-          commentary: '',
-        },
-      ],
-    }
+    return initialState()
   },
   methods: {
     // Modal Event
@@ -1497,6 +705,53 @@ export default {
       this[this.isSavePathModal.previewPage] = true
     },
 
+    // 필터 모달
+    openFilterModal(path) {
+      this.closeSearchListModal()
+      this.isFilterModal.open = true
+      if (path !== '') {
+        this.isFilterModal.prevPage = path
+      }
+    },
+
+    closeFilterModal() {
+      this.isFilterModal.open = false
+      if (this.isFilterModal.prevPage === 'prev') {
+        this.openSearchListModal()
+      }
+    },
+
+    // 검색 모달
+    openSearchListModal() {
+      this.isFilterModal.prevPage = ''
+      this.closeFilterModal()
+      this.isSearchListModal = true
+    },
+
+    closeSearchListModal() {
+      this.isSearchListModal = false
+    },
+
+    // 검색 내용 change Event
+    changeSearchData({ target: { name, checked, dataset, value } }) {
+      const result = this.searchData
+      if (name === 'word') {
+        const newValue = value
+        return (result[name] = newValue)
+      } else {
+        const idx = result[name]?.findIndex((item) => item === dataset.value)
+        if (checked) {
+          if (dataset.value === '전체') {
+            return (result[name] = [])
+          } else {
+            return (result[name] = [...result[name], dataset.value])
+          }
+        } else {
+          return result[name].splice(idx, 1)
+        }
+      }
+    },
+
     // 등록 자료 내용 변경
     onChangeUploadFile({ target: { id, value, type, checked, name } }) {
       if (type === 'checkbox') {
@@ -1534,8 +789,8 @@ export default {
     onChangeQuiz({ target: { value, name } }, idx) {
       this.quizList[idx][name] = value
     },
-
     // 수정 페이지 변경
+
     onChangeSelectQuiz({ target: { value, name } }, idx) {
       this.selectData.quizList[idx][name] = value
     },
@@ -1590,66 +845,85 @@ export default {
       this.pushKeyword = value
     },
 
-    // 비디오 업로드
-    onUploadVideo({ target: { files, value } }) {
-      this.uploadType = 'video'
-      this.uploadFile = {}
+    // 비디오 업로드 시 미리보기 보여주기
+    setThumbnail(files) {
       const _video = document.querySelector('#video')
       const _canvas = document.querySelector('#thumb_canvas')
       const _ctx = _canvas.getContext('2d')
+      _video.setAttribute('src', URL.createObjectURL(files[0]))
+      _video.addEventListener('loadedmetadata', function () {
+        // 비디오 태그의 메타데이터가 들어오면
+        _canvas.width = _video.videoWidth
+        _canvas.height = _video.videoHeight
+        const time = Math.random() * _video.duration // 비디오의 영상길이 중 랜덤 타임을 뽑음
+        _video.currentTime = time // 해당 시간으로 이동
+        setTimeout(() => {
+          // 바로 출력하면 비디오가 불러오기 전이라 동작이 안됨. 잠깐의 기다림 후 캔버스에 해당 이미지를 그림.
+          _ctx.drawImage(_video, 0, 0, _video.videoWidth, _video.videoHeight)
+        }, 400)
+      })
+    },
+
+    // 비디오 업로드
+    onUploadVideo(e) {
+      const {
+        target: { files },
+      } = e
+
+      this.uploadType = 'video'
+      this.uploadFile = {}
       if (files[0] && files[0].type === 'video/mp4') {
         document.getElementById('selectClose').click()
         this.onOpenReferenceAddModal()
+        this.setThumbnail(files)
         this.uploadFile = files[0]
-        this.reference.name = files[0].name
-        this.reference.fileName = files[0].name
-        this.reference.fileDivision = '교육기관'
-        this.reference.fileType = files[0].type
-        this.reference.uploadType = 'video'
-        this.reference.fileVolume = files[0].size
-        this.reference.createAt = files[0].lastModifiedDate
-
-        _video.setAttribute('src', URL.createObjectURL(files[0]))
-        _video.addEventListener('loadedmetadata', function () {
-          // 비디오 태그의 메타데이터가 들어오면
-          _canvas.width = _video.videoWidth
-          _canvas.height = _video.videoHeight
-          const time = Math.random() * _video.duration // 비디오의 영상길이 중 랜덤 타임을 뽑음
-          _video.currentTime = time // 해당 시간으로 이동
-          setTimeout(() => {
-            // 바로 출력하면 비디오가 불러오기 전이라 동작이 안됨. 잠깐의 기다림 후 캔버스에 해당 이미지를 그림.
-            _ctx.drawImage(_video, 0, 0, _video.videoWidth, _video.videoHeight)
-          }, 400)
-        })
+        this.reference = {
+          ...this.reference,
+          name: files[0].name,
+          fileName: files[0].name,
+          fileDivision: '교육기관',
+          fileType: files[0].type,
+          uploadType: 'video',
+          fileVolume: files[0].size,
+          createAt: files[0].lastModifiedDate,
+        }
       } else {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
       }
+      return (e.target.value = '')
     },
 
     // PDF 업로드
-    onUploadPdf({ target: { files } }) {
+    onUploadPdf(e) {
+      const {
+        target: { files },
+      } = e
       this.uploadType = 'pdf'
       this.uploadFile = {}
       const _embed = document.querySelector('#embed')
       if (files[0] && files[0].type === 'application/pdf') {
         document.getElementById('selectClose').click()
         this.onOpenReferenceAddModal()
-        this.uploadFile = files[0]
-        this.reference.name = files[0].name
-        this.reference.fileName = files[0].name
-        this.reference.fileDivision = '교육기관'
-        this.reference.fileType = files[0].type
-        this.reference.uploadType = 'pdf'
-        this.reference.fileVolume = files[0].size
-        this.reference.createAt = files[0].lastModifiedDate
         _embed.setAttribute(
           'src',
           URL.createObjectURL(files[0]) + '#toolbar=0&navpanes=0&scrollbar=0'
         )
         this.onOpenReferenceAddModal()
+        this.uploadFile = files[0]
+        this.reference = {
+          ...this.reference,
+          name: files[0].name,
+          fileName: files[0].name,
+          fileDivision: '교육기관',
+          fileType: files[0].type,
+          uploadType: 'pdf',
+          fileVolume: files[0].size,
+          createAt: files[0].lastModifiedDate,
+        }
       } else {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
       }
+      e.target.value = ''
     },
 
     // 유튜브 API 호출
@@ -1663,13 +937,16 @@ export default {
             lastModifiedDate: new Date(),
             size: 0,
           }
-          this.reference.name = items[0].snippet.title
-          this.reference.fileName = items[0].snippet.title
-          this.reference.fileDivision = '교육기관'
-          this.reference.fileType = 'YOUTUBE'
-          this.reference.uploadType = 'youtube'
-          this.reference.fileVolume = 0
-          this.reference.createAt = new Date()
+          this.reference = {
+            ...this.reference,
+            name: items[0].snippet.title,
+            fileName: items[0].snippet.title,
+            fileDivision: '교육기관',
+            fileType: 'youtube',
+            uploadType: 'youtube',
+            fileVolume: 0,
+            createAt: new Date(),
+          }
         })
     },
 
@@ -1705,13 +982,16 @@ export default {
         size: 0,
       }
       if (urlRegex.test(this.urlData.page) === true) {
-        this.reference.name = url
-        this.reference.fileName = url
-        this.reference.fileDivision = '교육기관'
-        this.reference.fileType = 'URL'
-        this.reference.uploadType = 'url'
-        this.reference.fileVolume = 0
-        this.reference.createAt = new Date()
+        this.reference = {
+          ...this.reference,
+          name: url,
+          fileName: url,
+          fileDivision: '교육기관',
+          fileType: 'url',
+          uploadType: 'url',
+          fileVolume: 0,
+          createAt: new Date(),
+        }
         const _iframe = document.querySelector('#iframe')
         _iframe.setAttribute('src', url)
         document.getElementById('selectCloseYoutube').click()
@@ -1752,8 +1032,8 @@ export default {
         this.quizList.push(quizItem)
       }
     },
-
     // 퀴즈 수정페이지 리스트 추가
+
     onPlusSelectQuizList() {
       if (this.selectData.quizList.length <= 19) {
         const quizItem = {
@@ -1776,8 +1056,8 @@ export default {
       if (this.quizList.length > 1) {
         this.quizList.splice(idx, 1)
       }
+      // 수정 페이지 퀴즈 지우기
     },
-    // 수정 페이지 퀴즈 지우기
     onDeleteSelectQuizItem(idx) {
       if (this.selectData.quizList.length > 1) {
         this.selectData.quizList.splice(idx, 1)
@@ -1789,8 +1069,8 @@ export default {
       if (this.noteTestList.length > 1) {
         this.noteTestList.splice(idx, 1)
       }
+      // 수정 페이지 퀴즈 지우기
     },
-    // 수정 페이지 퀴즈 지우기
     onDeleteSelectNoteTest(idx) {
       if (this.selectData.noteTestList.length > 1) {
         this.selectData.noteTestList.splice(idx, 1)
@@ -1813,8 +1093,8 @@ export default {
         this.quizList[idx].subjectiveAnswer = ''
       }
     },
-
     // 수정 페이지 퀴즈 타입 변경
+
     onClickSelectQuizType(idx, num) {
       this.selectData.quizList[idx].quizType = num
       if (num === 0) {
@@ -1835,8 +1115,8 @@ export default {
     onSelectOx(idx, num) {
       this.quizList[idx].oxAnswer = num
     },
-
     // 수정 페이지ox클릭 이벤트
+
     onSelectChangeOx(idx, num) {
       this.selectData.quizList[idx].oxAnswer = num
     },
@@ -1845,8 +1125,8 @@ export default {
     onSelectDificultade(idx, num) {
       this.quizList[idx].dificultade = num
     },
-
     // 수정 페이지난이도 설정
+
     onSelectChangeDificultade(idx, num) {
       this.selectData.quizList[idx].dificultade = num
     },
@@ -1855,8 +1135,8 @@ export default {
     onSelectDificultadeTest(idx, num) {
       this.noteTestList[idx].dificultade = num
     },
-
     // 수정 페이지 난이도 설정 쪽지 시험
+
     onSelectChangeDificultadeTest(idx, num) {
       this.selectData.noteTestList[idx].dificultade = num
     },
@@ -1888,8 +1168,8 @@ export default {
         this.noteTestList.push(noteTestItem)
       }
     },
-
     // 수정 페이지 쪽지 시험 추가
+
     onPlusSelectNoteTestList() {
       if (this.selectData.noteTestList.length <= 19) {
         const noteTestItem = {
@@ -1915,8 +1195,8 @@ export default {
     onSelectAnswer(idx, targetIdx) {
       this.noteTestList[idx].answer = targetIdx + 1
     },
-
     // 수정 페이지
+
     onSelectChangeAnswer(idx, targetIdx) {
       console.log(targetIdx)
       this.selectData.noteTestList[idx].answer = targetIdx + 1
@@ -1932,14 +1212,14 @@ export default {
     deleteExample(idx, targetIdx) {
       this.noteTestList[idx].exampleList.splice(targetIdx, 1)
     },
-
     // 수정 페이지 쪽지시험 예제 추가
+
     plusChangeExampleList(idx) {
       const example = { id: '', example: '' }
       this.selectData.noteTestList[idx].exampleList.push(example)
     },
-
     // 수정 페이지 쪽지시험 예제 제거
+
     deleteChangeExample(idx, targetIdx) {
       this.selectData.noteTestList[idx].exampleList.splice(targetIdx, 1)
     },
@@ -1963,61 +1243,7 @@ export default {
 
     // 취소시 등록 하려고했던 데이터 지우기
     initAddReferenceData() {
-      this.uploadType = ''
-      this.currentPageIdx = 0
-      this.uploadFile = {}
-      this.reference = {
-        name: '',
-        subject: '',
-        desc: '',
-        keyword: [],
-        registrant: '',
-        savePath: '',
-        isOpenEducation: true,
-        isContinueRegister: true,
-        fileName: '',
-        fileDivision: '',
-        fileType: '',
-        fileVolume: '',
-        createAt: '',
-      }
-
-      this.urlData = {
-        youtube: '',
-        page: '',
-      }
-
-      this.quizList = [
-        {
-          id: 0,
-          problem: '',
-          oxAnswer: 0,
-          dificultade: 1,
-          limitTime: 0,
-          quizType: 0,
-          shortAnswer: '',
-          subjectiveAnswer: '',
-          shortWrongAnswer: '',
-        },
-      ]
-
-      this.noteTestList = [
-        {
-          id: 0,
-          problem: '',
-          exampleList: [
-            { id: '', example: '' },
-            { id: '', example: '' },
-            { id: '', example: '' },
-            { id: '', example: '' },
-            { id: '', example: '' },
-          ],
-          dificultade: 0,
-          limitTime: '',
-          answer: 0,
-        },
-      ]
-      // tree component
+      Object.assign(this.$data, initialState())
     },
 
     // tree component
@@ -2036,17 +1262,18 @@ export default {
 
     onClick(params) {
       this.selectData = params
+      const type = params.uploadType
       if (
-        params.uploadType === 'video' ||
-        params.uploadType === 'pdf' ||
-        params.uploadType === 'youtube' ||
-        params.uploadType === 'url'
+        type === 'video' ||
+        type === 'pdf' ||
+        type === 'youtube' ||
+        type === 'url'
       ) {
         this.onOpenReferenceBrowseModal()
-      } else if (params.uploadType === 'quiz') {
+      } else if (type === 'quiz') {
         this.onOpenQuizBrowseModal()
         this.selectQuizList = params.quizList
-      } else if (params.uploadType === 'test') {
+      } else if (type === 'test') {
         this.onOpenNoteTestBrowseModal()
         this.selectNoteTestList = params.noteTestList
       }
@@ -2074,46 +1301,16 @@ export default {
       console.log(this.copyCheckData)
     },
 
-    exportQuizToPDF() {
+    // PDF변환
+    exportPdf(target) {
       window.scrollTo(0, 0)
-      const targetElem = document.querySelector('#pdfSave')
-      setTimeout(() => {
-        this.isQuizPrint = true
-        html2pdf(targetElem, {
-          margin: 0,
-          filename: 'quiz.pdf',
-          image: { type: 'jpeg', quality: 0.95 },
-          html2canvas: {
-            scrollY: 0,
-            scale: 2,
-            dpi: 300,
-            letterRendering: true,
-            allowTaint: false,
-            ignoreElements(element) {
-              // pdf에 출력하지 않아야할 dom이 있다면 해당 옵션 사용
-              if (element.id === 'noneItem') {
-                return true
-              }
-            },
-          },
-          jsPDF: {
-            orientation: 'portrait',
-            unit: 'mm',
-            format: 'a4',
-            compressPDF: true,
-          },
-        })
-        this.isQuizPrint = false
-      }, 1500)
-    },
-    exportNoteTestToPDF() {
-      window.scrollTo(0, 0)
-      const targetElem = document.querySelector('#pdfSaveNoteTest')
+      const targetId = target === 'quiz' ? '#pdfSave' : '#pdfSaveNoteTest'
+      const targetElem = document.querySelector(targetId)
       setTimeout(() => {
         this.isNoteTestPrint = true
         html2pdf(targetElem, {
           margin: 0,
-          filename: 'noteTest.pdf',
+          filename: `${target}.pdf`,
           image: { type: 'jpeg', quality: 0.95 },
           html2canvas: {
             scrollY: 0,
@@ -2137,6 +1334,62 @@ export default {
         })
         this.isNoteTestPrint = false
       }, 1500)
+    },
+
+    // 순환 구조를 Json으로 변환
+    getCircularReplacer() {
+      const seen = new WeakSet()
+      return (key, value) => {
+        if (typeof value === 'object' && value !== null) {
+          if (seen.has(value)) {
+            return
+          }
+          seen.add(value)
+        }
+        return value
+      }
+    },
+
+    // json으로 변환 후 return
+    jsonItem(data) {
+      const spare = JSON.stringify(data, this.getCircularReplacer())
+      return JSON.parse(spare)
+    },
+
+    // 다운로드 a태그 만들기
+    createAtag(path) {
+      const downBtn = document.createElement('a')
+      downBtn.setAttribute('href', path)
+      downBtn.setAttribute('download', 'download')
+      downBtn.setAttribute('target', '_blank')
+      downBtn.click()
+      downBtn.remove()
+    },
+
+    // tree menu download button
+    downloadSelectData(data) {
+      const newItem = this.jsonItem(data)
+      this.selectData = newItem
+      const type = newItem.uploadType
+      if (type === 'quiz') {
+        return this.exportPdf('quiz')
+      } else if (type === 'test') {
+        return this.exportPdf('test')
+      }
+      return this.createAtag(newItem.savePath)
+    },
+
+    // tree menu change button
+    updateSelectData(data) {
+      const newItem = this.jsonItem(data)
+      this.selectData = newItem
+      this.onOpenReferenceChangeModal()
+    },
+
+    // drop시 이벤트
+    dropItem(item, data) {
+      const parent = this.jsonItem(data)
+      console.log(parent)
     },
   },
 }

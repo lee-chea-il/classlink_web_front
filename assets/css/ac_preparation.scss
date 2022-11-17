@@ -1201,18 +1201,34 @@
 
 	.th02 {
 		width: 19%;
+
+		@media (max-width: 1199.98px) {
+			width: 21%;
+		}
 	}
 
 	.th03 {
 		width: 26%;
+
+		@media (max-width: 1199.98px) {
+			width: 26%;
+		}
 	}
 
 	.th05 {
 		width: 21%;
+
+		@media (max-width: 1199.98px) {
+			width: 20%;
+		}
 	}
 
 	.th06 {
 		width: 8%;
+
+		@media (max-width: 1199.98px) {
+			width: 9%;
+		}
 	}
 
 	.th07 {
@@ -1368,6 +1384,9 @@
 /* jeh-2022.09.15 */
 /* 자료등록01 (팝업 L) */
 #modalDataregi {
+	.modal-body {
+		overflow-y: scroll;
+	}
 
 	.box_up,
 	.box_down {
@@ -2015,7 +2034,7 @@
 
 	.answer_area03 {
 		.aa_number_select {
-			width: 67px;
+			width: 105px;
 			height: 67px;
 			background: #7391FA;
 			border-radius: 5px;
@@ -2303,6 +2322,10 @@
 /* 자료실 - 자료등록 - 쪽지시험 - 보기 편집창 (팝업 m2) */
 
 #modalTastVeiwEdit {
+	.modal-body {
+		height: 320px;
+	}
+
 	.edit_box {
 		width: 90%;
 		height: 276px;
@@ -2657,7 +2680,7 @@
 	}
 
 	.row {
-		padding: 5px 0px;
+		padding: 4px 0px;
 	}
 
 	.thumbnail_view {
@@ -3308,6 +3331,59 @@
 
 /* 레슨등록 / 레슨수정 (팝업 L) */
 #modalLessonRegi {
+
+	.keyword_area_01 {
+		position: relative;
+		min-width: 310px;
+		height: 30px;
+		display: flex;
+		flex-wrap: wrap;
+		padding: 0 10px;
+		overflow-x: auto;
+		white-space: nowrap;
+		margin-top: 10px;
+		margin-left: -10px;
+	}
+
+	.keyword01 {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		min-width: 49px;
+		height: 28px;
+		background: #D1DBFF;
+		border-radius: 3px;
+		margin-right: 10px;
+		margin-bottom: 10px;
+	}
+
+	.keyword01-1 {
+		font-weight: 400;
+		font-size: 12px;
+		line-height: 17px;
+		margin: 0px 5px 0px 9px;
+	}
+
+	.x {
+		display: inline-block;
+		width: 10px;
+		height: 10px;
+		text-align: center;
+		vertical-align: middle;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: contain;
+		background-image: url(../images/icon_×.png);
+		margin-right: 8px;
+	}
+
+	.info {
+		font-weight: 400;
+		font-size: 10px;
+		line-height: 14px;
+		color: theme.$color_notice;
+	}
+
 	.check_sec .form-inline {
 		width: 72%;
 	}
@@ -4186,5 +4262,117 @@
 		border: 0.4px solid #A7A9AC;
 		border-radius: 5px;
 	}
+
+}
+
+/* 페이지쿼리-퀴즈.html */
+
+.pdf_save {
+	.answer_area {
+		width: 90%;
+		height: 257px;
+		background: #F9F9FC;
+		border: 0.4px solid #D1D3D4;
+		border-radius: 0px 0px 5px 5px;
+		border-top: none;
+		margin: 0 auto;
+		gap: 130px;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.icon_o {
+		display: inline-block;
+		width: 130px;
+		height: 130px;
+		text-align: center;
+		vertical-align: middle;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: contain;
+		background-image: url(../images/icon_o.png);
+	}
+
+	.icon_xx {
+		display: inline-block;
+		width: 130px;
+		height: 130px;
+		text-align: center;
+		vertical-align: middle;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: contain;
+		background-image: url(../images/icon_xx.png);
+	}
+
+	.icon_o_correct {
+		display: inline-block;
+		width: 130px;
+		height: 130px;
+		text-align: center;
+		vertical-align: middle;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: contain;
+		background-image: url(../images/icon_o_correct.png);
+	}
+
+	.icon_xx_correct {
+		display: inline-block;
+		width: 130px;
+		height: 130px;
+		text-align: center;
+		vertical-align: middle;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: contain;
+		background-image: url(../images/icon_xx_correct.png);
+	}
+
+	.answer_area03 {
+		width: 90%;
+		height: 257px;
+		background: #F9F9FC;
+		border: 0.4px solid #D1D3D4;
+		border-radius: 0px 0px 5px 5px;
+		border-top: none;
+		margin: 0 auto;
+		gap: 130px;
+		justify-content: center;
+		align-items: center;
+
+		.aa_number_select {
+			width: 105px;
+			height: 67px;
+			background: #7391FA;
+			border-radius: 5px;
+		}
+
+		.aa_result_select {
+			width: 187px;
+			height: 67px;
+			background: #FFFFFF;
+			border: 1px solid #7391FA;
+			border-radius: 5px;
+		}
+
+		.aa_num_font01 {
+			font-weight: 500;
+			font-size: 20px;
+			line-height: 65px;
+			color: #FFFFFF;
+		}
+
+		.aa_correct {
+			font-weight: 400;
+			font-size: 20px;
+			line-height: 65px;
+			color: #454545;
+			text-align: left;
+			margin-left: 20px;
+		}
+	}
+
+
 
 }

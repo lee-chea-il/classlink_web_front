@@ -1877,6 +1877,8 @@ ol {
 .modal .modal-body {
   text-align: center;
   padding-top: 35px;
+  overflow-y: scroll;
+  height: 500px;
 }
 .modal .modal-body .text_type01 {
   font-size: 16px;
@@ -3119,6 +3121,7 @@ ol {
 }
 .ac_manage_notice .search_section .left_area {
   width: 50%;
+  text-align: left;
 }
 .ac_manage_notice .search_section .right_area {
   width: 50%;

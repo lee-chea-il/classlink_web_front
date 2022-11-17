@@ -367,6 +367,10 @@
 /* 수업-강의코스-과제함-제출 현황 (팝업 L) */
 
 #modalTaskView {
+  .modal-body {
+    overflow-y: scroll;
+  }
+
   .th01 {
     width: 10%;
   }

@@ -1,5 +1,6 @@
 <template>
   <vue-tree-list
+    ref="treeItem"
     :model="datas"
     :default-expanded="expanded"
     default-tree-node-name="새 폴더"
@@ -14,7 +15,8 @@
     @more-menu-update="moreMenuUpdate"
     @more-menu-view="moreMenuView"
     @more-menu-dell="moreMenuDell"
-    @more-menu-copy="moreMenuCopy"
+    @more-menu-copy="copyData"
+    @drop-before="$emit('drop', $event, datas)"
   >
     <span slot="addTreeNodeIcon" class="icon">＋</span>
     <span slot="addLeafNodeIcon" class="icon"></span>
@@ -63,12 +65,21 @@ export default {
       pid: this.pidNum,
     }
   },
+  // watch: {
+  //   datas: {
+  //     deep: true,
+  //     handler(newValue, oldValue) {
+  //       console.log(newValue)
+  //       this.$emit('drop', newValue)
+  //     },
+  //   },
+  // },
   mounted() {
     const dataMapping = (item, isReadOnly) => {
       const result = []
-      let isDragDisable=false
-      if(this.listType==='lesson'){
-        isDragDisable=true
+      let isDragDisable = false
+      if (this.listType === 'lesson') {
+        isDragDisable = true
       }
       const len = item.length
       for (let i = 0; i < len; i++) {
@@ -186,6 +197,7 @@ export default {
       }
       console.log(_dfs(vm.data))
     },
+
     copyData() {
       let idNum = new Date().valueOf()
       function _dfs(oldNode) {
@@ -215,6 +227,7 @@ export default {
       }
       this.$emit('copyDataCallBack', _dfs(this.datas))
     },
+
     pasteData(copyCheckData) {
       let idNum = new Date().valueOf()
       function _addNode(parentNode, oldNode) {
@@ -231,6 +244,7 @@ export default {
           newNode.isChecked = false
           newNode.dbIdx = oldNode.dbIdx
           newNode.type = oldNode.type
+
           node = new TreeNode(newNode)
           parentNode.addChildren(node)
           idNum++
@@ -289,6 +303,7 @@ export default {
         _resetPasteData(this.datas)
       }
     },
+
     delData() {
       function _dell(oldNode) {
         if (
@@ -306,6 +321,7 @@ export default {
       }
       _dell(this.datas)
     },
+
     moreMenu({ e }) {
       const hasOffClass = e.target.classList.contains('icons_mu_off')
       const iLists = document.querySelectorAll('.more_mu ')
@@ -324,29 +340,50 @@ export default {
         e.target.querySelector('.more_list').style.display = 'block'
       }
     },
-    moreMenuDown(node) {
-      console.log(`down ${node}`)
+
+    moreMenuClose() {
+      const iLists = document.querySelectorAll('.more_mu ')
+      let i = 0
+      for (i = 0; i < iLists.length; i++) {
+        iLists[i].classList.remove('icons_mu_on')
+        iLists[i].classList.add('icons_mu_off')
+      }
+      const moreLists = document.querySelectorAll('.more_list')
+      for (i = 0; i < moreLists.length; i++) {
+        moreLists[i].style.display = 'none'
+      }
     },
+
+    moreMenuDown(node) {
+      console.log(`download ${node}`)
+      this.$emit('download-data', node)
+      this.moreMenuClose()
+    },
+
     moreMenuUpdate(node) {
       console.log(`update ${node}`)
+      this.$emit('update-data', node)
+      this.moreMenuClose()
     },
+
     moreMenuView(node) {
       console.log(`view ${node}`)
       this.$emit('file-view', node)
+      this.moreMenuClose()
     },
+
     moreMenuDell(node) {
       node.remove()
     },
+
     moreMenuCopy(node) {
       console.log(`copy ${node}`)
     },
-    getCheckDataList(){
+
+    getCheckDataList() {
       const checkList = []
       function _checkData(oldNode) {
-        if (
-          oldNode.children &&
-          oldNode.children.length > 0
-        ) {
+        if (oldNode.children && oldNode.children.length > 0) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
             _checkData(oldNode.children[len - i - 1])
           }
@@ -358,11 +395,11 @@ export default {
       _checkData(this.datas)
       return checkList
     },
-    moreShowClick(node){
+
+    moreShowClick(node) {
       this.$emit('moreShowClick', node)
-    }
+    },
   },
 }
 </script>
-<style scoped>
-</style>
+<style scoped></style>

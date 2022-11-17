@@ -874,10 +874,15 @@ export default {
       }
     },
 
+    // json으로 변환 후 return
+    jsonItem(data) {
+      const spare = JSON.stringify(data, this.getCircularReplacer())
+      return JSON.parse(spare)
+    },
+
     // 레슨 추가
     addLessonList({ children }) {
-      const str = JSON.stringify(children, this.getCircularReplacer())
-      const list = JSON.parse(str)
+      const list = this.jsonItem(children)
       const filterItem = list.filter((item) => item.dbIdx !== -1)
       return (this.createLessonData.referenceList = filterItem)
     },
@@ -900,9 +905,7 @@ export default {
     // 레슨 자료 보기
     openReferenceDetail(reference) {
       console.log(reference)
-      const str = JSON.stringify(reference, this.getCircularReplacer())
-      const list = JSON.parse(str)
-      console.log(list)
+      const list = this.jsonItem(reference)
       this.openLessonBrowseModal('isLessonAdd')
       this.selectReference = list
       this.isLessonAdd = false

@@ -30,10 +30,13 @@
                 title="이동"
                 @click-event="$emit('open-save-path', 'isNoteTestBrowseModal')"
               />
-              <ReferenceBtn title="공유" @click-event="$emit('export-pdf')" />
+              <ReferenceBtn
+                title="공유"
+                @click-event="$emit('export-pdf', 'test')"
+              />
               <ReferenceBtn
                 title="다운로드"
-                @click-event="$emit('export-pdf')"
+                @click-event="$emit('export-pdf', 'test')"
               />
               <ReferenceBtn title="수정" @click-event="$emit('change')" />
               <ReferenceBtn

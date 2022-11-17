@@ -41,34 +41,12 @@
         </div>
       </div>
 
-      <div class="form-group row">
-        <label for="" class="data_title">키워드</label>
-        <div id="inputBox" class="col">
-          <input
-            id="keyword"
-            class="form-control"
-            name="keyword"
-            placeholder="입력"
-            :value="pushKeyword"
-            @input="$emit('changePushKeyword', $event)"
-            @keyup.enter="$emit('set-keyword', $event)"
-          />
-          <div class="keyword_area_01">
-            <span
-              v-for="(item, idx) in reference.keyword"
-              :key="idx"
-              class="keyword01"
-            >
-              <span class="keyword01-1">{{ item }}</span
-              ><span
-                class="x span"
-                @click="$emit('delete-keyword', idx)"
-              ></span>
-            </span>
-          </div>
-          <span class="info">키워드는 엔터로 구분할 수 있습니다</span>
-        </div>
-      </div>
+      <CustomKeywordBox
+        :pushKeyword="pushKeyword"
+        :keyword="reference.keyword"
+        @changePushKeyword="$emit('changePushKeyword', $event)"
+        @set-keyword="$emit('set-keyword', $event)"
+      />
 
       <div class="form-group row">
         <label for="" class="data_title">등록자</label>
@@ -100,36 +78,11 @@
         />
       </div>
 
-      <div class="check_sec">
-        <span class="custom-control custom-checkbox form-inline">
-          <input
-            :id="setTarget"
-            type="checkbox"
-            class="custom-control-input"
-            name="isOpenEducation"
-            :value="reference.isOpenEducation"
-            :checked="reference.isOpenEducation"
-            @input="$emit('change-input', $event)"
-          />
-          <label class="custom-control-label checkbox06" :for="setTarget"
-            >교육기관에 해당 자료를 공개합니다.</label
-          >
-        </span>
-        <span class="custom-control custom-checkbox form-inline">
-          <input
-            :id="setTargetTwo"
-            type="checkbox"
-            class="custom-control-input"
-            name="isContinueRegister"
-            :value="reference.isContinueRegister"
-            :checked="reference.isContinueRegister"
-            @input="$emit('change-input', $event)"
-          />
-          <label class="custom-control-label checkbox07" :for="setTargetTwo"
-            >계속 등록하기</label
-          >
-        </span>
-      </div>
+      <CheckboxGroup
+        :isOpenEducation="reference.isOpenEducation"
+        :isContinueRegister="reference.isContinueRegister"
+        @change-input="$emit('isOpenEducation', $event)"
+      />
     </div>
   </div>
 </template>
@@ -137,10 +90,18 @@
 <script>
 import CustomSelect from '../common/custom/CustomSelect.vue'
 import CustomBtnInput from '../common/custom/CustomBtnInput.vue'
+import CustomKeywordBox from './commom/CustomKeywordBox.vue'
+import CheckboxGroup from './commom/CheckboxGroup.vue'
 import CustomModalInput from '@/components/common/custom/CustomModalInput.vue'
 export default {
   name: 'ReferenceAddLeftField',
-  components: { CustomModalInput, CustomSelect, CustomBtnInput },
+  components: {
+    CustomModalInput,
+    CustomSelect,
+    CustomBtnInput,
+    CustomKeywordBox,
+    CheckboxGroup,
+  },
   props: {
     reference: {
       type: Object,
@@ -153,38 +114,6 @@ export default {
     target: {
       type: String,
       default: '',
-    },
-  },
-  computed: {
-    setTarget() {
-      if (this.target === 'quiz') {
-        return 'quizTarget'
-      } else if (this.target === 'noteTest') {
-        return 'noteTestTarget'
-      } else if (this.target === 'referenceChange') {
-        return 'referenceChangeTarget'
-      } else if (this.target === 'quizChange') {
-        return 'quizChangeTarget'
-      } else if (this.target === 'noteTestChange') {
-        return 'noteTestChangeTarget'
-      } else {
-        return 'refereceTarget'
-      }
-    },
-    setTargetTwo() {
-      if (this.target === 'quiz') {
-        return 'quizTargetTwo'
-      } else if (this.target === 'noteTest') {
-        return 'noteTestTargetTwo'
-      } else if (this.target === 'referenceChange') {
-        return 'referenceChangeTargetTwo'
-      } else if (this.target === 'quizChange') {
-        return 'quizChangeTargetTwo'
-      } else if (this.target === 'noteTestChange') {
-        return 'noteTestChangeTargetTwo'
-      } else {
-        return 'refereceTargetTwo'
-      }
     },
   },
 }
