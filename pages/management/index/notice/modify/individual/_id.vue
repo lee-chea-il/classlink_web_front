@@ -66,7 +66,17 @@
                   대상 설정
                 </button>
                 <span class="box02">
-                  <span class="content02"> 선생님 | 학부모 | 학생</span>
+                  <span class="content02">
+                    <span
+                      v-for="(item, idx) in noticeList.targetSetting"
+                      :key="idx"
+                    >
+                      {{ item }}
+                      <span v-if="noticeList.targetSetting.length - 1 !== idx"
+                        >|</span
+                      >
+                    </span>
+                  </span>
                 </span>
               </div>
             </div>
@@ -149,9 +159,19 @@
       @change-input="onChangePlanInput"
       @start-time="onClickStartTimeSelect"
       @end-time="onClickEndTimeSelect"
+      @after-deadline="onClickAfterDeadlineCheck"
+      @notice-alarm="onClickNoticeAlarmCheck"
     />
     <!-- @click-date="onDayClick" -->
-    <SettingNoticeTarget />
+    <SettingNoticeTarget
+      :noticeList="noticeList"
+      :target="target"
+      :targetList="targetList"
+      :allCheck="allcheck"
+      @onClickTargetAllCheck="onClickTargetAllCheck"
+      @target-setting="onClickTargetSetting"
+      @complete="onClickTargetSeleted"
+    />
 
     <ModalDesc
       :open="modalDesc.open"
@@ -189,13 +209,18 @@ export default {
         time_range_end: '11:59',
         time_range_start_m: 0,
         time_range_end_m: 0,
-        notice_alarm: true,
+        after_deadline: false,
+        notice_alarm: false,
+        targetSetting: ['홍길동', '김철수', '이유리'],
       },
+      target: ['홍길동', '김철수', '이유리'],
+      targetList: ['홍길동', '김철수', '이유리'],
 
-      targetSetting: ['선생님', '학부모', '학생'],
       masks: {
         input: 'YYYY-MM-DD h:mm A',
       },
+
+      allcheck: true,
 
       selectedDateTitle: '',
       editorOptions: {
@@ -222,6 +247,12 @@ export default {
       range: {
         start: new Date(),
         end: new Date(),
+        time_range_start: '09:00',
+        time_range_end: '11:59',
+        time_range_start_m: 0,
+        time_range_end_m: 0,
+        after_deadline: false,
+        notice_alarm: false,
       },
 
       modalDesc: {
@@ -248,22 +279,36 @@ export default {
     onClickConfirmBtn() {
       this.noticeList.date_range_start = this.changeDateFormat(this.range.start)
       this.noticeList.date_range_end = this.changeDateFormat(this.range.end)
+      this.noticeList.time_range_start = this.range.time_range_start
+      this.noticeList.time_range_end = this.range.time_range_end
+      this.noticeList.time_range_start_m = this.range.time_range_start_m
+      this.noticeList.time_range_end_m = this.range.time_range_end_m
+      this.noticeList.after_deadline = this.range.after_deadline
+      this.noticeList.notice_alarm = this.range.notice_alarm
 
-      console.log(
-        this.noticeList.date_range_start,
-        this.noticeList.date_range_end,
-        this.noticeList.notice_alarm
-      )
+      // console.log(
+      //   '날짜',
+      //   this.noticeList.date_range_start,
+      //   this.noticeList.date_range_end,
+      //   '시간',
+      //   this.noticeList.time_range_start,
+      //   this.noticeList.time_range_end,
+      //   this.noticeList.time_range_start_m,
+      //   this.noticeList.time_range_end_m,
+      //   '체크박스',
+      //   this.noticeList.after_deadline,
+      //   this.noticeList.notice_alarm
+      // )
     },
     onChangePlanInput({ target: { value, id, checked } }) {
-      this.noticeList[id] = value
+      this.range[id] = value
       if (id === 'open') {
-        this.noticeList[id] = checked
+        this.range[id] = checked
       } else {
-        this.noticeList[id] = value
+        this.range[id] = value
       }
       if (id === 'time_range_start' || id === 'time_range_end') {
-        this.noticeList[id] = value
+        this.range[id] = value
           .replace(/[^0-9]/g, '')
           .replace(/^(\d{0,2})(\d{0,2})$/g, '$1:$2')
           .replace(/(:{1})$/g, '')
@@ -273,17 +318,33 @@ export default {
     },
 
     onClickStartTimeSelect() {
-      if (this.noticeList.time_range_start_m === 0) {
-        this.noticeList.time_range_start_m = 1
+      if (this.range.time_range_start_m === 0) {
+        this.range.time_range_start_m = 1
       } else {
-        this.noticeList.time_range_start_m = 0
+        this.range.time_range_start_m = 0
       }
     },
     onClickEndTimeSelect() {
-      if (this.noticeList.time_range_end_m === 0) {
-        this.noticeList.time_range_end_m = 1
+      if (this.range.time_range_end_m === 0) {
+        this.range.time_range_end_m = 1
       } else {
-        this.noticeList.time_range_end_m = 0
+        this.range.time_range_end_m = 0
+      }
+    },
+
+    // 기한 설정 체크박스
+    onClickAfterDeadlineCheck() {
+      if (this.range.after_deadline) {
+        this.range.after_deadline = false
+      } else {
+        this.range.after_deadline = true
+      }
+    },
+    onClickNoticeAlarmCheck() {
+      if (this.range.notice_alarm) {
+        this.range.notice_alarm = false
+      } else {
+        this.range.notice_alarm = true
       }
     },
 
@@ -299,10 +360,13 @@ export default {
       this.modalDesc.open = false
     },
 
-    onClickSuccess() {},
-
+    // 공지사항 등록
     onClickNoticeRegist() {
-      if (this.noticeList.title === '' || this.noticeList.content === '') {
+      if (
+        this.noticeList.title === '' ||
+        this.noticeList.content === '' ||
+        this.noticeList.targetSetting.length === 0
+      ) {
         this.openModalDesc(
           '공지사항 등록 실패',
           '공지사항을 작성하고 클릭해주세요.'
@@ -310,6 +374,67 @@ export default {
       } else {
         this.openModalDesc('공지사항 등록', '공지사항이 등록되었습니다.')
       }
+    },
+
+    // 대상 설정 체크박스
+    // onClickTargetSetting(data) {
+    //   console.log(data)
+    //   if (this.targetList[data.id - 1].state) {
+    //     data.state = false
+    //     this.noticeList.targetSetting = this.noticeList.targetSetting.filter(
+    //       (item) => item !== data.text
+    //     )
+    //   } else {
+    //     data.state = true
+    //     this.noticeList.targetSetting.push(data.text)
+    //   }
+    // },
+
+    onClickTargetAllCheck() {
+      if (this.allcheck) {
+        this.allcheck = false
+        this.targetList.splice(0, this.targetList.length)
+      } else {
+        this.allcheck = true
+        this.targetList.splice(0, this.targetList.length)
+        for (let i = 0; i < this.target.length; i++) {
+          this.targetList.push(this.target[i])
+        }
+      }
+    },
+
+    onClickTargetSetting(data) {
+      console.log(data, this.targetList.includes(data))
+      if (this.targetList.includes(data)) {
+        this.targetList = this.targetList.filter((item) => item !== data)
+        if (this.target.length !== this.targetList.length) {
+          this.allcheck = false
+        }
+      } else {
+        this.targetList.push(data)
+        if (this.target.length === this.targetList.length) {
+          this.allcheck = true
+        }
+      }
+
+      // if (this.targetList[data.id - 1].state) {
+      //   data.state = false
+      //   this.target = this.target.filter((item) => item !== data.text)
+      //   if (this.target.length !== this.targetList.length) {
+      //     this.allcheck = false
+      //   }
+      // } else {
+      //   data.state = true
+      //   this.target.push(data.text)
+      //   if (this.target.length === this.targetList.length) {
+      //     this.allcheck = true
+      //   }
+      // }
+    },
+
+    onClickTargetSeleted() {
+      console.log('asdfsa')
+      this.noticeList.targetSetting = this.targetList
     },
   },
 }

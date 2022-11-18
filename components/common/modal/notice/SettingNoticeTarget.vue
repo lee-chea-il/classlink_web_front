@@ -20,23 +20,25 @@
           </button>
         </div>
         <div class="modal-body">
-          <div
-            v-if="$route.fullPath === '/management/notice/regist/all'"
-            class="notice_box"
-          >
+          <div class="notice_box">
+            <!-- v-if="
+              $route.fullPath === '/management/notice/regist/all' ||
+              `/management/notice/modify/all/${$route.params.id}`
+            " -->
             <div class="notice_first flex-wrap">
               <div
                 class="custom-control custom-checkbox form-inline form-check"
               >
                 <input
-                  id="checkbox01"
+                  id="allcheck01"
+                  :checked="allCheck"
                   type="checkbox"
                   class="custom-control-input"
-                  checked
+                  @input="$emit('onClickTargetAllCheck')"
                 />
-                <label class="custom-control-label" for="checkbox01"
-                  >전체</label
-                >
+                <label class="custom-control-label" for="allcheck01">
+                  전체
+                </label>
               </div>
 
               <div
@@ -46,9 +48,10 @@
               >
                 <input
                   :id="idx"
+                  :checked="targetList.includes(item)"
                   type="checkbox"
                   class="custom-control-input"
-                  @input="$emit('target-setting', $event)"
+                  @input="$emit('target-setting', item)"
                 />
                 <label class="custom-control-label" :for="idx">{{
                   item
@@ -57,18 +60,18 @@
             </div>
           </div>
 
-          <div v-else class="notice_box overflow-auto">
+          <!-- <div v-else class="notice_box overflow-auto">
             <div class="notice_first flex-wrap">
               <div
                 class="custom-control custom-checkbox form-inline form-check"
               >
                 <input
-                  id="checkbox01"
+                  id="allcheck02"
                   type="checkbox"
                   class="custom-control-input"
                   checked
                 />
-                <label class="custom-control-label" for="checkbox01"
+                <label class="custom-control-label" for="allcheck02"
                   >전체</label
                 >
               </div>
@@ -78,20 +81,20 @@
                 :key="idx"
                 class="custom-control custom-checkbox form-inline form-check"
               >
-                <input
-                  id="checkbox05"
-                  type="checkbox"
-                  class="custom-control-input"
-                />
-                <label class="custom-control-label" for="checkbox05"
-                  >심화</label
-                >
+                <input :id="idx" type="checkbox" class="custom-control-input" />
+                <label class="custom-control-label" :for="idx">심화</label>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="modal-footer">
-          <button class="btn btn_crud_point" data-dismiss="modal">완료</button>
+          <button
+            class="btn btn_crud_point"
+            data-dismiss="modal"
+            @click="$emit('complete')"
+          >
+            완료
+          </button>
           <button class="btn btn_crud_default" data-dismiss="modal">
             취소
           </button>
@@ -112,6 +115,14 @@ export default {
     target: {
       type: Array,
       default: () => [],
+    },
+    targetList: {
+      type: Array,
+      default: () => [],
+    },
+    allCheck: {
+      type: Boolean,
+      default: false,
     },
   },
 }

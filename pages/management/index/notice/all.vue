@@ -70,6 +70,7 @@
                         v-model="allCheck"
                         type="checkbox"
                         class="custom-control-input"
+                        @input="onClickAllCheck"
                       />
                       <label class="custom-control-label" for="chkAll"></label>
                     </div>
@@ -101,7 +102,7 @@
                         v-model="item.attributes.check"
                         type="checkbox"
                         class="custom-control-input"
-                        @input="onClickCheckBox($event)"
+                        @input="onClickCheckBox(item)"
                       />
                       <label
                         class="custom-control-label"
@@ -136,14 +137,14 @@
                     <button
                       id="btnExpand"
                       class="btn icons_arrow_dn btn_expand"
-                      :class="{ up: item.attributes.showContent }"
+                      :class="{ up: idx === open_detail }"
                       @click="onClickShowContent(idx)"
                     ></button>
                   </td>
                 </tr>
                 <!-- 상세 tr [개발참조] 공지사항 상세 TR 펼치고 접기 -->
                 <tr
-                  v-show="item.attributes.showContent"
+                  v-show="idx === open_detail"
                   id="trExpand"
                   class="tr_expand"
                 >
@@ -267,7 +268,9 @@
     <ShowNoticeConfirmCheck
       :show="openNoticeConfirmCheckModal.open"
       :data="openNoticeConfirmCheckModal.data"
+      :openConfirmFilter="open_confirmFilter"
       @onClickConfirm="onClickConfirm"
+      @filter-radio="onClickConfirmRadio"
       @close="onCloseNoticeConfirmCheckModal"
     />
     <ShowNoticeDetailModal
@@ -321,8 +324,7 @@ export default {
               '안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다.  안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다.',
             createdAt: '2022-08-01',
             view_count: 222,
-            showContent: false,
-            confirmFilter: false,
+            confirmSearchRadio: 0,
             check: false,
             student: [
               {
@@ -360,8 +362,7 @@ export default {
             content: '안녕하십니까? 학원장입니다.',
             createdAt: '2022-08-01',
             view_count: 87,
-            showContent: false,
-            confirmFilter: false,
+            confirmSearchRadio: 0,
             check: false,
             student: [
               {
@@ -399,13 +400,12 @@ export default {
             content: '안녕하십니까? 홍길동 학원장입니다.',
             createdAt: '2022-08-15',
             view_count: 57,
-            showContent: false,
-            confirmFilter: false,
+            confirmSearchRadio: 0,
             check: false,
             student: [
               {
                 name: '홍길동',
-                class: '영어심화A',
+                class: '영어심화C',
               },
               {
                 name: '강희진',
@@ -413,7 +413,7 @@ export default {
               },
               {
                 name: '전미진',
-                class: '영어심화A',
+                class: '영어심화B',
               },
               {
                 name: '홍길동',
@@ -438,8 +438,7 @@ export default {
             content: '안녕하십니까? 홍길동 학원장입니다.',
             createdAt: '2022-09-24',
             view_count: 3,
-            showContent: false,
-            confirmFilter: false,
+            confirmSearchRadio: 0,
             check: false,
             student: [
               {
@@ -477,8 +476,7 @@ export default {
             content: '안녕하십니까? 홍길동 학원장입니다.',
             createdAt: '2022-12-01',
             view_count: 16,
-            showContent: false,
-            confirmFilter: false,
+            confirmSearchRadio: 0,
             check: false,
             student: [
               {
@@ -507,6 +505,8 @@ export default {
       searchText: '',
       searchKeyword: '',
       allCheck: false,
+      open_detail: null,
+      open_confirmFilter: 0,
 
       openNoticeConfirmCheckModal: {
         open: false,
@@ -526,14 +526,8 @@ export default {
     }
   },
   watch: {
-    allCheck: 'onClickAllCheck',
-    check() {
-      if (this.selectNoticeList.length === 5) {
-        this.allCheck = true
-      } else {
-        this.allCheck = false
-      }
-    },
+    // allCheck: 'onClickAllCheck',
+    noticeList: 'check',
   },
   mounted() {
     this.noticeList = this.notice
@@ -557,9 +551,11 @@ export default {
       this.openNoticeConfirmCheckModal.data = data
       console.log(this.openNoticeConfirmCheckModal.data)
     },
+    // 공지사항 컨펌체크 닫기
     onCloseNoticeConfirmCheckModal() {
       this.openNoticeConfirmCheckModal.open = false
       this.openNoticeConfirmCheckModal.data = {}
+      this.open_confirmFilter = 0
     },
 
     // 공지사항 상세 열기
@@ -574,19 +570,19 @@ export default {
 
     // 자세히보기 열기 닫기
     onClickShowContent(idx) {
-      if (this.noticeList[idx].attributes.showContent === false) {
-        this.noticeList[idx].attributes.showContent = true
+      if (idx === this.open_detail) {
+        this.open_detail = null
       } else {
-        this.noticeList[idx].attributes.showContent = false
+        this.open_detail = idx
       }
     },
 
     // 컨펌체크 필터 열기 닫기
     onClickConfirm() {
-      if (this.openNoticeConfirmCheckModal.data.confirmFilter === false) {
-        this.openNoticeConfirmCheckModal.data.confirmFilter = true
+      if (this.open_confirmFilter === 0) {
+        this.open_confirmFilter = 1
       } else {
-        this.openNoticeConfirmCheckModal.data.confirmFilter = false
+        this.open_confirmFilter = 0
       }
     },
 
@@ -646,7 +642,8 @@ export default {
 
     // 체크박스 모두 선택
     onClickAllCheck() {
-      if (this.allCheck === true) {
+      if (!this.allCheck) {
+        this.selectNoticeList.splice(0, 10)
         for (let i = 0; i < this.noticeList.length; i++) {
           this.noticeList[i].attributes.check = true
           this.selectNoticeList.push(i)
@@ -660,13 +657,37 @@ export default {
       console.log(this.selectNoticeList)
     },
     // 공지사항 삭제
-    onClickCheckBox({ target: { id } }) {
-      if (this.noticeList[id - 1].attributes.check) {
-        this.noticeList[id - 1].attributes.check = false
-        this.selectNoticeList.splice(id - 1, 1)
+    onClickCheckBox(data) {
+      if (data.attributes.check) {
+        data.attributes.check = false
+        this.selectNoticeList = this.selectNoticeList.filter(
+          (item) => item !== data.id - 1
+        )
+        if (this.selectNoticeList.length !== 5) {
+          this.allCheck = false
+        }
       } else {
-        this.noticeList[id - 1].attributes.check = true
-        this.selectNoticeList.push(id - 1)
+        data.attributes.check = true
+        this.selectNoticeList.push(data.id - 1)
+        if (this.selectNoticeList.length === 5) {
+          this.allCheck = true
+        }
+      }
+      console.log(this.selectNoticeList)
+      // if (this.noticeList[id - 1].attributes.check) {
+      //   this.noticeList[id - 1].attributes.check = false
+      //   this.selectNoticeList = this.selectNoticeList.filter((item) => item !== )
+      // } else {
+      //   this.noticeList[id - 1].attributes.check = true
+      //   this.selectNoticeList.push(id - 1)
+      // }
+    },
+
+    check() {
+      if (this.selectNoticeList.length === 5) {
+        this.allCheck = true
+      } else {
+        this.allCheck = false
       }
     },
 
@@ -675,6 +696,17 @@ export default {
       if (this.selectNoticeList.length === 0) {
         this.openModalDesc('공지사항 삭제', '삭제할 공지사항을 선택해주세요.')
       }
+    },
+
+    // 컨펌체크 필터 반, 학생 선택
+    onClickConfirmRadio({ target: { id } }, data) {
+      // console.log(id)
+      if (id === 'radio01') {
+        data.confirmSearchRadio = 0
+      } else if (id === 'radio02') {
+        data.confirmSearchRadio = 1
+      }
+      // console.log(this.noticeList)
     },
   },
 }

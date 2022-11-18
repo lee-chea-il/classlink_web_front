@@ -28,12 +28,12 @@
             <div class="title_area">
               <span class="confirm_title">게시물을 조회한 회원</span>
               <span class="confirm_sub">
-                컨펌 체크 <span>125</span> &nbsp; | 조회 <span>222</span>
+                컨펌 체크 <span>125</span> | 조회 <span>222</span>
               </span>
               <button
                 id="btnOpenfilter"
                 class="btn btn_filter"
-                :class="{ active: data.confirmFilter }"
+                :class="{ active: openConfirmFilter === 1 }"
                 @click="$emit('onClickConfirm')"
               >
                 필터
@@ -42,7 +42,7 @@
               <button class="btn btn_crud_default">필터 해제</button>
             </div>
             <!-- [개발참조] [개발참조] 컨펌체크 팝업 필터열기, 해제 스크립트 -->
-            <div v-if="data.confirmFilter" id="filterBox" class="box01">
+            <div v-if="openConfirmFilter === 1" id="filterBox" class="box01">
               <div class="row">
                 <div class="keyword_area">
                   <div class="keyword_area_01">
@@ -74,10 +74,11 @@
                   >
                     <input
                       id="radio01"
+                      :checked="data.confirmSearchRadio === 0"
                       type="radio"
                       name="radio00"
                       class="custom-control-input"
-                      checked
+                      @input="$emit('filter-radio', $event, data)"
                     />
                     <label class="custom-control-label" for="radio01">반</label>
                   </div>
@@ -86,9 +87,11 @@
                   >
                     <input
                       id="radio02"
+                      :checked="data.confirmSearchRadio === 1"
                       type="radio"
                       name="radio00"
                       class="custom-control-input"
+                      @input="$emit('filter-radio', $event, data)"
                     />
                     <label class="custom-control-label" for="radio02"
                       >학생</label
@@ -125,7 +128,7 @@
                           id="box01chk01"
                           type="checkbox"
                           class="custom-control-input"
-                          checked
+                          :checked="data.confirmSearchRadio === 0"
                         />
                         <label
                           class="custom-control-label"
@@ -160,6 +163,7 @@
                           id="box01chk04"
                           type="checkbox"
                           class="custom-control-input"
+                          :checked="data.confirmSearchRadio === 1"
                         />
                         <label
                           class="custom-control-label"
@@ -409,6 +413,10 @@ export default {
     data: {
       type: Object,
       default: () => {},
+    },
+    openConfirmFilter: {
+      type: Number,
+      default: 0,
     },
   },
 }

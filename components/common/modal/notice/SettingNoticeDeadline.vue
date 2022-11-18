@@ -34,8 +34,8 @@
               id="time_range_start"
               type="text"
               placeholder="09:00"
-              max-length="5"
-              :value="noticeList.time_range_start"
+              maxlength="5"
+              :value="range.time_range_start"
               class="form-control form-inline form-time"
               @input="$emit('change-input', $event)"
             />
@@ -50,8 +50,8 @@
               id="time_range_end"
               type="text"
               placeholder="11:59"
-              max-length="5"
-              :value="noticeList.time_range_end"
+              maxlength="5"
+              :value="range.time_range_end"
               class="form-control form-inline form-time"
               @input="$emit('change-input', $event)"
             />
@@ -77,24 +77,26 @@
             <div class="custom-control custom-checkbox form-inline form-check">
               <input
                 id="checkbox01"
+                :checked="range.after_deadline"
                 type="checkbox"
                 class="custom-control-input"
-                checked
+                @input="$emit('after-deadline')"
               />
-              <label class="custom-control-label" for="checkbox01"
-                >해당 공지의 열람 기한이 지나도 열람 가능하게 합니다.</label
-              >
+              <label class="custom-control-label" for="checkbox01">
+                해당 공지의 열람 기한이 지나도 열람 가능하게 합니다.
+              </label>
             </div>
             <div class="custom-control custom-checkbox form-inline form-check">
               <input
                 id="checkbox02"
+                :checked="range.notice_alarm"
                 type="checkbox"
                 class="custom-control-input"
-                checked
+                @input="$emit('notice-alarm')"
               />
-              <label class="custom-control-label" for="checkbox02"
-                >해당 공지가 뜰 때 알림을 보냅니다.</label
-              >
+              <label class="custom-control-label" for="checkbox02">
+                해당 공지가 뜰 때 알림을 보냅니다.
+              </label>
             </div>
           </div>
         </div>
