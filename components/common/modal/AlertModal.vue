@@ -10,13 +10,13 @@
     </div>
     <div class="cnts">
       <!-- [개발참조]: 알림이 없을때 -->
-      <div v-if="newContentThreeList.length === 0" class="alert_none">
+      <div v-if="newContentList.length === 0" class="alert_none">
         새로운 알림이 없습니다.
       </div>
 
       <!-- 알림기본박스 -->
       <div
-        v-for="(item, idx) in newContentThreeList"
+        v-for="(item, idx) in newContentList.slice(0, 3)"
         v-else
         :key="idx"
         class="alert_box"
@@ -64,7 +64,7 @@
 export default {
   name: 'AlertModal',
   props: {
-    newContentThreeList: {
+    newContentList: {
       type: Array,
       default: () => [],
     },

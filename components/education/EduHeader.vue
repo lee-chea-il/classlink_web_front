@@ -39,7 +39,7 @@
                 <NuxtLink
                   class="nav-link"
                   :class="{ active: $route.matched[0].path === '/management' }"
-                  to="/management/notice/all"
+                  to="/management/operation/teachermanagement"
                   >관리</NuxtLink
                 >
               </li>
@@ -157,7 +157,15 @@
         <ul class="nav nav_dapth02">
           <li class="nav-item">
             <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
-            <a class="nav-link" href="#">운영관리</a>
+            <NuxtLink
+              class="nav-link"
+              :class="{
+                'nav-link': true,
+                active: $route.fullPath.includes('/management/operation'),
+              }"
+              to="/management/operation/teachermanagement"
+              >운영관리</NuxtLink
+            >
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">출결</a>

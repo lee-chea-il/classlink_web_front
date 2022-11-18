@@ -50,21 +50,7 @@
                   <table class="table">
                     <thead>
                       <tr>
-                        <th>
-                          <div
-                            class="custom-control custom-checkbox form-inline"
-                          >
-                            <input
-                              id="chkAll"
-                              type="checkbox"
-                              class="custom-control-input"
-                            />
-                            <label
-                              class="custom-control-label"
-                              for="chkAll"
-                            ></label>
-                          </div>
-                        </th>
+                        <th></th>
                         <th>학년</th>
                         <th>이름</th>
                         <th>연락처</th>
@@ -76,21 +62,7 @@
                     </thead>
                     <tbody v-for="(item, idx) in submissionList" :key="idx">
                       <tr>
-                        <td>
-                          <div
-                            class="custom-control custom-checkbox form-inline"
-                          >
-                            <input
-                              id="chk01"
-                              type="checkbox"
-                              class="custom-control-input"
-                            />
-                            <label
-                              class="custom-control-label"
-                              for="chk01"
-                            ></label>
-                          </div>
-                        </td>
+                        <td></td>
                         <td>{{ item.grade }}</td>
                         <td>{{ item.student_name }}</td>
                         <td>{{ item.student_phone }}</td>

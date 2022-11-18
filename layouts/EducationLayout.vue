@@ -8,7 +8,7 @@
     </div>
     <!-- 클래스링크 알림 모달 팝업 -->
     <AlertModal
-      :newContentThreeList="newContentThreeList"
+      :newContentList="newContentList"
       @click-homework="openHomeWorkDetailModal"
       @click-note="openNoteDetailModal"
       @delete-all="onClickAllDelete"
@@ -118,7 +118,6 @@ export default {
           },
         },
       ],
-      newContentThreeList: [],
       HomeWorkDetailModalDesc: {
         open: false,
       },
@@ -149,7 +148,6 @@ export default {
     }
   },
   created() {
-    this.newContentThreeList = this.newContentList.slice(0, 3)
     for (let i = 0; i < this.newContentList.length; i++) {
       if (this.alertDateList.includes(this.newContentList[i].date)) {
         continue
@@ -157,7 +155,6 @@ export default {
         this.alertDateList.push(this.newContentList[i].date)
       }
     }
-    console.log(this.alertDateList)
   },
   methods: {
     // 과제 상세/미리보기 모달
@@ -184,22 +181,15 @@ export default {
 
     // 알림 전체 삭제
     onClickAllDelete() {
-      this.newContentThreeList = []
       this.newContentList = []
       this.alertDateList = []
     },
     onClickDeleteBtn(id, date) {
-      for (let i = 0; i < this.newContentThreeList.length; i++) {
-        if (this.newContentThreeList[i].id === id) {
-          this.newContentThreeList.splice(i, 1)
-        }
-      }
       for (let i = 0; i < this.newContentList.length; i++) {
         if (this.newContentList[i].id === id) {
           this.newContentList.splice(i, 1)
         }
       }
-      console.log(date)
       const result = this.newContentList.filter((elem) => {
         return elem.date === date
       })

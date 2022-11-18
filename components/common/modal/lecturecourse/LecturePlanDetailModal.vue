@@ -12,7 +12,7 @@
       <div class="background_close" @click="$emit('close')"></div>
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-          <ModalHeader title="강의계획서 열람" @close="$emit('close')" />
+          <ModalHeader title="강의계획서 열람" @click="$emit('close')" />
 
           <div class="modal-body">
             <div class="title_area row">

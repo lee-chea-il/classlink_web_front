@@ -1498,6 +1498,7 @@ ol {
 .btn_login.active::before,
 .btn_login:hover::before,
 .btn_login:focus::before {
+  /* background: url('../images/icons/.svg') no-repeat center; */
   background-size: contain;
 }
 
