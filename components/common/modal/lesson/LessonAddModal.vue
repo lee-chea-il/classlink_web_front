@@ -78,7 +78,6 @@
                         :pidNum="10000"
                         @moreShowClick="moreShowClick"
                         @copyDataCallBack="$emit('call-back')"
-                        @open-reference="open - reference"
                       />
                     </div>
                     <!-- /.탭 내용01 -->
@@ -145,7 +144,7 @@
                   <!-- /.탭 컨텐츠 -->
                 </div>
                 <!-- /.왼쪽 영역 -->
-                
+
                 <!-- 오른쪽 영역 -->
                 <RightSection
                   :lessonData="createLessonData"
@@ -183,7 +182,7 @@
 <script>
 import ModalHeader from '../../ModalHeader.vue'
 import TopNavigation from '~/components/lesson/lessonAdd/TopNavigaion.vue'
-import TreeView from '~/components/common/custom/CustomReferenceTreeView.vue'
+import TreeView from '~/components/lesson/custom/CustomTreeView.vue'
 import RightSection from '~/components/lesson/lessonAdd/RightSection.vue'
 export default {
   name: 'LessonAddModal',

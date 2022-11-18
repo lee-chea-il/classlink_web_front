@@ -18,6 +18,7 @@ export default function initialState() {
     isFilterModal: { open: false, prevPage: '' },
     isSearchListModal: false,
     copyCheckData: [],
+    checkList: [],
     searchData: {
       word: '',
       type: [],
@@ -59,6 +60,8 @@ export default function initialState() {
                 children: [
                   {
                     id: 0,
+                    dbIdx: 1,
+                    type: 'institution',
                     name: '국어학습자료 애니메이션.mp4',
                     subject: '국어',
                     desc: '등록한 자료 1',
@@ -73,8 +76,6 @@ export default function initialState() {
                     uploadType: 'video',
                     fileVolume: '',
                     createAt: '',
-                    dbIdx: 1,
-                    type: 'institution',
                   },
                   {
                     id: 1,

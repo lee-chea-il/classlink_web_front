@@ -1,17 +1,6 @@
 <template>
   <div class="table_section">
     <table class="table">
-      <!-- <colgroup>
-        <col />
-        <col />
-        <col />
-        <col width="120" />
-        <col />
-        <col width="120" />
-        <col width="120" />
-        <col />
-        <col />
-      </colgroup> -->
       <thead>
         <tr>
           <th>
@@ -44,8 +33,8 @@
           </td>
           <td>{{ lecture.createdAt }}</td>
           <td>{{ lecture.name }}</td>
-          <td>{{ lecture.teacher }}</td>
-          <td>{{ lecture.class }}</td>
+          <CustomSpan :dataList="lecture.teacher" />
+          <CustomSpan :dataList="lecture.className" />
           <td>
             <div class="lec_curi">
               {{ lecture.curriculum }}
@@ -73,8 +62,10 @@
 </template>
 
 <script>
+import CustomSpan from './custom/CustomSpan.vue'
 export default {
   name: 'TableSection',
+  components: { CustomSpan },
   props: {
     lectureList: {
       type: Array,

@@ -46,6 +46,7 @@
         :keyword="reference.keyword"
         @changePushKeyword="$emit('changePushKeyword', $event)"
         @set-keyword="$emit('set-keyword', $event)"
+        @delete-keyword="$emit('delete-keyword', $event)"
       />
 
       <div class="form-group row">

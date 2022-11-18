@@ -19,7 +19,7 @@
               <!-- 2단 분류 컨텐츠 -->
               <div class="divide_section">
                 <!-- 왼쪽 영역 -->
-                <LessonBrowseLeftField  
+                <LessonBrowseLeftField
                   :lessonItem="lessonItem"
                   @select-reference="$emit('select-reference', $event)"
                 />
@@ -27,7 +27,7 @@
 
                 <!-- 오른쪽 영역 -->
                 <LessonBrowseRightField
-                  :selectReference="selectReference"
+                  :referenceItem="selectReference"
                   :currentIdx="currentIdx"
                   @pagination="paginationEmit"
                   @quiz-preview="$emit('quiz-preview', $event)"
@@ -38,7 +38,6 @@
               <!-- /.2단 분류 컨텐츠 -->
             </div>
           </div>
-          <!-- {{ selectReference }} -->
           <div class="modal-footer">
             <button class="btn btn_crud_default">수정</button>
             <button class="btn btn_crud_default" @click="$emit('close')">
@@ -77,8 +76,8 @@ export default {
       default: () => {},
     },
     lessonItem: {
-      type: Object,
-      default: () => {},
+      type: [Array, Object],
+      default: () => [],
     },
   },
   methods: {

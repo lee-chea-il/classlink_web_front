@@ -5,52 +5,16 @@
     <div class="tab-content depth03 ac_manage_dtr">
       <div class="tab-pane active">
         <!-- 컨트롤 버튼 영역 -->
-        <div class="search_section">
-          <div class="left_area">
-            <div class="btn btn_crud_default" @click="copyData">복사</div>
-            <!-- <button class="btn btn_crud_default" @click="pasteData"> -->
-            <button class="btn btn_crud_default" @click="pasteData">
-              붙여넣기
-            </button>
-            <button class="btn btn_crud_default" @click="delData">삭제</button>
-          </div>
-
-          <div class="right_area">
-            <div class="input-group input-search form-inline">
-              <input
-                v-show="!isSearchListModal"
-                id="word"
-                v-model="searchData.word"
-                name="word"
-                type="text"
-                placeholder="검색어 입력"
-                class="form-control"
-              />
-              <input
-                v-show="isSearchListModal"
-                placeholder="검색어 입력"
-                class="form-control"
-              />
-              <div class="input-group-append">
-                <button
-                  class="btn icons_search_off"
-                  type="button"
-                  @click="openSearchListModal"
-                ></button>
-              </div>
-            </div>
-            <button class="btn btn_filter" @click="openFilterModal">
-              필터
-            </button>
-            <button
-              class="btn btn_crud_point"
-              data-toggle="modal"
-              data-target="#modalDataregi"
-            >
-              등록
-            </button>
-          </div>
-        </div>
+        <SearchSection
+          :open="isSearchListModal"
+          :value="searchData.word"
+          @open-filter="openFilterModal"
+          @open-search-List="openSearchListModal"
+          @copy="copyData"
+          @paste="pasteData"
+          @delete="delData"
+          @change-word="changeSearchData"
+        />
         <!-- /.컨트롤 버튼 영역 -->
 
         <!-- 2단 분류 컨텐츠 -->
@@ -58,51 +22,19 @@
           <!-- 왼쪽 영역 -->
           <div class="divide_area left">
             <!-- 탭 컨텐츠 -->
-            <TopNavigation />
+            <EducationTabMenu />
 
-            <div id="myTabContent" class="tab-content">
-              <!-- 탭 내용01 -->
-              <div
-                id="institute"
-                class="tab-pane fade show active"
-                role="tabpanel"
-                aria-labelledby="grade-tab"
-              >
-                <ReferenceTreeView
-                  ref="institution"
-                  :dataList="receiveInstitutionData"
-                  :editable="identity == 'master' ? true : false"
-                  :identity="identity"
-                  :pidNum="0"
-                  @file-view="onClick"
-                  @copyDataCallBack="copyDataCallBack"
-                  @download-data="downloadSelectData"
-                  @update-data="updateSelectData"
-                  @drop="dropItem"
-                />
-              </div>
-              <!-- /.탭 내용01 -->
-              <!-- 탭 내용02 -->
-              <div
-                id="franchise"
-                class="tab-pane fade"
-                role="tabpanel"
-                aria-labelledby="class-tab"
-              >
-                <ReferenceTreeView
-                  ref="franchise"
-                  :dataList="receiveFranchiseData"
-                  :editable="identity == 'master' ? true : false"
-                  :identity="identity"
-                  :pidNum="1000"
-                  @file-view="onClick"
-                  @copyDataCallBack="copyDataCallBack"
-                  @download-data="downloadSelectData"
-                  @update-data="updateSelectData"
-                />
-              </div>
-              <!-- /.탭 내용02 -->
-            </div>
+            <LeftTreeTab
+              ref="education"
+              :institutionData="receiveInstitutionData"
+              :franchiseData="receiveFranchiseData"
+              :identity="identity"
+              @file-view="onClick"
+              @copyDataCallBack="copyDataCallBack"
+              @download-data="downloadSelectData"
+              @update-data="updateSelectData"
+              @drop="dropItem"
+            />
 
             <!-- /.탭 컨텐츠 -->
           </div>
@@ -111,48 +43,16 @@
           <!-- 오른쪽 영역 -->
           <div class="divide_area right">
             <!-- 탭 컨텐츠 -->
-            <ul id="myTab" class="nav nav-tabs" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button
-                  id="grade-tab"
-                  class="nav-link active"
-                  data-toggle="tab"
-                  data-target="#mydata"
-                  type="button"
-                  role="tab"
-                  aria-controls="home"
-                  aria-selected="true"
-                >
-                  <span class="icon_mydata"></span>
-                  내 자료
-                </button>
-              </li>
-            </ul>
-            <div id="myTabContent" class="tab-content">
-              <!-- 탭 내용01 -->
-              <div
-                id="mydata"
-                class="tab-pane fade show active"
-                role="tabpanel"
-                aria-labelledby="grade-tab"
-              >
-                <ReferenceTreeView
-                  ref="curriculum"
-                  :expanded="false"
-                  :dataList="receiveCurriculumData"
-                  identity="master"
-                  :pidNum="2000"
-                  @file-view="onClick"
-                  @copyDataCallBack="copyDataCallBack"
-                  @download-data="downloadSelectData"
-                  @update-data="updateSelectData"
-                  @drop="dropItem"
-                />
-                <br />
-                <br />
-              </div>
-              <!-- /.탭 내용01 -->
-            </div>
+            <MyTabMenu title="내 자료" />
+            <RightTreeTab
+              ref="myData"
+              :myData="receiveCurriculumData"
+              @file-view="onClick"
+              @copyDataCallBack="copyDataCallBack"
+              @download-data="downloadSelectData"
+              @update-data="updateSelectData"
+              @drop="dropItem"
+            />
             <!-- /.탭 컨텐츠 -->
           </div>
           <!-- /.오른쪽 영역 -->
@@ -409,10 +309,14 @@
       :open="isSearchListModal"
       :searchData="searchData"
       :resultSearchList="resultSearchList"
+      :filterItem="filterItem(resultSearchList)"
+      :checkList="checkList"
       @change-word="changeSearchData"
       @close="closeSearchListModal"
       @open-filter="openFilterModal"
       @copy="copyData"
+      @check-handler="checkHandler"
+      @detail-view="onClickViewDetail"
     />
 
     <!-- 퀴즈 프린트 영역 -->
@@ -451,11 +355,14 @@ import NoteTestChangeModal from '~/components/common/modal/reference/NoteTestCha
 import { apiReference } from '~/services'
 import QuizPreviewModal from '~/components/common/modal/reference/QuizPreviewModal.vue'
 import NoteTestPreviewModal from '~/components/common/modal/reference/NoteTestPreviewModal.vue'
-import ReferenceTreeView from '~/components/common/custom/CustomReferenceTreeView.vue'
 import QuizPrintPage from '~/components/reference/QuizPrintPage.vue'
 import NoteTestPrintPage from '~/components/reference/NoteTestPrintPage.vue'
-import TopNavigation from '~/components/reference/main/TopNavigation.vue'
 import initialState from '~/data/reference/initialState'
+import SearchSection from '~/components/reference/main/SearchSection.vue'
+import MyTabMenu from '~/components/common/MyTabMenu.vue'
+import EducationTabMenu from '~/components/common/EducationTabMenu.vue'
+import LeftTreeTab from '~/components/reference/main/LeftTreeTab.vue'
+import RightTreeTab from '~/components/reference/main/RightTreeTab.vue'
 
 export default {
   name: 'ReferenceRoom',
@@ -482,10 +389,13 @@ export default {
     NoteTestChangeModal,
     QuizPreviewModal,
     NoteTestPreviewModal,
-    ReferenceTreeView,
     QuizPrintPage,
     NoteTestPrintPage,
-    TopNavigation,
+    SearchSection,
+    MyTabMenu,
+    EducationTabMenu,
+    LeftTreeTab,
+    RightTreeTab,
   },
   layout: 'EducationLayout',
   data() {
@@ -732,7 +642,7 @@ export default {
       this.isSearchListModal = false
     },
 
-    // 검색 내용 change Event
+    // 자료 검색 내용 change Event
     changeSearchData({ target: { name, checked, dataset, value } }) {
       const result = this.searchData
       if (name === 'word') {
@@ -750,6 +660,79 @@ export default {
           return result[name].splice(idx, 1)
         }
       }
+    },
+
+    // 필터링 시 이름 return
+    setType(item) {
+      if (item === 'video' || item === 'youtube') return '동영상'
+      else if (item === 'pdf' || item === 'url') return '문서'
+      else if (item === 'quiz') return '퀴즈'
+      else return '쪽지시험'
+    },
+
+    // 자료 검색 필터링 result
+    filterItem(list) {
+      const filter = this.searchData
+      const filterName = () => {
+        if (filter && filter.word !== '')
+          return list.filter(
+            (item) =>
+              item.name.includes(filter.word) ||
+              item.keyword.includes(filter.word)
+          )
+        else return list
+      }
+      const filterSubject = () => {
+        if (filter.subject?.length)
+          return filterName().filter((item) =>
+            filter.subject.includes(item.subject)
+          )
+        else return filterName()
+      }
+
+      const filterDivision = () => {
+        if (filter.type?.length)
+          return filterSubject().filter((item) =>
+            filter.type.includes(item.fileDivision)
+          )
+        else return filterSubject()
+      }
+
+      const filterCategory = () => {
+        if (filter.category?.length)
+          return filterDivision().filter((item) =>
+            filter.category.includes(this.setType(item.uploadType))
+          )
+        else return filterDivision()
+      }
+      return filterCategory()
+    },
+
+    onClickDetailView(item) {
+      this.selectData = item
+      // isReferenceBrowseModal
+    },
+
+    // 검색결과 체크박스
+    checkHandler({ target: { checked, value, id } }) {
+      const idx = this.resultSearchList?.findIndex(
+        (item) => item.name === value
+      )
+      if (id === 'all_check') {
+        if (checked) return (this.checkList = [...this.resultSearchList])
+        else return (this.checkList = [])
+      } else if (checked)
+        return (this.checkList = [
+          ...this.checkList,
+          this.resultSearchList[idx],
+        ])
+      else return this.checkList.splice(idx, 1)
+    },
+
+    // 검색결과에서 상세 보기
+    onClickViewDetail(data) {
+      this.isSearchListModal = false
+      this.onClick(data)
     },
 
     // 등록 자료 내용 변경
@@ -1261,6 +1244,7 @@ export default {
     },
 
     onClick(params) {
+      console.log('열려라')
       this.selectData = params
       const type = params.uploadType
       if (
@@ -1282,18 +1266,18 @@ export default {
     copyData() {
       const instiTab = document.getElementById('institute')
       if (instiTab.classList.contains('show')) {
-        this.$refs.institution.copyData()
+        this.$refs.education.$refs.institution.copyData()
       } else {
-        this.$refs.franchise.copyData()
+        this.$refs.education.$refs.franchise.copyData()
       }
     },
 
     pasteData() {
-      this.$refs.curriculum.pasteData(this.copyCheckData)
+      this.$refs.myData.$refs.curriculum.pasteData(this.copyCheckData)
     },
 
     delData() {
-      this.$refs.curriculum.delData()
+      this.$refs.myData.$refs.curriculum.delData()
     },
 
     copyDataCallBack(copyData) {
@@ -1387,7 +1371,7 @@ export default {
     },
 
     // drop시 이벤트
-    dropItem(item, data) {
+    dropItem(data) {
       const parent = this.jsonItem(data)
       console.log(parent)
     },

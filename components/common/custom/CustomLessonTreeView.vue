@@ -47,6 +47,14 @@ export default {
       isEmptyData: true,
     }
   },
+  watch: {
+    dataList: {
+      handler(value, oldValue) {
+        this.datas = new Tree(false, this.dataMapping(value, false))
+      },
+      immediate: false,
+    },
+  },
   mounted() {
     if (this.dataList.length === 0) {
       this.isEmptyData = true

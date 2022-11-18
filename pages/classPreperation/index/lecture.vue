@@ -33,7 +33,7 @@
     <CurriculumAssignmentModal />
 
     <!-- 커리큘럼 선택 -->
-    <SelectCurriculumModal />
+    <SelectCurriculumModal :curriculumList="curriculumList" />
 
     <!-- 수업시간 선택 -->
     <SelectScheduleModal
@@ -65,6 +65,8 @@
       :desc="isOpenModalDesc.desc"
       @close="closeModalDesc"
     />
+
+    <button @click="filterCurriculum">ㄴ눌러</button>
   </div>
 </template>
 
@@ -80,6 +82,7 @@ import PageHeader from '~/components/common/PageHeader.vue'
 import CustomDataPicker from '~/components/lecture/custom/CustomDataPicker.vue'
 import LectureList from '~/components/lecture/LectureList.vue'
 import NoListSection from '~/components/lecture/NoListSection.vue'
+import initialState from '~/data/lecture/initialState'
 
 export default {
   name: 'LecturePage',
@@ -97,97 +100,7 @@ export default {
     ModalDesc,
   },
   data() {
-    return {
-      isCalendar: false,
-      isOpenModalDesc: {
-        open: false,
-        title: '',
-        desc: '',
-      },
-      bgCnt: 0,
-      lectureInfo: {
-        name: '',
-        teacher: [],
-        spareTeacher: [],
-        className: [],
-        classTime: '',
-        curriculum: '',
-        createdAt: '',
-        image: '',
-        startAlarmTime: '5분',
-        endAlarmTime: '5분',
-      },
-      lectureList: [
-        {
-          name: '영어 심화 1',
-          teacher: '홍길동/김지원',
-          className: '1-1A',
-          classTime: '화,목,금,13~15시',
-          curriculum: '영어심화 1A 리딩 교제',
-          createdAt: '2020-07-10',
-          image: '',
-        },
-        {
-          name: '과학 심화 1',
-          teacher: '홍길동/김수원',
-          className: '1-2A',
-          classTime: '화,목,금,13~15시',
-          curriculum: '과학심화 1A 리딩 교제',
-          createdAt: '2020-07-10',
-          image: '',
-        },
-        {
-          name: '수학의 정석 1',
-          teacher: '홍길동/박지수',
-          className: '1-3A',
-          classTime: '화,목,금,13~15시',
-          curriculum: '수학의정석 1A 리딩 교제',
-          createdAt: '2020-07-10',
-          image: '',
-        },
-      ],
-      teacherList: [
-        { id: 1, name: '김지원', selectType: 0 },
-        { id: 2, name: '박지수', selectType: 0 },
-        { id: 3, name: '임한솔', selectType: 0 },
-        { id: 4, name: '최유나', selectType: 0 },
-        { id: 5, name: '강원영', selectType: 0 },
-      ],
-      classList: [
-        { id: 1, name: '1-1A' },
-        { id: 2, name: '1-1B' },
-        { id: 3, name: '1-1C' },
-        { id: 4, name: '1-1D' },
-        { id: 5, name: '1-1E' },
-      ],
-      scheduleItem: {
-        startTime: '0000',
-        endTime: '0030',
-        startDay: '2022-11-01',
-        endDay: '2022-11-02',
-        selectWeekDay: [],
-        isRepeat: false,
-        bgColor: '#8fa7fb',
-      },
-      scheduleWeekList: {
-        sun: [],
-        mon: [],
-        tue: [],
-        wed: [],
-        thu: [],
-        fri: [],
-        set: [],
-      },
-      weekIdx: {
-        일: 'sun',
-        월: 'mon',
-        화: 'tue',
-        수: 'wed',
-        목: 'thu',
-        금: 'fri',
-        토: 'set',
-      },
-    }
+    return initialState()
   },
   computed: {
     hourData() {
@@ -219,7 +132,6 @@ export default {
       const year = new Date().getFullYear()
       const month = new Date().getMonth() + 1
       const day = new Date().getDate()
-
       return { year, month, day }
     },
   },
@@ -524,6 +436,19 @@ export default {
       return (this.scheduleWeekList[week] = this.scheduleWeekList[week].filter(
         (item) => item.startDay !== data.startDay
       ))
+    },
+
+    // 해당 선생님 커리큘럼 호출
+    filterCurriculum() {
+      const item = []
+      for (const i in this.curriculumList) {
+        const newArr = this.curriculumList[i].filter(
+          (item) => item.teacher === '김민정'
+        )
+        item.push(newArr)
+      }
+      const data = item.filter((item) => item[0])
+      console.log(data)
     },
   },
 }

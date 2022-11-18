@@ -21,10 +21,10 @@
                 <!-- 왼쪽 영역 -->
                 <div class="divide_area left">
                   <!-- 컨트롤 버튼 영역 [개발참조] 활성화 : active -->
-                  <div class="button_tab">
-                    <button class="btn btn_activated active">자료실</button>
-                    <button class="btn btn_crud_default">레슨</button>
-                  </div>
+                  <TopNavigation
+                    :isLesson="isLesson"
+                    @set-lesson="$emit('set-lesson', $event)"
+                  />
                   <!-- /.컨트롤 버튼 영역 -->
                   <!-- 탭 컨텐츠 -->
                   <ul id="myTab" class="nav nav-tabs" role="tablist">
@@ -33,7 +33,9 @@
                         id="grade-tab"
                         class="nav-link active"
                         data-toggle="tab"
-                        data-target="#institutePop"
+                        :data-target="
+                          isLesson ? '#institutePopItem' : '#institutePopItem1'
+                        "
                         type="button"
                         role="tab"
                         aria-controls="home"
@@ -47,7 +49,9 @@
                         id="class-tab"
                         class="nav-link"
                         data-toggle="tab"
-                        data-target="#franchisePop"
+                        :data-target="
+                          isLesson ? '#franchisePopItem' : '#franchisePopItem1'
+                        "
                         type="button"
                         role="tab"
                         aria-controls="profile"
@@ -56,391 +60,104 @@
                         프랜차이즈
                       </button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                      <button
-                        id="class-tab"
-                        class="nav-link"
-                        data-toggle="tab"
-                        data-target="#mydataPop"
-                        type="button"
-                        role="tab"
-                        aria-controls="profile"
-                        aria-selected="false"
-                      >
-                        내자료
-                      </button>
-                    </li>
                   </ul>
-                  <div id="myTabContent" class="tab-content">
+                  <div v-show="isLesson" id="myTabContent" class="tab-content">
                     <!-- 탭 내용01 -->
                     <div
-                      id="institutePop"
+                      id="institutePopItem"
                       class="tab-pane fade show active"
                       role="tabpanel"
                       aria-labelledby="grade-tab"
                     >
-                      <ul>
-                        <li>
-                          <!-- 리스트01 -->
-                          <div class="list">
-                            <div
-                              class="custom-control custom-checkbox form-inline"
-                            >
-                              <input
-                                id="chkPopA01"
-                                type="checkbox"
-                                class="custom-control-input"
-                              />
-                              <label
-                                class="custom-control-label"
-                                for="chkPopA01"
-                              ></label>
-                            </div>
-                            <i
-                              id="show_sublistLessonRegi01"
-                              class="btn icons_arrow_r"
-                            ></i>
-                            <span class="text">국어</span>
-                            <!-- <i class="icons_plus_circle_off"></i> -->
-                          </div>
-                          <!-- 리스트01_sub-->
-                          <div
-                            id="list_sublistLessonRegi01"
-                            class="list_sub"
-                            style="display: none"
-                          >
-                            <ul>
-                              <li>
-                                <div
-                                  class="custom-control custom-checkbox form-inline"
-                                >
-                                  <input
-                                    id="chkPopB01"
-                                    type="checkbox"
-                                    class="custom-control-input"
-                                  />
-                                  <label
-                                    class="custom-control-label"
-                                    for="chkPopB01"
-                                  ></label>
-                                </div>
-                                <i
-                                  id="show_sublistLessonRegi01_sub"
-                                  class="btn icons_arrow_r"
-                                ></i>
-                                <span class="text">대단원1</span>
-                                <!-- <i class="icons_plus_circle_off"></i> -->
-                              </li>
-                            </ul>
-                          </div>
-                          <!-- /.리스트01_sub-->
-                          <!-- 리스트01_sub_sub-->
-                          <div
-                            id="list_sublistLessonRegi01_sub"
-                            class="list_sub_sub"
-                            style="display: none"
-                          >
-                            <ul>
-                              <li>
-                                <div
-                                  class="custom-control custom-checkbox form-inline"
-                                >
-                                  <input
-                                    id="chkPopC01"
-                                    type="checkbox"
-                                    class="custom-control-input"
-                                  />
-                                  <label
-                                    class="custom-control-label"
-                                    for="chkPopC01"
-                                  ></label>
-                                </div>
-                                <span class="text"
-                                  >자연수의 혼합 계산 영상1.mp4</span
-                                >
-                                <!-- [개발참조] 클릭 시 자료실 - 자료열람  팝업 -->
-                                <i
-                                  class="btn icons_zoom_off"
-                                  data-toggle="modal"
-                                  data-target="#"
-                                ></i>
-                              </li>
-                              <li>
-                                <div
-                                  class="custom-control custom-checkbox form-inline"
-                                >
-                                  <input
-                                    id="chkPopC02"
-                                    type="checkbox"
-                                    class="custom-control-input"
-                                  />
-                                  <label
-                                    class="custom-control-label"
-                                    for="chkPopC02"
-                                  ></label>
-                                </div>
-                                <span class="text"
-                                  >자연수의 혼합 계산 영상2.mp4</span
-                                >
-                                <!-- [개발참조] 클릭 시 자료실 - 자료열람 팝업 -->
-                                <i
-                                  class="btn icons_zoom_off"
-                                  data-toggle="modal"
-                                  data-target="#"
-                                ></i>
-                              </li>
-                            </ul>
-                          </div>
-                          <!-- /.리스트01_sub_sub-->
-                          <!-- /.리스트01 -->
-                        </li>
-                        <li>
-                          <!-- 리스트02 -->
-                          <div class="list">
-                            <div
-                              class="custom-control custom-checkbox form-inline"
-                            >
-                              <input
-                                id="chkPopA02"
-                                type="checkbox"
-                                class="custom-control-input"
-                              />
-                              <label
-                                class="custom-control-label"
-                                for="chkPopA02"
-                              ></label>
-                            </div>
-                            <i
-                              id="show_sublistLessonRegi02"
-                              class="btn icons_arrow_r"
-                            ></i>
-                            <span class="text">수학</span>
-                            <!-- <i class="icons_plus_circle_off"></i> -->
-                          </div>
-                          <div
-                            id="list_sublistLessonRegi02"
-                            class="list_sub"
-                            style="display: none"
-                          >
-                            <ul>
-                              <li>
-                                <div
-                                  class="custom-control custom-checkbox form-inline"
-                                >
-                                  <input
-                                    id="chkPopB02"
-                                    type="checkbox"
-                                    class="custom-control-input"
-                                  />
-                                  <label
-                                    class="custom-control-label"
-                                    for="chkPopB02"
-                                  ></label>
-                                </div>
-                                <i
-                                  id="show_sublistLessonRegi02_sub"
-                                  class="btn icons_arrow_r"
-                                ></i>
-                                <span class="text">자연수 I</span>
-                                <!-- <i class="icons_plus_circle_off"></i> -->
-                              </li>
-                            </ul>
-                          </div>
-                          <!-- /.리스트02 -->
-                        </li>
-                      </ul>
+                      <TreeView
+                        ref="institution"
+                        listType="lesson"
+                        :dataList="receiveInstitutionLessonData"
+                        :editable="identity == 'master' ? true : false"
+                        :identity="identity"
+                        :pidNum="10000"
+                        @moreShowClick="moreShowClick"
+                        @copyDataCallBack="$emit('call-back')"
+                      />
                     </div>
                     <!-- /.탭 내용01 -->
                     <!-- 탭 내용02 -->
                     <div
-                      id="franchisePop"
+                      id="franchisePopItem"
                       class="tab-pane fade"
                       role="tabpanel"
                       aria-labelledby="class-tab"
                     >
-                      프랜차이즈 동일 구성
+                      <TreeView
+                        ref="franchise"
+                        listType="lesson"
+                        :dataList="receiveFranchiseLessonData"
+                        :editable="identity == 'master' ? true : false"
+                        :identity="identity"
+                        :pidNum="11000"
+                        @moreShowClick="moreShowClick"
+                        @copyDataCallBack="$emit('call-back')"
+                      />
                     </div>
                     <!-- /.탭 내용02 -->
-                    <!-- 탭 내용03 -->
+                  </div>
+                  <div v-show="!isLesson" id="myTabContent" class="tab-content">
+                    <!-- 탭 내용01 -->
                     <div
-                      id="mydataPop"
+                      id="institutePopItem1"
+                      class="tab-pane fade show active"
+                      role="tabpanel"
+                      aria-labelledby="grade-tab"
+                    >
+                      <TreeView
+                        ref="myLesson"
+                        listType="lesson"
+                        :dataList="receiveInstitutionData"
+                        :editable="identity == 'master' ? true : false"
+                        :identity="identity"
+                        :pidNum="12000"
+                        @moreShowClick="moreShowClick"
+                        @copyDataCallBack="$emit('call-back')"
+                      />
+                    </div>
+                    <!-- /.탭 내용01 -->
+                    <!-- 탭 내용02 -->
+                    <div
+                      id="franchisePopItem1"
                       class="tab-pane fade"
                       role="tabpanel"
                       aria-labelledby="class-tab"
                     >
-                      프랜차이즈 동일 구성
+                      <TreeView
+                        ref="franchise"
+                        listType="listType"
+                        :dataList="receiveFranchiseData"
+                        :editable="identity == 'master' ? true : false"
+                        :identity="identity"
+                        :pidNum="13000"
+                        @moreShowClick="moreShowClick"
+                        @copyDataCallBack="$emit('call-back')"
+                      />
                     </div>
-                    <!-- /.탭 내용03 -->
+                    <!-- /.탭 내용02 -->
                   </div>
                   <!-- /.탭 컨텐츠 -->
                 </div>
                 <!-- /.왼쪽 영역 -->
+
                 <!-- 오른쪽 영역 -->
-                <div class="divide_area right">
-                  <div class="form-group">
-                    <label for="">제목</label>
-                    <div class="col">
-                      <input
-                        type="text"
-                        placeholder="입력해 주세요"
-                        class="form-control"
-                        value=""
-                      />
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="">설명</label>
-                    <div class="col">
-                      <textarea placeholder="메모입력"></textarea>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="">교육 목표</label>
-                    <div class="col">
-                      <input
-                        type="text"
-                        placeholder="입력해 주세요"
-                        class="form-control"
-                        value=""
-                      />
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="">레슨 자료</label>
-                    <div class="col">
-                      <div class="list_box">
-                        <div class="sum">등록 개수: 5개</div>
-                        <div class="list_area">
-                          <ul>
-                            <li>
-                              <span class="inst"></span>
-                              <span>자연수의 혼합 계산 영상1.mp4</span>
-                              <!-- [개발참조] 클릭 시 자료실 - 자료열람 팝업 -->
-                              <i class="btn icons_zoom_off"></i>
-                              <i class="btn icons_x_circle_off"></i>
-                            </li>
-                            <li>
-                              <span class="inst"></span>
-                              <span>자연수의 혼합 계산 영상1.mp4</span>
-                              <!-- [개발참조] 클릭 시 자료실 - 자료열람 팝업 -->
-                              <i class="btn icons_zoom_off"></i>
-                              <i class="btn icons_x_circle_off"></i>
-                            </li>
-                            <li>
-                              <span class="no_icon"
-                                >자연수의 혼합 계산 영상1.mp4</span
-                              >
-                              <!-- [개발참조] 클릭 시 자료실 - 자료열람 팝업 -->
-                              <i class="btn icons_zoom_off"></i>
-                              <i class="btn icons_x_circle_off"></i>
-                            </li>
-                            <li>
-                              <span class="inst"></span>
-                              <span>자연수의 혼합 계산 영상1.mp4</span>
-                              <!-- [개발참조] 클릭 시 자료실 - 자료열람 팝업 -->
-                              <i class="btn icons_zoom_off"></i>
-                              <i class="btn icons_x_circle_off"></i>
-                            </li>
-                            <li>
-                              <span class="fran"></span>
-                              <span>자연수의 혼합 계산 영상1.mp4</span>
-                              <!-- [개발참조] 클릭 시 자료실 - 자료열람 팝업 -->
-                              <i class="btn icons_zoom_off"></i>
-                              <i class="btn icons_x_circle_off"></i>
-                            </li>
-                            <li>
-                              <span class="inst"></span>
-                              <span>자연수의 혼합 계산 영상1.mp4</span>
-                              <!-- [개발참조] 클릭 시 자료실 - 자료열람 팝업 -->
-                              <i class="btn icons_zoom_off"></i>
-                              <i class="btn icons_x_circle_off"></i>
-                            </li>
-                            <li>
-                              <span class="fran"></span>
-                              <span>자연수의 혼합 계산 영상1.mp4</span>
-                              <!-- [개발참조] 클릭 시 자료실 - 자료열람 팝업 -->
-                              <i class="btn icons_zoom_off"></i>
-                              <i class="btn icons_x_circle_off"></i>
-                            </li>
-                            <li>
-                              <span class="inst"></span>
-                              <span>자연수의 혼합 계산 영상1.mp4</span>
-                              <!-- [개발참조] 클릭 시 자료실 - 자료열람 팝업 -->
-                              <i class="btn icons_zoom_off"></i>
-                              <i class="btn icons_x_circle_off"></i>
-                            </li>
-                            <li>
-                              <span class="fran"></span>
-                              <span>자연수의 혼합 계산 영상1.mp4</span>
-                              <!-- [개발참조] 클릭 시 자료실 - 자료열람 팝업 -->
-                              <i class="btn icons_zoom_off"></i>
-                              <i class="btn icons_x_circle_off"></i>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="">저장 경로</label>
-                    <div class="col">
-                      <input
-                        type="text"
-                        placeholder="저장할 폴더를 선택해 주세요"
-                        class="form-control form-inline front_button"
-                      />
-                      <button
-                        class="btn btn_crud_default"
-                        data-toggle="modal"
-                        data-target="#modalStoragepath"
-                      >
-                        찾아보기
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="">키워드</label>
-                    <div class="col">
-                      <input
-                        type="text"
-                        placeholder="키워드 입력 후 Enter 키를 입력해 주세요."
-                        class="form-control"
-                        value=""
-                      />
-                    </div>
-                  </div>
-
-                  <div class="check_sec">
-                    <span class="custom-control custom-checkbox form-inline">
-                      <input
-                        id="checkbox06"
-                        type="checkbox"
-                        class="custom-control-input"
-                        checked
-                      />
-                      <label
-                        class="custom-control-label checkbox06"
-                        for="checkbox06"
-                        >교육기관에 해당 자료를 공개합니다.</label
-                      >
-                    </span>
-                    <!-- [개발참조] 레슨수정시에는 미출력 -->
-                    <span class="custom-control custom-checkbox form-inline">
-                      <input
-                        id="checkbox07"
-                        type="checkbox"
-                        class="custom-control-input"
-                        checked
-                      />
-                      <label
-                        class="custom-control-label checkbox07"
-                        for="checkbox07"
-                        >계속 등록하기</label
-                      >
-                    </span>
-                  </div>
-                </div>
+                <RightSection
+                  :isChange="true"
+                  :lessonData="lessonItem"
+                  :pushKeyword="pushKeyword"
+                  @change-lesson="$emit('change-lesson', $event)"
+                  @add-lesson="$emit('add-lesson', $event)"
+                  @remove-lesson="$emit('remove-lesson', $event)"
+                  @changePushKeyword="$emit('changePushKeyword', $event)"
+                  @set-keyword="$emit('set-keyword', $event)"
+                  @delete-keyword="$emit('delete-keyword', $event)"
+                  @moreShowClick="$emit('open-reference', $event)"
+                />
                 <!-- /.오른쪽 영역 -->
               </div>
               <!-- /.2단 분류 컨텐츠 -->
@@ -469,17 +186,109 @@
 
 <script>
 import ModalHeader from '../../ModalHeader.vue'
+import TopNavigation from '~/components/lesson/lessonAdd/TopNavigaion.vue'
+import TreeView from '~/components/lesson/custom/CustomTreeView.vue'
+import RightSection from '~/components/lesson/lessonAdd/RightSection.vue'
 
 export default {
   name: 'LessonChangeModal',
-  components: { ModalHeader },
+  components: { ModalHeader, TopNavigation, TreeView, RightSection },
   props: {
     open: {
       type: Boolean,
       default: false,
     },
+    lessonItem: {
+      type: Object,
+      default: () => {},
+    },
+    identity: {
+      type: String,
+      default: '',
+    },
+    isLesson: {
+      type: Boolean,
+      default: false,
+    },
+    receiveInstitutionLessonData: {
+      type: Array,
+      default: () => [],
+    },
+    receiveFranchiseLessonData: {
+      type: Array,
+      default: () => [],
+    },
+    createLessonData: {
+      type: Object,
+      default: () => {},
+    },
+    receiveInstitutionData: {
+      type: Array,
+      default: () => [],
+    },
+    receiveFranchiseData: {
+      type: Array,
+      default: () => [],
+    },
+    pushKeyword: {
+      type: String,
+      default: '',
+    },
+  },
+  methods: {
+    moreShowClick(node) {
+      // console.log(`moreShowClick ${node}`)
+      this.$emit('open-reference', node)
+    },
   },
 }
 </script>
 
-<style></style>
+<style scoped>
+.divide_area.right .custom-control {
+  display: none;
+}
+#institutePop > .vtl,
+#institutePop1 > .vtl {
+  height: 349px;
+}
+
+#franchisePop > .vtl,
+#franchisePop1 > .vtl {
+  height: 349px;
+}
+
+#mydata > .vtl {
+  height: 80px;
+}
+
+#modalLessonRegi .divide_area > .tab-content {
+  height: 80px;
+  overflow: scroll;
+  margin-bottom: 18px;
+}
+
+.main > ul {
+  display: none;
+}
+
+#myTabContent {
+  padding: 30px 15px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+}
+
+#myTabContent {
+  height: 550px !important;
+}
+</style>
+<style>
+#myTabContent .icon_mp4_sm,
+#myTabContent .icon_pdf_sm,
+#myTabContent .icon_quiz_sm,
+#myTabContent .icon_exam_sm,
+#myTabContent .icon_youtube_sm,
+#myTabContent .icon_link_sm {
+  display: none;
+}
+</style>

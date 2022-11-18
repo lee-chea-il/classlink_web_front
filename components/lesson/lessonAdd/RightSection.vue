@@ -33,12 +33,12 @@
       <label for="">교육 목표</label>
       <div class="col">
         <CustomModalInput
-          id="educationalGoals"
+          id="role"
           name="교육 목표"
           placeholder="교육 목표를 입력해 주세요"
           rules="min:2|required"
           type="text"
-          :inputValue="lessonData.educationalGoals"
+          :inputValue="lessonData.role"
           @change-input="$emit('change-lesson', $event)"
         />
       </div>
@@ -49,7 +49,7 @@
         <div class="list_box">
           <div class="sum">
             등록 개수:
-            {{ lessonData.referenceList.length }}개
+            {{ lessonData.referenceList?.length }}개
           </div>
           <div class="list_area">
             <LessonTreeView
@@ -60,7 +60,6 @@
               :pidNum="20000"
               @add-lesson="$emit('add-lesson', $event)"
               @remove-lesson="$emit('remove-lesson', $event)"
-              @moreShowClick="$emit('moreShowClick', $event)"
             />
           </div>
         </div>
@@ -79,27 +78,15 @@
       />
     </div>
 
-    <div class="form-group">
-      <label for="">키워드</label>
-      <div id="inputBox" class="col">
-        <input
-          id="keyword"
-          class="form-control"
-          name="keyword"
-          placeholder="입력"
-          :value="pushKeyword"
-          @input="$emit('changePushKeyword', $event)"
-          @keyup.enter="$emit('set-keyword', $event)"
-        />
-        <CustomKeywordArea
-          :keyword="lessonData.keyword"
-          @delete-keyword="$emit('delete-keyword', $event)"
-        />
-        <span class="info">키워드는 엔터로 구분할 수 있습니다</span>
-      </div>
-    </div>
+    <CustomKeywordArea
+      :pushKeyword="pushKeyword"
+      :keyword="lessonData.keyword"
+      @changePushKeyword="$emit('changePushKeyword', $event)"
+      @set-keyword="$emit('set-keyword', $event)"
+      @delete-keyword="$emit('delete-keyword', $event)"
+    />
 
-    <div class="check_sec">
+    <div v-show="!isChange" class="check_sec">
       <span class="custom-control custom-checkbox form-inline">
         <input
           id="checkbox06"
@@ -149,6 +136,7 @@ export default {
   props: {
     lessonData: { type: Object, default: () => {} },
     pushKeyword: { type: String, default: '' },
+    isChange: { type: Boolean, default: false },
   },
 }
 </script>

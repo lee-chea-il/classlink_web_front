@@ -4,7 +4,7 @@
     <div class="col">
       <div class="list_box">
         <div class="sum">
-          등록 개수: <span>{{ reference.length }}</span
+          등록 개수: <span>{{ reference?.length }}</span
           >개
         </div>
         <div class="list_area">

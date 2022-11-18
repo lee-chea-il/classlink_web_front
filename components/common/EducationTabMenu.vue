@@ -35,7 +35,7 @@
 
 <script>
 export default {
-  name: 'TopNavigation',
+  name: 'EducationTabMenu',
 }
 </script>
 

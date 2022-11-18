@@ -185,11 +185,6 @@
                     @click-item="$emit('click-item', $event)"
                   />
                 </div>
-
-                <!-- <div class="filter_fifth">
-								<div class="title filter_name">키워드</div>
-								<input type="text" placeholder="추가할 키워드를 입력해 주세요" class="form-control form-inline filter_control">
-							</div> -->
               </div>
             </div>
           </div>

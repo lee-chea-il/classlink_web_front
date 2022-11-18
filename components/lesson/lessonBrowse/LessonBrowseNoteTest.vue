@@ -4,7 +4,6 @@
     <div class="thumb_box">
       <div class="title col-12">자료 열람</div>
       <NoteTestEditorField :reference="reference" :currentIdx="currentIdx" />
-
       <div class="page_thumb row">
         <PaginationField
           :length="reference.noteTestList?.length"

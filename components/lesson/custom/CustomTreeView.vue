@@ -16,7 +16,7 @@
     @more-menu-view="moreMenuView"
     @more-menu-dell="moreMenuDell"
     @more-menu-copy="copyData"
-    @drop-before="$emit('drop', $event)"
+    @drop-before="$emit('drop', $event, datas)"
   >
     <span slot="addTreeNodeIcon" class="icon">＋</span>
     <span slot="addLeafNodeIcon" class="icon"></span>
@@ -29,7 +29,7 @@
 <script>
 import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
 export default {
-  name: 'ReferenceTreeView',
+  name: 'CustomTreeView',
   components: {
     VueTreeList,
   },
@@ -65,15 +65,6 @@ export default {
       pid: this.pidNum,
     }
   },
-  // watch: {
-  //   datas: {
-  //     deep: true,
-  //     handler(newValue, oldValue) {
-  //       console.log(newValue)
-  //       this.$emit('drop', newValue)
-  //     },
-  //   },
-  // },
   mounted() {
     const dataMapping = (item, isReadOnly) => {
       const result = []
@@ -94,23 +85,17 @@ export default {
             isChecked: false,
 
             dragDisabled: isDragDisable,
-            subject: item[i].subject,
-            desc: item[i].desc,
-            keyword: item[i].keyword,
-            registrant: item[i].registrant,
-            savePath: item[i].savePath,
-            isOpenEducation: item[i].isOpenEducation,
-            isContinueRegister: item[i].isContinueRegister,
-            fileName: item[i].fileName,
-            fileDivision: item[i].fileDivision,
-            fileType: item[i].fileType,
-            uploadType: item[i].uploadType,
-            fileVolume: item[i].fileVolume,
-            createAt: item[i].createAt,
-            dbIdx: item[i].dbIdx,
             type: item[i].type,
-            quizList: item[i].quizList,
-            noteTestList: item[i].noteTestList,
+            title: item[i].title,
+            desc: item[i].desc,
+            role: item[i].role,
+            keyword: item[i].keyword,
+            isOpen: item[i].isOpen,
+            savePath: item[i].savePath,
+            createAt: item[i].createAt,
+            ragistrant: item[i].ragistrant,
+            subject: item[i].subject,
+            referenceList: item[i].referenceList,
           }
 
           this.pid++
@@ -124,23 +109,17 @@ export default {
             readOnly: isReadOnly,
             isChecked: false,
 
-            subject: item[i].subject,
-            desc: item[i].desc,
-            keyword: item[i].keyword,
-            registrant: item[i].registrant,
-            savePath: item[i].savePath,
-            isOpenEducation: item[i].isOpenEducation,
-            isContinueRegister: item[i].isContinueRegister,
-            fileName: item[i].fileName,
-            fileDivision: item[i].fileDivision,
-            fileType: item[i].fileType,
-            uploadType: item[i].uploadType,
-            fileVolume: item[i].fileVolume,
-            createAt: item[i].createAt,
-            dbIdx: item[i].dbIdx,
             type: item[i].type,
-            quizList: item[i].quizList,
-            noteTestList: item[i].noteTestList,
+            title: item[i].title,
+            desc: item[i].desc,
+            role: item[i].role,
+            keyword: item[i].keyword,
+            isOpen: item[i].isOpen,
+            savePath: item[i].savePath,
+            createAt: item[i].createAt,
+            ragistrant: item[i].ragistrant,
+            subject: item[i].subject,
+            referenceList: item[i].referenceList,
           }
           this.pid++
         }
@@ -368,7 +347,7 @@ export default {
 
     moreMenuView(node) {
       console.log(`view ${node}`)
-      this.$emit('file-view', node)
+      this.$emit('open-data', node)
       this.moreMenuClose()
     },
 

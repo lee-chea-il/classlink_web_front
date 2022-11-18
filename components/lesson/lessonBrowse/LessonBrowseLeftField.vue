@@ -1,21 +1,21 @@
 <template>
   <div class="divide_area left">
-    <CustomTitle title="제목" :value="lessonItem.title" />
-    <CustomTitle title="설명" :value="lessonItem.desc" />
-    <CustomTitle title="교육 목표" :value="lessonItem.role" />
+    <CustomTitle title="제목" :value="lessonItem?.title" />
+    <CustomTitle title="설명" :value="lessonItem?.desc" />
+    <CustomTitle title="교육 목표" :value="lessonItem?.role" />
 
     <LessonFileField
-      :reference="lessonItem.referenceList"
+      :reference="lessonItem?.referenceList"
       @select-reference="$emit('select-reference', $event)"
     />
 
-    <LessonKeywordField :keyword="lessonItem.keyword" />
+    <LessonKeywordField :keyword="lessonItem?.keyword" />
 
-    <CustomData title="구분" :value="lessonItem.type" :first="true" />
-    <CustomData title="과목" :value="lessonItem.subject" />
-    <CustomData title="등록자" :value="lessonItem.registrant" />
-    <CustomData title="등록일" :value="lessonItem.createAt" />
-    <CustomData title="저장 경로" :value="lessonItem.savePath" />
+    <CustomData title="구분" :value="lessonItem?.type" :first="true" />
+    <CustomData title="과목" :value="lessonItem?.subject" />
+    <CustomData title="등록자" :value="lessonItem?.registrant" />
+    <CustomData title="등록일" :value="lessonItem?.createAt" />
+    <CustomData title="저장 경로" :value="lessonItem?.savePath" />
 
     <span class="custom-control custom-checkbox form-inline div_cont">
       <input
@@ -23,8 +23,8 @@
         type="checkbox"
         class="custom-control-input"
         name="isOpen"
-        :value="lessonItem.isOpen"
-        :checked="lessonItem.isOpen"
+        :value="lessonItem?.isOpen"
+        :checked="lessonItem?.isOpen"
       />
       <label class="custom-control-label checkbox06" for="isOpen"
         >교육기관에 해당 자료를 공개합니다.</label

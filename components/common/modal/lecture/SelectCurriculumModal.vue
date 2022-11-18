@@ -67,84 +67,13 @@
                         role="tabpanel"
                         aria-labelledby="grade-tab"
                       >
-                        <ul>
-                          <li>
-                            <!-- 리스트01 -->
-                            <div class="list">
-                              <i
-                                id="show_sublist01"
-                                class="btn icons_arrow_r"
-                              ></i>
-                              <span class="text">국어</span>
-                              <i class="icons_plus_circle_off"></i>
-                            </div>
-                            <!-- 리스트01_sub-->
-                            <div
-                              id="list_sub01"
-                              class="list_sub"
-                              style="display: none"
-                            >
-                              <ul>
-                                <li>
-                                  <i
-                                    id="show_sublist01_sub"
-                                    class="btn icons_arrow_r"
-                                  ></i>
-                                  <span class="text">대단원1</span>
-                                  <i class="icons_plus_circle_off"></i>
-                                </li>
-                              </ul>
-                            </div>
-                            <!-- /.리스트01_sub-->
-                            <!-- 리스트01_sub_sub-->
-                            <div
-                              id="list_sub01_sub"
-                              class="list_sub_sub"
-                              style="display: none"
-                            >
-                              <ul>
-                                <li>
-                                  <span class="text">소단원1.link</span>
-                                  <i class="icons_plus_circle_off"></i>
-                                </li>
-                                <li>
-                                  <span class="text">소단원2.link</span>
-                                  <i class="icons_plus_circle_off"></i>
-                                </li>
-                              </ul>
-                            </div>
-                            <!-- /.리스트01_sub_sub-->
-                            <!-- /.리스트01 -->
-                          </li>
-                          <li>
-                            <!-- 리스트02 -->
-                            <div class="list">
-                              <i
-                                id="show_sublist02"
-                                class="btn icons_arrow_r"
-                              ></i>
-                              <span class="text">수학</span>
-                              <i class="icons_plus_circle_off"></i>
-                            </div>
-                            <div
-                              id="list_sub02"
-                              class="list_sub"
-                              style="display: none"
-                            >
-                              <ul>
-                                <li>
-                                  <i
-                                    id="show_sublist02_sub"
-                                    class="btn icons_arrow_r"
-                                  ></i>
-                                  <span class="text">자연수 I</span>
-                                  <i class="icons_plus_circle_off"></i>
-                                </li>
-                              </ul>
-                            </div>
-                            <!-- /.리스트02 -->
-                          </li>
-                        </ul>
+                        <CustomTreeView
+                          ref="institution"
+                          :dataList="curriculumList"
+                          :editable="false"
+                          identity="teacher"
+                          :pidNum="0"
+                        />
                       </div>
                       <!-- /.탭 내용01 -->
                     </div>
@@ -273,9 +202,30 @@
 </template>
 
 <script>
+import CustomTreeView from '../../custom/CustomTreeView.vue'
+
 export default {
   name: 'SelectCurriculumModal',
+  components: { CustomTreeView },
+  props: {
+    curriculumList: {
+      type: Array,
+      default: () => [],
+    },
+  },
 }
 </script>
-
-<style></style>
+<style scoped>
+#institute > .vtl {
+  height: 349px;
+}
+#franchise > .vtl {
+  height: 349px;
+}
+#mydata > .vtl {
+  height: 349px;
+}
+.main > ul {
+  display: none;
+}
+</style>
