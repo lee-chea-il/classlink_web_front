@@ -73,6 +73,7 @@ export default {
           break
         }
       }
+      this.checkLinkDataCnt()
     },
     unLinkData(listIdx){
       for(let i=0;i<this.datas.children.length;i++){
@@ -82,14 +83,63 @@ export default {
           break
         }
       }
+      this.checkLinkDataCnt()
+    },
+    checkLinkDataCnt(){
+      let cnt=0
+      for(let i=0;i<this.datas.children.length;i++){
+        if(this.datas.children[i].isLink){
+          cnt++
+        }
+      }
+      this.$emit('update-link-cnt', cnt)
+    },
+    unLinkAllItem(){
+      for(let i=0;i<this.datas.children.length;i++){
+        this.datas.children[i].isLink=false
+        this.datas.children[i].linkIdx=-1
+      }
+      this.$emit('update-link-cnt', 0)
     }
   },
 }
 </script>
 
 <style>
-
 #modalCuriRegi .form-inline{
   width:initial;
+}
+#modalCuriRegi .list_area .icon_institute{
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(~assets/images/icon_institute.png);
+}
+#modalCuriRegi .list_area .icon_fran {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(~assets/images/icon_fran.png);
+}
+#modalCuriRegi .list_area .icon_mydata {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(~assets/images/icon_mydata.png);
 }
 </style>

@@ -152,254 +152,49 @@
         <!-- /.2단 분류 컨텐츠 -->
       </div>
     </div>
-    <CurriculumUpdateModal />
+    <CurriculumUpdateModal
+      ref="curriculumUpdateModal"
+      @open-file-path="()=>{isShowOpenPathModal=true}"
+      @open-save-path="()=>{isShowSavePathModal=true}"
+    />
+    <OpenSearchFileModal
+      :open="isShowOpenPathModal"
+      :institutionData="receiveInstitutionLessonData"
+      :franchiseData="receiveFranchiseLessonData"
+      :myData="receiveLessonList"
+      @close="()=>{isShowOpenPathModal=false}"
+      @open-file-info="openFileInfo"
+    />
+    <SavePathSearchModal
+      :open="isShowSavePathModal"
+      :institutionData="receiveInstitutionData"
+      :franchiseData="receiveFranchiseData"
+      :myData="receiveCurriculumData"
+      @close="()=>{isShowSavePathModal=false}"
+      @save-file-path="saveFilePath"
+    />
   </div>
 </template>
 
 <script>
 import PageHeader from '~/components/common/PageHeader.vue'
 import TreeView from '@/components/common/custom/CustomTreeView.vue'
+import initialState from '~/data/curriculum/initialState'
 import CurriculumUpdateModal from '@/components/common/modal/curriculum/CurriculumUpdateModal.vue'
+import SavePathSearchModal from '@/components/common/modal/curriculum/SavePathSearchModal.vue'
+import OpenSearchFileModal from '@/components/common/modal/curriculum/openSearchFileModal.vue'
 
 export default {
   name: 'MyCurriculum',
-  components: { PageHeader, TreeView, CurriculumUpdateModal },
+  components: {
+    PageHeader,
+    TreeView,
+    CurriculumUpdateModal,
+    SavePathSearchModal,
+    OpenSearchFileModal
+  },
   data() {
-    return {
-      /*
-      master,teacher
-      */
-      identity: 'teacher',
-      copyCheckData: [],
-      receiveInstitutionData: [
-        {
-          name: '마포 학원',
-          children: [
-            {
-              name: '국어',
-              children: [
-                {
-                  name: '1단원',
-                  children: [
-                    {
-                      name: '화법과 작문1.link',
-                      type: 'institution',
-                      dbIdx: 1,
-                    },
-                    {
-                      name: '화법과 작문2.link',
-                      type: 'institution',
-                      dbIdx: 2,
-                    },
-                    {
-                      name: '화법과 작문3.link',
-                      type: 'institution',
-                      dbIdx: 3,
-                    },
-                    {
-                      name: '화법과 작문4.link',
-                      type: 'institution',
-                      dbIdx: 4,
-                    },
-                  ],
-                },
-                {
-                  name: '2단원',
-                  children: [
-                    {
-                      name: '법과 작문1.link',
-                      type: 'institution',
-                      dbIdx: 5,
-                    },
-                    {
-                      name: '법과 작문2.link',
-                      type: 'institution',
-                      dbIdx: 6,
-                    },
-                    {
-                      name: '법과 작문3.link',
-                      type: 'institution',
-                      dbIdx: 7,
-                    },
-                    {
-                      name: '법과 작문4.link',
-                      type: 'institution',
-                      dbIdx: 8,
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              name: '수학',
-              children: [
-                {
-                  name: '1단원',
-                  children: [
-                    {
-                      name: '삼각함수1.link',
-                      type: 'institution',
-                      dbIdx: 1,
-                    },
-                    {
-                      name: '삼각함수2.link',
-                      type: 'institution',
-                      dbIdx: 2,
-                    },
-                    {
-                      name: '삼각함수3.link',
-                      type: 'institution',
-                      dbIdx: 3,
-                    },
-                    {
-                      name: '삼각함수4.link',
-                      type: 'institution',
-                      dbIdx: 4,
-                    },
-                  ],
-                },
-                {
-                  name: '2단원',
-                  children: [
-                    {
-                      name: '2차 방정식1.link',
-                      type: 'institution',
-                      dbIdx: 5,
-                    },
-                    {
-                      name: '2차 방정식2.link',
-                      type: 'institution',
-                      dbIdx: 6,
-                    },
-                    {
-                      name: '2차 방정식3.link',
-                      type: 'institution',
-                      dbIdx: 7,
-                    },
-                    {
-                      name: '2차 방정식4.link',
-                      type: 'institution',
-                      dbIdx: 8,
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      receiveFranchiseData: [
-        {
-          name: '서울 학원',
-          children: [
-            {
-              name: '과학',
-              children: [
-                {
-                  name: '1단원',
-                  children: [
-                    {
-                      name: '일산화탄소1.link',
-                      type: 'franchise',
-                      dbIdx: 1,
-                    },
-                    {
-                      name: '일산화탄소2.link',
-                      type: 'franchise',
-                      dbIdx: 2,
-                    },
-                    {
-                      name: '일산화탄소3.link',
-                      type: 'franchise',
-                      dbIdx: 3,
-                    },
-                    {
-                      name: '일산화탄소4.link',
-                      type: 'franchise',
-                      dbIdx: 4,
-                    },
-                  ],
-                },
-                {
-                  name: '2단원',
-                  children: [
-                    {
-                      name: '이산화탄소1.link',
-                      type: 'franchise',
-                      dbIdx: 5,
-                    },
-                    {
-                      name: '이산화탄소2.link',
-                      type: 'franchise',
-                      dbIdx: 6,
-                    },
-                    {
-                      name: '이산화탄소3.link',
-                      type: 'franchise',
-                      dbIdx: 7,
-                    },
-                    {
-                      name: '이산화탄소4.link',
-                      type: 'franchise',
-                      dbIdx: 8,
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      receiveCurriculumData: [
-        {
-          name: '국어',
-          children: [
-            {
-              name: '1단원',
-              children: [
-                {
-                  name: '사투리 작문1.link',
-                  type: 'institution',
-                },
-                {
-                  name: '사투리 작문2.link',
-                  type: 'franchise',
-                },
-              ],
-            },
-            {
-              name: '2단원',
-              children: [
-                {
-                  name: '부산 사투리 작문1.link',
-                  type: 'curriculum',
-                },
-                {
-                  name: '부산 사투리 작문2.link',
-                  type: 'institution',
-                },
-                {
-                  name: '부산 사투리 작문2.link',
-                  type: 'franchise',
-                },
-                {
-                  name: '부산 사투리 작문2.link',
-                  type: 'institution',
-                },
-                {
-                  name: '부산 사투리 작문2.link',
-                  type: 'franchise',
-                },
-                {
-                  name: '네이버란.link',
-                  type: 'curriculum',
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    }
+    return initialState()
   },
   methods: {
     copyData() {
@@ -420,6 +215,14 @@ export default {
       this.copyCheckData = copyData
       console.log(this.copyCheckData)
     },
+    saveFilePath(pathInfo){
+      this.$refs.curriculumUpdateModal.setSavePath(pathInfo)
+      this.isShowSavePathModal=false
+    },
+    openFileInfo(info){
+      console.log('--------------------------------')
+      console.log(info)
+    }
   },
 }
 </script>

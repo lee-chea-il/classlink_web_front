@@ -85,6 +85,9 @@
       },
       linkData(linkListIdx,imgIdx){
         const len=this.dataList.length
+        const moveX=imgIdx*-80
+        $(".swiper-wrapper").css({"transform":`translate3d(${moveX}px, 0px, 0px)`})
+
         for (let i = 0; i < len; i++) {
           if(this.dataList[i].imgIdx===imgIdx){
             this.dataList[i].linkListIdx=linkListIdx
@@ -115,6 +118,14 @@
           this.dataList[imgIdx].linkListIdx=-1
           this.$emit('unLink-event',tIdx,imgIdx)
         }
+      },
+      unLinkAllItem(){
+        const len=this.dataList.length
+        for (let i = 0; i < len; i++) {
+          this.dataList[i].linkListIdx=-1
+          const target=$("#imgIcon"+i).find("img")
+          target.attr({"src":this.dataList[i].icon_dim_url})
+        }
       }
     }
   }
@@ -141,8 +152,5 @@
   background-position: center center;
   margin-right:initial;
   background-image:initial;
-}
-.modal_curiregi .swiper-scrollbar{
-  opacity: 1 !important;
 }
 </style>

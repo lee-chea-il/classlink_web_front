@@ -40,7 +40,7 @@
                     CW 교실
                     <div class="dropdown form-inline">
                       <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-                        교실선택
+                        {{currentClassName}}
                       </button>
                       <div class="dropdown-menu">
                         <a 
@@ -87,9 +87,11 @@
                     <div class="col">
                       <div class="input_file">
                         <input id="fileName" type="text" class="file_input_textbox" readonly >
-                        <div class="file_input_div" @click.stop.prevent="selectLessonData">
+                        <div
+                          class="file_input_div"
+                          @click="()=>{$emit('open-file-path')}"
+                        >
                           <button class="btn btn_crud_default">찾아보기</button>
-                          <input type="file" name="file_1" class="file_input_hidden" onchange="javascript: document.getElementById('fileName').value = this.value"/>
                         </div>
                       </div>
                     </div>
@@ -116,26 +118,28 @@
                     <label for="" style="place-self: flex-start">레슨 자료</label>
                     <div class="col">
                       <div class="list_box">
-                        <!-- 자료가 없을 경우 텍스트
-                        <div class="nothing_txt">
+                        <div v-if="lessonDataList.title===undefined" class="nothing_txt">
                           현재 불러온 레슨이 없습니다.
-                        </div>-->  	
-
-                        <div class="section">
+                        </div>
+                        <div v-else class="section">
                           <span class="custom-control custom-checkbox form-inline checkbox00">
                             <input id="checkbox01" type="checkbox" class="custom-control-input">
                             <label class="custom-control-label checkbox01" for="checkbox01"></label>
                           </span>
                           <!-- 커리큘럼 등록 시 출력됨 -->
-                          <span class="sum">연결 개수: 1개</span>
-                          <button class="btn btn_crud_default cancel">전체 해제</button>
-                          <!-- 커리큘럼 수정 시 출력됨
-                          <button class="btn btn_crud_default cancel">초기화</button> -->
+                          <span v-if="!isUpdate" class="sum">연결 개수: {{linkDataCnt}}개</span>
+                          <button
+                            class="btn btn_crud_default cancel"
+                            @click="unLinkAllItem"
+                          >전체 해제</button>
+                          <!-- 커리큘럼 수정 시 출력됨 -->
+                          <button v-if="isUpdate" class="btn btn_crud_default cancel">초기화</button>
                         </div>
                         <div class="list_area">
                           <CustomListView
                             ref="listView"
                             :pidNum="3000"
+                            @update-link-cnt="updateLinkCnt"
                           />
                         </div>
                       </div>
@@ -144,8 +148,18 @@
                   <div class="form-group">
                     <label for="">저장 경로</label>
                     <div class="col">
-                      <input type="text" placeholder="저장할 폴더를 선택해 주세요" class="form-control form-inline front_button">
-                      <button class="btn btn_crud_default" data-toggle="modal" data-target="#modalStoragepath">찾아보기</button> 
+                      <input
+                        id="inputSavePathTxt"
+                        type="text"
+                        placeholder="저장할 폴더를 선택해 주세요"
+                        class="form-control form-inline front_button"
+                      >
+                      <button
+                        class="btn btn_crud_default"
+                        data-toggle="modal"
+                        data-target="#modalStoragepath"
+                        @click="()=>{$emit('open-save-path')}"
+                      >찾아보기</button> 
                     </div>
                   </div>
 
@@ -167,11 +181,11 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn_crud_point">등록</button>
-            <button class="btn btn_crud_default" data-dismiss="modal">취소</button>
+            <button v-if="!isUpdate" class="btn btn_crud_point">등록</button>
+            <button v-if="!isUpdate" class="btn btn_crud_default" data-dismiss="modal">취소</button>
             <!-- [개발참조] 커리큘럼 수정 시 출력되는 버튼 -->
-            <!-- <button class="btn btn_crud_point">수정</button>
-            <button class="btn btn_crud_danger" data-dismiss="modal">삭제</button> -->
+            <button v-if="isUpdate" class="btn btn_crud_point">수정</button>
+            <button v-if="isUpdate" class="btn btn_crud_danger" data-dismiss="modal">삭제</button>
           </div>
         </div>
       </div>
@@ -180,6 +194,7 @@
 </template>
 
 <script>
+import $ from 'jquery'
 import CustomListView from '@/components/common/custom/CustomListView.vue'
 import CustomImgListView from '@/components/common/custom/CustomImgListView.vue'
 import CustomCurriculumSwiper from '@/components/common/custom/CustomCurriculumSwiper.vue'
@@ -201,13 +216,20 @@ export default {
       type: String,
       default: '',
     },
+    isUpdate: Boolean,
   },
   data() {
     return {
       dropMenuList: [],
       dropMenuListData: [],
       cwData: null,
-      lessonDataList:{}
+      lessonDataList:{},
+      linkDataCnt:0,
+      currentClassName:'교실선택',
+      savePathInfo:{
+        path: '',
+        type: ''
+      }
     }
   },
   mounted() {
@@ -1247,27 +1269,513 @@ export default {
         codeNum:'CW_002',
         name:'CW_002',
         data: {
-          backImg_url: require('@/assets/images/cw/type1/cw_bg_guide.png'),
+          backImg_url: require('@/assets/images/cw/type2/cw_class_bg.png'),
           interactionObjects:[
             {
-              nomal_url: require('@/assets/images/cw/type1/object/101.png'),
-              over_url: require('@/assets/images/cw/type1/object/over/101.png'),
-              icon_normal_url: require('@/assets/images/cw/type1/icon/4.png'),
-              icon_dim_url: require('@/assets/images/cw/type1/icon/4.png'),
+              nomal_url: require('@/assets/images/cw/type2/object/40.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/40.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/40.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/40_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
               imgIdx: 0,
-              left:18,
-              top:56,
-              height:319
+              left:88,
+              top:10
             },
             {
-              nomal_url: require('@/assets/images/cw/type1/object/99.png'),
-              over_url: require('@/assets/images/cw/type1/object/over/99.png'),
-              icon_normal_url: require('@/assets/images/cw/type1/icon/4.png'),
-              icon_dim_url: require('@/assets/images/cw/type1/icon/4.png'),
+              nomal_url: require('@/assets/images/cw/type2/object/186.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/186.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/186.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/186_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
               imgIdx: 1,
+              left:63,
+              top:72
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/185.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/185.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/185.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/185_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 2,
+              left:192,
+              top:72
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/186_2.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/186_2.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/186.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/186_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 3,
+              left:365,
+              top:72
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/58.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/58.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/58.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/58_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 4,
+              left:-5,
+              top:105
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/52.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/52.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/52.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/52_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 5,
+              left:271,
+              top:154
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/202_1.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/202_1.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/202.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/202_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 6,
+              left:117,
+              top:276
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/47_3.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/47_3.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/47.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/47_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 7,
+              left:136,
+              top:246
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/35_5.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/35_5.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/35.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/35_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 8,
+              left:170,
+              top:273
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/4_1.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/4_1.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/4.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/4_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 9,
+              left:193,
+              top:272
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/33_5.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/33_5.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/33.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/33_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 10,
+              left:213,
+              top:244
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/35_1.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/35_1.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/35.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/35_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 11,
+              left:316,
+              top:246
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/33_4.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/33_4.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/33.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/33_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 12,
+              left:330,
+              top:273
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/202_2.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/202_2.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/202.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/202_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 13,
+              left:341,
+              top:247
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/4_2.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/4_2.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/4.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/4_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 14,
+              left:384,
+              top:277
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/47_2.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/47_2.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/47.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/47_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 15,
+              left:399,
+              top:242
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/33_6.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/33_6.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/33.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/33_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 16,
+              left:137,
+              top:380
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/184_1.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/184_1.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/184.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/184_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 17,
+              left:165,
+              top:377
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/35_6.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/35_6.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/35.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/35_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 18,
+              left:202,
+              top:355
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/184_2.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/184_2.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/184.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/184_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 19,
+              left:318,
+              top:377
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/35_2.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/35_2.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/35.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/35_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 20,
+              left:329,
+              top:355
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/33_4.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/33_4.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/33.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/33_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 21,
+              left:364,
+              top:373
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/48_1.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/48_1.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/48.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/48_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 22,
+              left:387,
+              top:352
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/202_3.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/202_3.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/202.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/202_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 23,
+              left:388,
+              top:386
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/4_4.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/4_4.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/4.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/4_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 24,
+              left:112,
+              top:489
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/202_4.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/202_4.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/202.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/202_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 25,
+              left:133,
+              top:461
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/48_3.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/48_3.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/48.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/48_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 26,
+              left:175,
+              top:484
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/33_7.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/33_7.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/33.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/33_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 27,
+              left:205,
+              top:460
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/35_8.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/35_8.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/35.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/35_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 28,
+              left:211,
+              top:488
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/33_6.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/33_6.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/33.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/33_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 29,
+              left:313,
+              top:480
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/4.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/4.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/4.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/4_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 30,
+              left:334,
+              top:492
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/202_5.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/202_5.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/202.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/202_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 31,
+              left:366,
+              top:463
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/47_1.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/47_1.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/47.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/47_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 32,
+              left:371,
+              top:493
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/35_3.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/35_3.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/35.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/35_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 33,
+              left:409,
+              top:458
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/33_8.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/33_8.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/33.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/33_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 34,
+              left:131,
+              top:569
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/47_4.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/47_4.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/47.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/47_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 35,
               left:160,
-              top:56,
-              height:179
+              top:598
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/35_7.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/35_7.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/35.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/35_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 36,
+              left:187,
+              top:575
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/35_4.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/35_4.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/35.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/35_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 37,
+              left:310,
+              top:572
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/184_3.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/184_3.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/184.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/184_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 38,
+              left:323,
+              top:592
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/48_2.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/48_2.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/48.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/48_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 39,
+              left:365,
+              top:583
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/33_1.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/33_1.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/33.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/33_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 40,
+              left:403,
+              top:568
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/22_1.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/22_1.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/22.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/22_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 41,
+              left:1,
+              top:365
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/22_2.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/22_2.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/22.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/22_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 42,
+              left:1,
+              top:551
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/57_2.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/57_2.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/57.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/57_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 43,
+              left:57,
+              top:331
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/57_3.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/57_3.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/57.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/57_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 44,
+              left:57,
+              top:520
+            },
+            {
+              nomal_url: require('@/assets/images/cw/type2/object/57_1.png'),
+              over_url: require('@/assets/images/cw/type2/object/over/57_1.png'),
+              icon_normal_url: require('@/assets/images/cw/type2/icon/57.png'),
+              icon_dim_url: require('@/assets/images/cw/type2/icon/dim/57_dim.png'),
+              linkListIdx: -1,
+              lessonData:{},
+              imgIdx: 45,
+              left:466,
+              top:376
             }
           ]
         }
@@ -1287,6 +1795,7 @@ export default {
           break
         }
       }
+      this.currentClassName=value
       if(this.cwData){
         this.$refs.imgListView.setData(this.cwData.data)
         this.$refs.imgListViewSwiper.setData(this.cwData.data.interactionObjects)
@@ -1419,6 +1928,18 @@ export default {
         ],
       }
       this.$refs.listView.setDataList(this.lessonDataList)
+    },
+    updateLinkCnt(cnt){
+      this.linkDataCnt=cnt
+    },
+    unLinkAllItem(){
+      this.$refs.listView.unLinkAllItem()
+      this.$refs.imgListView.unLinkAllItem()
+      this.$refs.imgListViewSwiper.unLinkAllItem()
+    },
+    setSavePath(pathInfo){
+      this.savePathInfo=pathInfo
+      $("#inputSavePathTxt").val(this.savePathInfo.path)
     }
   }
 }
@@ -1455,5 +1976,8 @@ export default {
 }
 #modalCuriRegi .modal_curiregi .divide_area.right .list_box .vtl-node-main .custom-control-label::after{
   margin: -8px 0px 0px 15px;
+}
+#modalCuriRegi{
+  pointer-events: none;
 }
 </style>
