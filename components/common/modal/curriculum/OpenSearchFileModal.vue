@@ -69,11 +69,11 @@
                 aria-labelledby="grade-tab"
               >
                 <CustomOpenFileListTreeView
-                  ref="institutionFolderView"
+                  ref="institutionFileView"
                   :dataList="institutionData"
                   :expanded="true"
                   :pidNum="5100"
-                  @folder-click="folderClickInsti"
+                  @file-click="fileClickInsti"
                 />
               </div>
               <!-- /.탭01 내용 -->
@@ -85,11 +85,11 @@
                 aria-labelledby="class-tab"
               >
                 <CustomOpenFileListTreeView
-                  ref="franchiseFolderView"
+                  ref="franchiseFileView"
                   :dataList="franchiseData"
                   :expanded="true"
                   :pidNum="7100"
-                  @folder-click="folderClickFran"
+                  @file-click="fileClickFran"
                 />
               </div>
               <!-- /.탭02 내용 -->
@@ -101,11 +101,11 @@
                 aria-labelledby="class-tab"
               >
                 <CustomOpenFileListTreeView
-                  ref="myDataFolderView"
+                  ref="myDataFileView"
                   :dataList="myData"
                   :expanded="true"
                   :pidNum="10100"
-                  @folder-click="folderClickMyData"
+                  @file-click="fileClickMyData"
                 />
               </div>
               <!-- /.탭02 내용 -->
@@ -113,7 +113,7 @@
             <!-- /.탭 컨텐츠 -->
             <div class="select_path">
               <span class="tit">선택폴더</span>
-              <span>{{ folderInfo.path }}</span>
+              <span>{{ openFileInfo.path }}</span>
             </div>
             <div class="file_name">
               <div class="form-group">
@@ -125,7 +125,7 @@
                   type="text"
                   class="form-control form-inline savePathInput"
                   placeholder="파일을 선택해 주세요"
-                  value=""
+                  :value="openFileInfo.data.name"
                 />
               </div>
             </div>
@@ -190,21 +190,24 @@ export default {
       openFileInfo: {
         path: '',
         type: '',
-        data: '',
+        data: {},
       },
     }
   },
   methods: {
-    folderClickInsti(pathInfo) {
+    fileClickInsti(pathInfo,fileInfo) {
       this.openFileInfo.path = pathInfo
+      this.openFileInfo.data=fileInfo
       this.openFileInfo.type = 'institution'
     },
-    folderClickFran(pathInfo) {
+    fileClickFran(pathInfo,fileInfo) {
       this.openFileInfo.path = pathInfo
+      this.openFileInfo.data=fileInfo
       this.openFileInfo.type = 'franchise'
     },
-    folderClickMyData(pathInfo) {
+    fileClickMyData(pathInfo,fileInfo) {
       this.openFileInfo.path = pathInfo
+      this.openFileInfo.data=fileInfo
       this.openFileInfo.type = 'curriculum'
     },
     saveOpenFileInfo() {
