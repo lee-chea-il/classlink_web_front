@@ -219,9 +219,9 @@ export default {
       this.$refs.curriculumUpdateModal.setSavePath(pathInfo)
       this.isShowSavePathModal=false
     },
-    openFileInfo(info){
-      console.log('--------------------------------')
-      console.log(info)
+    openFileInfo(fileInfo){
+      this.$refs.curriculumUpdateModal.setFileInfo(fileInfo)
+      this.isShowOpenPathModal=false
     }
   },
 }

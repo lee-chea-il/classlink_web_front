@@ -73,7 +73,7 @@
                   :dataList="institutionData"
                   :expanded="true"
                   :pidNum="5100"
-                  @folder-click="folderClickInsti"
+                  @file-click="fileClickInsti"
                 />
               </div>
               <!-- /.탭01 내용 -->
@@ -89,7 +89,7 @@
                   :dataList="franchiseData"
                   :expanded="true"
                   :pidNum="7100"
-                  @folder-click="folderClickFran"
+                  @file-click="fileClickFran"
                 />
               </div>
               <!-- /.탭02 내용 -->
@@ -105,7 +105,7 @@
                   :dataList="myData"
                   :expanded="true"
                   :pidNum="10100"
-                  @folder-click="folderClickMyData"
+                  @file-click="fileClickMyData"
                 />
               </div>
               <!-- /.탭02 내용 -->
@@ -113,7 +113,7 @@
             <!-- /.탭 컨텐츠 -->
             <div class="select_path">
               <span class="tit">선택폴더</span>
-              <span>{{folderInfo.path}}</span>
+              <span>{{openFileInfo.path}}</span>
             </div>
             <div class="file_name">
               <div class="form-group">
@@ -191,20 +191,25 @@ export default {
     }
   },
   methods: {
-    folderClickInsti(pathInfo){
+    fileClickInsti(pathInfo,fileInfo){
       this.openFileInfo.path=pathInfo
       this.openFileInfo.type='institution'
+      this.openFileInfo.data=fileInfo
+      $("#inputOpenPath").val(this.openFileInfo.data.name)
     },
-    folderClickFran(pathInfo){
+    fileClickFran(pathInfo,fileInfo){
       this.openFileInfo.path=pathInfo
       this.openFileInfo.type='franchise'
+      this.openFileInfo.data=fileInfo
+      $("#inputOpenPath").val(this.openFileInfo.data.name)
     },
-    folderClickMyData(pathInfo){
+    fileClickMyData(pathInfo,fileInfo){
       this.openFileInfo.path=pathInfo
       this.openFileInfo.type='curriculum'
+      this.openFileInfo.data=fileInfo
+      $("#inputOpenPath").val(this.openFileInfo.data.name)
     },
     saveOpenFileInfo(){
-      this.openFileInfo.fileName=$("#inputOpenPath").val()
       this.$emit("open-file-info",this.openFileInfo)
     }
   }

@@ -114,10 +114,12 @@ export default {
       $('#imgListView_'+imgIdx).find('img').css('opacity',0.3)
     },
     unLinkAllItem(){
-      for(let i=0;i<this.datas.children.length;i++){
-        this.datas.children[i].isLink=false
-        this.datas.children[i].linkListIdx=-1
-        $('#imgListView_'+i).find('img').css('opacity',0.3)
+      if(this.datas.children){
+        for(let i=0;i<this.datas.children.length;i++){
+          this.datas.children[i].isLink=false
+          this.datas.children[i].linkListIdx=-1
+          $('#imgListView_'+i).find('img').css('opacity',0.3)
+        }
       }
     }
   }

@@ -95,9 +95,11 @@ export default {
       this.$emit('update-link-cnt', cnt)
     },
     unLinkAllItem(){
-      for(let i=0;i<this.datas.children.length;i++){
-        this.datas.children[i].isLink=false
-        this.datas.children[i].linkIdx=-1
+      if(this.datas.children){
+        for(let i=0;i<this.datas.children.length;i++){
+          this.datas.children[i].isLink=false
+          this.datas.children[i].linkIdx=-1
+        }
       }
       this.$emit('update-link-cnt', 0)
     }

@@ -485,7 +485,7 @@ export default function initialState() {
                     referenceList: [
                       {
                         id: 0,
-                        name: '국어학습자료 애니메이션.mp4',
+                        name: '미술학습자료 애니메이션.mp4',
                         subject: '국어',
                         desc: '등록한 자료 1',
                         keyword: ['국어', '수학'],

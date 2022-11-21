@@ -86,7 +86,7 @@
                     <label for="">불러오기</label>
                     <div class="col">
                       <div class="input_file">
-                        <input id="fileName" type="text" class="file_input_textbox" readonly >
+                        <input id="openFileNameTxt" type="text" class="file_input_textbox" readonly >
                         <div
                           class="file_input_div"
                           @click="()=>{$emit('open-file-path')}"
@@ -229,7 +229,8 @@ export default {
       savePathInfo:{
         path: '',
         type: ''
-      }
+      },
+      fileInfo: {}
     }
   },
   mounted() {
@@ -1815,120 +1816,6 @@ export default {
       this.$refs.listView.unLinkData(listIdx)
       this.$refs.imgListView.unLinkData(imgIdx)
     },
-    selectLessonData(){
-      this.lessonDataList={
-        title: '3-1반 수업',
-        desc: '3-1반 전체 수업 내용',
-        role: '3-1반 학생들의 평균적인 이해를 도와줄 수 있다.',
-        keyword: ['국어', '수학', '영어', '사회'],
-        isOpen: true,
-        type: '프랜차이즈',
-        savePath: '수학>대단원>피타고라스',
-        createAt: '2022.05.03',
-        ragistrant: '홍길남',
-        subject: '수학',
-        referenceList: [
-          {
-            id: 0,
-            name: '국어학습자료 애니메이션.mp4',
-            subject: '국어',
-            desc: '등록한 자료 1',
-            keyword: ['국어', '수학'],
-            registrant: '등록인',
-            savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
-            isOpenEducation: true,
-            isContinueRegister: true,
-            fileName: '',
-            fileDivision: '교육기관',
-            fileType: 'video/mp4',
-            uploadType: 'video',
-            fileVolume: '',
-            createAt: '',
-            dbIdx: 1,
-            type: 'institution',
-          },
-          {
-            id: 1,
-            name: '수학 학습자료.pdf',
-            subject: '수학',
-            desc: '등록한 자료 2',
-            keyword: ['국어', '수학'],
-            registrant: '등록인',
-            savePath:
-              'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
-            isOpenEducation: true,
-            isContinueRegister: true,
-            fileName: '',
-            fileDivision: '교육기관',
-            fileType: 'application/pdf',
-            uploadType: 'pdf',
-            fileVolume: '',
-            createAt: '',
-            isLeaf: false,
-            dbIdx: 2,
-            type: 'franchise',
-          },
-          {
-            id: 2,
-            name: '국어 애니메이션.mp4',
-            subject: '국어',
-            desc: '등록한 자료 222',
-            keyword: ['국어', '수학'],
-            registrant: '등록인',
-            savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
-            isOpenEducation: true,
-            isContinueRegister: true,
-            fileName: '',
-            fileDivision: '교육기관',
-            fileType: 'video/mp4',
-            uploadType: 'video',
-            fileVolume: '',
-            createAt: '',
-            dbIdx: 1,
-            type: 'institution',
-          },
-          {
-            id: 3,
-            name: '수학 애니메이션.mp4',
-            subject: '국어',
-            desc: '등록한 자료 222',
-            keyword: ['국어', '수학'],
-            registrant: '등록인',
-            savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
-            isOpenEducation: true,
-            isContinueRegister: true,
-            fileName: '',
-            fileDivision: '교육기관',
-            fileType: 'video/mp4',
-            uploadType: 'video',
-            fileVolume: '',
-            createAt: '',
-            dbIdx: 1,
-            type: 'institution',
-          },
-          {
-            id: 4,
-            name: '영어 애니메이션.mp4',
-            subject: '국어',
-            desc: '등록한 자료 222',
-            keyword: ['국어', '수학'],
-            registrant: '등록인',
-            savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
-            isOpenEducation: true,
-            isContinueRegister: true,
-            fileName: '',
-            fileDivision: '교육기관',
-            fileType: 'video/mp4',
-            uploadType: 'video',
-            fileVolume: '',
-            createAt: '',
-            dbIdx: 1,
-            type: 'institution',
-          }
-        ],
-      }
-      this.$refs.listView.setDataList(this.lessonDataList)
-    },
     updateLinkCnt(cnt){
       this.linkDataCnt=cnt
     },
@@ -1940,6 +1827,13 @@ export default {
     setSavePath(pathInfo){
       this.savePathInfo=pathInfo
       $("#inputSavePathTxt").val(this.savePathInfo.path)
+    },
+    setFileInfo(fileInfo){
+      this.unLinkAllItem()
+      this.fileInfo=fileInfo
+      this.lessonDataList=fileInfo.data
+      $("#openFileNameTxt").val(this.fileInfo.path+' > '+this.fileInfo.data.name)
+      this.$refs.listView.setDataList(this.lessonDataList)
     }
   }
 }

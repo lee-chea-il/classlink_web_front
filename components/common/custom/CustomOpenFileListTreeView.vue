@@ -38,29 +38,27 @@ export default {
       const result = []
       const len = item.length
       for (let i = 0; i < len; i++) {
+        const cNode = {}
+        const tNode = item[i]
+        for (const k in tNode) {
+          cNode[k] = tNode[k]
+        }
+        cNode.id="file"+this.pid
+        cNode.pid=this.pid
+        cNode.readOnly=isReadOnly
+        cNode.isChecked=false
+
         if (item[i].children !== undefined) {
-          result[i] = {
-            name: item[i].name,
-            id: "file"+this.pid,
-            isLeaf: false,
-            pid: this.pid,
-            children: [],
-            readOnly: isReadOnly,
-            isChecked: false,
-            type: item[i].type,
-          }
+          cNode.isLeaf=false
+          cNode.children=[]
+
+          result[i] = cNode
           this.pid++
           result[i].children = dataMapping(item[i].children, isReadOnly)
         } else {
-          result[i] = {
-            name: item[i].name,
-            id: "file"+this.pid,
-            pid: this.pid,
-            isLeaf: true,
-            readOnly: isReadOnly,
-            isChecked: false,
-            type: item[i].type,
-          }
+          cNode.isLeaf=true
+
+          result[i] = cNode
           this.pid++
         }
       }
@@ -76,15 +74,19 @@ export default {
       $(".vtl-node-main").removeClass("active")
       $("#"+params.id).find('.vtl-node-main').addClass("active")
 
-      let path = params.name
+      let path = ''
       const getParentName = (item) => {
         if(item.name!=='root'){
-          path = item.name + ' > ' +path
+          if(path===''){
+            path = item.name
+          }else{
+            path = item.name + ' > ' +path
+          }
           getParentName(item.parent)
         }
       }
-      getParentName(params.parent)
-      this.$emit('file-click',path)
+      getParentName(params.parent,true)
+      this.$emit('file-click',path,params)
     },
   }
 }
