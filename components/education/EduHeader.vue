@@ -168,10 +168,27 @@
             >
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">출결</a>
+            <NuxtLink
+              class="nav-link"
+              :class="{
+                'nav-link': true,
+                active: $route.fullPath.includes('/management/attendance'),
+              }"
+              to="/management/attendance/student"
+              >출결</NuxtLink
+            >
+            <!-- <a class="nav-link" href="#">출결</a> -->
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">프랜차이즈 가입관리</a>
+            <NuxtLink
+              class="nav-link"
+              :class="{
+                'nav-link': true,
+                active: $route.fullPath.includes('/management/franchise'),
+              }"
+              to="/management/franchise/list"
+              >프랜차이즈 가입관리</NuxtLink
+            >
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">결제관리</a>

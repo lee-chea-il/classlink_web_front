@@ -31,9 +31,9 @@
                   type="file"
                   class="custom-control-input"
                 />
-                <label for="fileSelect" class="btn btn_crud_default mypc"
-                  >내 PC</label
-                >
+                <label for="fileSelect" class="btn btn_crud_default mypc">
+                  내 PC
+                </label>
                 <button class="btn btn_crud_default">삭제</button>
               </div>
             </div>
@@ -49,7 +49,7 @@
                 <span class="box01">
                   <span class="content02">
                     {{ noticeList.date_range_start }} -
-                    {{ noticeList.date_range_end }}
+                    {{ noticeList.date_range_end }} <br />
                     {{ noticeList.time_range_start_m === 0 ? '오전' : '오후' }}
                     {{ noticeList.time_range_start }} -
                     {{ noticeList.time_range_end_m === 0 ? '오전' : '오후' }}
@@ -72,9 +72,9 @@
                       :key="idx"
                     >
                       {{ item }}
-                      <span v-if="noticeList.targetSetting.length - 1 !== idx"
-                        >|</span
-                      >
+                      <span v-if="noticeList.targetSetting.length - 1 !== idx">
+                        |
+                      </span>
                     </span>
                   </span>
                 </span>
@@ -117,10 +117,8 @@
                           type="checkbox"
                           class="custom-control-input"
                         />
-                        <label
-                          class="custom-control-label"
-                          :for="`chk${idx}`"
-                        ></label>
+                        <label class="custom-control-label" :for="`chk${idx}`">
+                        </label>
                       </div>
                     </td>
                     <td class="table001">영어리딩심화.pdf</td>
@@ -142,9 +140,9 @@
             <button class="btn btn_crud_point" @click="onClickNoticeRegist">
               등록
             </button>
-            <NuxtLink to="/management/notice/all" class="btn btn_crud_default"
-              >취소</NuxtLink
-            >
+            <NuxtLink to="/management/notice/all" class="btn btn_crud_default">
+              취소
+            </NuxtLink>
           </div>
         </div>
       </div>
@@ -169,6 +167,7 @@
       @onClickTargetAllCheck="onClickTargetAllCheck"
       @target-setting="onClickTargetSetting"
       @complete="onClickTargetSeleted"
+      @cancel="onClickTargetCancel"
     />
 
     <ModalDesc
@@ -207,7 +206,7 @@ export default {
         time_range_end: '11:59',
         time_range_start_m: 0,
         time_range_end_m: 0,
-        after_deadline: false,
+        after_deadline: true,
         notice_alarm: false,
         targetSetting: ['선생님', '학부모', '학생'],
       },
@@ -217,7 +216,6 @@ export default {
       masks: {
         input: 'YYYY-MM-DD h:mm A',
       },
-
       allcheck: true,
 
       selectedDateTitle: '',
@@ -249,7 +247,7 @@ export default {
         time_range_end: '11:59',
         time_range_start_m: 0,
         time_range_end_m: 0,
-        after_deadline: false,
+        after_deadline: true,
         notice_alarm: false,
       },
 
@@ -283,20 +281,6 @@ export default {
       this.noticeList.time_range_end_m = this.range.time_range_end_m
       this.noticeList.after_deadline = this.range.after_deadline
       this.noticeList.notice_alarm = this.range.notice_alarm
-
-      // console.log(
-      //   '날짜',
-      //   this.noticeList.date_range_start,
-      //   this.noticeList.date_range_end,
-      //   '시간',
-      //   this.noticeList.time_range_start,
-      //   this.noticeList.time_range_end,
-      //   this.noticeList.time_range_start_m,
-      //   this.noticeList.time_range_end_m,
-      //   '체크박스',
-      //   this.noticeList.after_deadline,
-      //   this.noticeList.notice_alarm
-      // )
     },
     onChangePlanInput({ target: { value, id, checked } }) {
       this.range[id] = value
@@ -374,64 +358,56 @@ export default {
       }
     },
 
-    // 대상 설정 체크박스
-    // onClickTargetSetting(data) {
-    //   console.log(data)
-    //   if (this.targetList[data.id - 1].state) {
-    //     data.state = false
-    //     this.noticeList.targetSetting = this.noticeList.targetSetting.filter(
-    //       (item) => item !== data.text
-    //     )
-    //   } else {
-    //     data.state = true
-    //     this.noticeList.targetSetting.push(data.text)
-    //   }
-    // },
-
+    // 대상 설정 체크박스 전체 선택
     onClickTargetAllCheck() {
       if (this.allcheck) {
         this.allcheck = false
-        this.targetList.splice(0, this.targetList.length)
+        this.noticeList.targetSetting.splice(
+          0,
+          this.noticeList.targetSetting.length
+        )
       } else {
         this.allcheck = true
-        this.targetList.splice(0, this.targetList.length)
+        this.noticeList.targetSetting.splice(
+          0,
+          this.noticeList.targetSetting.length
+        )
         for (let i = 0; i < this.target.length; i++) {
-          this.targetList.push(this.target[i])
+          this.noticeList.targetSetting.push(this.target[i])
         }
       }
     },
 
+    // 대상 설정 체크박스
     onClickTargetSetting(data) {
-      console.log(data, this.targetList.includes(data))
-      if (this.targetList.includes(data)) {
-        this.targetList = this.targetList.filter((item) => item !== data)
-        if (this.target.length !== this.targetList.length) {
+      console.log(data, this.noticeList.targetSetting.includes(data))
+      if (this.noticeList.targetSetting.includes(data)) {
+        this.noticeList.targetSetting = this.noticeList.targetSetting.filter(
+          (item) => item !== data
+        )
+        if (this.target.length !== this.noticeList.targetSetting.length) {
           this.allcheck = false
         }
       } else {
-        this.targetList.push(data)
-        if (this.target.length === this.targetList.length) {
+        this.noticeList.targetSetting.push(data)
+        if (this.target.length === this.noticeList.targetSetting.length) {
           this.allcheck = true
         }
       }
-
-      // if (this.targetList[data.id - 1].state) {
-      //   data.state = false
-      //   this.target = this.target.filter((item) => item !== data.text)
-      //   if (this.target.length !== this.targetList.length) {
-      //     this.allcheck = false
-      //   }
-      // } else {
-      //   data.state = true
-      //   this.target.push(data.text)
-      //   if (this.target.length === this.targetList.length) {
-      //     this.allcheck = true
-      //   }
-      // }
     },
 
+    // 대상 설정 취소 버튼
+    onClickTargetCancel() {
+      this.targetList = this.noticeList.targetSetting
+      if (this.noticeList.targetSetting.length === this.target.length) {
+        this.allcheck = true
+      } else {
+        this.allcheck = false
+      }
+    },
+    // 대상 설정 완료버튼
     onClickTargetSeleted() {
-      console.log('asdfsa')
+      console.log('click', this.targetList, this.noticeList.targetSetting)
       this.noticeList.targetSetting = this.targetList
     },
   },
@@ -468,5 +444,9 @@ export default {
 }
 .custom-control-label::after {
   left: -1.65rem !important;
+}
+
+.box02 {
+  text-align: center;
 }
 </style>

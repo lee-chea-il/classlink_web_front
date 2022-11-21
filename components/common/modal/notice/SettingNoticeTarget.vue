@@ -48,7 +48,7 @@
               >
                 <input
                   :id="idx"
-                  :checked="targetList.includes(item)"
+                  :checked="noticeList.targetSetting.includes(item)"
                   type="checkbox"
                   class="custom-control-input"
                   @input="$emit('target-setting', item)"
@@ -88,14 +88,12 @@
           </div> -->
         </div>
         <div class="modal-footer">
-          <button
-            class="btn btn_crud_point"
-            data-dismiss="modal"
-            @click="$emit('complete')"
-          >
+          <button class="btn btn_crud_point" data-dismiss="modal">
+            <!-- @click="$emit('complete')" -->
             완료
           </button>
           <button class="btn btn_crud_default" data-dismiss="modal">
+            <!-- @click="$emit('cancel')" -->
             취소
           </button>
         </div>
