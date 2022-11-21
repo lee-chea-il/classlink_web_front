@@ -1877,7 +1877,6 @@ ol {
 .modal .modal-body {
   text-align: center;
   padding-top: 35px;
-  height: 500px;
 }
 .modal .modal-body .text_type01 {
   font-size: 16px;
@@ -2429,4 +2428,34 @@ ol {
 /* 패키지 열람 (팝업 L) */
 #modalLessonView .preview {
   margin-right: 10px;
+}
+#modalLessonView .data_title {
+  width: 20%;
+  margin-left: 15px;
+}
+#modalLessonView .pack_title {
+  width: 41%;
+  margin-left: 15px;
+}
+#modalLessonView .pack_title01 {
+  width: 19%;
+  margin-left: 15px;
+}
+#modalLessonView .pack_title02 {
+  width: 20%;
+  margin-left: 15px;
+}
+
+/* 건물-패키지.html */
+/* 패키지 등록 / 패키지 수정 (팝업 L) */
+#modalLessonRegi .icon_franReal {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_franReal.png);
 }/*# sourceMappingURL=ac_building.css.map */

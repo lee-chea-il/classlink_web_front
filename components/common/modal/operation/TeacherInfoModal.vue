@@ -3,7 +3,7 @@
     <div
       v-show="open"
       id="modalMyinfo"
-      class="modal modal_myinfo modal_ac_manage_tch modal-mask"
+      class="modal modal_myinfo modal_ac_manage_tch modal-mask index"
       tabindex="-1"
       aria-labelledby="modalMyinfo"
       aria-hidden="true"
@@ -79,6 +79,7 @@
                         placeholder="닉네임입력"
                         rules="min:2|required"
                         type="text"
+                        :nickNameCheck="nickNameCheck"
                         :inputValue="teacherInfo.nickname"
                         :isCheckBox="true"
                         @change-input="$emit('change-input', $event)"
@@ -117,12 +118,14 @@
                       <button
                         class="btn btn_activated"
                         :class="teacherInfo.gender === 0 ? 'active' : false"
+                        @click="$emit('click-gender')"
                       >
                         남
                       </button>
                       <button
                         class="btn btn_activated"
                         :class="teacherInfo.gender === 1 ? 'active' : false"
+                        @click="$emit('click-gender')"
                       >
                         여
                       </button>
@@ -939,6 +942,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    nickNameCheck: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
     onClickBirthdayBtn() {
@@ -950,5 +957,8 @@ export default {
 <style scoped>
 .form-group {
   margin-bottom: 0 !important;
+}
+.index {
+  z-index: 1000;
 }
 </style>

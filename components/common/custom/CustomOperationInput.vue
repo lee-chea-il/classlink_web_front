@@ -26,12 +26,13 @@
       :class="classes['is-valid'] ? '' : 'disabled'"
     >
       <input
-        id="checkbox01"
+        id="nickname_chk"
         type="checkbox"
         class="custom-control-input"
-        @input="$emit('change-check', $event)"
+        :checked="nickNameCheck"
+        @input="$emit('change-input', $event)"
       />
-      <label class="custom-control-label" for="checkbox01">이름과 동일</label>
+      <label class="custom-control-label" for="nickname_chk">이름과 동일</label>
     </div>
     <div class="invalid_text">
       {{ errors[0] }}
@@ -88,6 +89,10 @@ export default {
       type: Boolean,
     },
     isBirthdayBtn: {
+      default: false,
+      type: Boolean,
+    },
+    nickNameCheck: {
       default: false,
       type: Boolean,
     },

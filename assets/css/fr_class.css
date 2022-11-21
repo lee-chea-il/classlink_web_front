@@ -1877,8 +1877,6 @@ ol {
 .modal .modal-body {
   text-align: center;
   padding-top: 35px;
-  overflow-y: scroll;
-  height: 500px;
 }
 .modal .modal-body .text_type01 {
   font-size: 16px;
@@ -1971,20 +1969,25 @@ ol {
 }
 
 /* 커리큘럼 - 커리큘럼등록/수정 (팝업 L) 수정 */
-#modalCuriRegi .form-group {
+#modalCuriRegi .form-group,
+#modalLessonRegi .form-group {
   margin-bottom: 0.7rem;
 }
-#modalCuriRegi .form-group textarea {
+#modalCuriRegi .form-group textarea,
+#modalLessonRegi .form-group textarea {
   padding: 10px 10px 40px 10px;
 }
-#modalCuriRegi .custom-control-label {
+#modalCuriRegi .custom-control-label,
+#modalLessonRegi .custom-control-label {
   width: 145%;
 }
-#modalCuriRegi .list_area_text {
+#modalCuriRegi .list_area_text,
+#modalLessonRegi .list_area_text {
   line-height: 40px;
 }
 @media (max-width: 1199.98px) {
-  #modalCuriRegi .list_area_text {
+  #modalCuriRegi .list_area_text,
+#modalLessonRegi .list_area_text {
     display: inline-block;
     width: 149px;
     white-space: nowrap;
@@ -1992,7 +1995,8 @@ ol {
     text-overflow: ellipsis;
   }
 }
-#modalCuriRegi .icon_mydata {
+#modalCuriRegi .icon_mydata,
+#modalLessonRegi .icon_mydata {
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -2005,7 +2009,22 @@ ol {
   margin-right: 10px;
   margin-left: 20px;
 }
-#modalCuriRegi .icon_youtube_sm {
+#modalCuriRegi .icon_mydata01,
+#modalLessonRegi .icon_mydata01 {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_mydata.png);
+  margin-right: 0px;
+  margin-left: 0px;
+}
+#modalCuriRegi .icon_youtube_sm,
+#modalLessonRegi .icon_youtube_sm {
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -2018,7 +2037,8 @@ ol {
   margin-right: -10px;
   margin-left: 10px;
 }
-#modalCuriRegi .icon_exam_sm {
+#modalCuriRegi .icon_exam_sm,
+#modalLessonRegi .icon_exam_sm {
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -2031,7 +2051,8 @@ ol {
   margin-right: -10px;
   margin-left: 10px;
 }
-#modalCuriRegi .icon_link_sm {
+#modalCuriRegi .icon_link_sm,
+#modalLessonRegi .icon_link_sm {
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -2044,7 +2065,8 @@ ol {
   margin-right: -10px;
   margin-left: 10px;
 }
-#modalCuriRegi .icon_mp4_sm {
+#modalCuriRegi .icon_mp4_sm,
+#modalLessonRegi .icon_mp4_sm {
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -2057,7 +2079,8 @@ ol {
   margin-right: -10px;
   margin-left: 10px;
 }
-#modalCuriRegi .icon_pdf_sm {
+#modalCuriRegi .icon_pdf_sm,
+#modalLessonRegi .icon_pdf_sm {
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -2070,7 +2093,8 @@ ol {
   margin-right: -10px;
   margin-left: 10px;
 }
-#modalCuriRegi .icon_quiz_sm {
+#modalCuriRegi .icon_quiz_sm,
+#modalLessonRegi .icon_quiz_sm {
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -2083,7 +2107,8 @@ ol {
   margin-right: -10px;
   margin-left: 10px;
 }
-#modalCuriRegi .icons_unlink {
+#modalCuriRegi .icons_unlink,
+#modalLessonRegi .icons_unlink {
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -2094,7 +2119,10 @@ ol {
   background-size: contain;
   background-image: url(../images/icons/icon_unlink.svg);
 }
-#modalCuriRegi .icons_unlink:hover, #modalCuriRegi .icons_unlink:focus, #modalCuriRegi .icons_unlink:active {
+#modalCuriRegi .icons_unlink:hover, #modalCuriRegi .icons_unlink:focus, #modalCuriRegi .icons_unlink:active,
+#modalLessonRegi .icons_unlink:hover,
+#modalLessonRegi .icons_unlink:focus,
+#modalLessonRegi .icons_unlink:active {
   background-image: url(../images/icons/icon_link.svg);
   cursor: pointer;
 }/*# sourceMappingURL=fr_class.css.map */

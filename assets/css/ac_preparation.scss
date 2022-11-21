@@ -528,6 +528,23 @@
 	}
 }
 
+.modal_ac_manage_lesson {
+	.list_area {
+		position: relative;
+		width: 100%;
+		height: 204px;
+		overflow-y: auto;
+	}
+}
+
+.modal_ac_manage_curi {
+	.list_area {
+		position: relative;
+		width: 100%;
+		height: 264px;
+		overflow-y: auto;
+	}
+}
 
 // 레슨 - 레슨등록,열람 팝업, 커리큘럼 등록 공통 사용
 .modal_ac_manage_lesson,
@@ -604,10 +621,6 @@
 		}
 
 		.list_area {
-			position: relative;
-			width: 100%;
-			height: 260px;
-			overflow-y: auto;
 
 			li {
 				display: flex;
@@ -680,6 +693,52 @@
 
 				&.ok {
 					background-image: url(../images/icon_item_be.png);
+				}
+
+				.btn.icons_x_circle_off {
+					position: absolute;
+					top: -12px;
+					right: -17px;
+				}
+			}
+
+			.itemicon4 {
+				position: relative;
+				display: inline-block;
+				width: 30px;
+				height: 40px;
+				margin-top: 15px;
+				margin-right: 25px;
+				background-repeat: no-repeat;
+				background-size: contain;
+				background-position: center center;
+				background-image: url(../images/item_icons/dim/4_dim.png);
+
+				&.ok {
+					background-image: url(../images/item_icons/4.png);
+				}
+
+				.btn.icons_x_circle_off {
+					position: absolute;
+					top: -12px;
+					right: -17px;
+				}
+			}
+
+			.itemicon5 {
+				position: relative;
+				display: inline-block;
+				width: 30px;
+				height: 40px;
+				margin-top: 15px;
+				margin-right: 25px;
+				background-repeat: no-repeat;
+				background-size: contain;
+				background-position: center center;
+				background-image: url(../images/item_icons/dim/5_dim.png);
+
+				&.ok {
+					background-image: url(../images/item_icons/5.png);
 				}
 
 				.btn.icons_x_circle_off {
@@ -2466,6 +2525,7 @@
 		background-position: center center;
 		background-size: contain;
 		margin-left: auto;
+		cursor: pointer;
 	}
 
 	.full {
@@ -2478,6 +2538,7 @@
 		background-position: center center;
 		background-size: contain;
 		margin-left: 25px;
+		cursor: pointer;
 	}
 
 	.btnsec {
@@ -2934,7 +2995,7 @@
 
 	.thumb_box {
 		box-sizing: border-box;
-		height: 633px;
+		height: 604px;
 		@include mixin.border_common;
 		padding: 0 15px;
 	}
@@ -3492,7 +3553,7 @@
 	}
 
 	.sum {
-		margin: 0 0 0 112px;
+		margin-left: auto;
 	}
 
 	.cancel {
@@ -3609,7 +3670,7 @@
 	}
 
 	.modal_curiregi .divide_area.right .list_box {
-		height: 335px;
+		height: 325px;
 		overflow-y: scroll;
 	}
 

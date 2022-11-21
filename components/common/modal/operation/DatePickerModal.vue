@@ -20,7 +20,7 @@
           <button class="btn btn_crud_default" @click="$emit('close')">
             취소
           </button>
-          <button class="btn btn_crud_point" @click="$emit('close')">
+          <button class="btn btn_crud_point" @click="$emit('confirm')">
             확인
           </button>
         </div>

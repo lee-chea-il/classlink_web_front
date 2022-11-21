@@ -30,9 +30,11 @@
     <TeacherInfoModal
       :open="teacherInfoModalDesc.open"
       :teacherInfo="teacherInfo"
+      :nickNameCheck="nickNameCheck"
       @close="onCloseTeacherInfoModalDesc"
       @change-input="onChangeUpdateInput"
       @click-birthday="openDatePickerModalDesc"
+      @click-gender="onClickGenderBtn"
     />
 
     <!-- 생일 날짜 선택 모달 -->
@@ -41,6 +43,7 @@
       :teacherInfo="teacherInfo"
       @close="onCloseDatePickerModalDesc"
       @select-date="selectBirthday"
+      @confirm="onClickBirthdayConfirm"
     />
 
     <!-- 팝업 M2- 내정보 수정 - 프로필 이미지 등록1 -->
@@ -329,7 +332,7 @@ export default {
       ],
       // modal
       teacherInfoModalDesc: {
-        open: false,
+        open: true,
       },
       modalDesc: {
         open: false,
@@ -349,6 +352,7 @@ export default {
       deleteIdxList: [],
       // 상세/수정
       nickNameCheck: false,
+      birthday: '',
     }
   },
   created() {
@@ -422,16 +426,42 @@ export default {
     },
     // 정보 수정
     onChangeUpdateInput({ target: { value, id, checked } }) {
-      if (id === 'nickname' && checked) {
+      this.nickNameCheck = false
+      if (checked) {
         this.teacherInfo.nickname = this.teacherInfo.name
+        this.nickNameCheck = true
       }
       this.teacherInfo[id] = value
-      console.log(this.teacherInfo)
+      if (this.teacherInfo.nickname !== this.teacherInfo.name) {
+        this.nickNameCheck = false
+      } else {
+        this.nickNameCheck = true
+      }
     },
     // 생일 수정
     selectBirthday(e) {
-      this.teacherInfo.birthday = e.id
+      this.birthday = e.id
     },
+    onClickBirthdayConfirm() {
+      this.teacherInfo.birthday = this.birthday
+      this.datePickerModalDesc.open = false
+    },
+    // 성별 수정
+    onClickGenderBtn() {
+      if (this.teacherInfo.gender === 0) {
+        this.teacherInfo.gender = 1
+      } else {
+        this.teacherInfo.gender = 0
+      }
+    },
+    // 상태 변경
+    onClickStatusBtn(){
+      if(this.teacherInfo.status){
+      this.teacherInfo.status=false
+      } else {
+      this.teacherInfo.status=true
+      }
+    }
   },
 }
 </script>
