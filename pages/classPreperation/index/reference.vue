@@ -709,8 +709,7 @@ export default {
     },
 
     onClickDetailView(item) {
-      this.selectData = item
-      // isReferenceBrowseModal
+      this.selectData = JSON.parse(JSON.stringify(item))
     },
 
     // 검색결과 체크박스
@@ -1015,8 +1014,8 @@ export default {
         this.quizList.push(quizItem)
       }
     },
-    // 퀴즈 수정페이지 리스트 추가
 
+    // 퀴즈 수정페이지 리스트 추가
     onPlusSelectQuizList() {
       if (this.selectData.quizList.length <= 19) {
         const quizItem = {
@@ -1209,7 +1208,7 @@ export default {
 
     // 자료 클릭 이벤트
     onClickSelectData(data) {
-      this.selectData = data
+      this.selectData = JSON.parse(JSON.stringify(data))
       if (
         data.uploadType === 'video' ||
         data.uploadType === 'pdf' ||
@@ -1244,8 +1243,7 @@ export default {
     },
 
     onClick(params) {
-      console.log('열려라')
-      this.selectData = params
+      this.selectData = this.jsonItem(params)
       const type = params.uploadType
       if (
         type === 'video' ||

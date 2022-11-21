@@ -6,6 +6,11 @@ export default function initialState() {
       title: '',
       desc: '',
     },
+    isChangeLecture: false,
+    isCurriculemSelect: false,
+    isSchedule: false,
+    isChangeCurriculemAssignment: false,
+    isDeleteModal: { open: false, list: false },
     bgCnt: 0,
     lectureInfo: {
       name: '',
@@ -22,10 +27,8 @@ export default function initialState() {
     lectureList: [
       {
         name: '영어 심화 1',
-        teacher: [
-          { id: 1, name: '김지원', selectType: 0 },
-          { id: 2, name: '박지수', selectType: 1 },
-        ],
+        teacher: [{ id: 1, name: '김지원' }],
+        spareTeacher: [{ id: 2, name: '박지수' }],
         className: [{ id: 1, name: '1-1A' }],
         classTime: '화,목,금,13~15시',
         curriculum: '영어심화 1A 리딩 교제',
@@ -36,10 +39,8 @@ export default function initialState() {
       },
       {
         name: '과학 심화 1',
-        teacher: [
-          { id: 1, name: '김지원', selectType: 0 },
-          { id: 2, name: '박지수', selectType: 0 },
-        ],
+        teacher: [{ id: 1, name: '김지원' }],
+        spareTeacher: [{ id: 2, name: '박지수' }],
         className: [{ id: 2, name: '1-1B' }],
         classTime: '화,목,금,13~15시',
         curriculum: '과학심화 1A 리딩 교제',
@@ -50,10 +51,8 @@ export default function initialState() {
       },
       {
         name: '수학의 정석 1',
-        teacher: [
-          { id: 1, name: '김지원', selectType: 0 },
-          { id: 2, name: '박지수', selectType: 0 },
-        ],
+        teacher: [{ id: 1, name: '김지원' }],
+        spareTeacher: [{ id: 2, name: '박지수' }],
         className: [{ id: 3, name: '1-1C' }],
         classTime: '화,목,금,13~15시',
         curriculum: '수학의정석 1A 리딩 교제',
@@ -64,11 +63,11 @@ export default function initialState() {
       },
     ],
     teacherList: [
-      { id: 1, name: '김지원', selectType: 0 },
-      { id: 2, name: '박지수', selectType: 0 },
-      { id: 3, name: '임한솔', selectType: 0 },
-      { id: 4, name: '최유나', selectType: 0 },
-      { id: 5, name: '강원영', selectType: 0 },
+      { id: 1, name: '김지원' },
+      { id: 2, name: '박지수' },
+      { id: 3, name: '임한솔' },
+      { id: 4, name: '최유나' },
+      { id: 5, name: '강원영' },
     ],
     classList: [
       { id: 1, name: '1-1A' },
@@ -207,5 +206,19 @@ export default function initialState() {
       ],
     ],
     myCurriculum: {},
+    checkLectureList: [],
+    changeLectureItem: {
+      name: '',
+      teacher: [],
+      spareTeacher: [],
+      className: [],
+      classTime: '',
+      curriculum: '',
+      createdAt: '',
+      image: '',
+      startAlarmTime: '',
+      endAlarmTime: '',
+    },
+    deleteItem: {},
   }
 }

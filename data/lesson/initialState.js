@@ -1167,8 +1167,9 @@ export default function initialState() {
         ],
       },
     ],
-    selectReference: {},
-    selectLesson: {},
+    selectReferenceItem: {},
+    changeLessonItem: {},
+    viewLessonItem: {},
     currentIdx: 0,
   }
 }

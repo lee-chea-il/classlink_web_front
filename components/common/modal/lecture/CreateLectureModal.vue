@@ -8,19 +8,19 @@
   >
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content">
-        <CreateLectureHeader />
+        <CreateLectureHeader @close="$emit('close')" />
         <div class="modal-body">
           <div class="cnts_section">
             <!-- 왼쪽 SECTION -->
             <LeftSection
               :teacherList="teacherList"
               :lectureInfo="lectureInfo"
+              @change-lecture="$emit('change-lecture', $event)"
+              @show-menu="$emit('show-menu', $event)"
               @add-teacher="$emit('add-teacher', $event)"
               @add-spare-teacher="$emit('add-spare-teacher', $event)"
-              @show-menu="$emit('show-menu', $event)"
               @delete-teacher="$emit('delete-teacher', $event)"
               @delete-spare-teacher="$emit('delete-spare-teacher', $event)"
-              @change-lecture="$emit('change-lecture', $event)"
             />
             <!--/. 왼쪽 SECTION -->
             <!-- 오른쪽 SECTION -->
@@ -28,8 +28,8 @@
               :classList="classList"
               :lectureInfo="lectureInfo"
               @add-class="$emit('add-class', $event)"
-              @delete-class="$emit('delete-class', $event)"
               @change-lecture="$emit('change-lecture', $event)"
+              @delete-class="$emit('delete-class', $event)"
             />
             <!-- /.오른쪽 SECTION -->
           </div>
@@ -55,18 +55,9 @@ export default {
     CreateLectureBtn,
   },
   props: {
-    lectureInfo: {
-      type: Object,
-      default: () => {},
-    },
-    teacherList: {
-      type: Array,
-      default: () => [],
-    },
-    classList: {
-      type: Array,
-      default: () => [],
-    },
+    lectureInfo: { type: Object, default: () => {} },
+    teacherList: { type: Array, default: () => [] },
+    classList: { type: Array, default: () => [] },
   },
 }
 </script>

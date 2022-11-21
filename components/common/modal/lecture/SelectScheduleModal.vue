@@ -8,17 +8,7 @@
   >
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 id="exampleModalLabel" class="modal-title">강좌 만들기</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <i class="icons_close"></i>
-          </button>
-        </div>
+        <Header />
 
         <div class="modal-body">
           <!-- [개발참조] 학생관리의 출결팝업 캘린더와 동일 함 -->
@@ -130,6 +120,7 @@ import WeekDaySelectField from '~/components/lecture/schedule/WeekDaySelectField
 import ScheduleTable from '~/components/lecture/schedule/ScheduleTable.vue'
 import TimeSelectBox from '~/components/lecture/custom/TimeSelectBox.vue'
 import CustomModalBtn from '~/components/lecture/custom/CustomModalBtn.vue'
+import Header from '~/components/lecture/schedule/ScheduleHeader.vue'
 export default {
   name: 'SelectScheduleModal',
   components: {
@@ -137,6 +128,7 @@ export default {
     WeekDaySelectField,
     TimeSelectBox,
     CustomModalBtn,
+    Header,
   },
   props: {
     hourData: { type: Array, default: () => [] },

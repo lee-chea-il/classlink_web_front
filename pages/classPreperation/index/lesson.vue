@@ -22,7 +22,7 @@
               :institutionData="receiveInstitutionLessonData"
               :franchiseData="receiveFranchiseLessonData"
               @copyDataCallBack="copyDataCallBack"
-              @file-view="openReferenceDetail"
+              @file-view="openLessonDetail"
               @open-data="openLessonBrowseModal"
               @update-data="openLessonChangeModal"
             />
@@ -53,17 +53,18 @@
       @set-lesson="setLessonFlag"
       @remove-lesson="removeLessonItem"
       @call-back="copyDataCallBack"
-      @close="isLessonAdd = false"
+      @close="closeLessonAdd"
       @change-keyword="changePushKeyword"
       @set-keyword="setKeyword"
       @delete-keyword="deleteKeyword"
-      @open-reference="openReferenceDetail"
+      @open-reference="openLessonDetail"
+      @open-data="openLessonBrowseModal"
     />
 
     <!-- 레슨 변경 -->
     <LessonChangeModal
       :open="isLessonChange"
-      :lessonItem="selectLesson"
+      :lessonItem="changeLessonItem"
       :identity="identity"
       :isLesson="isLesson"
       :receiveInstitutionLessonData="receiveInstitutionLessonData"
@@ -73,34 +74,36 @@
       :receiveFranchiseData="receiveFranchiseData"
       :pushKeyword="pushKeyword"
       @add-lesson="addChangePageLessonList"
-      @change-lesson="changeLesson"
+      @change-lesson="onChangeLesson"
       @set-lesson="setLessonFlag"
       @remove-lesson="removeLessonItem"
       @call-back="copyDataCallBack"
       @change-keyword="changeChangePagePushKeyword"
       @set-keyword="setChangePageKeyword"
       @delete-keyword="deleteChangePageKeyword"
-      @open-reference="openReferenceDetail"
+      @open-reference="openLessonDetail"
       @close="closeLessonChangeModal"
+      @open-data="openLessonBrowseModal"
     />
 
     <!-- 레슨 열람 -->
     <LessonBrowseModal
       :open="isLessonBrowse.open"
-      :lessonItem="selectLesson"
-      :selectReference="selectReference"
+      :lessonItem="viewLessonItem"
+      :selectReference="selectReferenceItem"
       :currentIdx="currentIdx"
       @pagination="setPagination"
       @select-reference="setSelectReference"
       @close="closeLessonBrowseModal"
       @quiz-preview="openQuizPreview"
       @test-preview="openNoteTestPreview"
+      @lesson-change="openLessonChangeModal"
     />
 
     <!-- 퀴즈 미리보기 -->
     <QuizPreviewModal
       :open="isQuizPreviewModal.open"
-      :quizList="selectReference.quizList"
+      :quizList="selectReferenceItem.quizList"
       :currentPageIdx="currentIdx"
       @close="closeQuizPreview"
       @pagination="setPagination"
@@ -109,7 +112,7 @@
     <!-- 쪽지시험 미리보기 -->
     <NoteTestPreviewModal
       :open="isNoteTestPreviewModal.open"
-      :testList="selectReference.noteTestList"
+      :testList="selectReferenceItem.noteTestList"
       :currentPageIdx="currentIdx"
       @pagination="setPagination"
       @close="closeNoteTestPreview"
@@ -152,12 +155,19 @@ export default {
   },
   methods: {
     openLessonAdd() {
-      this.isLessonAdd = !this.isLessonAdd
+      this.isLessonAdd = true
+    },
+
+    closeLessonAdd() {
+      this.isLessonAdd = false
     },
 
     openLessonChangeModal(data) {
+      if (this.isLessonBrowse) {
+        this.closeLessonBrowseModal()
+      }
       const newItem = this.jsonItem(data)
-      this.selectLesson = newItem
+      this.changeLessonItem = newItem
       this.isLessonChange = true
     },
 
@@ -166,17 +176,26 @@ export default {
     },
 
     // 열람 데이터 초기 설정
-    setSelectLesson(item) {
-      this.setSelectFirstReference(item)
-      return (this.selectLesson = item)
+    setViewLesson(item) {
+      const newItem = this.jsonItem(item)
+      this.setViewLessonFirstReference(newItem)
+      return (this.viewLessonItem = newItem)
     },
 
-    setSelectFirstReference(item) {
-      this.selectReference = item.referenceList[0]
+    setViewLessonFirstReference(item) {
+      this.selectReferenceItem = item?.referenceList[0]
     },
 
     openLessonBrowseModal(item, prev) {
-      this.setSelectLesson(item)
+      if (this.isLessonAdd === true) {
+        this.closeLessonAdd()
+      }
+
+      if (this.isLessonChange === true) {
+        this.closeLessonChangeModal()
+      }
+
+      this.setViewLesson(item)
       return (this.isLessonBrowse = {
         open: true,
         prevPage: prev,
@@ -249,7 +268,7 @@ export default {
     // 자료 보기 페이지
     setSelectReference(reference) {
       console.log(reference, 'reference')
-      this.selectReference = reference
+      this.selectReferenceItem = reference
       this.currentIdx = 0
     },
 
@@ -299,7 +318,7 @@ export default {
     addChangePageLessonList({ children }) {
       const list = this.jsonItem(children)
       const filterItem = list.filter((item) => item.dbIdx !== -1)
-      return (this.selectLesson.referenceList = filterItem)
+      return (this.changeLessonItem.referenceList = filterItem)
     },
 
     // 레슨 지우기
@@ -318,20 +337,17 @@ export default {
     },
 
     // 수정페이지 레슨 수정
-    changeLesson({ target: { id, name, value, checked } }) {
+    onChangeLesson({ target: { id, name, value, checked } }) {
       const isCheckbox =
         name === 'isOpenEducation' || name === 'isContinuedRegist'
-      if (isCheckbox) return (this.selectLesson[name] = checked)
-      else return (this.selectLesson[id] = value)
+      if (isCheckbox) return (this.changeLessonItem[name] = checked)
+      else return (this.changeLessonItem[id] = value)
     },
 
     // 레슨 자료 보기
-    openReferenceDetail(reference) {
-      const list = this.jsonItem(reference)
-      this.selectLesson = list
-      // this.selectLesson = list
-      // this.selectReference = list.referenceList
-      // this.isLessonAdd = false
+    openLessonDetail(lesson) {
+      const list = this.jsonItem(lesson)
+      this.changeLessonItem = list
     },
 
     // 키워드 변경
@@ -353,14 +369,14 @@ export default {
 
     // 수정 페이지키워드 변경
     setChangePageKeyword({ target: { value } }) {
-      const keywordList = [...this.selectLesson.keyword, value]
+      const keywordList = [...this.changeLessonItem.keyword, value]
       this.pushKeyword = ''
-      this.selectLesson.keyword = Array.from(new Set(keywordList))
+      this.changeLessonItem.keyword = Array.from(new Set(keywordList))
     },
 
     // 수정 페이지키워드 삭제
     deleteChangePageKeyword(idx) {
-      this.selectLesson.keyword.splice(idx, 1)
+      this.changeLessonItem.keyword.splice(idx, 1)
     },
 
     // 수정 페이지키워드 내용 변경

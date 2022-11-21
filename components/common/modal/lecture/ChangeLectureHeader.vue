@@ -1,6 +1,6 @@
 <template>
   <div class="modal-header">
-    <h5 id="exampleModalLabel" class="modal-title">강좌 만들기</h5>
+    <h5 id="exampleModalLabel" class="modal-title">강좌 수정</h5>
     <button
       type="button"
       class="close"
@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: 'CreateLectureHeader',
+  name: 'ChangeLectureHeader',
 }
 </script>
 

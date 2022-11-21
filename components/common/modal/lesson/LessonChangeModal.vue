@@ -91,10 +91,10 @@
                       <TreeView
                         ref="franchise"
                         listType="lesson"
-                        :dataList="receiveFranchiseLessonData"
+                        :dataList="receiveFranchiseData"
                         :editable="identity == 'master' ? true : false"
                         :identity="identity"
-                        :pidNum="11000"
+                        :pidNum="13000"
                         @moreShowClick="moreShowClick"
                         @copyDataCallBack="$emit('call-back')"
                       />
@@ -116,7 +116,7 @@
                         :editable="identity == 'master' ? true : false"
                         :identity="identity"
                         :pidNum="12000"
-                        @moreShowClick="moreShowClick"
+                        @moreShowClick="moreShowClickReference"
                         @copyDataCallBack="$emit('call-back')"
                       />
                     </div>
@@ -130,12 +130,12 @@
                     >
                       <TreeView
                         ref="franchise"
-                        listType="listType"
+                        listType="lesson"
                         :dataList="receiveFranchiseData"
                         :editable="identity == 'master' ? true : false"
                         :identity="identity"
                         :pidNum="13000"
-                        @moreShowClick="moreShowClick"
+                        @moreShowClick="moreShowClickReference"
                         @copyDataCallBack="$emit('call-back')"
                       />
                     </div>
@@ -236,9 +236,13 @@ export default {
     },
   },
   methods: {
+    // lesson 보는 페이지
     moreShowClick(node) {
       // console.log(`moreShowClick ${node}`)
-      this.$emit('open-reference', node)
+      this.$emit('open-data', node, 'isLessonChange')
+    },
+    moreShowClickReference() {
+      console.log('계발예정')
     },
   },
 }

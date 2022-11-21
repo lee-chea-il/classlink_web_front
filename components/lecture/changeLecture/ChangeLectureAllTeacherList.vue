@@ -5,10 +5,10 @@
         <span class="text">{{ data.name }}</span>
         <i
           class="icons_plus_circle_off more_mu"
-          @click="$emit('show-menu', idx)"
+          @click="$emit('show-menu', '_' + idx)"
         >
           <div
-            :id="`teacher_list${idx}`"
+            :id="`teacher_list_${idx}`"
             class="more_list"
             style="display: none"
           >
@@ -16,13 +16,16 @@
               <li data-toggle="modal" @click="$emit('add-teacher', data)">
                 정담임
                 <i
-                  v-show="teacher.includes(data)"
+                  v-show="isActive(data.name, 'teacher')"
                   class="icons_check_circle"
                 ></i>
               </li>
               <li data-toggle="modal" @click="$emit('add-spare-teacher', data)">
                 부담임
-                <i v-show="spare.includes(data)" class="icons_check_circle"></i>
+                <i
+                  v-show="isActive(data.name, 'spare')"
+                  class="icons_check_circle"
+                ></i>
               </li>
             </ul>
           </div>
@@ -34,7 +37,7 @@
 
 <script>
 export default {
-  name: 'AllTeacherList',
+  name: 'ChangeLectureAllTeacherList',
   props: {
     dataList: {
       type: Array,
@@ -47,6 +50,13 @@ export default {
     spare: {
       type: Array,
       default: () => [],
+    },
+  },
+  methods: {
+    isActive(tmp, targetList) {
+      const item = this[targetList].filter((item) => item.name === tmp)
+      if (item.length) return true
+      else return false
     },
   },
 }

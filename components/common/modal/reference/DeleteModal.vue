@@ -26,7 +26,9 @@
             >
               취소
             </button>
-            <button class="btn btn_crud_danger">삭제</button>
+            <button class="btn btn_crud_danger" @click="$emit('submit')">
+              삭제
+            </button>
           </div>
         </div>
       </div>

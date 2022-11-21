@@ -73,7 +73,7 @@
                   :dataList="institutionData"
                   :expanded="true"
                   :pidNum="5100"
-                  @file-click="fileClickInsti"
+                  @folder-click="folderClickInsti"
                 />
               </div>
               <!-- /.탭01 내용 -->
@@ -89,7 +89,7 @@
                   :dataList="franchiseData"
                   :expanded="true"
                   :pidNum="7100"
-                  @file-click="fileClickFran"
+                  @folder-click="folderClickFran"
                 />
               </div>
               <!-- /.탭02 내용 -->
@@ -105,7 +105,7 @@
                   :dataList="myData"
                   :expanded="true"
                   :pidNum="10100"
-                  @file-click="fileClickMyData"
+                  @folder-click="folderClickMyData"
                 />
               </div>
               <!-- /.탭02 내용 -->
@@ -113,18 +113,20 @@
             <!-- /.탭 컨텐츠 -->
             <div class="select_path">
               <span class="tit">선택폴더</span>
-              <span>{{openFileInfo.path}}</span>
+              <span>{{ folderInfo.path }}</span>
             </div>
             <div class="file_name">
               <div class="form-group">
-                <label for="inputOpenPath" class="tit savePathLabel">파일명</label>
+                <label for="inputOpenPath" class="tit savePathLabel"
+                  >파일명</label
+                >
                 <input
                   id="inputOpenPath"
                   type="text"
                   class="form-control form-inline savePathInput"
                   placeholder="파일을 선택해 주세요"
                   value=""
-                >
+                />
               </div>
             </div>
           </div>
@@ -133,7 +135,9 @@
               class="btn btn_crud_point"
               data-dismiss="modal"
               @click="saveOpenFileInfo"
-            >저장</button>
+            >
+              저장
+            </button>
             <button
               class="btn btn_crud_default"
               data-dismiss="modal"
@@ -157,7 +161,7 @@ export default {
   name: 'OpenSearchFileModal',
   components: {
     ModalHeader,
-    CustomOpenFileListTreeView
+    CustomOpenFileListTreeView,
   },
   props: {
     institutionData: {
@@ -173,46 +177,41 @@ export default {
       default: () => [],
     },
     open: {
-      type:Boolean,
-      default:false
+      type: Boolean,
+      default: false,
     },
     componentId: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   data() {
     return {
       openFileInfo: {
         path: '',
         type: '',
-        data: ''
-      }
+        data: '',
+      },
     }
   },
   methods: {
-    fileClickInsti(pathInfo,fileInfo){
-      this.openFileInfo.path=pathInfo
-      this.openFileInfo.type='institution'
-      this.openFileInfo.data=fileInfo
-      $("#inputOpenPath").val(this.openFileInfo.data.name)
+    folderClickInsti(pathInfo) {
+      this.openFileInfo.path = pathInfo
+      this.openFileInfo.type = 'institution'
     },
-    fileClickFran(pathInfo,fileInfo){
-      this.openFileInfo.path=pathInfo
-      this.openFileInfo.type='franchise'
-      this.openFileInfo.data=fileInfo
-      $("#inputOpenPath").val(this.openFileInfo.data.name)
+    folderClickFran(pathInfo) {
+      this.openFileInfo.path = pathInfo
+      this.openFileInfo.type = 'franchise'
     },
-    fileClickMyData(pathInfo,fileInfo){
-      this.openFileInfo.path=pathInfo
-      this.openFileInfo.type='curriculum'
-      this.openFileInfo.data=fileInfo
-      $("#inputOpenPath").val(this.openFileInfo.data.name)
+    folderClickMyData(pathInfo) {
+      this.openFileInfo.path = pathInfo
+      this.openFileInfo.type = 'curriculum'
     },
-    saveOpenFileInfo(){
-      this.$emit("open-file-info",this.openFileInfo)
-    }
-  }
+    saveOpenFileInfo() {
+      this.openFileInfo.fileName = $('#inputOpenPath').val()
+      this.$emit('open-file-info', this.openFileInfo)
+    },
+  },
 }
 </script>
 
@@ -221,18 +220,18 @@ export default {
   background: #eee;
 }
 .savePathLabel {
-    text-align: left;
-    padding: 10px 0;
-    font-size: 14px;
-    color: #A7A9AC;
+  text-align: left;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #a7a9ac;
 }
-.savePathInput{
-    margin: 0 0 0 30px;
-    width: 83%;
+.savePathInput {
+  margin: 0 0 0 30px;
+  width: 83%;
 }
 </style>
 <style>
-#modalStoragepath .icon_institute{
+#modalStoragepath .icon_institute {
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -265,7 +264,7 @@ export default {
   background-size: contain;
   background-image: url(~assets/images/icon_mydata.png);
 }
-#modalStoragepath .vtl-node-main.active{
+#modalStoragepath .vtl-node-main.active {
   background-color: #a2a2a2 !important;
 }
 #modalStoragepath .vtl-node-main:hover {

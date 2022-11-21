@@ -39,7 +39,12 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn_crud_default">수정</button>
+            <button
+              class="btn btn_crud_default"
+              @click="$emit('lesson-change', lessonItem)"
+            >
+              수정
+            </button>
             <button class="btn btn_crud_default" @click="$emit('close')">
               취소
             </button>

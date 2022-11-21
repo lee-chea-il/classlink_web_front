@@ -1,10 +1,16 @@
 <template>
   <div class="tab-pane active">
     <!-- 검색 영역 -->
-    <SearchSection />
+    <SearchSection @delete-item="$emit('delete-item', checkList, 'list')" />
     <!-- 검색 영역 -->
     <!-- 테이블 영역 -->
-    <TableSection :lectureList="lectureList" />
+    <TableSection
+      :lectureList="lectureList"
+      :checkList="checkList"
+      @check-item="$emit('check-item', $event)"
+      @open-lecture="$emit('open-lecture', $event)"
+      @delete-item="$emit('delete-item', $event)"
+    />
     <!-- /.테이블 영역 -->
     <!-- 페이징 영역 -->
     <PaginationSection />
@@ -22,6 +28,10 @@ export default {
   components: { SearchSection, TableSection, PaginationSection },
   props: {
     lectureList: {
+      type: Array,
+      default: () => [],
+    },
+    checkList: {
       type: Array,
       default: () => [],
     },

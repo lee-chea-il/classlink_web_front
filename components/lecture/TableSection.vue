@@ -5,8 +5,17 @@
         <tr>
           <th>
             <div class="custom-control custom-checkbox form-inline">
-              <input id="chkAll" type="checkbox" class="custom-control-input" />
-              <label class="custom-control-label" for="chkAll"></label>
+              <input
+                id="lecture_all_check"
+                type="checkbox"
+                class="custom-control-input"
+                :checked="lectureList.length === checkList.length"
+                @input="$emit('check-item', $event)"
+              />
+              <label
+                class="custom-control-label"
+                for="lecture_all_check"
+              ></label>
             </div>
           </th>
           <th>개설 날짜</th>
@@ -27,6 +36,9 @@
                 :id="`check${idx}`"
                 type="checkbox"
                 class="custom-control-input"
+                :value="lecture.name"
+                :checked="checkList.includes(lecture)"
+                @input="$emit('check-item', $event)"
               />
               <label class="custom-control-label" :for="`check${idx}`"></label>
             </div>
@@ -48,12 +60,14 @@
           <td>
             <i
               class="btn icons_pencil_off"
-              data-toggle="modal"
-              data-target="#modalLectureRegi"
+              @click="$emit('open-lecture', lecture)"
             ></i>
           </td>
           <td>
-            <i class="icons_x_circle_off"></i>
+            <i
+              class="icons_x_circle_off"
+              @click="$emit('delete-item', lecture)"
+            ></i>
           </td>
         </tr>
       </tbody>
@@ -68,6 +82,10 @@ export default {
   components: { CustomSpan },
   props: {
     lectureList: {
+      type: Array,
+      default: () => [],
+    },
+    checkList: {
       type: Array,
       default: () => [],
     },

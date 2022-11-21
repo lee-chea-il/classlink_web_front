@@ -9,7 +9,7 @@
           type="text"
           class="form-control form-inline lec_regi01"
           placeholder="강좌 이름을 입력해주세요."
-          :value="lectureInfo.name"
+          :value="lecture.name"
           @input="$emit('change-lecture', $event)"
         />
       </div>
@@ -18,10 +18,11 @@
         <div class="input_area">
           <div class="input_file">
             <input
+              id="fileName"
               type="text"
               placeholder="이미지를 선택해 주세요."
               class="file_input_textbox"
-              :value="lectureInfo.image"
+              :value="lecture.image"
               readonly
             />
             <div class="file_input_div">
@@ -53,8 +54,8 @@
         </div>
         <AllTeacherList
           :dataList="teacherList"
-          :teacher="lectureInfo.teacher"
-          :spare="lectureInfo.spareTeacher"
+          :teacher="lecture.teacher"
+          :spare="lecture.spareTeacher"
           @add-teacher="$emit('add-teacher', $event)"
           @add-spare-teacher="$emit('add-spare-teacher', $event)"
           @show-menu="$emit('show-menu', $event)"
@@ -63,11 +64,11 @@
       <div class="list_section">
         <div class="list_area_all">
           <TeacherList
-            :teacherList="lectureInfo.teacher"
+            :teacherList="lecture.teacher"
             @delete="$emit('delete-teacher', $event)"
           />
           <TeacherList
-            :teacherList="lectureInfo.spareTeacher"
+            :teacherList="lecture.spareTeacher"
             @delete="$emit('delete-spare-teacher', $event)"
           />
         </div>
@@ -77,20 +78,20 @@
 </template>
 
 <script>
-import AllTeacherList from '~/components/lecture/AllTeacherList.vue'
-import TeacherList from '~/components/lecture/TeacherList.vue'
+import TeacherList from '../TeacherList.vue'
+import AllTeacherList from './ChangeLectureAllTeacherList.vue'
 
 export default {
-  name: 'LeftSection',
+  name: 'LectruenChangeLeftSection',
   components: { AllTeacherList, TeacherList },
   props: {
+    lecture: {
+      type: Object,
+      default: () => {},
+    },
     teacherList: {
       type: Array,
       default: () => [],
-    },
-    lectureInfo: {
-      type: Object,
-      default: () => {},
     },
   },
 }

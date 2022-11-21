@@ -2,12 +2,17 @@
   <div>
     <PageHeader title="강좌 리스트" />
     <div class="tab-content depth03 ac_manage_lec">
-      <!-- [개발참조] 데이터가 없는 경우 -->
-      <NoListSection v-if="lectureList.length == 0" />
-      <!-- /.데이터가 없는 경우 -->
       <!-- 데이터 있을 경우 -->
-      <LectureList v-else :lectureList="lectureList" />
-      <!-- /.데이터 있을 경우 -->
+      <LectureList
+        v-if="lectureList.length"
+        :lectureList="lectureList"
+        :checkList="checkLectureList"
+        @check-item="handleCheckbox"
+        @open-lecture="openChangeLectrueModal"
+        @delete-item="openDeleteModal"
+      />
+      <!-- /.데이터가 없는 경우 -->
+      <NoListSection v-else />
     </div>
 
     <!-- 강좌 생성 -->
@@ -15,7 +20,7 @@
       :lectureInfo="lectureInfo"
       :teacherList="teacherList"
       :classList="classList"
-      @change-lecture="changeLecture"
+      @change-lecture="onChangeLecture"
       @show-menu="showTeacherMenu"
       @add-teacher="addTeacher"
       @add-spare-teacher="addSpareTeacher"
@@ -24,16 +29,31 @@
       @add-class="addClassData"
       @delete-class="deleteClassData"
       @next-btn="onSubmitCreateClass"
+      @close="initAddReferenceData"
     />
 
     <!-- 강좌 변경 -->
-    <ChangeLectureModal />
-
-    <!-- 커리큘럼 배정 -->
-    <CurriculumAssignmentModal />
+    <ChangeLectureModal
+      :open="isChangeLecture"
+      :lecture="lectureInfo"
+      :teacherList="teacherList"
+      :classList="classList"
+      @show-menu="showTeacherMenu"
+      @change-lecture="onChangeLecture"
+      @delete-teacher="deleteTeacher"
+      @delete-spare-teacher="deleteSpareTeacher"
+      @add-teacher="addTeacher"
+      @add-spare-teacher="addSpareTeacher"
+      @add-class="addClassData"
+      @delete-class="deleteClassData"
+      @close="closeChangeLectureModal"
+    />
 
     <!-- 커리큘럼 선택 -->
-    <SelectCurriculumModal :curriculumList="curriculumList" />
+    <SelectCurriculumModal
+      :curriculumList="curriculumList"
+      :teacherList="teacherList"
+    />
 
     <!-- 수업시간 선택 -->
     <SelectScheduleModal
@@ -48,9 +68,18 @@
       @delete-schedule="deleteSchedule"
     />
 
+    <!-- 커리큘럼 배정 -->
+    <CurriculumAssignmentModal />
+
+    <ChangeCurriculumAssignmentModal
+      :open="isChangeCurriculemAssignment"
+      @close="closeChangeCurriculemAssignmentModal"
+    />
+
     <!-- 커리큘럼 리스트 상세 -->
     <SelectCurriculumListModal />
 
+    <!-- 달력 모달 호출 -->
     <CustomDataPicker
       :open="isCalendar"
       :scheduleItem="scheduleItem"
@@ -66,11 +95,17 @@
       @close="closeModalDesc"
     />
 
-    <button @click="filterCurriculum">ㄴ눌러</button>
+    <!-- 삭제 모달 -->
+    <DeleteModal
+      :open="isDeleteModal.open"
+      @close="closeDeleteModal"
+      @submit="deleteLecture"
+    />
   </div>
 </template>
 
 <script>
+import ChangeCurriculumAssignmentModal from '~/components/common/modal/lecture/ChangeCurriculumAssignmentModal.vue'
 import ChangeLectureModal from '~/components/common/modal/lecture/ChangeLectureModal.vue'
 import CreateLectureModal from '~/components/common/modal/lecture/CreateLectureModal.vue'
 import CurriculumAssignmentModal from '~/components/common/modal/lecture/CurriculumAssignmentModal.vue'
@@ -78,6 +113,7 @@ import SelectCurriculumListModal from '~/components/common/modal/lecture/SelectC
 import SelectCurriculumModal from '~/components/common/modal/lecture/SelectCurriculumModal.vue'
 import SelectScheduleModal from '~/components/common/modal/lecture/SelectScheduleModal.vue'
 import ModalDesc from '~/components/common/modal/ModalDesc.vue'
+import DeleteModal from '~/components/common/modal/reference/DeleteModal.vue'
 import PageHeader from '~/components/common/PageHeader.vue'
 import CustomDataPicker from '~/components/lecture/custom/CustomDataPicker.vue'
 import LectureList from '~/components/lecture/LectureList.vue'
@@ -98,6 +134,8 @@ export default {
     ChangeLectureModal,
     CustomDataPicker,
     ModalDesc,
+    ChangeCurriculumAssignmentModal,
+    DeleteModal,
   },
   data() {
     return initialState()
@@ -136,10 +174,16 @@ export default {
     },
   },
   methods: {
+    // 취소시 등록 하려고했던 데이터 지우기
+    initAddReferenceData() {
+      Object.assign(this.$data, initialState())
+    },
+
     // 달력 모달
     openModalCalendar() {
       this.isCalendar = true
     },
+
     closeModalCalendar() {
       this.isCalendar = false
     },
@@ -156,21 +200,73 @@ export default {
       this.isOpenModalDesc.open = false
     },
 
+    // 강좌 변경 모달
+    openChangeLectrueModal(data) {
+      this.isChangeLecture = true
+      const newItem = this.deepCopy(data)
+      return Object.assign(this.lectureInfo, newItem)
+    },
+
+    closeChangeLectureModal() {
+      this.initAddReferenceData()
+      return (this.isChangeLecture = false)
+    },
+
+    // 커리큘럼 배정 보달
+    openChangeCurriculemAssignmentModal() {
+      this.isChangeCurriculemAssignment = true
+    },
+
+    closeChangeCurriculemAssignmentModal() {
+      this.isChangeCurriculemAssignment = false
+    },
+
+    // 삭제 확인 모달
+    openDeleteModal(item, list) {
+      if (list) {
+        if (this.checkLectureList.length) {
+          this.isDeleteModal.list = list
+        } else {
+          this.openModalDesc('실패', '삭제할 데이터를 선택해주세요')
+          return false
+        }
+      } else {
+        this.deleteItem = item
+      }
+      return (this.isDeleteModal.open = true)
+    },
+
+    closeDeleteModal() {
+      this.isDeleteModal.open = false
+    },
+
+    // 깊은 복사
+    deepCopy(data) {
+      return JSON.parse(JSON.stringify(data))
+    },
+
     // 배열 만들기
     setNewArray(arr) {
       return Array.from(new Set(arr))
     },
 
     // 강좌 변경 Event
-    changeLecture({ target: { name, value } }) {
+    onChangeLecture({ target: { name, value } }) {
       this.lectureInfo[name] = value
     },
+
+    // 선택 강좌 변경 Event
+    // onChangeSelectLecture({ target: { name, value } }) {
+    //   this.changeLectureItem[name] = value
+    // },
 
     // 배정 메뉴 보여줄때 다른 메뉴 닫기
     closeTeacherMenu() {
       for (const index in this.teacherList) {
         const allTarget = document.getElementById(`teacher_list${index}`)
+        const allTargetTwo = document.getElementById(`teacher_list_${index}`)
         allTarget.style.display = 'none'
+        allTargetTwo.style.display = 'none'
       }
     },
 
@@ -186,93 +282,69 @@ export default {
       }
     },
 
-    // 선생님 배정 시 원래 선생님 번호 초기화
-    resetTeacherIdx() {
-      const selectIdx = this.lectureInfo.teacher.findIndex(
-        (teacher) => teacher?.selectType === 1
-      )
-      const target = this.lectureInfo.teacher[selectIdx]
-      return selectIdx >= 0 && (target.selectType = 0)
-    },
-
-    // 선생님 타입 지정
-    setTeacherType(id) {
-      const number = this.teacherList.findIndex((item) => item.id === id)
-      const target = this.teacherList[number]
-      return (target.selectType = 1)
-    },
-
     // 담임 배정시 부담임이였으면 지우기
     resetSpareTeacherIdx(id) {
-      const spareNumber = this.lectureInfo.spareTeacher.findIndex(
-        (item) => item.id === id
-      )
-      return this.lectureInfo.spareTeacher.splice(spareNumber, 1)
+      let idx = 0
+      idx = this.lectureInfo.spareTeacher.findIndex((item) => item.id === id)
+      if (idx >= 0) {
+        return this.lectureInfo.spareTeacher.splice(idx, 1)
+      }
     },
 
     // 담임 추가
     addTeacher(payload) {
-      const { id, selectType } = payload
-      this.resetTeacherIdx()
-      if (selectType === 0) {
-        this.setTeacherType(id)
-        this.lectureInfo.teacher = [payload]
-      } else if (selectType === 2) {
-        this.setTeacherType(id)
-        this.resetSpareTeacherIdx(id)
-        this.lectureInfo.teacher = [payload]
-      }
-    },
-
-    // 부담임 번호 지정
-    setSpareTeacherIdx(id) {
-      const number = this.teacherList.findIndex((item) => item.id === id)
-      return (this.teacherList[number].selectType = 2)
+      const { id } = payload
+      this.resetSpareTeacherIdx(id)
+      return (this.lectureInfo.teacher = [payload])
     },
 
     // 부담임 지정시 담임이였으면 지우기
     resetIfTeacherIdx(id) {
-      const teacherNum = this.lectureInfo.teacher.findIndex(
-        (item) => item.id === id
-      )
-      return this.lectureInfo.teacher.splice(teacherNum, 1)
+      const idx = this.lectureInfo.teacher.findIndex((item) => item.id === id)
+      if (idx >= 0) {
+        return this.lectureInfo.teacher.splice(idx, 1)
+      }
     },
 
     // 부담임 추가
-    addSpareTeacher(payload) {
-      const { id, selectType } = payload
+    addSpareTeacher(payload, type) {
+      const { id } = payload
       const target = this.lectureInfo
       const selectSpareList = [...target.spareTeacher, payload]
-      if (selectType === 0) {
-        this.setSpareTeacherIdx(id)
-        return (target.spareTeacher = this.setNewArray(selectSpareList))
-      } else if (selectType === 1) {
-        this.setSpareTeacherIdx(id)
-        this.resetIfTeacherIdx(id)
-        return (target.spareTeacher = this.setNewArray(selectSpareList))
-      }
+      const spareIdx = this.lectureInfo.spareTeacher.findIndex(
+        (item) => item.id === id
+      )
+      this.resetIfTeacherIdx(id, type)
+      return (
+        spareIdx === -1 &&
+        (target.spareTeacher = this.setNewArray(selectSpareList))
+      )
     },
 
     // 반 추가
     addClassData(payload) {
+      const idx = this.lectureInfo.className.findIndex(
+        (item) => item.id === payload.id
+      )
       const selectClassList = [...this.lectureInfo.className, payload]
-      return (this.lectureInfo.className = this.setNewArray(selectClassList))
+      return (
+        idx === -1 &&
+        (this.lectureInfo.className = this.setNewArray(selectClassList))
+      )
     },
 
     // 담임 삭제
-    deleteTeacher(selectIdx) {
-      this.teacherList[selectIdx].selectType = 0
+    deleteTeacher(selectIdx, type) {
       return this.lectureInfo.teacher.splice(selectIdx, 1)
     },
 
     // 부담임 삭제
-    deleteSpareTeacher(selectIdx) {
-      this.teacherList[selectIdx].selectType = 0
+    deleteSpareTeacher(selectIdx, type) {
       return this.lectureInfo.spareTeacher.splice(selectIdx, 1)
     },
 
     // 반 삭제
-    deleteClassData(selectIdx) {
+    deleteClassData(selectIdx, page) {
       return this.lectureInfo.className.splice(selectIdx, 1)
     },
 
@@ -438,17 +510,59 @@ export default {
       ))
     },
 
-    // 해당 선생님 커리큘럼 호출
-    filterCurriculum() {
-      const item = []
-      for (const i in this.curriculumList) {
-        const newArr = this.curriculumList[i].filter(
-          (item) => item.teacher === '김민정'
-        )
-        item.push(newArr)
+    // checkbox 리스트 추가삭제
+    handleCheckbox({ target: { checked, value, id } }) {
+      const idx = this.lectureList.findIndex((item) => item.name === value)
+      if (id === 'lecture_all_check') {
+        if (checked) {
+          this.checkLectureList = [...this.lectureList]
+        } else {
+          this.checkLectureList = []
+        }
+      } else if (checked) {
+        this.checkLectureList = [
+          ...this.checkLectureList,
+          this.lectureList[idx],
+        ]
+      } else {
+        return this.checkLectureList.splice(idx, 1)
       }
-      const data = item.filter((item) => item[0])
-      console.log(data)
+    },
+
+    // 순환 구조를 Json으로 변환
+    getCircularReplacer() {
+      const seen = new WeakSet()
+      return (key, value) => {
+        if (typeof value === 'object' && value !== null) {
+          if (seen.has(value)) {
+            return
+          }
+          seen.add(value)
+        }
+        return value
+      }
+    },
+
+    // json으로 변환 후 return
+    jsonItem(data) {
+      const spare = JSON.stringify(data, this.getCircularReplacer())
+      return JSON.parse(spare)
+    },
+
+    // 리스트 삭제 클릭
+    deleteLecture() {
+      let newArray
+      if (this.isDeleteModal.list) {
+        newArray = this.lectureList.filter(
+          (item) => !this.checkLectureList.includes(item)
+        )
+      } else {
+        newArray = this.lectureList.filter((item) => item !== this.deleteItem)
+      }
+
+      this.closeDeleteModal()
+      this.openModalDesc('성공', '해당 강좌를 삭제하였습니다.')
+      return (this.lectureList = newArray)
     },
   },
 }
