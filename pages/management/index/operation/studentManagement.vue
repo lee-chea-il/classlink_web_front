@@ -12,7 +12,7 @@
           url1="/management/operation/teachermanagement"
           url2="/management/operation/studentmanagement"
           url3="/management/operation/teachermanagement"
-          url4="/management/operation/teachermanagement"
+          url4="/management/operation/exammanagement"
         />
         <div class="tab-content depth03 ac_manage_std">
           <StudentListBox

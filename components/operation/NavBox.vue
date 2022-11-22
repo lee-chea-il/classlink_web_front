@@ -24,7 +24,11 @@
       </NuxtLink>
     </li>
     <li class="nav-item">
-      <NuxtLink class="nav-link" :to="url4">
+      <NuxtLink
+        class="nav-link"
+        :to="url4"
+        :class="{ active: $route.fullPath.includes('/exammanagement') }"
+      >
         {{ title4 }}
       </NuxtLink>
     </li>
