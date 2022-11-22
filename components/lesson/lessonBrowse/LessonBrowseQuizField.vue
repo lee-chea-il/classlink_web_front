@@ -3,8 +3,8 @@
     <div class="thumb_box">
       <div v-for="(quiz, idx) in reference.quizList" :key="idx">
         <div v-if="idx === currentIdx" class="row">
-          <div class="title col-12">자료 열람</div>
-          <div class="thumbnail_view02 col-12">
+          <div class="title">자료 열람</div>
+          <div class="thumbnail_view02">
             <div v-html="quiz.problem"></div>
             <button class="btn icons_fullscreen"></button>
             <!-- {{ quiz }} -->

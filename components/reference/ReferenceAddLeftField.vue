@@ -20,8 +20,8 @@
         <label for="" class="data_title">과목</label>
         <div class="col">
           <CustomSelect
-            :input="reference.subject"
-            @input="$emit('change-input', $event)"
+            :inputValue="reference.subject"
+            @change-input="$emit('change-input', $event)"
           />
         </div>
       </div>
@@ -67,12 +67,12 @@
       <div class="form-group row">
         <label for="" class="data_title">저장 경로</label>
         <CustomBtnInput
-          id="savePath"
+          id="saveFolder"
           name="저장경로"
           placeholder="저장할 폴더를 선택해 주세요"
           rules="min:2|required"
           type="text"
-          :inputValue="reference.savePath"
+          :inputValue="reference.saveFolder"
           :target="target"
           @change-input="$emit('change-input', $event)"
           @open-save-path="$emit('open-save-path', $event)"
@@ -81,7 +81,7 @@
 
       <CheckboxGroup
         :isOpenEducation="reference.isOpenEducation"
-        :isContinueRegister="reference.isContinueRegister"
+        :isOpenReference="reference.isOpenReference"
         @change-input="$emit('isOpenEducation', $event)"
       />
     </div>

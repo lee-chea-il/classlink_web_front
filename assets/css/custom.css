@@ -43,3 +43,8 @@
 .modal-leave-active {
   opacity: 0;
 }
+
+/* 레슨 열람 모달 */
+#modalLessonView .thumb_box {
+  height: 620px;
+}

@@ -1,608 +1,273 @@
 <template>
-  <div>
-    <PageHeader title="강좌 리스트" />
-    <div class="tab-content depth03 ac_manage_lec">
-      <!-- 데이터 있을 경우 -->
-      <LectureList
-        v-if="lectureList.length"
-        :lectureList="lectureList"
-        :checkList="checkLectureList"
-        @check-item="handleCheckbox"
-        @open-lecture="openChangeLectrueModal"
-        @delete-item="openDeleteModal"
-      />
-      <!-- /.데이터가 없는 경우 -->
-      <NoListSection v-else />
+  <Transition name="modal">
+    <div
+      v-if="open"
+      id="modalStoragepath"
+      class="modal modal_ac_manage_dtr double modal-mask"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+      style="display: block"
+    >
+      <div class="background_close"></div>
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <ModalHeader title="저장 경로" @close="$emit('close')" />
+
+          <div class="modal-body">
+            <!-- 탭 컨텐츠 -->
+            <ul id="myTab" class="nav nav-tabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  id="grade-tab"
+                  class="nav-link active"
+                  data-toggle="tab"
+                  data-target="#tab01"
+                  type="button"
+                  role="tab"
+                  aria-controls="home"
+                  aria-selected="true"
+                >
+                  교육기관
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  id="class-tab"
+                  class="nav-link"
+                  data-toggle="tab"
+                  data-target="#tab02"
+                  type="button"
+                  role="tab"
+                  aria-controls="profile"
+                  aria-selected="false"
+                >
+                  프랜차이즈
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  id="class-tab"
+                  class="nav-link"
+                  data-toggle="tab"
+                  data-target="#tab03"
+                  type="button"
+                  role="tab"
+                  aria-controls="profile"
+                  aria-selected="false"
+                >
+                  내자료
+                </button>
+              </li>
+            </ul>
+            <div id="myTabContent" class="tab-content path_list">
+              <!-- 탭01 내용 -->
+              <div
+                id="tab01"
+                class="tab-pane fade show active"
+                role="tabpanel"
+                aria-labelledby="grade-tab"
+              >
+                <CustomFolderListTreeView
+                  ref="institutionFolderView"
+                  :dataList="institutionData"
+                  :expanded="true"
+                  :pidNum="110"
+                  @folder-click="folderClickInsti"
+                />
+              </div>
+              <!-- /.탭01 내용 -->
+              <!-- 탭02 내용 -->
+              <div
+                id="tab02"
+                class="tab-pane fade"
+                role="tabpanel"
+                aria-labelledby="class-tab"
+              >
+                <CustomFolderListTreeView
+                  ref="franchiseFolderView"
+                  :dataList="franchiseData"
+                  :expanded="true"
+                  :pidNum="210"
+                  @folder-click="folderClickFran"
+                />
+              </div>
+              <!-- /.탭02 내용 -->
+              <!-- 탭02 내용 -->
+              <div
+                id="tab03"
+                class="tab-pane fade"
+                role="tabpanel"
+                aria-labelledby="class-tab"
+              >
+                <CustomFolderListTreeView
+                  ref="myDataFolderView"
+                  :dataList="myData"
+                  :expanded="true"
+                  :pidNum="310"
+                  @folder-click="folderClickMyData"
+                />
+              </div>
+              <!-- /.탭02 내용 -->
+            </div>
+            <!-- /.탭 컨텐츠 -->
+            <div class="select_path">
+              <span class="tit">선택폴더</span>
+              <span>{{folderInfo.path}}</span>
+            </div>
+            <div class="file_name">
+              <div class="form-group">
+                <label for="inputSavePath" class="tit savePathLabel"
+                  >파일명</label
+                >
+                <input
+                  id="inputSavePath"
+                  type="text"
+                  class="form-control form-inline savePathInput"
+                  placeholder="저장할 파일명을 입력해 주세요"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn_crud_point"
+              data-dismiss="modal"
+              @click="saveFilePath"
+            >
+              저장
+            </button>
+            <button
+              class="btn btn_crud_default"
+              data-dismiss="modal"
+              @click="$emit('close')"
+            >
+              취소
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <!-- 강좌 생성 -->
-    <CreateLectureModal
-      :lectureInfo="lectureInfo"
-      :teacherList="teacherList"
-      :classList="classList"
-      @change-lecture="onChangeLecture"
-      @show-menu="showTeacherMenu"
-      @add-teacher="addTeacher"
-      @add-spare-teacher="addSpareTeacher"
-      @delete-teacher="deleteTeacher"
-      @delete-spare-teacher="deleteSpareTeacher"
-      @add-class="addClassData"
-      @delete-class="deleteClassData"
-      @next-btn="onSubmitCreateClass"
-    />
-
-    <!-- 강좌 변경 -->
-    <ChangeLectureModal
-      :open="isChangeLecture"
-      :lecture="lectureInfo"
-      :teacherList="teacherList"
-      :classList="classList"
-      @show-menu="showTeacherMenu"
-      @change-lecture="onChangeSelectLecture"
-      @delete-teacher="deleteTeacher"
-      @delete-spare-teacher="deleteSpareTeacher"
-      @add-teacher="addTeacher"
-      @add-spare-teacher="addSpareTeacher"
-      @add-class="addClassData"
-      @delete-class="deleteClassData"
-      @close="closeChangeLectureModal"
-    />
-
-    <!-- 커리큘럼 선택 -->
-    <SelectCurriculumModal
-      :curriculumList="curriculumList"
-      :teacherList="teacherList"
-    />
-
-    <!-- 수업시간 선택 -->
-    <SelectScheduleModal
-      :hourData="hourData"
-      :scheduleItem="scheduleItem"
-      :scheduleWeekList="scheduleWeekList"
-      :timeList="timeList"
-      @select-day="onSelectWeekDay"
-      @change-time="onChangeSchedule"
-      @open-calendar="openModalCalendar"
-      @add-schedule="addSchedule"
-      @delete-schedule="deleteSchedule"
-    />
-
-    <!-- 커리큘럼 배정 -->
-    <CurriculumAssignmentModal />
-
-    <ChangeCurriculumAssignmentModal
-      :open="isChangeCurriculemAssignment"
-      @close="closeChangeCurriculemAssignmentModal"
-    />
-
-    <!-- 커리큘럼 리스트 상세 -->
-    <SelectCurriculumListModal />
-
-    <!-- 달력 모달 호출 -->
-    <CustomDataPicker
-      :open="isCalendar"
-      :scheduleItem="scheduleItem"
-      @select-date="onChangeDate"
-      @close="closeModalCalendar"
-    />
-
-    <!-- 설명 모달 -->
-    <ModalDesc
-      :open="isOpenModalDesc.open"
-      :title="isOpenModalDesc.title"
-      :desc="isOpenModalDesc.desc"
-      @close="closeModalDesc"
-    />
-
-    <!-- 삭제 모달 -->
-    <DeleteModal
-      :open="isDeleteModal.open"
-      @close="closeDeleteModal"
-      @submit="deleteLecture"
-    />
-  </div>
+  </Transition>
 </template>
 
 <script>
-import ChangeCurriculumAssignmentModal from '~/components/common/modal/lecture/ChangeCurriculumAssignmentModal.vue'
-import ChangeLectureModal from '~/components/common/modal/lecture/ChangeLectureModal.vue'
-import CreateLectureModal from '~/components/common/modal/lecture/CreateLectureModal.vue'
-import CurriculumAssignmentModal from '~/components/common/modal/lecture/CurriculumAssignmentModal.vue'
-import SelectCurriculumListModal from '~/components/common/modal/lecture/SelectCurriculumListModal.vue'
-import SelectCurriculumModal from '~/components/common/modal/lecture/SelectCurriculumModal.vue'
-import SelectScheduleModal from '~/components/common/modal/lecture/SelectScheduleModal.vue'
-import ModalDesc from '~/components/common/modal/ModalDesc.vue'
-import DeleteModal from '~/components/common/modal/reference/DeleteModal.vue'
-import PageHeader from '~/components/common/PageHeader.vue'
-import CustomDataPicker from '~/components/lecture/custom/CustomDataPicker.vue'
-import LectureList from '~/components/lecture/LectureList.vue'
-import NoListSection from '~/components/lecture/NoListSection.vue'
-import initialState from '~/data/lecture/initialState'
+  import $ from 'jquery'
+  import ModalHeader from '../../ModalHeader.vue'
+  import CustomFolderListTreeView from '@/components/common/custom/CustomFolderListTreeView.vue'
 
-export default {
-  name: 'LecturePage',
-  components: {
-    PageHeader,
-    CreateLectureModal,
-    CurriculumAssignmentModal,
-    SelectCurriculumModal,
-    SelectScheduleModal,
-    SelectCurriculumListModal,
-    NoListSection,
-    LectureList,
-    ChangeLectureModal,
-    CustomDataPicker,
-    ModalDesc,
-    ChangeCurriculumAssignmentModal,
-    DeleteModal,
-  },
-  data() {
-    return initialState()
-  },
-  computed: {
-    hourData() {
-      return Array.from({ length: 48 }, (i, j) => j / 2 + 0)
+  export default {
+    name: 'SavePathSearchModal',
+    components: {
+      ModalHeader,
+      CustomFolderListTreeView,
     },
-    timeList() {
-      const timeArr = this.hourData.map((item) => {
-        const time = item.toString()
-        const timeLen = time.length
-        const isOnTime = time.includes('.5')
-        const timeSet = (a, b) => {
-          return time.replace(a, b)
-        }
-        if (isOnTime) {
-          if (timeLen === 3) {
-            return timeSet(/(\d)(.5)/, '0$130')
-          } else {
-            return timeSet(/(\d)(.5)/, '$130')
-          }
-        } else if (timeLen === 1) {
-          return timeSet(/(\d)/, '0$100')
-        } else {
-          return timeSet(/(\d\d)/, '$100')
-        }
-      })
-      return timeArr
+    props: {
+      institutionData: {
+        type: Array,
+        default: () => [],
+      },
+      franchiseData: {
+        type: Array,
+        default: () => [],
+      },
+      myData: {
+        type: Array,
+        default: () => [],
+      },
+      open: {
+        type: Boolean,
+        default: false,
+      },
+      componentId: {
+        type: String,
+        default: '',
+      },
     },
-    getToday() {
-      const year = new Date().getFullYear()
-      const month = new Date().getMonth() + 1
-      const day = new Date().getDate()
-      return { year, month, day }
-    },
-  },
-  methods: {
-    // 달력 모달
-    openModalCalendar() {
-      this.isCalendar = true
-    },
-
-    closeModalCalendar() {
-      this.isCalendar = false
-    },
-
-    openModalDesc(tit, msg) {
-      this.isOpenModalDesc = {
-        open: true,
-        title: tit,
-        desc: msg,
+    data() {
+      return {
+        folderInfo: {
+          path: '',
+          type: '',
+          fileName: '',
+        },
       }
     },
-
-    closeModalDesc() {
-      this.isOpenModalDesc.open = false
+    methods: {
+      folderClickInsti(pathInfo) {
+        this.folderInfo.path = pathInfo
+        this.folderInfo.type = 'institution'
+      },
+      folderClickFran(pathInfo) {
+        this.folderInfo.path = pathInfo
+        this.folderInfo.type = 'franchise'
+      },
+      folderClickMyData(pathInfo) {
+        this.folderInfo.path = pathInfo
+        this.folderInfo.type = 'curriculum'
+      },
+      saveFilePath() {
+        this.folderInfo.fileName = $('#inputSavePath').val()
+        this.$emit('save-file-path', this.folderInfo)
+      },
     },
-
-    // 강좌 변경 모달
-    openChangeLectrueModal(data) {
-      this.isChangeLecture = true
-      const newItem = this.deepCopy(data)
-      return Object.assign(this.lectureInfo, newItem)
-    },
-
-    closeChangeLectureModal() {
-      this.isChangeLecture = false
-    },
-
-    // 커리큘럼 배정 보달
-    openChangeCurriculemAssignmentModal() {
-      this.isChangeCurriculemAssignment = true
-    },
-
-    closeChangeCurriculemAssignmentModal() {
-      this.isChangeCurriculemAssignment = false
-    },
-
-    // 삭제 확인 모달
-    openDeleteModal(item, list) {
-      if (list) {
-        if (this.checkLectureList.length) {
-          this.isDeleteModal.list = list
-        } else {
-          this.openModalDesc('실패', '삭제할 데이터를 선택해주세요')
-          return false
-        }
-      } else {
-        this.deleteItem = item
-      }
-      return (this.isDeleteModal.open = true)
-    },
-
-    closeDeleteModal() {
-      this.isDeleteModal.open = false
-    },
-
-    // 깊은 복사
-    deepCopy(data) {
-      return JSON.parse(JSON.stringify(data))
-    },
-
-    // 배열 만들기
-    setNewArray(arr) {
-      return Array.from(new Set(arr))
-    },
-
-    // 강좌 변경 Event
-    onChangeLecture({ target: { name, value } }) {
-      this.lectureInfo[name] = value
-    },
-
-    // 선택 강좌 변경 Event
-    // onChangeSelectLecture({ target: { name, value } }) {
-    //   this.changeLectureItem[name] = value
-    // },
-
-    // 배정 메뉴 보여줄때 다른 메뉴 닫기
-    closeTeacherMenu() {
-      for (const index in this.teacherList) {
-        const allTarget = document.getElementById(`teacher_list${index}`)
-        const allTargetTwo = document.getElementById(`teacher_list_${index}`)
-        allTarget.style.display = 'none'
-        allTargetTwo.style.display = 'none'
-      }
-    },
-
-    // 선생님 배정 메뉴 보여주기
-    showTeacherMenu(idx) {
-      const targetStyle = document.getElementById(`teacher_list${idx}`).style
-      const isNone = targetStyle.display === 'none'
-      if (isNone) {
-        this.closeTeacherMenu()
-        return (targetStyle.display = 'block')
-      } else {
-        return (targetStyle.display = 'none')
-      }
-    },
-
-    // 담임 배정시 부담임이였으면 지우기
-    resetSpareTeacherIdx(id, type) {
-      let idx = 0
-      // if (type === 'create') {
-      idx = this.lectureInfo.spareTeacher.findIndex((item) => item.id === id)
-      if (idx >= 0) {
-        return this.lectureInfo.spareTeacher.splice(idx, 1)
-      }
-      // } else {
-      //   idx = this.changeLectureItem.spareTeacher.findIndex(
-      //     (item) => item.id === id
-      //   )
-      //   if (idx >= 0) {
-      //     return this.changeLectureItem.spareTeacher.splice(idx, 1)
-      //   }
-      // }
-    },
-
-    // 담임 추가
-    addTeacher(payload, type) {
-      const { id } = payload
-      this.resetSpareTeacherIdx(id, type)
-      // if (type === 'create')
-      return (this.lectureInfo.teacher = [payload])
-      // else return (this.changeLectureItem.teacher = [payload])
-    },
-
-    // 부담임 지정시 담임이였으면 지우기
-    resetIfTeacherIdx(id, type) {
-      // let idx
-      // if (type === 'create') {
-      const idx = this.lectureInfo.teacher.findIndex((item) => item.id === id)
-      if (idx >= 0) {
-        return this.lectureInfo.teacher.splice(idx, 1)
-      }
-      // } else {
-      //   idx = this.changeLectureItem.teacher.findIndex((item) => item.id === id)
-      //   if (idx >= 0) {
-      //     return this.changeLectureItem.teacher.splice(idx, 1)
-      //   }
-      // }
-    },
-
-    // 부담임 추가
-    addSpareTeacher(payload, type) {
-      const { id } = payload
-      const target = this.lectureInfo
-      // const changeTarget = this.changeLectureItem
-      const selectSpareList = [...target.spareTeacher, payload]
-      // const selectChangeSpareList = [
-      //   ...this.changeLectureItem.spareTeacher,
-      //   payload,
-      // ]
-      // const spareIdx = this.changeLectureItem.spareTeacher.findIndex(
-      //   (item) => item.id === id
-      // )
-      this.resetIfTeacherIdx(id, type)
-      // if (type === 'create')
-        return (target.spareTeacher = this.setNewArray(selectSpareList))
-      // else if (spareIdx === -1)
-      //   return (changeTarget.spareTeacher = this.setNewArray(
-      //     selectChangeSpareList
-      //   ))
-    },
-
-    // 반 추가
-    addClassData(payload, page) {
-      // const idx = this.changeLectureItem.className.findIndex(
-      //   (item) => item.id === payload.id
-      // )
-      // if (page === 'create') {
-        const selectClassList = [...this.lectureInfo.className, payload]
-        return (this.lectureInfo.className = this.setNewArray(selectClassList))
-      // } else {
-        // const selectClassList = [...this.changeLectureItem.className, payload]
-        // if (idx === -1) {
-        //   return (this.changeLectureItem.className =
-        //     this.setNewArray(selectClassList))
-        // }
-      //   return null
-      // }
-    },
-
-    // 담임 삭제
-    deleteTeacher(selectIdx, type) {
-      // if (type === 'create') {
-        return this.lectureInfo.teacher.splice(selectIdx, 1)
-      // } else {
-      //   return this.changeLectureItem.teacher.splice(selectIdx, 1)
-      // }
-    },
-
-    // 부담임 삭제
-    deleteSpareTeacher(selectIdx, type) {
-      // if (type === 'create') {
-        return this.lectureInfo.spareTeacher.splice(selectIdx, 1)
-      // } else {
-      //   return this.changeLectureItem.spareTeacher.splice(selectIdx, 1)
-      // }
-    },
-
-    // 반 삭제
-    deleteClassData(selectIdx, page) {
-      // if (page === 'create') {
-        return this.lectureInfo.className.splice(selectIdx, 1)
-      // } else {
-      //   return this.changeLectureItem.className.splice(selectIdx, 1)
-      // }
-    },
-
-    // 강좌 만들기 Submit
-    onSubmitCreateClass() {
-      const nextBtnTarget = document.getElementById('create_chapter_1')
-      if (this.lectureInfo.name === '') {
-        this.openModalDesc('실패', '강좌 이름을 입력해주세요.')
-        return false
-      }
-      if (this.lectureInfo.teacher.length === 0) {
-        this.openModalDesc('실패', '담임 선생님을 배정해주세요.')
-        return false
-      }
-      if (this.lectureInfo.className.length === 0) {
-        this.openModalDesc('실패', '반을 배정해주세요.')
-        return false
-      }
-
-      if (
-        this.lectureInfo.name !== '' &&
-        this.lectureInfo.teacher.length > 0 &&
-        this.lectureInfo.className.length > 0
-      ) {
-        nextBtnTarget.click()
-      }
-    },
-
-    // 스케줄
-    // 스케줄 요일 토글 이벤트
-    onSelectWeekDay({ target: { classList, innerHTML } }) {
-      let newArr = []
-      const isClass = classList.contains('active')
-      const filter = (item) => item?.filter((data) => data !== innerHTML)
-      const settingTarget = this.scheduleItem.selectWeekDay
-
-      if (isClass) {
-        newArr = filter(settingTarget)
-        classList.remove('active')
-      } else {
-        newArr = [...settingTarget, innerHTML]
-        classList.add('active')
-      }
-      return (this.scheduleItem.selectWeekDay = this.setNewArray(newArr))
-    },
-
-    // 달력 날자 설정
-    onChangeDate({ start, end }) {
-      const setDate = (date) =>
-        `${date?.getFullYear()}.${date?.getMonth() + 1}.${date?.getDate()}`
-      this.scheduleItem.startDay = setDate(start)
-      this.scheduleItem.endDay = setDate(end)
-      this.isCalendar = false
-    },
-
-    // 달력 시간 변경
-    onChangeSchedule({ target: { name, value, checked } }) {
-      if (name === 'isRepeat') {
-        this.scheduleItem[name] = checked
-      } else {
-        this.scheduleItem[name] = value
-      }
-    },
-
-    // 색 바꾸기
-    getColor() {
-      if (this.bgCnt === 0) return '#8fa7fb'
-      else if (this.bgCnt === 1) return '#72d8d9'
-      else if (this.bgCnt === 2) {
-        this.bgCnt = 0
-        return '#bff0f1'
-      }
-    },
-
-    // 검색 내용 초기화
-    resetSearchShedule() {
-      const now = this.getToday
-      return (this.scheduleItem = {
-        startTime: '',
-        endTime: '',
-        startDay: `${now.year}.${now.month}.${now.day}`,
-        endDay: `${now.year}.${now.month}.${now.day + 1}`,
-        selectWeekDay: [],
-        bgColor: this.getColor(),
-        isRepeat: false,
-      })
-    },
-
-    // 검색 완료시 버튼 초기화
-    resetBtn() {
-      for (let j = 0; j < 7; j++) {
-        document.getElementById(`week_btn_${j}`).classList.remove('active')
-      }
-    },
-
-    // 검색완료시 시간표 데이터 보여주기
-    addScheduleWeekList(idx, schedule) {
-      const weekList = this.weekIdx
-      this.scheduleWeekList[weekList[idx]] = [
-        ...this.scheduleWeekList[weekList[idx]],
-        schedule,
-      ]
-    },
-
-    // 동일한 시간 체크
-    selectArrayLength(i, startTime) {
-      const weekList = this.weekIdx
-      const array = this.scheduleWeekList[weekList[i]].filter(
-        (item) => item.startTime <= startTime && item.endTime >= startTime
-      )
-      return array
-    },
-
-    // 시간표 추가
-    addSchedule(schedule) {
-      const { startDay, endDay, startTime, endTime, selectWeekDay } = schedule
-      if (startDay === '') {
-        this.openModalDesc('실패', '시작 날짜를 입력해주세요')
-        return false
-      }
-      if (endDay === '') {
-        this.openModalDesc('실패', '종료 날짜를 입력해주세요')
-        return false
-      }
-      if (startTime === '') {
-        this.openModalDesc('실패', '시작 시간을 입력해주세요')
-        return false
-      }
-      if (endTime === '') {
-        this.openModalDesc('실패', '종료 시간을 입력해주세요')
-        return false
-      }
-      if (selectWeekDay.length === 0) {
-        this.openModalDesc('실패', '요일을 입력해주세요')
-        return false
-      }
-
-      if (
-        startDay !== '' &&
-        endDay !== '' &&
-        startTime !== '' &&
-        endTime !== '' &&
-        selectWeekDay.length !== 0
-      ) {
-        for (const i of selectWeekDay) {
-          if (this.selectArrayLength(i, startTime).length) {
-            this.openModalDesc('실패', '해당하는 날짜의 강의가 이미 있습니다.')
-            return false
-          } else {
-            this.addScheduleWeekList(i, schedule)
-            this.resetBtn()
-            this.resetSearchShedule()
-          }
-        }
-        return (this.bgCnt = this.bgCnt + 1)
-      }
-    },
-
-    // 시간표 삭제
-    deleteSchedule(week, data) {
-      return (this.scheduleWeekList[week] = this.scheduleWeekList[week].filter(
-        (item) => item.startDay !== data.startDay
-      ))
-    },
-
-    // checkbox 리스트 추가삭제
-    handleCheckbox({ target: { checked, value, id } }) {
-      const idx = this.lectureList.findIndex((item) => item.name === value)
-      if (id === 'lecture_all_check') {
-        if (checked) {
-          this.checkLectureList = [...this.lectureList]
-        } else {
-          this.checkLectureList = []
-        }
-      } else if (checked) {
-        this.checkLectureList = [
-          ...this.checkLectureList,
-          this.lectureList[idx],
-        ]
-      } else {
-        return this.checkLectureList.splice(idx, 1)
-      }
-    },
-
-    // 순환 구조를 Json으로 변환
-    getCircularReplacer() {
-      const seen = new WeakSet()
-      return (key, value) => {
-        if (typeof value === 'object' && value !== null) {
-          if (seen.has(value)) {
-            return
-          }
-          seen.add(value)
-        }
-        return value
-      }
-    },
-
-    // json으로 변환 후 return
-    jsonItem(data) {
-      const spare = JSON.stringify(data, this.getCircularReplacer())
-      return JSON.parse(spare)
-    },
-
-    // 리스트 삭제 클릭
-    deleteLecture() {
-      let newArray
-      if (this.isDeleteModal.list) {
-        newArray = this.lectureList.filter(
-          (item) => !this.checkLectureList.includes(item)
-        )
-      } else {
-        newArray = this.lectureList.filter((item) => item !== this.deleteItem)
-      }
-
-      this.closeDeleteModal()
-      this.openModalDesc('성공', '해당 강좌를 삭제하였습니다.')
-      return (this.lectureList = newArray)
-    },
-  },
-}
+  }
 </script>
 
-<style></style>
+<style scoped>
+  .background {
+    background: #eee;
+  }
+  .savePathLabel {
+    text-align: left;
+    padding: 10px 0;
+    font-size: 14px;
+    color: #a7a9ac;
+  }
+  .savePathInput {
+    margin: 0 0 0 30px;
+    width: 83%;
+  }
+</style>
+<style>
+  #modalStoragepath .icon_institute {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    background-image: url(~assets/images/icon_institute.png);
+  }
+  #modalStoragepath .icon_fran {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    background-image: url(~assets/images/icon_fran.png);
+  }
+  #modalStoragepath .icon_mydata {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    background-image: url(~assets/images/icon_mydata.png);
+  }
+  #modalStoragepath .vtl-node-main.active {
+    background-color: #a2a2a2 !important;
+  }
+  #modalStoragepath .vtl-node-main:hover {
+    background-color: #f0f0f0;
+  }
+</style>

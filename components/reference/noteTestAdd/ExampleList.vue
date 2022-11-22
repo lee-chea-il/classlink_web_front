@@ -8,6 +8,7 @@
             <CustomDescEditor
               :itemList="noteTestList[currentIdx]"
               :currentIdx="currentIdx"
+              :isCreate="isCreate"
               @select-answer="$emit('select-answer', currentIdx, $event)"
               @delete-example="setDeleteExample"
             />
@@ -88,7 +89,7 @@
                 id="commentary"
                 name="commentary"
                 :value="item.commentary"
-                rows="3"
+                rows="4"
                 placeholder="입력한 해설"
                 @input="$emit('change-item', $event, idx)"
               ></textarea>
@@ -116,6 +117,10 @@ export default {
     currentIdx: {
       type: Number,
       default: 0,
+    },
+    isCreate: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {

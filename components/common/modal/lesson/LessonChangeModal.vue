@@ -156,7 +156,7 @@
                   @changePushKeyword="$emit('changePushKeyword', $event)"
                   @set-keyword="$emit('set-keyword', $event)"
                   @delete-keyword="$emit('delete-keyword', $event)"
-                  @moreShowClick="$emit('open-reference', $event)"
+                  @open-save-path="$emit('open-save-path', 'isChangeLesson')"
                 />
                 <!-- /.오른쪽 영역 -->
               </div>
@@ -239,7 +239,7 @@ export default {
     // lesson 보는 페이지
     moreShowClick(node) {
       // console.log(`moreShowClick ${node}`)
-      this.$emit('open-data', node, 'isLessonChange')
+      this.$emit('open-data', node, 'isChangeLesson')
     },
     moreShowClickReference() {
       console.log('계발예정')

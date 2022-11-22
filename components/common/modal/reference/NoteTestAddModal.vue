@@ -32,7 +32,8 @@
 
               <!-- 오른쪽 영역 -->
               <NoteTestRightField
-                :noteTestList="noteTestList"
+                :isCreate="true"
+                :noteTestList="reference.noteTestList"
                 :currentIdx="currentPageIdx"
                 @change-number="$emit('change-number', $event)"
                 @plus-item="$emit('plus-item', $event)"
@@ -74,10 +75,6 @@ export default {
     reference: {
       type: Object,
       default: () => {},
-    },
-    noteTestList: {
-      type: Array,
-      default: () => [],
     },
     currentPageIdx: {
       type: Number,

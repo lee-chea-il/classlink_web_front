@@ -5,6 +5,7 @@
     <div class="tab-content depth03 ac_manage_dtr">
       <div class="tab-pane active">
         <!-- 컨트롤 버튼 영역 -->
+
         <LessonBtnBox
           @open-add="openLessonAdd"
           @copy="copyData"
@@ -22,7 +23,6 @@
               :institutionData="receiveInstitutionLessonData"
               :franchiseData="receiveFranchiseLessonData"
               @copyDataCallBack="copyDataCallBack"
-              @file-view="openLessonDetail"
               @open-data="openLessonBrowseModal"
               @update-data="openLessonChangeModal"
             />
@@ -39,7 +39,7 @@
 
     <!-- 레슨 추가 -->
     <LessonAddModal
-      :open="isLessonAdd"
+      :open="isAddLesson.open"
       :identity="identity"
       :isLesson="isLesson"
       :receiveInstitutionLessonData="receiveInstitutionLessonData"
@@ -50,20 +50,21 @@
       :pushKeyword="pushKeyword"
       @add-lesson="addLessonList"
       @change-lesson="changeCreateLesson"
-      @set-lesson="setLessonFlag"
-      @remove-lesson="removeLessonItem"
       @call-back="copyDataCallBack"
       @close="closeLessonAdd"
       @change-keyword="changePushKeyword"
-      @set-keyword="setKeyword"
       @delete-keyword="deleteKeyword"
-      @open-reference="openLessonDetail"
       @open-data="openLessonBrowseModal"
+      @open-reference="openReference"
+      @remove-lesson="removeLessonItem"
+      @set-lesson="setLessonFlag"
+      @set-keyword="setKeyword"
+      @open-save-path="openSavePathModal"
     />
 
     <!-- 레슨 변경 -->
     <LessonChangeModal
-      :open="isLessonChange"
+      :open="isChangeLesson.open"
       :lessonItem="changeLessonItem"
       :identity="identity"
       :isLesson="isLesson"
@@ -81,9 +82,9 @@
       @change-keyword="changeChangePagePushKeyword"
       @set-keyword="setChangePageKeyword"
       @delete-keyword="deleteChangePageKeyword"
-      @open-reference="openLessonDetail"
       @close="closeLessonChangeModal"
       @open-data="openLessonBrowseModal"
+      @open-save-path="openSavePathModal"
     />
 
     <!-- 레슨 열람 -->
@@ -117,6 +118,36 @@
       @pagination="setPagination"
       @close="closeNoteTestPreview"
     />
+
+    <!-- 등록 자료실 자료 열람 -->
+    <VideoBrowseModal
+      :open="isReferenceBrowse.open"
+      :selectData="selectReferenceItem"
+      @close="closeReferenceBrowse"
+    />
+
+    <QuizBrowseModal
+      :open="isQuizBrowse.open"
+      :selectData="selectReferenceItem"
+      @close="closeBrowseQuiz"
+      @preview="onOpenQuizPreviewModal"
+    />
+
+    <NoteTestBrowseModal
+      :open="isNoteTestBrowse.open"
+      :selectData="selectReferenceItem"
+      @close="closeBrowseNoteTest"
+      @preview="openNoteTestPreview"
+    />
+
+    <SavePathModal
+      :open="isSavePath.open"
+      :institutionData="receiveInstitutionLessonData"
+      :franchiseData="receiveFranchiseLessonData"
+      :myData="receiveLessonList"
+      @close="closeSavePathModal"
+      @save-file-path="setSaveFilePath"
+    />
   </div>
 </template>
 
@@ -133,6 +164,10 @@ import MyTabMenu from '~/components/common/MyTabMenu.vue'
 import LeftTreeTab from '~/components/lesson/Main/LeftTreeTab.vue'
 import RightTreeTab from '~/components/lesson/Main/RightTreeTab.vue'
 import EducationTabMenu from '~/components/common/EducationTabMenu.vue'
+import VideoBrowseModal from '~/components/common/modal/reference/VideoBrowseModal.vue'
+import QuizBrowseModal from '~/components/common/modal/reference/QuizBrowseModal.vue'
+import NoteTestBrowseModal from '~/components/common/modal/reference/NoteTestBrowseModal.vue'
+import SavePathModal from '~/components/common/modal/lesson/SavePathModal.vue'
 
 export default {
   name: 'LessonPage',
@@ -148,6 +183,10 @@ export default {
     LeftTreeTab,
     RightTreeTab,
     EducationTabMenu,
+    VideoBrowseModal,
+    QuizBrowseModal,
+    NoteTestBrowseModal,
+    SavePathModal,
   },
   layout: 'EducationLayout',
   data() {
@@ -155,11 +194,11 @@ export default {
   },
   methods: {
     openLessonAdd() {
-      this.isLessonAdd = true
+      this.isAddLesson.open = true
     },
 
     closeLessonAdd() {
-      this.isLessonAdd = false
+      this.isAddLesson.open = false
     },
 
     openLessonChangeModal(data) {
@@ -168,11 +207,11 @@ export default {
       }
       const newItem = this.jsonItem(data)
       this.changeLessonItem = newItem
-      this.isLessonChange = true
+      this.isChangeLesson.open = true
     },
 
     closeLessonChangeModal() {
-      this.isLessonChange = false
+      this.isChangeLesson.open = false
     },
 
     // 열람 데이터 초기 설정
@@ -186,12 +225,13 @@ export default {
       this.selectReferenceItem = item?.referenceList[0]
     },
 
+    // 레슨 열기
     openLessonBrowseModal(item, prev) {
-      if (this.isLessonAdd === true) {
+      if (this.isAddLesson.open === true) {
         this.closeLessonAdd()
       }
 
-      if (this.isLessonChange === true) {
+      if (this.isChangeLesson.open === true) {
         this.closeLessonChangeModal()
       }
 
@@ -209,8 +249,67 @@ export default {
       }
     },
 
+    // 자료실 자료 열람 하기
+    openReference(item, prev) {
+      if (this[prev]) {
+        this[prev] = false
+      }
+      this.setReference(item)
+      if (item.uploadType === 'quiz') return this.openBrowseQuiz(prev)
+      else if (item.uploadType === 'test') return this.openBrowseNoteTest(prev)
+      else return this.openReferenceBrowse(prev)
+    },
+
+    // [자료열람] 동영상,pdf,youtube,url
+    openReferenceBrowse(prev) {
+      this.isReferenceBrowse = {
+        open: true,
+        prevPage: prev,
+      }
+    },
+
+    closeReferenceBrowse() {
+      if (this.isReferenceBrowse.prevPage) {
+        this[this.isReferenceBrowse.prevPage] = true
+      }
+      this.isReferenceBrowse.open = false
+    },
+
+    // [자료열람] 퀴즈
+    openBrowseQuiz(prev) {
+      this.isQuizBrowse = {
+        open: true,
+        prevPage: prev,
+      }
+    },
+
+    closeBrowseQuiz() {
+      if (this.isQuizBrowse.prevPage) {
+        this[this.isQuizBrowse.prevPage] = true
+      }
+      this.isQuizBrowse.open = false
+    },
+
+    // [자료열람] 쪽지시험
+    openBrowseNoteTest(prev) {
+      this.isNoteTestBrowse = {
+        open: true,
+        prevPage: prev,
+      }
+    },
+
+    closeBrowseNoteTest() {
+      if (this.isNoteTestBrowse.prevPage) {
+        this[this.isNoteTestBrowse.prevPage] = true
+      } else if (this.isNoteTestBrowse.prevPage === 'browse') {
+        this.isQuizBrowse.oepn = true
+      }
+      this.isNoteTestBrowse = false
+    },
+
+    // [자료미리보기] 퀴즈
     openQuizPreview(page) {
-      this[page] = false
+      this[page].open = false
       this.isQuizPreviewModal = {
         open: true,
         prevPage: page,
@@ -218,14 +317,17 @@ export default {
     },
 
     closeQuizPreview() {
-      this[this.isQuizPreviewModal.prevPage] = true
+      if (this.isQuizPreviewModal.prevPage) {
+        this[this.isQuizPreviewModal.prevPage].open = true
+      }
       this.isQuizPreviewModal = {
         open: false,
       }
     },
 
+    // [자료미리보기] 쪽지시험
     openNoteTestPreview(page) {
-      this[page] = false
+      this[page].open = false
       this.isNoteTestPreviewModal = {
         open: true,
         prevPage: page,
@@ -233,12 +335,73 @@ export default {
     },
 
     closeNoteTestPreview() {
-      this[this.isNoteTestPreviewModal.prevPage] = true
+      if (this.isNoteTestPreviewModal.prevPage) {
+        this[this.isNoteTestPreviewModal.prevPage].open = true
+      }
       this.isNoteTestPreviewModal = {
         open: false,
       }
     },
 
+    onOpenQuizPreviewModal(prevItem, page) {
+      console.log(prevItem)
+      const target =
+        prevItem === 'browse' ? 'isQuizBrowse' : 'isQuizChangeModal'
+      this.isQuizPreviewModal = {
+        open: true,
+        prevPage: target,
+      }
+      if (page === 'first') {
+        this.currentPageIdx = 0
+      }
+      if (prevItem === 'browse') {
+        this.isQuizBrowse.open = false
+        this.isQuizPreviewModal.select = true
+      } else {
+        this.isQuizChangeModal = false
+        this.isQuizPreviewModal.select = true
+      }
+    },
+
+    onOpenNoteTestPreviewModal(prevItem, page) {
+      this.isNoteTestPreviewModal = {
+        open: true,
+        prevPage: prevItem,
+      }
+      if (page === 'first') {
+        this.currentPageIdx = 0
+      }
+      if (prevItem === 'add') {
+        this.isNoteTestAddModal = false
+        this.isNoteTestPreviewModal.select = false
+      } else if (prevItem === 'browse') {
+        this.isNoteTestBrowseModal = false
+        this.isNoteTestPreviewModal.select = true
+      } else {
+        this.isNoteTestChangeModal = false
+        this.isNoteTestPreviewModal.select = true
+      }
+    },
+
+    // [저장경로 모달]
+    openSavePathModal(prev) {
+      if (this[prev].open) {
+        this[prev].open = false
+      }
+      this.isSavePath = {
+        open: true,
+        prevPage: prev,
+      }
+    },
+
+    closeSavePathModal() {
+      this.isSavePath.open = false
+      if (this.isSavePath.prevPage) {
+        this[this.isSavePath.prevPage].open = true
+      }
+    },
+
+    // [자료등록,수정] 트리뷰 변경 flag
     setLessonFlag(flag) {
       this.isLesson = flag
     },
@@ -265,9 +428,13 @@ export default {
       console.log(this.copyCheckData)
     },
 
-    // 자료 보기 페이지
+    // 자료실 자료 설정
+    setReference(item) {
+      this.selectReferenceItem = this.jsonItem(item)
+    },
+
+    // 레슨 열람 자료 보기 페이지
     setSelectReference(reference) {
-      console.log(reference, 'reference')
       this.selectReferenceItem = reference
       this.currentIdx = 0
     },
@@ -344,10 +511,14 @@ export default {
       else return (this.changeLessonItem[id] = value)
     },
 
-    // 레슨 자료 보기
-    openLessonDetail(lesson) {
-      const list = this.jsonItem(lesson)
-      this.changeLessonItem = list
+    // 저장경로 수정
+    setSaveFilePath(path) {
+      console.log(path)
+      if (this.isSavePath.prevPage === 'isAddLesson') {
+        this.createLessonData.savePath = path
+      } else {
+        this.changeLessonItem.savePath = path
+      }
     },
 
     // 키워드 변경

@@ -13,7 +13,6 @@
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <ModalHeader title="자료 등록" @close="$emit('close')" />
-
           <div class="modal-body">
             <div class="modal_dataquiz row">
               <!-- 모달 내용 구분 class-->
@@ -33,7 +32,8 @@
 
               <!-- 오른쪽 영역 -->
               <QuizRightField
-                :quizList="quizList"
+                :isCreate="true"
+                :quizList="reference.quizList"
                 :currentPageIdx="currentPageIdx"
                 @change-item="onChangeItem"
                 @pagination="setPagination"
@@ -71,10 +71,6 @@ export default {
   },
   props: {
     open: Boolean,
-    quizList: {
-      type: Array,
-      default: () => [],
-    },
     currentPageIdx: {
       type: Number,
       default: 0,
@@ -95,8 +91,8 @@ export default {
     setPagination(item, idx) {
       this.$emit('pagination', item, idx)
     },
-    setSelectType(idx, num) {
-      this.$emit('select-type', idx, num)
+    setSelectType(e, idx, num) {
+      this.$emit('select-type', e, idx, num)
     },
     setSelectOx(idx, num) {
       this.$emit('select-ox', idx, num)

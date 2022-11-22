@@ -23,6 +23,7 @@
           id="#modalStoragepath"
           class="btn btn_crud_default"
           data-toggle="modal"
+          @click="$emit('open-save-path')"
         >
           찾아보기
         </button>

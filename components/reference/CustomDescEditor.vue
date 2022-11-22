@@ -6,9 +6,9 @@
           <input
             :id="!changePage ? `item${idx}` : `target${idx}`"
             type="radio"
-            name="radB"
-            class="custom-control-input"
+            :name="isCreate ? 'answer' : 'answerChange'"
             :checked="itemList.answer === idx + 1"
+            class="custom-control-input"
             @click="$emit('select-answer', idx)"
           />
           <label
@@ -61,6 +61,10 @@ export default {
       default: 0,
     },
     changePage: {
+      type: Boolean,
+      default: false,
+    },
+    isCreate: {
       type: Boolean,
       default: false,
     },

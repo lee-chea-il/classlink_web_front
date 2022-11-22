@@ -75,6 +75,7 @@
         type="text"
         :inputValue="lessonData.savePath"
         @change-input="$emit('change-lesson', $event)"
+        @open-save-path="$emit('open-save-path')"
       />
     </div>
 
@@ -86,25 +87,30 @@
       @delete-keyword="$emit('delete-keyword', $event)"
     />
 
-    <div v-show="!isChange" class="check_sec">
+    <div class="check_sec">
       <span class="custom-control custom-checkbox form-inline">
         <input
-          id="checkbox06"
+          :id="isChange ? 'isOpenEducationItem' : 'isOpenEducation'"
           type="checkbox"
           class="custom-control-input"
-          name="isOpenEducation"
+          name="isOpenEducation1"
           :value="lessonData.isOpenEducation"
           :checked="lessonData.isOpenEducation"
           @input="$emit('change-lesson', $event)"
         />
-        <label class="custom-control-label checkbox06" for="checkbox06"
+        <label
+          class="custom-control-label checkbox06"
+          :for="isChange ? 'isOpenEducationItem' : 'isOpenEducation'"
           >교육기관에 해당 자료를 공개합니다.</label
         >
       </span>
       <!-- [개발참조] 레슨수정시에는 미출력 -->
-      <span class="custom-control custom-checkbox form-inline">
+      <span
+        v-show="!isChange"
+        class="custom-control custom-checkbox form-inline"
+      >
         <input
-          id="checkbox07"
+          id="isContinuedRegist"
           type="checkbox"
           class="custom-control-input"
           name="isContinuedRegist"
@@ -112,7 +118,7 @@
           :checked="lessonData.isContinuedRegist"
           @input="$emit('change-lesson', $event)"
         />
-        <label class="custom-control-label checkbox07" for="checkbox07"
+        <label class="custom-control-label checkbox07" for="isContinuedRegist"
           >계속 등록하기</label
         >
       </span>

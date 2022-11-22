@@ -17,6 +17,7 @@
           <div class="modal-body">
             <div class="modal_dataquiz row">
               <!-- 모달 내용 구분 class-->
+
               <!-- 왼쪽 영역 -->
               <ReferenceAddLeftField
                 :reference="quiz"
@@ -29,7 +30,6 @@
                 @open-save-path="$emit('open-save-path', $event)"
               />
               <!-- /.왼쪽 영역 -->
-
               <!-- 오른쪽 영역 -->
               <QuizRightField
                 :quizList="quiz.quizList"
@@ -59,6 +59,7 @@
 import ModalHeader from '../../ModalHeader.vue'
 import ModalBtnBox from '../../ModalBtnBox.vue'
 import QuizRightField from '~/components/reference/quizAdd/QuizRightField.vue'
+import ReferenceAddLeftField from '~/components/reference/ReferenceAddLeftField.vue'
 
 export default {
   name: 'QuizChangeModal',
@@ -66,6 +67,7 @@ export default {
     ModalHeader,
     ModalBtnBox,
     QuizRightField,
+    ReferenceAddLeftField,
   },
   props: {
     open: {
@@ -92,8 +94,8 @@ export default {
     setPagination(item, idx) {
       this.$emit('pagination', item, idx)
     },
-    setSelectType(idx, num) {
-      this.$emit('select-type', idx, num)
+    setSelectType(e, idx, num) {
+      this.$emit('select-type', e, idx, num)
     },
     setSelectOx(idx, num) {
       this.$emit('select-ox', idx, num)

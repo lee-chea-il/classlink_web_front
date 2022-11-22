@@ -17,6 +17,7 @@
             isBtn || isIdCheckBtn ? 'form-inline' : '')
           "
           autocomplete="off"
+          disabled
           @input="$emit('change-input', $event)"
         />
         <button
@@ -107,4 +108,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+input:disabled {
+  background: white;
+}
+</style>

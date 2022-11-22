@@ -8,10 +8,11 @@
               <input
                 id="isOx"
                 type="radio"
-                name="isOx"
+                :name="isCreate ? 'quizType' : 'quizType1'"
+                :value="0"
                 class="custom-control-input"
                 :checked="item.quizType === 0"
-                @change="$emit('select-type', idx, 0)"
+                @click="$emit('select-type', $event, idx, 0)"
               />
               <label class="custom-control-label" for="isOx">OX 유형</label>
             </div>
@@ -67,10 +68,11 @@
               <input
                 id="isShortAnswer"
                 type="radio"
-                name="isShortAnswer"
+                :name="isCreate ? 'quizType' : 'quizType1'"
+                :value="1"
                 class="custom-control-input"
                 :checked="item.quizType === 1"
-                @change="$emit('select-type', idx, 1)"
+                @click="$emit('select-type', $event, idx, 1)"
               />
               <label class="custom-control-label" for="isShortAnswer"
                 >주관식 단답형</label
@@ -111,10 +113,11 @@
                 <input
                   id="isSubjective"
                   type="radio"
-                  name="isSubjective"
+                  :name="isCreate ? 'quizType' : 'quizType1'"
+                  :value="2"
                   class="custom-control-input"
                   :checked="item.quizType === 2"
-                  @change="$emit('select-type', idx, 2)"
+                  @click="$emit('select-type', $event, idx, 2)"
                 />
                 <label class="custom-control-label" for="isSubjective"
                   >단답형</label
@@ -170,6 +173,7 @@ export default {
       type: Number,
       default: 0,
     },
+    isCreate: { type: Boolean, default: false },
   },
 }
 </script>

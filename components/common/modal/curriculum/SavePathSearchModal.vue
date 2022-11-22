@@ -113,18 +113,20 @@
             <!-- /.탭 컨텐츠 -->
             <div class="select_path">
               <span class="tit">선택폴더</span>
-              <span>{{folderInfo.path}}</span>
+              <span>{{ folderInfo.path }}</span>
             </div>
             <div class="file_name">
               <div class="form-group">
-                <label for="inputSavePath" class="tit savePathLabel">파일명</label>
+                <label for="inputSavePath" class="tit savePathLabel"
+                  >파일명</label
+                >
                 <input
                   id="inputSavePath"
                   type="text"
                   class="form-control form-inline savePathInput"
                   placeholder="저장할 파일명을 입력해 주세요"
                   value=""
-                >
+                />
               </div>
             </div>
           </div>
@@ -133,7 +135,9 @@
               class="btn btn_crud_point"
               data-dismiss="modal"
               @click="saveFilePath"
-            >저장</button>
+            >
+              저장
+            </button>
             <button
               class="btn btn_crud_default"
               data-dismiss="modal"
@@ -157,7 +161,7 @@ export default {
   name: 'SavePathSearchModal',
   components: {
     ModalHeader,
-    CustomFolderListTreeView
+    CustomFolderListTreeView,
   },
   props: {
     institutionData: {
@@ -173,41 +177,41 @@ export default {
       default: () => [],
     },
     open: {
-      type:Boolean,
-      default:false
+      type: Boolean,
+      default: false,
     },
     componentId: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   data() {
     return {
       folderInfo: {
         path: '',
         type: '',
-        fileName: ''
-      }
+        fileName: '',
+      },
     }
   },
   methods: {
-    folderClickInsti(pathInfo){
-      this.folderInfo.path=pathInfo
-      this.folderInfo.type='institution'
+    folderClickInsti(pathInfo) {
+      this.folderInfo.path = pathInfo
+      this.folderInfo.type = 'institution'
     },
-    folderClickFran(pathInfo){
-      this.folderInfo.path=pathInfo
-      this.folderInfo.type='franchise'
+    folderClickFran(pathInfo) {
+      this.folderInfo.path = pathInfo
+      this.folderInfo.type = 'franchise'
     },
-    folderClickMyData(pathInfo){
-      this.folderInfo.path=pathInfo
-      this.folderInfo.type='curriculum'
+    folderClickMyData(pathInfo) {
+      this.folderInfo.path = pathInfo
+      this.folderInfo.type = 'curriculum'
     },
-    saveFilePath(){
-      this.folderInfo.fileName=$("#inputSavePath").val()
-      this.$emit("save-file-path",this.folderInfo)
-    }
-  }
+    saveFilePath() {
+      this.folderInfo.fileName = $('#inputSavePath').val()
+      this.$emit('save-file-path', this.folderInfo)
+    },
+  },
 }
 </script>
 
@@ -216,18 +220,18 @@ export default {
   background: #eee;
 }
 .savePathLabel {
-    text-align: left;
-    padding: 10px 0;
-    font-size: 14px;
-    color: #A7A9AC;
+  text-align: left;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #a7a9ac;
 }
-.savePathInput{
-    margin: 0 0 0 30px;
-    width: 83%;
+.savePathInput {
+  margin: 0 0 0 30px;
+  width: 83%;
 }
 </style>
 <style>
-#modalStoragepath .icon_institute{
+#modalStoragepath .icon_institute {
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -260,7 +264,7 @@ export default {
   background-size: contain;
   background-image: url(~assets/images/icon_mydata.png);
 }
-#modalStoragepath .vtl-node-main.active{
+#modalStoragepath .vtl-node-main.active {
   background-color: #a2a2a2 !important;
 }
 #modalStoragepath .vtl-node-main:hover {

@@ -23,6 +23,7 @@
         />
 
         <ExampleList
+          :isCreate="isCreate"
           :noteTestList="noteTestList"
           :currentIdx="currentIdx"
           @select-answer="setAnswer"
@@ -60,6 +61,10 @@ export default {
     currentIdx: {
       type: Number,
       default: 0,
+    },
+    isCreate: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {

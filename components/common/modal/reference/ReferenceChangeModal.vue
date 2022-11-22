@@ -26,9 +26,12 @@
                 @set-keyword="$emit('set-keyword', $event)"
                 @change-keyword="$emit('changePushKeyword', $event)"
                 @delete-keyword="$emit('delete-keyword', $event)"
-                @open-save-path="$emit('open-save-path', $event)"
+                @open-save-path="
+                  $emit('open-save-path', 'isReferenceChangeModal')
+                "
               />
               <!-- /.왼쪽 영역 -->
+
               <!-- 오른쪽 영역 -->
               <div class="right_area">
                 <div class="regi_area right">
@@ -93,11 +96,6 @@
                         <span>홍길동</span>
                       </div>
                     </div>
-
-                    <!-- [개발참조] 자료수정일때 출력되는 버튼 -->
-                    <!-- <div class="row">
-										<button for="" class="btn btn_crud_default fileChange">파일 교체</button>
-									</div> -->
                   </div>
                 </div>
               </div>

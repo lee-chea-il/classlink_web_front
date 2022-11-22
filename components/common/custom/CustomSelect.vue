@@ -1,8 +1,9 @@
 <template>
   <select
+    id="subject"
     class="select"
     name="subject"
-    :value="input"
+    :value="inputValue"
     @input="$emit('change-input', $event)"
   >
     <option class="dropdown-item" value="국어">국어</option>
@@ -18,7 +19,7 @@
 export default {
   name: 'CustomSelect',
   props: {
-    input: {
+    inputValue: {
       type: String,
       default: '국어',
     },

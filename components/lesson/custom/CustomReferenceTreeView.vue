@@ -29,7 +29,7 @@
 <script>
 import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
 export default {
-  name: 'CustomTreeView',
+  name: 'CustomReferenceTreeView',
   components: {
     VueTreeList,
   },
@@ -68,10 +68,6 @@ export default {
   mounted() {
     const dataMapping = (item, isReadOnly) => {
       const result = []
-      let isDragDisable = false
-      if (this.listType === 'lesson') {
-        isDragDisable = true
-      }
       const len = item.length
       for (let i = 0; i < len; i++) {
         if (item[i].children !== undefined) {
@@ -83,12 +79,8 @@ export default {
             children: [],
             readOnly: isReadOnly,
             isChecked: false,
-
-            dragDisabled: isDragDisable,
             type: item[i].type,
-            title: item[i].title,
             desc: item[i].desc,
-            role: item[i].role,
             keyword: item[i].keyword,
             isOpen: item[i].isOpen,
             savePath: item[i].savePath,
@@ -96,7 +88,14 @@ export default {
             createAt: item[i].createAt,
             ragistrant: item[i].ragistrant,
             subject: item[i].subject,
-            referenceList: item[i].referenceList,
+            registrant: item[i].registrant,
+            isOpenEducation: item[i].isOpenEducation,
+            isOpenReference: item[i].isOpenReference,
+            fileName: item[i].fileName,
+            fileDivision: item[i].fileDivision,
+            fileType: item[i].fileType,
+            uploadType: item[i].uploadType,
+            fileVolume: item[i].fileVolume,
           }
 
           this.pid++
@@ -111,9 +110,7 @@ export default {
             isChecked: false,
 
             type: item[i].type,
-            title: item[i].title,
             desc: item[i].desc,
-            role: item[i].role,
             keyword: item[i].keyword,
             isOpen: item[i].isOpen,
             savePath: item[i].savePath,
@@ -121,7 +118,14 @@ export default {
             createAt: item[i].createAt,
             ragistrant: item[i].ragistrant,
             subject: item[i].subject,
-            referenceList: item[i].referenceList,
+            registrant: item[i].registrant,
+            isOpenEducation: item[i].isOpenEducation,
+            isOpenReference: item[i].isOpenReference,
+            fileName: item[i].fileName,
+            fileDivision: item[i].fileDivision,
+            fileType: item[i].fileType,
+            uploadType: item[i].uploadType,
+            fileVolume: item[i].fileVolume,
           }
           this.pid++
         }

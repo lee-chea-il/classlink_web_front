@@ -33,4 +33,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+#modalLessonView .div_cont02 {
+  padding: 20px 0;
+}
+</style>

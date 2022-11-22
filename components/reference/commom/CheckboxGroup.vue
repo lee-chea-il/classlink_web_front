@@ -19,13 +19,13 @@
         :id="setTargetTwo"
         type="checkbox"
         class="custom-control-input"
-        name="isContinueRegister"
-        :value="isContinueRegister"
-        :checked="isContinueRegister"
+        name="isOpenReference"
+        :value="isOpenReference"
+        :checked="isOpenReference"
         @input="$emit('change-input', $event)"
       />
       <label class="custom-control-label checkbox07" :for="setTargetTwo"
-        >계속 등록하기</label
+        >공개자료실에 해당 자료를 공개합니다.</label
       >
     </span>
   </div>
@@ -39,7 +39,7 @@ export default {
       type: Boolean,
       default: true,
     },
-    isContinueRegister: {
+    isOpenReference: {
       type: Boolean,
       default: true,
     },

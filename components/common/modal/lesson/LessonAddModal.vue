@@ -101,6 +101,7 @@
                     </div>
                     <!-- /.탭 내용02 -->
                   </div>
+
                   <div v-show="!isLesson" id="myTabContent" class="tab-content">
                     <!-- 탭 내용01 -->
                     <div
@@ -109,7 +110,7 @@
                       role="tabpanel"
                       aria-labelledby="grade-tab"
                     >
-                      <TreeView
+                      <CustomReferenceTreeView
                         ref="myLesson"
                         listType="lesson"
                         :dataList="receiveInstitutionData"
@@ -128,7 +129,7 @@
                       role="tabpanel"
                       aria-labelledby="class-tab"
                     >
-                      <TreeView
+                      <CustomReferenceTreeView
                         ref="franchise"
                         listType="lesson"
                         :dataList="receiveFranchiseData"
@@ -155,7 +156,7 @@
                   @changePushKeyword="$emit('changePushKeyword', $event)"
                   @set-keyword="$emit('set-keyword', $event)"
                   @delete-keyword="$emit('delete-keyword', $event)"
-                  @moreShowClick="$emit('open-reference', $event)"
+                  @open-save-path="$emit('open-save-path', 'isAddLesson')"
                 />
                 <!-- /.오른쪽 영역 -->
               </div>
@@ -181,6 +182,7 @@
 
 <script>
 import ModalHeader from '../../ModalHeader.vue'
+import CustomReferenceTreeView from '../../custom/CustomReferenceTreeView.vue'
 import TopNavigation from '~/components/lesson/lessonAdd/TopNavigaion.vue'
 import TreeView from '~/components/lesson/custom/CustomTreeView.vue'
 import RightSection from '~/components/lesson/lessonAdd/RightSection.vue'
@@ -191,6 +193,7 @@ export default {
     TreeView,
     RightSection,
     TopNavigation,
+    CustomReferenceTreeView,
   },
   props: {
     open: {
@@ -232,10 +235,10 @@ export default {
   },
   methods: {
     moreShowClick(data) {
-      this.$emit('open-data', data, 'isLessonAdd')
+      this.$emit('open-data', data, 'isAddLesson')
     },
-    moreShowClickReference() {
-      console.log('계발예정')
+    moreShowClickReference(data) {
+      this.$emit('open-reference', data, 'isAddLesson')
     },
   },
 }

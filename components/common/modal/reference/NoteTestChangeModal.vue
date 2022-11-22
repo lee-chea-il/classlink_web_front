@@ -75,10 +75,6 @@ export default {
       type: Object,
       default: () => {},
     },
-    noteTestList: {
-      type: Array,
-      default: () => [],
-    },
     currentPageIdx: {
       type: Number,
       default: 0,

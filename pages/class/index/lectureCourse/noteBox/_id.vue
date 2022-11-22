@@ -218,7 +218,7 @@ export default {
                       savePath:
                         'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
                       isOpenEducation: true,
-                      isContinueRegister: true,
+                      isOpenReference: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'pdf',
@@ -238,7 +238,7 @@ export default {
                       savePath:
                         'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
                       isOpenEducation: true,
-                      isContinueRegister: true,
+                      isOpenReference: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'pdf',
@@ -258,7 +258,7 @@ export default {
                       savePath:
                         'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
                       isOpenEducation: true,
-                      isContinueRegister: true,
+                      isOpenReference: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'pdf',
@@ -278,7 +278,7 @@ export default {
                       savePath:
                         'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
                       isOpenEducation: false,
-                      isContinueRegister: false,
+                      isOpenReference: false,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'pdf',

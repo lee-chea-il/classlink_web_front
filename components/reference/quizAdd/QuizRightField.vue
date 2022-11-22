@@ -25,6 +25,7 @@
       <QuizFormField
         :quizList="quizList"
         :currentIdx="currentPageIdx"
+        :isCreate="isCreate"
         @change-item="onChangeItem"
         @select-type="setSelectType"
         @select-ox="setSelectOx"
@@ -59,6 +60,7 @@ export default {
       type: Number,
       default: 0,
     },
+    isCreate: { type: Boolean, default: false },
   },
   methods: {
     setPreview(prev, isFirst) {
@@ -70,8 +72,8 @@ export default {
     onChangeItem(e, idx) {
       this.$emit('change-item', e, idx)
     },
-    setSelectType(idx, num) {
-      this.$emit('select-type', idx, num)
+    setSelectType(e, idx, num) {
+      this.$emit('select-type', e, idx, num)
     },
     setSelectOx(idx, num) {
       this.$emit('select-ox', idx, num)
