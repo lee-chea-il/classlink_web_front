@@ -1,44 +1,61 @@
 <template>
-  <ValidationProvider v-slot="{ errors, classes }" :rules="rules">
-    <input
-      :id="id"
-      :name="name"
-      :value="inputValue"
-      :type="type"
-      :placeholder="placeholder"
-      class="form-control"
-      :class="
-        (isError ? 'is-invalid' : classes,
-        isBtn || isIdCheckBtn ? 'form-inline' : classes,
-        isBirthdayBtn ? 'form_calendar datePicker' : '')
-      "
-      :maxlength="id === 'phone' ? '13' : ''"
-      autocomplete="off"
-      @input="$emit('change-input', $event)"
-    />
-    <button
-      v-if="isBirthdayBtn"
-      class="btn icons_calendar_off"
-      @click="$emit('click-birthday')"
-    ></button>
-    <div
-      v-if="isCheckBox"
-      class="custom-control custom-checkbox custom-sm top"
-      :class="classes['is-valid'] ? '' : 'disabled'"
-    >
+  <div>
+    <ValidationProvider v-slot="{ errors, classes }" :rules="rules">
       <input
-        id="nickname_chk"
-        type="checkbox"
-        class="custom-control-input"
-        :checked="nickNameCheck"
+        :id="id"
+        :name="name"
+        :value="inputValue"
+        :type="type"
+        :placeholder="placeholder"
+        class="form-control"
+        :class="
+          (isError ? 'is-invalid' : classes,
+          isIdCheckBtn
+            ? 'form-inline'
+            : isBirthdayBtn
+            ? 'form_calendar datePicker'
+            : '')
+        "
+        :maxlength="id === 'phone' ? '13' : ''"
+        autocomplete="off"
         @input="$emit('change-input', $event)"
       />
-      <label class="custom-control-label" for="nickname_chk">이름과 동일</label>
-    </div>
-    <div class="invalid_text">
-      {{ errors[0] }}
-    </div>
-  </ValidationProvider>
+      <button v-if="isIdCheckBtn" class="btn btn_crud_default btn-custom">
+        중복체크
+      </button>
+      <button
+        v-if="isBirthdayBtn"
+        class="btn icons_calendar_off"
+        @click="$emit('click-birthday')"
+      ></button>
+      <div
+        v-if="isCheckBox"
+        class="custom-control custom-checkbox custom-sm top"
+        :class="classes['is-valid'] ? '' : 'disabled'"
+      >
+        <input
+          id="nickname_chk"
+          type="checkbox"
+          class="custom-control-input"
+          :checked="nickNameCheck"
+          @input="$emit('change-input', $event)"
+        />
+        <label class="custom-control-label" for="nickname_chk"
+          >이름과 동일</label
+        >
+      </div>
+      <div
+        v-if="isStudentInput"
+        class="invalid_text text-set"
+        :class="isIdCheckBtn ? 'text-idcheck ' : ''"
+      >
+        {{ errors[0] }}
+      </div>
+      <div v-else class="invalid_text" :class="isIdCheckBtn ? 'text-mt' : ''">
+        {{ errors[0] }}
+      </div>
+    </ValidationProvider>
+  </div>
 </template>
 
 <script>
@@ -97,6 +114,10 @@ export default {
       default: false,
       type: Boolean,
     },
+    isStudentInput: {
+      default: false,
+      type: Boolean,
+    },
   },
 }
 </script>
@@ -110,5 +131,22 @@ button {
 }
 .top {
   top: -10px;
+}
+.btn-custom {
+  width: 54px !important;
+  margin-top: 13px;
+  white-space: normal;
+  line-height: 14px !important;
+}
+.text-mt {
+  margin-top: -1px;
+}
+.text-set {
+  height: 20px;
+  margin-top: -32px !important;
+}
+.text-idcheck {
+  margin-top: -22px !important;
+  line-height: 12px;
 }
 </style>

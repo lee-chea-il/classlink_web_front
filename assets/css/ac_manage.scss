@@ -99,6 +99,23 @@
 
 //선생님관리 모달
 .modal_ac_manage_tch {
+	.idcheck {
+		.group .row .overlap_btn {
+			display: block;
+			float: right;
+			width: 55px;
+			font-size: 12px;
+			line-height: 15px;
+			padding-bottom: 5px;
+		}
+
+		.form-inline {
+			width: 58%;
+			margin-right: 5px;
+			margin-left: 15px;
+		}
+	}
+
 	.info_area .form-group.row {
 		.readonly_txt {
 			font-weight: 400;

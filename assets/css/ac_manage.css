@@ -2019,6 +2019,19 @@ ol {
   margin-top: 12px;
 }
 
+.modal_ac_manage_tch .idcheck .group .row .overlap_btn {
+  display: block;
+  float: right;
+  width: 55px;
+  font-size: 12px;
+  line-height: 15px;
+  padding-bottom: 5px;
+}
+.modal_ac_manage_tch .idcheck .form-inline {
+  width: 58%;
+  margin-right: 5px;
+  margin-left: 15px;
+}
 .modal_ac_manage_tch .info_area .form-group.row .readonly_txt {
   font-weight: 400;
   font-size: 14px;

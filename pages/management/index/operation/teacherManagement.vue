@@ -15,7 +15,7 @@
       />
       <div class="tab-content depth03 ac_manage_tch">
         <TeacherListBox
-          :teacherList="teacherList"
+          :teacherList="searchList"
           :statusFlag="statusFlag"
           :statusTrue="statusTrue"
           :statusFalse="statusFalse"
@@ -26,6 +26,8 @@
           @click-register="openRegisterTeacherModalDesc"
           @select-teacher="onClickCheckBox"
           @checked-all="selectAll"
+          @change-input="onChangeInput"
+          @search-teacher="searchTeacher"
         />
       </div>
     </div>
@@ -390,7 +392,7 @@ export default {
           subject: '수학',
           group: '초등, 중등',
           phone: '010-1234-1234',
-          status: false,
+          status: true,
         },
         {
           id: 4,
@@ -400,7 +402,7 @@ export default {
           subject: '수학',
           group: '초등, 중등',
           phone: '010-1234-1234',
-          status: false,
+          status: true,
         },
         {
           id: 5,
@@ -462,11 +464,11 @@ export default {
       // 목록
       searchFlag: 0,
       statusFlag: 0,
+      sortFlag: 0,
       statusTrue: 0,
       statusFalse: 0,
       searchText: '',
       searchList: [],
-      
 
       // 선생님 상세/수정
       newNickNameCheck: false,
@@ -487,6 +489,7 @@ export default {
     })
     this.statusTrue = trueArray.length
     this.statusFalse = falseArray.length
+    this.searchList = trueArray
   },
   methods: {
     // modal event
@@ -750,10 +753,49 @@ export default {
     onClickStatusFilter() {
       if (this.statusFlag === 0) {
         this.statusFlag = 1
+        const result = this.teacherList.filter((elem) => {
+          return !elem.status
+        })
+        this.searchList = result
       } else {
         this.statusFlag = 0
+        const result = this.teacherList.filter((elem) => {
+          return elem.status
+        })
+        this.searchList = result
       }
-      console.log(this.statusFlag)
+    },
+    onChangeInput({ target: { value } }) {
+      this.searchText = value
+      console.log(value)
+    },
+    searchTeacher() {
+      if (this.searchText.length < 2) {
+        this.openModalDesc('선생님 검색', '검색어는 2글자 이상 입력해주세요.')
+        return false
+      }
+
+      if (this.statusFlag === 0) {
+        const result = this.teacherList.filter((elem) => {
+          return elem.name.includes(this.searchText) && elem.status
+        })
+        if (result.length === 0) {
+          this.openModalDesc('선생님 검색', '일치하는 선생님이 없습니다.')
+          return false
+        } else {
+          this.searchList = result
+        }
+      } else {
+        const result = this.teacherList.filter((elem) => {
+          return elem.name.includes(this.searchText) && !elem.status
+        })
+        if (result.length === 0) {
+          this.openModalDesc('선생님 검색', '일치하는 선생님이 없습니다.')
+          return false
+        } else {
+          this.searchList = result
+        }
+      }
     },
   },
 }

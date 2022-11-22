@@ -33,8 +33,6 @@
             <a class="dropdown-item" href="#">최신 등록순</a>
             <a class="dropdown-item" href="#">이름 오름차순</a>
             <a class="dropdown-item" href="#">이름 내림차순</a>
-            <a class="dropdown-item" href="#">학년 오름차순</a>
-            <a class="dropdown-item" href="#">학년 내림차순</a>
           </div>
         </div>
         <div class="dropdown form-inline">
@@ -50,6 +48,8 @@
             <a class="dropdown-item" href="#" @click="$emit('click-status')">{{
               statusFlag === 0 ? '비활성화' : '활성화'
             }}</a>
+            <a class="dropdown-item" href="#">활성화</a>
+            <a class="dropdown-item" href="#">비활성화</a>
           </div>
         </div>
       </div>
@@ -59,9 +59,15 @@
             type="text"
             class="form-control"
             placeholder="선생님 이름 검색"
+            @input="$emit('change-input', $event)"
+            @keyup.enter="$emit('search-teacher')"
           />
           <div class="input-group-append">
-            <button class="btn icons_search_off" type="button"></button>
+            <button
+              class="btn icons_search_off"
+              type="button"
+              @click="$emit('search-teacher')"
+            ></button>
           </div>
         </div>
       </div>

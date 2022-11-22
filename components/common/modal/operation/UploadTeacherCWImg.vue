@@ -3,7 +3,7 @@
     <div
       v-if="open"
       id="modalMyinfo04"
-      class="modal modal_myinfo04 modal-mask"
+      class="modal modal_myinfo04 modal-mask index"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
@@ -140,5 +140,8 @@ export default {
 }
 .edit_title {
   margin-top: 20px;
+}
+.index {
+  z-index: 999 !important;
 }
 </style>

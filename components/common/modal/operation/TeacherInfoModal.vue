@@ -3,7 +3,7 @@
     <div
       v-show="open"
       id="modalMyinfo"
-      class="modal modal_myinfo modal_ac_manage_tch modal-mask index"
+      class="modal modal_ac_manage_tch modal_myinfo modal-mask index"
       tabindex="-1"
       aria-labelledby="modalMyinfo"
       aria-hidden="true"
@@ -115,7 +115,7 @@
                       </div> -->
                     </div>
                   </div>
-                  <div class="form-group row">
+                  <div class="form-group form-inlinebox row idcheck">
                     <label for="" class="title00 col-form-label">ID</label>
                     <div v-if="register" class="col">
                       <CustomOperationInput
@@ -124,10 +124,11 @@
                         placeholder="ID입력"
                         rules="account|required"
                         type="text"
+                        :isIdCheckBtn="true"
                         :inputValue="teacherInfo.account"
                         @change-input="$emit('change-input', $event)"
                       />
-                      <div class="exp_text">*초기 비밀번호:123456</div>
+                      <div class="exp_text mt">*초기 비밀번호:123456</div>
                     </div>
                     <div v-else class="col">
                       <span>{{ teacherInfo.account }}</span>
@@ -1006,7 +1007,7 @@ export default {
   margin-bottom: 0 !important;
 }
 .index {
-  z-index: 1000;
+  z-index: 999;
 }
 .profile_img {
   width: 108px;
@@ -1024,5 +1025,9 @@ export default {
 .profile_photo {
   background-size: cover;
   background-position: center;
+}
+
+.mt {
+  height: 10px;
 }
 </style>
