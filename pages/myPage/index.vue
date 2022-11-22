@@ -462,7 +462,6 @@ export default {
         state: true,
         alarm: false,
         profile_image: require('@/assets/images/mypage/profile1.png'),
-
         profile_cw_image: require('@/assets/images/mypage/cwprofile1.png'),
 
         password: '1234!',

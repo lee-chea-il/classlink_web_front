@@ -15,39 +15,49 @@
       >
         <div class="modal-content">
           <div class="modal-header">
-            <h5 id="modalMyinfo" class="modal-title">선생님 상세정보</h5>
-            <button
-              type="button"
-              class="close"
-              aria-label="Close"
-              @click="$emit('close')"
-            >
+            <h5 id="modalMyinfo" class="modal-title">
+              {{ title }}
+            </h5>
+            <button type="button" class="close" @click="$emit('close')">
               <i class="icons_close"></i>
             </button>
           </div>
           <div class="modal-body">
             <!-- 프로필 사진 영역 -->
-            <div class="profile_images_area">
+            <div
+              class="profile_images_area"
+              :style="{
+                'background-image': `url(${teacherInfo.profile_cw_image})`,
+              }"
+            >
               <button
                 type="button"
                 class="btn icons_camera_gray"
-                data-toggle="modal"
-                data-target="#modalMyinfo04"
-                data-dismiss="modal"
+                @click="$emit('click-cwimg')"
               ></button>
               <!-- [개발참조]: 업로드 사진은 <span>의 backgroung-image로 젹용 -->
-              <div class="profile_photo">
-                <span
+              <div
+                class="profile_photo"
+                :style="
+                  teacherInfo.profile_image === '' ||
+                  teacherInfo.profile_image === null
+                    ? {
+                        'background-image': `url(${sample_photo})`,
+                      }
+                    : {
+                        'background-image': `url(${teacherInfo.profile_image})`,
+                      }
+                "
+              >
+                <!-- <span
                   style="
                     background-image: url(../images/sample_profile_photo.jpg);
                   "
-                ></span>
+                ></span> -->
                 <button
                   type="button"
                   class="btn icons_camera"
-                  data-toggle="modal"
-                  data-target="#modalMyinfo02"
-                  data-dismiss="modal"
+                  @click="$emit('click-profile')"
                 ></button>
               </div>
             </div>
@@ -107,7 +117,19 @@
                   </div>
                   <div class="form-group row">
                     <label for="" class="title00 col-form-label">ID</label>
-                    <div class="col">
+                    <div v-if="register" class="col">
+                      <CustomOperationInput
+                        id="account"
+                        name="ID"
+                        placeholder="ID입력"
+                        rules="account|required"
+                        type="text"
+                        :inputValue="teacherInfo.account"
+                        @change-input="$emit('change-input', $event)"
+                      />
+                      <div class="exp_text">*초기 비밀번호:123456</div>
+                    </div>
+                    <div v-else class="col">
                       <span>{{ teacherInfo.account }}</span>
                       <div class="exp_text">*초기 비밀번호:123456</div>
                     </div>
@@ -181,7 +203,7 @@
                       <CustomOperationInput
                         id="email"
                         name="이메일"
-                        placeholder="연락처입력"
+                        placeholder="이메일입력"
                         rules="required|email"
                         type="email"
                         :inputValue="teacherInfo.email"
@@ -212,7 +234,11 @@
                       >신분 목록</label
                     >
                     <div class="col">
-                      <span>교육기관장 / 프랜차이즈장</span>
+                      <span>{{
+                        teacherInfo.position === '교육기관장'
+                          ? '교육기관장 / 프랜차이즈장'
+                          : '선생님 / 프랜차이즈관리자'
+                      }}</span>
                     </div>
                   </div>
                   <div class="form-group row">
@@ -224,10 +250,19 @@
                           type="button"
                           data-toggle="dropdown"
                         >
-                          선생님
+                          {{ teacherInfo.position }}
                         </button>
                         <div class="dropdown-menu">
-                          <a class="dropdown-item" href="#">교육기관장</a>
+                          <a
+                            class="dropdown-item"
+                            href="#"
+                            @click="$emit('select-position')"
+                            >{{
+                              teacherInfo.position === '교육기관장'
+                                ? '선생님'
+                                : '교육기관장'
+                            }}</a
+                          >
                         </div>
                       </div>
                     </div>
@@ -250,14 +285,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box01chk01"
+                                id="update_box01chk01"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box01chk01"
+                                for="update_box01chk01"
                                 >초등</label
                               >
                             </div>
@@ -267,14 +302,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box01chk02"
+                                id="update_box01chk02"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box01chk02"
+                                for="update_box01chk02"
                                 >중등</label
                               >
                             </div>
@@ -284,14 +319,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box01chk03"
+                                id="update_box01chk03"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box01chk03"
+                                for="update_box01chk03"
                                 >고등</label
                               >
                             </div>
@@ -301,14 +336,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box01chk04"
+                                id="update_box01chk04"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
-                                class="custom-control-label box01chk04"
-                                for="box01chk04"
+                                class="custom-control-label update_box01chk04"
+                                for="update_box01chk04"
                                 >대학생</label
                               >
                             </div>
@@ -320,34 +355,34 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box01chk05"
+                                id="update_box01chk05"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box01chk05"
+                                for="update_box01chk05"
                                 >성인</label
                               >
                             </div>
                           </div>
                           <!-- <div class="title02">
 													<div class="custom-control custom-checkbox custom-sm inline_block">
-														<input type="checkbox" class="custom-control-input" id="box01chk01" checked />
-														<label class="custom-control-label" for="box01chk01">aa</label>
+														<input type="checkbox" class="custom-control-input" id="update_box01chk01" checked />
+														<label class="custom-control-label" for="update_box01chk01">aa</label>
 													</div>
 												</div>
 												<div class="title02">
 													<div class="custom-control custom-checkbox custom-sm inline_block">
-														<input type="checkbox" class="custom-control-input" id="box01chk01" checked />
-														<label class="custom-control-label" for="box01chk01">aa</label>
+														<input type="checkbox" class="custom-control-input" id="update_box01chk01" checked />
+														<label class="custom-control-label" for="update_box01chk01">aa</label>
 													</div>
 												</div>
 												<div class="title02">
 													<div class="custom-control custom-checkbox custom-sm inline_block">
-														<input type="checkbox" class="custom-control-input" id="box01chk01" checked />
-														<label class="custom-control-label" for="box01chk01">aa</label>
+														<input type="checkbox" class="custom-control-input" id="update_box01chk01" checked />
+														<label class="custom-control-label" for="update_box01chk01">aa</label>
 													</div>
 												</div> -->
                         </div>
@@ -364,14 +399,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box02chk01"
+                                id="update_box02chk01"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box02chk01"
+                                for="update_box02chk01"
                                 >전체</label
                               >
                             </div>
@@ -381,14 +416,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box02chk02"
+                                id="update_box02chk02"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box02chk02"
+                                for="update_box02chk02"
                                 >국어</label
                               >
                             </div>
@@ -398,14 +433,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box02chk03"
+                                id="update_box02chk03"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box02chk03"
+                                for="update_box02chk03"
                                 >수학</label
                               >
                             </div>
@@ -415,14 +450,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box02chk04"
+                                id="update_box02chk04"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box02chk04"
+                                for="update_box02chk04"
                                 >영어</label
                               >
                             </div>
@@ -434,14 +469,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box02chk05"
+                                id="update_box02chk05"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box02chk05"
+                                for="update_box02chk05"
                                 >음악</label
                               >
                             </div>
@@ -451,14 +486,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box02chk06"
+                                id="update_box02chk06"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box02chk06"
+                                for="update_box02chk06"
                                 >기타</label
                               >
                             </div>
@@ -468,14 +503,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box02chk07"
+                                id="update_box02chk07"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box02chk07"
+                                for="update_box02chk07"
                                 >직접입력</label
                               >
                               <div class="form-group">
@@ -505,14 +540,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk01"
+                                id="update_box03chk01"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk01"
+                                for="update_box03chk01"
                                 >전체</label
                               >
                             </div>
@@ -522,14 +557,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk02"
+                                id="update_box03chk02"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk02"
+                                for="update_box03chk02"
                                 >반</label
                               >
                             </div>
@@ -539,14 +574,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk03"
+                                id="update_box03chk03"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk03"
+                                for="update_box03chk03"
                                 >개별공지</label
                               >
                             </div>
@@ -562,14 +597,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk04"
+                                id="update_box03chk04"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk04"
+                                for="update_box03chk04"
                                 >자료실</label
                               >
                             </div>
@@ -579,14 +614,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk05"
+                                id="update_box03chk05"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk05"
+                                for="update_box03chk05"
                                 >레슨</label
                               >
                             </div>
@@ -596,14 +631,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk06"
+                                id="update_box03chk06"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk06"
+                                for="update_box03chk06"
                                 >커리큘럼</label
                               >
                             </div>
@@ -619,14 +654,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk07"
+                                id="update_box03chk07"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk07"
+                                for="update_box03chk07"
                                 >강좌 개설</label
                               >
                             </div>
@@ -636,14 +671,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk08"
+                                id="update_box03chk08"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk08"
+                                for="update_box03chk08"
                                 >시간표 수정</label
                               >
                             </div>
@@ -658,14 +693,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk09"
+                                id="update_box03chk09"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk09"
+                                for="update_box03chk09"
                                 >결제관리</label
                               >
                             </div>
@@ -675,14 +710,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk10"
+                                id="update_box03chk10"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk10"
+                                for="update_box03chk10"
                                 >프랜차이즈 가입관리</label
                               >
                             </div>
@@ -697,14 +732,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk11"
+                                id="update_box03chk11"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk11"
+                                for="update_box03chk11"
                                 >선생님관리</label
                               >
                             </div>
@@ -714,14 +749,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk12"
+                                id="update_box03chk12"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk12"
+                                for="update_box03chk12"
                                 >학생관리</label
                               >
                             </div>
@@ -731,14 +766,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk13"
+                                id="update_box03chk13"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk13"
+                                for="update_box03chk13"
                                 >반관리</label
                               >
                             </div>
@@ -751,14 +786,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk14"
+                                id="update_box03chk14"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk14"
+                                for="update_box03chk14"
                                 >시험관리</label
                               >
                             </div>
@@ -773,14 +808,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk15"
+                                id="update_box03chk15"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk15"
+                                for="update_box03chk15"
                                 >자료실</label
                               >
                             </div>
@@ -790,14 +825,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk16"
+                                id="update_box03chk16"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk16"
+                                for="update_box03chk16"
                                 >패키지</label
                               >
                             </div>
@@ -807,14 +842,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk17"
+                                id="update_box03chk17"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk17"
+                                for="update_box03chk17"
                                 >건물SET</label
                               >
                             </div>
@@ -827,14 +862,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk18"
+                                id="update_box03chk18"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk18"
+                                for="update_box03chk18"
                                 >빌딩</label
                               >
                             </div>
@@ -849,14 +884,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk19"
+                                id="update_box03chk19"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk19"
+                                for="update_box03chk19"
                                 >수업</label
                               >
                             </div>
@@ -866,14 +901,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk20"
+                                id="update_box03chk20"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk20"
+                                for="update_box03chk20"
                                 >관리</label
                               >
                             </div>
@@ -883,14 +918,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="box03chk21"
+                                id="update_box03chk21"
                                 type="checkbox"
                                 class="custom-control-input"
                                 checked
                               />
                               <label
                                 class="custom-control-label"
-                                for="box03chk21"
+                                for="update_box03chk21"
                                 >건물</label
                               >
                             </div>
@@ -917,8 +952,10 @@
               </button>
             </div>
             <div class="btn_right">
-              <button class="btn btn_crud_point">저장하기</button>
-              <button class="btn btn_crud_default" data-dismiss="modal">
+              <button class="btn btn_crud_point" @click="$emit('click-save')">
+                저장하기
+              </button>
+              <button class="btn btn_crud_default" @click="$emit('close')">
                 취소
               </button>
             </div>
@@ -931,9 +968,10 @@
 <script>
 import CustomOperationInput from '~/components/common/custom/CustomOperationInput.vue'
 export default {
-  name: 'UpdateTeacherInfoModal',
+  name: 'TeacherInfoModal',
   components: { CustomOperationInput },
   props: {
+    title: { type: String, default: '' },
     open: {
       type: Boolean,
       default: false,
@@ -946,6 +984,15 @@ export default {
       type: Boolean,
       default: false,
     },
+    register: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data() {
+    return {
+      sample_photo: require('@/assets/images/sample_profile_photo.jpg'),
+    }
   },
   methods: {
     onClickBirthdayBtn() {
@@ -960,5 +1007,22 @@ export default {
 }
 .index {
   z-index: 1000;
+}
+.profile_img {
+  width: 108px;
+  height: 108px;
+  object-fit: cover;
+  border-radius: 55px;
+}
+.profile_images_area {
+  width: 100%;
+  height: 170px;
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+.profile_photo {
+  background-size: cover;
+  background-position: center;
 }
 </style>

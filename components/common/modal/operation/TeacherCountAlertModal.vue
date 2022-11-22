@@ -24,7 +24,9 @@
           추가 결제 후 진행해주세요.
         </div>
         <div class="modal-footer">
-          <button class="btn btn_crud_point">초기화</button>
+          <button class="btn btn_crud_point" data-dismiss="modal">
+            초기화
+          </button>
           <button class="btn btn_crud_default" data-dismiss="modal">
             취소
           </button>

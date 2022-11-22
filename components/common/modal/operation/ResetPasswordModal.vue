@@ -24,7 +24,13 @@
           비밀번호를 초기화하시겠습니까?
         </div>
         <div class="modal-footer">
-          <button class="btn btn_crud_point">초기화</button>
+          <button
+            class="btn btn_crud_point"
+            data-dismiss="modal"
+            @click="$emit('reset')"
+          >
+            초기화
+          </button>
           <button class="btn btn_crud_default" data-dismiss="modal">
             취소
           </button>

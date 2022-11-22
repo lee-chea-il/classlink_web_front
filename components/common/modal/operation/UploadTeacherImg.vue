@@ -1,11 +1,15 @@
 <template>
-   <div
+  <Transition name="modal">
+    <div
+      v-if="open"
       id="modalMyinfo02"
-      class="modal fade modal_myinfo02"
+      class="modal modal_myinfo02 modal-mask"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
+      style="display: block"
     >
+      <div class="background_close" @click="$emit('close')"></div>
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -17,6 +21,7 @@
               class="close"
               data-dismiss="modal"
               aria-label="Close"
+              @click="$emit('close')"
             >
               <i class="icons_close"></i>
             </button>
@@ -29,39 +34,110 @@
               자르기 영역은 정방형으로 설정됩니다.
             </div>
             <div class="btn_section">
-              <button class="btn btn_crud_default btn_sec">
-                이미지 불러오기
+              <button
+                class="btn btn_crud_default btn_sec btn_width"
+                @click="$emit('click-upload')"
+              >
+                {{
+                  teacherInfo.profile_image === '' ||
+                  teacherInfo.profile_image === null
+                    ? '이미지 불러오기'
+                    : '이미지 교체하기'
+                }}
               </button>
-              <button class="btn btn_crud_default btn_sec" data-dismiss="modal">
-                자르기
-              </button>
+              <input
+                id="upload-input"
+                type="file"
+                accept="image/png, image/jpeg"
+                @change="$emit('select-file', $event)"
+              />
+              <!-- <button class="btn btn_crud_default btn_sec" data-dismiss="modal">
+              자르기
+            </button> -->
             </div>
-            <div class="explainType02">
+            <div
+              v-if="teacherInfo.profile_image === '' && uploadImageFile === ''"
+              class="explainType02"
+            >
               <a
                 class=""
                 data-toggle="modal"
                 data-target="#modalMyinfo03"
-                data-dismiss="modal"
+                @click="$emit('click-upload')"
               >
                 <i class="icons_plus_circle_off"></i> 이미지 불러오기
               </a>
             </div>
+            <div v-else class="preview-area">
+              <img
+                class="preview-img"
+                :src="
+                  uploadImageFile === ''
+                    ? teacherInfo.profile_image
+                    : uploadImageFile
+                "
+              />
+            </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn_crud_point">저장</button>
-            <button class="btn btn_crud_default" data-dismiss="modal">
+            <button class="btn btn_crud_point" @click="$emit('close')">
+              저장
+            </button>
+            <button class="btn btn_crud_default" @click="$emit('close')">
               취소
             </button>
           </div>
         </div>
       </div>
     </div>
+  </Transition>
 </template>
 <script>
 export default {
-    name: 'UploadTeacherImg',
+  name: 'UploadTeacherImg',
+  props: {
+    open: {
+      type: Boolean,
+      default: false,
+    },
+    teacherInfo: {
+      type: Object,
+      default: () => {},
+    },
+    uploadImageFile: {
+      type: String,
+      default: '',
+    },
+  },
 }
 </script>
 <style scoped>
-    
+.btn_width {
+  width: 400px;
+}
+#upload-input {
+  visibility: hidden;
+}
+.explainType02 {
+  width: 400px;
+  height: 250px;
+  padding: 110px 0 !important;
+}
+.preview-area {
+  width: 400px;
+  height: 250px;
+  background-color: #f9f9fb;
+  margin: 0 auto;
+}
+.explainType02 a {
+  top: 125px;
+}
+.preview-img {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+}
+.edit_title {
+  margin-top: 20px;
+}
 </style>

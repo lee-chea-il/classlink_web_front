@@ -12,6 +12,7 @@
         isBtn || isIdCheckBtn ? 'form-inline' : classes,
         isBirthdayBtn ? 'form_calendar datePicker' : '')
       "
+      :maxlength="id === 'phone' ? '13' : ''"
       autocomplete="off"
       @input="$emit('change-input', $event)"
     />

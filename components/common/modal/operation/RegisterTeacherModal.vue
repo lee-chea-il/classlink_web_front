@@ -1,17 +1,19 @@
 <template>
-  <div
+  <Transition name="modal">
+    <div
       id="modalMyinfo"
-      class="modal fade modal_myinfo modal_ac_manage_tch"
+      class="modal fade modal_myinfo modal_ac_manage_tch modal-mask"
       tabindex="-1"
       aria-labelledby="modalMyinfo"
       aria-hidden="true"
+      style="display: block"
     >
       <div
         class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable"
       >
         <div class="modal-content">
           <div class="modal-header">
-            <h5 id="modalMyinfo" class="modal-title">선생님 등록 / 상세정보</h5>
+            <h5 id="modalMyinfo" class="modal-title">선생님 등록</h5>
             <button
               type="button"
               class="close"
@@ -882,30 +884,24 @@
             </div>
           </div>
           <div class="modal-footer">
-            <!-- [개발참조]선생님 등록일때 출력되는 버튼
-					<button class="btn btn_crud_point">확인</button>
-					<button class="btn btn_crud_default" data-dismiss="modal">취소</button> -->
+            <!-- [개발참조]선생님 등록일때 출력되는 버튼 -->
+            <button class="btn btn_crud_point">확인</button>
+            <button class="btn btn_crud_default" data-dismiss="modal">
+              취소
+            </button>
             <!-- [개발참조] 선생님 상세정보 일때 출력되는 버튼 -->
-            <div class="btn_left">
-              <button
-                class="btn btn_crud_default"
-                data-dismiss="modal"
-                data-toggle="modal"
-                data-target="#modalPwchange"
-              >
-                비밀번호 초기화
-              </button>
-            </div>
-            <div class="btn_right">
-              <button class="btn btn_crud_point">저장하기</button>
-              <button class="btn btn_crud_default" data-dismiss="modal">
-                취소
-              </button>
-            </div>
+            <!-- m -->
+            <!-- <div class="btn_right">
+            <button class="btn btn_crud_point">저장하기</button>
+            <button class="btn btn_crud_default" data-dismiss="modal">
+              취소
+            </button>
+          </div> -->
           </div>
         </div>
       </div>
     </div>
+  </Transition>
 </template>
 <script>
 export default {

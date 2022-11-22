@@ -3,17 +3,15 @@
     <!-- 컨트롤 버튼 영역 -->
     <div class="search_section">
       <div class="left_area">
-        <button class="btn btn_crud_default">삭제</button>
+        <button class="btn btn_crud_default" @click="$emit('delete')">
+          삭제
+        </button>
         <div class="info_box">
           활성화 {{ statusTrue }}명 비활성화 {{ statusFalse }}명
         </div>
       </div>
       <div class="right_area">
-        <button
-          class="btn btn_crud_point"
-          data-toggle="modal"
-          data-target="#modalMyinfo"
-        >
+        <button class="btn btn_crud_point" @click="$emit('click-register')">
           선생님 등록
         </button>
       </div>
@@ -32,6 +30,7 @@
             최신 등록순
           </button>
           <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">최신 등록순</a>
             <a class="dropdown-item" href="#">이름 오름차순</a>
             <a class="dropdown-item" href="#">이름 내림차순</a>
             <a class="dropdown-item" href="#">학년 오름차순</a>
@@ -45,10 +44,12 @@
             data-toggle="dropdown"
             aria-expanded="false"
           >
-            활성화
+            {{ statusFlag === 0 ? '활성화' : '비활성화' }}
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">비활성화</a>
+            <a class="dropdown-item" href="#" @click="$emit('click-status')">{{
+              statusFlag === 0 ? '비활성화' : '활성화'
+            }}</a>
           </div>
         </div>
       </div>
@@ -77,6 +78,8 @@
                   id="chkAll"
                   type="checkbox"
                   class="custom-control-input"
+                  :checked="allCheckBoxFlag"
+                  @input="$emit('checked-all', $event)"
                 />
                 <label class="custom-control-label" for="chkAll"></label>
               </div>
@@ -94,7 +97,13 @@
           <tr v-for="(item, idx) in teacherList" :key="idx">
             <td>
               <div class="custom-control custom-checkbox form-inline">
-                <input :id="idx" type="checkbox" class="custom-control-input" />
+                <input
+                  :id="idx"
+                  name="chk"
+                  type="checkbox"
+                  class="custom-control-input"
+                  @input="$emit('select-teacher', $event)"
+                />
                 <label class="custom-control-label" :for="idx"></label>
               </div>
             </td>
@@ -154,6 +163,14 @@ export default {
     teacherList: {
       type: Array,
       default: () => [],
+    },
+    allCheckBoxFlag: {
+      type: Boolean,
+      default: false,
+    },
+    statusFlag: {
+      type: Number,
+      default: 0,
     },
   },
 }

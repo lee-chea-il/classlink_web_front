@@ -16,25 +16,72 @@
       <div class="tab-content depth03 ac_manage_tch">
         <TeacherListBox
           :teacherList="teacherList"
+          :statusFlag="statusFlag"
           :statusTrue="statusTrue"
           :statusFalse="statusFalse"
+          :allCheckBoxFlag="allCheckBoxFlag"
+          @click-status="onClickStatusFilter"
           @delete="deleteTeacher"
           @click-detail="openTeacherInfoModalDesc"
+          @click-register="openRegisterTeacherModalDesc"
+          @select-teacher="onClickCheckBox"
+          @checked-all="selectAll"
         />
       </div>
     </div>
     <!-- 선생님 등록 -->
-    <RegisterTeacherModal />
+    <!-- <RegisterTeacherModal /> -->
+    <TeacherInfoModal
+      title="선생님 등록"
+      :open="registerTeacherModal.open"
+      :register="registerTeacherModal.open"
+      :teacherInfo="newTeacherInfo"
+      :nickNameCheck="newNickNameCheck"
+      @close="onCloseRegisterTeacherModalDesc"
+      @click-profile="openUploadNewTeacherImgModalDesc"
+      @click-cwimg="openUploadNewTeacherCWImgModalDesc"
+      @change-input="onChangeUpdateInput"
+      @click-birthday="openDatePickerModalDesc"
+      @click-gender="onClickGenderBtn"
+      @select-position="selectPosition"
+      @click-save="onClickSaveBtn"
+    />
+    <!-- 선생님 등록 - 프로필 이미지 등록1 -->
+    <UploadTeacherImg
+      :open="uploadNewTeacherImgModalDesc.open"
+      :teacherInfo="newTeacherInfo"
+      :uploadImageFile="uploadImageFile"
+      :register="registerTeacherModal.open"
+      @select-file="onFileSelected"
+      @click-upload="onClickInputButton"
+      @close="onCloseUploadNewTeacherImgModalDesc"
+    />
+
+    <!-- 선생님 등록 - CW 이미지 등록1 -->
+    <UploadTeacherCWImg
+      :open="uploadNewTeacherCWImgModalDesc.open"
+      :teacherInfo="newTeacherInfo"
+      :uploadImageFile="uploadImageFile"
+      :register="registerTeacherModal.open"
+      @select-file="onFileSelected"
+      @click-upload="onClickInputButton"
+      @close="onCloseUploadNewTeacherCWImgModalDesc"
+    />
 
     <!-- 선생님 상세 -->
     <TeacherInfoModal
+      title="선생님 상세정보"
       :open="teacherInfoModalDesc.open"
       :teacherInfo="teacherInfo"
       :nickNameCheck="nickNameCheck"
       @close="onCloseTeacherInfoModalDesc"
+      @click-profile="openUploadTeacherImgModalDesc"
+      @click-cwimg="openUploadTeacherCWImgModalDesc"
       @change-input="onChangeUpdateInput"
       @click-birthday="openDatePickerModalDesc"
       @click-gender="onClickGenderBtn"
+      @select-position="selectPosition"
+      @click-save="onClickSaveBtn"
     />
 
     <!-- 생일 날짜 선택 모달 -->
@@ -47,13 +94,29 @@
     />
 
     <!-- 팝업 M2- 내정보 수정 - 프로필 이미지 등록1 -->
-    <UploadTeacherImg />
+    <UploadTeacherImg
+      :open="uploadTeacherImgModalDesc.open"
+      :teacherInfo="teacherInfo"
+      :uploadImageFile="uploadImageFile"
+      :register="registerTeacherModal.open"
+      @select-file="onFileSelected"
+      @click-upload="onClickInputButton"
+      @close="onCloseUploadTeacherImgModalDesc"
+    />
 
     <!-- 팝업 M2- 내정보 수정 - CW 이미지 등록1 -->
-    <UploadTeacherCWImg />
+    <UploadTeacherCWImg
+      :open="uploadTeacherCWImgModalDesc.open"
+      :teacherInfo="teacherInfo"
+      :uploadImageFile="uploadImageFile"
+      :register="registerTeacherModal.open"
+      @select-file="onFileSelected"
+      @click-upload="onClickInputButton"
+      @close="onCloseUploadTeacherCWImgModalDesc"
+    />
 
     <!-- 팝업 S2-비밀번호초기화 -->
-    <ResetPasswordModal />
+    <ResetPasswordModal @reset="onClickResetBtn" />
 
     <!-- 팝업 S2-선생님수 초과 알림 팝업창 -->
     <TeacherCountAlertModal />
@@ -65,9 +128,19 @@
       :desc="modalDesc.desc"
       @close="onCloseModalDesc"
     />
-
+    <!-- 등록 확인 모달 -->
+    <ModalDesc
+      :open="registerConfirmModalDesc.open"
+      :title="registerConfirmModalDesc.title"
+      :desc="registerConfirmModalDesc.desc"
+      @close="onCloseRegisterConfirmModalDesc"
+    />
     <!-- 삭제 모달 -->
-    <DeleteModal />
+    <DeleteModal
+      :open="deleteModalDesc.open"
+      :title="deleteModalDesc.title"
+      @close="onCloseDeleteModalDesc"
+    />
 
     <!-- 팝업 M2- 내정보 수정 - 프로필 이미지 등록2-->
     <!-- <div
@@ -216,7 +289,7 @@
 <script>
 import NavBox from '@/components/operation/NavBox.vue'
 import TeacherListBox from '@/components/operation/TeacherListBox.vue'
-import RegisterTeacherModal from '@/components/common/modal/operation/RegisterTeacherModal.vue'
+// import RegisterTeacherModal from '@/components/common/modal/operation/RegisterTeacherModal.vue'
 import ResetPasswordModal from '@/components/common/modal/operation/ResetPasswordModal.vue'
 import TeacherCountAlertModal from '@/components/common/modal/operation/TeacherCountAlertModal.vue'
 import TeacherInfoModal from '@/components/common/modal/operation/TeacherInfoModal.vue'
@@ -230,7 +303,7 @@ export default {
   components: {
     NavBox,
     TeacherListBox,
-    RegisterTeacherModal,
+    // RegisterTeacherModal,
     ResetPasswordModal,
     TeacherCountAlertModal,
     UploadTeacherImg,
@@ -242,6 +315,24 @@ export default {
   },
   data() {
     return {
+      newTeacherInfo: {
+        id: 0,
+        name: '',
+        nickname: '',
+        account: '',
+        subject: '',
+        group: '',
+        phone: '',
+        status: false,
+        gender: 0,
+        educationCode: 123456,
+        email: '',
+        birthday: '',
+        identity: '',
+        position: '교육기관장',
+        profile_image: '',
+        profile_cw_image: '',
+      },
       teacherInfo: {
         id: 0,
         name: '김지원',
@@ -250,13 +341,15 @@ export default {
         subject: '수학',
         group: '초등, 중등',
         phone: '010-1234-1234',
-        status: false,
+        status: true,
         gender: 0,
         educationCode: 123456,
         email: 'wldnjs@naver.com',
         birthday: '2022-11-15',
         identity: '',
-        position: '',
+        position: '교육기관장',
+        profile_image: require('@/assets/images/mypage/profile1.png'),
+        profile_cw_image: require('@/assets/images/mypage/cwprofile1.png'),
       },
       teacherList: [
         {
@@ -332,9 +425,14 @@ export default {
       ],
       // modal
       teacherInfoModalDesc: {
-        open: true,
+        open: false,
       },
       modalDesc: {
+        open: false,
+        title: '',
+        desc: '',
+      },
+      registerConfirmModalDesc: {
         open: false,
         title: '',
         desc: '',
@@ -346,13 +444,38 @@ export default {
       datePickerModalDesc: {
         open: false,
       },
+      registerTeacherModal: {
+        open: false,
+      },
+      uploadTeacherImgModalDesc: {
+        open: false,
+      },
+      uploadTeacherCWImgModalDesc: {
+        open: false,
+      },
+      uploadNewTeacherImgModalDesc: {
+        open: false,
+      },
+      uploadNewTeacherCWImgModalDesc: {
+        open: false,
+      },
       // 목록
+      searchFlag: 0,
+      statusFlag: 0,
       statusTrue: 0,
       statusFalse: 0,
-      deleteIdxList: [],
-      // 상세/수정
+      searchText: '',
+      searchList: [],
+      
+
+      // 선생님 상세/수정
+      newNickNameCheck: false,
       nickNameCheck: false,
       birthday: '',
+      uploadImageFile: '',
+      // 선생님 삭제
+      deleteIdxList: [],
+      allCheckBoxFlag: false,
     }
   },
   created() {
@@ -376,6 +499,18 @@ export default {
     },
     onCloseModalDesc() {
       this.modalDesc.open = false
+      this.registerConfirmModalDesc.open = false
+    },
+    openRegisterConfirmModalDesc(tit, msg) {
+      this.registerConfirmModalDesc = {
+        open: true,
+        title: tit,
+        desc: msg,
+      }
+    },
+    onCloseRegisterConfirmModalDesc() {
+      this.registerConfirmModalDesc.open = false
+      this.registerTeacherModal.open = false
     },
     openDeleteModalDesc(tit) {
       this.deleteModalDesc = {
@@ -392,7 +527,42 @@ export default {
     onCloseDatePickerModalDesc() {
       this.datePickerModalDesc.open = false
     },
-
+    openRegisterTeacherModalDesc() {
+      this.registerTeacherModal.open = true
+    },
+    onCloseRegisterTeacherModalDesc() {
+      this.registerTeacherModal.open = false
+    },
+    openTeacherInfoModalDesc() {
+      this.teacherInfoModalDesc.open = true
+    },
+    onCloseTeacherInfoModalDesc() {
+      this.teacherInfoModalDesc.open = false
+    },
+    openUploadTeacherImgModalDesc() {
+      this.uploadTeacherImgModalDesc.open = true
+    },
+    onCloseUploadTeacherImgModalDesc() {
+      this.uploadTeacherImgModalDesc.open = false
+    },
+    openUploadTeacherCWImgModalDesc() {
+      this.uploadTeacherCWImgModalDesc.open = true
+    },
+    onCloseUploadTeacherCWImgModalDesc() {
+      this.uploadTeacherCWImgModalDesc.open = false
+    },
+    openUploadNewTeacherImgModalDesc() {
+      this.uploadNewTeacherImgModalDesc.open = true
+    },
+    onCloseUploadNewTeacherImgModalDesc() {
+      this.uploadNewTeacherImgModalDesc.open = false
+    },
+    openUploadNewTeacherCWImgModalDesc() {
+      this.uploadNewTeacherCWImgModalDesc.open = true
+    },
+    onCloseUploadNewTeacherCWImgModalDesc() {
+      this.uploadNewTeacherCWImgModalDesc.open = false
+    },
     // 선생님 삭제
     onClickCheckBox({ target: { id, checked } }) {
       if (checked) {
@@ -407,6 +577,24 @@ export default {
         }
       }
     },
+    selectAll({ target: { checked } }) {
+      const checkboxes = document.getElementsByName('chk')
+      if (checked) {
+        this.allCheckBoxFlag = true
+        for (let i = 0; i < checkboxes.length; i++) {
+          checkboxes[i].checked = true
+          this.deleteIdxList.push(checkboxes[i].id)
+        }
+        console.log(this.deleteIdxList)
+      } else {
+        this.allCheckBoxFlag = false
+        for (let i = 0; i < checkboxes.length; i++) {
+          checkboxes[i].checked = false
+          this.deleteIdxList.pop()
+        }
+        console.log(this.deleteIdxList)
+      }
+    },
     deleteTeacher() {
       if (this.deleteIdxList.length === 0) {
         this.openModalDesc('선생님 삭제', '삭제할 선생님을 선택해주세요.')
@@ -418,24 +606,71 @@ export default {
     },
 
     // 선생님 상세보기
-    openTeacherInfoModalDesc() {
-      this.teacherInfoModalDesc.open = true
-    },
-    onCloseTeacherInfoModalDesc() {
-      this.teacherInfoModalDesc.open = false
-    },
     // 정보 수정
     onChangeUpdateInput({ target: { value, id, checked } }) {
-      this.nickNameCheck = false
-      if (checked) {
-        this.teacherInfo.nickname = this.teacherInfo.name
-        this.nickNameCheck = true
-      }
-      this.teacherInfo[id] = value
-      if (this.teacherInfo.nickname !== this.teacherInfo.name) {
-        this.nickNameCheck = false
+      console.log(checked)
+      if (this.registerTeacherModal.open) {
+        this.newTeacherInfo[id] = value
+        if (checked) {
+          this.newTeacherInfo.nickname = this.newTeacherInfo.name
+          this.newNickNameCheck = true
+        }
+        if (this.newTeacherInfo.nickname !== this.newTeacherInfo.name) {
+          this.newNickNameCheck = false
+        } else {
+          this.newNickNameCheck = true
+        }
+        if (id === 'phone') {
+          this.newTeacherInfo[id] = value
+            .replace(/[^0-9]/g, '')
+            .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
+            .replace(/(-{1,2})$/g, '')
+            .replace(/ /g, '')
+            .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
+        }
       } else {
-        this.nickNameCheck = true
+        this.teacherInfo[id] = value
+        if (checked) {
+          console.log(checked)
+          this.teacherInfo.nickname = this.teacherInfo.name
+          this.nickNameCheck = true
+        }
+        if (this.teacherInfo.nickname !== this.teacherInfo.name) {
+          this.nickNameCheck = false
+        } else {
+          this.nickNameCheck = true
+        }
+        if (id === 'phone') {
+          this.teacherInfo[id] = value
+            .replace(/[^0-9]/g, '')
+            .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
+            .replace(/(-{1,2})$/g, '')
+            .replace(/ /g, '')
+            .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
+        }
+      }
+    },
+    // 이미지 업로드
+    onClickInputButton() {
+      const inputBtn = document.getElementById('upload-input')
+      inputBtn.click()
+    },
+    onFileSelected({ target }) {
+      const input = target
+      if (input.files && input.files[0]) {
+        if (input.files[0].size < 3145728) {
+          const reader = new FileReader()
+          reader.onload = (e) => {
+            this.uploadImageFile = e.target.result
+            console.log(this.uploadImageFile)
+          }
+          reader.readAsDataURL(input.files[0])
+        } else {
+          this.openModalDesc(
+            '업로드 제한',
+            '해당 파일은 제한된 용량을 초과하였습니다. (이미지 제한 용량: 3MB)'
+          )
+        }
       }
     },
     // 생일 수정
@@ -443,25 +678,83 @@ export default {
       this.birthday = e.id
     },
     onClickBirthdayConfirm() {
-      this.teacherInfo.birthday = this.birthday
+      if (this.registerTeacherModal.open) {
+        this.newTeacherInfo.birthday = this.birthday
+      } else {
+        this.teacherInfo.birthday = this.birthday
+      }
       this.datePickerModalDesc.open = false
     },
     // 성별 수정
     onClickGenderBtn() {
-      if (this.teacherInfo.gender === 0) {
+      if (this.registerTeacherModal.open) {
+        if (this.newTeacherInfo.gender === 0) {
+          this.newTeacherInfo.gender = 1
+        } else {
+          this.newTeacherInfo.gender = 0
+        }
+      } else if (this.teacherInfo.gender === 0) {
         this.teacherInfo.gender = 1
       } else {
         this.teacherInfo.gender = 0
       }
     },
     // 상태 변경
-    onClickStatusBtn(){
-      if(this.teacherInfo.status){
-      this.teacherInfo.status=false
+    onClickStatusBtn() {
+      if (this.registerTeacherModal.open) {
+        if (this.newTeacherInfo.status) {
+          this.newTeacherInfo.status = false
+        } else {
+          this.newTeacherInfo.status = true
+        }
+      } else if (this.teacherInfo.status) {
+        this.teacherInfo.status = false
       } else {
-      this.teacherInfo.status=true
+        this.teacherInfo.status = true
       }
-    }
+    },
+    // 직위 변경
+    selectPosition() {
+      if (this.registerTeacherModal.open) {
+        if (this.newTeacherInfo.position === '교육기관장') {
+          this.newTeacherInfo.position = '선생님'
+        } else {
+          this.newTeacherInfo.position = '교육기관장'
+        }
+      } else if (this.teacherInfo.position === '교육기관장') {
+        this.teacherInfo.position = '선생님'
+      } else {
+        this.teacherInfo.position = '교육기관장'
+      }
+    },
+    // 비밀번호 초기화
+    onClickResetBtn() {
+      this.openModalDesc('비밀번호 초기화', '비밀번호가 초기화되었습니다.')
+    },
+    // 수정된 정보 저장하기
+    onClickSaveBtn() {
+      if (this.registerTeacherModal.open) {
+        this.openRegisterConfirmModalDesc(
+          '선생님 등록',
+          '선생님이 등록되었습니다.'
+        )
+      } else {
+        this.openModalDesc(
+          '선생님 정보 수정',
+          '선생님 상세 정보가 수정되었습니다.'
+        )
+      }
+    },
+
+    // 필터링
+    onClickStatusFilter() {
+      if (this.statusFlag === 0) {
+        this.statusFlag = 1
+      } else {
+        this.statusFlag = 0
+      }
+      console.log(this.statusFlag)
+    },
   },
 }
 </script>
