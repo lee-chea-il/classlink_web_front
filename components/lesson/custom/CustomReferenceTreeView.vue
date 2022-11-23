@@ -66,76 +66,35 @@ export default {
     }
   },
   mounted() {
-    const dataMapping = (item, isReadOnly) => {
+    const dataMapping = (data, isReadOnly) => {
       const result = []
-      const len = item.length
+      const len = data.length
       for (let i = 0; i < len; i++) {
-        if (item[i].children !== undefined) {
-          result[i] = {
-            name: item[i].name,
-            id: this.pid,
-            isLeaf: false,
-            pid: this.pid,
-            children: [],
-            readOnly: isReadOnly,
-            isChecked: false,
-            type: item[i].type,
-            desc: item[i].desc,
-            keyword: item[i].keyword,
-            isOpen: item[i].isOpen,
-            savePath: item[i].savePath,
-            saveFolder: item[i].saveFolder,
-            createAt: item[i].createAt,
-            ragistrant: item[i].ragistrant,
-            subject: item[i].subject,
-            registrant: item[i].registrant,
-            isOpenEducation: item[i].isOpenEducation,
-            isOpenReference: item[i].isOpenReference,
-            fileName: item[i].fileName,
-            fileDivision: item[i].fileDivision,
-            fileType: item[i].fileType,
-            uploadType: item[i].uploadType,
-            fileVolume: item[i].fileVolume,
-            quizList: item[i].quizList,
-            noteTestList: item[i].noteTestList,
-          }
+        const newStr = JSON.stringify(data[i])
+        const nObj = JSON.parse(newStr)
+        nObj.id=this.pid
+        nObj.pid=this.pid
+        nObj.isChecked=false
+        nObj.readOnly=isReadOnly
 
+        if (data[i].children !== undefined) {
+          nObj.isLeaf=false
+          nObj.children=[]
+
+          result[i] = nObj
           this.pid++
-          result[i].children = dataMapping(item[i].children, isReadOnly)
+          result[i].children = dataMapping(data[i].children, isReadOnly)
         } else {
-          result[i] = {
-            name: item[i].name,
-            id: this.pid,
-            pid: this.pid,
-            isLeaf: true,
-            readOnly: isReadOnly,
-            isChecked: false,
+          nObj.isLeaf=true
 
-            type: item[i].type,
-            desc: item[i].desc,
-            keyword: item[i].keyword,
-            isOpen: item[i].isOpen,
-            savePath: item[i].savePath,
-            saveFolder: item[i].saveFolder,
-            createAt: item[i].createAt,
-            ragistrant: item[i].ragistrant,
-            subject: item[i].subject,
-            registrant: item[i].registrant,
-            isOpenEducation: item[i].isOpenEducation,
-            isOpenReference: item[i].isOpenReference,
-            fileName: item[i].fileName,
-            fileDivision: item[i].fileDivision,
-            fileType: item[i].fileType,
-            uploadType: item[i].uploadType,
-            fileVolume: item[i].fileVolume,
-            quizList: item[i].quizList,
-            noteTestList: item[i].noteTestList,
-          }
+          result[i] = nObj
           this.pid++
         }
       }
       return result
     }
+    console.log('-----------')
+    console.log(this.identity)
     this.datas = new Tree(
       !this.editable,
       dataMapping(this.dataList, !this.editable)
@@ -190,19 +149,14 @@ export default {
     copyData() {
       let idNum = new Date().valueOf()
       function _dfs(oldNode) {
-        const newNode = {}
+        const newNode={}
         if (oldNode.isChecked) {
+          for(const item in oldNode){
+            newNode[item] = oldNode[item]
+          }
           newNode.children = []
           newNode.id = idNum
-          newNode.isLeaf = oldNode.isLeaf
-          newNode.name = oldNode.name
-          newNode.parent = oldNode.parent
-          newNode.pid = oldNode.id
-          newNode.readOnly = oldNode.readOnly
           newNode.isChecked = false
-          newNode.dbIdx = oldNode.dbIdx
-          newNode.type = oldNode.type
-          console.log(newNode.name)
           idNum++
         }
         if (oldNode.children && oldNode.children.length > 0) {
@@ -222,17 +176,13 @@ export default {
       function _addNode(parentNode, oldNode) {
         let node, i, len
         if (oldNode.name) {
-          const newNode = {}
+          const newNode={}
+          for(const item in oldNode){
+            newNode[item] = oldNode[item]
+          }
           newNode.children = []
           newNode.id = idNum
-          newNode.isLeaf = oldNode.isLeaf
-          newNode.name = oldNode.name
-          newNode.parent = oldNode.parent
-          newNode.pid = oldNode.id
-          newNode.readOnly = oldNode.readOnly
           newNode.isChecked = false
-          newNode.dbIdx = oldNode.dbIdx
-          newNode.type = oldNode.type
 
           node = new TreeNode(newNode)
           parentNode.addChildren(node)

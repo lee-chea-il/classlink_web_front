@@ -31,7 +31,10 @@
           <div class="divide_area right">
             <!-- 오른쪽 영역 -->
             <MyTabMenu title="내 레슨" />
-            <RightTreeTab ref="myData" :receiveLessonList="receiveLessonList" />
+            <RightTreeTab
+              ref="myData" :receiveLessonList="receiveLessonList"
+              @open-data="openLessonBrowseModal"
+            />
           </div>
         </div>
       </div>

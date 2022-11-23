@@ -80,15 +80,13 @@ export default {
       this.setEmptyAreaHeight()
     },
     copyData(data) {
-      const nObj = {}
-      for (const item in data) {
-        nObj[item] = data[item]
-      }
-      nObj.id = 'list_' + this.pid
-      nObj.pid = this.pid
-      nObj.isLeaf = true
-      nObj.readOnly = true
-      return nObj
+      const newStr = JSON.stringify(data)
+      const newData = JSON.parse(newStr)
+      newData.id = 'list_' + this.pid
+      newData.pid = this.pid
+      newData.isLeaf = true
+      newData.readOnly = true
+      return newData
     },
     dataMapping(item) {
       const result = []

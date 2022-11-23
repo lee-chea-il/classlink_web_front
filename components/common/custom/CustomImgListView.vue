@@ -35,33 +35,40 @@ export default {
   data(){
     return {
       datas: new Tree(false, []),
-      pid: this.pidNum
+      pid: this.pidNum,
+      imgSizeType: 'init',
+      isImgLoadComp: false
     }
   },
   mounted() {
-    
+    window.addEventListener('resize', this.imgReSize)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.imgReSize)
   },
   methods: {
+    imgReSize(){
+      if(this.isImgLoadComp){
+        console.log(33)
+      }
+    },
     setData(cwData) {
-      const dataMapping = (item) => {
+      const dataMapping = (data) => {
         const result = []
-        const len = item.length
+        const len = data.length
         for (let i = 0; i < len; i++) {
-          result[i] = {
-            name: item[i].name,
-            id: 'imgListView_'+this.pid,
-            isLink: false,
-            linkListIdx: -1,
-            imgIdx: item[i].imgIdx,
-            nomal_url: item[i].nomal_url,
-            over_url: item[i].over_url,
-            icon_nomal_url: item[i].icon_nomal_url,
-            icon_dim_url: item[i].icon_dim_url
-          }
+          const newStr = JSON.stringify(data[i])
+          const nObj = JSON.parse(newStr)
+          nObj.id='imgListView_'+this.pid
+          nObj.pid=this.pid
+          nObj.isLink=false
+          nObj.linkListIdx=-1
+          result[i]=nObj
           this.pid++
         }
         return result
       }
+      this.isImgLoadComp=false
       this.datas = new Tree( false, dataMapping(cwData.interactionObjects, false) )
       $("#cwBoxBackImg").attr("src",cwData.backImg_url)
       $('.cw_box> .vtl').css('opacity',0)
@@ -80,6 +87,7 @@ export default {
             target.css({'height':tHei+'px'})
           }
           $('.cw_box> .vtl').css('opacity',1)
+          this.isImgLoadComp=true
         }, 500)
       }, 500)
     },

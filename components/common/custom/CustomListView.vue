@@ -38,11 +38,8 @@ export default {
     setDataList(listData) {
       this.receiveDataList=listData
       const copyData = (data) => {
-        const nObj={}
-        for(const item in data){
-          nObj[item]=data[item]
-        }
-        nObj.id=this.pid
+        const newStr = JSON.stringify(data)
+        const nObj = JSON.parse(newStr)
         nObj.isLeaf=true
         nObj.readOnly=false
         nObj.isChecked=false

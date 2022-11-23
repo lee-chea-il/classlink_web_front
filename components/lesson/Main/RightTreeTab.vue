@@ -13,6 +13,7 @@
         :dataList="receiveLessonList"
         identity="master"
         :pidNum="2000"
+        @open-data="setOpenData"
       />
     </div>
     <!-- /.탭 내용01 -->
@@ -30,6 +31,11 @@ export default {
     receiveLessonList: {
       type: Array,
       default: () => [],
+    },
+  },
+  methods: {
+    setOpenData(e, item) {
+      this.$emit('open-data', e, item)
     },
   },
 }

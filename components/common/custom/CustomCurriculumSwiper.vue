@@ -54,14 +54,14 @@
             prevEl: '.swiper-button-prev'
           },
           breakpoints: {
-            360: {
-              slidesPerView: 1.2
+            578: {
+              slidesPerView: 3
             },
-            575.98: {
-              slidesPerView: 2.2
+            992: {
+              slidesPerView: 4
             },
-            767.98: {
-              slidesPerView: 3.2
+            1200: {
+              slidesPerView: 5
             },
           }
         }
@@ -137,9 +137,6 @@
 }
 .modal_curiregi .item_list .swiper-container-horizontal > .swiper-scrollbar{
   bottom: 0;
-}
-.modal_curiregi .swiper-slide{
-  width:70px !important;
 }
 .modal_curiregi .divide_area.left .cw_box + .item_list_wrap .item {
   position: relative;

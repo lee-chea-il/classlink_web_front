@@ -78,10 +78,8 @@ export default {
     const setListItem = (listData) => {
       this.receiveDataList = listData
       const copyData = (data) => {
-        const nObj = {}
-        for (const item in data) {
-          nObj[item] = data[item]
-        }
+        const newStr = JSON.stringify(data)
+        const nObj = JSON.parse(newStr)
         nObj.id = this.pid
         nObj.isLeaf = true
         nObj.readOnly = false
@@ -163,19 +161,14 @@ export default {
     copyData() {
       let idNum = new Date().valueOf()
       function _dfs(oldNode) {
-        const newNode = {}
+        const newNode={}
         if (oldNode.isChecked) {
+          for(const item in oldNode){
+            newNode[item] = oldNode[item]
+          }
           newNode.children = []
           newNode.id = idNum
-          newNode.isLeaf = oldNode.isLeaf
-          newNode.name = oldNode.name
-          newNode.parent = oldNode.parent
-          newNode.pid = oldNode.id
-          newNode.readOnly = oldNode.readOnly
           newNode.isChecked = false
-          newNode.dbIdx = oldNode.dbIdx
-          newNode.type = oldNode.type
-          console.log(newNode.name)
           idNum++
         }
         if (oldNode.children && oldNode.children.length > 0) {
@@ -195,18 +188,14 @@ export default {
       function _addNode(parentNode, oldNode) {
         let node, i, len
         if (oldNode.name) {
-          const newNode = {}
+          const newNode={}
+          for(const item in oldNode){
+            newNode[item] = oldNode[item]
+          }
           newNode.children = []
           newNode.id = idNum
-          newNode.isLeaf = oldNode.isLeaf
-          newNode.name = oldNode.name
-          newNode.parent = oldNode.parent
-          newNode.pid = oldNode.id
-          newNode.readOnly = oldNode.readOnly
           newNode.isChecked = false
-          newNode.dbIdx = oldNode.dbIdx
-          newNode.type = oldNode.type
-
+          
           node = new TreeNode(newNode)
           parentNode.addChildren(node)
           idNum++

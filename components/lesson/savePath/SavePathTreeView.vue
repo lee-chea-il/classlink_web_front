@@ -34,33 +34,29 @@ export default {
     }
   },
   mounted() {
-    const dataMapping = (item, isReadOnly) => {
+    const dataMapping = (data, isReadOnly) => {
       const result = []
-      const len = item.length
+      const len = data.length
       for (let i = 0; i < len; i++) {
-        if (item[i].children !== undefined) {
-          result[i] = {
-            name: item[i].name,
-            id: 'folder' + this.pid,
-            isLeaf: false,
-            pid: this.pid,
-            children: [],
-            readOnly: isReadOnly,
-            isChecked: false,
-            type: item[i].type,
-          }
+        const newStr = JSON.stringify(data[i])
+        const nObj = JSON.parse(newStr)
+        nObj.id='folder' + this.pid
+        nObj.pid=this.pid
+        nObj.isChecked=false
+        nObj.readOnly=isReadOnly
+
+        if (data[i].children !== undefined) {
+          nObj.isLeaf=false
+          nObj.children=[]
+
+          result[i] = nObj
           this.pid++
-          result[i].children = dataMapping(item[i].children, isReadOnly)
+
+          result[i].children = dataMapping(data[i].children, isReadOnly)
         } else {
-          result[i] = {
-            name: item[i].name,
-            id: 'folder' + this.pid,
-            pid: this.pid,
-            isLeaf: true,
-            readOnly: isReadOnly,
-            isChecked: false,
-            type: item[i].type,
-          }
+          nObj.isLeaf=true
+
+          result[i] = nObj
           this.pid++
         }
       }

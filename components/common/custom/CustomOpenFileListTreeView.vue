@@ -34,31 +34,29 @@ export default {
     }
   },
   mounted() {
-    const dataMapping = (item, isReadOnly) => {
+    const dataMapping = (data, isReadOnly) => {
       const result = []
-      const len = item.length
+      const len = data.length
       for (let i = 0; i < len; i++) {
-        const cNode = {}
-        const tNode = item[i]
-        for (const k in tNode) {
-          cNode[k] = tNode[k]
-        }
-        cNode.id="file"+this.pid
-        cNode.pid=this.pid
-        cNode.readOnly=isReadOnly
-        cNode.isChecked=false
+        const newStr = JSON.stringify(data[i])
+        const nObj = JSON.parse(newStr)
 
-        if (item[i].children !== undefined) {
-          cNode.isLeaf=false
-          cNode.children=[]
+        nObj.id="file"+this.pid
+        nObj.pid=this.pid
+        nObj.readOnly=isReadOnly
+        nObj.isChecked=false
 
-          result[i] = cNode
+        if (data[i].children !== undefined) {
+          nObj.isLeaf=false
+          nObj.children=[]
+
+          result[i] = nObj
           this.pid++
-          result[i].children = dataMapping(item[i].children, isReadOnly)
+          result[i].children = dataMapping(data[i].children, isReadOnly)
         } else {
-          cNode.isLeaf=true
+          nObj.isLeaf=true
 
-          result[i] = cNode
+          result[i] = nObj
           this.pid++
         }
       }
