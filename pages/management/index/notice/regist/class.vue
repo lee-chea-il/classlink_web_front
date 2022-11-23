@@ -182,7 +182,7 @@
 
 <script>
 // import PageHeader from '~/components/common/PageHeader.vue'
-import CustomPageHeader from '~/components/common/custom/CustomPageHeader.vue'
+import CustomPageHeader from '~/components/notice/CustomPageHeader.vue'
 import SettingNoticeDeadline from '~/components/common/modal/notice/SettingNoticeDeadline.vue'
 import SettingNoticeTarget from '~/components/common/modal/notice/SettingNoticeTarget.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'

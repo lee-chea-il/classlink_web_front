@@ -6,9 +6,11 @@
         title1="전체"
         title2="반"
         title3="개인"
+        title4="클래스링크"
         url1="/management/notice/all"
-        url2="/management/notice/class"
+        url2="/management/notice/classroom"
         url3="/management/notice/individual"
+        url4="/management/notice/classlink"
       />
       <div class="tab-content depth03 ac_manage_notice notice_rigi">
         <div class="tab-pane active">
@@ -181,7 +183,7 @@
 
 <script>
 // import PageHeader from '~/components/common/PageHeader.vue'
-import CustomPageHeader from '~/components/common/custom/CustomPageHeader.vue'
+import CustomPageHeader from '~/components/notice/CustomPageHeader.vue'
 import SettingNoticeDeadline from '~/components/common/modal/notice/SettingNoticeDeadline.vue'
 import SettingNoticeTarget from '~/components/common/modal/notice/SettingNoticeTarget.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'

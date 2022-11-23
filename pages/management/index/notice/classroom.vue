@@ -49,7 +49,7 @@
               </div>
               <NuxtLink
                 class="btn btn_crud_point"
-                to="/management/notice/regist/all"
+                to="/management/notice/regist/class"
                 >등록</NuxtLink
               >
             </div>
@@ -186,7 +186,7 @@
                       <div class="btns_area">
                         <NuxtLink
                           class="btn btn_crud_default"
-                          :to="`/management/notice/modify/all/${item.id}`"
+                          :to="`/management/notice/modify/class/${item.id}`"
                           >수정</NuxtLink
                         >
                         <button
@@ -297,7 +297,7 @@ import ShowNoticeConfirmCheck from '~/components/common/modal/notice/ShowNoticeC
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 
 export default {
-  name: 'All',
+  name: 'Classroom',
   components: {
     CustomPageHeader,
     ShowNoticeDetailModal,
@@ -321,7 +321,7 @@ export default {
               endTime: '오후 11:59',
             },
             writer: '홍길동',
-            target: '전체',
+            target: '반',
             content:
               '안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다.  안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다.',
             createdAt: '2022-08-01',
@@ -360,7 +360,7 @@ export default {
               endTime: '오후 11:59',
             },
             writer: '강희진',
-            target: '전체',
+            target: '반',
             content: '안녕하십니까? 학원장입니다.',
             createdAt: '2022-08-01',
             view_count: 87,
@@ -398,7 +398,7 @@ export default {
               endTime: '오후 11:59',
             },
             writer: '홍길동',
-            target: '전체',
+            target: '반',
             content: '안녕하십니까? 홍길동 학원장입니다.',
             createdAt: '2022-08-15',
             view_count: 57,
@@ -436,7 +436,7 @@ export default {
               endTime: '오후 11:59',
             },
             writer: '전미진',
-            target: '전체',
+            target: '반',
             content: '안녕하십니까? 홍길동 학원장입니다.',
             createdAt: '2022-09-24',
             view_count: 3,
@@ -474,7 +474,7 @@ export default {
               endTime: '오후 11:59',
             },
             writer: '심화A',
-            target: '전체',
+            target: '반',
             content: '안녕하십니까? 홍길동 학원장입니다.',
             createdAt: '2022-12-01',
             view_count: 16,

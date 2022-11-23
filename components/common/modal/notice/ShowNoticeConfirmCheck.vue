@@ -114,7 +114,10 @@
               </div>
 
               <div
-                v-if="$route.fullPath === '/management/notice/all'"
+                v-if="
+                  $route.fullPath === '/management/notice/all' ||
+                  $route.fullPath === '/management/notice/classlink'
+                "
                 class="filter_wrap"
               >
                 <div class="filter_section">

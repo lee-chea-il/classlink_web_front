@@ -68,7 +68,7 @@
                           id="chkA01"
                           type="checkbox"
                           class="custom-control-input"
-                          checked
+                          :checked="tagList.length === 0"
                         />
                         <label class="custom-control-label" for="chkA01"
                           >전체</label
@@ -81,6 +81,8 @@
                           id="chkA02"
                           type="checkbox"
                           class="custom-control-input"
+                          :checked="tagList.includes('심화A반')"
+                          @input="$emit('add-tag', '심화A반')"
                         />
                         <label class="custom-control-label" for="chkA02"
                           >심화A반</label
@@ -351,8 +353,16 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn_crud_point">검색</button>
-          <button class="btn btn_crud_default">취소</button>
+          <button
+            class="btn btn_crud_point"
+            data-dismiss="modal"
+            @click="$emit('complete')"
+          >
+            검색
+          </button>
+          <button class="btn btn_crud_default" data-dismiss="modal">
+            취소
+          </button>
         </div>
       </div>
     </div>
@@ -374,14 +384,26 @@ export default {
   components: {
     DatePickerModal,
   },
+  props: {
+    tagList: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
       datePickerModalDesc: {
         open: false,
       },
       studentSearchDate: {
-        date_range_start: '2022.11.22',
-        date_range_end: '2022.11.29',
+        date_range_start: `${new Date().getFullYear()}.${(
+          '0' +
+          (new Date().getMonth() + 1)
+        ).slice(-2)}.${('0' + new Date().getDate()).slice(-2)}`,
+        date_range_end: `${new Date().getFullYear()}.${(
+          '0' +
+          (new Date().getMonth() + 1)
+        ).slice(-2)}.${('0' + new Date().getDate()).slice(-2)}`,
       },
       range: {
         start: new Date(),
