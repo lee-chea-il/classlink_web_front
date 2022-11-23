@@ -75,83 +75,44 @@ export default {
   //   },
   // },
   mounted() {
-    const dataMapping = (item, isReadOnly) => {
-      const result = []
-      let isDragDisable = false
-      if (this.listType === 'lesson') {
-        isDragDisable = true
-      }
-      const len = item.length
-      for (let i = 0; i < len; i++) {
-        if (item[i].children !== undefined) {
-          result[i] = {
-            name: item[i].name,
-            id: this.pid,
-            isLeaf: false,
-            pid: this.pid,
-            children: [],
-            readOnly: isReadOnly,
-            isChecked: false,
-            dragDisabled: isDragDisable,
-            subject: item[i].subject,
-            desc: item[i].desc,
-            keyword: item[i].keyword,
-            registrant: item[i].registrant,
-            savePath: item[i].savePath,
-            saveFolder: item[i].saveFolder,
-            isOpenEducation: item[i].isOpenEducation,
-            isOpenReference: item[i].isOpenReference,
-            fileName: item[i].fileName,
-            fileDivision: item[i].fileDivision,
-            fileType: item[i].fileType,
-            uploadType: item[i].uploadType,
-            fileVolume: item[i].fileVolume,
-            createAt: item[i].createAt,
-            dbIdx: item[i].dbIdx,
-            type: item[i].type,
-            quizList: item[i].quizList,
-            noteTestList: item[i].noteTestList,
-          }
-
-          this.pid++
-          result[i].children = dataMapping(item[i].children, isReadOnly)
-        } else {
-          result[i] = {
-            name: item[i].name,
-            id: this.pid,
-            pid: this.pid,
-            isLeaf: true,
-            readOnly: isReadOnly,
-            isChecked: false,
-
-            subject: item[i].subject,
-            desc: item[i].desc,
-            keyword: item[i].keyword,
-            registrant: item[i].registrant,
-            savePath: item[i].savePath,
-            saveFolder: item[i].saveFolder,
-            isOpenEducation: item[i].isOpenEducation,
-            isOpenReference: item[i].isOpenReference,
-            fileName: item[i].fileName,
-            fileDivision: item[i].fileDivision,
-            fileType: item[i].fileType,
-            uploadType: item[i].uploadType,
-            fileVolume: item[i].fileVolume,
-            createAt: item[i].createAt,
-            dbIdx: item[i].dbIdx,
-            type: item[i].type,
-            quizList: item[i].quizList,
-            noteTestList: item[i].noteTestList,
-          }
-          this.pid++
+    const setListItem = (listData) => {
+      this.receiveDataList = listData
+      const copyData = (data) => {
+        const nObj = {}
+        for (const item in data) {
+          nObj[item] = data[item]
         }
+        nObj.id = this.pid
+        nObj.isLeaf = true
+        nObj.readOnly = false
+        nObj.isChecked = false
+        nObj.isLink = false
+        nObj.linkIdx = -1
+        nObj.addTreeNodeDisabled = true
+        nObj.addLeafNodeDisabled = true
+        nObj.editNodeDisabled = true
+        nObj.delNodeDisabled = true
+        return nObj
       }
-      return result
+
+      const dataMapping = (datas) => {
+        const result = []
+        const len = datas?.length
+        for (let i = 0; i < len; i++) {
+          if (copyData(datas[i]).children !== undefined) {
+            result[i] = copyData(datas[i])
+            this.pid++
+            result[i].children = dataMapping(copyData(datas[i]).children)
+          } else {
+            result[i] = copyData(datas[i])
+            this.pid++
+          }
+        }
+        return result
+      }
+      return (this.datas = new Tree(false, dataMapping(this.receiveDataList)))
     }
-    this.datas = new Tree(
-      !this.editable,
-      dataMapping(this.dataList, !this.editable)
-    )
+    setListItem(this.dataList)
   },
   methods: {
     onDel(node) {

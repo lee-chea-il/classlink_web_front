@@ -146,7 +146,7 @@
 
     <!-- 비디오 & 문서 & 유튜브 & url 보기 -->
     <VideoBrowseModal
-      :open="isReferenceBrowseModal"
+      :open="isReferenceBrowse"
       :selectData="reference"
       @close="onCloseReferenceBrowseModal"
       @reference-change="onOpenReferenceChangeModal"
@@ -157,7 +157,7 @@
 
     <!-- 퀴즈 보기 -->
     <QuizBrowseModal
-      :open="isQuizBrowseModal"
+      :open="isQuizBrowse"
       :selectData="reference"
       :currentPageIdx="currentPageIdx"
       @change-number="onClickPagination"
@@ -182,7 +182,7 @@
 
     <!-- 쪽지시험 보기 -->
     <NoteTestBrowseModal
-      :open="isNoteTestBrowseModal"
+      :open="isNoteTestBrowse"
       :selectData="reference"
       :currentPageIdx="currentPageIdx"
       @change-number="onClickPagination"
@@ -207,7 +207,7 @@
 
     <!-- 자료 수정 -->
     <ReferenceChangeModal
-      :open="isReferenceChangeModal"
+      :open="isReferenceChange"
       :reference="reference"
       :pushKeyword="pushKeyword"
       @close="onCloseReferenceChangeModal"
@@ -220,7 +220,7 @@
 
     <!-- 퀴즈 수정 -->
     <QuizChangeModal
-      :open="isQuizChangeModal"
+      :open="isQuizChange"
       :quiz="reference"
       :currentPageIdx="currentPageIdx"
       :pushKeyword="pushKeyword"
@@ -243,7 +243,7 @@
 
     <!-- 쪽지시험 수정 -->
     <NoteTestChangeModal
-      :open="isNoteTestChangeModal"
+      :open="isNoteTestChange"
       :reference="reference"
       :currentPageIdx="currentPageIdx"
       :pushKeyword="pushKeyword"
@@ -421,12 +421,12 @@ export default {
       this[url] = false
       this.isSelectModal = {
         open: true,
-        previewPage: url,
+        prevPage: url,
       }
     },
 
     onCloseSelectModal() {
-      this[this.isSelectModal.previewPage] = true
+      this[this.isSelectModal.prevPage] = true
       this.isSelectModal.open = false
     },
 
@@ -463,11 +463,11 @@ export default {
     },
 
     onOpenReferenceBrowseModal() {
-      this.isReferenceBrowseModal = true
+      this.isReferenceBrowse = true
     },
 
     onCloseReferenceBrowseModal() {
-      this.isReferenceBrowseModal = false
+      this.isReferenceBrowse = false
     },
 
     onCloseNoteTestAddModal() {
@@ -475,121 +475,121 @@ export default {
     },
 
     onOpenQuizBrowseModal() {
-      this.isQuizBrowseModal = true
+      this.isQuizBrowse = true
     },
 
     onCloseQuizBrowseModal() {
       this.initAddReferenceData()
-      this.isQuizBrowseModal = false
+      this.isQuizBrowse = false
     },
 
     onOpenNoteTestBrowseModal() {
-      this.isNoteTestBrowseModal = true
+      this.isNoteTestBrowse = true
     },
 
     onCloseNoteTestBrowseModal() {
       this.initAddReferenceData()
-      this.isNoteTestBrowseModal = false
+      this.isNoteTestBrowse = false
     },
 
     onOpenReferenceChangeModal() {
-      if (this.isReferenceBrowseModal) {
+      if (this.isReferenceBrowse) {
         this.onCloseReferenceBrowseModal()
       }
-      this.isReferenceChangeModal = true
+      this.isReferenceChange = true
     },
 
     onCloseReferenceChangeModal() {
       this.initAddReferenceData()
-      this.isReferenceChangeModal = false
+      this.isReferenceChange = false
     },
 
     onOpenQuizChangeModal() {
-      if (this.isQuizBrowseModal) {
+      if (this.isQuizBrowse) {
         this.onCloseQuizBrowseModal()
       }
-      this.isQuizChangeModal = true
+      this.isQuizChange = true
     },
 
     onCloseQuizChangeModal() {
       this.initAddReferenceData()
-      this.isQuizChangeModal = false
+      this.isQuizChange = false
     },
 
     onOpenNoteTestChangeModal() {
-      if (this.isNoteTestBrowseModal) {
+      if (this.isNoteTestBrowse) {
         this.onCloseNoteTestBrowseModal()
       }
-      this.isNoteTestChangeModal = true
+      this.isNoteTestChange = true
     },
 
     onCloseNoteTestChangeModal() {
       this.initAddReferenceData()
-      this.isNoteTestChangeModal = false
+      this.isNoteTestChange = false
     },
 
-    onOpenQuizPreviewModal(prevPage, page) {
+    onOpenQuizPreviewModal(prevPath, page) {
       this.isQuizPreviewModal = {
         open: true,
-        previewPage: prevPage,
+        prevPage: prevPath,
       }
       if (page === 'first') {
         this.currentPageIdx = 0
       }
-      if (prevPage === 'add') {
+      if (prevPath === 'add') {
         this.isQuizAddModal = false
         this.isQuizPreviewModal.select = false
-      } else if (prevPage === 'browse') {
-        this.isQuizBrowseModal = false
+      } else if (prevPath === 'browse') {
+        this.isQuizBrowse = false
         this.isQuizPreviewModal.select = true
       } else {
-        this.isQuizChangeModal = false
+        this.isQuizChange = false
         this.isQuizPreviewModal.select = true
       }
     },
 
     onCloseQuizPreviewModal() {
       this.isQuizPreviewModal.open = false
-      const target = this.isQuizPreviewModal.previewPage
+      const target = this.isQuizPreviewModal.prevPage
       if (target === 'add') {
         this.isQuizAddModal = true
       } else if (target === 'browse') {
-        this.isQuizBrowseModal = true
+        this.isQuizBrowse = true
       } else {
-        this.isQuizChangeModal = true
+        this.isQuizChange = true
       }
     },
 
-    onOpenNoteTestPreviewModal(prevPage, page) {
+    onOpenNoteTestPreviewModal(prevPath, page) {
       this.isNoteTestPreviewModal = {
         open: true,
-        previewPage: prevPage,
+        prevPage: prevPath,
       }
 
       if (page === 'first') {
         this.currentPageIdx = 0
       }
-      if (prevPage === 'add') {
+      if (prevPath === 'add') {
         this.isNoteTestAddModal = false
         this.isNoteTestPreviewModal.select = false
-      } else if (prevPage === 'browse') {
-        this.isNoteTestBrowseModal = false
+      } else if (prevPath === 'browse') {
+        this.isNoteTestBrowse = false
         this.isNoteTestPreviewModal.select = true
       } else {
-        this.isNoteTestChangeModal = false
+        this.isNoteTestChange = false
         this.isNoteTestPreviewModal.select = true
       }
     },
 
     onCloseNoteTestPreviewModal() {
       this.isNoteTestPreviewModal.open = false
-      const target = this.isNoteTestPreviewModal.previewPage
+      const target = this.isNoteTestPreviewModal.prevPage
       if (target === 'add') {
         this.isNoteTestAddModal = true
       } else if (target === 'browse') {
-        this.isNoteTestBrowseModal = true
+        this.isNoteTestBrowse = true
       } else {
-        this.isNoteTestChangeModal = true
+        this.isNoteTestChange = true
       }
     },
 
@@ -611,13 +611,13 @@ export default {
       this[path] = false
       this.isSavePathModal = {
         open: true,
-        previewPage: path,
+        prevPage: path,
       }
     },
 
     onCloseSavePathModal() {
       this.isSavePathModal.open = false
-      this[this.isSavePathModal.previewPage] = true
+      this[this.isSavePathModal.prevPage] = true
     },
 
     // 필터 모달

@@ -22,14 +22,14 @@
             <!-- <div class="btnsec">
               <ReferenceBtn
                 title="이동"
-                @click-event="$emit('open-save-path', 'isReferenceBrowseModal')"
+                @click-event="$emit('open-save-path', 'isReferenceBrowse')"
               />
               <ReferenceBtn
                 title="공유"
                 @click-event="
                   $emit(
                     'view-url',
-                    'isReferenceBrowseModal',
+                    'isReferenceBrowse',
                     selectData.savePath
                   )
                 "
@@ -48,7 +48,7 @@
               />
               <ReferenceBtn
                 title="삭제"
-                @click-event="$emit('delete', 'isReferenceBrowseModal')"
+                @click-event="$emit('delete', 'isReferenceBrowse')"
               />
             </div> -->
 

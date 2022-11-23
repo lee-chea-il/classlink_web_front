@@ -119,27 +119,53 @@
       @close="closeNoteTestPreview"
     />
 
-    <!-- 등록 자료실 자료 열람 -->
+    <!-- 자료실 자료 열람 -->
     <VideoBrowseModal
       :open="isReferenceBrowse.open"
       :selectData="selectReferenceItem"
       @close="closeReferenceBrowse"
+      @reference-change="onOpenReferenceChangeModal"
+      @view-url="onOpenShareViewModal"
+      @delete="openSelectModal"
+      @open-save-path="onOpenSavePathModal"
     />
 
+    <!-- 자료실 퀴즈 열람 -->
     <QuizBrowseModal
       :open="isQuizBrowse.open"
       :selectData="selectReferenceItem"
       @close="closeBrowseQuiz"
       @preview="onOpenQuizPreviewModal"
+      @view-url="onOpenShareViewModal"
+      @delete="openSelectModal"
+      @open-save-path="onOpenSavePathModal"
     />
 
+    <!-- 자료실 쪽지시험 열람 -->
     <NoteTestBrowseModal
       :open="isNoteTestBrowse.open"
       :selectData="selectReferenceItem"
       @close="closeBrowseNoteTest"
       @preview="openNoteTestPreview"
+      @view-url="onOpenShareViewModal"
+      @delete="openSelectModal"
+      @open-save-path="onOpenSavePathModal"
     />
 
+    <!-- 자료 수정 -->
+    <ReferenceChangeModal
+      :open="isReferenceChange.open"
+      :reference="selectReferenceItem"
+      :pushKeyword="pushKeyword"
+      @close="onCloseReferenceChangeModal"
+      @change-input="onChangeUploadFile"
+      @change-keyword="changePushKeyword"
+      @set-keyword="setKeyword"
+      @delete-keyword="deleteKeyword"
+      @open-save-path="onOpenSavePathModal"
+    />
+
+    <!-- 레슨 저장경로 모달 -->
     <SavePathModal
       :open="isSavePath.open"
       :institutionData="receiveInstitutionLessonData"
@@ -147,6 +173,27 @@
       :myData="receiveLessonList"
       @close="closeSavePathModal"
       @save-file-path="setSaveFilePath"
+    />
+
+    <!-- 자료실 공유하기 -->
+    <ShareViewModal
+      :open="isShareViewModal.open"
+      :url="isShareViewModal.url"
+      @close="onCloseShareViewModal"
+    />
+
+    <!-- 자료실 삭제 모달 -->
+    <DeleteModal :open="isSelectModal.open" @close="onCloseSelectModal" />
+
+    <!-- 자료실 자료 저장경로 설정 -->
+    <!-- 저장경로 설정 -->
+    <ReferenceSavePathModal
+      :open="isSavePathModal.open"
+      :institutionData="receiveInstitutionData"
+      :franchiseData="receiveFranchiseData"
+      :myData="receiveMyData"
+      @save-file-path="setSavePath"
+      @close="onCloseSavePathModal"
     />
   </div>
 </template>
@@ -168,6 +215,12 @@ import VideoBrowseModal from '~/components/common/modal/reference/VideoBrowseMod
 import QuizBrowseModal from '~/components/common/modal/reference/QuizBrowseModal.vue'
 import NoteTestBrowseModal from '~/components/common/modal/reference/NoteTestBrowseModal.vue'
 import SavePathModal from '~/components/common/modal/lesson/SavePathModal.vue'
+import ShareViewModal from '~/components/common/modal/reference/ShareViewModal.vue'
+import DeleteModal from '~/components/common/modal/reference/DeleteModal.vue'
+import ReferenceSavePathModal from '~/components/common/modal/reference/SavePathModal.vue'
+import ReferenceChangeModal from '~/components/common/modal/reference/ReferenceChangeModal.vue'
+// import QuizChangeModal from '~/components/common/modal/reference/QuizChangeModal.vue'
+// import NoteTestChangeModal from '~/components/common/modal/reference/NoteTestChangeModal.vue'
 
 export default {
   name: 'LessonPage',
@@ -187,12 +240,24 @@ export default {
     QuizBrowseModal,
     NoteTestBrowseModal,
     SavePathModal,
+    ShareViewModal,
+    DeleteModal,
+    ReferenceSavePathModal,
+    ReferenceChangeModal,
+    // QuizChangeModal,
+    // NoteTestChangeModal,
   },
   layout: 'EducationLayout',
   data() {
     return initialState()
   },
   methods: {
+    // 리셋
+    initAddReferenceData() {
+      Object.assign(this.$data, initialState())
+    },
+
+    // 레슨 등록
     openLessonAdd() {
       this.isAddLesson.open = true
     },
@@ -201,6 +266,7 @@ export default {
       this.isAddLesson.open = false
     },
 
+    // 레슨 수정
     openLessonChangeModal(data) {
       if (this.isLessonBrowse) {
         this.closeLessonBrowseModal()
@@ -252,7 +318,7 @@ export default {
     // 자료실 자료 열람 하기
     openReference(item, prev) {
       if (this[prev]) {
-        this[prev] = false
+        this[prev].open = false
       }
       this.setReference(item)
       if (item.uploadType === 'quiz') return this.openBrowseQuiz(prev)
@@ -270,7 +336,7 @@ export default {
 
     closeReferenceBrowse() {
       if (this.isReferenceBrowse.prevPage) {
-        this[this.isReferenceBrowse.prevPage] = true
+        this[this.isReferenceBrowse.prevPage].open = true
       }
       this.isReferenceBrowse.open = false
     },
@@ -285,7 +351,7 @@ export default {
 
     closeBrowseQuiz() {
       if (this.isQuizBrowse.prevPage) {
-        this[this.isQuizBrowse.prevPage] = true
+        this[this.isQuizBrowse.prevPage].open = true
       }
       this.isQuizBrowse.open = false
     },
@@ -300,7 +366,7 @@ export default {
 
     closeBrowseNoteTest() {
       if (this.isNoteTestBrowse.prevPage) {
-        this[this.isNoteTestBrowse.prevPage] = true
+        this[this.isNoteTestBrowse.prevPage].open = true
       } else if (this.isNoteTestBrowse.prevPage === 'browse') {
         this.isQuizBrowse.oepn = true
       }
@@ -343,10 +409,10 @@ export default {
       }
     },
 
+    // 퀴즈 조회
     onOpenQuizPreviewModal(prevItem, page) {
       console.log(prevItem)
-      const target =
-        prevItem === 'browse' ? 'isQuizBrowse' : 'isQuizChangeModal'
+      const target = prevItem === 'browse' ? 'isQuizBrowse' : 'isQuizChange'
       this.isQuizPreviewModal = {
         open: true,
         prevPage: target,
@@ -358,7 +424,7 @@ export default {
         this.isQuizBrowse.open = false
         this.isQuizPreviewModal.select = true
       } else {
-        this.isQuizChangeModal = false
+        this.isQuizChange = false
         this.isQuizPreviewModal.select = true
       }
     },
@@ -375,10 +441,10 @@ export default {
         this.isNoteTestAddModal = false
         this.isNoteTestPreviewModal.select = false
       } else if (prevItem === 'browse') {
-        this.isNoteTestBrowseModal = false
+        this.isNoteTestBrowse = false
         this.isNoteTestPreviewModal.select = true
       } else {
-        this.isNoteTestChangeModal = false
+        this.isNoteTestChange = false
         this.isNoteTestPreviewModal.select = true
       }
     },
@@ -398,6 +464,85 @@ export default {
       this.isSavePath.open = false
       if (this.isSavePath.prevPage) {
         this[this.isSavePath.prevPage].open = true
+      }
+    },
+
+    // [자료실 자료관련 모달]
+    // [공유하기 모달]
+    onOpenShareViewModal(path, url) {
+      this[path].open = false
+      this.isShareViewModal = {
+        open: true,
+        path,
+        url,
+      }
+    },
+
+    onCloseShareViewModal() {
+      this[this.isShareViewModal.path].open = true
+      this.isShareViewModal.open = false
+    },
+
+    // [삭제하기 모달]
+    openSelectModal(url) {
+      this[url].open = false
+      this.isSelectModal = {
+        open: true,
+        prevPage: url,
+      }
+    },
+
+    onCloseSelectModal() {
+      this[this.isSelectModal.prevPage].open = true
+      this.isSelectModal.open = false
+    },
+
+    // [자료실 저장경로]
+    onOpenSavePathModal(path) {
+      this[path].open = false
+      this.isSavePathModal = {
+        open: true,
+        prevPage: path,
+      }
+    },
+
+    onCloseSavePathModal() {
+      this[this.isSavePathModal.prevPage].open = true
+      this.isSavePathModal.open = false
+    },
+
+    // 저장 경로 선택 하기
+    setSavePath(path) {
+      return (this.selectReferenceItem.saveFolder = path)
+    },
+
+    // 자료 수정
+    onOpenReferenceChangeModal() {
+      if (this.isReferenceBrowse.open) {
+        this.closeReferenceBrowse()
+        this.closeLessonAdd()
+        this.closeLessonChangeModal()
+      }
+      this.isReferenceChange.open = true
+    },
+
+    onCloseReferenceChangeModal() {
+      this.initAddReferenceData()
+      this.isReferenceChange.open = false
+    },
+
+    // 등록 자료 내용 변경
+    onChangeUploadFile({ target: { id, value, type, checked, name } }) {
+      if (type === 'checkbox') {
+        if (checked) {
+          this.selectReferenceItem[id] = true
+        } else {
+          this.selectReferenceItem[id] = false
+        }
+      } else if (name === 'isOpenReference' || name === 'isOpenEducation') {
+        this.selectReferenceItem[name] = value
+      } else {
+        this.selectReferenceItem[id] = value
       }
     },
 

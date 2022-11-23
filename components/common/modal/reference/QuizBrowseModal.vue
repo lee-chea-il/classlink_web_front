@@ -35,7 +35,7 @@
             <div class="btnsec">
               <ReferenceBtn
                 title="이동"
-                @click-event="$emit('open-save-path', 'isQuizBrowseModal')"
+                @click-event="$emit('open-save-path', 'isQuizBrowse')"
               />
               <ReferenceBtn
                 title="공유"
@@ -48,7 +48,7 @@
               <ReferenceBtn title="수정" @click-event="$emit('change')" />
               <ReferenceBtn
                 title="삭제"
-                @click-event="$emit('delete', 'isQuizBrowseModal')"
+                @click-event="$emit('delete', 'isQuizBrowse')"
               />
             </div>
 

@@ -182,7 +182,7 @@ import TreeView from '@/components/common/custom/CustomTreeView.vue'
 import initialState from '~/data/curriculum/initialState'
 import CurriculumUpdateModal from '@/components/common/modal/curriculum/CurriculumUpdateModal.vue'
 import SavePathSearchModal from '@/components/common/modal/curriculum/SavePathSearchModal.vue'
-import OpenSearchFileModal from '@/components/common/modal/curriculum/openSearchFileModal.vue'
+import OpenSearchFileModal from '@/components/common/modal/curriculum/OpenSearchFileModal.vue'
 
 export default {
   name: 'MyCurriculum',
