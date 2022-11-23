@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import TreeView from '~/components/lesson/custom/CustomTreeView.vue'
+import TreeView from '~/components/lesson/custom/LessonMainTreeView.vue'
 export default {
   name: 'RightTreeTab',
   components: {

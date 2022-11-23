@@ -49,10 +49,15 @@ export default {
   },
   watch: {
     dataList: {
-      handler(value, oldValue) {
-        this.datas = new Tree(false, this.dataMapping(value, false))
+      handler(value) {
+        if (value.length === 0) {
+          this.isEmptyData = true
+          this.setEmptyArea()
+        } else {
+          this.datas = new Tree(false, this.dataMapping(value, false))
+        }
       },
-      immediate: false,
+      immediate: true,
     },
   },
   mounted() {
@@ -66,27 +71,29 @@ export default {
   },
   methods: {
     moreShowClick(node) {
+      console.log('show', node)
       this.$emit('moreShowClick', node)
     },
     moreRemoveClick(node) {
+      this.$emit('remove-reference', node)
       node.remove()
       this.setEmptyAreaHeight()
-      this.$emit('remove-lesson', node)
     },
-    dataMapping(item, isReadOnly) {
+    copyData(data) {
+      const nObj = {}
+      for (const item in data) {
+        nObj[item] = data[item]
+      }
+      nObj.id = 'list_' + this.pid
+      nObj.pid = this.pid
+      nObj.isLeaf = true
+      nObj.readOnly = true
+      return nObj
+    },
+    dataMapping(item) {
       const result = []
-      const len = item.length
-      for (let i = 0; i < len; i++) {
-        result[i] = {
-          name: item[i].name,
-          id: 'list_' + this.pid,
-          pid: this.pid,
-          isLeaf: true,
-          readOnly: isReadOnly,
-          type: item[i].type,
-          dbIdx: item[i].dbIdx,
-          desc: item[i].desc,
-        }
+      for (let i = 0; i < item.length; i++) {
+        result[i] = this.copyData(item[i])
         this.pid++
       }
       return result
@@ -120,6 +127,7 @@ export default {
         this.pid++
         this.setEmptyAreaHeight()
       }
+      this.$emit('add-reference', this.datas)
     },
     setEmptyAreaHeight() {
       let nHei = 250
@@ -127,7 +135,6 @@ export default {
       if (nHei < 10) nHei = 10
       const target = $(`#list_${this.pidNum}`).find('.vtl-border')
       target.css({ height: nHei + 'px' })
-      this.$emit('add-lesson', this.datas)
     },
   },
 }

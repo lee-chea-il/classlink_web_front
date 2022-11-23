@@ -69,7 +69,7 @@
                       role="tabpanel"
                       aria-labelledby="grade-tab"
                     >
-                      <TreeView
+                      <LessonMainTreeView
                         ref="institution"
                         listType="lesson"
                         :dataList="receiveInstitutionLessonData"
@@ -88,7 +88,7 @@
                       role="tabpanel"
                       aria-labelledby="class-tab"
                     >
-                      <TreeView
+                      <LessonMainTreeView
                         ref="franchise"
                         listType="lesson"
                         :dataList="receiveFranchiseLessonData"
@@ -145,18 +145,19 @@
                   <!-- /.탭 컨텐츠 -->
                 </div>
                 <!-- /.왼쪽 영역 -->
-
                 <!-- 오른쪽 영역 -->
                 <RightSection
+                  ref="right"
                   :lessonData="createLessonData"
                   :pushKeyword="pushKeyword"
                   @change-lesson="$emit('change-lesson', $event)"
-                  @add-lesson="$emit('add-lesson', $event)"
-                  @remove-lesson="$emit('remove-lesson', $event)"
+                  @add-reference="$emit('add-reference', $event)"
+                  @remove-reference="$emit('remove-reference', $event)"
                   @changePushKeyword="$emit('changePushKeyword', $event)"
                   @set-keyword="$emit('set-keyword', $event)"
                   @delete-keyword="$emit('delete-keyword', $event)"
                   @open-save-path="$emit('open-save-path', 'isAddLesson')"
+                  @moreShowClick="moreShowClickReference"
                 />
                 <!-- /.오른쪽 영역 -->
               </div>
@@ -182,15 +183,15 @@
 
 <script>
 import ModalHeader from '../../ModalHeader.vue'
-import CustomReferenceTreeView from '../../custom/CustomReferenceTreeView.vue'
+import CustomReferenceTreeView from '~/components/lesson/custom/CustomReferenceTreeView.vue'
 import TopNavigation from '~/components/lesson/lessonAdd/TopNavigaion.vue'
-import TreeView from '~/components/lesson/custom/CustomTreeView.vue'
+import LessonMainTreeView from '~/components/lesson/custom/LessonMainTreeView.vue'
 import RightSection from '~/components/lesson/lessonAdd/RightSection.vue'
 export default {
   name: 'LessonAddModal',
   components: {
     ModalHeader,
-    TreeView,
+    LessonMainTreeView,
     RightSection,
     TopNavigation,
     CustomReferenceTreeView,

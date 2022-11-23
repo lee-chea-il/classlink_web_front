@@ -29,7 +29,7 @@
               :institutionData="receiveInstitutionData"
               :franchiseData="receiveFranchiseData"
               :identity="identity"
-              @file-view="onClick"
+              @file-view="onClickView"
               @copyDataCallBack="copyDataCallBack"
               @download-data="downloadSelectData"
               @update-data="updateSelectData"
@@ -46,7 +46,7 @@
             <RightTreeTab
               ref="myData"
               :myData="receiveMyData"
-              @file-view="onClick"
+              @file-view="onClickView"
               @copyDataCallBack="copyDataCallBack"
               @download-data="downloadSelectData"
               @update-data="updateSelectData"
@@ -72,7 +72,7 @@
       :open="isReferenceAddModal"
       :uploadType="uploadType"
       :uploadFile="uploadFile"
-      :reference="reference"
+      :reference="referenceData"
       :pushKeyword="pushKeyword"
       @change-keyword="changePushKeyword"
       @change-input="onChangeUploadFile"
@@ -99,8 +99,8 @@
     <!-- 퀴즈 등록 -->
     <QuizAddModal
       :open="isQuizAddModal"
-      :reference="reference"
-      :quizList="reference.quizList"
+      :reference="referenceData"
+      :quizList="referenceData.quizList"
       :currentPageIdx="currentPageIdx"
       :pushKeyword="pushKeyword"
       @change-number="onClickPagination"
@@ -123,7 +123,7 @@
     <!-- 쪽지시험 등록 -->
     <NoteTestAddModal
       :open="isNoteTestAddModal"
-      :reference="reference"
+      :reference="referenceData"
       :currentPageIdx="currentPageIdx"
       :pushKeyword="pushKeyword"
       @change-number="onClickPagination"
@@ -147,7 +147,7 @@
     <!-- 비디오 & 문서 & 유튜브 & url 보기 -->
     <VideoBrowseModal
       :open="isReferenceBrowse"
-      :selectData="reference"
+      :selectData="referenceData"
       @close="onCloseReferenceBrowseModal"
       @reference-change="onOpenReferenceChangeModal"
       @view-url="onOpenShareViewModal"
@@ -158,7 +158,7 @@
     <!-- 퀴즈 보기 -->
     <QuizBrowseModal
       :open="isQuizBrowse"
-      :selectData="reference"
+      :selectData="referenceData"
       :currentPageIdx="currentPageIdx"
       @change-number="onClickPagination"
       @close="onCloseQuizBrowseModal"
@@ -174,7 +174,7 @@
     <!-- 퀴즈 미리보기 -->
     <QuizPreviewModal
       :open="isQuizPreviewModal.open"
-      :quizList="reference.quizList"
+      :quizList="referenceData.quizList"
       :currentPageIdx="currentPageIdx"
       @close="onCloseQuizPreviewModal"
       @pagination="onClickQuizPagination"
@@ -183,7 +183,7 @@
     <!-- 쪽지시험 보기 -->
     <NoteTestBrowseModal
       :open="isNoteTestBrowse"
-      :selectData="reference"
+      :selectData="referenceData"
       :currentPageIdx="currentPageIdx"
       @change-number="onClickPagination"
       @close="onCloseNoteTestBrowseModal"
@@ -199,7 +199,7 @@
     <!-- 쪽지시험 미리보기 -->
     <NoteTestPreviewModal
       :open="isNoteTestPreviewModal.open"
-      :testList="reference.noteTestList"
+      :testList="referenceData.noteTestList"
       :currentPageIdx="currentPageIdx"
       @close="onCloseNoteTestPreviewModal"
       @pagination="onClickQuizPagination"
@@ -208,7 +208,7 @@
     <!-- 자료 수정 -->
     <ReferenceChangeModal
       :open="isReferenceChange"
-      :reference="reference"
+      :reference="referenceData"
       :pushKeyword="pushKeyword"
       @close="onCloseReferenceChangeModal"
       @change-input="onChangeUploadFile"
@@ -221,7 +221,7 @@
     <!-- 퀴즈 수정 -->
     <QuizChangeModal
       :open="isQuizChange"
-      :quiz="reference"
+      :quiz="referenceData"
       :currentPageIdx="currentPageIdx"
       :pushKeyword="pushKeyword"
       @close="onCloseQuizChangeModal"
@@ -244,7 +244,7 @@
     <!-- 쪽지시험 수정 -->
     <NoteTestChangeModal
       :open="isNoteTestChange"
-      :reference="reference"
+      :reference="referenceData"
       :currentPageIdx="currentPageIdx"
       :pushKeyword="pushKeyword"
       @close="onCloseNoteTestChangeModal"
@@ -310,8 +310,7 @@
     <SearchResultModal
       :open="isSearchListModal"
       :searchData="searchData"
-      :resultSearchList="resultSearchList"
-      :filterItem="filterItem(resultSearchList)"
+      :filterItem="filterItem(referenceList)"
       :checkList="checkList"
       @change-word="changeSearchData"
       @close="closeSearchListModal"
@@ -322,12 +321,12 @@
     />
 
     <!-- 퀴즈 프린트 영역 -->
-    <QuizPrintPage v-show="isQuizPrint" :quizList="selectQuizList" />
+    <QuizPrintPage v-show="isQuizPrint" :quizList="referenceData.quizList" />
 
     <!-- 쪽지시험 프린트 영역 -->
     <NoteTestPrintPage
       v-show="isNoteTestPrint"
-      :noteTestList="selectNoteTestList"
+      :noteTestList="referenceData.noteTestList"
     />
   </div>
 </template>
@@ -440,11 +439,11 @@ export default {
     },
 
     onOpenQuizAddModal() {
-      this.reference.fileDivision = '교육기관'
-      this.reference.fileType = 'quiz'
-      this.reference.uploadType = 'quiz'
-      this.reference.fileVolume = 0
-      this.reference.createAt = new Date()
+      this.referenceData.fileDivision = '교육기관'
+      this.referenceData.fileType = 'quiz'
+      this.referenceData.uploadType = 'quiz'
+      this.referenceData.fileVolume = 0
+      this.referenceData.createAt = new Date()
       document.getElementById('referenceSelectClose').click()
       this.isQuizAddModal = true
     },
@@ -454,10 +453,10 @@ export default {
       this.isQuizAddModal = false
     },
     onOpenNoteTestAddModal() {
-      this.reference.fileDivision = '교육기관'
-      this.reference.fileType = 'test'
-      this.reference.uploadType = 'test'
-      this.reference.fileVolume = 0
+      this.referenceData.fileDivision = '교육기관'
+      this.referenceData.fileType = 'test'
+      this.referenceData.uploadType = 'test'
+      this.referenceData.fileVolume = 0
       document.getElementById('referenceSelectClose').click()
       this.isNoteTestAddModal = true
     },
@@ -622,7 +621,9 @@ export default {
 
     // 필터 모달
     openFilterModal(path) {
-      this.closeSearchListModal()
+      if (this.isSearchListModal) {
+        this.closeSearchListModal()
+      }
       this.isFilterModal.open = true
       if (path !== '') {
         this.isFilterModal.prevPage = path
@@ -685,7 +686,7 @@ export default {
               item.name.includes(filter.word) ||
               item.keyword.includes(filter.word)
           )
-        else return list
+        else return []
       }
       const filterSubject = () => {
         if (filter.subject?.length)
@@ -714,43 +715,38 @@ export default {
     },
 
     onClickDetailView(item) {
-      this.reference = JSON.parse(JSON.stringify(item))
+      this.referenceData = JSON.parse(JSON.stringify(item))
     },
 
     // 검색결과 체크박스
     checkHandler({ target: { checked, value, id } }) {
-      const idx = this.resultSearchList?.findIndex(
-        (item) => item.name === value
-      )
+      const idx = this.referenceList?.findIndex((item) => item.name === value)
       if (id === 'all_check') {
-        if (checked) return (this.checkList = [...this.resultSearchList])
+        if (checked) return (this.checkList = [...this.referenceList])
         else return (this.checkList = [])
       } else if (checked)
-        return (this.checkList = [
-          ...this.checkList,
-          this.resultSearchList[idx],
-        ])
+        return (this.checkList = [...this.checkList, this.referenceList[idx]])
       else return this.checkList.splice(idx, 1)
     },
 
     // 검색결과에서 상세 보기
     onClickViewDetail(data) {
       this.isSearchListModal = false
-      this.onClick(data)
+      this.onClickView(data)
     },
 
     // 등록 자료 내용 변경
     onChangeUploadFile({ target: { id, value, type, checked, name } }) {
       if (type === 'checkbox') {
         if (checked) {
-          this.reference[id] = true
+          this.referenceData[id] = true
         } else {
-          this.reference[id] = false
+          this.referenceData[id] = false
         }
       } else if (name === 'isOpenReference' || name === 'isOpenEducation') {
-        this.reference[name] = value
+        this.referenceData[name] = value
       } else {
-        this.reference[id] = value
+        this.referenceData[id] = value
       }
     },
 
@@ -760,30 +756,29 @@ export default {
     },
 
     onChangeQuiz({ target: { value, name } }, idx) {
-      this.reference.quizList[idx][name] = value
+      this.referenceData.quizList[idx][name] = value
     },
 
     onChangeTest({ target: { value, name, type, checked } }, idx) {
       if (type === 'checkbox') {
         if (checked) {
-          this.reference.noteTestList[idx][name] = true
+          this.referenceData.noteTestList[idx][name] = true
         } else {
-          this.reference.noteTestList[idx][name] = false
+          this.referenceData.noteTestList[idx][name] = false
         }
       } else {
-        this.reference.noteTestList[idx][name] = value
+        this.referenceData.noteTestList[idx][name] = value
       }
     },
 
     setKeyword({ target: { value } }) {
-      const keywordList = [...this.reference.keyword]
-      keywordList.push(value)
+      const keywordList = [...this.referenceData.keyword, value]
       this.pushKeyword = ''
-      this.reference.keyword = Array.from(new Set(keywordList))
+      this.referenceData.keyword = Array.from(new Set(keywordList))
     },
 
     deleteKeyword(idx) {
-      this.reference.keyword.splice(idx, 1)
+      this.referenceData.keyword.splice(idx, 1)
     },
 
     changePushKeyword({ target: { value } }) {
@@ -792,7 +787,7 @@ export default {
 
     // 저장 경로 선택 하기
     setSavePath(path) {
-      return (this.reference.saveFolder = path)
+      return (this.referenceData.saveFolder = path)
     },
 
     // 비디오 업로드 시 미리보기 보여주기
@@ -826,8 +821,8 @@ export default {
         this.onOpenReferenceAddModal()
         this.setThumbnail(files)
         this.uploadFile = files[0]
-        this.reference = {
-          ...this.reference,
+        this.referenceData = {
+          ...this.referenceData,
           name: files[0].name,
           fileName: files[0].name,
           fileDivision: '교육기관',
@@ -842,6 +837,12 @@ export default {
       return (e.target.value = '')
     },
 
+    // 호출 성공시 미리보기 만들기
+    getPreviewData(payload) {
+      const _embed = document.querySelector('#embed')
+      _embed.setAttribute('src', payload)
+    },
+
     // PDF 업로드
     onUploadPdf(e) {
       const {
@@ -849,18 +850,11 @@ export default {
       } = e
       this.uploadType = 'pdf'
       this.uploadFile = {}
-      const _embed = document.querySelector('#embed')
       if (files[0] && files[0].type === 'application/pdf') {
         document.getElementById('selectClose').click()
-        this.onOpenReferenceAddModal()
-        _embed.setAttribute(
-          'src',
-          URL.createObjectURL(files[0]) + '#toolbar=0&navpanes=0&scrollbar=0'
-        )
-        this.onOpenReferenceAddModal()
         this.uploadFile = files[0]
-        this.reference = {
-          ...this.reference,
+        this.referenceData = {
+          ...this.referenceData,
           name: files[0].name,
           fileName: files[0].name,
           fileDivision: '교육기관',
@@ -869,6 +863,11 @@ export default {
           fileVolume: files[0].size,
           createAt: files[0].lastModifiedDate,
         }
+        this.onOpenReferenceAddModal()
+        this.getPreviewData(
+          URL.createObjectURL(files[0]) + '#toolbar=0&navpanes=0&scrollbar=0'
+        )
+        this.onOpenReferenceAddModal()
       } else {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
       }
@@ -886,8 +885,8 @@ export default {
             lastModifiedDate: new Date(),
             size: 0,
           }
-          this.reference = {
-            ...this.reference,
+          this.referenceData = {
+            ...this.referenceData,
             name: items[0].snippet.title,
             fileName: items[0].snippet.title,
             fileDivision: '교육기관',
@@ -896,6 +895,14 @@ export default {
             fileVolume: 0,
             createAt: new Date(),
           }
+          document.getElementById('selectCloseYoutube').click()
+          this.onOpenReferenceAddModal()
+          this.getPreviewData(`https://www.youtube.com/embed/${youtubeUrl}`)
+        })
+        .catch((err) => {
+          console.log(err)
+          this.openModalDesc('실패', '유효하지 않은 주소입니다.')
+          return false
         })
     },
 
@@ -905,15 +912,8 @@ export default {
       const youtubeRegex =
         /(http:|https:)?(\/\/)?(www\.)?(youtube.com|youtu.be)\/(watch|embed)?(\?v=|\/)?(\S+)?/g
       const youtubeUrl = this.urlData.youtube.replace('https://youtu.be/', '')
-      const _embed = document.querySelector('#embed')
       if (youtubeRegex.test(this.urlData.youtube) === true) {
         this.getYoutubeData(youtubeUrl)
-        _embed.setAttribute(
-          'src',
-          `https://www.youtube.com/embed/${youtubeUrl}`
-        )
-        document.getElementById('selectCloseYoutube').click()
-        this.onOpenReferenceAddModal()
       } else {
         this.openModalDesc('실패', '유튜브 형식의 URL을 입력해주세요')
       }
@@ -931,8 +931,8 @@ export default {
         size: 0,
       }
       if (urlRegex.test(this.urlData.page) === true) {
-        this.reference = {
-          ...this.reference,
+        this.referenceData = {
+          ...this.referenceData,
           name: url,
           fileName: url,
           fileDivision: '교육기관',
@@ -966,9 +966,9 @@ export default {
 
     // 퀴즈 리스트 하나 추가
     onPlusQuizList() {
-      if (this.reference.quizList.length <= 19) {
+      if (this.referenceData.quizList.length <= 19) {
         const quizItem = {
-          id: this.reference.quizList.length + 1,
+          id: this.referenceData.quizList.length + 1,
           problem: '',
           dificultade: 0,
           limitTime: 0,
@@ -978,27 +978,27 @@ export default {
           subjectiveAnswer: '',
           shortWrongAnswer: '',
         }
-        this.reference.quizList.push(quizItem)
+        this.referenceData.quizList.push(quizItem)
       }
     },
 
     // 선택한 퀴즈 지우기
     onDeleteQuizItem(idx) {
-      if (this.reference.quizList.length > 1) {
-        this.reference.quizList.splice(idx, 1)
+      if (this.referenceData.quizList.length > 1) {
+        this.referenceData.quizList.splice(idx, 1)
       }
     },
 
-    // 선택한 퀴즈 지우기
+    // 선택한 쪽지시험 지우기
     onDeleteNoteTest(idx) {
-      if (this.reference.noteTestList.length > 1) {
-        this.reference.noteTestList.splice(idx, 1)
+      if (this.referenceData.noteTestList.length > 1) {
+        this.referenceData.noteTestList.splice(idx, 1)
       }
     },
 
     // 퀴즈 타입 변경
     onClickQuizType({ target: { value } }, idx, num) {
-      const target = this.reference.quizList[idx]
+      const target = this.referenceData.quizList[idx]
       if (num === 0) {
         target.shortAnswer = ''
         target.subjectiveAnswer = ''
@@ -1016,30 +1016,30 @@ export default {
 
     // ox클릭 이벤트
     onSelectOx(idx, num) {
-      this.reference.quizList[idx].oxAnswer = num
+      this.referenceData.quizList[idx].oxAnswer = num
     },
 
     // 난이도 설정
     onSelectDificultade(idx, num) {
-      this.reference.quizList[idx].dificultade = num
+      this.referenceData.quizList[idx].dificultade = num
     },
 
     // 난이도 설정 쪽지 시험
     onSelectDificultadeTest(idx, num) {
-      this.reference.noteTestList[idx].dificultade = num
+      this.referenceData.noteTestList[idx].dificultade = num
     },
 
     // 쪽지 시험
-    // 퀴즈 변경 UI
+    // 쪽지시험 변경 UI
     onClickNoteTestList(idx) {
       this.currentPageIdxio = idx
     },
 
     // 쪽지 시험 추가
     onPlusNoteTestList() {
-      if (this.reference.noteTestList.length <= 19) {
+      if (this.referenceData.noteTestList.length <= 19) {
         const noteTestItem = {
-          id: this.reference.noteTestList.length,
+          id: this.referenceData.noteTestList.length,
           problem: '',
           exampleList: [
             { id: '', example: '' },
@@ -1053,42 +1053,34 @@ export default {
           answer: 0,
         }
 
-        this.reference.noteTestList.push(noteTestItem)
+        this.referenceData.noteTestList.push(noteTestItem)
       }
     },
 
     // 정답 입력
     onSelectAnswer(idx, targetIdx) {
       console.log(idx, targetIdx)
-      this.reference.noteTestList[idx].answer = Number(targetIdx + 1)
+      this.referenceData.noteTestList[idx].answer = Number(targetIdx + 1)
     },
 
     // 쪽지시험 예제 추가
     plusExampleList(idx) {
       const example = { id: '', example: '' }
-      this.reference.noteTestList[idx].exampleList.push(example)
+      this.referenceData.noteTestList[idx].exampleList.push(example)
     },
 
     // 쪽지시험 예제 제거
     deleteExample(idx, targetIdx) {
-      this.reference.noteTestList[idx].exampleList.splice(targetIdx, 1)
+      this.referenceData.noteTestList[idx].exampleList.splice(targetIdx, 1)
     },
 
     // 자료 클릭 이벤트
     onClickSelectData(data) {
-      this.reference = JSON.parse(JSON.stringify(data))
-      if (
-        data.uploadType === 'video' ||
-        data.uploadType === 'pdf' ||
-        data.uploadType === 'youtube' ||
-        data.uploadType === 'url'
-      ) {
-        this.onOpenReferenceBrowseModal()
-      } else if (data.uploadType === 'quiz') {
-        this.onOpenQuizBrowseModal()
-      } else if (data.uploadType === 'test') {
-        this.onOpenNoteTestBrowseModal()
-      }
+      this.referenceData = JSON.parse(JSON.stringify(data))
+      if (data.uploadType === 'quiz') return this.onOpenQuizBrowseModal()
+      else if (data.uploadType === 'test')
+        return this.onOpenNoteTestBrowseModal()
+      else return this.onOpenReferenceBrowseModal()
     },
 
     // 취소시 등록 하려고했던 데이터 지우기
@@ -1096,27 +1088,19 @@ export default {
       Object.assign(this.$data, initialState())
     },
 
-    onClick(params) {
-      this.reference = this.jsonItem(params)
+    onClickView(params) {
+      this.referenceData = this.jsonItem(params)
       const type = params.uploadType
-      if (type === 'quiz') {
-        this.onOpenQuizBrowseModal()
-        this.selectQuizList = params.quizList
-      } else if (type === 'test') {
-        this.onOpenNoteTestBrowseModal()
-        this.selectNoteTestList = params.noteTestList
-      } else {
-        this.onOpenReferenceBrowseModal()
-      }
+      if (type === 'quiz') return this.onOpenQuizBrowseModal()
+      else if (type === 'test') return this.onOpenNoteTestBrowseModal()
+      else return this.onOpenReferenceBrowseModal()
     },
 
     copyData() {
       const instiTab = document.getElementById('institute')
-      if (instiTab.classList.contains('show')) {
-        this.$refs.education.$refs.institution.copyData()
-      } else {
-        this.$refs.education.$refs.franchise.copyData()
-      }
+      if (instiTab.classList.contains('show'))
+        return this.$refs.education.$refs.institution.copyData()
+      else return this.$refs.education.$refs.franchise.copyData()
     },
 
     pasteData() {
@@ -1129,7 +1113,6 @@ export default {
 
     copyDataCallBack(copyData) {
       this.copyCheckData = copyData
-      console.log(this.copyCheckData)
     },
 
     // PDF변환
@@ -1200,7 +1183,7 @@ export default {
     // tree menu download button
     downloadSelectData(data) {
       const newItem = this.jsonItem(data)
-      this.reference = newItem
+      this.referenceData = newItem
       const type = newItem.uploadType
       if (type === 'quiz') {
         return this.exportPdf('quiz')
@@ -1212,7 +1195,7 @@ export default {
 
     // tree menu change button
     updateSelectData(data) {
-      this.reference = this.jsonItem(data)
+      this.referenceData = this.jsonItem(data)
       const type = data.uploadType
 
       console.log(type)

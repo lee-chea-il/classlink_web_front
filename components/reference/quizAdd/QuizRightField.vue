@@ -17,7 +17,7 @@
 
         <PaginationDelBtn
           :currentIdx="currentPageIdx"
-          :length="quizList.length"
+          :length="quizList?.length"
           @delete-quiz="$emit('delete-quiz', $event)"
           @pagination="setPagination"
         />

@@ -96,6 +96,8 @@ export default {
             fileType: item[i].fileType,
             uploadType: item[i].uploadType,
             fileVolume: item[i].fileVolume,
+            quizList: item[i].quizList,
+            noteTestList: item[i].noteTestList,
           }
 
           this.pid++
@@ -126,6 +128,8 @@ export default {
             fileType: item[i].fileType,
             uploadType: item[i].uploadType,
             fileVolume: item[i].fileVolume,
+            quizList: item[i].quizList,
+            noteTestList: item[i].noteTestList,
           }
           this.pid++
         }

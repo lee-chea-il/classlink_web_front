@@ -19,11 +19,12 @@ export default function initialState() {
 
     // 자료실 모달
     isReferenceChange: { open: false },
-    isQuizChange: false,
-    isNoteTestChange: false,
+    isQuizChange: { open: false },
+    isNoteTestChange: { open: false },
     isShareViewModal: { open: false, path: '', url: '' },
     isSelectModal: { open: false, prevPage: '' },
     isSavePathModal: { open: false, prevPage: '' },
+    treeReferenceList: {},
     createLessonData: {
       name: '',
       role: '',

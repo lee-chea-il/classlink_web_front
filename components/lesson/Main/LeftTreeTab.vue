@@ -7,7 +7,7 @@
       role="tabpanel"
       aria-labelledby="grade-tab"
     >
-      <TreeView
+      <LessonMainTreeView
         ref="institution"
         :dataList="institutionData"
         :editable="identity == 'master' ? true : false"
@@ -27,7 +27,7 @@
       role="tabpanel"
       aria-labelledby="class-tab"
     >
-      <TreeView
+      <LessonMainTreeView
         ref="franchise"
         :dataList="franchiseData"
         :editable="identity == 'master' ? true : false"
@@ -44,11 +44,11 @@
 </template>
 
 <script>
-import TreeView from '~/components/lesson/custom/CustomTreeView.vue'
+import LessonMainTreeView from '~/components/lesson/custom/LessonMainTreeView.vue'
 export default {
   name: 'LeftTreeTab',
   components: {
-    TreeView,
+    LessonMainTreeView,
   },
   props: {
     institutionData: {

@@ -69,7 +69,7 @@
                       role="tabpanel"
                       aria-labelledby="grade-tab"
                     >
-                      <TreeView
+                      <LessonMainTreeView
                         ref="institution"
                         listType="lesson"
                         :dataList="receiveInstitutionLessonData"
@@ -88,7 +88,7 @@
                       role="tabpanel"
                       aria-labelledby="class-tab"
                     >
-                      <TreeView
+                      <LessonMainTreeView
                         ref="franchise"
                         listType="lesson"
                         :dataList="receiveFranchiseData"
@@ -109,7 +109,7 @@
                       role="tabpanel"
                       aria-labelledby="grade-tab"
                     >
-                      <TreeView
+                      <LessonMainTreeView
                         ref="myLesson"
                         listType="lesson"
                         :dataList="receiveInstitutionData"
@@ -128,7 +128,7 @@
                       role="tabpanel"
                       aria-labelledby="class-tab"
                     >
-                      <TreeView
+                      <LessonMainTreeView
                         ref="franchise"
                         listType="lesson"
                         :dataList="receiveFranchiseData"
@@ -148,15 +148,16 @@
                 <!-- 오른쪽 영역 -->
                 <RightSection
                   :isChange="true"
-                  :lessonData="lessonItem"
+                  :lessonData="createLessonData"
                   :pushKeyword="pushKeyword"
                   @change-lesson="$emit('change-lesson', $event)"
-                  @add-lesson="$emit('add-lesson', $event)"
-                  @remove-lesson="$emit('remove-lesson', $event)"
+                  @add-reference="$emit('add-reference', $event)"
+                  @remove-reference="$emit('remove-reference', $event)"
                   @changePushKeyword="$emit('changePushKeyword', $event)"
                   @set-keyword="$emit('set-keyword', $event)"
                   @delete-keyword="$emit('delete-keyword', $event)"
                   @open-save-path="$emit('open-save-path', 'isChangeLesson')"
+                  @moreShowClick="moreShowClickReference"
                 />
                 <!-- /.오른쪽 영역 -->
               </div>
@@ -187,20 +188,16 @@
 <script>
 import ModalHeader from '../../ModalHeader.vue'
 import TopNavigation from '~/components/lesson/lessonAdd/TopNavigaion.vue'
-import TreeView from '~/components/lesson/custom/CustomTreeView.vue'
+import LessonMainTreeView from '~/components/lesson/custom/CustomReferenceTreeView.vue'
 import RightSection from '~/components/lesson/lessonAdd/RightSection.vue'
 
 export default {
   name: 'LessonChangeModal',
-  components: { ModalHeader, TopNavigation, TreeView, RightSection },
+  components: { ModalHeader, TopNavigation, LessonMainTreeView, RightSection },
   props: {
     open: {
       type: Boolean,
       default: false,
-    },
-    lessonItem: {
-      type: Object,
-      default: () => {},
     },
     identity: {
       type: String,
@@ -241,8 +238,8 @@ export default {
       // console.log(`moreShowClick ${node}`)
       this.$emit('open-data', node, 'isChangeLesson')
     },
-    moreShowClickReference() {
-      console.log('계발예정')
+    moreShowClickReference(data) {
+      this.$emit('open-reference', data, 'isChangeLesson')
     },
   },
 }

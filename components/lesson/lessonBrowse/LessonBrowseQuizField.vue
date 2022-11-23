@@ -14,7 +14,7 @@
 
       <div class="page_thumb row">
         <PaginationField
-          :length="reference.quizList.length"
+          :length="reference.quizList?.length"
           :currentIdx="currentIdx"
           @pagination="paginationEmit"
         />

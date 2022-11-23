@@ -29,7 +29,7 @@
 <script>
 import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
 export default {
-  name: 'CustomTreeView',
+  name: 'LessonMainTreeView',
   components: {
     VueTreeList,
   },

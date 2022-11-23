@@ -52,14 +52,15 @@
             {{ lessonData.referenceList?.length }}개
           </div>
           <div class="list_area">
-            <LessonTreeView
+            <LessonAddTreeView
               ref="myLessonTreevie"
               list-type="lessonList"
               :dataList="lessonData.referenceList"
               :expanded="false"
               :pidNum="20000"
-              @add-lesson="$emit('add-lesson', $event)"
-              @remove-lesson="$emit('remove-lesson', $event)"
+              @moreShowClick="$emit('moreShowClick', $event)"
+              @add-reference="$emit('add-reference', $event)"
+              @remove-reference="$emit('remove-reference', $event)"
             />
           </div>
         </div>
@@ -129,13 +130,13 @@
 <script>
 import CustomKeywordArea from '../custom/CustomKeywordArea.vue'
 import CustomBtnInput from '~/components/lesson/custom/CustomBtnInput.vue'
-import LessonTreeView from '~/components/common/custom/CustomLessonTreeView.vue'
+import LessonAddTreeView from '~/components/lesson/custom/LessonAddTreeView.vue'
 import CustomModalInput from '~/components/common/custom/CustomModalInput.vue'
 export default {
   name: 'RightSection',
   components: {
     CustomBtnInput,
-    LessonTreeView,
+    LessonAddTreeView,
     CustomModalInput,
     CustomKeywordArea,
   },
