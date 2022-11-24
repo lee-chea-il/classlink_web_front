@@ -25,10 +25,21 @@
               type="text"
               class="form-control"
               placeholder="일촌 이름 / ID 검색"
+              :value="familySearchText"
+              @input="$emit('change-Input', $event)"
+              @keyup.enter="$emit('search-family')"
             />
             <div class="input-group-append">
-              <button class="btn icons_x_circle_off" type="button"></button>
-              <button class="btn icons_search_off" type="button"></button>
+              <button
+                class="btn icons_x_circle_off"
+                type="button"
+                @click="$emit('reset-input')"
+              ></button>
+              <button
+                class="btn icons_search_off"
+                type="button"
+                @click="$emit('search-family')"
+              ></button>
             </div>
           </div>
           <div class="table_area">
@@ -64,74 +75,27 @@
 									<col width="55">
 									<col width="50">
 								</colgroup> -->
-                <tbody>
-                  <tr>
+                <tbody v-if="familySearchList.length !== 0">
+                  <tr v-for="(item, idx) in familySearchList" :key="idx">
                     <td>
                       <div class="custom-control custom-checkbox form-inline">
                         <input
-                          id="chk02"
+                          :id="item.id"
                           type="checkbox"
                           class="custom-control-input"
+                          @input="$emit('check-family', $event)"
                         />
-                        <label class="custom-control-label" for="chk02"></label>
+                        <label
+                          class="custom-control-label"
+                          :for="item.id"
+                        ></label>
                       </div>
                     </td>
-                    <td>홍길동</td>
-                    <td class="id">aaaaabbbbbcccccddddd</td>
-                    <td>010-1111-2222</td>
-                    <td>남</td>
-                    <td>10세</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="custom-control custom-checkbox form-inline">
-                        <input
-                          id="chk03"
-                          type="checkbox"
-                          class="custom-control-input"
-                        />
-                        <label class="custom-control-label" for="chk03"></label>
-                      </div>
-                    </td>
-                    <td>홍길동</td>
-                    <td class="id">aaaaabbbbbcccccddddd</td>
-                    <td>010-1111-2222</td>
-                    <td>남</td>
-                    <td>12세</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="custom-control custom-checkbox form-inline">
-                        <input
-                          id="chk04"
-                          type="checkbox"
-                          class="custom-control-input"
-                        />
-                        <label class="custom-control-label" for="chk04"></label>
-                      </div>
-                    </td>
-                    <td>홍길동</td>
-                    <td class="id">aaaaabbbbbcccccddddd</td>
-                    <td>010-1111-2222</td>
-                    <td>남</td>
+                    <td>{{ item.name }}</td>
+                    <td class="id">{{ item.account }}</td>
+                    <td>{{ item.phone }}</td>
+                    <td>{{ item.gender }}</td>
                     <td>-</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="custom-control custom-checkbox form-inline">
-                        <input
-                          id="chk05"
-                          type="checkbox"
-                          class="custom-control-input"
-                        />
-                        <label class="custom-control-label" for="chk05"></label>
-                      </div>
-                    </td>
-                    <td>홍길동</td>
-                    <td class="id">aaaaabbbbbcccccddddd</td>
-                    <td>010-1111-2222</td>
-                    <td>-</td>
-                    <td>12세</td>
                   </tr>
                 </tbody>
               </table>
@@ -139,7 +103,13 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn_crud_point">등록</button>
+          <button
+            class="btn btn_crud_point"
+            data-dismiss="modal"
+            @click="$emit('add-family')"
+          >
+            등록
+          </button>
           <button class="btn btn_crud_default" data-dismiss="modal">
             취소
           </button>
@@ -151,6 +121,16 @@
 <script>
 export default {
   name: 'RegisterFamilyModal',
+  props: {
+    familySearchText: {
+      type: String,
+      default: '',
+    },
+    familySearchList: {
+      type: Array,
+      default: () => [],
+    },
+  },
 }
 </script>
 <style scoped></style>

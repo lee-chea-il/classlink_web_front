@@ -41,17 +41,81 @@
     <StudentInfoModal
       :studentInfo="studentInfo"
       :open="studentInfoModalDesc.open"
+      :nickNameCheck="nickNameCheck"
+      :familySearchText="familySearchText"
       @close="onCloseStudentInfoModalDesc"
       @change-input="onChangeUpdateInput"
+      @click-birthday="openDatePickerModalDesc"
+      @click-lecturedate="openDatePickerLectureDateModalDesc"
+      @click-identity="onClickIdentityBtn"
+      @click-grade="onClickTypeGrade"
+      @click-adult="onClickTypeAdult"
+      @click-men="onClickGenderMen"
+      @click-women="onClickGenderWomen"
+      @click-statusTrue="onClickStatusTrue"
+      @click-statusFalse="onClickStatusFalse"
+      @click-stuStatusTrue="onClickStudentStatusTrue"
+      @click-stuStatusFalse="onClickStudentStatusFalse"
+      @select-grade="selectGrade"
+      @click-profile="openUploadStudentImgModalDesc"
+      @click-deleteFamily="onClickFamilyDeleteBtn"
+      @change-familyInput="onChangeFamilySearchInput"
+      @search-family="onClickSearchBtn"
     />
 
     <!-- 일촌등록 - 팝업 M2 -->
     <!-- [개발참조]: 모달에서 띄워지는 모달 class "double" 추가 -->
-    <RegisterFamilyModal />
+    <RegisterFamilyModal
+      :familySearchText="familySearchText"
+      :familySearchList="familySearchList"
+      @change-input="onChangeFamilySearchInput"
+      @reset-input="resetFamilySearchInput"
+      @search-family="searchFamily"
+      @check-family="checkSelectedFamily"
+      @add-family="addFamily"
+    />
 
     <!-- 학생재배정 - 팝업 M1 -->
     <!-- [개발참조]: 모달에서 띄워지는 모달 class "double" 추가 -->
-    <ResetAssignmentModal />
+    <ResetAssignmentModal
+      :classList="classList"
+      :studentInfo="studentInfo"
+      :resetClassList="resetClassList"
+      @check-class="checkResetClass"
+      @reset-check="resetAllCheck"
+    />
+
+    <!-- 생일 날짜 선택 모달 -->
+    <DatePickerModal
+      :open="datePickerModalDesc.open"
+      :teacherInfo="studentInfo"
+      @close="onCloseDatePickerModalDesc"
+      @select-date="selectBirthday"
+      @confirm="onClickBirthdayConfirm"
+    />
+
+    <!-- 수강일 선택 모달 -->
+    <DatePickerModal
+      :open="datePickerLectureDateModalDesc.open"
+      :teacherInfo="studentInfo"
+      @close="onCloseDatePickerLectureDateModalDesc"
+      @select-date="selectLectureDate"
+      @confirm="onClickLectureDateConfirm"
+    />
+
+    <!-- 학생 정보 수정 - 프로필 이미지 등록1 -->
+    <UploadStudentImg
+      :open="uploadStudentImgModalDesc.open"
+      :teacherInfo="studentInfo"
+      :uploadImageFile="uploadImageFile"
+      @select-file="onFileSelected"
+      @click-upload="onClickInputButton"
+      @close="onCloseUploadStudentImgModalDesc"
+      @confirm="onClickImgConfirm"
+    />
+
+    <!-- 비밀번호초기화 -->
+    <ResetPasswordModal @reset="onClickResetBtn" />
 
     <!-- 수강정보-팝업 M1 -->
     <LectureInfoModal />
@@ -73,54 +137,19 @@
     <ReportDetailModal />
 
     <!-- 설명 모달 -->
-    <ModalDesc />
+    <ModalDesc
+      :open="modalDesc.open"
+      :title="modalDesc.title"
+      :desc="modalDesc.desc"
+      @close="onCloseModalDesc"
+    />
 
     <!-- 토스트메세지 victor.js ------------------------------------->
     <!-- [개발참조] : 출결팝업의 선택날짜범위 밖으로의 이전 다음 버튼 클리 시 노출 -->
-    <div
-      class="toast hide"
-      role="alert"
-      aria-live="assertive"
-      aria-atomic="true"
-      data-delay="2000"
-    >
-      <div class="toast-body">
-        <span id="toastMsg" class="message"></span>
-      </div>
-    </div>
+    <DeleteFamilyModal @delete-family="deleteFamily" />
 
     <!-- 기본 모달로 대체 예정 -->
     <!-- 팝업 S2- 일촌ID삭제 -->
-    <div
-      id="modalFriendsDelete"
-      class="modal fade double"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered modal-sm s2">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 id="exampleModalLabel" class="modal-title">삭제</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <i class="icons_close"></i>
-            </button>
-          </div>
-          <div class="modal-body">일촌 ID를 삭제하시겠습니까?</div>
-          <div class="modal-footer">
-            <button class="btn btn_crud_point">네</button>
-            <button class="btn btn_crud_default" data-dismiss="modal">
-              아니요
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- 학생 개별 등록2(학생등록완료) - 팝업 S2 -->
     <div
@@ -168,6 +197,10 @@ import SaveMemoModal from '@/components/common/modal/operation/SaveMemoModal.vue
 import ReportFilterModal from '@/components/common/modal/operation/ReportFilterModal.vue'
 import ReportDetailModal from '@/components/common/modal/operation/ReportDetailModal.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
+import DatePickerModal from '@/components/common/modal/operation/DatePickerModal.vue'
+import UploadStudentImg from '@/components/common/modal/operation/UploadTeacherImg.vue'
+import ResetPasswordModal from '@/components/common/modal/operation/ResetPasswordModal.vue'
+import DeleteFamilyModal from '@/components/common/modal/operation/DeleteFamilyModal.vue'
 export default {
   name: 'StudentManagement',
   components: {
@@ -186,31 +219,77 @@ export default {
     ReportFilterModal,
     ReportDetailModal,
     ModalDesc,
+    DatePickerModal,
+    UploadStudentImg,
+    ResetPasswordModal,
+    DeleteFamilyModal,
   },
   data() {
     return {
+      newStudentInfo: {
+        id: 0,
+        identity: '학생',
+        status: true,
+        grade: '초1',
+        grade_type: 0,
+        name: '',
+        nickname: '',
+        family: '',
+        account: '',
+        phone: '',
+        parent_phone: '',
+        gender: 0,
+        student_status: false,
+        school: '',
+        attendance_num: '',
+        created_at: '2022.11.22',
+        lecture_date: '',
+        birthday: '',
+        email: '',
+        profile_image: '',
+        lectureInfo: [],
+      },
       studentInfo: {
         id: 1,
-        identity: '학생',
-        status: '재원',
+        identity: ['학생', '학부모'],
+        status: true,
         grade: '중1',
         grade_type: 0,
+        class: ['심화 A반', '심화 B반'],
         name: '김유진',
         nickname: '유진쓰',
-        family: '홍길순, 홍길삼, 홍길사',
+        family: [
+          {
+            id: 0,
+            identity: '학생',
+            status: '재원',
+            grade: '중1',
+            name: '홍길동',
+            nickname: '길동쓰',
+            family: '홍길순, 홍길삼, 홍길사, 홍길오, 홍길육',
+            account: 'rlfehd1004',
+            phone: '010-1234-1234',
+            parent_phone: '010-1234-1111',
+            gender: '남',
+          },
+        ],
         account: 'rlfehd1004',
         phone: '010-1234-1234',
         parent_phone: '010-1234-1111',
         gender: 0,
-        leave: false,
+        student_status: false,
         school: '스노우',
-        attendance_num: 12345,
+        attendance_num: '12345',
         created_at: '2022.11.22',
         lecture_date: '2022.11.30',
         birthday: '2022.11.01',
         email: 'test@naver.com',
         profile_image: require('@/assets/images/mypage/profile1.png'),
-        lectureInfo: [],
+        lectureInfo: [
+          '영어리딩심화 | 심화 A반',
+          '영어리딩심화 | 심화 B반',
+          '영어리딩심화 | 심화 C반',
+        ],
       },
       studentList: [
         {
@@ -224,6 +303,7 @@ export default {
           account: 'rlfehd1004',
           phone: '010-1234-1234',
           parent_phone: '010-1234-1111',
+          gender: '남',
         },
         {
           id: 1,
@@ -236,6 +316,7 @@ export default {
           account: 'rlfehd1004',
           phone: '010-1234-1234',
           parent_phone: '010-1234-1111',
+          gender: '여',
         },
         {
           id: 2,
@@ -248,6 +329,7 @@ export default {
           account: 'rlfehd1004',
           phone: '010-1234-1234',
           parent_phone: '010-1234-1111',
+          gender: '남',
         },
         {
           id: 3,
@@ -260,6 +342,7 @@ export default {
           account: 'rlfehd1004',
           phone: '010-1234-1234',
           parent_phone: '010-1234-1111',
+          gender: '남',
         },
         {
           id: 4,
@@ -272,36 +355,90 @@ export default {
           account: 'rlfehd1004',
           phone: '010-1234-1234',
           parent_phone: '010-1234-1111',
+          gender: '여',
         },
       ],
+      // 교육기관 반 리스트
+      classList: ['심화 A반', '심화 B반', '심화 C반', '심화 D반', '심화 E반'],
       // 모달
+      modalDesc: {
+        open: false,
+        title: '',
+        desc: '',
+      },
       studentInfoModalDesc: {
         open: true,
       },
+      datePickerModalDesc: {
+        open: false,
+      },
+      datePickerLectureDateModalDesc: {
+        open: false,
+      },
+      uploadStudentImgModalDesc: {
+        open: false,
+      },
+      // 정보 수정
+      nickNameCheck: false,
+      birthday: '',
+      lectureDate: '',
+      resetClassList: [],
+      uploadImageFile: '',
+      familySearchText: '',
+      familySearchList: [],
+      registerFamilyList: [],
+      deleteFamilyId: 0,
     }
   },
   methods: {
     // 모달이벤트
+    openModalDesc(tit, msg) {
+      this.modalDesc = {
+        open: true,
+        title: tit,
+        desc: msg,
+      }
+    },
+    onCloseModalDesc() {
+      this.modalDesc.open = false
+    },
     openStudentInfoModalDesc() {
       this.studentInfoModalDesc.open = true
     },
     onCloseStudentInfoModalDesc() {
       this.studentInfoModalDesc.open = false
     },
-
+    openDatePickerModalDesc() {
+      this.datePickerModalDesc.open = true
+    },
+    onCloseDatePickerModalDesc() {
+      this.datePickerModalDesc.open = false
+    },
+    openDatePickerLectureDateModalDesc() {
+      this.datePickerLectureDateModalDesc.open = true
+    },
+    onCloseDatePickerLectureDateModalDesc() {
+      this.datePickerLectureDateModalDesc.open = false
+    },
+    openUploadStudentImgModalDesc() {
+      this.uploadStudentImgModalDesc.open = true
+    },
+    onCloseUploadStudentImgModalDesc() {
+      this.uploadStudentImgModalDesc.open = false
+    },
     // 학생 정보 등록/수정
     onChangeUpdateInput({ target: { value, id, checked } }) {
       this.studentInfo[id] = value
       if (checked) {
         this.studentInfo.nickname = this.studentInfo.name
-        this.studentInfo = true
+        this.nickNameCheck = true
       }
       if (this.studentInfo.nickname !== this.studentInfo.name) {
-        this.NickNameCheck = false
+        this.nickNameCheck = false
       } else {
-        this.NickNameCheck = true
+        this.nickNameCheck = true
       }
-      if (id === 'phone') {
+      if (id.includes('phone')) {
         this.studentInfo[id] = value
           .replace(/[^0-9]/g, '')
           .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
@@ -310,6 +447,179 @@ export default {
           .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
       }
     },
+    // 생일 수정
+    selectBirthday(e) {
+      this.birthday = e.id
+    },
+    onClickBirthdayConfirm() {
+      this.studentInfo.birthday = this.birthday
+      this.datePickerModalDesc.open = false
+    },
+    // 수강일 수정
+    selectLectureDate(e) {
+      this.lectureDate = e.id
+    },
+    onClickLectureDateConfirm() {
+      this.studentInfo.lecture_date = this.lectureDate
+      this.datePickerLectureDateModalDesc.open = false
+    },
+    // 나의 신분 수정
+    onClickIdentityBtn(identity) {
+      if (this.studentInfo.identity.includes(identity)) {
+        for (let i = 0; i < this.studentInfo.identity.length; i++) {
+          if (this.studentInfo.identity[i] === identity) {
+            this.studentInfo.identity.splice(i, 1)
+          }
+        }
+      } else {
+        this.studentInfo.identity.push(identity)
+      }
+      console.log(this.studentInfo.identity)
+    },
+    // 학년 수정
+    onClickTypeGrade() {
+      this.studentInfo.grade_type = 0
+    },
+    onClickTypeAdult() {
+      this.studentInfo.grade_type = 1
+    },
+    selectGrade(grade) {
+      this.studentInfo.grade = grade
+    },
+    // 성별 수정
+    onClickGenderMen() {
+      this.studentInfo.gender = 0
+    },
+    onClickGenderWomen() {
+      this.studentInfo.gender = 1
+    },
+    // 상태 변경 수정
+    onClickStatusTrue() {
+      this.studentInfo.status = true
+    },
+    onClickStatusFalse() {
+      this.studentInfo.status = false
+    },
+    // 학생상태 변경 수정
+    onClickStudentStatusTrue() {
+      this.studentInfo.student_status = true
+    },
+    onClickStudentStatusFalse() {
+      this.studentInfo.student_status = false
+    },
+    checkResetClass({ target: { id, checked } }) {
+      // 반 재배정
+      if (checked) {
+        this.studentInfo.class.push(id)
+      } else {
+        for (let i = 0; i < this.resetClassList.length; i++) {
+          if (this.studentInfo.class[i] === id) {
+            this.studentInfo.class.splice(i, 1)
+          }
+        }
+      }
+    },
+    resetAllCheck() {
+      this.studentInfo.class = []
+    },
+    // 이미지 업로드
+    onClickInputButton() {
+      const inputBtn = document.getElementById('upload-input')
+      inputBtn.click()
+    },
+    onFileSelected({ target }) {
+      const input = target
+      if (input.files && input.files[0]) {
+        if (input.files[0].size < 3145728) {
+          const reader = new FileReader()
+          reader.onload = (e) => {
+            this.uploadImageFile = e.target.result
+            console.log(this.uploadImageFile)
+          }
+          reader.readAsDataURL(input.files[0])
+        } else {
+          this.openModalDesc(
+            '업로드 제한',
+            '해당 파일은 제한된 용량을 초과하였습니다. (이미지 제한 용량: 3MB)'
+          )
+        }
+      }
+    },
+    onClickImgConfirm() {
+      this.studentInfo.profile_image = this.uploadImageFile
+      this.uploadStudentImgModalDesc.open = false
+    },
+    // 비밀번호 초기화
+    onClickResetBtn() {
+      this.openModalDesc('비밀번호 초기화', '비밀번호가 초기화되었습니다.')
+    },
+    // 일촌
+    onChangeFamilySearchInput({ target: { value } }) {
+      this.familySearchText = value
+    },
+    resetFamilySearchInput() {
+      this.familySearchText = ''
+    },
+    searchFamily() {
+      if (this.familySearchText.length < 2) {
+        this.openModalDesc('일촌 검색', '검색어는 2글자 이상 입력해주세요.')
+        return false
+      }
+      const result = this.studentList.filter((elem) => {
+        return (
+          elem.name.includes(this.familySearchText) ||
+          elem.account.includes(this.familySearchText)
+        )
+      })
+      if (result.length === 0) {
+        this.openModalDesc('일촌 검색', '일치하는 학생이 없습니다.')
+        return false
+      } else {
+        this.familySearchList = result
+        console.log(this.familySearchList)
+      }
+    },
+    checkSelectedFamily({ target: { id, checked } }) {
+      console.log(id, checked)
+      if (checked) {
+        this.registerFamilyList.push(id)
+      } else {
+        for (let i = 0; i < this.registerFamilyList.length; i++) {
+          if (this.registerFamilyList[i] === id) {
+            this.registerFamilyList.splice(i, 1)
+          }
+        }
+      }
+      console.log(this.registerFamilyList)
+    },
+    addFamily() {
+      // for (let i = 0; i < this.registerFamilyList.length; i++) {
+      const result = this.studentList.filter(
+        (elem, idx) => elem.id === Number(this.registerFamilyList[idx])
+      )
+      console.log(result)
+      const newArray = [...this.studentInfo.family, ...result]
+
+      this.studentInfo.family = Array.from(new Set(newArray))
+      // }
+      console.log(this.studentInfo.family)
+    },
+    onClickFamilyDeleteBtn(id) {
+      this.deleteFamilyId = id
+    },
+    deleteFamily() {
+      for (let i = 0; i < this.studentInfo.family.length; i++) {
+        if (this.studentInfo.family[i].id === this.deleteFamilyId) {
+          this.studentInfo.family.splice(i, 1)
+        }
+      }
+    },
+    onClickSearchBtn() {
+      const btn = document.getElementById('modalFamilySearch')
+      btn.click()
+      this.searchFamily()
+    },
+    
   },
 }
 </script>
