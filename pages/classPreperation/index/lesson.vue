@@ -22,6 +22,7 @@
               :institutionData="receiveInstitutionLessonData"
               :franchiseData="receiveFranchiseLessonData"
               :identity="identity"
+              :isHideDownload="false"
               @copyDataCallBack="copyDataCallBack"
               @open-data="openLessonBrowseModal"
               @update-data="openLessonChangeModal"
@@ -34,6 +35,7 @@
             <RightTreeTab
               ref="myData"
               :receiveLessonList="receiveLessonList"
+              :isHideDownload="false"
               @open-data="openLessonBrowseModal"
               @update-data="openLessonChangeModal"
             />

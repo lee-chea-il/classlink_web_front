@@ -5,6 +5,7 @@
     default-tree-node-name="새 폴더"
     :is-drop="identity == 'master' ? true : false"
     :is-show-option="identity == 'master' ? true : false"
+    :isHideDownload="isHideDownload"
     @click="onClick"
     @change-name="onChangeName"
     @more-menu="moreMenu"
@@ -50,6 +51,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    isHideDownload: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {

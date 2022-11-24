@@ -13,6 +13,7 @@
         :editable="identity == 'master' ? true : false"
         :identity="identity"
         :pidNum="0"
+        :isHideDownload="isHideDownload"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @open-data="setOpenData"
         @update-data="$emit('update-data', $event)"
@@ -33,6 +34,7 @@
         :editable="identity == 'master' ? true : false"
         :identity="identity"
         :pidNum="1000"
+        :isHideDownload="isHideDownload"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @open-data="setOpenData"
         @update-data="$emit('update-data', $event)"
@@ -63,6 +65,10 @@ export default {
       type: String,
       default: '',
     },
+    isHideDownload: {
+      type: Boolean,
+      default: true
+    }
   },
   methods: {
     setOpenData(e) {

@@ -9,7 +9,7 @@
     >
       <Treeview
         ref="curriculum"
-        :expanded="false"
+        :expanded="true"
         :dataList="myData"
         identity="master"
         :pidNum="2000"

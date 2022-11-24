@@ -77,6 +77,7 @@
                   :editable="identity == 'master' ? true : false"
                   :identity="identity"
                   :pidNum="0"
+                  :isHideDownload="false"
                   @copyDataCallBack="copyDataCallBack"
                 />
               </div>
@@ -95,6 +96,7 @@
                   :editable="identity == 'master' ? true : false"
                   :identity="identity"
                   :pidNum="1000"
+                  :isHideDownload="false"
                   @copyDataCallBack="copyDataCallBack"
                 />
               </div>
@@ -135,10 +137,11 @@
               >
                 <TreeView
                   ref="curriculum"
-                  :expanded="false"
+                  :expanded="true"
                   :dataList="receiveCurriculumData"
                   identity="master"
                   :pidNum="2000"
+                  :isHideDownload="false"
                 />
                 <br />
                 <br />

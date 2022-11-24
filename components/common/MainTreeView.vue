@@ -7,6 +7,7 @@
     :is-drop="identity == 'master' ? true : false"
     :is-show-option="identity == 'master' ? true : false"
     :list-type="listType"
+    :isHideDownload="isHideDownload"
     @more-show-click="moreShowClick"
     @click="onClick"
     @change-name="onChangeName"
@@ -57,6 +58,10 @@ export default {
       type: String,
       default: '',
     },
+    isHideDownload: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {
