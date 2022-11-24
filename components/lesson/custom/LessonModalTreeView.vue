@@ -19,6 +19,7 @@
   >
     <span slot="addTreeNodeIcon" class="icon">＋</span>
     <span slot="addLeafNodeIcon" class="icon"></span>
+
     <span slot="addTreeNodeIcon" class="icon"></span>
     <span slot="delNodeIcon" class="icon"></span>
   </vue-tree-list>
@@ -27,7 +28,7 @@
 <script>
 import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
 export default {
-  name: 'ReferenceTreeView',
+  name: 'LessonModalTreeView',
   components: {
     VueTreeList,
   },
@@ -64,42 +65,42 @@ export default {
     }
   },
   mounted() {
-    const setListItem = (listData) => {
-      this.receiveDataList = listData
-      const copyData = (data) => {
-        const newStr = JSON.stringify(data)
+    const dataMapping = (data, isReadOnly) => {
+      const result = []
+      let isDragDisable = false
+      if (this.listType === 'lesson') {
+        isDragDisable = true
+      }
+      const len = data.length
+      for (let i = 0; i < len; i++) {
+        const newStr = JSON.stringify(data[i])
         const nObj = JSON.parse(newStr)
         nObj.id = this.pid
-        nObj.isLeaf = true
-        nObj.readOnly = false
+        nObj.pid = this.pid
         nObj.isChecked = false
-        nObj.isLink = false
-        nObj.linkIdx = -1
-        nObj.addTreeNodeDisabled = true
-        nObj.addLeafNodeDisabled = true
-        nObj.editNodeDisabled = true
-        nObj.delNodeDisabled = true
-        return nObj
-      }
+        nObj.readOnly = isReadOnly
 
-      const dataMapping = (datas) => {
-        const result = []
-        const len = datas?.length
-        for (let i = 0; i < len; i++) {
-          if (copyData(datas[i]).children !== undefined) {
-            result[i] = copyData(datas[i])
-            this.pid++
-            result[i].children = dataMapping(copyData(datas[i]).children)
-          } else {
-            result[i] = copyData(datas[i])
-            this.pid++
-          }
+        if (data[i].children !== undefined) {
+          nObj.isLeaf = false
+          nObj.children = []
+          nObj.dragDisabled = isDragDisable
+
+          result[i] = nObj
+          this.pid++
+          result[i].children = dataMapping(data[i].children, isReadOnly)
+        } else {
+          nObj.isLeaf = true
+
+          result[i] = nObj
+          this.pid++
         }
-        return result
       }
-      return (this.datas = new Tree(false, dataMapping(this.receiveDataList)))
+      return result
     }
-    setListItem(this.dataList)
+    this.datas = new Tree(
+      !this.editable,
+      dataMapping(this.dataList, !this.editable)
+    )
   },
   methods: {
     onDel(node) {
@@ -183,7 +184,14 @@ export default {
           }
           newNode.children = []
           newNode.id = idNum
+          newNode.isLeaf = oldNode.isLeaf
+          newNode.name = oldNode.name
+          newNode.parent = oldNode.parent
+          newNode.pid = oldNode.id
+          newNode.readOnly = oldNode.readOnly
           newNode.isChecked = false
+          newNode.dbIdx = oldNode.dbIdx
+          newNode.type = oldNode.type
 
           node = new TreeNode(newNode)
           parentNode.addChildren(node)
@@ -308,7 +316,7 @@ export default {
 
     moreMenuView(node) {
       console.log(`view ${node}`)
-      this.$emit('file-view', node)
+      this.$emit('open-data', node)
       this.moreMenuClose()
     },
 

@@ -13,7 +13,7 @@
         :editable="identity == 'master' ? true : false"
         :identity="identity"
         :pidNum="0"
-        @file-view="$emit('file-view', $event)"
+        @open-data="$emit('open-data', $event)"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @download-data="$emit('download-data', $event)"
         @update-data="$emit('update-data', $event)"
@@ -34,7 +34,7 @@
         :editable="identity == 'master' ? true : false"
         :identity="identity"
         :pidNum="1000"
-        @file-view="$emit('file-view', $event)"
+        @open-data="$emit('open-data', $event)"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @download-data="$emit('download-data', $event)"
         @update-data="$emit('update-data', $event)"
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import TreeView from '~/components/common/custom/CustomReferenceTreeView.vue'
+import TreeView from '~/components/common/MainTreeView.vue'
 
 export default {
   name: 'LeftTreeTab',

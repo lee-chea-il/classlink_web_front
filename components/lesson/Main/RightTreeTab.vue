@@ -14,6 +14,7 @@
         identity="master"
         :pidNum="2000"
         @open-data="setOpenData"
+        @update-data="$emit('update-data', $event)"
       />
     </div>
     <!-- /.탭 내용01 -->
@@ -21,7 +22,7 @@
 </template>
 
 <script>
-import TreeView from '~/components/lesson/custom/LessonMainTreeView.vue'
+import TreeView from '~/components/common/MainTreeView.vue'
 export default {
   name: 'RightTreeTab',
   components: {

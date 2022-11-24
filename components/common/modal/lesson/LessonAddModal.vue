@@ -69,7 +69,7 @@
                       role="tabpanel"
                       aria-labelledby="grade-tab"
                     >
-                      <LessonMainTreeView
+                      <LessonModalTreeView
                         ref="institution"
                         listType="lesson"
                         :dataList="receiveInstitutionLessonData"
@@ -88,7 +88,7 @@
                       role="tabpanel"
                       aria-labelledby="class-tab"
                     >
-                      <LessonMainTreeView
+                      <LessonModalTreeView
                         ref="franchise"
                         listType="lesson"
                         :dataList="receiveFranchiseLessonData"
@@ -149,6 +149,7 @@
                 <RightSection
                   ref="right"
                   :lessonData="createLessonData"
+                  :referenceList="referenceList"
                   :pushKeyword="pushKeyword"
                   @change-lesson="$emit('change-lesson', $event)"
                   @add-reference="$emit('add-reference', $event)"
@@ -166,7 +167,9 @@
           </div>
           <div class="modal-footer">
             <!-- [개발참조] 레슨등록 시 출력되는 버튼 -->
-            <button class="btn btn_crud_point">등록</button>
+            <button class="btn btn_crud_point" @click="$emit('submit')">
+              등록
+            </button>
             <button
               class="btn btn_crud_default"
               data-dismiss="modal"
@@ -185,54 +188,28 @@
 import ModalHeader from '../../ModalHeader.vue'
 import CustomReferenceTreeView from '~/components/lesson/custom/CustomReferenceTreeView.vue'
 import TopNavigation from '~/components/lesson/lessonAdd/TopNavigaion.vue'
-import LessonMainTreeView from '~/components/lesson/custom/LessonMainTreeView.vue'
+import LessonModalTreeView from '~/components/lesson/custom/LessonModalTreeView.vue'
 import RightSection from '~/components/lesson/lessonAdd/RightSection.vue'
 export default {
   name: 'LessonAddModal',
   components: {
     ModalHeader,
-    LessonMainTreeView,
+    LessonModalTreeView,
     RightSection,
     TopNavigation,
     CustomReferenceTreeView,
   },
   props: {
-    open: {
-      type: Boolean,
-      default: false,
-    },
-    identity: {
-      type: String,
-      default: '',
-    },
-    isLesson: {
-      type: Boolean,
-      default: false,
-    },
-    receiveInstitutionLessonData: {
-      type: Array,
-      default: () => [],
-    },
-    receiveFranchiseLessonData: {
-      type: Array,
-      default: () => [],
-    },
-    createLessonData: {
-      type: Object,
-      default: () => {},
-    },
-    receiveInstitutionData: {
-      type: Array,
-      default: () => [],
-    },
-    receiveFranchiseData: {
-      type: Array,
-      default: () => [],
-    },
-    pushKeyword: {
-      type: String,
-      default: '',
-    },
+    open: { type: Boolean, default: false },
+    identity: { type: String, default: '' },
+    isLesson: { type: Boolean, default: false },
+    receiveInstitutionLessonData: { type: Array, default: () => [] },
+    receiveFranchiseLessonData: { type: Array, default: () => [] },
+    createLessonData: { type: Object, default: () => {} },
+    referenceList: { type: Array, default: () => [] },
+    receiveInstitutionData: { type: Array, default: () => [] },
+    receiveFranchiseData: { type: Array, default: () => [] },
+    pushKeyword: { type: String, default: '' },
   },
   methods: {
     moreShowClick(data) {

@@ -49,7 +49,7 @@
         <div class="list_box">
           <div class="sum">
             등록 개수:
-            {{ lessonData.referenceList?.length }}개
+            {{ referenceList?.length }}개
           </div>
           <div class="list_area">
             <LessonAddTreeView
@@ -144,6 +144,7 @@ export default {
     lessonData: { type: Object, default: () => {} },
     pushKeyword: { type: String, default: '' },
     isChange: { type: Boolean, default: false },
+    referenceList: { type: Array, default: () => [] },
   },
 }
 </script>

@@ -16,7 +16,6 @@
     @more-menu-view="moreMenuView"
     @more-menu-dell="moreMenuDell"
     @more-menu-copy="copyData"
-    @drop-before="$emit('drop', $event, datas)"
   >
     <span slot="addTreeNodeIcon" class="icon">＋</span>
     <span slot="addLeafNodeIcon" class="icon"></span>
@@ -29,7 +28,7 @@
 <script>
 import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
 export default {
-  name: 'LessonMainTreeView',
+  name: 'MainTreeView',
   components: {
     VueTreeList,
   },
@@ -76,22 +75,22 @@ export default {
       for (let i = 0; i < len; i++) {
         const newStr = JSON.stringify(data[i])
         const nObj = JSON.parse(newStr)
-        nObj.id=this.pid
-        nObj.pid=this.pid
-        nObj.isChecked=false
-        nObj.readOnly=isReadOnly
-        
+        nObj.id = this.pid
+        nObj.pid = this.pid
+        nObj.isChecked = false
+        nObj.readOnly = isReadOnly
+
         if (data[i].children !== undefined) {
-          nObj.isLeaf=false
-          nObj.children=[]
-          nObj.dragDisabled=isDragDisable
+          nObj.isLeaf = false
+          nObj.children = []
+          nObj.dragDisabled = isDragDisable
 
           result[i] = nObj
           this.pid++
           result[i].children = dataMapping(data[i].children, isReadOnly)
         } else {
-          nObj.isLeaf=true
-          
+          nObj.isLeaf = true
+
           result[i] = nObj
           this.pid++
         }
@@ -152,9 +151,9 @@ export default {
     copyData() {
       let idNum = new Date().valueOf()
       function _dfs(oldNode) {
-        const newNode={}
+        const newNode = {}
         if (oldNode.isChecked) {
-          for(const item in oldNode){
+          for (const item in oldNode) {
             newNode[item] = oldNode[item]
           }
           newNode.children = []
@@ -179,8 +178,8 @@ export default {
       function _addNode(parentNode, oldNode) {
         let node, i, len
         if (oldNode.name) {
-          const newNode={}
-          for(const item in oldNode){
+          const newNode = {}
+          for (const item in oldNode) {
             newNode[item] = oldNode[item]
           }
           newNode.children = []
@@ -310,7 +309,7 @@ export default {
     },
 
     moreMenuUpdate(node) {
-      console.log(`update ${node}`)
+      // console.log(`update ${node}`)
       this.$emit('update-data', node)
       this.moreMenuClose()
     },

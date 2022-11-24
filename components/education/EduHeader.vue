@@ -37,8 +37,10 @@
               </li>
               <li class="nav-item">
                 <NuxtLink
-                  class="nav-link"
-                  :class="{ active: $route.matched[0].path === '/management' }"
+                  :class="{
+                    'nav-link': true,
+                    active: $route.matched[0].path === '/management',
+                  }"
                   to="/management/operation/teachermanagement"
                   >관리</NuxtLink
                 >
@@ -111,7 +113,6 @@
           </li>
           <li class="nav-item">
             <NuxtLink
-              class="nav-link"
               :class="{
                 'nav-link': true,
                 active: $route.fullPath === '/classPreperation/curriculum',
@@ -158,7 +159,6 @@
           <li class="nav-item">
             <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
             <NuxtLink
-              class="nav-link"
               :class="{
                 'nav-link': true,
                 active: $route.fullPath.includes('/management/operation'),
@@ -169,7 +169,6 @@
           </li>
           <li class="nav-item">
             <NuxtLink
-              class="nav-link"
               :class="{
                 'nav-link': true,
                 active: $route.fullPath.includes('/management/attendance'),
@@ -181,7 +180,6 @@
           </li>
           <li class="nav-item">
             <NuxtLink
-              class="nav-link"
               :class="{
                 'nav-link': true,
                 active: $route.fullPath.includes('/management/franchise'),
@@ -195,7 +193,6 @@
           </li>
           <li class="nav-item">
             <NuxtLink
-              class="nav-link"
               :class="{
                 'nav-link': true,
                 active: $route.fullPath.includes('/management/notice'),

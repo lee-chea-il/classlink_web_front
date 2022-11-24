@@ -1,7 +1,11 @@
 <template>
   <div class="search_section">
     <div class="left_area">
-      <button class="btn btn_crud_default" @click="$emit('delete-item')">
+      <button
+        v-if="identity !== 'teacher'"
+        class="btn btn_crud_default"
+        @click="$emit('delete-item')"
+      >
         삭제
       </button>
     </div>
@@ -17,6 +21,7 @@
         </div>
       </div>
       <button
+        v-if="identity !== 'teacher'"
         class="btn btn_crud_point"
         data-toggle="modal"
         data-target="#modalLectureRegi"
@@ -30,6 +35,12 @@
 <script>
 export default {
   name: 'SearchSection',
+  props: {
+    identity: {
+      type: String,
+      default: '',
+    },
+  },
 }
 </script>
 

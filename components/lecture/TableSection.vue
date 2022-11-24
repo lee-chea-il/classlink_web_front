@@ -24,8 +24,9 @@
           <th>반</th>
           <th>커리큘럼</th>
           <th>수업시간</th>
-          <th>수정</th>
-          <th>삭제</th>
+          <th v-if="identity !== 'teacher'">수정</th>
+          <th v-if="identity !== 'teacher'">삭제</th>
+          <th v-else>상세</th>
         </tr>
       </thead>
       <tbody>
@@ -57,17 +58,48 @@
               {{ lecture.classTime }}
             </div>
           </td>
-          <td>
+          <td v-if="identity !== 'teacher'">
             <i
               class="btn icons_pencil_off"
               @click="$emit('open-lecture', lecture)"
             ></i>
           </td>
-          <td>
+          <td v-if="identity !== 'teacher'">
             <i
               class="icons_x_circle_off"
               @click="$emit('delete-item', lecture)"
             ></i>
+          </td>
+          <td v-show="identity === 'teacher'">
+            <i
+              class="btn icons_mu_off more_mu"
+              @click="$emit('show-menu', idx)"
+            >
+              <div
+                :id="`lecture_more_list_${idx}`"
+                class="more_list"
+                style="display: none"
+              >
+                <ul>
+                  <li
+                    data-toggle="modal"
+                    data-target="#modalLectureRegi02
+													"
+                    data-dismiss="modal"
+                  >
+                    커리큘럼 선택
+                  </li>
+                  <li
+                    data-toggle="modal"
+                    data-target="#modalLectureRegi04
+													"
+                    data-dismiss="modal"
+                  >
+                    커리큘럼 배정
+                  </li>
+                </ul>
+              </div>
+            </i>
           </td>
         </tr>
       </tbody>
@@ -89,7 +121,16 @@ export default {
       type: Array,
       default: () => [],
     },
+    identity: {
+      type: String,
+      default: '',
+    },
   },
+  // methods: {
+  //   name() {
+
+  //   }
+  // },
 }
 </script>
 

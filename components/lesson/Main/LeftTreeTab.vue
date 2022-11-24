@@ -7,7 +7,7 @@
       role="tabpanel"
       aria-labelledby="grade-tab"
     >
-      <LessonMainTreeView
+      <MainTreeView
         ref="institution"
         :dataList="institutionData"
         :editable="identity == 'master' ? true : false"
@@ -27,7 +27,7 @@
       role="tabpanel"
       aria-labelledby="class-tab"
     >
-      <LessonMainTreeView
+      <MainTreeView
         ref="franchise"
         :dataList="franchiseData"
         :editable="identity == 'master' ? true : false"
@@ -44,11 +44,11 @@
 </template>
 
 <script>
-import LessonMainTreeView from '~/components/lesson/custom/LessonMainTreeView.vue'
+import MainTreeView from '~/components/common/MainTreeView.vue'
 export default {
   name: 'LeftTreeTab',
   components: {
-    LessonMainTreeView,
+    MainTreeView,
   },
   props: {
     institutionData: {
@@ -65,8 +65,8 @@ export default {
     },
   },
   methods: {
-    setOpenData(e, item) {
-      this.$emit('open-data', e, item)
+    setOpenData(e) {
+      this.$emit('open-data', e)
     },
   },
 }

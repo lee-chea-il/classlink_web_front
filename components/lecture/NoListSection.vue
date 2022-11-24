@@ -1,6 +1,9 @@
 <template>
   <div class="tab-pane active">
-    <div class="page_nodata">
+    <div v-if="identity === 'teacher'" class="page_nodata">
+      <div class="txt">현재 배정된 강좌가 없습니다.</div>
+    </div>
+    <div v-else class="page_nodata">
       <div class="txt">
         현재 개설한 강좌가 없습니다. <br />
         먼저 강좌를 개설해 보세요
@@ -19,6 +22,12 @@
 <script>
 export default {
   name: 'NoListSection',
+  props: {
+    identity: {
+      type: String,
+      default: 'teacher',
+    },
+  },
 }
 </script>
 

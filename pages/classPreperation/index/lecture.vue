@@ -7,12 +7,14 @@
         v-if="lectureList.length"
         :lectureList="lectureList"
         :checkList="checkLectureList"
+        :identity="identity"
         @check-item="handleCheckbox"
-        @open-lecture="openChangeLectrueModal"
+        @open-lecture="setChangeLecture"
         @delete-item="openDeleteModal"
+        @show-menu="showDetailMenu"
       />
       <!-- /.데이터가 없는 경우 -->
-      <NoListSection v-else />
+      <NoListSection v-else :identity="identity" />
     </div>
 
     <!-- 강좌 생성 -->
@@ -34,7 +36,7 @@
 
     <!-- 강좌 변경 -->
     <ChangeLectureModal
-      :open="isChangeLecture"
+      :open="isChangeLecture.open"
       :lecture="lectureInfo"
       :teacherList="teacherList"
       :classList="classList"
@@ -47,6 +49,7 @@
       @add-class="addClassData"
       @delete-class="deleteClassData"
       @close="closeChangeLectureModal"
+      @next-button="moveToChangeSecond"
     />
 
     <!-- 커리큘럼 선택 -->
@@ -55,11 +58,19 @@
       :teacherList="teacherList"
     />
 
+    <!-- 커리큘럼 선택 변경 -->
+    <ChangeSelectCurriculumModal
+      :open="isChangeSelectCurriculum.open"
+      @close="closeChangeCurriculum"
+      @next-button="moveToChangeThird"
+      @prev-button="backToChangeFirst"
+    />
+
     <!-- 수업시간 선택 -->
     <SelectScheduleModal
       :hourData="hourData"
       :scheduleItem="scheduleItem"
-      :scheduleWeekList="scheduleWeekList"
+      :scheduleWeekList="lectureInfo.scheduleWeekList"
       :timeList="timeList"
       @select-day="onSelectWeekDay"
       @change-time="onChangeSchedule"
@@ -68,12 +79,31 @@
       @delete-schedule="deleteSchedule"
     />
 
+    <!-- 수업시간 변경 -->
+    <ChangeScheduleModal
+      :open="isChangeSchedule.open"
+      :hourData="hourData"
+      :scheduleItem="scheduleItem"
+      :scheduleWeekList="lectureInfo.scheduleWeekList"
+      :timeList="timeList"
+      @select-day="onSelectWeekDay"
+      @change-time="onChangeSchedule"
+      @open-calendar="openModalCalendar"
+      @add-schedule="addSchedule"
+      @delete-schedule="deleteSchedule"
+      @close="closeChangeSchedule"
+      @prev-button="backToChangeSecond"
+      @next-button="moToChangeFourth"
+    />
+
     <!-- 커리큘럼 배정 -->
     <CurriculumAssignmentModal />
 
+    <!-- 커리큘럼 배정 변경 -->
     <ChangeCurriculumAssignmentModal
-      :open="isChangeCurriculemAssignment"
-      @close="closeChangeCurriculemAssignmentModal"
+      :open="isChangeCurriculumAssignment.open"
+      @close="closeChangeCurriculumAssignmentModal"
+      @prev-button="backToChangeThird"
     />
 
     <!-- 커리큘럼 리스트 상세 -->
@@ -107,6 +137,8 @@
 <script>
 import ChangeCurriculumAssignmentModal from '~/components/common/modal/lecture/ChangeCurriculumAssignmentModal.vue'
 import ChangeLectureModal from '~/components/common/modal/lecture/ChangeLectureModal.vue'
+import ChangeScheduleModal from '~/components/common/modal/lecture/ChangeScheduleModal.vue'
+import ChangeSelectCurriculumModal from '~/components/common/modal/lecture/ChangeSelectCurriculumModal.vue'
 import CreateLectureModal from '~/components/common/modal/lecture/CreateLectureModal.vue'
 import CurriculumAssignmentModal from '~/components/common/modal/lecture/CurriculumAssignmentModal.vue'
 import SelectCurriculumListModal from '~/components/common/modal/lecture/SelectCurriculumListModal.vue'
@@ -136,13 +168,15 @@ export default {
     ModalDesc,
     ChangeCurriculumAssignmentModal,
     DeleteModal,
+    ChangeSelectCurriculumModal,
+    ChangeScheduleModal,
   },
   data() {
     return initialState()
   },
   computed: {
     hourData() {
-      return Array.from({ length: 48 }, (i, j) => j / 2 + 0)
+      return Array.from({ length: 49 }, (i, j) => j / 2 + 0)
     },
     timeList() {
       const timeArr = this.hourData.map((item) => {
@@ -188,6 +222,7 @@ export default {
       this.isCalendar = false
     },
 
+    // 메세지 모달
     openModalDesc(tit, msg) {
       this.isOpenModalDesc = {
         open: true,
@@ -200,25 +235,47 @@ export default {
       this.isOpenModalDesc.open = false
     },
 
-    // 강좌 변경 모달
-    openChangeLectrueModal(data) {
-      this.isChangeLecture = true
+    // 선택한 강좌 변경 설정
+    setChangeLecture(data) {
       const newItem = this.deepCopy(data)
+      this.openChangeLectrueModal()
       return Object.assign(this.lectureInfo, newItem)
     },
 
+    // 강좌 변경 모달
+    openChangeLectrueModal() {
+      this.isChangeLecture.open = true
+    },
+
     closeChangeLectureModal() {
-      this.initAddReferenceData()
-      return (this.isChangeLecture = false)
+      return (this.isChangeLecture.open = false)
+    },
+
+    // 커리큘럼 변경 모달
+    openChangeCurriculum() {
+      this.isChangeSelectCurriculum.open = true
+    },
+
+    closeChangeCurriculum() {
+      this.isChangeSelectCurriculum.open = false
+    },
+
+    // 시간표 변경 모달
+    openChangeSchedule() {
+      this.isChangeSchedule.open = true
+    },
+
+    closeChangeSchedule() {
+      this.isChangeSchedule.open = false
     },
 
     // 커리큘럼 배정 보달
-    openChangeCurriculemAssignmentModal() {
-      this.isChangeCurriculemAssignment = true
+    openChangeCurriculumAssignmentModal() {
+      this.isChangeCurriculumAssignment.open = true
     },
 
-    closeChangeCurriculemAssignmentModal() {
-      this.isChangeCurriculemAssignment = false
+    closeChangeCurriculumAssignmentModal() {
+      this.isChangeCurriculumAssignment.open = false
     },
 
     // 삭제 확인 모달
@@ -240,6 +297,43 @@ export default {
       this.isDeleteModal.open = false
     },
 
+    // 변경 모달 이동 Event
+    // 2 -> 1
+    backToChangeFirst() {
+      this.closeChangeCurriculum()
+      this.openChangeLectrueModal()
+    },
+
+    // 3 -> 2
+    backToChangeSecond() {
+      this.closeChangeSchedule()
+      this.openChangeCurriculum()
+    },
+
+    // 4 -> 3
+    backToChangeThird() {
+      this.closeChangeCurriculumAssignmentModal()
+      this.openChangeSchedule()
+    },
+
+    // 1 -> 2
+    moveToChangeSecond() {
+      this.closeChangeLectureModal()
+      this.openChangeCurriculum()
+    },
+
+    // 2 -> 3
+    moveToChangeThird() {
+      this.closeChangeCurriculum()
+      this.openChangeSchedule()
+    },
+
+    // 3 -> 4
+    moToChangeFourth() {
+      this.closeChangeSchedule()
+      this.openChangeCurriculumAssignmentModal()
+    },
+
     // 깊은 복사
     deepCopy(data) {
       return JSON.parse(JSON.stringify(data))
@@ -255,11 +349,6 @@ export default {
       this.lectureInfo[name] = value
     },
 
-    // 선택 강좌 변경 Event
-    // onChangeSelectLecture({ target: { name, value } }) {
-    //   this.changeLectureItem[name] = value
-    // },
-
     // 배정 메뉴 보여줄때 다른 메뉴 닫기
     closeTeacherMenu() {
       for (const index in this.teacherList) {
@@ -270,12 +359,34 @@ export default {
       }
     },
 
+    // 상세 메뉴 보여줄때 다른 메뉴 닫기
+    closeDetailMenu() {
+      for (const index in this.lectureList) {
+        const allTarget = document.getElementById(`lecture_more_list_${index}`)
+        allTarget.style.display = 'none'
+      }
+    },
+
     // 선생님 배정 메뉴 보여주기
     showTeacherMenu(idx) {
       const targetStyle = document.getElementById(`teacher_list${idx}`).style
       const isNone = targetStyle.display === 'none'
       if (isNone) {
         this.closeTeacherMenu()
+        return (targetStyle.display = 'block')
+      } else {
+        return (targetStyle.display = 'none')
+      }
+    },
+
+    // 선생님 권한일때 상세 메뉴 보여주기
+    showDetailMenu(idx) {
+      const targetStyle = document.getElementById(
+        `lecture_more_list_${idx}`
+      ).style
+      const isNone = targetStyle.display === 'none'
+      if (isNone) {
+        this.closeDetailMenu()
         return (targetStyle.display = 'block')
       } else {
         return (targetStyle.display = 'none')
@@ -413,9 +524,10 @@ export default {
     getColor() {
       if (this.bgCnt === 0) return '#8fa7fb'
       else if (this.bgCnt === 1) return '#72d8d9'
-      else if (this.bgCnt === 2) {
+      else if (this.bgCnt === 2) return '#bff0f1'
+      else {
         this.bgCnt = 0
-        return '#bff0f1'
+        return '#8fa7fb'
       }
     },
 
@@ -423,7 +535,7 @@ export default {
     resetSearchShedule() {
       const now = this.getToday
       return (this.scheduleItem = {
-        startTime: '',
+        startTime: '0000',
         endTime: '',
         startDay: `${now.year}.${now.month}.${now.day}`,
         endDay: `${now.year}.${now.month}.${now.day + 1}`,
@@ -435,16 +547,15 @@ export default {
 
     // 검색 완료시 버튼 초기화
     resetBtn() {
-      for (let j = 0; j < 7; j++) {
+      for (let j = 0; j < 7; j++)
         document.getElementById(`week_btn_${j}`).classList.remove('active')
-      }
     },
 
     // 검색완료시 시간표 데이터 보여주기
     addScheduleWeekList(idx, schedule) {
       const weekList = this.weekIdx
-      this.scheduleWeekList[weekList[idx]] = [
-        ...this.scheduleWeekList[weekList[idx]],
+      this.lectureInfo.scheduleWeekList[weekList[idx]] = [
+        ...this.lectureInfo.scheduleWeekList[weekList[idx]],
         schedule,
       ]
     },
@@ -452,7 +563,7 @@ export default {
     // 동일한 시간 체크
     selectArrayLength(i, startTime) {
       const weekList = this.weekIdx
-      const array = this.scheduleWeekList[weekList[i]].filter(
+      const array = this.lectureInfo.scheduleWeekList[weekList[i]].filter(
         (item) => item.startTime <= startTime && item.endTime >= startTime
       )
       return array
@@ -489,25 +600,33 @@ export default {
         endTime !== '' &&
         selectWeekDay.length !== 0
       ) {
+        let isHave = false
+
         for (const i of selectWeekDay) {
           if (this.selectArrayLength(i, startTime).length) {
             this.openModalDesc('실패', '해당하는 날짜의 강의가 이미 있습니다.')
             return false
           } else {
             this.addScheduleWeekList(i, schedule)
-            this.resetBtn()
-            this.resetSearchShedule()
+            isHave = true
           }
         }
-        return (this.bgCnt = this.bgCnt + 1)
+        if (isHave) {
+          this.bgCnt = this.bgCnt + 1
+          this.resetSearchShedule()
+          this.resetBtn()
+        } else {
+          return false
+        }
       }
     },
 
     // 시간표 삭제
     deleteSchedule(week, data) {
-      return (this.scheduleWeekList[week] = this.scheduleWeekList[week].filter(
-        (item) => item.startDay !== data.startDay
-      ))
+      return (this.lectureInfo.scheduleWeekList[week] =
+        this.lectureInfo.scheduleWeekList[week].filter(
+          (item) => item.startDay !== data.startDay
+        ))
     },
 
     // checkbox 리스트 추가삭제
