@@ -265,9 +265,9 @@ export default {
   background-image: url(~assets/images/icon_mydata.png);
 }
 #modalStoragepath .vtl-node-main.active {
-  background-color: #a2a2a2 !important;
+  background-color: #E7EDFF !important;
 }
 #modalStoragepath .vtl-node-main:hover {
-  background-color: #f0f0f0;
+  background-color: #E7EDFF;
 }
 </style>

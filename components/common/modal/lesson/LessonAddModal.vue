@@ -76,6 +76,7 @@
                         :editable="identity == 'master' ? true : false"
                         :identity="identity"
                         :pidNum="10000"
+                        :dragDisabled="true"
                         @moreShowClick="moreShowClick"
                         @copyDataCallBack="$emit('call-back')"
                       />
@@ -95,6 +96,7 @@
                         :editable="identity == 'master' ? true : false"
                         :identity="identity"
                         :pidNum="11000"
+                        :dragDisabled="true"
                         @moreShowClick="moreShowClick"
                         @copyDataCallBack="$emit('call-back')"
                       />
