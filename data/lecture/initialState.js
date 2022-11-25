@@ -1,17 +1,18 @@
 export default function initialState() {
   return {
+    bgCnt: 0,
+    identity: 'teacher',
     isCalendar: false,
-    isOpenModalDesc: {
-      open: false,
-      title: '',
-      desc: '',
-    },
-    isChangeLecture: false,
+    isChangeLecture: { open: false },
     isCurriculemSelect: false,
     isSchedule: false,
-    isChangeCurriculemAssignment: false,
+    isChangeCurriculumAssignment: { open: false },
+    isOpenModalDesc: { open: false, title: '', desc: '' },
+    isChangeSchedule: { open: false },
+    isChangeSelectCurriculum: { open: false },
+    myCurriculum: {},
+    deleteItem: {},
     isDeleteModal: { open: false, list: false },
-    bgCnt: 0,
     lectureInfo: {
       name: '',
       teacher: [],
@@ -23,6 +24,33 @@ export default function initialState() {
       image: '',
       startAlarmTime: '5분',
       endAlarmTime: '5분',
+      scheduleWeekList: {
+        sun: [],
+        mon: [],
+        tue: [],
+        wed: [],
+        thu: [],
+        fri: [],
+        set: [],
+      },
+    },
+    scheduleItem: {
+      startTime: '0000',
+      endTime: '',
+      startDay: '2022-11-01',
+      endDay: '2022-11-02',
+      selectWeekDay: [],
+      isRepeat: false,
+      bgColor: '#8fa7fb',
+    },
+    weekIdx: {
+      일: 'sun',
+      월: 'mon',
+      화: 'tue',
+      수: 'wed',
+      목: 'thu',
+      금: 'fri',
+      토: 'set',
     },
     lectureList: [
       {
@@ -36,6 +64,35 @@ export default function initialState() {
         startAlarmTime: '5분',
         endAlarmTime: '5분',
         createdAt: '2020-07-10',
+        scheduleWeekList: {
+          sun: [],
+          mon: [
+            {
+              startTime: '0100',
+              endTime: '0600',
+              startDay: '2022-11-01',
+              endDay: '2022-11-02',
+              selectWeekDay: ['월'],
+              isRepeat: false,
+              bgColor: '#8fa7fb',
+            },
+          ],
+          tue: [],
+          wed: [
+            {
+              startTime: '0130',
+              endTime: '0600',
+              startDay: '2022.11.24',
+              endDay: '2022.11.25',
+              selectWeekDay: ['수'],
+              bgColor: '#8fa7fb',
+              isRepeat: false,
+            },
+          ],
+          thu: [],
+          fri: [],
+          set: [],
+        },
       },
       {
         name: '과학 심화 1',
@@ -48,6 +105,35 @@ export default function initialState() {
         startAlarmTime: '5분',
         endAlarmTime: '5분',
         createdAt: '2020-07-10',
+        scheduleWeekList: {
+          sun: [],
+          mon: [
+            {
+              startTime: '0030',
+              endTime: '0900',
+              startDay: '2022-11-01',
+              endDay: '2022-11-02',
+              selectWeekDay: ['월'],
+              isRepeat: false,
+              bgColor: '#8fa7fb',
+            },
+          ],
+          tue: [],
+          wed: [
+            {
+              startTime: '0100',
+              endTime: '0630',
+              startDay: '2022.11.24',
+              endDay: '2022.11.25',
+              selectWeekDay: ['수'],
+              bgColor: '#8fa7fb',
+              isRepeat: false,
+            },
+          ],
+          thu: [],
+          fri: [],
+          set: [],
+        },
       },
       {
         name: '수학의 정석 1',
@@ -60,6 +146,35 @@ export default function initialState() {
         startAlarmTime: '5분',
         endAlarmTime: '5분',
         createdAt: '2020-07-10',
+        scheduleWeekList: {
+          sun: [
+            {
+              startTime: '0030',
+              endTime: '0900',
+              startDay: '2022-11-01',
+              endDay: '2022-11-02',
+              selectWeekDay: ['일'],
+              isRepeat: false,
+              bgColor: '#8fa7fb',
+            },
+          ],
+          mon: [],
+          tue: [],
+          wed: [],
+          thu: [],
+          fri: [],
+          set: [
+            {
+              startTime: '0100',
+              endTime: '0630',
+              startDay: '2022.11.24',
+              endDay: '2022.11.25',
+              selectWeekDay: ['토'],
+              bgColor: '#8fa7fb',
+              isRepeat: false,
+            },
+          ],
+        },
       },
     ],
     teacherList: [
@@ -76,149 +191,123 @@ export default function initialState() {
       { id: 4, name: '1-1D' },
       { id: 5, name: '1-1E' },
     ],
-    scheduleItem: {
-      startTime: '0000',
-      endTime: '0030',
-      startDay: '2022-11-01',
-      endDay: '2022-11-02',
-      selectWeekDay: [],
-      isRepeat: false,
-      bgColor: '#8fa7fb',
-    },
-    scheduleWeekList: {
-      sun: [],
-      mon: [],
-      tue: [],
-      wed: [],
-      thu: [],
-      fri: [],
-      set: [],
-    },
-    weekIdx: {
-      일: 'sun',
-      월: 'mon',
-      화: 'tue',
-      수: 'wed',
-      목: 'thu',
-      금: 'fri',
-      토: 'set',
-    },
     curriculumList: [
-      [
-        {
-          name: '국어',
-          teacher: '김민정',
-          children: [
-            {
-              name: '1단원',
-              children: [
-                {
-                  name: '사투리 작문1.link',
-                  type: 'institution',
-                },
-                {
-                  name: '사투리 작문2.link',
-                  type: 'franchise',
-                },
-              ],
-            },
-            {
-              name: '2단원',
-              children: [
-                {
-                  name: '서울 사투리 작문1.link',
-                  type: 'curriculum',
-                },
-                {
-                  name: '부산 사투리 작문2.link',
-                  type: 'institution',
-                },
-                {
-                  name: '부산 사투리 작문2.link',
-                  type: 'franchise',
-                },
-                {
-                  name: '부산 사투리 작문2.link',
-                  type: 'institution',
-                },
-                {
-                  name: '부산 사투리 작문2.link',
-                  type: 'franchise',
-                },
-                {
-                  name: '네이버란.link',
-                  type: 'curriculum',
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      [
-        {
-          name: '수학',
-          teacher: '최수진',
-          children: [
-            {
-              name: '1단원',
-              children: [
-                {
-                  name: '사투리 작문1.link',
-                  type: 'institution',
-                },
-                {
-                  name: '사투리 작문2.link',
-                  type: 'franchise',
-                },
-              ],
-            },
-            {
-              name: '2단원',
-              children: [
-                {
-                  name: '서울 사투리 작문1.link',
-                  type: 'curriculum',
-                },
-                {
-                  name: '서울 사투리 작문2.link',
-                  type: 'institution',
-                },
-                {
-                  name: '서울 사투리 작문2.link',
-                  type: 'franchise',
-                },
-                {
-                  name: '서울 사투리 작문2.link',
-                  type: 'institution',
-                },
-                {
-                  name: '서울 사투리 작문2.link',
-                  type: 'franchise',
-                },
-                {
-                  name: '네이버란.link',
-                  type: 'curriculum',
-                },
-              ],
-            },
-          ],
-        },
-      ],
+      {
+        name: '마포 학원',
+        children: [
+          {
+            name: '국어',
+            children: [
+              {
+                name: '1단원',
+                children: [
+                  {
+                    name: '화법과 작문1.link',
+                    type: 'institution',
+                    dbIdx: 1,
+                  },
+                  {
+                    name: '화법과 작문2.link',
+                    type: 'institution',
+                    dbIdx: 2,
+                  },
+                  {
+                    name: '화법과 작문3.link',
+                    type: 'institution',
+                    dbIdx: 3,
+                  },
+                  {
+                    name: '화법과 작문4.link',
+                    type: 'institution',
+                    dbIdx: 4,
+                  },
+                ],
+              },
+              {
+                name: '2단원',
+                children: [
+                  {
+                    name: '법과 작문1.link',
+                    type: 'institution',
+                    dbIdx: 5,
+                  },
+                  {
+                    name: '법과 작문2.link',
+                    type: 'institution',
+                    dbIdx: 6,
+                  },
+                  {
+                    name: '법과 작문3.link',
+                    type: 'institution',
+                    dbIdx: 7,
+                  },
+                  {
+                    name: '법과 작문4.link',
+                    type: 'institution',
+                    dbIdx: 8,
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            name: '수학',
+            children: [
+              {
+                name: '1단원',
+                children: [
+                  {
+                    name: '삼각함수1.link',
+                    type: 'institution',
+                    dbIdx: 1,
+                  },
+                  {
+                    name: '삼각함수2.link',
+                    type: 'institution',
+                    dbIdx: 2,
+                  },
+                  {
+                    name: '삼각함수3.link',
+                    type: 'institution',
+                    dbIdx: 3,
+                  },
+                  {
+                    name: '삼각함수4.link',
+                    type: 'institution',
+                    dbIdx: 4,
+                  },
+                ],
+              },
+              {
+                name: '2단원',
+                children: [
+                  {
+                    name: '2차 방정식1.link',
+                    type: 'institution',
+                    dbIdx: 5,
+                  },
+                  {
+                    name: '2차 방정식2.link',
+                    type: 'institution',
+                    dbIdx: 6,
+                  },
+                  {
+                    name: '2차 방정식3.link',
+                    type: 'institution',
+                    dbIdx: 7,
+                  },
+                  {
+                    name: '2차 방정식4.link',
+                    type: 'institution',
+                    dbIdx: 8,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      }
     ],
-    myCurriculum: {},
     checkLectureList: [],
-    changeLectureItem: {
-      name: '',
-      teacher: [],
-      spareTeacher: [],
-      className: [],
-      classTime: '',
-      curriculum: '',
-      createdAt: '',
-      image: '',
-      startAlarmTime: '',
-      endAlarmTime: '',
-    },
-    deleteItem: {},
   }
 }

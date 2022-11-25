@@ -8,7 +8,7 @@
         :data-value="label"
         class="custom-control-input"
         :checked="allCheck ? listItem.length === 0 : listItem.includes(label)"
-        @click="$emit('click-item', $event)"
+        @input="$emit('click-item', $event)"
       />
       <label class="custom-control-label" :for="id">{{ label }}</label>
     </div>
@@ -44,3 +44,8 @@ export default {
 </script>
 
 <style></style>
+
+matchFilterArrayName(name){ if(name==='type') return 'typeList' else
+if(name==='subject') return 'subjectList' else return 'categoryList' }, else if
+( result[name].length === this[this.matchFilterArrayName(name)].length ) return
+(result[name] = []) (result[name] = [...result[name], dataset.value])

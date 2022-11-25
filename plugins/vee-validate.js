@@ -74,6 +74,14 @@ Object.keys(rules).forEach((rule) => {
     ...confirmed,
     message: '비밀번호와 비밀번호확인이 일치하지 않습니다.',
   })
+
+  extend('attendance', (value) => {
+    const pattern = /^[0-9]{5}$/
+    if (!pattern.test(value)) {
+      return '출결번호는 5자리 숫자로 입력하세요.'
+    }
+    return true
+  })
 })
 
 // config setting

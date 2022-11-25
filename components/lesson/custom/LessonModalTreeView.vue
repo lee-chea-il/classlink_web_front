@@ -1,11 +1,13 @@
 <template>
   <vue-tree-list
+    ref="treeItem"
     :model="datas"
     :default-expanded="expanded"
     default-tree-node-name="새 폴더"
     :is-drop="identity == 'master' ? true : false"
     :is-show-option="identity == 'master' ? true : false"
-    :isHideDownload="isHideDownload"
+    :list-type="listType"
+    @more-show-click="moreShowClick"
     @click="onClick"
     @change-name="onChangeName"
     @more-menu="moreMenu"
@@ -13,7 +15,7 @@
     @more-menu-update="moreMenuUpdate"
     @more-menu-view="moreMenuView"
     @more-menu-dell="moreMenuDell"
-    @more-menu-copy="moreMenuCopy"
+    @more-menu-copy="copyData"
   >
     <span slot="addTreeNodeIcon" class="icon">＋</span>
     <span slot="addLeafNodeIcon" class="icon"></span>
@@ -26,7 +28,7 @@
 <script>
 import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
 export default {
-  name: 'TreeView',
+  name: 'LessonModalTreeView',
   components: {
     VueTreeList,
   },
@@ -51,10 +53,14 @@ export default {
       type: Boolean,
       default: true,
     },
-    isHideDownload: {
+    listType: {
+      type: String,
+      default: '',
+    },
+    dragDisabled: {
       type: Boolean,
-      default: true
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -65,25 +71,30 @@ export default {
   mounted() {
     const dataMapping = (data, isReadOnly) => {
       const result = []
+      let isDragDisable = false
+      if (this.listType === 'lesson') {
+        isDragDisable = true
+      }
       const len = data.length
       for (let i = 0; i < len; i++) {
         const newStr = JSON.stringify(data[i])
         const nObj = JSON.parse(newStr)
-        nObj.id=this.pid
-        nObj.pid=this.pid
-        nObj.isChecked=false
-        nObj.readOnly=isReadOnly
+        nObj.id = this.pid
+        nObj.pid = this.pid
+        nObj.isChecked = false
+        nObj.readOnly = isReadOnly
+        nObj.dragDisabled=this.dragDisabled
 
         if (data[i].children !== undefined) {
-          nObj.isLeaf=false
-          nObj.children=[]
+          nObj.isLeaf = false
+          nObj.children = []
+          nObj.dragDisabled = isDragDisable
 
           result[i] = nObj
           this.pid++
-
           result[i].children = dataMapping(data[i].children, isReadOnly)
         } else {
-          nObj.isLeaf=true
+          nObj.isLeaf = true
 
           result[i] = nObj
           this.pid++
@@ -141,12 +152,13 @@ export default {
       }
       console.log(_dfs(vm.data))
     },
+
     copyData() {
       let idNum = new Date().valueOf()
       function _dfs(oldNode) {
-        const newNode={}
+        const newNode = {}
         if (oldNode.isChecked) {
-          for(const item in oldNode){
+          for (const item in oldNode) {
             newNode[item] = oldNode[item]
           }
           newNode.children = []
@@ -165,18 +177,27 @@ export default {
       }
       this.$emit('copyDataCallBack', _dfs(this.datas))
     },
+
     pasteData(copyCheckData) {
       let idNum = new Date().valueOf()
       function _addNode(parentNode, oldNode) {
         let node, i, len
         if (oldNode.name) {
-          const newNode={}
-          for(const item in oldNode){
+          const newNode = {}
+          for (const item in oldNode) {
             newNode[item] = oldNode[item]
           }
           newNode.children = []
           newNode.id = idNum
+          newNode.isLeaf = oldNode.isLeaf
+          newNode.name = oldNode.name
+          newNode.parent = oldNode.parent
+          newNode.pid = oldNode.id
+          newNode.readOnly = oldNode.readOnly
           newNode.isChecked = false
+          newNode.dbIdx = oldNode.dbIdx
+          newNode.type = oldNode.type
+
           node = new TreeNode(newNode)
           parentNode.addChildren(node)
           idNum++
@@ -235,6 +256,7 @@ export default {
         _resetPasteData(this.datas)
       }
     },
+
     delData() {
       function _dell(oldNode) {
         if (
@@ -252,6 +274,7 @@ export default {
       }
       _dell(this.datas)
     },
+
     moreMenu({ e }) {
       const hasOffClass = e.target.classList.contains('icons_mu_off')
       const iLists = document.querySelectorAll('.more_mu ')
@@ -270,23 +293,66 @@ export default {
         e.target.querySelector('.more_list').style.display = 'block'
       }
     },
-    moreMenuDown(node) {
-      console.log(`down ${node}`)
+
+    moreMenuClose() {
+      const iLists = document.querySelectorAll('.more_mu ')
+      let i = 0
+      for (i = 0; i < iLists.length; i++) {
+        iLists[i].classList.remove('icons_mu_on')
+        iLists[i].classList.add('icons_mu_off')
+      }
+      const moreLists = document.querySelectorAll('.more_list')
+      for (i = 0; i < moreLists.length; i++) {
+        moreLists[i].style.display = 'none'
+      }
     },
+
+    moreMenuDown(node) {
+      console.log(`download ${node}`)
+      this.$emit('download-data', node)
+      this.moreMenuClose()
+    },
+
     moreMenuUpdate(node) {
       console.log(`update ${node}`)
+      this.$emit('update-data', node)
+      this.moreMenuClose()
     },
+
     moreMenuView(node) {
       console.log(`view ${node}`)
+      this.$emit('open-data', node)
+      this.moreMenuClose()
     },
+
     moreMenuDell(node) {
       node.remove()
     },
+
     moreMenuCopy(node) {
       console.log(`copy ${node}`)
+    },
+
+    getCheckDataList() {
+      const checkList = []
+      function _checkData(oldNode) {
+        if (oldNode.children && oldNode.children.length > 0) {
+          for (let i = 0, len = oldNode.children.length; i < len; i++) {
+            _checkData(oldNode.children[len - i - 1])
+          }
+        }
+        if (oldNode.isLeaf && oldNode.isChecked) {
+          checkList.push(oldNode.savePath)
+        }
+      }
+      _checkData(this.datas)
+      return checkList
+    },
+
+    moreShowClick(node) {
+      this.$emit('moreShowClick', node)
     },
   },
 }
 </script>
-<style scoped>
-</style>
+<style scoped></style>

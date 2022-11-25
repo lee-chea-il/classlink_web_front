@@ -3,7 +3,7 @@
     <div
       v-show="open"
       id="modalMyinfo"
-      class="modal modal_myinfo ac_manage_std modal-mask"
+      class="modal modal_myinfo ac_manage_std modal-mask modal-index"
       tabindex="-1"
       aria-labelledby="modalMyinfo"
       aria-hidden="true"
@@ -31,18 +31,28 @@
             <!-- 프로필 사진 영역 -->
             <div class="profile_images_area student">
               <!-- [개발참조]: 업로드 사진은 <span>의 backgroung-image로 젹용 -->
-              <div class="profile_photo">
-                <span
+              <div
+                class="profile_photo"
+                :style="
+                  studentInfo.profile_image === '' ||
+                  studentInfo.profile_image === null
+                    ? {
+                        'background-image': `url(${sample_photo})`,
+                      }
+                    : {
+                        'background-image': `url(${studentInfo.profile_image})`,
+                      }
+                "
+              >
+                <!-- <span
                   style="
                     background-image: url(../images/sample_profile_photo.jpg);
                   "
-                ></span>
+                ></span> -->
                 <button
                   type="button"
                   class="btn icons_camera"
-                  data-toggle="modal"
-                  data-target="#modalMyinfo02"
-                  data-dismiss="modal"
+                  @click="$emit('click-profile')"
                 ></button>
               </div>
             </div>
@@ -110,8 +120,28 @@
                       ></label
                     >
                     <div class="col">
-                      <button class="btn btn_choice active">학생</button>
-                      <button class="btn btn_choice">학부모</button>
+                      <button
+                        class="btn btn_choice"
+                        :class="
+                          studentInfo.identity.includes('학생')
+                            ? 'active'
+                            : false
+                        "
+                        @click="$emit('click-identity', '학생')"
+                      >
+                        학생
+                      </button>
+                      <button
+                        class="btn btn_choice"
+                        :class="
+                          studentInfo.identity.includes('학부모')
+                            ? 'active'
+                            : false
+                        "
+                        @click="$emit('click-identity', '학부모')"
+                      >
+                        학부모
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -123,7 +153,13 @@
                   <div class="form-group row">
                     <label for="" class="st_title00 col-form-label">학년</label>
                     <div class="col">
-                      <button class="btn btn_activated active">학년</button>
+                      <button
+                        class="btn btn_activated"
+                        :class="studentInfo.grade_type === 0 ? 'active' : ''"
+                        @click="$emit('click-grade')"
+                      >
+                        학년
+                      </button>
                       <div class="dropdown form-inline">
                         <button
                           class="btn dropdown-toggle"
@@ -131,22 +167,45 @@
                           data-toggle="dropdown"
                           aria-expanded="false"
                         >
-                          초1
+                          {{ studentInfo.grade }}
                         </button>
                         <div class="dropdown-menu">
-                          <a class="dropdown-item" href="#">초2</a>
-                          <a class="dropdown-item" href="#">초3</a>
-                          <a class="dropdown-item" href="#">초4</a>
+                          <a
+                            v-for="(item, idx) in gradeList"
+                            :key="idx"
+                            class="dropdown-item"
+                            href="#"
+                            @click="$emit('select-grade', item.title)"
+                            >{{ item.title }}</a
+                          >
                         </div>
                       </div>
-                      <button class="btn btn_activated">성인</button>
+                      <button
+                        class="btn btn_activated"
+                        :class="studentInfo.grade_type === 1 ? 'active' : ''"
+                        @click="$emit('click-adult')"
+                      >
+                        성인
+                      </button>
                     </div>
                   </div>
                   <div class="form-group row">
                     <label for="" class="st_title00 col-form-label">성별</label>
                     <div class="col">
-                      <button class="btn btn_activated active">남</button>
-                      <button class="btn btn_activated">여</button>
+                      <button
+                        class="btn btn_activated"
+                        :class="studentInfo.gender === 0 ? 'active' : ''"
+                        @click="$emit('click-men')"
+                      >
+                        남
+                      </button>
+                      <button
+                        class="btn btn_activated"
+                        :class="studentInfo.gender === 1 ? 'active' : ''"
+                        @click="$emit('click-women')"
+                      >
+                        여
+                      </button>
                     </div>
                   </div>
                   <div class="form-group row">
@@ -154,8 +213,20 @@
                       >상태 변경</label
                     >
                     <div class="col">
-                      <button class="btn btn_activated active">활성화</button>
-                      <button class="btn btn_activated">비활성화</button>
+                      <button
+                        class="btn btn_activated"
+                        :class="studentInfo.status ? 'active' : ''"
+                        @click="$emit('click-statusTrue')"
+                      >
+                        활성화
+                      </button>
+                      <button
+                        class="btn btn_activated"
+                        :class="!studentInfo.status ? 'active' : ''"
+                        @click="$emit('click-statusFalse')"
+                      >
+                        비활성화
+                      </button>
                     </div>
                   </div>
                   <div class="form-group row">
@@ -164,13 +235,21 @@
                     >
                     <div class="col">
                       <button
-                        class="btn btn_activated active"
+                        class="btn btn_activated"
                         data-toggle="modal"
                         data-target="#modalReassignstudent"
+                        :class="studentInfo.student_status ? 'active' : ''"
+                        @click="$emit('click-stuStatusTrue')"
                       >
                         재원
                       </button>
-                      <button class="btn btn_activated">퇴원</button>
+                      <button
+                        class="btn btn_activated"
+                        :class="!studentInfo.student_status ? 'active' : ''"
+                        @click="$emit('click-stuStatusFalse')"
+                      >
+                        퇴원
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -188,18 +267,17 @@
                       >출결번호</label
                     >
                     <div class="col">
-                      <input
+                      <CustomOperationInput
+                        id="attendance_num"
+                        name="출결번호"
+                        placeholder="출결번호입력"
+                        rules="attendance"
                         type="text"
-                        placeholder=""
-                        class="form-control form-inline"
-                        value="12345"
+                        :isIdCheckBtn="true"
+                        :inputValue="studentInfo.attendance_num"
+                        :isStudentInput="true"
+                        @change-input="$emit('change-input', $event)"
                       />
-                      <button class="btn btn_crud_default overlap_btn">
-                        중복체크
-                      </button>
-                      <span class="exp_txt"
-                        >출결번호는 5자리 숫자로 입력하세요.</span
-                      >
                     </div>
                   </div>
                   <div class="form-group row">
@@ -207,11 +285,14 @@
                       >학생 연락처</label
                     >
                     <div class="col">
-                      <input
+                      <CustomOperationInput
+                        id="phone"
+                        name="학생 연락처"
+                        placeholder="학생 연락처입력"
                         type="text"
-                        placeholder=""
-                        class="form-control"
-                        value="010-1234-5678"
+                        :isStudentInput="true"
+                        :inputValue="studentInfo.phone"
+                        @change-input="$emit('change-input', $event)"
                       />
                     </div>
                   </div>
@@ -220,11 +301,14 @@
                       >학교 이름</label
                     >
                     <div class="col">
-                      <input
+                      <CustomOperationInput
+                        id="school"
+                        name="학교 이름"
+                        placeholder="학교 이름입력"
                         type="text"
-                        placeholder=""
-                        class="form-control"
-                        value="길동학교"
+                        :isStudentInput="true"
+                        :inputValue="studentInfo.school"
+                        @change-input="$emit('change-input', $event)"
                       />
                     </div>
                   </div>
@@ -233,13 +317,17 @@
                       >수강일</label
                     >
                     <div class="col">
-                      <input
+                      <CustomOperationInput
+                        id="lecture_date"
+                        name="수강일"
+                        placeholder="2022-11-18"
                         type="text"
-                        placeholder=""
-                        class="form-control form_calendar datePicker"
-                        value=""
+                        :inputValue="studentInfo.lecture_date"
+                        :isBirthdayBtn="true"
+                        :isStudentInput="true"
+                        @change-input="$emit('change-input', $event)"
+                        @click-birthday="$emit('click-lecturedate')"
                       />
-                      <button class="btn icons_calendar_off"></button>
                     </div>
                   </div>
                   <div class="form-group row">
@@ -259,13 +347,17 @@
                       >생년월일</label
                     >
                     <div class="col">
-                      <input
+                      <CustomOperationInput
+                        id="birthday"
+                        name="생년월일"
+                        placeholder="2022-11-18"
                         type="text"
-                        placeholder=""
-                        class="form-control form_calendar datePicker"
-                        value=""
+                        :inputValue="studentInfo.birthday"
+                        :isBirthdayBtn="true"
+                        :isStudentInput="true"
+                        @change-input="$emit('change-input', $event)"
+                        @click-birthday="$emit('click-birthday')"
                       />
-                      <button class="btn icons_calendar_off"></button>
                     </div>
                   </div>
                   <div class="form-group row">
@@ -273,11 +365,15 @@
                       >이메일</label
                     >
                     <div class="col">
-                      <input
-                        type="text"
-                        placeholder=""
-                        class="form-control"
-                        value="example@mail.com"
+                      <CustomOperationInput
+                        id="email"
+                        name="이메일"
+                        placeholder="이메일입력"
+                        rules="email"
+                        type="email"
+                        :isStudentInput="true"
+                        :inputValue="studentInfo.email"
+                        @change-input="$emit('change-input', $event)"
                       />
                     </div>
                   </div>
@@ -286,11 +382,14 @@
                       >학부모 연락처</label
                     >
                     <div class="col">
-                      <input
+                      <CustomOperationInput
+                        id="phone"
+                        name="학부모 연락처"
+                        placeholder="학부모 연락처입력"
                         type="text"
-                        placeholder=""
-                        class="form-control"
-                        value="010-1234-5678"
+                        :isStudentInput="true"
+                        :inputValue="studentInfo.parent_phone"
+                        @change-input="$emit('change-input', $event)"
                       />
                     </div>
                   </div>
@@ -304,9 +403,13 @@
                           type="text"
                           placeholder="이름/ID 검색"
                           class="form-control"
+                          :value="familySearchText"
+                          @input="$emit('change-familyInput', $event)"
+                          @keyup.enter="$emit('search-family')"
                         />
                         <div class="input-group-append">
                           <button
+                            id="modalFamilySearch"
                             class="btn icons_search_off"
                             type="button"
                             data-toggle="modal"
@@ -318,28 +421,21 @@
                   </div>
                   <!-- 일촌 id검색 결과 -->
                   <div class="friend_search">
-                    <div class="friends">
-                      <span>홍길동</span><span class="divid"></span
-                      ><span class="frid"
-                        >abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdef</span
-                      >
+                    <div
+                      v-for="(item, idx) in studentInfo.family"
+                      :key="idx"
+                      class="friends"
+                    >
+                      <span>{{ item.name }}</span
+                      ><span class="divid"></span
+                      ><span class="frid">{{ item.account }}</span>
                       <button class="btn btn_crud_default">상세</button>
                       <button
                         class="btn icons_minus_circle_off"
                         type="button"
                         data-toggle="modal"
                         data-target="#modalFriendsDelete"
-                      ></button>
-                    </div>
-                    <div class="friends">
-                      <span>홍길동</span><span class="divid"></span
-                      ><span class="frid">abcdef</span>
-                      <button class="btn btn_crud_default">상세</button>
-                      <button
-                        class="btn icons_minus_circle_off"
-                        type="button"
-                        data-toggle="modal"
-                        data-target="#modalFriendsDelete"
+                        @click="$emit('click-deleteFamily', item.id)"
                       ></button>
                     </div>
                   </div>
@@ -352,17 +448,20 @@
                 <div class="lacture_info">
                   <div class="title">배정받은 강좌 정보</div>
                   <div class="list_area">
-                    <div class="lacture">영어리딩심화 | 심화 A반</div>
-                    <div class="lacture">영어리딩심화 | 심화 A반</div>
-                    <div class="lacture">영어리딩심화 | 심화 A반</div>
-                    <div class="lacture">영어리딩심화 | 심화 A반</div>
+                    <div
+                      v-for="(item, idx) in studentInfo.lectureInfo"
+                      :key="idx"
+                      class="lacture"
+                    >
+                      {{ item }}
+                    </div>
                   </div>
                 </div>
                 <!-- /.배정받은 강좌 정보-->
               </div>
             </div>
             <!-- 사용분류에 따른 하단 버튼 -->
-            <div class="btn_section regi">
+            <!-- <div class="btn_section regi">
               <div class="custom-control custom-checkbox form-inline">
                 <input
                   id="checkbox02"
@@ -381,9 +480,14 @@
               >
                 등록하기
               </button>
-            </div>
+            </div> -->
             <div class="btn_section">
-              <button class="btn btn_crud_default" data-dismiss="modal">
+              <button
+                class="btn btn_crud_default"
+                data-dismiss="modal"
+                data-toggle="modal"
+                data-target="#modalPwchange"
+              >
                 비밀번호 초기화
               </button>
               <span class="exp_txt"
@@ -412,10 +516,37 @@ export default {
       type: Boolean,
       default: false,
     },
+    nickNameCheck: {
+      type: Boolean,
+      default: false,
+    },
     studentInfo: {
       type: Object,
       default: () => {},
     },
+    familySearchText: {
+      type: String,
+      default: '',
+    },
+  },
+  data() {
+    return {
+      today: Date(),
+      gradeList: [
+        { id: 0, title: '초1' },
+        { id: 1, title: '초2' },
+        { id: 2, title: '초3' },
+        { id: 3, title: '초4' },
+        { id: 4, title: '초5' },
+        { id: 5, title: '초6' },
+        { id: 6, title: '중1' },
+        { id: 7, title: '중2' },
+        { id: 8, title: '중3' },
+        { id: 9, title: '고1' },
+        { id: 10, title: '고2' },
+        { id: 11, title: '고3' },
+      ],
+    }
   },
 }
 </script>
@@ -423,5 +554,30 @@ export default {
 .invalid_text {
   height: 5px;
   margin-top: -32px !important;
+}
+.modal-index {
+  z-index: 999;
+}
+.profile_img {
+  width: 108px;
+  height: 108px;
+  object-fit: cover;
+  border-radius: 55px;
+}
+.profile_images_area {
+  width: 100%;
+  height: 170px;
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+.profile_photo {
+  border-radius: 50;
+  background-size: cover;
+  background-position: center;
+}
+.form-control[readonly] {
+  background-color: #ffffff;
+  opacity: 1;
 }
 </style>

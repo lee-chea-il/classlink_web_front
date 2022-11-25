@@ -20,7 +20,11 @@
         autocomplete="off"
         @input="$emit('change-input', $event)"
       />
-      <button v-if="isIdCheckBtn" class="btn btn_crud_default btn-custom">
+      <button
+        v-if="isIdCheckBtn"
+        class="btn btn_crud_default"
+        :class="isStudentInput ? 'btn-custom2' : 'btn-custom'"
+      >
         중복체크
       </button>
       <button
@@ -47,7 +51,7 @@
       <div
         v-if="isStudentInput"
         class="invalid_text text-set"
-        :class="isIdCheckBtn ? 'text-idcheck ' : ''"
+        :class="isIdCheckBtn ? 'idcheck-msg' : ''"
       >
         {{ errors[0] }}
       </div>
@@ -148,5 +152,16 @@ button {
 .text-idcheck {
   margin-top: -22px !important;
   line-height: 12px;
+}
+.idcheck-msg {
+  margin-top: -7px !important;
+  line-height: 12px;
+  height: 6px !important;
+}
+.btn-custom2 {
+  width: 58px !important;
+  margin-top: 12px;
+  white-space: normal;
+  line-height: 14px !important;
 }
 </style>

@@ -9,11 +9,11 @@
     >
       <Treeview
         ref="curriculum"
-        :expanded="false"
+        :expanded="true"
         :dataList="myData"
         identity="master"
         :pidNum="2000"
-        @file-view="$emit('file-view', $event)"
+        @open-data="$emit('open-data', $event)"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @download-data="$emit('download-data', $event)"
         @update-data="$emit('update-data', $event)"
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import Treeview from '~/components/common/custom/CustomReferenceTreeView.vue'
+import Treeview from '~/components/common/MainTreeView.vue'
 
 export default {
   name: 'RightTreeTab',

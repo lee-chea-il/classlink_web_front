@@ -12,7 +12,11 @@
         <div class="modal-body">
           <div class="cnts_section">
             <!-- 왼쪽 SECTION -->
-            <LeftSection :teacherList="teacherList" />
+            <LeftSection
+              :teacherList="teacherList"
+              :curriculumList="curriculumList"
+              @plus-event-click="plusEventClick"
+            />
             <!-- 왼쪽 SECTION -->
 
             <!-- 오른쪽 SECTION -->
@@ -60,6 +64,11 @@ export default {
       default: () => [],
     },
   },
+  methods:{
+    plusEventClick(node){
+      
+    }
+  }
 }
 </script>
 <style scoped>

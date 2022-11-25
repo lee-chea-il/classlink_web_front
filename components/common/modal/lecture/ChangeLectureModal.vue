@@ -41,12 +41,7 @@
             <button class="btn btn_crud_default" @close="$emit('close')">
               취소
             </button>
-            <button
-              class="btn btn_crud_point"
-              data-dismiss="modal"
-              data-toggle="modal"
-              data-target="#modalLectureRegi02"
-            >
+            <button class="btn btn_crud_point" @click="$emit('next-button')">
               다음
             </button>
           </div>

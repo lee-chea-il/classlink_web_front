@@ -12,7 +12,7 @@
       <div class="background_close" @click="$emit('close')"></div>
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-          <ModalHeader title="강좌 만들기" @close="$emit('close')" />
+          <ModalHeader title="강좌 수정" @close="$emit('close')" />
           <div class="modal-body">
             <div class="title">커리큘럼 배정</div>
             <div class="cnts_section">
@@ -276,17 +276,10 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button
-              class="btn btn_crud_default"
-              data-dismiss="modal"
-              data-toggle="modal"
-              data-target="#modalLectureRegi03"
-            >
+            <button class="btn btn_crud_default" @click="$emit('prev-button')">
               이전
             </button>
-            <button class="btn btn_crud_point" data-dismiss="modal">
-              개설
-            </button>
+            <button class="btn btn_crud_point">개설</button>
           </div>
         </div>
       </div>

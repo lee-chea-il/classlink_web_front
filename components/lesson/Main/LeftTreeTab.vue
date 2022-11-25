@@ -7,12 +7,13 @@
       role="tabpanel"
       aria-labelledby="grade-tab"
     >
-      <LessonMainTreeView
+      <MainTreeView
         ref="institution"
         :dataList="institutionData"
         :editable="identity == 'master' ? true : false"
         :identity="identity"
         :pidNum="0"
+        :isHideDownload="isHideDownload"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @open-data="setOpenData"
         @update-data="$emit('update-data', $event)"
@@ -27,12 +28,13 @@
       role="tabpanel"
       aria-labelledby="class-tab"
     >
-      <LessonMainTreeView
+      <MainTreeView
         ref="franchise"
         :dataList="franchiseData"
         :editable="identity == 'master' ? true : false"
         :identity="identity"
         :pidNum="1000"
+        :isHideDownload="isHideDownload"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @open-data="setOpenData"
         @update-data="$emit('update-data', $event)"
@@ -44,11 +46,11 @@
 </template>
 
 <script>
-import LessonMainTreeView from '~/components/lesson/custom/LessonMainTreeView.vue'
+import MainTreeView from '~/components/common/MainTreeView.vue'
 export default {
   name: 'LeftTreeTab',
   components: {
-    LessonMainTreeView,
+    MainTreeView,
   },
   props: {
     institutionData: {
@@ -63,10 +65,14 @@ export default {
       type: String,
       default: '',
     },
+    isHideDownload: {
+      type: Boolean,
+      default: true
+    }
   },
   methods: {
-    setOpenData(e, item) {
-      this.$emit('open-data', e, item)
+    setOpenData(e) {
+      this.$emit('open-data', e)
     },
   },
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(item, idx) in quizList" :key="item.id" class="info_area">
+    <div v-for="(item, idx) in quizList" :key="idx" class="info_area">
       <div v-if="currentIdx === idx" class="row">
         <div class="quiz_area">
           <div class="tit">

@@ -29,11 +29,10 @@
               :institutionData="receiveInstitutionData"
               :franchiseData="receiveFranchiseData"
               :identity="identity"
-              @file-view="onClickView"
+              @open-data="onClickView"
               @copyDataCallBack="copyDataCallBack"
               @download-data="downloadSelectData"
               @update-data="updateSelectData"
-              @drop="dropItem"
             />
             <!-- /.탭 컨텐츠 -->
           </div>
@@ -46,11 +45,10 @@
             <RightTreeTab
               ref="myData"
               :myData="receiveMyData"
-              @file-view="onClickView"
+              @open-data="onClickView"
               @copyDataCallBack="copyDataCallBack"
               @download-data="downloadSelectData"
               @update-data="updateSelectData"
-              @drop="dropItem"
             />
             <!-- /.탭 컨텐츠 -->
           </div>
@@ -300,7 +298,9 @@
     <ReferenceFilterModal
       :open="isFilterModal.open"
       :searchData="searchData"
-      @change-data="changeSearchData"
+      :typeList="typeList"
+      :subjectList="subjectList"
+      :categoryList="categoryList"
       @close="closeFilterModal"
       @search-list-view="openSearchListModal"
       @click-item="changeSearchData"
@@ -402,6 +402,17 @@ export default {
   data() {
     return initialState()
   },
+  // watch: {
+  //   searchData: {
+  //     handler(value) {
+  //       console.log(value)
+  //       if (value.type.length === this.typeList.length - 1) {
+  //         value.type = []
+  //       }
+  //     },
+  //     deep: true,
+  //   },
+  // },
   methods: {
     // Modal Event
     openModalDesc(tit, msg) {
@@ -564,7 +575,6 @@ export default {
         open: true,
         prevPage: prevPath,
       }
-
       if (page === 'first') {
         this.currentPageIdx = 0
       }
@@ -593,7 +603,9 @@ export default {
     },
 
     onOpenShareViewModal(path, url) {
-      this[path] = false
+      if (this[path]) {
+        this[path] = false
+      }
       this.isShareViewModal = {
         open: true,
         path,
@@ -607,7 +619,9 @@ export default {
     },
 
     onOpenSavePathModal(path) {
-      this[path] = false
+      if (this[path]) {
+        this[path] = false
+      }
       this.isSavePathModal = {
         open: true,
         prevPage: path,
@@ -645,27 +659,33 @@ export default {
     },
 
     closeSearchListModal() {
-      this.isSearchListModal = false
+      return (this.isSearchListModal = false)
+    },
+
+    matchFilterArrayName(name) {
+      if (name === 'type') return 'typeList'
+      else if (name === 'subject') return 'subjectList'
+      else return 'categoryList'
     },
 
     // 자료 검색 내용 change Event
-    changeSearchData({ target: { name, checked, dataset, value } }) {
+    changeSearchData(e) {
+      const { name, checked, dataset, value } = e.target
       const result = this.searchData
+      const idx = result[name]?.findIndex((item) => item === dataset.value)
       if (name === 'word') {
         const newValue = value
         return (result[name] = newValue)
-      } else {
-        const idx = result[name]?.findIndex((item) => item === dataset.value)
-        if (checked) {
-          if (dataset.value === '전체') {
-            return (result[name] = [])
-          } else {
-            return (result[name] = [...result[name], dataset.value])
-          }
-        } else {
-          return result[name].splice(idx, 1)
-        }
-      }
+      } else if (checked) {
+        if (dataset.value === '전체') return (result[name] = [])
+        else if (
+          result[name].length ===
+          this[this.matchFilterArrayName(name)].length - 2
+        ) {
+          result[name] = []
+          return (e.target.checked = false)
+        } else return (result[name] = [...result[name], dataset.value])
+      } else return result[name].splice(idx, 1)
     },
 
     // 필터링 시 이름 return
@@ -731,8 +751,8 @@ export default {
 
     // 검색결과에서 상세 보기
     onClickViewDetail(data) {
-      this.isSearchListModal = false
       this.onClickView(data)
+      this.isSearchListModal = false
     },
 
     // 등록 자료 내용 변경
@@ -1030,11 +1050,6 @@ export default {
     },
 
     // 쪽지 시험
-    // 쪽지시험 변경 UI
-    onClickNoteTestList(idx) {
-      this.currentPageIdxio = idx
-    },
-
     // 쪽지 시험 추가
     onPlusNoteTestList() {
       if (this.referenceData.noteTestList.length <= 19) {
@@ -1059,7 +1074,6 @@ export default {
 
     // 정답 입력
     onSelectAnswer(idx, targetIdx) {
-      console.log(idx, targetIdx)
       this.referenceData.noteTestList[idx].answer = Number(targetIdx + 1)
     },
 
@@ -1166,8 +1180,7 @@ export default {
 
     // json으로 변환 후 return
     jsonItem(data) {
-      const spare = JSON.stringify(data, this.getCircularReplacer())
-      return JSON.parse(spare)
+      return JSON.parse(JSON.stringify(data, this.getCircularReplacer()))
     },
 
     // 다운로드 a태그 만들기
@@ -1185,11 +1198,8 @@ export default {
       const newItem = this.jsonItem(data)
       this.referenceData = newItem
       const type = newItem.uploadType
-      if (type === 'quiz') {
-        return this.exportPdf('quiz')
-      } else if (type === 'test') {
-        return this.exportPdf('test')
-      }
+      if (type === 'quiz') return this.exportPdf('quiz')
+      else if (type === 'test') return this.exportPdf('test')
       return this.createAtag(newItem.fileUrl)
     },
 
@@ -1197,21 +1207,9 @@ export default {
     updateSelectData(data) {
       this.referenceData = this.jsonItem(data)
       const type = data.uploadType
-
-      console.log(type)
-      if (type === 'quiz') {
-        this.onOpenQuizChangeModal()
-      } else if (type === 'test') {
-        this.onOpenNoteTestChangeModal()
-      } else {
-        this.onOpenReferenceChangeModal()
-      }
-    },
-
-    // drop시 이벤트
-    dropItem(data) {
-      const parent = this.jsonItem(data)
-      console.log(parent)
+      if (type === 'quiz') return this.onOpenQuizChangeModal()
+      else if (type === 'test') return this.onOpenNoteTestChangeModal()
+      else return this.onOpenReferenceChangeModal()
     },
   },
 }

@@ -19,9 +19,10 @@
             <EducationTabMenu />
             <LeftTreeTab
               ref="education"
-              :identity="identity"
               :institutionData="receiveInstitutionLessonData"
               :franchiseData="receiveFranchiseLessonData"
+              :identity="identity"
+              :isHideDownload="false"
               @copyDataCallBack="copyDataCallBack"
               @open-data="openLessonBrowseModal"
               @update-data="openLessonChangeModal"
@@ -32,8 +33,11 @@
             <!-- 오른쪽 영역 -->
             <MyTabMenu title="내 레슨" />
             <RightTreeTab
-              ref="myData" :receiveLessonList="receiveLessonList"
+              ref="myData"
+              :receiveLessonList="receiveLessonList"
+              :isHideDownload="false"
               @open-data="openLessonBrowseModal"
+              @update-data="openLessonChangeModal"
             />
           </div>
         </div>
@@ -49,6 +53,7 @@
       :receiveInstitutionLessonData="receiveInstitutionLessonData"
       :receiveFranchiseLessonData="receiveFranchiseLessonData"
       :createLessonData="createLessonData"
+      :referenceList="treeReferenceList"
       :receiveInstitutionData="receiveInstitutionData"
       :receiveFranchiseData="receiveFranchiseData"
       :pushKeyword="pushKeyword"
@@ -64,6 +69,7 @@
       @set-lesson="setLessonFlag"
       @set-keyword="setKeyword"
       @open-save-path="openSavePathModal"
+      @submit="onSubmitAddLesson"
     />
 
     <!-- 레슨 변경 -->
@@ -71,6 +77,7 @@
       :open="isChangeLesson.open"
       :identity="identity"
       :isLesson="isLesson"
+      :referenceList="treeReferenceList"
       :receiveInstitutionLessonData="receiveInstitutionLessonData"
       :receiveFranchiseLessonData="receiveFranchiseLessonData"
       :createLessonData="changeLessonItem"
@@ -89,6 +96,7 @@
       @open-data="openLessonBrowseModal"
       @open-reference="openReference"
       @open-save-path="openSavePathModal"
+      @submit="onSubmitChangeLesson"
     />
 
     <!-- 레슨 열람 -->
@@ -366,7 +374,7 @@ export default {
       this.pushKeyword = value
     },
 
-    // [레슨] 레슨 등록
+    // [레슨] 레슨 등록 모달
     openLessonAdd() {
       this.createLessonData = {
         name: '',
@@ -379,6 +387,7 @@ export default {
         createAt: '',
         referenceList: [],
       }
+      this.treeReferenceList = []
       this.isAddLesson.open = true
     },
 
@@ -386,13 +395,15 @@ export default {
       this.isAddLesson.open = false
     },
 
-    // [레슨] 레슨 수정
+    // [레슨] 레슨 수정 모달
     openLessonChangeModal(data) {
+      console.log(data)
       if (this.isLessonBrowse.open) {
         this.closeLessonBrowseModal()
       }
       const newItem = this.jsonItem(data)
       this.changeLessonItem = newItem
+      this.treeReferenceList = newItem.referenceList
       this.isChangeLesson.open = true
     },
 
@@ -413,6 +424,7 @@ export default {
 
     // [레슨] 조회 열기
     openLessonBrowseModal(item, prev) {
+      console.log('나는')
       if (this.isAddLesson.open === true) {
         this.closeLessonAdd()
       }
@@ -505,14 +517,13 @@ export default {
       const list = this.jsonItem(children)
       const filterItem = list.filter((item) => item.dbIdx !== -1)
       this.treeReferenceList = filterItem
-      console.log(this.treeReferenceList)
     },
 
     // [레슨] 수정페이지 레슨에  추가
     addChangePageReferenceOfLesson({ children }) {
       const list = this.jsonItem(children)
       const filterItem = list.filter((item) => item.dbIdx !== -1)
-      return (this.changeLessonItem.referenceList = filterItem)
+      return (this.treeReferenceList = filterItem)
     },
 
     // [레슨] 레슨 지우기
@@ -520,14 +531,14 @@ export default {
       const newArray = this.treeReferenceList
       const filterItem = newArray.filter((data) => data.id !== id)
       this.treeReferenceList = filterItem
-      console.log(this.treeReferenceList)
     },
 
     // [레슨] 수정 페이지 레슨 지우기
-    removeReferenceOfLessonItemChange({ id }) {
-      const newArray = this.changeLessonItem.referenceList
-      const filterItem = newArray.filter((data) => data.id !== id)
-      return (this.changeLessonItem.referenceList = filterItem)
+    removeReferenceOfLessonItemChange({ name }) {
+      console.log(name)
+      const newArray = this.treeReferenceList
+      const filterItem = newArray.filter((data) => data.name !== name)
+      return (this.treeReferenceList = filterItem)
     },
 
     // [레슨] 레슨 수정
@@ -578,13 +589,24 @@ export default {
       this.createLessonData.keyword.splice(idx, 1)
     },
 
+    // [레슨] 레슨 추가 Submit (임시)
+    onSubmitAddLesson() {
+      // 레슨 추가시 tree자료로 바꾸기 임시
+      return (this.createLessonData.referenceList = this.treeReferenceList)
+    },
+
+    // [레슨] 레슨 수정 Submit (임시)
+    onSubmitChangeLesson() {
+      // 레슨 등록시 tree자료로 바꾸기 임시
+      return (this.changeLessonItem.referenceList = this.treeReferenceList)
+    },
+
     // [자료실] 자료 클릭시 해당자료 열기
     openReference(item, prev) {
       if (this[prev]) {
         this[prev].open = false
       }
       this.setReference(item)
-      console.log(item.uploadType)
       if (item.uploadType === 'quiz') return this.openBrowseQuiz(prev)
       else if (item.uploadType === 'test') return this.openBrowseNoteTest(prev)
       else return this.openReferenceBrowse(prev)
@@ -821,7 +843,7 @@ export default {
 
     // [자료실] 퀴즈 변경 UI
     onClickPagination(idx) {
-      this.currentIdx = idx
+      this.currentIdx = Number(idx)
     },
 
     // [자료실] 퀴즈 지우기
@@ -840,19 +862,16 @@ export default {
 
     // [자료실] 퀴즈 추가
     onPlusQuizList() {
-      if (this.selectReferenceItem.quizList.length <= 19) {
-        const quizItem = {
-          id: this.selectReferenceItem.quizList.length + 1,
-          problem: '',
-          dificultade: 0,
-          limitTime: 0,
-          quizType: 0,
-          oxAnswer: 0,
-          shortAnswer: '',
-          subjectiveAnswer: '',
-          shortWrongAnswer: '',
-        }
-        this.selectReferenceItem.quizList.push(quizItem)
+      const target = this.selectReferenceItem
+      const isLength = target.quizList.length <= 19
+      if (isLength) {
+        target.quizList = [
+          ...target.quizList,
+          {
+            ...this.quizItem,
+            id: target.length + 1,
+          },
+        ]
       }
     },
 
@@ -891,42 +910,23 @@ export default {
 
     // [자료실] 쪽지시험 내용 수정
     onChangeTest({ target: { value, name, type, checked } }, idx) {
+      const item = this.selectReferenceItem.noteTestList[idx]
       if (type === 'checkbox') {
-        if (checked) {
-          this.selectReferenceItem.noteTestList[idx][name] = true
-        } else {
-          this.selectReferenceItem.noteTestList[idx][name] = false
-        }
-      } else {
-        this.selectReferenceItem.noteTestList[idx][name] = value
-      }
-    },
-
-    // 퀴즈 변경 UI
-    onClickNoteTestList(idx) {
-      this.currentPageIdxio = idx
+        if (checked) return (item[name] = true)
+        else return (item[name] = false)
+      } else return (item[name] = value)
     },
 
     // 쪽지 시험 추가
     onPlusNoteTestList() {
-      if (this.selectReferenceItem.noteTestList.length <= 19) {
-        const noteTestItem = {
-          id: this.selectReferenceItem.noteTestList.length,
-          problem: '',
-          exampleList: [
-            { id: '', example: '' },
-            { id: '', example: '' },
-            { id: '', example: '' },
-            { id: '', example: '' },
-            { id: '', example: '' },
-          ],
-          dificultade: 0,
-          limitTime: '',
-          answer: 0,
-        }
-
-        this.selectReferenceItem.noteTestList.push(noteTestItem)
-      }
+      const target = this.selectReferenceItem
+      const isLength = target.noteTestList.length <= 19
+      const setId = target.noteTestList.length + 1
+      if (isLength)
+        return (target.noteTestList = [
+          ...target.noteTestList,
+          { ...this.testItem, id: setId },
+        ])
     },
 
     // 정답 입력
@@ -1007,14 +1007,15 @@ export default {
     pasteData() {
       this.$refs.myData.$refs.curriculum.pasteData(this.copyCheckData)
     },
+
     // [트리]
     delData() {
       this.$refs.myData.$refs.curriculum.delData()
     },
+
     // [트리]
     copyDataCallBack(copyData) {
       this.copyCheckData = copyData
-      console.log(this.copyCheckData)
     },
   },
 }

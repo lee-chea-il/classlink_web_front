@@ -16,11 +16,9 @@
     @more-menu-view="moreMenuView"
     @more-menu-dell="moreMenuDell"
     @more-menu-copy="copyData"
-    @drop-before="$emit('drop', $event)"
   >
     <span slot="addTreeNodeIcon" class="icon">＋</span>
     <span slot="addLeafNodeIcon" class="icon"></span>
-
     <span slot="addTreeNodeIcon" class="icon"></span>
     <span slot="delNodeIcon" class="icon"></span>
   </vue-tree-list>
@@ -65,15 +63,6 @@ export default {
       pid: this.pidNum,
     }
   },
-  // watch: {
-  //   datas: {
-  //     deep: true,
-  //     handler(newValue, oldValue) {
-  //       console.log(newValue)
-  //       this.$emit('drop', newValue)
-  //     },
-  //   },
-  // },
   mounted() {
     const setListItem = (listData) => {
       this.receiveDataList = listData
@@ -161,9 +150,9 @@ export default {
     copyData() {
       let idNum = new Date().valueOf()
       function _dfs(oldNode) {
-        const newNode={}
+        const newNode = {}
         if (oldNode.isChecked) {
-          for(const item in oldNode){
+          for (const item in oldNode) {
             newNode[item] = oldNode[item]
           }
           newNode.children = []
@@ -188,14 +177,14 @@ export default {
       function _addNode(parentNode, oldNode) {
         let node, i, len
         if (oldNode.name) {
-          const newNode={}
-          for(const item in oldNode){
+          const newNode = {}
+          for (const item in oldNode) {
             newNode[item] = oldNode[item]
           }
           newNode.children = []
           newNode.id = idNum
           newNode.isChecked = false
-          
+
           node = new TreeNode(newNode)
           parentNode.addChildren(node)
           idNum++

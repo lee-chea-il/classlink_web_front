@@ -9,11 +9,13 @@
     >
       <TreeView
         ref="curriculum"
-        :expanded="false"
+        :expanded="true"
         :dataList="receiveLessonList"
         identity="master"
         :pidNum="2000"
+        :isHideDownload="isHideDownload"
         @open-data="setOpenData"
+        @update-data="$emit('update-data', $event)"
       />
     </div>
     <!-- /.탭 내용01 -->
@@ -21,7 +23,7 @@
 </template>
 
 <script>
-import TreeView from '~/components/lesson/custom/LessonMainTreeView.vue'
+import TreeView from '~/components/common/MainTreeView.vue'
 export default {
   name: 'RightTreeTab',
   components: {
@@ -32,6 +34,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    isHideDownload: {
+      type: Boolean,
+      default: true
+    }
   },
   methods: {
     setOpenData(e, item) {

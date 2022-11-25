@@ -41,39 +41,40 @@ export default {
       return { background: this.weekData?.bgColor }
     },
     isSchedule() {
-      let start = 0
-      let end = 0
-      let currentTime = 0
-      let isTime = false
-      let isWeekNoTime = false
       if (this.weekData) {
-        const { startTime, endTime } = this.weekData
-        start = Number(startTime.replace(':', ''))
-        end = Number(endTime.replace(':', ''))
-        currentTime = this.currentTime
-        isTime = currentTime === Number(start)
-        isWeekNoTime = currentTime > start && currentTime < end
-      }
-      if (isWeekNoTime) return 2
-      else if (isTime) return 1
-      else return 3
+        const { startTime } = this.weekData
+        const start = Number(startTime.replace(':', ''))
+        const isTime = this.currentTime === start
+        if (isTime) return 1
+        else return 2
+      } else return 3
     },
     rowSpanIdx() {
       const { startTime, endTime } = this.weekData
-      const setNum = (item) => Number(item.replace(':', '').substr(0, 2))
-      const endNum = (item) => Number(item.replace(':', '').substr(2, 4))
-      const isHarf = (item) => endNum(item) === 30
-      const result = (setNum(endTime) - setNum(startTime)) * 2
-      if (setNum(endTime) === setNum(startTime)) return 1
-      else if (isHarf(startTime) && isHarf(endTime)) return result + 2
-      else if (!isHarf(startTime) && !isHarf(endTime)) return result + 1
-      else return result
+      return this.setEnd(endTime) - this.setStart(startTime)
     },
   },
   methods: {
     isTrue(idx) {
       if (idx % 6 === 0) return 'half-hour lined'
       else return 'half-hour'
+    },
+    getMin(item) {
+      return item.substr(2, 4) === '30'
+    },
+    decimal(item) {
+      return (Number(item) + 20) / 50
+    },
+    essence(item) {
+      return Number(item) / 50
+    },
+    setStart(item) {
+      if (this.getMin(item)) return this.decimal(item)
+      else return this.essence(item)
+    },
+    setEnd(item) {
+      if (this.getMin(item)) return this.decimal(item)
+      else return this.essence(item)
     },
   },
 }

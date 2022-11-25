@@ -69,7 +69,7 @@
                       role="tabpanel"
                       aria-labelledby="grade-tab"
                     >
-                      <LessonMainTreeView
+                      <LessonModalTreeView
                         ref="institution"
                         listType="lesson"
                         :dataList="receiveInstitutionLessonData"
@@ -88,7 +88,7 @@
                       role="tabpanel"
                       aria-labelledby="class-tab"
                     >
-                      <LessonMainTreeView
+                      <LessonModalTreeView
                         ref="franchise"
                         listType="lesson"
                         :dataList="receiveFranchiseData"
@@ -109,7 +109,7 @@
                       role="tabpanel"
                       aria-labelledby="grade-tab"
                     >
-                      <LessonMainTreeView
+                      <LessonModalTreeView
                         ref="myLesson"
                         listType="lesson"
                         :dataList="receiveInstitutionData"
@@ -128,7 +128,7 @@
                       role="tabpanel"
                       aria-labelledby="class-tab"
                     >
-                      <LessonMainTreeView
+                      <LessonModalTreeView
                         ref="franchise"
                         listType="lesson"
                         :dataList="receiveFranchiseData"
@@ -149,6 +149,7 @@
                 <RightSection
                   :isChange="true"
                   :lessonData="createLessonData"
+                  :referenceList="referenceList"
                   :pushKeyword="pushKeyword"
                   @change-lesson="$emit('change-lesson', $event)"
                   @add-reference="$emit('add-reference', $event)"
@@ -166,7 +167,9 @@
           </div>
           <div class="modal-footer">
             <!-- [개발참조] 레슨등록 시 출력되는 버튼 -->
-            <button class="btn btn_crud_point">등록</button>
+            <button class="btn btn_crud_point" @submit="$emit('submit')">
+              등록
+            </button>
             <button
               class="btn btn_crud_default"
               data-dismiss="modal"
@@ -188,49 +191,23 @@
 <script>
 import ModalHeader from '../../ModalHeader.vue'
 import TopNavigation from '~/components/lesson/lessonAdd/TopNavigaion.vue'
-import LessonMainTreeView from '~/components/lesson/custom/CustomReferenceTreeView.vue'
+import LessonModalTreeView from '~/components/lesson/custom/CustomReferenceTreeView.vue'
 import RightSection from '~/components/lesson/lessonAdd/RightSection.vue'
 
 export default {
   name: 'LessonChangeModal',
-  components: { ModalHeader, TopNavigation, LessonMainTreeView, RightSection },
+  components: { ModalHeader, TopNavigation, LessonModalTreeView, RightSection },
   props: {
-    open: {
-      type: Boolean,
-      default: false,
-    },
-    identity: {
-      type: String,
-      default: '',
-    },
-    isLesson: {
-      type: Boolean,
-      default: false,
-    },
-    receiveInstitutionLessonData: {
-      type: Array,
-      default: () => [],
-    },
-    receiveFranchiseLessonData: {
-      type: Array,
-      default: () => [],
-    },
-    createLessonData: {
-      type: Object,
-      default: () => {},
-    },
-    receiveInstitutionData: {
-      type: Array,
-      default: () => [],
-    },
-    receiveFranchiseData: {
-      type: Array,
-      default: () => [],
-    },
-    pushKeyword: {
-      type: String,
-      default: '',
-    },
+    open: { type: Boolean, default: false },
+    identity: { type: String, default: '' },
+    isLesson: { type: Boolean, default: false },
+    receiveInstitutionLessonData: { type: Array, default: () => [] },
+    receiveFranchiseLessonData: { type: Array, default: () => [] },
+    createLessonData: { type: Object, default: () => {} },
+    referenceList: { type: Array, default: () => [] },
+    receiveInstitutionData: { type: Array, default: () => [] },
+    receiveFranchiseData: { type: Array, default: () => [] },
+    pushKeyword: { type: String, default: '' },
   },
   methods: {
     // lesson 보는 페이지

@@ -77,6 +77,32 @@ export default function initialState() {
     },
     copyCheckData: [],
     checkList: [],
+    typeList: [
+      { id: 0, name: '전체' },
+      { id: 1, name: '교육기관' },
+      { id: 2, name: '프랜차이즈' },
+      { id: 3, name: '공개자료실' },
+      { id: 4, name: '내 자료' },
+    ],
+    subjectList: [
+      { id: 0, name: '전체' },
+      { id: 1, name: '국어' },
+      { id: 2, name: '영어' },
+      { id: 3, name: '수학' },
+      { id: 4, name: '기타' },
+      { id: 5, name: '논술' },
+      { id: 6, name: '사회' },
+      { id: 7, name: '과학' },
+      { id: 8, name: '미술' },
+      { id: 9, name: '체육' },
+    ],
+    categoryList: [
+      { id: 0, name: '전체' },
+      { id: 1, name: '동영상' },
+      { id: 2, name: '문서' },
+      { id: 3, name: '퀴즈' },
+      { id: 4, name: '쪽지시험' },
+    ],
     receiveInstitutionData: [
       {
         name: '마포 학원',
