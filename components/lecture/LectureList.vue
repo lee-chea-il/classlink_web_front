@@ -3,6 +3,7 @@
     <!-- 검색 영역 -->
     <SearchSection
       :identity="identity"
+      @open-create="$emit('open-create')"
       @delete-item="$emit('delete-item', checkList, 'list')"
     />
     <!-- 검색 영역 -->
@@ -15,10 +16,16 @@
       @open-lecture="$emit('open-lecture', $event)"
       @delete-item="$emit('delete-item', $event)"
       @show-menu="$emit('show-menu', $event)"
+      @open-select-curriculum="$emit('open-select-curriculum')"
     />
     <!-- /.테이블 영역 -->
     <!-- 페이징 영역 -->
-    <PaginationSection />
+    <PaginationSection
+      :numberList="numberList"
+      :currentPage="currentPage"
+      @pagination="$emit('pagination', $event)"
+      @paging-derection="$emit('paging-derection', $event)"
+    />
     <!-- /.페이징 영역 -->
   </div>
 </template>
@@ -36,6 +43,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    numberList: {
+      type: Array,
+      default: () => [],
+    },
     checkList: {
       type: Array,
       default: () => [],
@@ -43,6 +54,10 @@ export default {
     identity: {
       type: String,
       default: 'teacher',
+    },
+    currentPage: {
+      type: Number,
+      default: 1,
     },
   },
 }

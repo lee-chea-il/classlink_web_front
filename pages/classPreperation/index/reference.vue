@@ -5,55 +5,30 @@
     <div class="tab-content depth03 ac_manage_dtr">
       <div class="tab-pane active">
         <!-- 컨트롤 버튼 영역 -->
-        <SearchSection
-          :open="isSearchListModal"
+        <MainBtnBox
           :value="searchData.word"
+          pageType="reference"
           @open-filter="openFilterModal"
           @open-search-List="openSearchListModal"
+          @change-word="changeSearchData"
           @copy="copyData"
           @paste="pasteData"
           @delete="delData"
-          @change-word="changeSearchData"
         />
         <!-- /.컨트롤 버튼 영역 -->
 
         <!-- 2단 분류 컨텐츠 -->
-        <div class="divide_section">
-          <!-- 왼쪽 영역 -->
-          <div class="divide_area left">
-            <!-- 탭 컨텐츠 -->
-            <EducationTabMenu />
-
-            <LeftTreeTab
-              ref="education"
-              :institutionData="receiveInstitutionData"
-              :franchiseData="receiveFranchiseData"
-              :identity="identity"
-              @open-data="onClickView"
-              @copyDataCallBack="copyDataCallBack"
-              @download-data="downloadSelectData"
-              @update-data="updateSelectData"
-            />
-            <!-- /.탭 컨텐츠 -->
-          </div>
-          <!-- /.왼쪽 영역 -->
-
-          <!-- 오른쪽 영역 -->
-          <div class="divide_area right">
-            <!-- 탭 컨텐츠 -->
-            <MyTabMenu title="내 자료" />
-            <RightTreeTab
-              ref="myData"
-              :myData="receiveMyData"
-              @open-data="onClickView"
-              @copyDataCallBack="copyDataCallBack"
-              @download-data="downloadSelectData"
-              @update-data="updateSelectData"
-            />
-            <!-- /.탭 컨텐츠 -->
-          </div>
-          <!-- /.오른쪽 영역 -->
-        </div>
+        <TreeSection
+          ref="mainEducation"
+          :institutionData="receiveInstitutionData"
+          :franchiseData="receiveFranchiseData"
+          :identity="identity"
+          :myDataList="receiveMyData"
+          @open-data="onClickView"
+          @copyDataCallBack="copyDataCallBack"
+          @download-data="downloadSelectData"
+          @update-data="updateSelectData"
+        />
         <!-- /.2단 분류 컨텐츠 -->
       </div>
     </div>
@@ -270,9 +245,6 @@
       @close="onCloseShareViewModal"
     />
 
-    <!-- 주소 복사 성공 -->
-    <AddressCopySuccessModal />
-
     <!-- 삭제 모달 -->
     <DeleteModal :open="isSelectModal.open" @close="onCloseSelectModal" />
 
@@ -335,7 +307,7 @@
 import html2pdf from 'html2pdf.js'
 import PageHeader from '~/components/common/PageHeader.vue'
 import ModalDesc from '~/components/common/modal/ModalDesc.vue'
-import SavePathModal from '~/components/common/modal/reference/SavePathModal.vue'
+import SavePathModal from '~/components/common/modal/SavePathModal.vue'
 import ReferenceSelectModal from '~/components/common/modal/reference/ReferenceSelectModal.vue'
 import ReferenceAddModal from '~/components/common/modal/reference/ReferenceAddModal.vue'
 import VideoFileUploadModal from '~/components/common/modal/reference/VideoFileUploadModal.vue'
@@ -348,22 +320,19 @@ import VideoBrowseModal from '~/components/common/modal/reference/VideoBrowseMod
 import QuizBrowseModal from '~/components/common/modal/reference/QuizBrowseModal.vue'
 import NoteTestBrowseModal from '~/components/common/modal/reference/NoteTestBrowseModal.vue'
 import ShareViewModal from '~/components/common/modal/reference/ShareViewModal.vue'
-import AddressCopySuccessModal from '~/components/common/modal/reference/AddressCopySuccessModal.vue'
 import DeleteModal from '~/components/common/modal/reference/DeleteModal.vue'
 import ReferenceChangeModal from '~/components/common/modal/reference/ReferenceChangeModal.vue'
 import QuizChangeModal from '~/components/common/modal/reference/QuizChangeModal.vue'
 import NoteTestChangeModal from '~/components/common/modal/reference/NoteTestChangeModal.vue'
-import { apiReference } from '~/services'
 import QuizPreviewModal from '~/components/common/modal/reference/QuizPreviewModal.vue'
 import NoteTestPreviewModal from '~/components/common/modal/reference/NoteTestPreviewModal.vue'
 import QuizPrintPage from '~/components/reference/QuizPrintPage.vue'
 import NoteTestPrintPage from '~/components/reference/NoteTestPrintPage.vue'
 import initialState from '~/data/reference/initialState'
-import SearchSection from '~/components/reference/main/SearchSection.vue'
-import MyTabMenu from '~/components/common/MyTabMenu.vue'
-import EducationTabMenu from '~/components/common/EducationTabMenu.vue'
-import LeftTreeTab from '~/components/reference/main/LeftTreeTab.vue'
-import RightTreeTab from '~/components/reference/main/RightTreeTab.vue'
+import TreeSection from '~/components/common/TreeSection.vue'
+import MainBtnBox from '~/components/common/MainBtnBox.vue'
+import { apiReference } from '~/services'
+import { urlRegex, youtubeRegex, setNewArray, jsonItem } from '~/utiles/common'
 
 export default {
   name: 'ReferenceRoom',
@@ -383,7 +352,6 @@ export default {
     QuizBrowseModal,
     NoteTestBrowseModal,
     ShareViewModal,
-    AddressCopySuccessModal,
     DeleteModal,
     ReferenceChangeModal,
     QuizChangeModal,
@@ -392,27 +360,13 @@ export default {
     NoteTestPreviewModal,
     QuizPrintPage,
     NoteTestPrintPage,
-    SearchSection,
-    MyTabMenu,
-    EducationTabMenu,
-    LeftTreeTab,
-    RightTreeTab,
+    TreeSection,
+    MainBtnBox,
   },
   layout: 'EducationLayout',
   data() {
     return initialState()
   },
-  // watch: {
-  //   searchData: {
-  //     handler(value) {
-  //       console.log(value)
-  //       if (value.type.length === this.typeList.length - 1) {
-  //         value.type = []
-  //       }
-  //     },
-  //     deep: true,
-  //   },
-  // },
   methods: {
     // Modal Event
     openModalDesc(tit, msg) {
@@ -450,10 +404,13 @@ export default {
     },
 
     onOpenQuizAddModal() {
-      this.referenceData.fileDivision = '교육기관'
-      this.referenceData.fileType = 'quiz'
-      this.referenceData.uploadType = 'quiz'
-      this.referenceData.fileVolume = 0
+      this.referenceData = {
+        ...this.referenceData,
+        fileDivision: '교육기관',
+        fileType: 'quiz',
+        uploadType: 'quiz',
+        fileVolume: '0',
+      }
       this.referenceData.createAt = new Date()
       document.getElementById('referenceSelectClose').click()
       this.isQuizAddModal = true
@@ -464,10 +421,13 @@ export default {
       this.isQuizAddModal = false
     },
     onOpenNoteTestAddModal() {
-      this.referenceData.fileDivision = '교육기관'
-      this.referenceData.fileType = 'test'
-      this.referenceData.uploadType = 'test'
-      this.referenceData.fileVolume = 0
+      this.referenceData = {
+        ...this.referenceData,
+        fileDivision: '교육기관',
+        fileType: 'test',
+        uploadType: 'test',
+        fileVolume: '0',
+      }
       document.getElementById('referenceSelectClose').click()
       this.isNoteTestAddModal = true
     },
@@ -593,13 +553,9 @@ export default {
     onCloseNoteTestPreviewModal() {
       this.isNoteTestPreviewModal.open = false
       const target = this.isNoteTestPreviewModal.prevPage
-      if (target === 'add') {
-        this.isNoteTestAddModal = true
-      } else if (target === 'browse') {
-        this.isNoteTestBrowse = true
-      } else {
-        this.isNoteTestChange = true
-      }
+      if (target === 'add') return (this.isNoteTestAddModal = true)
+      else if (target === 'browse') return (this.isNoteTestBrowse = true)
+      else return (this.isNoteTestChange = true)
     },
 
     onOpenShareViewModal(path, url) {
@@ -672,11 +628,8 @@ export default {
     changeSearchData(e) {
       const { name, checked, dataset, value } = e.target
       const result = this.searchData
-      const idx = result[name]?.findIndex((item) => item === dataset.value)
-      if (name === 'word') {
-        const newValue = value
-        return (result[name] = newValue)
-      } else if (checked) {
+      if (name === 'word') return (result[name] = value)
+      else if (checked) {
         if (dataset.value === '전체') return (result[name] = [])
         else if (
           result[name].length ===
@@ -685,7 +638,10 @@ export default {
           result[name] = []
           return (e.target.checked = false)
         } else return (result[name] = [...result[name], dataset.value])
-      } else return result[name].splice(idx, 1)
+      } else {
+        const idx = result[name]?.findIndex((item) => item === dataset?.value)
+        return result[name].splice(idx, 1)
+      }
     },
 
     // 필터링 시 이름 return
@@ -735,7 +691,7 @@ export default {
     },
 
     onClickDetailView(item) {
-      this.referenceData = JSON.parse(JSON.stringify(item))
+      this.referenceData = jsonItem(item)
     },
 
     // 검색결과 체크박스
@@ -757,44 +713,37 @@ export default {
 
     // 등록 자료 내용 변경
     onChangeUploadFile({ target: { id, value, type, checked, name } }) {
+      const elem = this.referenceData
+      const isCheckbox =
+        name === 'isOpenReference' || name === 'isOpenEducation'
       if (type === 'checkbox') {
-        if (checked) {
-          this.referenceData[id] = true
-        } else {
-          this.referenceData[id] = false
-        }
-      } else if (name === 'isOpenReference' || name === 'isOpenEducation') {
-        this.referenceData[name] = value
-      } else {
-        this.referenceData[id] = value
-      }
+        if (checked) return (elem[id] = true)
+        else return (elem[id] = false)
+      } else if (isCheckbox) return (elem[name] = value)
+      else return (elem[id] = value)
     },
 
     // 유튜브, 링크 변경
     onChangeUrl({ target: { name, value } }) {
-      this.urlData[name] = value
+      return (this.urlData[name] = value)
     },
 
     onChangeQuiz({ target: { value, name } }, idx) {
-      this.referenceData.quizList[idx][name] = value
+      return (this.referenceData.quizList[idx][name] = value)
     },
 
     onChangeTest({ target: { value, name, type, checked } }, idx) {
+      const testElem = this.referenceData.noteTestList[idx]
       if (type === 'checkbox') {
-        if (checked) {
-          this.referenceData.noteTestList[idx][name] = true
-        } else {
-          this.referenceData.noteTestList[idx][name] = false
-        }
-      } else {
-        this.referenceData.noteTestList[idx][name] = value
-      }
+        if (checked) return (testElem[name] = true)
+        else return (testElem[name] = false)
+      } else return (testElem[name] = value)
     },
 
     setKeyword({ target: { value } }) {
       const keywordList = [...this.referenceData.keyword, value]
       this.pushKeyword = ''
-      this.referenceData.keyword = Array.from(new Set(keywordList))
+      this.referenceData.keyword = setNewArray(keywordList)
     },
 
     deleteKeyword(idx) {
@@ -929,8 +878,6 @@ export default {
     // 유튜브 업로드
     onUploadYoutube() {
       this.uploadType = 'youtube'
-      const youtubeRegex =
-        /(http:|https:)?(\/\/)?(www\.)?(youtube.com|youtu.be)\/(watch|embed)?(\?v=|\/)?(\S+)?/g
       const youtubeUrl = this.urlData.youtube.replace('https://youtu.be/', '')
       if (youtubeRegex.test(this.urlData.youtube) === true) {
         this.getYoutubeData(youtubeUrl)
@@ -941,7 +888,6 @@ export default {
 
     // URL 업로드
     onUploadUrl() {
-      const urlRegex = /^(http(s)?:\/\/)([^\/]*)(\.)(com|net|kr|my|shop)/gi
       this.uploadType = 'file'
       const url = this.urlData.page
       this.uploadFile = {
@@ -977,29 +923,24 @@ export default {
 
     // 퀴즈 페이지네이션
     onClickQuizPagination(direction, max) {
-      if (direction === 'plus') {
-        if (this.currentPageIdx < max - 1) this.currentPageIdx += 1
-      } else if (direction === 'min') {
-        if (this.currentPageIdx !== 0) this.currentPageIdx -= 1
-      }
+      const idx = this.currentPageIdx
+      const isPlus = direction === 'plus'
+      if (isPlus) return idx < max - 1 && (this.currentPageIdx += 1)
+      else return idx !== 0 && (this.currentPageIdx -= 1)
     },
 
-    // 퀴즈 리스트 하나 추가
+    //  퀴즈 추가
     onPlusQuizList() {
-      if (this.referenceData.quizList.length <= 19) {
-        const quizItem = {
-          id: this.referenceData.quizList.length + 1,
-          problem: '',
-          dificultade: 0,
-          limitTime: 0,
-          quizType: 0,
-          oxAnswer: 0,
-          shortAnswer: '',
-          subjectiveAnswer: '',
-          shortWrongAnswer: '',
-        }
-        this.referenceData.quizList.push(quizItem)
-      }
+      const target = this.referenceData
+      const isLength = target.quizList.length <= 19
+      if (isLength)
+        return (target.quizList = [
+          ...target.quizList,
+          {
+            ...this.quizItem,
+            id: target.length + 1,
+          },
+        ])
     },
 
     // 선택한 퀴즈 지우기
@@ -1052,24 +993,14 @@ export default {
     // 쪽지 시험
     // 쪽지 시험 추가
     onPlusNoteTestList() {
-      if (this.referenceData.noteTestList.length <= 19) {
-        const noteTestItem = {
-          id: this.referenceData.noteTestList.length,
-          problem: '',
-          exampleList: [
-            { id: '', example: '' },
-            { id: '', example: '' },
-            { id: '', example: '' },
-            { id: '', example: '' },
-            { id: '', example: '' },
-          ],
-          dificultade: 0,
-          limitTime: '',
-          answer: 0,
-        }
-
-        this.referenceData.noteTestList.push(noteTestItem)
-      }
+      const target = this.referenceData
+      const isLength = target.noteTestList.length <= 19
+      const setId = target.noteTestList.length + 1
+      if (isLength)
+        return (target.noteTestList = [
+          ...target.noteTestList,
+          { ...this.testItem, id: setId },
+        ])
     },
 
     // 정답 입력
@@ -1090,7 +1021,7 @@ export default {
 
     // 자료 클릭 이벤트
     onClickSelectData(data) {
-      this.referenceData = JSON.parse(JSON.stringify(data))
+      this.referenceData = jsonItem(data)
       if (data.uploadType === 'quiz') return this.onOpenQuizBrowseModal()
       else if (data.uploadType === 'test')
         return this.onOpenNoteTestBrowseModal()
@@ -1103,7 +1034,7 @@ export default {
     },
 
     onClickView(params) {
-      this.referenceData = this.jsonItem(params)
+      this.referenceData = jsonItem(params)
       const type = params.uploadType
       if (type === 'quiz') return this.onOpenQuizBrowseModal()
       else if (type === 'test') return this.onOpenNoteTestBrowseModal()
@@ -1113,16 +1044,19 @@ export default {
     copyData() {
       const instiTab = document.getElementById('institute')
       if (instiTab.classList.contains('show'))
-        return this.$refs.education.$refs.institution.copyData()
-      else return this.$refs.education.$refs.franchise.copyData()
+        return this.$refs.mainEducation.$refs.education.$refs.institution.copyData()
+      else
+        return this.$refs.mainEducation.$refs.education.$refs.franchise.copyData()
     },
 
     pasteData() {
-      this.$refs.myData.$refs.curriculum.pasteData(this.copyCheckData)
+      this.$refs.mainEducation.$refs.myData.$refs.curriculum.pasteData(
+        this.copyCheckData
+      )
     },
 
     delData() {
-      this.$refs.myData.$refs.curriculum.delData()
+      this.$refs.mainEducation.$refs.myData.$refs.curriculum.delData()
     },
 
     copyDataCallBack(copyData) {
@@ -1164,25 +1098,6 @@ export default {
       }, 1500)
     },
 
-    // 순환 구조를 Json으로 변환
-    getCircularReplacer() {
-      const seen = new WeakSet()
-      return (key, value) => {
-        if (typeof value === 'object' && value !== null) {
-          if (seen.has(value)) {
-            return
-          }
-          seen.add(value)
-        }
-        return value
-      }
-    },
-
-    // json으로 변환 후 return
-    jsonItem(data) {
-      return JSON.parse(JSON.stringify(data, this.getCircularReplacer()))
-    },
-
     // 다운로드 a태그 만들기
     createAtag(path) {
       const downBtn = document.createElement('a')
@@ -1195,17 +1110,17 @@ export default {
 
     // tree menu download button
     downloadSelectData(data) {
-      const newItem = this.jsonItem(data)
+      const newItem = jsonItem(data)
       this.referenceData = newItem
       const type = newItem.uploadType
       if (type === 'quiz') return this.exportPdf('quiz')
       else if (type === 'test') return this.exportPdf('test')
-      return this.createAtag(newItem.fileUrl)
+      return this.createAtag(newItem.savePath)
     },
 
     // tree menu change button
     updateSelectData(data) {
-      this.referenceData = this.jsonItem(data)
+      this.referenceData = jsonItem(data)
       const type = data.uploadType
       if (type === 'quiz') return this.onOpenQuizChangeModal()
       else if (type === 'test') return this.onOpenNoteTestChangeModal()

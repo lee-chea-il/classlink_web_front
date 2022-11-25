@@ -50,6 +50,7 @@ export default {
       type: Boolean,
       default: false,
     },
+
     curriculumList: {
       type: Array,
       default: () => [],

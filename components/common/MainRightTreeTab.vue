@@ -7,10 +7,10 @@
       role="tabpanel"
       aria-labelledby="grade-tab"
     >
-      <Treeview
+      <TreeView
         ref="curriculum"
-        :expanded="true"
-        :dataList="myData"
+        :expanded="false"
+        :dataList="myDataList"
         identity="master"
         :pidNum="2000"
         @open-data="$emit('open-data', $event)"
@@ -18,21 +18,20 @@
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @download-data="$emit('download-data', $event)"
       />
-      <br />
-      <br />
     </div>
     <!-- /.탭 내용01 -->
   </div>
 </template>
 
 <script>
-import Treeview from '~/components/common/MainTreeView.vue'
-
+import TreeView from '~/components/common/MainTreeView.vue'
 export default {
-  name: 'RightTreeTab',
-  components: { Treeview },
+  name: 'MainRightTreeTab',
+  components: {
+    TreeView,
+  },
   props: {
-    myData: {
+    myDataList: {
       type: Array,
       default: () => [],
     },
@@ -48,7 +47,7 @@ export default {
   height: 349px;
 }
 #mydata > .vtl {
-  height: 300px;
+  height: 349px;
 }
 .main > ul {
   display: none;

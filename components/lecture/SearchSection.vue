@@ -25,6 +25,7 @@
         class="btn btn_crud_point"
         data-toggle="modal"
         data-target="#modalLectureRegi"
+        @click="$emit('open-create')"
       >
         등록
       </button>

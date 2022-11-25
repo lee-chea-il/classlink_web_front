@@ -5,13 +5,19 @@
       <!-- 데이터 있을 경우 -->
       <LectureList
         v-if="lectureList.length"
-        :lectureList="lectureList"
+        :lectureList="currentList(lectureList)"
         :checkList="checkLectureList"
         :identity="identity"
+        :currentPage="currentPage"
+        :numberList="currentNumberList(pagiNumberList)"
+        @open-create="openCreateLecture"
         @check-item="handleCheckbox"
         @open-lecture="setChangeLecture"
         @delete-item="openDeleteModal"
         @show-menu="showDetailMenu"
+        @paging-derection="paginationDerection"
+        @pagination="onClickPagination"
+        @open-select-curriculum="openSelectCurriculumTeacher"
       />
       <!-- /.데이터가 없는 경우 -->
       <NoListSection v-else :identity="identity" />
@@ -61,6 +67,7 @@
     <!-- 커리큘럼 선택 변경 -->
     <ChangeSelectCurriculumModal
       :open="isChangeSelectCurriculum.open"
+      :identity="identity"
       @close="closeChangeCurriculum"
       @next-button="moveToChangeThird"
       @prev-button="backToChangeFirst"
@@ -102,6 +109,7 @@
     <!-- 커리큘럼 배정 변경 -->
     <ChangeCurriculumAssignmentModal
       :open="isChangeCurriculumAssignment.open"
+      :identity="identity"
       @close="closeChangeCurriculumAssignmentModal"
       @prev-button="backToChangeThird"
     />
@@ -151,6 +159,7 @@ import CustomDataPicker from '~/components/lecture/custom/CustomDataPicker.vue'
 import LectureList from '~/components/lecture/LectureList.vue'
 import NoListSection from '~/components/lecture/NoListSection.vue'
 import initialState from '~/data/lecture/initialState'
+import { setNewArray, deepCopy } from '~/utiles/common'
 
 export default {
   name: 'LecturePage',
@@ -206,11 +215,32 @@ export default {
       const day = new Date().getDate()
       return { year, month, day }
     },
+    lastIdx() {
+      return this.currentPage * this.postPerPage
+    },
+    firstIdx() {
+      return this.lastIdx - this.postPerPage
+    },
+    lastNumIdx() {
+      return this.currentPageNumber * this.postPerPageNum
+    },
+    firstNumIdx() {
+      return this.lastNumIdx - this.postPerPageNum
+    },
+    pagiNumberList() {
+      const length = Math.ceil(this.lectureList.length / this.postPerPage)
+      return Array.from({ length }, (i, j) => j + 1)
+    },
   },
   methods: {
     // 취소시 등록 하려고했던 데이터 지우기
     initAddReferenceData() {
       Object.assign(this.$data, initialState())
+    },
+
+    // 강좌 등록
+    openCreateLecture() {
+      this.lectureInfo = deepCopy(this.initLectureInfo)
     },
 
     // 달력 모달
@@ -237,7 +267,7 @@ export default {
 
     // 선택한 강좌 변경 설정
     setChangeLecture(data) {
-      const newItem = this.deepCopy(data)
+      const newItem = deepCopy(data)
       this.openChangeLectrueModal()
       return Object.assign(this.lectureInfo, newItem)
     },
@@ -334,16 +364,6 @@ export default {
       this.openChangeCurriculumAssignmentModal()
     },
 
-    // 깊은 복사
-    deepCopy(data) {
-      return JSON.parse(JSON.stringify(data))
-    },
-
-    // 배열 만들기
-    setNewArray(arr) {
-      return Array.from(new Set(arr))
-    },
-
     // 강좌 변경 Event
     onChangeLecture({ target: { name, value } }) {
       this.lectureInfo[name] = value
@@ -396,10 +416,9 @@ export default {
     // 담임 배정시 부담임이였으면 지우기
     resetSpareTeacherIdx(id) {
       let idx = 0
-      idx = this.lectureInfo.spareTeacher.findIndex((item) => item.id === id)
-      if (idx >= 0) {
-        return this.lectureInfo.spareTeacher.splice(idx, 1)
-      }
+      const target = this.lectureInfo
+      idx = target.spareTeacher.findIndex((item) => item.id === id)
+      if (idx >= 0) return target.spareTeacher.splice(idx, 1)
     },
 
     // 담임 추가
@@ -412,9 +431,7 @@ export default {
     // 부담임 지정시 담임이였으면 지우기
     resetIfTeacherIdx(id) {
       const idx = this.lectureInfo.teacher.findIndex((item) => item.id === id)
-      if (idx >= 0) {
-        return this.lectureInfo.teacher.splice(idx, 1)
-      }
+      if (idx >= 0) return this.lectureInfo.teacher.splice(idx, 1)
     },
 
     // 부담임 추가
@@ -427,8 +444,7 @@ export default {
       )
       this.resetIfTeacherIdx(id, type)
       return (
-        spareIdx === -1 &&
-        (target.spareTeacher = this.setNewArray(selectSpareList))
+        spareIdx === -1 && (target.spareTeacher = setNewArray(selectSpareList))
       )
     },
 
@@ -440,22 +456,22 @@ export default {
       const selectClassList = [...this.lectureInfo.className, payload]
       return (
         idx === -1 &&
-        (this.lectureInfo.className = this.setNewArray(selectClassList))
+        (this.lectureInfo.className = setNewArray(selectClassList))
       )
     },
 
     // 담임 삭제
-    deleteTeacher(selectIdx, type) {
+    deleteTeacher(selectIdx) {
       return this.lectureInfo.teacher.splice(selectIdx, 1)
     },
 
     // 부담임 삭제
-    deleteSpareTeacher(selectIdx, type) {
+    deleteSpareTeacher(selectIdx) {
       return this.lectureInfo.spareTeacher.splice(selectIdx, 1)
     },
 
     // 반 삭제
-    deleteClassData(selectIdx, page) {
+    deleteClassData(selectIdx) {
       return this.lectureInfo.className.splice(selectIdx, 1)
     },
 
@@ -499,7 +515,7 @@ export default {
         newArr = [...settingTarget, innerHTML]
         classList.add('active')
       }
-      return (this.scheduleItem.selectWeekDay = this.setNewArray(newArr))
+      return (this.scheduleItem.selectWeekDay = setNewArray(newArr))
     },
 
     // 달력 날자 설정
@@ -513,11 +529,9 @@ export default {
 
     // 달력 시간 변경
     onChangeSchedule({ target: { name, value, checked } }) {
-      if (name === 'isRepeat') {
-        this.scheduleItem[name] = checked
-      } else {
-        this.scheduleItem[name] = value
-      }
+      const target = this.scheduleItem
+      if (name === 'isRepeat') return (target[name] = checked)
+      else return (target[name] = value)
     },
 
     // 색 바꾸기
@@ -554,10 +568,8 @@ export default {
     // 검색완료시 시간표 데이터 보여주기
     addScheduleWeekList(idx, schedule) {
       const weekList = this.weekIdx
-      this.lectureInfo.scheduleWeekList[weekList[idx]] = [
-        ...this.lectureInfo.scheduleWeekList[weekList[idx]],
-        schedule,
-      ]
+      const target = this.lectureInfo.scheduleWeekList
+      target[weekList[idx]] = [...target[weekList[idx]], schedule]
     },
 
     // 동일한 시간 체크
@@ -623,10 +635,10 @@ export default {
 
     // 시간표 삭제
     deleteSchedule(week, data) {
-      return (this.lectureInfo.scheduleWeekList[week] =
-        this.lectureInfo.scheduleWeekList[week].filter(
-          (item) => item.startDay !== data.startDay
-        ))
+      const target = this.lectureInfo.scheduleWeekList
+      return (target[week] = target[week].filter(
+        (item) => item.startDay !== data.startDay
+      ))
     },
 
     // checkbox 리스트 추가삭제
@@ -648,29 +660,11 @@ export default {
       }
     },
 
-    // 순환 구조를 Json으로 변환
-    getCircularReplacer() {
-      const seen = new WeakSet()
-      return (key, value) => {
-        if (typeof value === 'object' && value !== null) {
-          if (seen.has(value)) {
-            return
-          }
-          seen.add(value)
-        }
-        return value
-      }
-    },
-
-    // json으로 변환 후 return
-    jsonItem(data) {
-      const spare = JSON.stringify(data, this.getCircularReplacer())
-      return JSON.parse(spare)
-    },
-
     // 리스트 삭제 클릭
     deleteLecture() {
       let newArray
+      this.closeDeleteModal()
+      this.openModalDesc('성공', '해당 강좌를 삭제하였습니다.')
       if (this.isDeleteModal.list) {
         newArray = this.lectureList.filter(
           (item) => !this.checkLectureList.includes(item)
@@ -679,9 +673,50 @@ export default {
         newArray = this.lectureList.filter((item) => item !== this.deleteItem)
       }
 
-      this.closeDeleteModal()
-      this.openModalDesc('성공', '해당 강좌를 삭제하였습니다.')
       return (this.lectureList = newArray)
+    },
+
+    // [pagination] 강좌 리스트
+    currentList(tmp) {
+      return tmp.slice(this.firstIdx, this.lastIdx)
+    },
+
+    // [pagination] 강좌 리스트 숫자
+    currentNumberList(tmp) {
+      return tmp.slice(this.firstNumIdx, this.lastNumIdx)
+    },
+
+    // [pagination] 방향으로 페이징
+    paginationDerection(direction) {
+      const current = this.currentPageNumber
+      const max = this.currentNumberList(this.pagiNumberList)
+      const isPlus = max.length === 10
+      if (direction === 'plus') {
+        if (isPlus) {
+          this.currentPageNumber += 1
+          this.currentPage = this.currentNumberList(this.pagiNumberList)[0]
+        }
+      } else if (current > 1) {
+        this.currentPageNumber -= 1
+        this.currentPage = this.currentNumberList(this.pagiNumberList)[0]
+      }
+    },
+
+    // [pagination] 숫자로 페이징
+    onClickPagination(number) {
+      this.currentPage = number
+    },
+
+    // [선생님] 커리큘럼 선택
+    openSelectCurriculumTeacher(data) {
+      this.lectureInfo = deepCopy(data)
+      this.isChangeSelectCurriculum = true
+    },
+
+    // [선생님] 커리큘럼 배정
+    openAssignmentCurriculumTeacher(data) {
+      this.lectureInfo = deepCopy(data)
+      this.isChangeCurriculumAssignment = true
     },
   },
 }

@@ -13,11 +13,10 @@
         :editable="identity == 'master' ? true : false"
         :identity="identity"
         :pidNum="0"
-        @open-data="$emit('open-data', $event)"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
-        @download-data="$emit('download-data', $event)"
+        @open-data="$emit('open-data', $event)"
         @update-data="$emit('update-data', $event)"
-        @drop="$emit('drop', $event)"
+        @download-data="$emit('download-data', $event)"
       />
     </div>
     <!-- /.탭 내용01 -->
@@ -34,11 +33,10 @@
         :editable="identity == 'master' ? true : false"
         :identity="identity"
         :pidNum="1000"
-        @open-data="$emit('open-data', $event)"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
-        @download-data="$emit('download-data', $event)"
+        @open-data="$emit('open-data', $event)"
         @update-data="$emit('update-data', $event)"
-        @drop="$emit('drop', $event)"
+        @download-data="$emit('download-data', $event)"
       />
     </div>
     <!-- /.탭 내용02 -->
@@ -49,8 +47,10 @@
 import TreeView from '~/components/common/MainTreeView.vue'
 
 export default {
-  name: 'LeftTreeTab',
-  components: { TreeView },
+  name: 'MainLeftTreeTab',
+  components: {
+    TreeView,
+  },
   props: {
     institutionData: {
       type: Array,
@@ -76,7 +76,7 @@ export default {
   height: 349px;
 }
 #mydata > .vtl {
-  height: 300px;
+  height: 349px;
 }
 .main > ul {
   display: none;

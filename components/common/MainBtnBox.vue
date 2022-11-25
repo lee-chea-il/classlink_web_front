@@ -12,9 +12,11 @@
     </div>
 
     <div class="right_area">
-      <div class="input-group input-search form-inline">
+      <div
+        v-show="pageType === 'reference'"
+        class="input-group input-search form-inline"
+      >
         <input
-          v-show="!open"
           id="word"
           :value="value"
           name="word"
@@ -33,13 +35,27 @@
           ></button>
         </div>
       </div>
-      <button class="btn btn_filter" @click="$emit('open-filter', $event)">
+      <button
+        v-show="pageType === 'reference'"
+        class="btn btn_filter"
+        @click="$emit('open-filter', $event)"
+      >
         필터
       </button>
       <button
+        v-show="pageType === 'reference'"
         class="btn btn_crud_point"
         data-toggle="modal"
         data-target="#modalDataregi"
+      >
+        등록
+      </button>
+      <button
+        v-show="pageType === 'lesson'"
+        class="btn btn_crud_point"
+        data-toggle="modal"
+        data-target="#modalCuriRegi"
+        @click="$emit('open-add')"
       >
         등록
       </button>
@@ -49,10 +65,11 @@
 
 <script>
 export default {
-  name: 'SearchSection',
+  name: 'MainBtnBox',
   props: {
     open: { type: Boolean, default: false },
     value: { type: String, default: '' },
+    pageType: { type: String, default: '' },
   },
 }
 </script>

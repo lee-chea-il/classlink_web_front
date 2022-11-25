@@ -94,9 +94,9 @@
 
 <script>
 import $ from 'jquery'
-import ModalHeader from '../../ModalHeader.vue'
-import SavePathHeader from '~/components/reference/savePath/SavePathHeader.vue'
-import TreeView from '~/components/reference/savePath/SavePathTreeView.vue'
+import ModalHeader from '../ModalHeader.vue'
+import SavePathHeader from '~/components/common/SavePathHeader.vue'
+import TreeView from '~/components/common/SavePathTreeView.vue'
 
 export default {
   name: 'SavePathModal',

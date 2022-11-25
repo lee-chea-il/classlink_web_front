@@ -7,7 +7,6 @@
     :is-drop="identity == 'master' ? true : false"
     :is-show-option="identity == 'master' ? true : false"
     :list-type="listType"
-    :isHideDownload="isHideDownload"
     @more-show-click="moreShowClick"
     @click="onClick"
     @change-name="onChangeName"
@@ -28,7 +27,7 @@
 <script>
 import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
 export default {
-  name: 'MainTreeView',
+  name: 'ModalReferenceTreeView',
   components: {
     VueTreeList,
   },
@@ -57,10 +56,6 @@ export default {
       type: String,
       default: '',
     },
-    isHideDownload: {
-      type: Boolean,
-      default: true
-    }
   },
   data() {
     return {
@@ -71,10 +66,6 @@ export default {
   mounted() {
     const dataMapping = (data, isReadOnly) => {
       const result = []
-      let isDragDisable = false
-      if (this.listType === 'lesson') {
-        isDragDisable = true
-      }
       const len = data.length
       for (let i = 0; i < len; i++) {
         const newStr = JSON.stringify(data[i])
@@ -87,7 +78,6 @@ export default {
         if (data[i].children !== undefined) {
           nObj.isLeaf = false
           nObj.children = []
-          nObj.dragDisabled = isDragDisable
 
           result[i] = nObj
           this.pid++
@@ -101,6 +91,8 @@ export default {
       }
       return result
     }
+    console.log('-----------')
+    console.log(this.identity)
     this.datas = new Tree(
       !this.editable,
       dataMapping(this.dataList, !this.editable)
@@ -188,14 +180,7 @@ export default {
           }
           newNode.children = []
           newNode.id = idNum
-          newNode.isLeaf = oldNode.isLeaf
-          newNode.name = oldNode.name
-          newNode.parent = oldNode.parent
-          newNode.pid = oldNode.id
-          newNode.readOnly = oldNode.readOnly
           newNode.isChecked = false
-          newNode.dbIdx = oldNode.dbIdx
-          newNode.type = oldNode.type
 
           node = new TreeNode(newNode)
           parentNode.addChildren(node)
@@ -313,7 +298,7 @@ export default {
     },
 
     moreMenuUpdate(node) {
-      // console.log(`update ${node}`)
+      console.log(`update ${node}`)
       this.$emit('update-data', node)
       this.moreMenuClose()
     },

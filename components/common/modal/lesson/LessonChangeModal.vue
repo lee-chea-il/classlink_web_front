@@ -69,7 +69,7 @@
                       role="tabpanel"
                       aria-labelledby="grade-tab"
                     >
-                      <LessonModalTreeView
+                      <TreeView
                         ref="institution"
                         listType="lesson"
                         :dataList="receiveInstitutionLessonData"
@@ -88,7 +88,7 @@
                       role="tabpanel"
                       aria-labelledby="class-tab"
                     >
-                      <LessonModalTreeView
+                      <TreeView
                         ref="franchise"
                         listType="lesson"
                         :dataList="receiveFranchiseData"
@@ -109,7 +109,7 @@
                       role="tabpanel"
                       aria-labelledby="grade-tab"
                     >
-                      <LessonModalTreeView
+                      <TreeView
                         ref="myLesson"
                         listType="lesson"
                         :dataList="receiveInstitutionData"
@@ -128,7 +128,7 @@
                       role="tabpanel"
                       aria-labelledby="class-tab"
                     >
-                      <LessonModalTreeView
+                      <TreeView
                         ref="franchise"
                         listType="lesson"
                         :dataList="receiveFranchiseData"
@@ -191,12 +191,12 @@
 <script>
 import ModalHeader from '../../ModalHeader.vue'
 import TopNavigation from '~/components/lesson/lessonAdd/TopNavigaion.vue'
-import LessonModalTreeView from '~/components/lesson/custom/CustomReferenceTreeView.vue'
+import TreeView from '~/components/lesson/custom/ModalReferenceTreeView.vue'
 import RightSection from '~/components/lesson/lessonAdd/RightSection.vue'
 
 export default {
   name: 'LessonChangeModal',
-  components: { ModalHeader, TopNavigation, LessonModalTreeView, RightSection },
+  components: { ModalHeader, TopNavigation, TreeView, RightSection },
   props: {
     open: { type: Boolean, default: false },
     identity: { type: String, default: '' },

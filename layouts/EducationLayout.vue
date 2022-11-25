@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <EduHeader />
+    <MainHeader />
     <div id="content" class="content">
       <div class="content_area">
         <Nuxt />
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import EduHeader from '@/components/education/EduHeader.vue'
+import MainHeader from '@/components/common/MainHeader.vue'
 import AlertModal from '@/components/common/modal/AlertModal.vue'
 import AlertMoreModal from '@/components/common/modal/AlertMoreModal.vue'
 import HomeWorkDetailModal from '@/components/common/modal/lecturecourse/HomeWorkDetailModal.vue'
@@ -46,7 +46,7 @@ import NoteDetailModal from '@/components/common/modal/myhome/NoteDetailModal.vu
 export default {
   name: 'EducationLayout',
   components: {
-    EduHeader,
+    MainHeader,
     AlertModal,
     AlertMoreModal,
     HomeWorkDetailModal,

@@ -48,8 +48,8 @@
 <script>
 import ModalHeader from '../../ModalHeader.vue'
 import ModalBtnBox from '../../ModalBtnBox.vue'
-import ReferenceAddLeftField from '@/components/reference/ReferenceAddLeftField.vue'
-import ReferenceRightModal from '@/components/reference/ReferenceRightModal.vue'
+import ReferenceAddLeftField from '~/components/reference/ReferenceAddLeftField.vue'
+import ReferenceRightModal from '~/components/reference/ReferenceRightModal.vue'
 export default {
   name: 'ReferenceAddModal',
   components: {

@@ -1,6 +1,10 @@
 export default function initialState() {
   return {
     bgCnt: 0,
+    currentPage: 1,
+    currentPageNumber: 1,
+    postPerPage: 10,
+    postPerPageNum: 10,
     identity: 'teacher',
     isCalendar: false,
     isChangeLecture: { open: false },
@@ -13,6 +17,27 @@ export default function initialState() {
     myCurriculum: {},
     deleteItem: {},
     isDeleteModal: { open: false, list: false },
+    initLectureInfo: {
+      name: '',
+      teacher: [],
+      spareTeacher: [],
+      className: [],
+      classTime: '',
+      curriculum: '',
+      createdAt: '',
+      image: '',
+      startAlarmTime: '5분',
+      endAlarmTime: '5분',
+      scheduleWeekList: {
+        sun: [],
+        mon: [],
+        tue: [],
+        wed: [],
+        thu: [],
+        fri: [],
+        set: [],
+      },
+    },
     lectureInfo: {
       name: '',
       teacher: [],
@@ -306,7 +331,7 @@ export default function initialState() {
             ],
           },
         ],
-      }
+      },
     ],
     checkLectureList: [],
   }

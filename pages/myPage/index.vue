@@ -1,41 +1,34 @@
 <template>
-  <div class="main">
-    <EduHeader />
-    <div id="content" class="content">
-      <div class="content_area">
-        <div class="page_mypage edu_head_bef row">
-          <div class="title">내 정보</div>
-          <!-- 왼쪽 영역 -->
-          <MyInfoLeft :myInfo="myInfo" @alarmBtn-click="changeAlarmState" />
-          <!-- 오른쪽 영역 -->
-          <MyInfoRightEdu
-            :myInfo="myInfo"
-            :eduInfo="eduInfo"
-            :franInfo="franInfo"
-            @alarmBtn-click="changeAlarmState"
-          />
-          <!-- /.오른쪽 영역 -->
-          <!-- 하단 버튼 영역 -->
-          <div class="btn_area">
-            <button
-              class="btn btn_crud_default"
-              data-toggle="modal"
-              data-target="#modalLogout"
-            >
-              로그아웃
-            </button>
-            <button
-              class="btn btn_crud_default"
-              data-toggle="modal"
-              data-target="#modalMyinfo"
-            >
-              정보 수정
-            </button>
-          </div>
-          <!-- /.하단 버튼 영역 -->
-        </div>
-      </div>
+  <div class="page_mypage edu_head_bef row">
+    <div class="title">내 정보</div>
+    <!-- 왼쪽 영역 -->
+    <MyInfoLeft :myInfo="myInfo" @alarmBtn-click="changeAlarmState" />
+    <!-- 오른쪽 영역 -->
+    <MyInfoRightEdu
+      :myInfo="myInfo"
+      :eduInfo="eduInfo"
+      :franInfo="franInfo"
+      @alarmBtn-click="changeAlarmState"
+    />
+    <!-- /.오른쪽 영역 -->
+    <!-- 하단 버튼 영역 -->
+    <div class="btn_area">
+      <button
+        class="btn btn_crud_default"
+        data-toggle="modal"
+        data-target="#modalLogout"
+      >
+        로그아웃
+      </button>
+      <button
+        class="btn btn_crud_default"
+        data-toggle="modal"
+        data-target="#modalMyinfo"
+      >
+        정보 수정
+      </button>
     </div>
+    <!-- /.하단 버튼 영역 -->
     <!-- //container -->
 
     <!-- 모달 팝업 ------------------------------------->
