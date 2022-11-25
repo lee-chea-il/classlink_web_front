@@ -7,6 +7,7 @@
     :is-show-option="identity == 'master' ? true : false"
     :isHideDownload="isHideDownload"
     listType="lecture"
+    @click="$emit('remove-active')"
     @pluse-event-click="pluseEventClick"
     @minus-event-click="minusEventClick"
   >
@@ -72,12 +73,13 @@ export default {
       for (let i = 0; i < len; i++) {
         const newStr = JSON.stringify(data[i])
         const nObj = JSON.parse(newStr)
-        nObj.id=this.pid
+        nObj.id="lectureTree_"+this.pid
         nObj.pid=this.pid
         nObj.isChecked=false
         nObj.readOnly=isReadOnly
         nObj.isCurriculum=this.isPlus
         nObj.isMy=this.isMy
+        nObj.active=false
 
         if (data[i].children !== undefined) {
           nObj.isLeaf=false
@@ -102,19 +104,33 @@ export default {
     )
   },
   methods: {
+    resetActiveStyle(){
+      function _resetActiveStyle(oldNode) {
+        oldNode.active = false
+        if (oldNode.children && oldNode.children.length > 0) {
+          for (let i = 0, len = oldNode.children.length; i < len; i++) {
+            _resetActiveStyle(oldNode.children[i])
+          }
+        }
+      }
+      _resetActiveStyle(this.datas)
+    },
     copyData(node) {
       let idNum = new Date().valueOf()
       function _dfs(oldNode) {
+        oldNode.active = true
+        console.log(oldNode)
         const newNode={}
         for(const item in oldNode){
           newNode[item] = oldNode[item]
         }
         newNode.children = []
-        newNode.id = idNum
+        newNode.id = "lectureTree_"+idNum
         newNode.isChecked = false
         newNode.isCurriculum=false
         newNode.isMy=true
         idNum++
+        
         if (oldNode.children && oldNode.children.length > 0) {
           const list = []
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
@@ -127,16 +143,18 @@ export default {
       return _dfs(node)
     },
     pluseEventClick(node) {
-      this.$emit('plus-event-click', this.copyData(node))
+      setTimeout(() => {
+        this.$emit('plus-event-click', this.copyData(node))
+      }, 50)
     },
     minusEventClick(node) {
       node.remove()
+      this.$emit('remove-active')
     },
     pasteData(copyCheckData) {
       let idNum = new Date().valueOf()
       let checkCnt=0
       function _addNode(parentNode, oldNode) {
-        console.log('222')
         let node, i, len
         if (oldNode.name) {
           const newNode={}
@@ -144,9 +162,8 @@ export default {
             newNode[item] = oldNode[item]
           }
           newNode.children = []
-          newNode.id = idNum
+          newNode.id = "lectureTree_"+idNum
           newNode.isChecked = false
-
           node = new TreeNode(newNode)
           parentNode.addChildren(node)
           idNum++
@@ -216,5 +233,5 @@ export default {
   },
 }
 </script>
-<style scoped>
+<style>
 </style>

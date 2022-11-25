@@ -13,15 +13,18 @@
           <div class="cnts_section">
             <!-- 왼쪽 SECTION -->
             <LeftSection
+              ref="leftSection"
               :teacherList="teacherList"
               :curriculumList="curriculumList"
+              @remove-active="removeActiveStyle"
               @plus-event-click="plusEventClick"
             />
             <!-- 왼쪽 SECTION -->
 
             <!-- 오른쪽 SECTION -->
             <RightSection
-              ref="selectedCurriculum"
+              ref="rightSection"
+              @remove-active="removeActiveStyle"
             />
             <!-- 오른쪽 SECTION -->
           </div>
@@ -53,6 +56,7 @@
 import LeftSection from '~/components/lecture/selectCurriculum/SelectCurriculumLeftSection.vue'
 import RightSection from '~/components/lecture/selectCurriculum/SelectCurriculumRightSection.vue'
 import Header from '~/components/lecture/selectCurriculum/SelectCurriculumHeader.vue'
+let isAddActiveStype = false
 export default {
   name: 'SelectCurriculumModal',
   components: { LeftSection, RightSection, Header },
@@ -68,7 +72,17 @@ export default {
   },
   methods:{
     plusEventClick(copyData){
-      this.$refs.selectedCurriculum.$refs.myCurriculum.pasteData(copyData)
+      console.log('plusEventClick')
+      isAddActiveStype = true
+      this.$refs.rightSection.$refs.myCurriculum.pasteData(copyData)
+    },
+    removeActiveStyle(){
+      console.log('removeActiveStyle')
+      if(isAddActiveStype){
+        isAddActiveStype=false
+        this.$refs.leftSection.$refs.curriculum.resetActiveStyle()
+        this.$refs.rightSection.$refs.myCurriculum.resetActiveStyle()
+      }
     }
   }
 }

@@ -37,6 +37,7 @@
                 identity="teacher"
                 :pidNum="1050"
                 @plus-event-click="plusEventClick"
+                @remove-active="$emit('remove-active')"
               />
             </div>
             <!-- /.탭 내용01 -->

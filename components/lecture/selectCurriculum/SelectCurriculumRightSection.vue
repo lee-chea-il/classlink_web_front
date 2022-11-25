@@ -20,6 +20,7 @@
               :isMy="true"
               identity="teacher"
               :pidNum="2050"
+              @remove-active="$emit('remove-active')"
             />
           </div>
           <!-- /.탭 내용01 -->
