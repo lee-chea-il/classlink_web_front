@@ -36,7 +36,13 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn_crud_point">확인</button>
+          <button
+            class="btn btn_crud_point"
+            data-dismiss="modal"
+            @click="$emit('close')"
+          >
+            확인
+          </button>
         </div>
       </div>
     </div>

@@ -26,7 +26,7 @@
               class="form-control"
               placeholder="일촌 이름 / ID 검색"
               :value="familySearchText"
-              @input="$emit('change-Input', $event)"
+              @input="$emit('change-input', $event)"
               @keyup.enter="$emit('search-family')"
             />
             <div class="input-group-append">

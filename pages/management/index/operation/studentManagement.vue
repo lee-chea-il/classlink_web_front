@@ -18,6 +18,8 @@
           <StudentListBox
             :studentList="studentList"
             @click-detail="openStudentInfoModalDesc"
+            @click-addStudent="openNewStudentInfoModalDesc"
+            @click-batchStudent="openBatchRegistrationModalDesc"
           />
         </div>
       </div>
@@ -27,15 +29,48 @@
     <!-- 모달 팝업 ------------------------------------->
 
     <!-- 학생 일괄 등록1 - 팝업 M2 -->
-    <BatchRegistrationModal />
+    <BatchRegistrationModal
+      :open="batchRegistrationModalDesc.open"
+      :uploadFileName="uploadFileName"
+      @upload="onClickInputFileButton"
+      @selected-file="onXlsxFileSelected"
+      @close="onCloseBatchRegistrationModalDesc"
+    />
 
     <!-- 학생 일괄 등록2(성공) - 팝업 S2 -->
     <!-- [개발참조] 학생 등록을 성공한 경우 나오는 팝업 -->
-    <BatchSuccessModal />
+    <BatchSuccessModal @close="onCloseBatchRegistrationModalDesc" />
 
     <!-- 학생 일괄 등록3(실패) - 팝업 S2 -->
     <!-- [개발참조] 학생 등록을 실패한 경우 나오는 팝업 -->
-    <BatchFailedModal />
+    <BatchFailedModal @close="onCloseBatchRegistrationModalDesc" />
+
+    <!-- 학생 개별 등록 -->
+    <StudentInfoModal
+      :isNewStudent="true"
+      :studentInfo="studentInfo"
+      :open="newStudentInfoModalDesc.open"
+      :nickNameCheck="nickNameCheck"
+      :familySearchText="familySearchText"
+      @close="onCloseNewStudentInfoModalDesc"
+      @change-input="onChangeUpdateInput"
+      @click-birthday="openDatePickerModalDesc"
+      @click-lecturedate="openDatePickerLectureDateModalDesc"
+      @click-identity="onClickIdentityBtn"
+      @click-grade="onClickTypeGrade"
+      @click-adult="onClickTypeAdult"
+      @click-men="onClickGenderMen"
+      @click-women="onClickGenderWomen"
+      @click-statusTrue="onClickStatusTrue"
+      @click-statusFalse="onClickStatusFalse"
+      @click-stuStatusTrue="onClickStudentStatusTrue"
+      @click-stuStatusFalse="onClickStudentStatusFalse"
+      @select-grade="selectGrade"
+      @click-profile="openUploadStudentImgModalDesc"
+      @click-deleteFamily="onClickFamilyDeleteBtn"
+      @change-familyInput="onChangeFamilySearchInput"
+      @search-family="onClickSearchBtn"
+    />
 
     <!-- 학생 개별 등록/학생 상세 정보 -->
     <StudentInfoModal
@@ -226,15 +261,16 @@ export default {
   },
   data() {
     return {
-      newStudentInfo: {
+      studentInfo: {
         id: 0,
-        identity: '학생',
-        status: true,
+        identity: [],
+        status: false,
         grade: '초1',
         grade_type: 0,
+        class: [],
         name: '',
         nickname: '',
-        family: '',
+        family: [],
         account: '',
         phone: '',
         parent_phone: '',
@@ -242,90 +278,132 @@ export default {
         student_status: false,
         school: '',
         attendance_num: '',
-        created_at: '2022.11.22',
+        created_at: '',
         lecture_date: '',
         birthday: '',
         email: '',
         profile_image: '',
         lectureInfo: [],
       },
-      studentInfo: {
-        id: 1,
-        identity: ['학생', '학부모'],
-        status: true,
-        grade: '중1',
-        grade_type: 0,
-        class: ['심화 A반', '심화 B반'],
-        name: '김유진',
-        nickname: '유진쓰',
-        family: [
-          {
-            id: 0,
-            identity: '학생',
-            status: '재원',
-            grade: '중1',
-            name: '홍길동',
-            nickname: '길동쓰',
-            family: '홍길순, 홍길삼, 홍길사, 홍길오, 홍길육',
-            account: 'rlfehd1004',
-            phone: '010-1234-1234',
-            parent_phone: '010-1234-1111',
-            gender: '남',
-          },
-        ],
-        account: 'rlfehd1004',
-        phone: '010-1234-1234',
-        parent_phone: '010-1234-1111',
-        gender: 0,
-        student_status: false,
-        school: '스노우',
-        attendance_num: '12345',
-        created_at: '2022.11.22',
-        lecture_date: '2022.11.30',
-        birthday: '2022.11.01',
-        email: 'test@naver.com',
-        profile_image: require('@/assets/images/mypage/profile1.png'),
-        lectureInfo: [
-          '영어리딩심화 | 심화 A반',
-          '영어리딩심화 | 심화 B반',
-          '영어리딩심화 | 심화 C반',
-        ],
-      },
+      initStudent: {},
       studentList: [
         {
           id: 0,
-          identity: '학생',
-          status: '재원',
+          identity: ['학생', '학부모'],
+          status: true,
           grade: '중1',
-          name: '홍길동',
-          nickname: '길동쓰',
-          family: '홍길순, 홍길삼, 홍길사, 홍길오, 홍길육',
+          grade_type: 0,
+          class: ['심화 A반', '심화 B반'],
+          name: '김유진',
+          nickname: '유진쓰',
+          family: [
+            {
+              id: 0,
+              identity: '학생',
+              status: '재원',
+              grade: '중1',
+              name: '홍길동',
+              nickname: '길동쓰',
+              account: 'rlfehd1004',
+              phone: '010-1234-1234',
+              parent_phone: '010-1234-1111',
+              gender: '남',
+            },
+            {
+              id: 2,
+              identity: '학부모',
+              status: '재원',
+              grade: '중1',
+              name: '이성국',
+              nickname: '성국쓰',
+              family: '홍길순, 홍길삼, 홍길사',
+              account: 'rlfehd1004',
+              phone: '010-1234-1234',
+              parent_phone: '010-1234-1111',
+              gender: '남',
+            },
+          ],
           account: 'rlfehd1004',
           phone: '010-1234-1234',
           parent_phone: '010-1234-1111',
-          gender: '남',
+          gender: 0,
+          student_status: false,
+          school: '스노우',
+          attendance_num: '12345',
+          created_at: '2022.11.22',
+          lecture_date: '2022.11.30',
+          birthday: '2022.11.01',
+          email: 'test@naver.com',
+          profile_image: require('@/assets/images/mypage/profile1.png'),
+          lectureInfo: [
+            '영어리딩심화 | 심화 A반',
+            '영어리딩심화 | 심화 B반',
+            '영어리딩심화 | 심화 C반',
+          ],
         },
         {
           id: 1,
-          identity: '학생',
-          status: '재원',
+          identity: ['학생', '학부모'],
+          status: true,
           grade: '중1',
+          grade_type: 0,
+          class: ['심화 A반', '심화 B반'],
           name: '김유진',
           nickname: '유진쓰',
-          family: '홍길순, 홍길삼, 홍길사',
+          family: [
+            {
+              id: 0,
+              identity: '학생',
+              status: '재원',
+              grade: '중1',
+              name: '홍길동',
+              nickname: '길동쓰',
+              account: 'rlfehd1004',
+              phone: '010-1234-1234',
+              parent_phone: '010-1234-1111',
+              gender: '남',
+            },
+            {
+              id: 2,
+              identity: '학부모',
+              status: '재원',
+              grade: '중1',
+              name: '이성국',
+              nickname: '성국쓰',
+              family: '홍길순, 홍길삼, 홍길사',
+              account: 'rlfehd1004',
+              phone: '010-1234-1234',
+              parent_phone: '010-1234-1111',
+              gender: '남',
+            },
+          ],
           account: 'rlfehd1004',
           phone: '010-1234-1234',
           parent_phone: '010-1234-1111',
-          gender: '여',
+          gender: 0,
+          student_status: false,
+          school: '스노우',
+          attendance_num: '12345',
+          created_at: '2022.11.22',
+          lecture_date: '2022.11.30',
+          birthday: '2022.11.01',
+          email: 'test@naver.com',
+          profile_image: require('@/assets/images/mypage/profile1.png'),
+          lectureInfo: [
+            '영어리딩심화 | 심화 A반',
+            '영어리딩심화 | 심화 B반',
+            '영어리딩심화 | 심화 C반',
+          ],
         },
         {
           id: 2,
-          identity: '학부모',
+          identity: ['학생'],
           status: '재원',
           grade: '중1',
           name: '이성국',
           nickname: '성국쓰',
-          family: '홍길순, 홍길삼, 홍길사',
+          class: [],
+          family: [],
           account: 'rlfehd1004',
           phone: '010-1234-1234',
           parent_phone: '010-1234-1111',
@@ -333,12 +411,13 @@ export default {
         },
         {
           id: 3,
-          identity: '학부모&학생',
+          identity: ['학생'],
           status: '퇴원',
           grade: '중1',
           name: '김단우',
+          class: [],
           nickname: '단우쓰',
-          family: '홍길순, 홍길삼, 홍길사',
+          family: [],
           account: 'rlfehd1004',
           phone: '010-1234-1234',
           parent_phone: '010-1234-1111',
@@ -346,12 +425,13 @@ export default {
         },
         {
           id: 4,
-          identity: '학생',
+          identity: ['학생'],
           status: '재원',
           grade: '중1',
           name: '박세익',
+          class: [],
           nickname: '세익쓰',
-          family: '홍길순, 홍길삼, 홍길사',
+          family: [],
           account: 'rlfehd1004',
           phone: '010-1234-1234',
           parent_phone: '010-1234-1111',
@@ -367,7 +447,7 @@ export default {
         desc: '',
       },
       studentInfoModalDesc: {
-        open: true,
+        open: false,
       },
       datePickerModalDesc: {
         open: false,
@@ -378,6 +458,17 @@ export default {
       uploadStudentImgModalDesc: {
         open: false,
       },
+      newStudentInfoModalDesc: {
+        open: false,
+      },
+      batchRegistrationModalDesc: {
+        open: false,
+      },
+      // 정렬 필터링
+      isRangeFlag: 0,
+      isIdentityFlag: 0,
+      isStatusFlag: 0,
+      isStudentStatusFlag: 0,
       // 정보 수정
       nickNameCheck: false,
       birthday: '',
@@ -388,10 +479,15 @@ export default {
       familySearchList: [],
       registerFamilyList: [],
       deleteFamilyId: 0,
+      // 학생 일괄 등록
+      uploadFileName: null,
     }
   },
+  created() {
+    this.initStudent = JSON.parse(JSON.stringify(this.studentInfo))
+  },
   methods: {
-    // 모달이벤트
+    // 모달 이벤트
     openModalDesc(tit, msg) {
       this.modalDesc = {
         open: true,
@@ -402,29 +498,58 @@ export default {
     onCloseModalDesc() {
       this.modalDesc.open = false
     },
-    openStudentInfoModalDesc() {
+    // 학생 상세 정보 / 수정
+    openStudentInfoModalDesc(id) {
+      const student = this.studentList.find((result) => result.id === id)
+      console.log(student)
+      Object.assign(this.studentInfo, student)
       this.studentInfoModalDesc.open = true
     },
     onCloseStudentInfoModalDesc() {
+      Object.assign(this.studentInfo, this.initStudent)
       this.studentInfoModalDesc.open = false
     },
+    // 학생 개별 등록
+    openNewStudentInfoModalDesc() {
+      Object.assign(this.studentInfo, this.initStudent)
+      this.newStudentInfoModalDesc.open = true
+    },
+    onCloseNewStudentInfoModalDesc() {
+      this.newStudentInfoModalDesc.open = false
+    },
+    // 생년월일
     openDatePickerModalDesc() {
       this.datePickerModalDesc.open = true
     },
     onCloseDatePickerModalDesc() {
       this.datePickerModalDesc.open = false
     },
+    // 수강일
     openDatePickerLectureDateModalDesc() {
       this.datePickerLectureDateModalDesc.open = true
     },
     onCloseDatePickerLectureDateModalDesc() {
       this.datePickerLectureDateModalDesc.open = false
     },
+    // 프로필 이미지
     openUploadStudentImgModalDesc() {
       this.uploadStudentImgModalDesc.open = true
     },
     onCloseUploadStudentImgModalDesc() {
       this.uploadStudentImgModalDesc.open = false
+    },
+    // 학생 일괄 등록
+    openBatchRegistrationModalDesc() {
+      console.log('열렸다')
+      this.batchRegistrationModalDesc.open = true
+    },
+    onCloseBatchRegistrationModalDesc() {
+      this.batchRegistrationModalDesc.open = false
+    },
+
+    // 깊은 복사
+    deepCopy(data) {
+      return JSON.parse(JSON.stringify(data))
     },
     // 학생 정보 등록/수정
     onChangeUpdateInput({ target: { value, id, checked } }) {
@@ -619,6 +744,16 @@ export default {
       btn.click()
       this.searchFamily()
     },
+    // 학생 일괄 등록
+    onClickInputFileButton() {
+      console.log('눌렀다')
+      const inputBtn = document.getElementById('upload-file')
+      inputBtn.click()
+    },
+    onXlsxFileSelected({ target }) {
+      this.uploadFileName = target.files[0].name
+    },
+    // 학생 검색
     
   },
 }

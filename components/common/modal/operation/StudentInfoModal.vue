@@ -445,7 +445,7 @@
               <!-- /.오른쪽 영역 -->
               <div class="st_title01">
                 <!-- 배정받은 강좌 정보 -->
-                <div class="lacture_info">
+                <div v-if="!isNewStudent" class="lacture_info">
                   <div class="title">배정받은 강좌 정보</div>
                   <div class="list_area">
                     <div
@@ -461,7 +461,7 @@
               </div>
             </div>
             <!-- 사용분류에 따른 하단 버튼 -->
-            <!-- <div class="btn_section regi">
+            <div v-if="isNewStudent" class="btn_section regi">
               <div class="custom-control custom-checkbox form-inline">
                 <input
                   id="checkbox02"
@@ -480,8 +480,8 @@
               >
                 등록하기
               </button>
-            </div> -->
-            <div class="btn_section">
+            </div>
+            <div v-else class="btn_section">
               <button
                 class="btn btn_crud_default"
                 data-dismiss="modal"
@@ -528,6 +528,10 @@ export default {
       type: String,
       default: '',
     },
+    isNewStudent: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -546,6 +550,7 @@ export default {
         { id: 10, title: '고2' },
         { id: 11, title: '고3' },
       ],
+      sample_photo: require('@/assets/images/sample_profile_photo.jpg'),
     }
   },
 }

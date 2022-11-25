@@ -21,12 +21,18 @@
         </div>
         <div class="modal-body">
           <div class="title">학생 등록 성공</div>
-          <div class="content">
+          <div class="content content-position">
             클래스링크 학생 일괄 등록.xls <span>000</span>명
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn_crud_point">확인</button>
+          <button
+            class="btn btn_crud_point"
+            data-dismiss="modal"
+            @click="$emit('close')"
+          >
+            확인
+          </button>
         </div>
       </div>
     </div>
@@ -37,4 +43,8 @@ export default {
   name: 'BatchSuccessModal',
 }
 </script>
-<style scoped></style>
+<style scoped>
+.content-position {
+  right: 0px !important;
+}
+</style>

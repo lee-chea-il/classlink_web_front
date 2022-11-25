@@ -8,13 +8,7 @@
       </div>
       <div class="btn_area">
         <button class="btn btn_regi_studentsall">학생 일괄 등록</button>
-        <button
-          class="btn btn_regi_student"
-          data-toggle="modal"
-          data-target="#modalMyinfo"
-        >
-          학생 개별 등록
-        </button>
+        <button class="btn btn_regi_student">학생 개별 등록</button>
       </div>
     </div>
     <!-- 검색 영역 -->
@@ -30,6 +24,7 @@
             최신 등록순
           </button>
           <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">최신 등록순</a>
             <a class="dropdown-item" href="#">이름 오름차순</a>
             <a class="dropdown-item" href="#">이름 내림차순</a>
             <a class="dropdown-item" href="#">학년 오름차순</a>
@@ -46,6 +41,7 @@
             학생
           </button>
           <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">학생</a>
             <a class="dropdown-item" href="#">학부모</a>
             <a class="dropdown-item" href="#">학부모&학생</a>
           </div>
@@ -60,6 +56,7 @@
             활성화
           </button>
           <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">활성화</a>
             <a class="dropdown-item" href="#">비활성화</a>
           </div>
         </div>
@@ -73,6 +70,7 @@
             재원
           </button>
           <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">재원</a>
             <a class="dropdown-item" href="#">퇴원</a>
           </div>
         </div>
@@ -91,16 +89,11 @@
         </div>
         <button
           class="btn btn_regi_studentsall"
-          data-toggle="modal"
-          data-target="#modalBatchregi"
+          @click="$emit('click-batchStudent')"
         >
           학생 일괄 등록
         </button>
-        <button
-          class="btn btn_regi_student"
-          data-toggle="modal"
-          data-target="#modalMyinfo"
-        >
+        <button class="btn btn_regi_student" @click="$emit('click-addStudent')">
           학생 개별 등록
         </button>
       </div>
@@ -139,12 +132,15 @@
             <td>{{ item.grade }}</td>
             <td>{{ item.name }}</td>
             <td>{{ item.nickname }}</td>
-            <td>{{ item.family }}</td>
+            <td>{{ setFamilyNameList(item.family) }}</td>
             <td>{{ item.account }}</td>
             <td>{{ item.phone }}</td>
             <td>{{ item.parent_phone }}</td>
             <td>
-              <i class="btn icons_zoom_off" @click="$emit('click-detail')"></i>
+              <i
+                class="btn icons_zoom_off"
+                @click="$emit('click-detail', item.id)"
+              ></i>
             </td>
             <td>
               <i class="btn icons_mu_off more_mu">
@@ -203,6 +199,15 @@ export default {
     studentList: {
       type: Array,
       default: () => [],
+    },
+  },
+  methods: {
+    setFamilyNameList(array) {
+      const nameList = []
+      for (const value of array) {
+        nameList.push(value.name)
+      }
+      return nameList.join(', ')
     },
   },
 }
