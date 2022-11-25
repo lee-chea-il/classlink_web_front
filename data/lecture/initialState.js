@@ -192,106 +192,121 @@ export default function initialState() {
       { id: 5, name: '1-1E' },
     ],
     curriculumList: [
-      [
-        {
-          name: '국어',
-          teacher: '김민정',
-          children: [
-            {
-              name: '1단원',
-              children: [
-                {
-                  name: '사투리 작문1.link',
-                  type: 'institution',
-                },
-                {
-                  name: '사투리 작문2.link',
-                  type: 'franchise',
-                },
-              ],
-            },
-            {
-              name: '2단원',
-              children: [
-                {
-                  name: '서울 사투리 작문1.link',
-                  type: 'curriculum',
-                },
-                {
-                  name: '부산 사투리 작문2.link',
-                  type: 'institution',
-                },
-                {
-                  name: '부산 사투리 작문2.link',
-                  type: 'franchise',
-                },
-                {
-                  name: '부산 사투리 작문2.link',
-                  type: 'institution',
-                },
-                {
-                  name: '부산 사투리 작문2.link',
-                  type: 'franchise',
-                },
-                {
-                  name: '네이버란.link',
-                  type: 'curriculum',
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      [
-        {
-          name: '수학',
-          teacher: '최수진',
-          children: [
-            {
-              name: '1단원',
-              children: [
-                {
-                  name: '사투리 작문1.link',
-                  type: 'institution',
-                },
-                {
-                  name: '사투리 작문2.link',
-                  type: 'franchise',
-                },
-              ],
-            },
-            {
-              name: '2단원',
-              children: [
-                {
-                  name: '서울 사투리 작문1.link',
-                  type: 'curriculum',
-                },
-                {
-                  name: '서울 사투리 작문2.link',
-                  type: 'institution',
-                },
-                {
-                  name: '서울 사투리 작문2.link',
-                  type: 'franchise',
-                },
-                {
-                  name: '서울 사투리 작문2.link',
-                  type: 'institution',
-                },
-                {
-                  name: '서울 사투리 작문2.link',
-                  type: 'franchise',
-                },
-                {
-                  name: '네이버란.link',
-                  type: 'curriculum',
-                },
-              ],
-            },
-          ],
-        },
-      ],
+      {
+        name: '마포 학원',
+        children: [
+          {
+            name: '국어',
+            children: [
+              {
+                name: '1단원',
+                children: [
+                  {
+                    name: '화법과 작문1.link',
+                    type: 'institution',
+                    dbIdx: 1,
+                  },
+                  {
+                    name: '화법과 작문2.link',
+                    type: 'institution',
+                    dbIdx: 2,
+                  },
+                  {
+                    name: '화법과 작문3.link',
+                    type: 'institution',
+                    dbIdx: 3,
+                  },
+                  {
+                    name: '화법과 작문4.link',
+                    type: 'institution',
+                    dbIdx: 4,
+                  },
+                ],
+              },
+              {
+                name: '2단원',
+                children: [
+                  {
+                    name: '법과 작문1.link',
+                    type: 'institution',
+                    dbIdx: 5,
+                  },
+                  {
+                    name: '법과 작문2.link',
+                    type: 'institution',
+                    dbIdx: 6,
+                  },
+                  {
+                    name: '법과 작문3.link',
+                    type: 'institution',
+                    dbIdx: 7,
+                  },
+                  {
+                    name: '법과 작문4.link',
+                    type: 'institution',
+                    dbIdx: 8,
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            name: '수학',
+            children: [
+              {
+                name: '1단원',
+                children: [
+                  {
+                    name: '삼각함수1.link',
+                    type: 'institution',
+                    dbIdx: 1,
+                  },
+                  {
+                    name: '삼각함수2.link',
+                    type: 'institution',
+                    dbIdx: 2,
+                  },
+                  {
+                    name: '삼각함수3.link',
+                    type: 'institution',
+                    dbIdx: 3,
+                  },
+                  {
+                    name: '삼각함수4.link',
+                    type: 'institution',
+                    dbIdx: 4,
+                  },
+                ],
+              },
+              {
+                name: '2단원',
+                children: [
+                  {
+                    name: '2차 방정식1.link',
+                    type: 'institution',
+                    dbIdx: 5,
+                  },
+                  {
+                    name: '2차 방정식2.link',
+                    type: 'institution',
+                    dbIdx: 6,
+                  },
+                  {
+                    name: '2차 방정식3.link',
+                    type: 'institution',
+                    dbIdx: 7,
+                  },
+                  {
+                    name: '2차 방정식4.link',
+                    type: 'institution',
+                    dbIdx: 8,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      }
     ],
     checkLectureList: [],
   }
