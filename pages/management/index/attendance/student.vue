@@ -59,6 +59,8 @@
                         id="chkAll"
                         type="checkbox"
                         class="custom-control-input"
+                        :checked="allCheck"
+                        @input="onClickAllCheck"
                       />
                       <label class="custom-control-label" for="chkAll"></label>
                     </div>
@@ -131,7 +133,15 @@
       </div>
     </div>
 
-    <MoreAttendanceModal />
+    <MoreAttendanceModal
+      :attendanceOpen="attendanceDatePickerModalDesc"
+      :attendanceRange="attendanceRange"
+      :attendanceSearchDate="attendanceStudentSearchDate"
+      @attendance-select-range="attendanceSelectRange"
+      @attendance-modal-open="attendanceOpenDatePickerModalDesc"
+      @attendance-close="attendanceOnCloseDatePickerModalDesc"
+      @attendance-confirm="attendanceOnClickConfirmBtn"
+    />
     <DatePickerModal
       :open="datePickerModalDesc.open"
       :range="range"
@@ -209,10 +219,34 @@ export default {
         open: false,
       },
       studentSearchDate: {
-        date_range_start: '2022.11.22',
-        date_range_end: '2022.11.29',
+        date_range_start: `${new Date().getFullYear()}.${(
+          '0' +
+          (new Date().getMonth() + 1)
+        ).slice(-2)}.${('0' + new Date().getDate()).slice(-2)}`,
+        date_range_end: `${new Date().getFullYear()}.${(
+          '0' +
+          (new Date().getMonth() + 1)
+        ).slice(-2)}.${('0' + new Date().getDate()).slice(-2)}`,
       },
       range: {
+        start: new Date(),
+        end: new Date(),
+      },
+
+      attendanceDatePickerModalDesc: {
+        open: false,
+      },
+      attendanceStudentSearchDate: {
+        date_range_start: `${new Date().getFullYear()}.${(
+          '0' +
+          (new Date().getMonth() + 1)
+        ).slice(-2)}.${('0' + new Date().getDate()).slice(-2)}`,
+        date_range_end: `${new Date().getFullYear()}.${(
+          '0' +
+          (new Date().getMonth() + 1)
+        ).slice(-2)}.${('0' + new Date().getDate()).slice(-2)}`,
+      },
+      attendanceRange: {
         start: new Date(),
         end: new Date(),
       },
@@ -248,14 +282,57 @@ export default {
       )
     },
 
+    // 출결 날짜 지정
+    attendanceSelectRange(e) {
+      this.attendanceRange.start = e.start
+      this.attendanceRange.end = e.end
+      // console.log(this.range)
+    },
+    attendanceOpenDatePickerModalDesc() {
+      this.attendanceDatePickerModalDesc.open = true
+    },
+    attendanceOnCloseDatePickerModalDesc() {
+      this.attendanceDatePickerModalDesc.open = false
+    },
+    attendanceOnClickConfirmBtn() {
+      this.attendanceDatePickerModalDesc.open = false
+      this.attendanceStudentSearchDate.date_range_start = this.changeDateFormat(
+        this.attendanceRange.start
+      )
+      this.attendanceStudentSearchDate.date_range_end = this.changeDateFormat(
+        this.attendanceRange.end
+      )
+    },
+
     // 내역 다운로드 체크박스
+    onClickAllCheck() {
+      if (this.allCheck) {
+        for (let i = 0; i < this.studentList.length; i++) {
+          this.allCheck = false
+          this.selectStudentList.pop()
+        }
+      } else {
+        this.selectStudentList.splice(0, this.studentList.length)
+        for (let i = 1; i <= this.studentList.length; i++) {
+          this.allCheck = true
+          this.selectStudentList.push(i)
+        }
+      }
+      console.log(this.selectStudentList)
+    },
     onClickCheckBox(data) {
       if (this.selectStudentList.includes(data.id)) {
         this.selectStudentList = this.selectStudentList.filter(
           (item) => item !== data.id
         )
+        if (this.selectStudentList.length !== this.studentList.length) {
+          this.allCheck = false
+        }
       } else {
         this.selectStudentList.push(data.id)
+        if (this.selectStudentList.length === this.studentList.length) {
+          this.allCheck = true
+        }
       }
     },
   },
