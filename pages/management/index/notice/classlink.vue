@@ -2,16 +2,7 @@
   <div id="content" class="content">
     <div class="content_area">
       <!--  3Depth -->
-      <CustomPageHeader
-        title1="전체"
-        title2="반"
-        title3="개인"
-        title4="클래스링크"
-        url1="/management/notice/all"
-        url2="/management/notice/classroom"
-        url3="/management/notice/individual"
-        url4="/management/notice/classlink"
-      />
+      <CustomPageHeader />
       <div class="tab-content depth03 ac_manage_notice">
         <div class="tab-pane active">
           <!-- 검색 영역 -->
@@ -26,7 +17,9 @@
                   <option class="dropdown-item" value="이름순">이름순</option>
                 </select>
               </div>
-              <button class="btn btn_crud_default">삭제</button>
+              <button class="btn btn_crud_default" @click="onClickDelete">
+                삭제
+              </button>
             </div>
             <div class="right_area">
               <div class="input-group input-search form-inline form-search">
@@ -233,6 +226,18 @@
       :data="openNoticeDetailModal.data"
       @close="onCloseNoticeDetailModal"
     />
+
+    <ModalDesc
+      :open="modalDesc.open"
+      :title="modalDesc.title"
+      :desc="modalDesc.desc"
+      @close="onCloseModalDesc"
+    />
+    <DeleteModal
+      :open="deleteModalDesc.open"
+      :title="deleteModalDesc.title"
+      @close="onCloseDeleteModalDesc"
+    />
   </div>
 </template>
 
@@ -240,13 +245,16 @@
 import CustomPageHeader from '~/components/notice/CustomPageHeader.vue'
 import ShowNoticeDetailModal from '~/components/common/modal/notice/ShowNoticeDetailModal.vue'
 import ShowNoticeConfirmCheck from '~/components/common/modal/notice/ShowNoticeConfirmCheck.vue'
-
+import ModalDesc from '@/components/common/modal/ModalDesc.vue'
+import DeleteModal from '@/components/lecturecourse/DeletePlanModal.vue'
 export default {
   name: 'Classlink',
   components: {
     CustomPageHeader,
     ShowNoticeDetailModal,
     ShowNoticeConfirmCheck,
+    ModalDesc,
+    DeleteModal,
   },
   data() {
     return {
@@ -460,10 +468,15 @@ export default {
         open: false,
         data: {},
       },
+
       modalDesc: {
         open: false,
         title: '',
         desc: '',
+      },
+      deleteModalDesc: {
+        open: false,
+        title: '',
       },
     }
   },
@@ -481,6 +494,24 @@ export default {
     },
     onCloseModalDesc() {
       this.modalDesc.open = false
+    },
+    onClickDelete() {
+      console.log(this.selectNoticeList.length)
+      if (this.selectNoticeList.length === 0) {
+        this.openModalDesc('공지사항 삭제', '삭제할 공지사항을 선택해주세요.')
+      } else {
+        this.openDeleteModalDesc('공지사항')
+      }
+    },
+
+    openDeleteModalDesc(tit) {
+      this.deleteModalDesc = {
+        open: true,
+        title: tit,
+      }
+    },
+    onCloseDeleteModalDesc() {
+      this.deleteModalDesc.open = false
     },
 
     // 공지사항 컨펌체크 열기

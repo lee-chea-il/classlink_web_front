@@ -201,6 +201,14 @@
 
     <ExamFilterModal
       :tagList="tagList"
+      :filterList="filterList"
+      :filterOpen="filterDatePickerModalDesc"
+      :filterRange="filterRange"
+      :filterSearchDate="filterStudentSearchDate"
+      @filter-select-range="filterSelectRange"
+      @filter-modal-open="filterOpenDatePickerModalDesc"
+      @filter-close="filterOnCloseDatePickerModalDesc"
+      @filter-confirm="filterOnClickConfirmBtn"
       @add-tag="onClickTagList"
       @complete="onClickAddFilterTag"
     />
@@ -533,12 +541,23 @@ export default {
           },
         ],
       },
-
       selectedExamInfo: {},
-
       openDetail: null,
 
-      tagList: [],
+      filterList: {
+        class: ['심화A반', '심화B반', '심화C반'],
+        subject: ['수학', '국어', '영어', '사회'],
+        course: ['영어리딩심화', '영어리딩기초'],
+        exam: ['쪽지시험', '퀴즈'],
+        student: ['홍길동', '홍길순'],
+      },
+      tagList: {
+        class: [],
+        subject: [],
+        course: [],
+        exam: [],
+        student: [],
+      },
       filterTag: ['영어리딩심화', '영어리딩기초'],
 
       datePickerModalDesc: {
@@ -555,6 +574,24 @@ export default {
         ).slice(-2)}.${('0' + new Date().getDate()).slice(-2)}`,
       },
       range: {
+        start: new Date(),
+        end: new Date(),
+      },
+
+      filterDatePickerModalDesc: {
+        open: false,
+      },
+      filterStudentSearchDate: {
+        date_range_start: `${new Date().getFullYear()}.${(
+          '0' +
+          (new Date().getMonth() + 1)
+        ).slice(-2)}.${('0' + new Date().getDate()).slice(-2)}`,
+        date_range_end: `${new Date().getFullYear()}.${(
+          '0' +
+          (new Date().getMonth() + 1)
+        ).slice(-2)}.${('0' + new Date().getDate()).slice(-2)}`,
+      },
+      filterRange: {
         start: new Date(),
         end: new Date(),
       },
@@ -586,6 +623,28 @@ export default {
       )
       this.studentSearchDate.date_range_end = this.changeDateFormat(
         this.range.end
+      )
+    },
+
+    // 상세검색 날짜 지정
+    filterSelectRange(e) {
+      this.filterRange.start = e.start
+      this.filterRange.end = e.end
+      // console.log(this.range)
+    },
+    filterOpenDatePickerModalDesc() {
+      this.filterDatePickerModalDesc.open = true
+    },
+    filterOnCloseDatePickerModalDesc() {
+      this.filterDatePickerModalDesc.open = false
+    },
+    filterOnClickConfirmBtn() {
+      this.filterDatePickerModalDesc.open = false
+      this.filterStudentSearchDate.date_range_start = this.changeDateFormat(
+        this.filterRange.start
+      )
+      this.filterStudentSearchDate.date_range_end = this.changeDateFormat(
+        this.filterRange.end
       )
     },
 
@@ -632,19 +691,101 @@ export default {
     },
 
     // 필터 태그
-    onClickTagList(text) {
-      if (this.tagList.includes(text)) {
-        this.tagList = this.tagList.filter((item) => item !== text)
-      } else {
-        this.tagList.push(text)
+    onClickTagList(text, title) {
+      // if (this.tagList.includes(text)) {
+      //   this.tagList = this.tagList.filter((item) => item !== text)
+      // } else {
+      //   this.tagList.push(text)
+      // }
+      // if (title === 'class') {
+      //   if (this.tagList.class.includes(text)) {
+      //     this.tagList.class = this.tagList.class.filter(
+      //       (item) => item !== text
+      //     )
+      //   } else if (this.tagList.class.length === this.filterList.class.length) {
+      //     this.tagList.class.splice(0, this.filterList.class.length)
+      //   } else {
+      //     this.tagList.class.push(text)
+      //   }
+      // } else if (title === 'subject') {
+      //   if (this.tagList.subject.includes(text)) {
+      //     this.tagList.subject = this.tagList.subject.filter(
+      //       (item) => item !== text
+      //     )
+      //   } else {
+      //     this.tagList.subject.push(text)
+      //   }
+      // } else if (title === 'course') {
+      //   if (this.tagList.course.includes(text)) {
+      //     this.tagList.course = this.tagList.course.filter(
+      //       (item) => item !== text
+      //     )
+      //   } else {
+      //     this.tagList.course.push(text)
+      //   }
+      // } else if (title === 'exam') {
+      //   if (this.tagList.exam.includes(text)) {
+      //     this.tagList.exam = this.tagList.exam.filter((item) => item !== text)
+      //   } else {
+      //     this.tagList.exam.push(text)
+      //   }
+      // } else if (title === 'student') {
+      //   if (this.tagList.student.includes(text)) {
+      //     this.tagList.student = this.tagList.student.filter(
+      //       (item) => item !== text
+      //     )
+      //   } else {
+      //     this.tagList.student.push(text)
+      //   }
+      // }
+      if (title === 'class') {
+        if (this.tagList.class.includes(text)) {
+          this.tagList.class = this.tagList.class.filter(
+            (item) => item !== text
+          )
+        } else {
+          this.tagList.class.push(text)
+          if (this.tagList.class.length === this.filterList.class.length) {
+            this.tagList.class.splice(0, this.filterList.class.length)
+          }
+        }
       }
+      console.log(this.tagList.class.length, this.filterList.class.length)
+
       console.log(this.tagList)
     },
     onClickAddFilterTag() {
-      for (let i = 0; i < this.tagList.length; i++) {
-        this.filterTag.push(this.tagList[i])
+      // this.tagList = this.tagList.join(' ')/
+      // for (let i = 0; i < this.tagList.length; i++) {
+      //   this.filterTag.push(this.tagList[i])
+      // }
+
+      if (
+        this.tagList.class.length !== 0 ||
+        this.tagList.subject.length !== 0 ||
+        this.tagList.course.length !== 0 ||
+        this.tagList.exam.length !== 0
+      ) {
+        // this.filterTag.push(
+        //   `${this.tagList.class} ${this.tagList.subject} ${this.tagList.course} ${this.tagList.exam} ${this.tagList.student}`
+        // )
+        // for (const value in this.tagList.class) {
+        //   this.filterTag.push(this.tagList.class[value])
+        // }
+        // this.filterTag.push(this.tagList.class)
+        // this.filterTag.push(this.tagList.subject)
+        // this.filterTag.push(this.tagList.course)
+        // this.filterTag.push(this.tagList.exam)
+        // this.filterTag.push(this.tagList.student)
+
+        this.tagList = {
+          class: [],
+          subject: [],
+          course: [],
+          exam: [],
+          student: [],
+        }
       }
-      this.tagList = []
     },
     onClickDeleteFilterTag(idx) {
       this.filterTag.splice(idx, 1)

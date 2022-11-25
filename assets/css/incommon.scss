@@ -242,13 +242,13 @@ $navtopHeight: 60px;
 		// border: 1px solid #fff;
 		z-index: 2000;
 		// display: none;
-		position: absolute;
+		position: fixed;
 		width: 100%;
 		// max-width: 318px;
 		height: 100%;
 		top: 0;
 		left: 0px;
-		margin-left: -960px;
+		margin-left: -1300px;
 		background-color: theme.$color_white;
 
 		li>a {
@@ -2059,7 +2059,18 @@ $navtopHeight: 60px;
 }
 
 /* Extra large devices (large desktops, ≥1200px and up) ~xl*/
+@media (max-width: 1272px) {
+	.nav_web {
+		display: none;
+	}
+
+	.main_mb {
+		display: block;
+	}
+}
+
 @media (min-width: 1200px) {}
+
 
 @media (max-width: 1199.98px) {
 	.web_only .modal-xl {

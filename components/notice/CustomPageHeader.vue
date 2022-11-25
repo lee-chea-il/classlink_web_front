@@ -3,37 +3,46 @@
     <li class="nav-item">
       <NuxtLink
         class="nav-link"
-        :to="url1"
+        to="/management/notice/all"
         :class="{ active: $route.fullPath.includes('/all') }"
       >
-        {{ title1 }}
+        전체
       </NuxtLink>
     </li>
     <li class="nav-item">
       <NuxtLink
         class="nav-link"
-        :to="url4"
+        to="/management/notice/classlink"
         :class="{ active: $route.fullPath.includes('/classlink') }"
       >
-        {{ title4 }}
+        클래스링크
       </NuxtLink>
     </li>
     <li class="nav-item">
       <NuxtLink
         class="nav-link"
-        :to="url2"
+        to="/management/notice/education"
+        :class="{ active: $route.fullPath.includes('/education') }"
+      >
+        교육기관
+      </NuxtLink>
+    </li>
+    <li class="nav-item">
+      <NuxtLink
+        class="nav-link"
+        to="/management/notice/classroom"
         :class="{ active: $route.fullPath.includes('/classroom') }"
       >
-        {{ title2 }}
+        반
       </NuxtLink>
     </li>
     <li class="nav-item">
       <NuxtLink
         class="nav-link"
-        :to="url3"
+        to="/management/notice/individual"
         :class="{ active: $route.fullPath.includes('/individual') }"
       >
-        {{ title3 }}
+        개인
       </NuxtLink>
     </li>
   </ul>
@@ -42,40 +51,6 @@
 <script>
 export default {
   name: 'CustomPageHeader',
-  props: {
-    title1: {
-      type: String,
-      default: '',
-    },
-    title2: {
-      type: String,
-      default: '',
-    },
-    title3: {
-      type: String,
-      default: '',
-    },
-    title4: {
-      type: String,
-      default: '',
-    },
-    url1: {
-      type: String,
-      default: '',
-    },
-    url2: {
-      type: String,
-      default: '',
-    },
-    url3: {
-      type: String,
-      default: '',
-    },
-    url4: {
-      type: String,
-      default: '',
-    },
-  },
 }
 </script>
 

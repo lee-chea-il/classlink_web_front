@@ -23,12 +23,12 @@
           <!-- 반이름 검색 -->
           <div class="search_class">
             <div class="date_box inline_block">
-              {{ studentSearchDate.date_range_start }} -
-              {{ studentSearchDate.date_range_end }}
+              {{ filterSearchDate.date_range_start }} -
+              {{ filterSearchDate.date_range_end }}
             </div>
             <button
               class="btn icons_calendar_off"
-              @click="openDatePickerModalDesc"
+              @click="$emit('filter-modal-open')"
             ></button>
             <div class="input-group input-search form-inline">
               <input
@@ -68,39 +68,43 @@
                           id="chkA01"
                           type="checkbox"
                           class="custom-control-input"
-                          :checked="tagList.length === 0"
+                          :checked="tagList.class.length === 0"
                         />
                         <label class="custom-control-label" for="chkA01"
                           >전체</label
                         >
                       </div>
                     </li>
-                    <li>
+                    <li v-for="(item, idx) in filterList.class" :key="idx">
                       <div class="custom-control custom-checkbox form-inline">
                         <input
-                          id="chkA02"
+                          :id="`class${idx}`"
                           type="checkbox"
                           class="custom-control-input"
-                          :checked="tagList.includes('심화A반')"
-                          @input="$emit('add-tag', '심화A반')"
+                          :checked="tagList.class.includes(item)"
+                          @input="$emit('add-tag', item, 'class')"
                         />
-                        <label class="custom-control-label" for="chkA02"
-                          >심화A반</label
+                        <label
+                          class="custom-control-label"
+                          :for="`class${idx}`"
+                          >{{ item }}</label
                         >
                       </div>
                     </li>
-                    <li>
+                    <!-- <li>
                       <div class="custom-control custom-checkbox form-inline">
                         <input
                           id="chkA03"
                           type="checkbox"
                           class="custom-control-input"
+                          :checked="tagList.includes('심화B반')"
+                          @input="$emit('add-tag', '심화B반')"
                         />
                         <label class="custom-control-label" for="chkA03"
                           >심화B반</label
                         >
                       </div>
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
               </div>
@@ -131,26 +135,30 @@
                           id="chkB01"
                           type="checkbox"
                           class="custom-control-input"
-                          checked
+                          :checked="tagList.subject.length === 0"
                         />
                         <label class="custom-control-label" for="chkB01"
                           >전체</label
                         >
                       </div>
                     </li>
-                    <li>
+                    <li v-for="(item, idx) in filterList.subject" :key="idx">
                       <div class="custom-control custom-checkbox form-inline">
                         <input
-                          id="chkB02"
+                          :id="`subject${idx}`"
                           type="checkbox"
                           class="custom-control-input"
+                          :checked="tagList.subject.includes(item)"
+                          @input="$emit('add-tag', item, 'subject')"
                         />
-                        <label class="custom-control-label" for="chkB02"
-                          >수학</label
+                        <label
+                          class="custom-control-label"
+                          :for="`subject${idx}`"
+                          >{{ item }}</label
                         >
                       </div>
                     </li>
-                    <li>
+                    <!-- <li>
                       <div class="custom-control custom-checkbox form-inline">
                         <input
                           id="chkB03"
@@ -161,7 +169,7 @@
                           >국어</label
                         >
                       </div>
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
               </div>
@@ -192,26 +200,30 @@
                           id="chkC01"
                           type="checkbox"
                           class="custom-control-input"
-                          checked
+                          :checked="tagList.course.length === 0"
                         />
                         <label class="custom-control-label" for="chkC01"
                           >전체</label
                         >
                       </div>
                     </li>
-                    <li>
+                    <li v-for="(item, idx) in filterList.course" :key="idx">
                       <div class="custom-control custom-checkbox form-inline">
                         <input
-                          id="chkC02"
+                          :id="`course${idx}`"
                           type="checkbox"
                           class="custom-control-input"
+                          :checked="tagList.course.includes(item)"
+                          @input="$emit('add-tag', item, 'course')"
                         />
-                        <label class="custom-control-label" for="chkC02"
-                          >영어리딩기초</label
+                        <label
+                          class="custom-control-label"
+                          :for="`course${idx}`"
+                          >{{ item }}</label
                         >
                       </div>
                     </li>
-                    <li>
+                    <!-- <li>
                       <div class="custom-control custom-checkbox form-inline">
                         <input
                           id="chkC03"
@@ -222,7 +234,7 @@
                           >영어리딩기초</label
                         >
                       </div>
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
               </div>
@@ -253,26 +265,30 @@
                           id="chkD01"
                           type="checkbox"
                           class="custom-control-input"
-                          checked
+                          :checked="tagList.exam.length === 0"
                         />
                         <label class="custom-control-label" for="chkD01"
                           >전체</label
                         >
                       </div>
                     </li>
-                    <li>
+                    <li v-for="(item, idx) in filterList.exam" :key="idx">
                       <div class="custom-control custom-checkbox form-inline">
                         <input
-                          id="chkD02"
+                          :id="`exam${idx}`"
                           type="checkbox"
                           class="custom-control-input"
+                          :checked="tagList.exam.includes(item)"
+                          @input="$emit('add-tag', item, 'exam')"
                         />
-                        <label class="custom-control-label" for="chkD02"
-                          >쪽지시험(22)</label
+                        <label
+                          class="custom-control-label"
+                          :for="`exam${idx}`"
+                          >{{ item }}</label
                         >
                       </div>
                     </li>
-                    <li>
+                    <!-- <li>
                       <div class="custom-control custom-checkbox form-inline">
                         <input
                           id="chkD03"
@@ -283,7 +299,7 @@
                           >퀴즈(6)</label
                         >
                       </div>
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
               </div>
@@ -368,11 +384,11 @@
     </div>
 
     <DatePickerModal
-      :open="datePickerModalDesc.open"
-      :range="range"
-      @select-range="selectRange"
-      @close="onCloseDatePickerModalDesc"
-      @confirm="onClickConfirmBtn"
+      :open="filterOpen.open"
+      :range="filterRange"
+      @select-range="$emit('filter-select-range', $event)"
+      @close="$emit('filter-close')"
+      @confirm="$emit('filter-confirm')"
     />
   </div>
 </template>
@@ -386,59 +402,24 @@ export default {
   },
   props: {
     tagList: {
-      type: Array,
-      default: () => [],
+      type: Object,
+      default: () => {},
     },
-  },
-  data() {
-    return {
-      datePickerModalDesc: {
-        open: false,
-      },
-      studentSearchDate: {
-        date_range_start: `${new Date().getFullYear()}.${(
-          '0' +
-          (new Date().getMonth() + 1)
-        ).slice(-2)}.${('0' + new Date().getDate()).slice(-2)}`,
-        date_range_end: `${new Date().getFullYear()}.${(
-          '0' +
-          (new Date().getMonth() + 1)
-        ).slice(-2)}.${('0' + new Date().getDate()).slice(-2)}`,
-      },
-      range: {
-        start: new Date(),
-        end: new Date(),
-      },
-    }
-  },
-  methods: {
-    // 날짜 지정
-    selectRange(e) {
-      this.range.start = e.start
-      this.range.end = e.end
-      // console.log(this.range)
+    filterList: {
+      type: Object,
+      default: () => {},
     },
-    openDatePickerModalDesc() {
-      this.datePickerModalDesc.open = true
+    filterOpen: {
+      type: Object,
+      default: () => {},
     },
-    onCloseDatePickerModalDesc() {
-      this.datePickerModalDesc.open = false
+    filterRange: {
+      type: Object,
+      default: () => {},
     },
-    changeDateFormat(date) {
-      const year = date.getFullYear()
-      const month = ('0' + (date.getMonth() + 1)).slice(-2)
-      const day = ('0' + date.getDate()).slice(-2)
-      const dateString = year + '.' + month + '.' + day
-      return dateString
-    },
-    onClickConfirmBtn() {
-      this.datePickerModalDesc.open = false
-      this.studentSearchDate.date_range_start = this.changeDateFormat(
-        this.range.start
-      )
-      this.studentSearchDate.date_range_end = this.changeDateFormat(
-        this.range.end
-      )
+    filterSearchDate: {
+      type: Object,
+      default: () => {},
     },
   },
 }

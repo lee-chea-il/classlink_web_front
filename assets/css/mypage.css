@@ -3620,7 +3620,7 @@ ol {
 /* 마이페이지(내정보) - 학생사용자 내정보수정 + 추가수정 */
 #modalMyinfo .btn_activated {
   /* min-width: 70px; */
-  padding: 7px 14px;
+  padding: 7px 12px;
 }
 #modalMyinfo .btn_choice {
   padding: 7px 14px;

@@ -2195,7 +2195,8 @@ ol {
   margin-right: 8px;
 }
 .ac_manage_building .btn_area {
-  margin: 50px 0 0 0px;
+  margin-top: 30px;
+  text-align: center;
 }
 
 .modal_ac_manage_building .filter_box {
@@ -2234,7 +2235,9 @@ ol {
   margin: 0 0 0 81px;
 }
 .modal_ac_manage_building .btn_area {
-  margin-top: 26px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .ac_manage_building.franchise .place_section .left_area .place_box .space {
@@ -2445,6 +2448,18 @@ ol {
   width: 20%;
   margin-left: 15px;
 }
+#modalLessonView .icon_mydata02 {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_mydata.png);
+  margin-right: 10px;
+}
 
 /* 건물-패키지.html */
 /* 패키지 등록 / 패키지 수정 (팝업 L) */
@@ -2458,4 +2473,125 @@ ol {
   background-position: center center;
   background-size: contain;
   background-image: url(../images/icon_franReal.png);
+}
+#modalLessonRegi .list_area_text {
+  line-height: 40px;
+}
+@media (max-width: 1199.98px) {
+  #modalLessonRegi .list_area_text {
+    display: inline-block;
+    width: 149px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+@media (max-width: 1199.98px) {
+  #modalLessonRegi .check_sec span.custom-control {
+    width: 100%;
+  }
+}
+#modalLessonRegi .icon_mydata {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_mydata.png);
+  margin-right: 10px;
+  margin-left: 20px;
+}
+#modalLessonRegi .icon_mydata01 {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_mydata.png);
+  margin-right: 0px;
+  margin-left: 0px;
+}
+#modalLessonRegi .icon_youtube_sm {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_youtube_sm.png);
+  margin-right: -10px;
+  margin-left: 10px;
+}
+#modalLessonRegi .icon_exam_sm {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_exam_sm.png);
+  margin-right: -10px;
+  margin-left: 10px;
+}
+#modalLessonRegi .icon_link_sm {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_link_sm.png);
+  margin-right: -10px;
+  margin-left: 10px;
+}
+#modalLessonRegi .icon_mp4_sm {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_mp4_sm.png);
+  margin-right: -10px;
+  margin-left: 10px;
+}
+#modalLessonRegi .icon_pdf_sm {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_pdf_sm.png);
+  margin-right: -10px;
+  margin-left: 10px;
+}
+#modalLessonRegi .icon_quiz_sm {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_quiz_sm.png);
+  margin-right: -10px;
+  margin-left: 10px;
 }/*# sourceMappingURL=ac_building.css.map */

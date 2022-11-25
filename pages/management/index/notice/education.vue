@@ -2,14 +2,8 @@
   <div id="content" class="content">
     <div class="content_area">
       <!--  3Depth -->
-      <CustomPageHeader
-        title1="전체"
-        title2="반"
-        title3="개인"
-        url1="/management/notice/all"
-        url2="/management/notice/class"
-        url3="/management/notice/individual"
-      />
+
+      <CustomPageHeader />
       <div class="tab-content depth03 ac_manage_notice">
         <div class="tab-pane active">
           <!-- 검색 영역 -->
@@ -31,24 +25,16 @@
             <div class="right_area">
               <div class="input-group input-search form-inline form-search">
                 <input
-                  v-model="searchText"
                   type="text"
                   class="form-control"
                   placeholder="제목, 내용, 작성자 검색"
-                  @keyup.enter="onClickSearchNotice"
                 />
                 <div class="input-group-append">
-                  <button
-                    class="btn icons_search_off"
-                    type="button"
-                    @click="onClickSearchNotice"
-                  ></button>
+                  <button class="btn icons_search_off" type="button"></button>
                 </div>
               </div>
-              <NuxtLink
-                class="btn btn_crud_point"
-                to="/management/notice/regist/class"
-                >등록</NuxtLink
+              <a href="(완)공지사항-등록.html" class="btn btn_crud_point"
+                >등록</a
               >
             </div>
           </div>
@@ -161,31 +147,25 @@
                     </div>
                     <div class="functional_area">
                       <div class="thumbnail_area">
-                        <!-- <div
-                          class="thumbnail"
-                          style="
-                            background-image: url('../images/sample_teacher.jpg');
-                          "
-                        ></div> -->
                         <div class="thumbnail"></div>
                         <div class="thumbnail"></div>
                         <div class="thumbnail"></div>
                         <div class="thumbnail"></div>
                         <div class="thumbnail"></div>
                         <div class="thumbnail"></div>
-                        <!-- <div class="thumbnail"></div>
-												<div class="thumbnail"></div>
-												<div class="thumbnail"></div>
-												<div class="thumbnail"></div> -->
+                        <div class="thumbnail"></div>
+                        <div class="thumbnail"></div>
+                        <div class="thumbnail"></div>
+                        <div class="thumbnail"></div>
                         <div class="thumbnail">
                           <div class="more_cover">+3</div>
                         </div>
                       </div>
                       <div class="btns_area">
-                        <NuxtLink
+                        <a
+                          href="(완)공지사항-등록.html"
                           class="btn btn_crud_default"
-                          :to="`/management/notice/modify/class/${item.id}`"
-                          >수정</NuxtLink
+                          >수정</a
                         >
                         <button
                           class="btn btn_crud_default"
@@ -205,35 +185,7 @@
                     </div>
                   </td>
                 </tr>
-
                 <!-- /.상세 tr -->
-                <!-- <tr>
-                  <td>
-                    <div class="custom-control custom-checkbox form-inline">
-                      <input
-                        id="chk01"
-                        type="checkbox"
-                        class="custom-control-input"
-                      />
-                      <label class="custom-control-label" for="chk01"></label>
-                    </div>
-                  </td>
-                  <td>컴플레인 이슈사항 공지드립니다</td>
-                  <td><span class="state warning">D-3</span></td>
-                  <td>
-                    <span class="date">
-                      2022.06.06 - 2022.08.05<br />
-                      오전 09:00 - 오후 11:59
-                    </span>
-                  </td>
-                  <td>홍길동</td>
-                  <td>전체</td>
-                  <td>2022.08.01</td>
-                  <td>222</td>
-                  <td>
-                    <button class="btn icons_arrow_dn btn_expand"></button>
-                  </td>
-                </tr> -->
               </tbody>
             </table>
           </div>
@@ -278,34 +230,38 @@
       :data="openNoticeDetailModal.data"
       @close="onCloseNoticeDetailModal"
     />
+
     <ModalDesc
       :open="modalDesc.open"
       :title="modalDesc.title"
       :desc="modalDesc.desc"
       @close="onCloseModalDesc"
     />
+    <DeleteModal
+      :open="deleteModalDesc.open"
+      :title="deleteModalDesc.title"
+      @close="onCloseDeleteModalDesc"
+    />
   </div>
 </template>
 
 <script>
-// import PageHeader from '~/components/common/PageHeader.vue'
-import CustomPageHeader from '~/components/common/custom/CustomPageHeader.vue'
 import ShowNoticeDetailModal from '~/components/common/modal/notice/ShowNoticeDetailModal.vue'
 import ShowNoticeConfirmCheck from '~/components/common/modal/notice/ShowNoticeConfirmCheck.vue'
+import CustomPageHeader from '~/components/notice/CustomPageHeader.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
-
+import DeleteModal from '@/components/lecturecourse/DeletePlanModal.vue'
 export default {
-  name: 'All',
+  name: 'Education',
   components: {
     CustomPageHeader,
     ShowNoticeDetailModal,
     ShowNoticeConfirmCheck,
     ModalDesc,
+    DeleteModal,
   },
   data() {
     return {
-      pageNumberList: 3,
-      currentPage: 1,
       notice: [
         {
           id: 1,
@@ -319,7 +275,7 @@ export default {
               endTime: '오후 11:59',
             },
             writer: '홍길동',
-            target: '반',
+            target: '전체',
             content:
               '안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다.  안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다.',
             createdAt: '2022-08-01',
@@ -358,7 +314,7 @@ export default {
               endTime: '오후 11:59',
             },
             writer: '강희진',
-            target: '반',
+            target: '전체',
             content: '안녕하십니까? 학원장입니다.',
             createdAt: '2022-08-01',
             view_count: 87,
@@ -396,7 +352,7 @@ export default {
               endTime: '오후 11:59',
             },
             writer: '홍길동',
-            target: '반',
+            target: '전체',
             content: '안녕하십니까? 홍길동 학원장입니다.',
             createdAt: '2022-08-15',
             view_count: 57,
@@ -434,7 +390,7 @@ export default {
               endTime: '오후 11:59',
             },
             writer: '전미진',
-            target: '반',
+            target: '전체',
             content: '안녕하십니까? 홍길동 학원장입니다.',
             createdAt: '2022-09-24',
             view_count: 3,
@@ -472,7 +428,7 @@ export default {
               endTime: '오후 11:59',
             },
             writer: '심화A',
-            target: '반',
+            target: '전체',
             content: '안녕하십니까? 홍길동 학원장입니다.',
             createdAt: '2022-12-01',
             view_count: 16,
@@ -502,8 +458,6 @@ export default {
 
       noticeList: [],
       selectNoticeList: [],
-      searchText: '',
-      searchKeyword: '',
       allCheck: false,
       open_detail: null,
       open_confirmFilter: 0,
@@ -518,18 +472,19 @@ export default {
         open: false,
         data: {},
       },
+
       modalDesc: {
         open: false,
         title: '',
         desc: '',
       },
+      deleteModalDesc: {
+        open: false,
+        title: '',
+      },
     }
   },
-  watch: {
-    // allCheck: 'onClickAllCheck',
-    noticeList: 'check',
-  },
-  mounted() {
+  created() {
     this.noticeList = this.notice
   },
   methods: {
@@ -543,6 +498,24 @@ export default {
     },
     onCloseModalDesc() {
       this.modalDesc.open = false
+    },
+    onClickDelete() {
+      console.log(this.selectNoticeList.length)
+      if (this.selectNoticeList.length === 0) {
+        this.openModalDesc('공지사항 삭제', '삭제할 공지사항을 선택해주세요.')
+      } else {
+        this.openDeleteModalDesc('공지사항')
+      }
+    },
+
+    openDeleteModalDesc(tit) {
+      this.deleteModalDesc = {
+        open: true,
+        title: tit,
+      }
+    },
+    onCloseDeleteModalDesc() {
+      this.deleteModalDesc.open = false
     },
 
     // 공지사항 컨펌체크 열기
@@ -583,60 +556,6 @@ export default {
         this.open_confirmFilter = 1
       } else {
         this.open_confirmFilter = 0
-      }
-    },
-
-    // 정렬
-    onSelectSort(e) {
-      if (e.target.value === '조회수 높은 순') {
-        this.noticeList = this.noticeList.sort((a, b) => {
-          return b.attributes.view_count - a.attributes.view_count
-        })
-      } else if (e.target.value === '최신순') {
-        this.noticeList = this.noticeList.sort(
-          (a, b) =>
-            new Date(b.attributes.createdAt) - new Date(a.attributes.createdAt)
-        )
-      } else {
-        this.noticeList = this.noticeList.sort((a, b) => {
-          if (a.attributes.writer > b.attributes.writer) return 1
-          if (a.attributes.writer < b.attributes.writer) return -1
-          return 0
-        })
-      }
-    },
-
-    // 공지사항 검색
-    onClickSearchNotice() {
-      if (this.searchText.length < 2) {
-        this.openModalDesc('검색 실패', '검색어는 2글자 이상 입력해주세요.')
-      } else {
-        const result = this.notice.filter((elem) => {
-          return (
-            elem.attributes.title.includes(this.searchText) ||
-            elem.attributes.content.includes(this.searchText) ||
-            elem.attributes.writer.includes(this.searchText)
-          )
-        })
-        if (result.length === 0) {
-          this.openModalDesc('검색 실패', '일치하는 공지사항이 없습니다.')
-          return false
-        } else {
-          this.noticeList = result
-        }
-      }
-    },
-
-    // 컨펌체크 필터 검색
-    onClickSearchKeyword() {
-      if (this.student.name === '') {
-        this.noticeList.student = this.notice.student
-      } else if (this.student.name.length === 1) {
-        return false
-      } else {
-        this.noticeList.student = this.notice.student.filter((elem) => {
-          return elem.attributes.student.includes(this.searchKeyword)
-        })
       }
     },
 
@@ -683,18 +602,23 @@ export default {
       // }
     },
 
-    check() {
-      if (this.selectNoticeList.length === 5) {
-        this.allCheck = true
+    // 정렬
+    onSelectSort(e) {
+      if (e.target.value === '조회수 높은 순') {
+        this.noticeList = this.noticeList.sort((a, b) => {
+          return b.attributes.view_count - a.attributes.view_count
+        })
+      } else if (e.target.value === '최신순') {
+        this.noticeList = this.noticeList.sort(
+          (a, b) =>
+            new Date(b.attributes.createdAt) - new Date(a.attributes.createdAt)
+        )
       } else {
-        this.allCheck = false
-      }
-    },
-
-    onClickDelete() {
-      console.log(this.selectNoticeList.length)
-      if (this.selectNoticeList.length === 0) {
-        this.openModalDesc('공지사항 삭제', '삭제할 공지사항을 선택해주세요.')
+        this.noticeList = this.noticeList.sort((a, b) => {
+          if (a.attributes.writer > b.attributes.writer) return 1
+          if (a.attributes.writer < b.attributes.writer) return -1
+          return 0
+        })
       }
     },
 

@@ -2,16 +2,7 @@
   <div id="content" class="content">
     <div class="content_area">
       <!--  3Depth -->
-      <CustomPageHeader
-        title1="전체"
-        title2="반"
-        title3="개인"
-        title4="클래스링크"
-        url1="/management/notice/all"
-        url2="/management/notice/classroom"
-        url3="/management/notice/individual"
-        url4="/management/notice/classlink"
-      />
+      <CustomPageHeader />
       <div class="tab-content depth03 ac_manage_notice">
         <div class="tab-pane active">
           <!-- 검색 영역 -->

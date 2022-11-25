@@ -2,14 +2,7 @@
   <div id="content" class="content">
     <div class="content_area">
       <!--  3Depth -->
-      <CustomPageHeader
-        title1="전체"
-        title2="반"
-        title3="개인"
-        url1="/management/notice/all"
-        url2="/management/notice/class"
-        url3="/management/notice/individual"
-      />
+      <CustomPageHeader />
       <div class="tab-content depth03 ac_manage_notice notice_rigi">
         <div class="tab-pane active">
           <div class="setting_section">
@@ -207,7 +200,7 @@ export default {
         time_range_end: '11:59',
         time_range_start_m: 0,
         time_range_end_m: 0,
-        after_deadline: false,
+        after_deadline: true,
         notice_alarm: false,
         targetSetting: ['심화A', '심화B', '심화C'],
       },
@@ -249,7 +242,7 @@ export default {
         time_range_end: '11:59',
         time_range_start_m: 0,
         time_range_end_m: 0,
-        after_deadline: false,
+        after_deadline: true,
         notice_alarm: false,
       },
 

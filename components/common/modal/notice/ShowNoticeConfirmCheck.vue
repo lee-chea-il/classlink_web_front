@@ -116,7 +116,8 @@
               <div
                 v-if="
                   $route.fullPath === '/management/notice/all' ||
-                  $route.fullPath === '/management/notice/classlink'
+                  $route.fullPath === '/management/notice/classlink' ||
+                  $route.fullPath === '/management/notice/education'
                 "
                 class="filter_wrap"
               >

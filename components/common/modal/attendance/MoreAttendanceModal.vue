@@ -55,12 +55,12 @@
                     </div> -->
                   </div>
                   <div class="calendar_date_bluebox">
-                    {{ studentSearchDate.date_range_start }} -
-                    {{ studentSearchDate.date_range_end }}
+                    {{ attendanceSearchDate.date_range_start }} -
+                    {{ attendanceSearchDate.date_range_end }}
                   </div>
                   <i
                     class="icons_calendar_off mr-2"
-                    @click="openDatePickerModalDesc"
+                    @click="$emit('attendance-modal-open')"
                   ></i>
                   <div class="input-group input-search form-inline">
                     <input
@@ -528,11 +528,11 @@
     </div>
 
     <DatePickerModal
-      :open="datePickerModalDesc.open"
-      :range="range"
-      @select-range="selectRange"
-      @close="onCloseDatePickerModalDesc"
-      @confirm="onClickConfirmBtn"
+      :open="attendanceOpen.open"
+      :range="attendanceRange"
+      @select-range="$emit('attendance-select-range', $event)"
+      @close="$emit('attendance-close')"
+      @confirm="$emit('attendance-confirm')"
     />
   </div>
 </template>
@@ -544,50 +544,64 @@ export default {
   components: {
     DatePickerModal,
   },
-  data() {
-    return {
-      datePickerModalDesc: {
-        open: false,
-      },
-      studentSearchDate: {
-        date_range_start: '2022.11.22',
-        date_range_end: '2022.11.29',
-      },
-      range: {
-        start: new Date(),
-        end: new Date(),
-      },
-    }
-  },
-  methods: {
-    selectRange(e) {
-      this.range.start = e.start
-      this.range.end = e.end
-      // console.log(this.range)
+  props: {
+    attendanceOpen: {
+      type: Object,
+      default: () => {},
     },
-    openDatePickerModalDesc() {
-      this.datePickerModalDesc.open = true
+    attendanceRange: {
+      type: Object,
+      default: () => {},
     },
-    onCloseDatePickerModalDesc() {
-      this.datePickerModalDesc.open = false
-    },
-    changeDateFormat(date) {
-      const year = date.getFullYear()
-      const month = ('0' + (date.getMonth() + 1)).slice(-2)
-      const day = ('0' + date.getDate()).slice(-2)
-      const dateString = year + '.' + month + '.' + day
-      return dateString
-    },
-    onClickConfirmBtn() {
-      this.datePickerModalDesc.open = false
-      this.studentSearchDate.date_range_start = this.changeDateFormat(
-        this.range.start
-      )
-      this.studentSearchDate.date_range_end = this.changeDateFormat(
-        this.range.end
-      )
+    attendanceSearchDate: {
+      type: Object,
+      default: () => {},
     },
   },
+  // data() {
+  //   return {
+  //     datePickerModalDesc: {
+  //       open: false,
+  //     },
+  //     studentSearchDate: {
+  //       date_range_start: '2022.11.22',
+  //       date_range_end: '2022.11.29',
+  //     },
+  //     range: {
+  //       start: new Date(),
+  //       end: new Date(),
+  //     },
+  //   }
+  // },
+  // methods: {
+  //   selectRange(e) {
+  //     this.range.start = e.start
+  //     this.range.end = e.end
+  //     // console.log(this.range)
+  //   },
+  //   openDatePickerModalDesc() {
+  //     this.datePickerModalDesc.open = true
+  //   },
+  //   onCloseDatePickerModalDesc() {
+  //     this.datePickerModalDesc.open = false
+  //   },
+  //   changeDateFormat(date) {
+  //     const year = date.getFullYear()
+  //     const month = ('0' + (date.getMonth() + 1)).slice(-2)
+  //     const day = ('0' + date.getDate()).slice(-2)
+  //     const dateString = year + '.' + month + '.' + day
+  //     return dateString
+  //   },
+  //   onClickConfirmBtn() {
+  //     this.datePickerModalDesc.open = false
+  //     this.studentSearchDate.date_range_start = this.changeDateFormat(
+  //       this.range.start
+  //     )
+  //     this.studentSearchDate.date_range_end = this.changeDateFormat(
+  //       this.range.end
+  //     )
+  //   },
+  // },
 }
 </script>
 
