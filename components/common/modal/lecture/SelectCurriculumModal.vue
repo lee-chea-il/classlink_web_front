@@ -20,7 +20,9 @@
             <!-- 왼쪽 SECTION -->
 
             <!-- 오른쪽 SECTION -->
-            <RightSection />
+            <RightSection
+              ref="selectedCurriculum"
+            />
             <!-- 오른쪽 SECTION -->
           </div>
         </div>
@@ -65,8 +67,8 @@ export default {
     },
   },
   methods:{
-    plusEventClick(node){
-      
+    plusEventClick(copyData){
+      this.$refs.selectedCurriculum.$refs.myCurriculum.pasteData(copyData)
     }
   }
 }

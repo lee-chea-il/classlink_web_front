@@ -53,6 +53,10 @@ export default {
     isPlus: {
       type: Boolean,
       default: true
+    },
+    isMy: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -73,6 +77,7 @@ export default {
         nObj.isChecked=false
         nObj.readOnly=isReadOnly
         nObj.isCurriculum=this.isPlus
+        nObj.isMy=this.isMy
 
         if (data[i].children !== undefined) {
           nObj.isLeaf=false
@@ -97,29 +102,19 @@ export default {
     )
   },
   methods: {
-    onAddNode(params) {
-      console.log(params)
-    },
-
-    addNode() {
-      const node = new TreeNode({ name: 'new node', isLeaf: false })
-      if (!this.data.children) this.data.children = []
-      this.data.addChildren(node)
-    },
-
-    copyData() {
+    copyData(node) {
       let idNum = new Date().valueOf()
       function _dfs(oldNode) {
         const newNode={}
-        if (oldNode.isChecked) {
-          for(const item in oldNode){
-            newNode[item] = oldNode[item]
-          }
-          newNode.children = []
-          newNode.id = idNum
-          newNode.isChecked = false
-          idNum++
+        for(const item in oldNode){
+          newNode[item] = oldNode[item]
         }
+        newNode.children = []
+        newNode.id = idNum
+        newNode.isChecked = false
+        newNode.isCurriculum=false
+        newNode.isMy=true
+        idNum++
         if (oldNode.children && oldNode.children.length > 0) {
           const list = []
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
@@ -129,11 +124,19 @@ export default {
         }
         return newNode
       }
-      this.$emit('copyDataCallBack', _dfs(this.datas))
+      return _dfs(node)
+    },
+    pluseEventClick(node) {
+      this.$emit('plus-event-click', this.copyData(node))
+    },
+    minusEventClick(node) {
+      node.remove()
     },
     pasteData(copyCheckData) {
       let idNum = new Date().valueOf()
+      let checkCnt=0
       function _addNode(parentNode, oldNode) {
+        console.log('222')
         let node, i, len
         if (oldNode.name) {
           const newNode={}
@@ -143,6 +146,7 @@ export default {
           newNode.children = []
           newNode.id = idNum
           newNode.isChecked = false
+
           node = new TreeNode(newNode)
           parentNode.addChildren(node)
           idNum++
@@ -176,6 +180,7 @@ export default {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
             if (oldNode.children[len - i - 1].isLeaf) {
               if (oldNode.children[len - i - 1].isChecked) {
+                checkCnt++
                 oldNode.isPaste = true
               }
             } else {
@@ -184,6 +189,7 @@ export default {
           }
         }
         if (oldNode.isChecked) {
+          checkCnt++
           oldNode.isPaste = true
         }
       }
@@ -195,34 +201,17 @@ export default {
         }
         oldNode.paste = false
       }
-      if (copyCheckData.children && copyCheckData.children.length > 0) {
+      if(this.datas.children&&this.datas.children.length>0){
         _checkPasteData(this.datas)
-        _pasteData(this.datas)
-        _resetPasteData(this.datas)
-      }
-    },
-    delData() {
-      function _dell(oldNode) {
-        if (
-          !oldNode.isChecked &&
-          oldNode.children &&
-          oldNode.children.length > 0
-        ) {
-          for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            _dell(oldNode.children[len - i - 1])
-          }
+        if(checkCnt===0){
+          _addNode(this.datas, copyCheckData)
+        }else{
+          _pasteData(this.datas)
+          _resetPasteData(this.datas)
         }
-        if (oldNode.isChecked) {
-          oldNode.remove()
-        }
+      }else{
+        _addNode(this.datas, copyCheckData)
       }
-      _dell(this.datas)
-    },
-    pluseEventClick(node) {
-      this.$emit('plus-event-click', node)
-    },
-    minusEventClick(node) {
-      node.remove()
     },
   },
 }
