@@ -1944,10 +1944,15 @@ ol {
 /* 가맹관리 - 가맹한기관 */
 .ac_manage_fran .fran_address {
   display: inline-block;
-  max-width: 230px;
+  max-width: 210px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+@media (max-width: 1199.98px) {
+  .ac_manage_fran .fran_address {
+    max-width: 120px;
+  }
 }
 .ac_manage_fran .input-search {
   width: 120%;
@@ -1976,6 +1981,8 @@ ol {
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
+  width: 25%;
+  padding-left: 15px;
 }
 #modalViewDetail .col {
   font-weight: 400;
@@ -2011,6 +2018,11 @@ ol {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+@media (max-width: 1199.98px) {
+  .ac_manage_fran .fran_id {
+    max-width: 60px;
+  }
 }
 
 /* 결제내역 */

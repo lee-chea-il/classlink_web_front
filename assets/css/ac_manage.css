@@ -1962,6 +1962,19 @@ ol {
 .ac_manage_std .tab-pane .nothing_txt .btn_area .btn:first-child {
   margin-right: 10px;
 }
+.ac_manage_std .first_cousin {
+  display: inline-block;
+  max-width: 160px;
+  line-height: 26px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 1199.98px) {
+  .ac_manage_std .first_cousin {
+    max-width: 91px;
+  }
+}
 
 @media (max-width: 1099px) {
   .tab-content.depth03.ac_manage_std .search_section {
@@ -1992,7 +2005,7 @@ ol {
   padding: 15px 36px;
 }
 .modal.ac_manage_std .st_title00 {
-  width: 33%;
+  width: 27%;
 }
 .modal.ac_manage_std .st_title01 {
   width: 100%;
@@ -3282,39 +3295,35 @@ ol {
 }
 
 /* 학생재배정 - 팝업 M1 */
-#modalReassignstudent .class_first {
-  display: flex;
-  justify-content: space-evenly;
-  padding: 13px 0px 10px;
+#modalReassignstudent ul > li {
+  width: 20%;
+  margin: 5px 0px;
 }
-#modalReassignstudent .class_second {
-  display: flex;
-  justify-content: space-evenly;
-  padding: 10px 0px 55px;
+#modalReassignstudent .reassign_tit {
+  margin-bottom: 20px;
 }
 #modalReassignstudent .class_box {
-  position: relative;
-  width: 680px;
-  height: 96px;
-  left: 41px;
-  top: 20px;
+  display: flex;
   border: 0.4px solid #A7A9AC;
   border-radius: 3px;
+  flex-flow: wrap;
+  padding: 15px 0px;
 }
-#modalReassignstudent .content {
+#modalReassignstudent .reassign_info {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   display: flex;
   align-items: center;
   color: #A7A9AC;
-  gap: 10px;
-  position: relative;
-  bottom: 30px;
-  left: 140px;
+  margin-top: 20px;
+  justify-content: center;
 }
 #modalReassignstudent .modal-footer {
-  padding-top: 70px;
+  padding-top: 20px;
+}
+#modalReassignstudent .icons_information {
+  margin-right: 5px;
 }
 
 /* jeh-2022.09.07 끝 */

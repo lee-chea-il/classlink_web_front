@@ -20,6 +20,20 @@
 			margin-right: 10px;
 		}
 	}
+
+	.first_cousin {
+		display: inline-block;
+		max-width: 160px;
+		line-height: 26px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+
+		@media (max-width: 1199.98px) {
+			max-width: 91px;
+		}
+	}
+
 }
 
 //학생관리 페이지 - 고정형min992px 관련 수정
@@ -65,7 +79,7 @@
 	}
 
 	.st_title00 {
-		width: 33%;
+		width: 27%;
 	}
 
 	.st_title01 {
@@ -1615,43 +1629,40 @@
 
 /* 학생재배정 - 팝업 M1 */
 #modalReassignstudent {
-	.class_first {
-		display: flex;
-		justify-content: space-evenly;
-		padding: 13px 0px 10px;
+	ul>li {
+		width: 20%;
+		margin: 5px 0px;
 	}
 
-	.class_second {
-		display: flex;
-		justify-content: space-evenly;
-		padding: 10px 0px 55px;
+	.reassign_tit {
+		margin-bottom: 20px;
 	}
 
 	.class_box {
-		position: relative;
-		width: 680px;
-		height: 96px;
-		left: 41px;
-		top: 20px;
+		display: flex;
 		border: 0.4px solid #A7A9AC;
 		border-radius: 3px;
+		flex-flow: wrap;
+		padding: 15px 0px;
 	}
 
-	.content {
+	.reassign_info {
 		font-weight: 400;
 		font-size: 14px;
 		line-height: 20px;
 		display: flex;
 		align-items: center;
-		color: theme.$text_unselected_color;
-		gap: 10px;
-		position: relative;
-		bottom: 30px;
-		left: 140px;
+		color: #A7A9AC;
+		margin-top: 20px;
+		justify-content: center;
 	}
 
 	.modal-footer {
-		padding-top: 70px;
+		padding-top: 20px;
+	}
+
+	.icons_information {
+		margin-right: 5px;
 	}
 }
 

@@ -2484,6 +2484,8 @@ ol {
 .ac_manage_notice td.td_expand .functional_area .thumbnail_area {
   position: relative;
   width: calc(100% - 275px);
+  height: 60px;
+  overflow-y: scroll;
 }
 .ac_manage_notice td.td_expand .functional_area .thumbnail_area .thumbnail {
   position: relative;
@@ -3325,40 +3327,48 @@ ol {
 }
 
 /* 공지사항 컨펌체크 (팝업 L) */
-#modalNoticeConfirm .confirm_sub {
+#modalNoticeConfirm .confirm_sub,
+#modalClassNoticeTarget .confirm_sub {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   color: #A7A9AC;
 }
-#modalNoticeConfirm .title_area {
+#modalNoticeConfirm .title_area,
+#modalClassNoticeTarget .title_area {
   display: flex;
 }
-#modalNoticeConfirm .confirm_title {
+#modalNoticeConfirm .confirm_title,
+#modalClassNoticeTarget .confirm_title {
   margin-right: 20px;
   line-height: 40px;
 }
-#modalNoticeConfirm .confirm_sub {
+#modalNoticeConfirm .confirm_sub,
+#modalClassNoticeTarget .confirm_sub {
   margin-right: auto;
   line-height: 40px;
 }
-#modalNoticeConfirm .btn_filter {
+#modalNoticeConfirm .btn_filter,
+#modalClassNoticeTarget .btn_filter {
   margin-right: 5px;
 }
-#modalNoticeConfirm .btn_filter_off {
+#modalNoticeConfirm .btn_filter_off,
+#modalClassNoticeTarget .btn_filter_off {
   opacity: 0.3;
 }
-#modalNoticeConfirm .btn_filter_off.on {
+#modalNoticeConfirm .btn_filter_off.on,
+#modalClassNoticeTarget .btn_filter_off.on {
   opacity: 1;
 }
-#modalNoticeConfirm .modal-body {
+#modalNoticeConfirm .modal-body,
+#modalClassNoticeTarget .modal-body {
   text-align: center;
   padding: 35px 30px;
 }
-#modalNoticeConfirm .box01 {
+#modalNoticeConfirm .box01,
+#modalClassNoticeTarget .box01 {
   position: relative;
   width: 100%;
-  height: 270px;
   padding: 10px;
   background: #F9F9FB;
   border: 0.4px solid rgba(167, 169, 172, 0.4);
@@ -3367,18 +3377,21 @@ ol {
   text-align: left;
 }
 @media (min-width: 992px) {
-  #modalNoticeConfirm .box01 .right_area {
+  #modalNoticeConfirm .box01 .right_area,
+#modalClassNoticeTarget .box01 .right_area {
     text-align: right;
     width: 48%;
   }
 }
-#modalNoticeConfirm .keyword_area {
+#modalNoticeConfirm .keyword_area,
+#modalClassNoticeTarget .keyword_area {
   position: relative;
   height: auto;
   padding: 1px 8px;
   width: 50%;
 }
-#modalNoticeConfirm .keyword_area_01 {
+#modalNoticeConfirm .keyword_area_01,
+#modalClassNoticeTarget .keyword_area_01 {
   position: relative;
   max-height: 113px;
   display: flex;
@@ -3387,7 +3400,8 @@ ol {
   overflow-y: auto;
   white-space: nowrap;
 }
-#modalNoticeConfirm .keyword01 {
+#modalNoticeConfirm .keyword01,
+#modalClassNoticeTarget .keyword01 {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -3398,13 +3412,15 @@ ol {
   margin-right: 10px;
   margin-bottom: 10px;
 }
-#modalNoticeConfirm .keyword01-1 {
+#modalNoticeConfirm .keyword01-1,
+#modalClassNoticeTarget .keyword01-1 {
   font-weight: 400;
   font-size: 12px;
   line-height: 17px;
   margin: 0px 5px 0px 9px;
 }
-#modalNoticeConfirm .x {
+#modalNoticeConfirm .x,
+#modalClassNoticeTarget .x {
   display: inline-block;
   width: 10px;
   height: 10px;
@@ -3416,7 +3432,8 @@ ol {
   background-image: url(../images/icon_×.png);
   margin-right: 8px;
 }
-#modalNoticeConfirm .filter_wrap {
+#modalNoticeConfirm .filter_wrap,
+#modalClassNoticeTarget .filter_wrap {
   position: relative;
   width: 100%;
   height: 150px;
@@ -3427,58 +3444,168 @@ ol {
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
 }
-#modalNoticeConfirm .filter_wrap .filter_section {
+#modalNoticeConfirm .filter_wrap .filter_section,
+#modalClassNoticeTarget .filter_wrap .filter_section {
   position: relative;
   display: flex;
   align-items: flex-start;
 }
-#modalNoticeConfirm .filter_wrap .filter_section .title_area {
+#modalNoticeConfirm .filter_wrap .filter_section .title_area,
+#modalClassNoticeTarget .filter_wrap .filter_section .title_area {
   width: 140px;
 }
-#modalNoticeConfirm .filter_wrap .filter_section .filter_area {
+#modalNoticeConfirm .filter_wrap .filter_section .filter_area,
+#modalClassNoticeTarget .filter_wrap .filter_section .filter_area {
   width: calc(100% - 140px);
   display: flex;
   flex-wrap: wrap;
 }
-#modalNoticeConfirm .filter_wrap .filter_section .filter_area .filter {
+#modalNoticeConfirm .filter_wrap .filter_section .filter_area .filter,
+#modalClassNoticeTarget .filter_wrap .filter_section .filter_area .filter {
   display: inline-block;
   text-align: left;
-  width: 140px;
+  width: 20%;
   margin-bottom: 15px;
 }
-#modalNoticeConfirm .search_result {
+#modalNoticeConfirm .search_result,
+#modalClassNoticeTarget .search_result {
   position: relative;
   margin-top: 10px;
 }
-#modalNoticeConfirm .search_result .tbl_overflow {
+#modalNoticeConfirm .search_result .tbl_overflow,
+#modalClassNoticeTarget .search_result .tbl_overflow {
   min-height: 250px;
 }
-#modalNoticeConfirm .search_result .table th {
+#modalNoticeConfirm .search_result .table th,
+#modalClassNoticeTarget .search_result .table th {
   color: #454545;
 }
-#modalNoticeConfirm .search_result .table tbody td {
+#modalNoticeConfirm .search_result .table tbody td,
+#modalClassNoticeTarget .search_result .table tbody td {
   padding: 15px 5px;
   font-size: 16px;
 }
-#modalNoticeConfirm .search_result .table tbody tr:nth-child(even) {
+#modalNoticeConfirm .search_result .table tbody tr:nth-child(even),
+#modalClassNoticeTarget .search_result .table tbody tr:nth-child(even) {
   background-color: #F9F9FC;
 }
-#modalNoticeConfirm .search_result .table01 {
+#modalNoticeConfirm .search_result .table01,
+#modalClassNoticeTarget .search_result .table01 {
   width: 13%;
 }
-#modalNoticeConfirm .search_result .table02 {
+#modalNoticeConfirm .search_result .table02,
+#modalClassNoticeTarget .search_result .table02 {
   width: 11%;
 }
-#modalNoticeConfirm .search_result .table03 {
+#modalNoticeConfirm .search_result .table03,
+#modalClassNoticeTarget .search_result .table03 {
   width: 11%;
 }
-#modalNoticeConfirm .search_result .table04 {
+#modalNoticeConfirm .search_result .table04,
+#modalClassNoticeTarget .search_result .table04 {
   width: 14%;
 }
-#modalNoticeConfirm .search_result .table05 {
+#modalNoticeConfirm .search_result .table05,
+#modalClassNoticeTarget .search_result .table05 {
   width: 26%;
 }
 #modalNoticeConfirm .search_result .table th,
-#modalNoticeConfirm .search_result .table td {
+#modalNoticeConfirm .search_result .table td,
+#modalClassNoticeTarget .search_result .table th,
+#modalClassNoticeTarget .search_result .table td {
   text-align: center;
+}
+
+/* 공지사항-등록(반).html */
+.notice_regi_class .line {
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  margin: 20px auto;
+}
+.notice_regi_class .left_area {
+  width: 50%;
+}
+.notice_regi_class .right_area {
+  width: 50%;
+  margin-left: auto;
+}
+@media (max-width: 1199.98px) {
+  .notice_regi_class .right_area {
+    width: 33%;
+  }
+}
+.notice_regi_class .keyword_area {
+  position: relative;
+  height: auto;
+  padding: 1px 8px;
+}
+.notice_regi_class .keyword_area_01 {
+  position: relative;
+  min-width: 520px;
+  max-height: 113px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 10px;
+  overflow-y: auto;
+  white-space: nowrap;
+}
+.notice_regi_class .keyword01 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 88px;
+  height: 28px;
+  background: #D1DBFF;
+  border-radius: 3px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.notice_regi_class .keyword01-1 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+  margin: 0px 5px 0px 9px;
+}
+.notice_regi_class .x {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_×.png);
+  margin-right: 8px;
+}
+.notice_regi_class .search_section02 {
+  width: 100%;
+  display: flex;
+}
+@media (min-width: 992px) {
+  .notice_regi_class .search_section02 .right_area {
+    text-align: right;
+    margin-bottom: 30px;
+  }
+  .notice_regi_class .search_section02 .right_area .filter_lift {
+    margin-top: 5px;
+  }
+}
+@media (min-width: 1199.98px) {
+  .notice_regi_class .search_section02 .right_area {
+    margin-bottom: 70px;
+  }
+  .notice_regi_class .search_section02 .right_area .filter_lift {
+    margin-top: 0px;
+  }
+}
+.notice_regi_class .reply_onoff {
+  text-align: center;
+  margin-top: 20px;
+  background: #F9F9FC;
+  padding: 10px 0px;
+}
+.notice_regi_class .reply_onoff label {
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 23px;
 }/*# sourceMappingURL=ac_manage2.css.map */

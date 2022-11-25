@@ -2181,12 +2181,12 @@ i.btn {
 }
 .nav_mobile .mobilemu_open {
   z-index: 2000;
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0px;
-  margin-left: -960px;
+  margin-left: -1300px;
   background-color: #FFFFFF;
 }
 .nav_mobile .mobilemu_open li > a {
@@ -3795,6 +3795,14 @@ i.btn {
   }
 }
 /* Extra large devices (large desktops, ≥1200px and up) ~xl*/
+@media (max-width: 1272px) {
+  .nav_web {
+    display: none;
+  }
+  .main_mb {
+    display: block;
+  }
+}
 @media (max-width: 1199.98px) {
   .web_only .modal-xl {
     max-width: 950px;

@@ -783,3 +783,78 @@
 		margin-bottom: 20px;
 	}
 }
+
+/* (완)CL-마이홈.html */
+@mixin favoritebtn($imgname) {
+	margin: 10px;
+	display: inline-block;
+	width: 230px;
+	height: 230px;
+	padding: 0;
+	border: 0;
+	border-radius: 30px;
+	// background-color: #D1D3D4;
+	background-repeat: no-repeat;
+	background-size: (230px+30px), (230px+30px);
+	background-position: -15px -15px;
+	$url: "../images/icons/#{$imgname}.svg";
+	background-image: url($url);
+	box-shadow: 2px 2px 10px 5px rgba(0, 0, 0, 0.2);
+
+	&:hover {
+		$url2: "../images/icons/#{$imgname}_hover.svg";
+		background-repeat: no-repeat;
+		background-size: (230px+30px), (230px+30px);
+		background-position: -15px -15px;
+		background-image: url($url2);
+	}
+}
+
+.btn_favorite_fc {
+	@include favoritebtn(btn_favorite_fc);
+}
+
+.btn_favorite_edu {
+	@include favoritebtn(btn_favorite_edu);
+}
+
+.btn_favorite_pay {
+	@include favoritebtn(btn_favorite_pay);
+}
+
+.btn_favorite_notice_mint {
+	@include favoritebtn(btn_favorite_notice_mint);
+}
+
+/* (완)프랜-마이홈.html */
+.fran_myhome {
+
+	.myhome {
+		display: flex;
+		justify-content: center;
+		margin-top: 100px;
+		margin: 120px 0px;
+	}
+
+	@media (max-width: 1199.98px) {
+
+		.btn_favorite_notice,
+		.btn_favorite_franchise,
+		.btn_favorite_pay,
+		.btn_favorite_class,
+		.btn_favorite_fc,
+		.btn_favorite_edu,
+		.btn_favorite_notice_mint {
+			width: 210px;
+			height: 210px;
+			text-align: center;
+			vertical-align: middle;
+			background-repeat: no-repeat;
+			background-position: center center;
+		}
+
+	}
+
+
+
+}
