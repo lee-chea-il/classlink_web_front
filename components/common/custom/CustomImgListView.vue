@@ -95,6 +95,10 @@ export default {
         return result
       }
       this.isImgLoadComp=false
+      if(this.datas){
+        this.datas = null
+      }
+      this.pid=0
       this.datas = new Tree( false, dataMapping(cwData.interactionObjects, false) )
       $("#cwBoxBackImg").attr("src",cwData.backImg_url)
       $('.cw_box> .vtl').css('opacity',0)

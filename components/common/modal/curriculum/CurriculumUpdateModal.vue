@@ -1799,6 +1799,7 @@ export default {
       }
       this.currentClassName=value
       if(this.cwData){
+        this.$refs.listView.unLinkAllItem()
         this.$refs.imgListView.setData(this.cwData.data)
         this.$refs.imgListViewSwiper.setData(this.cwData.data.interactionObjects)
       }
