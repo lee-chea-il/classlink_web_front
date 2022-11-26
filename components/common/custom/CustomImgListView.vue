@@ -17,6 +17,8 @@
 import { VueTreeList, Tree } from 'vue-tree-list'
 import $ from 'jquery'
 
+const imgMaxWid = 513
+
 export default {
   name: 'CustomImgListView',
   components: {
@@ -37,7 +39,10 @@ export default {
       datas: new Tree(false, []),
       pid: this.pidNum,
       imgSizeType: 'init',
-      isImgLoadComp: false
+      isImgLoadComp: false,
+      defaultRatio: 0.285,
+      currentCBWwid: 0,
+      perRatio: 1
     }
   },
   mounted() {
@@ -47,9 +52,29 @@ export default {
     window.removeEventListener('resize', this.imgReSize)
   },
   methods: {
+    resizeIO(){
+      this.isImgLoadComp=false
+      const len = this.datas.children.length
+      for (let i = 0; i < len; i++) {
+        const imgNode = this.datas.children[i]
+        const reLeft=imgNode.left*this.perRatio
+        const reTop=imgNode.top*this.perRatio
+        const hei=imgNode.height*this.defaultRatio*this.perRatio
+        const target=$("#"+imgNode.id).find('img')
+        target.css({'top':reTop+'px','left':reLeft+'px'}).height(hei)
+      }
+      this.isImgLoadComp=true
+    },
     imgReSize(){
       if(this.isImgLoadComp){
-        console.log(33)
+        const cbw=$("#cwBoxBackImg").width()
+        const cha=Math.abs(this.currentCBWwid-cbw)
+        if(cbw>0&&cha>3){
+          this.currentCBWwid=cbw
+          this.perRatio=(this.currentCBWwid/imgMaxWid).toFixed(3)
+          this.$emit('img-resize',this.perRatio)
+          this.resizeIO()
+        }
       }
     },
     setData(cwData) {
@@ -63,6 +88,7 @@ export default {
           nObj.pid=this.pid
           nObj.isLink=false
           nObj.linkListIdx=-1
+          nObj.height=0
           result[i]=nObj
           this.pid++
         }
@@ -83,11 +109,13 @@ export default {
           let target, tHei
           for (let i = 0; i < this.pid; i++) {
             target=$("#imgListView_"+i).find(".inter_action_object")
-            tHei=target.height()*0.285
+            this.datas.children[i].height=target.height()
+            tHei=target.height()*this.defaultRatio
             target.css({'height':tHei+'px'})
           }
           $('.cw_box> .vtl').css('opacity',1)
           this.isImgLoadComp=true
+          this.imgReSize()
         }, 500)
       }, 500)
     },

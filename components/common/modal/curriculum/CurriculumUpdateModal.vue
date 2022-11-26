@@ -65,6 +65,7 @@
                       @link-data="linkData"
                       @unlink-data-to-img="unLinkDataToImg"
                       @unlink-data-to-list="unLinkDataToList"
+                      @img-resize="imgResize"
                     />
                   </div>
                   <div class="item_list_wrap">
@@ -1834,6 +1835,9 @@ export default {
       this.lessonDataList=fileInfo.data
       $("#openFileNameTxt").val(this.fileInfo.path+' > '+this.fileInfo.data.name)
       this.$refs.listView.setDataList(this.lessonDataList)
+    },
+    imgResize(perRatio){
+      this.$refs.imgListViewSwiper.imgResize(perRatio)
     }
   }
 }

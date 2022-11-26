@@ -72,12 +72,10 @@ export default {
   },
   methods:{
     plusEventClick(copyData){
-      console.log('plusEventClick')
       isAddActiveStype = true
       this.$refs.rightSection.$refs.myCurriculum.pasteData(copyData)
     },
     removeActiveStyle(){
-      console.log('removeActiveStyle')
       if(isAddActiveStype){
         isAddActiveStype=false
         this.$refs.leftSection.$refs.curriculum.resetActiveStyle()

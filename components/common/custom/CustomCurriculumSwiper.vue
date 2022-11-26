@@ -42,7 +42,7 @@
         dataList: [],
         swiperOption: {
           direction: 'horizontal',
-          slidesPerView: 3.4,
+          slidesPerView: 5,
           spaceBetween: 10,
           scrollbar: {
             el: '.swiper-scrollbar',
@@ -55,16 +55,16 @@
           },
           breakpoints: {
             578: {
-              slidesPerView: 3
+              slidesPerView: 5
             },
             992: {
-              slidesPerView: 4
+              slidesPerView: 5
             },
             1200: {
               slidesPerView: 5
             },
           }
-        }
+        },
       }
     },
     methods: {
@@ -84,15 +84,14 @@
         },500)
       },
       linkData(linkListIdx,imgIdx){
-        const len=this.dataList.length
-        const moveX=imgIdx*-80
+        const distanceX=($("#imgIcon0").parent().width()).toFixed(2)
+        const moveX=imgIdx*-(Number(distanceX)+10)
         $(".swiper-wrapper").css({"transform":`translate3d(${moveX}px, 0px, 0px)`})
-
+        const len=this.dataList.length
         for (let i = 0; i < len; i++) {
           if(this.dataList[i].imgIdx===imgIdx){
             this.dataList[i].linkListIdx=linkListIdx
-            const target=$("#imgIcon"+i).find("img")
-            target.attr({"src":this.dataList[i].icon_normal_url})
+            $("#imgIcon"+i).find("img").attr({"src":this.dataList[i].icon_normal_url})
             break
           }
         }
@@ -125,6 +124,14 @@
           this.dataList[i].linkListIdx=-1
           const target=$("#imgIcon"+i).find("img")
           target.attr({"src":this.dataList[i].icon_dim_url})
+        }
+      },
+      imgResize(perRatio){
+        const len=this.dataList.length
+        for (let i = 0; i < len; i++) {
+          const target=$("#imgIcon"+i)
+          const hei=(52*perRatio).toFixed(3)
+          target.width(hei).height(hei)
         }
       }
     }

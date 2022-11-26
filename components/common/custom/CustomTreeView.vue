@@ -73,6 +73,7 @@ export default {
         nObj.pid=this.pid
         nObj.isChecked=false
         nObj.readOnly=isReadOnly
+        nObj.active=false
 
         if (data[i].children !== undefined) {
           nObj.isLeaf=false
@@ -118,28 +119,6 @@ export default {
       const node = new TreeNode({ name: 'new node', isLeaf: false })
       if (!this.data.children) this.data.children = []
       this.data.addChildren(node)
-    },
-
-    getNewTree() {
-      const vm = this
-      function _dfs(oldNode) {
-        const newNode = {}
-
-        for (const k in oldNode) {
-          if (k !== 'children' && k !== 'parent') {
-            newNode[k] = oldNode[k]
-          }
-        }
-
-        if (oldNode.children && oldNode.children.length > 0) {
-          newNode.children = []
-          for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            newNode.children.push(_dfs(oldNode.children[i]))
-          }
-        }
-        return newNode
-      }
-      console.log(_dfs(vm.data))
     },
     copyData() {
       let idNum = new Date().valueOf()
