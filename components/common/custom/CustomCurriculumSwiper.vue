@@ -5,12 +5,11 @@
       :key="index"
       class="swiper-slide swiper-slide-active"
     >
-      <div
-        :id="`imgIcon${index}`"
-        class="item"
-        @click="itemClick($event)"
-      >
-        <img src=''/>
+      <div :id="`imgIcon${index}`" class="item">
+        <img
+          src=''
+          @click="itemClick($event)"
+        />
         <button class="btn icons_x_circle_off" type="button" @click="unLinkEvent($event)"></button>
       </div>
     </swiper-slide>
@@ -139,7 +138,7 @@
         }
       },
       itemClick(event){
-        const idx=event.currentTarget.id.split('imgIcon')[1]
+        const idx=event.currentTarget.parentElement.id.split('imgIcon')[1]
         this.$emit('item-click',idx)
       }
     }
