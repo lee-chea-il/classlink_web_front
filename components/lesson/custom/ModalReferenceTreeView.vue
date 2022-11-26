@@ -77,6 +77,7 @@ export default {
 
         if (data[i].children !== undefined) {
           nObj.isLeaf = false
+          nObj.dragDisabled=true
           nObj.children = []
 
           result[i] = nObj

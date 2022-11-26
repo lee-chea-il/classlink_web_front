@@ -5,7 +5,11 @@
       :key="index"
       class="swiper-slide swiper-slide-active"
     >
-      <div :id="`imgIcon${index}`" class="item">
+      <div
+        :id="`imgIcon${index}`"
+        class="item"
+        @click="itemClick($event)"
+      >
         <img src=''/>
         <button class="btn icons_x_circle_off" type="button" @click="unLinkEvent($event)"></button>
       </div>
@@ -133,6 +137,10 @@
           const hei=(52*perRatio).toFixed(3)
           target.width(hei).height(hei)
         }
+      },
+      itemClick(event){
+        const idx=event.currentTarget.id.split('imgIcon')[1]
+        this.$emit('item-click',idx)
       }
     }
   }

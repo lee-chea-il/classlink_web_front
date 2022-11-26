@@ -74,6 +74,7 @@
                         ref="imgListViewSwiper"
                         :isHorizontal="true"
                         @unLink-event="unLinkEvent"
+                        @item-click="itemClick"
                       />
                     </div>
                   </div>
@@ -1839,6 +1840,9 @@ export default {
     },
     imgResize(perRatio){
       this.$refs.imgListViewSwiper.imgResize(perRatio)
+    },
+    itemClick(imgIdx){
+      this.$refs.imgListView.itemClick(imgIdx)
     }
   }
 }

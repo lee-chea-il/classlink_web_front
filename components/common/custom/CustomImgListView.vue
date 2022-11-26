@@ -161,6 +161,46 @@ export default {
           $('#imgListView_'+i).find('img').css('opacity',0.3)
         }
       }
+    },
+    itemClick(imgIdx){
+      const target=$('#imgListView_'+imgIdx).find('img')
+      let nYpos =0
+      const currentScrollPosition=$('.cw_box').scrollTop()
+      const targetYpos=target.position().top
+      const areaHei=$('.cw_box').height()
+      const maxYpos = $("#cwBoxBackImg").height()-areaHei
+      console.log('--------------------')
+      console.log(currentScrollPosition)
+      console.log(targetYpos)
+      console.log(areaHei)
+      console.log(maxYpos)
+      
+      let isChangeYpos=false
+      if(targetYpos<currentScrollPosition){
+        nYpos=targetYpos-50
+        if(nYpos<0)nYpos=0
+        isChangeYpos=true
+      }else if(targetYpos>currentScrollPosition+areaHei){
+        nYpos=targetYpos-50
+        if(nYpos>maxYpos)nYpos=maxYpos
+        isChangeYpos=true
+      }
+      let delay = 0
+      if(isChangeYpos){
+        delay=200
+      }
+      setTimeout(() => {
+        target.addClass("imgActive")
+        setTimeout(() => {
+          target.removeClass("imgActive")
+        },500)
+        setTimeout(() => {
+          target.addClass("imgActive")
+        },1000)
+        setTimeout(() => {
+          target.removeClass("imgActive")
+        },1500)
+      },delay)
     }
   }
 }
@@ -210,5 +250,10 @@ export default {
 #modalCuriRegi .modal_curiregi .divide_area.right .icon_link_sm,
 #modalCuriRegi .modal_curiregi .divide_area.right .icon_mp4_sm{
   margin-right: 11px;
+}
+.imgActive{
+  -webkit-filter: drop-shadow(12px 12px 7px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(12px 12px 7px rgba(0, 0, 0, 0.5));
+  opacity: 1;
 }
 </style>
