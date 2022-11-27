@@ -8,6 +8,7 @@
       <div :id="`imgIcon${index}`" class="item">
         <img
           src=''
+          style="cursor:pointer;"
           @click="itemClick($event)"
         />
         <button class="btn icons_x_circle_off" type="button" @click="unLinkEvent($event)"></button>
@@ -87,9 +88,7 @@
         },500)
       },
       linkData(linkListIdx,imgIdx){
-        const distanceX=($("#imgIcon0").parent().width()).toFixed(2)
-        const moveX=imgIdx*-(Number(distanceX)+10)
-        $(".swiper-wrapper").css({"transform":`translate3d(${moveX}px, 0px, 0px)`})
+        this.selectListImg(imgIdx)
         const len=this.dataList.length
         for (let i = 0; i < len; i++) {
           if(this.dataList[i].imgIdx===imgIdx){
@@ -140,6 +139,11 @@
       itemClick(event){
         const idx=event.currentTarget.parentElement.id.split('imgIcon')[1]
         this.$emit('item-click',idx)
+      },
+      selectListImg(imgIdx){
+        const distanceX=($("#imgIcon0").parent().width()).toFixed(2)
+        const moveX=imgIdx*-(Number(distanceX)+10)
+        $(".swiper-wrapper").css({"transform":`translate3d(${moveX}px, 0px, 0px)`})
       }
     }
   }

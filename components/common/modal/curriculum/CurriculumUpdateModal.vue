@@ -124,10 +124,10 @@
                           현재 불러온 레슨이 없습니다.
                         </div>
                         <div v-else class="section">
-                          <span class="custom-control custom-checkbox form-inline checkbox00">
+                          <!-- <span class="custom-control custom-checkbox form-inline checkbox00">
                             <input id="checkbox01" type="checkbox" class="custom-control-input">
                             <label class="custom-control-label checkbox01" for="checkbox01"></label>
-                          </span>
+                          </span> -->
                           <!-- 커리큘럼 등록 시 출력됨 -->
                           <span v-if="!isUpdate" class="sum">연결 개수: {{linkDataCnt}}개</span>
                           <button
@@ -142,6 +142,7 @@
                             ref="listView"
                             :pidNum="3000"
                             @update-link-cnt="updateLinkCnt"
+                            @select-list-img="selectListImg"
                           />
                         </div>
                       </div>
@@ -1843,6 +1844,11 @@ export default {
     },
     itemClick(imgIdx){
       this.$refs.imgListView.itemClick(imgIdx)
+      this.$refs.listView.itemClick(imgIdx)
+    },
+    selectListImg(imgIdx){
+      this.$refs.imgListView.selectListImg(imgIdx)
+      this.$refs.imgListViewSwiper.selectListImg(imgIdx)
     }
   }
 }

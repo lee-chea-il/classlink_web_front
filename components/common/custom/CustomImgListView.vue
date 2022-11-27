@@ -162,29 +162,30 @@ export default {
         }
       }
     },
+    selectListImg(imgIdx){
+      this.itemClick(imgIdx)
+    },
     itemClick(imgIdx){
       const target=$('#imgListView_'+imgIdx).find('img')
       let nYpos =0
       const currentScrollPosition=$('.cw_box').scrollTop()
+      const targetHei=target.height()
       const targetYpos=target.position().top
       const areaHei=$('.cw_box').height()
-      const maxYpos = $("#cwBoxBackImg").height()-areaHei
-      console.log('--------------------')
-      console.log(currentScrollPosition)
-      console.log(targetYpos)
-      console.log(areaHei)
-      console.log(maxYpos)
       
       let isChangeYpos=false
-      if(targetYpos<currentScrollPosition){
-        nYpos=targetYpos-50
+      const targetMaxYpos=targetYpos+targetHei
+      if(targetMaxYpos>areaHei){
+        isChangeYpos=true
+        nYpos=targetYpos-(targetMaxYpos-areaHei)
+        $('.cw_box').scrollTop(nYpos)
+      }else if(targetYpos<0){
+        isChangeYpos=true
+        nYpos=currentScrollPosition+targetYpos
         if(nYpos<0)nYpos=0
-        isChangeYpos=true
-      }else if(targetYpos>currentScrollPosition+areaHei){
-        nYpos=targetYpos-50
-        if(nYpos>maxYpos)nYpos=maxYpos
-        isChangeYpos=true
+        $('.cw_box').scrollTop(nYpos)
       }
+      
       let delay = 0
       if(isChangeYpos){
         delay=200
@@ -254,6 +255,6 @@ export default {
 .imgActive{
   -webkit-filter: drop-shadow(12px 12px 7px rgba(0, 0, 0, 0.5));
   filter: drop-shadow(12px 12px 7px rgba(0, 0, 0, 0.5));
-  opacity: 1;
+  opacity: 1 !important;
 }
 </style>

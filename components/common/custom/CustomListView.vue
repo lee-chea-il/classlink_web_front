@@ -5,6 +5,8 @@
     listType="listView"
     :is-drop="true"
     :is-show-option="false"
+    @leaf-name-click="nodeNameClick"
+    @click="removeActive"
   >
     <span slot="addTreeNodeIcon" class="icon">＋</span>
     <span slot="addLeafNodeIcon" class="icon"></span>
@@ -15,6 +17,7 @@
 </template>
 
 <script>
+import $ from 'jquery'
 import { VueTreeList, Tree } from 'vue-tree-list'
 export default {
   name: 'CustomListView',
@@ -36,6 +39,7 @@ export default {
   },
   methods: {
     setDataList(listData) {
+      this.pid=this.pidNum
       this.receiveDataList=listData
       const copyData = (data) => {
         const newStr = JSON.stringify(data)
@@ -45,6 +49,7 @@ export default {
         nObj.isChecked=false
         nObj.isLink=false
         nObj.linkIdx=-1
+        nObj.id="list_"+this.pid
         nObj.addTreeNodeDisabled=true
         nObj.addLeafNodeDisabled=true
         nObj.editNodeDisabled=true
@@ -63,6 +68,7 @@ export default {
       this.datas = new Tree(false, dataMapping(this.receiveDataList.referenceList))
     },
     linkData(listIdx,imgIdx){
+      this.removeActive()
       for(let i=0;i<this.datas.children.length;i++){
         if(listIdx===this.datas.children[i].id){
           this.datas.children[i].isLink=true
@@ -73,6 +79,7 @@ export default {
       this.checkLinkDataCnt()
     },
     unLinkData(listIdx){
+      this.removeActive()
       for(let i=0;i<this.datas.children.length;i++){
         if(listIdx===this.datas.children[i].id){
           this.datas.children[i].isLink=false
@@ -92,6 +99,7 @@ export default {
       this.$emit('update-link-cnt', cnt)
     },
     unLinkAllItem(){
+      this.removeActive()
       if(this.datas.children){
         for(let i=0;i<this.datas.children.length;i++){
           this.datas.children[i].isLink=false
@@ -99,7 +107,28 @@ export default {
         }
       }
       this.$emit('update-link-cnt', 0)
-    }
+    },
+    itemClick(imgIdx){
+      this.removeActive()
+      if(this.datas.children){
+        for(let i=0;i<this.datas.children.length;i++){
+          if(parseInt(this.datas.children[i].linkIdx)===parseInt(imgIdx)){
+            $("#"+this.datas.children[i].id).addClass('curriculum_list_active')
+            break
+          }
+        }
+      }
+    },
+    nodeNameClick(node){
+      this.removeActive()
+      $("#"+node.id).addClass('curriculum_list_active')
+      if(node.isLink){
+        this.$emit("select-list-img",node.linkIdx)
+      }
+    },
+    removeActive() {
+      $(".vtl-leaf-node").removeClass('curriculum_list_active')
+    },
   },
 }
 </script>
@@ -140,5 +169,8 @@ export default {
   background-position: center center;
   background-size: contain;
   background-image: url(~assets/images/icon_mydata.png);
+}
+.curriculum_list_active {
+  background-color: #e7edff !important;
 }
 </style>
