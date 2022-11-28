@@ -9,7 +9,7 @@
       aria-hidden="true"
       style="display: block"
     >
-      <div class="background_close" @click="$emit('close')"></div>
+      <div class="background_close" />
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <ModalHeader title="레슨 등록" @close="$emit('close')" />
@@ -167,19 +167,11 @@
               <!-- /.2단 분류 컨텐츠 -->
             </div>
           </div>
-          <div class="modal-footer">
-            <!-- [개발참조] 레슨등록 시 출력되는 버튼 -->
-            <button class="btn btn_crud_point" @click="$emit('submit')">
-              등록
-            </button>
-            <button
-              class="btn btn_crud_default"
-              data-dismiss="modal"
-              @click="$emit('close')"
-            >
-              취소
-            </button>
-          </div>
+          <ModalBtnBox
+            submitTxt="등록"
+            @submit="$emit('submit')"
+            @close="$emit('close')"
+          />
         </div>
       </div>
     </div>
@@ -188,6 +180,7 @@
 
 <script>
 import ModalHeader from '../../ModalHeader.vue'
+import ModalBtnBox from '../../ModalBtnBox.vue'
 import TreeView from '~/components/lesson/custom/ModalReferenceTreeView.vue'
 import TopNavigation from '~/components/lesson/lessonAdd/TopNavigaion.vue'
 import LessonModalTreeView from '~/components/lesson/custom/LessonModalTreeView.vue'
@@ -200,6 +193,7 @@ export default {
     RightSection,
     TopNavigation,
     TreeView,
+    ModalBtnBox,
   },
   props: {
     open: { type: Boolean, default: false },

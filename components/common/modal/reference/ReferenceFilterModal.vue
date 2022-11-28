@@ -9,7 +9,7 @@
       aria-hidden="true"
       style="display: block"
     >
-      <div class="background_close" @click="$emit('close')"></div>
+      <div class="background_close" />
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <ModalHeader title="필터" @close="$emit('close')" />

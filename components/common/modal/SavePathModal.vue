@@ -9,7 +9,7 @@
       aria-hidden="true"
       style="display: block"
     >
-      <div class="background_close" @click="$emit('close')"></div>
+      <div class="background_close" />
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <ModalHeader title="저장 경로" @close="$emit('close')" />
@@ -74,18 +74,11 @@
             </div>
           </div>
 
-          <div class="modal-footer">
-            <button class="btn btn_crud_point" @click="saveFilePath">
-              저장
-            </button>
-            <button
-              class="btn btn_crud_default"
-              data-dismiss="modal"
-              @click="$emit('close')"
-            >
-              취소
-            </button>
-          </div>
+          <ModalBtnBox
+            submitTxt="저장"
+            @submit="saveFilePath"
+            @close="$emit('close')"
+          />
         </div>
       </div>
     </div>
@@ -95,6 +88,7 @@
 <script>
 import $ from 'jquery'
 import ModalHeader from '../ModalHeader.vue'
+import ModalBtnBox from '../ModalBtnBox.vue'
 import SavePathHeader from '~/components/common/SavePathHeader.vue'
 import TreeView from '~/components/common/SavePathTreeView.vue'
 
@@ -104,6 +98,7 @@ export default {
     ModalHeader,
     SavePathHeader,
     TreeView,
+    ModalBtnBox,
   },
   props: {
     institutionData: {

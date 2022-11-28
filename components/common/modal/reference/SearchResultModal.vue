@@ -1,4 +1,3 @@
-
 <template>
   <Transition name="modal">
     <div
@@ -10,7 +9,7 @@
       aria-hidden="true"
       style="display: block"
     >
-      <div class="background_close" @click="$emit('close')"></div>
+      <div class="background_close" />
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <ModalHeader title="자료 검색 결과" @close="$emit('close')" />

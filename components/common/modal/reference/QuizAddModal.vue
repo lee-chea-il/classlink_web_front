@@ -9,7 +9,7 @@
       aria-hidden="true"
       style="display: block"
     >
-      <div class="background_close" @click="$emit('close')"></div>
+      <div class="background_close" />
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <ModalHeader title="자료 등록" @close="$emit('close')" />
@@ -48,7 +48,7 @@
               <!-- /.오른쪽 영역 -->
             </div>
           </div>
-          <ModalBtnBox @close="$emit('close')" />
+          <ModalBtnBox submitTxt="등록" @close="$emit('close')" />
         </div>
       </div>
     </div>

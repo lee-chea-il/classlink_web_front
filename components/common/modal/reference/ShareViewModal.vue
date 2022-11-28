@@ -9,7 +9,7 @@
       aria-hidden="true"
       style="display: block"
     >
-      <div class="background_close" @click="$emit('close')"></div>
+      <div class="background_close" />
       <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
           <ModalHeader title="자료 공유" @close="$emit('close')" />

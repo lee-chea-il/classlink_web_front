@@ -1,71 +1,58 @@
 <template>
   <div class="search_section">
     <div class="left_area">
-      <div class="btn btn_crud_default" @click="$emit('copy')">복사</div>
-      <!-- <button class="btn btn_crud_default" @click="pasteData"> -->
-      <button class="btn btn_crud_default" @click="$emit('paste')">
-        붙여넣기
-      </button>
-      <button class="btn btn_crud_default" @click="$emit('delete')">
-        삭제
-      </button>
+      <ButtonItem
+        title="복사"
+        color="default"
+        @click-item="$emit('copyData')"
+      />
+      <ButtonItem
+        title="붙여넣기"
+        color="default"
+        @click-item="$emit('paste')"
+      />
+      <ButtonItem title="삭제" color="default" @click-item="$emit('delete')" />
     </div>
 
     <div class="right_area">
-      <div
+      <SearchTextBox
+        :open="pageType === 'reference'"
+        :value="value"
+        @open-search-list="$emit('open-search-list')"
+        @change-word="$emit('change-word', $event)"
+      />
+      <ButtonItem
         v-show="pageType === 'reference'"
-        class="input-group input-search form-inline"
-      >
-        <input
-          id="word"
-          :value="value"
-          name="word"
-          type="text"
-          placeholder="검색어 입력"
-          class="form-control"
-          @input="$emit('change-word', $event)"
-          @keyup.enter="$emit('open-search-List', $event)"
-        />
-        <input v-show="open" placeholder="검색어 입력" class="form-control" />
-        <div class="input-group-append">
-          <button
-            class="btn icons_search_off"
-            type="button"
-            @click="$emit('open-search-List', $event)"
-          ></button>
-        </div>
-      </div>
-      <button
+        title="필터"
+        color="filter"
+        @click-item="$emit('open-filter', $event)"
+      />
+      <ButtonItem
         v-show="pageType === 'reference'"
-        class="btn btn_filter"
-        @click="$emit('open-filter', $event)"
-      >
-        필터
-      </button>
-      <button
-        v-show="pageType === 'reference'"
-        class="btn btn_crud_point"
+        title="등록"
+        color="point"
         data-toggle="modal"
         data-target="#modalDataregi"
-      >
-        등록
-      </button>
-      <button
+      />
+      <ButtonItem
         v-show="pageType === 'lesson'"
-        class="btn btn_crud_point"
+        title="등록"
+        color="point"
         data-toggle="modal"
         data-target="#modalCuriRegi"
-        @click="$emit('open-add')"
-      >
-        등록
-      </button>
+        @click-item="$emit('open-add')"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import ButtonItem from '../reference/commom/ButtonItem.vue'
+import SearchTextBox from '../reference/commom/SearchTextBox.vue'
+
 export default {
   name: 'MainBtnBox',
+  components: { SearchTextBox, ButtonItem },
   props: {
     open: { type: Boolean, default: false },
     value: { type: String, default: '' },

@@ -5,6 +5,7 @@ export default function initialState() {
     pushKeyword: '',
     identity: 'teacher',
     // Modal Flag
+    isSelectType: false,
     isQuizPrint: false,
     isNoteTestPrint: false,
     isReferenceAddModal: false,

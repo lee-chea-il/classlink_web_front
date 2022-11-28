@@ -29,7 +29,7 @@
 <script>
 import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 export default {
-  name: 'CustomDataPicker',
+  name: 'RangeDataPicker',
   components: {
     DatePicker,
   },
@@ -42,8 +42,8 @@ export default {
   data() {
     return {
       range: {
-        start: '2022-11-01',
-        end: '2022-11-02',
+        start: new Date(),
+        end: new Date(),
       },
     }
   },

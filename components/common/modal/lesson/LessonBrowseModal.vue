@@ -9,7 +9,7 @@
       aria-hidden="true"
       style="display: block"
     >
-      <div class="background_close" @click="$emit('close')"></div>
+      <div class="background_close" />
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <ModalHeader title="레슨 열람" @close="$emit('close')" />
@@ -38,17 +38,12 @@
               <!-- /.2단 분류 컨텐츠 -->
             </div>
           </div>
-          <div class="modal-footer">
-            <button
-              class="btn btn_crud_default"
-              @click="$emit('lesson-change', lessonItem)"
-            >
-              수정
-            </button>
-            <button class="btn btn_crud_default" @click="$emit('close')">
-              취소
-            </button>
-          </div>
+
+          <ModalBtnBox
+            submitTxt="수정"
+            @submit="$emit('lesson-change', lessonItem)"
+            @close="$emit('close')"
+          />
         </div>
       </div>
     </div>
@@ -57,6 +52,7 @@
 
 <script>
 import ModalHeader from '../../ModalHeader.vue'
+import ModalBtnBox from '../../ModalBtnBox.vue'
 import LessonBrowseLeftField from '~/components/lesson/lessonBrowse/LessonBrowseLeftField.vue'
 import LessonBrowseRightField from '~/components/lesson/lessonBrowse/LessonBrowseRightField.vue'
 
@@ -66,6 +62,7 @@ export default {
     ModalHeader,
     LessonBrowseLeftField,
     LessonBrowseRightField,
+    ModalBtnBox,
   },
   props: {
     open: {

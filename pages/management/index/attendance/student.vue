@@ -278,7 +278,7 @@ export default {
         this.range.start
       )
       this.studentSearchDate.date_range_end = this.changeDateFormat(
-        this.range.end
+        this.range.end  
       )
     },
 
