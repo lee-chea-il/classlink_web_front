@@ -11,7 +11,7 @@
           title4="시험관리"
           url1="/management/operation/teachermanagement"
           url2="/management/operation/studentmanagement"
-          url3="/management/operation/teachermanagement"
+          url3="/management/operation/classmanagement"
           url4="/management/operation/exammanagement"
         />
         <div class="tab-content depth03 ac_manage_std">
@@ -754,7 +754,6 @@ export default {
       this.uploadFileName = target.files[0].name
     },
     // 학생 검색
-    
   },
 }
 </script>

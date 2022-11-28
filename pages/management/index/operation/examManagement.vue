@@ -9,7 +9,7 @@
         title4="시험관리"
         url1="/management/operation/teachermanagement"
         url2="/management/operation/studentmanagement"
-        url3="/management/operation/teachermanagement"
+        url3="/management/operation/classmanagement"
         url4="/management/operation/exammanagement"
       />
 
@@ -209,6 +209,7 @@
       @filter-modal-open="filterOpenDatePickerModalDesc"
       @filter-close="filterOnCloseDatePickerModalDesc"
       @filter-confirm="filterOnClickConfirmBtn"
+      @all-check="onClickTagAllCheck"
       @add-tag="onClickTagList"
       @complete="onClickAddFilterTag"
     />
@@ -552,11 +553,11 @@ export default {
         student: ['홍길동', '홍길순'],
       },
       tagList: {
-        class: [],
-        subject: [],
-        course: [],
-        exam: [],
-        student: [],
+        classList: [],
+        subjectList: [],
+        courseList: [],
+        examList: [],
+        studentList: [],
       },
       filterTag: ['영어리딩심화', '영어리딩기초'],
 
@@ -691,99 +692,129 @@ export default {
     },
 
     // 필터 태그
-    onClickTagList(text, title) {
-      // if (this.tagList.includes(text)) {
-      //   this.tagList = this.tagList.filter((item) => item !== text)
-      // } else {
-      //   this.tagList.push(text)
-      // }
-      // if (title === 'class') {
-      //   if (this.tagList.class.includes(text)) {
-      //     this.tagList.class = this.tagList.class.filter(
-      //       (item) => item !== text
-      //     )
-      //   } else if (this.tagList.class.length === this.filterList.class.length) {
-      //     this.tagList.class.splice(0, this.filterList.class.length)
-      //   } else {
-      //     this.tagList.class.push(text)
-      //   }
-      // } else if (title === 'subject') {
-      //   if (this.tagList.subject.includes(text)) {
-      //     this.tagList.subject = this.tagList.subject.filter(
-      //       (item) => item !== text
-      //     )
-      //   } else {
-      //     this.tagList.subject.push(text)
-      //   }
-      // } else if (title === 'course') {
-      //   if (this.tagList.course.includes(text)) {
-      //     this.tagList.course = this.tagList.course.filter(
-      //       (item) => item !== text
-      //     )
-      //   } else {
-      //     this.tagList.course.push(text)
-      //   }
-      // } else if (title === 'exam') {
-      //   if (this.tagList.exam.includes(text)) {
-      //     this.tagList.exam = this.tagList.exam.filter((item) => item !== text)
-      //   } else {
-      //     this.tagList.exam.push(text)
-      //   }
-      // } else if (title === 'student') {
-      //   if (this.tagList.student.includes(text)) {
-      //     this.tagList.student = this.tagList.student.filter(
-      //       (item) => item !== text
-      //     )
-      //   } else {
-      //     this.tagList.student.push(text)
-      //   }
-      // }
-      if (title === 'class') {
-        if (this.tagList.class.includes(text)) {
-          this.tagList.class = this.tagList.class.filter(
+    onClickTagAllCheck(title) {
+      if (title === 'classList') {
+        this.tagList.classList = []
+      } else if (title === 'subjectList') {
+        this.tagList.subjectList = []
+      } else if (title === 'courseList') {
+        this.tagList.courseList = []
+      } else if (title === 'examList') {
+        this.tagList.examList = []
+      } else {
+        this.tagList.studentList = []
+      }
+      console.log(this.tagList.classList)
+    },
+    onClickTagList(text, title, e) {
+      if (title === 'classList') {
+        if (this.tagList.classList.includes(text)) {
+          this.tagList.classList = this.tagList.class.filter(
             (item) => item !== text
           )
         } else {
-          this.tagList.class.push(text)
-          if (this.tagList.class.length === this.filterList.class.length) {
-            this.tagList.class.splice(0, this.filterList.class.length)
+          console.log(text)
+          this.tagList.classList.push(text)
+          if (this.tagList.classList.length === this.filterList.class.length) {
+            this.tagList.classList = []
+            e.target.checked = false
+          }
+        }
+      } else if (title === 'subjectList') {
+        if (this.tagList.subjectList.includes(text)) {
+          this.tagList.subjectList = this.tagList.subjectList.filter(
+            (item) => item !== text
+          )
+        } else {
+          console.log(text)
+          this.tagList.subjectList.push(text)
+          if (
+            this.tagList.subjectList.length === this.filterList.subject.length
+          ) {
+            this.tagList.subjectList = []
+            e.target.checked = false
+          }
+        }
+      } else if (title === 'courseList') {
+        if (this.tagList.courseList.includes(text)) {
+          this.tagList.courseList = this.tagList.courseList.filter(
+            (item) => item !== text
+          )
+        } else {
+          console.log(text)
+          this.tagList.courseList.push(text)
+          if (
+            this.tagList.courseList.length === this.filterList.course.length
+          ) {
+            this.tagList.courseList = []
+            e.target.checked = false
+          }
+        }
+      } else if (title === 'examList') {
+        if (this.tagList.examList.includes(text)) {
+          this.tagList.examList = this.tagList.examList.filter(
+            (item) => item !== text
+          )
+        } else {
+          console.log(text)
+          this.tagList.examList.push(text)
+          if (this.tagList.examList.length === this.filterList.exam.length) {
+            this.tagList.examList = []
+            e.target.checked = false
+          }
+        }
+      } else if (title === 'studentList') {
+        if (this.tagList.studentList.includes(text)) {
+          this.tagList.studentList = this.tagList.studentList.filter(
+            (item) => item !== text
+          )
+        } else {
+          console.log(text)
+          this.tagList.studentList.push(text)
+          if (
+            this.tagList.studentList.length === this.filterList.student.length
+          ) {
+            this.tagList.studentList = []
+            e.target.checked = false
           }
         }
       }
-      console.log(this.tagList.class.length, this.filterList.class.length)
-
+      console.log(
+        this.tagList.subjectList.length,
+        this.filterList.subject.length
+      )
       console.log(this.tagList)
     },
     onClickAddFilterTag() {
-      // this.tagList = this.tagList.join(' ')/
-      // for (let i = 0; i < this.tagList.length; i++) {
-      //   this.filterTag.push(this.tagList[i])
-      // }
-
       if (
-        this.tagList.class.length !== 0 ||
-        this.tagList.subject.length !== 0 ||
-        this.tagList.course.length !== 0 ||
-        this.tagList.exam.length !== 0
+        this.tagList.classList.length !== 0 ||
+        this.tagList.subjectList.length !== 0 ||
+        this.tagList.courseList.length !== 0 ||
+        this.tagList.examList.length !== 0 ||
+        this.tagList.studentList.length !== 0
       ) {
-        // this.filterTag.push(
-        //   `${this.tagList.class} ${this.tagList.subject} ${this.tagList.course} ${this.tagList.exam} ${this.tagList.student}`
-        // )
-        // for (const value in this.tagList.class) {
-        //   this.filterTag.push(this.tagList.class[value])
-        // }
-        // this.filterTag.push(this.tagList.class)
-        // this.filterTag.push(this.tagList.subject)
-        // this.filterTag.push(this.tagList.course)
-        // this.filterTag.push(this.tagList.exam)
-        // this.filterTag.push(this.tagList.student)
+        for (const value in this.tagList.classList) {
+          this.filterTag.push(this.tagList.classList[value])
+        }
+        for (const value in this.tagList.subjectList) {
+          this.filterTag.push(this.tagList.subjectList[value])
+        }
+        for (const value in this.tagList.courseList) {
+          this.filterTag.push(this.tagList.courseList[value])
+        }
+        for (const value in this.tagList.examList) {
+          this.filterTag.push(this.tagList.examList[value])
+        }
+        for (const value in this.tagList.studentList) {
+          this.filterTag.push(this.tagList.studentList[value])
+        }
 
         this.tagList = {
-          class: [],
-          subject: [],
-          course: [],
-          exam: [],
-          student: [],
+          classList: [],
+          subjectList: [],
+          courseList: [],
+          examList: [],
+          studentList: [],
         }
       }
     },

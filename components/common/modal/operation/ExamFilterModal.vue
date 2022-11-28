@@ -65,14 +65,15 @@
                     <li>
                       <div class="custom-control custom-checkbox form-inline">
                         <input
-                          id="chkA01"
+                          id="classAll"
                           type="checkbox"
                           class="custom-control-input"
-                          :checked="tagList.class.length === 0"
+                          :checked="tagList.classList.length === 0"
+                          @click="$emit('all-check', 'classList')"
                         />
-                        <label class="custom-control-label" for="chkA01"
-                          >전체</label
-                        >
+                        <label class="custom-control-label" for="classAll">
+                          전체
+                        </label>
                       </div>
                     </li>
                     <li v-for="(item, idx) in filterList.class" :key="idx">
@@ -81,8 +82,9 @@
                           :id="`class${idx}`"
                           type="checkbox"
                           class="custom-control-input"
-                          :checked="tagList.class.includes(item)"
-                          @input="$emit('add-tag', item, 'class')"
+                          :data-value="item"
+                          :checked="tagList.classList.includes(item)"
+                          @input="$emit('add-tag', item, 'classList', $event)"
                         />
                         <label
                           class="custom-control-label"
@@ -132,12 +134,13 @@
                     <li>
                       <div class="custom-control custom-checkbox form-inline">
                         <input
-                          id="chkB01"
+                          id="subjectAll"
                           type="checkbox"
                           class="custom-control-input"
-                          :checked="tagList.subject.length === 0"
+                          :checked="tagList.subjectList.length === 0"
+                          @click="$emit('all-check', 'subjectList')"
                         />
-                        <label class="custom-control-label" for="chkB01"
+                        <label class="custom-control-label" for="subjectAll"
                           >전체</label
                         >
                       </div>
@@ -148,8 +151,8 @@
                           :id="`subject${idx}`"
                           type="checkbox"
                           class="custom-control-input"
-                          :checked="tagList.subject.includes(item)"
-                          @input="$emit('add-tag', item, 'subject')"
+                          :checked="tagList.subjectList.includes(item)"
+                          @input="$emit('add-tag', item, 'subjectList', $event)"
                         />
                         <label
                           class="custom-control-label"
@@ -197,12 +200,13 @@
                     <li>
                       <div class="custom-control custom-checkbox form-inline">
                         <input
-                          id="chkC01"
+                          id="courseAll"
                           type="checkbox"
                           class="custom-control-input"
-                          :checked="tagList.course.length === 0"
+                          :checked="tagList.courseList.length === 0"
+                          @click="$emit('all-check', 'courseList')"
                         />
-                        <label class="custom-control-label" for="chkC01"
+                        <label class="custom-control-label" for="courseAll"
                           >전체</label
                         >
                       </div>
@@ -213,8 +217,8 @@
                           :id="`course${idx}`"
                           type="checkbox"
                           class="custom-control-input"
-                          :checked="tagList.course.includes(item)"
-                          @input="$emit('add-tag', item, 'course')"
+                          :checked="tagList.courseList.includes(item)"
+                          @input="$emit('add-tag', item, 'courseList', $event)"
                         />
                         <label
                           class="custom-control-label"
@@ -262,12 +266,13 @@
                     <li>
                       <div class="custom-control custom-checkbox form-inline">
                         <input
-                          id="chkD01"
+                          id="examAll"
                           type="checkbox"
                           class="custom-control-input"
-                          :checked="tagList.exam.length === 0"
+                          :checked="tagList.examList.length === 0"
+                          @click="$emit('all-check', 'examList')"
                         />
-                        <label class="custom-control-label" for="chkD01"
+                        <label class="custom-control-label" for="examAll"
                           >전체</label
                         >
                       </div>
@@ -278,8 +283,8 @@
                           :id="`exam${idx}`"
                           type="checkbox"
                           class="custom-control-input"
-                          :checked="tagList.exam.includes(item)"
-                          @input="$emit('add-tag', item, 'exam')"
+                          :checked="tagList.examList.includes(item)"
+                          @input="$emit('add-tag', item, 'examList', $event)"
                         />
                         <label
                           class="custom-control-label"
@@ -327,29 +332,34 @@
                     <li>
                       <div class="custom-control custom-checkbox form-inline">
                         <input
-                          id="chkA01"
+                          id="studentAll"
                           type="checkbox"
                           class="custom-control-input"
-                          checked
+                          :checked="tagList.studentList.length === 0"
+                          @click="$emit('all-check', 'studentList')"
                         />
-                        <label class="custom-control-label" for="chkA01"
+                        <label class="custom-control-label" for="studentAll"
                           >전체</label
                         >
                       </div>
                     </li>
-                    <li>
+                    <li v-for="(item, idx) in filterList.student" :key="idx">
                       <div class="custom-control custom-checkbox form-inline">
                         <input
-                          id="chkA02"
+                          :id="`student${idx}`"
                           type="checkbox"
                           class="custom-control-input"
+                          :checked="tagList.studentList.includes(item)"
+                          @input="$emit('add-tag', item, 'studentList', $event)"
                         />
-                        <label class="custom-control-label" for="chkA02"
-                          >홍길동</label
+                        <label
+                          class="custom-control-label"
+                          :for="`student${idx}`"
+                          >{{ item }}</label
                         >
                       </div>
                     </li>
-                    <li>
+                    <!-- <li>
                       <div class="custom-control custom-checkbox form-inline">
                         <input
                           id="chkA03"
@@ -360,7 +370,7 @@
                           >홍길순</label
                         >
                       </div>
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
               </div>
