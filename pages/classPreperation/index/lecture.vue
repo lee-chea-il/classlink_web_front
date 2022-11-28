@@ -120,7 +120,6 @@
     <!-- 달력 모달 호출 -->
     <CustomDataPicker
       :open="isCalendar"
-      :scheduleItem="scheduleItem"
       @select-date="onChangeDate"
       @close="closeModalCalendar"
     />

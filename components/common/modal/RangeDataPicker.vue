@@ -10,17 +10,11 @@
       <div class="background_close" @click="$emit('close')"></div>
       <div class="dataWrap">
         <DatePicker v-model="range" is-range />
-        <div class="modal-footer">
-          <button class="btn btn_crud_default" @click="$emit('close')">
-            취소
-          </button>
-          <button
-            class="btn btn_crud_point"
-            @click="$emit('select-date', range)"
-          >
-            확인
-          </button>
-        </div>
+        <ModalBtnBox
+          submitTxt="확인"
+          @submit="$emit('select-date', range)"
+          @close="$emit('close')"
+        />
       </div>
     </div>
   </Transition>
@@ -28,10 +22,12 @@
 
 <script>
 import DatePicker from 'v-calendar/lib/components/date-picker.umd'
+import ModalBtnBox from '../ModalBtnBox.vue'
 export default {
   name: 'RangeDataPicker',
   components: {
     DatePicker,
+    ModalBtnBox,
   },
   props: {
     open: {
