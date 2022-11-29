@@ -83,18 +83,15 @@ export default {
         nObj.pid = this.pid
         nObj.isChecked = false
         nObj.readOnly = isReadOnly
-
         if (data[i].children !== undefined) {
           nObj.isLeaf = false
           nObj.children = []
           nObj.dragDisabled = isDragDisable
-
           result[i] = nObj
           this.pid++
           result[i].children = dataMapping(data[i].children, isReadOnly)
         } else {
           nObj.isLeaf = true
-
           result[i] = nObj
           this.pid++
         }

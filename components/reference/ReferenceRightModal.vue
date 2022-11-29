@@ -7,29 +7,28 @@
           <div class="title">미리보기</div>
           <div class="thumbnail_view">
             <video
+              v-show="reference.uploadType === 'video'"
               id="video"
               class="video"
-              src=""
-              style="display: none"
-            ></video>
-            <embed
-              v-show="uploadType === 'pdf' || uploadType === 'youtube'"
+              :src="reference.savePath"
+              controls
+            />
+            <iframe
+              v-show="
+                reference.uploadType === 'pdf' ||
+                reference.uploadType === 'youtube'
+              "
               id="embed"
               class="embed"
-              src=""
-              type="application/pdf"
+              :src="reference.savePath"
             />
-            <canvas
-              v-show="uploadType === 'video'"
-              id="thumb_canvas"
-              class="canvas"
-            ></canvas>
+            <!-- type="application/pdf" -->
 
             <iframe
-              v-show="uploadType === 'file'"
+              v-show="reference.uploadType === 'url'"
               id="iframe"
               class="iframe"
-              src=""
+              :src="reference.savePath"
               frameborder="0"
             ></iframe>
           </div>
@@ -80,14 +79,6 @@
 export default {
   name: 'ReferenceRightModal',
   props: {
-    uploadType: {
-      type: String,
-      default: '',
-    },
-    uploadFile: {
-      type: [Object, File],
-      default: () => {},
-    },
     reference: {
       type: Object,
       default: () => {},
@@ -97,7 +88,7 @@ export default {
     getDate() {
       const date = this.reference?.createAt
       if (date) {
-        return ` ${date.getFullYear()} ${date.getMonth() + 1} ${date.getDate()}`
+        return `${date.getFullYear()} ${date.getMonth() + 1} ${date.getDate()}`
       } else {
         return null
       }

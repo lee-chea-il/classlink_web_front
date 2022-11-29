@@ -4,6 +4,7 @@
     <SearchSection
       :identity="identity"
       @open-create="$emit('open-create')"
+      @set-title="$emit('set-title', $event)"
       @delete-item="$emit('delete-item', checkList, 'list')"
     />
     <!-- 검색 영역 -->
@@ -16,6 +17,7 @@
       @open-lecture="$emit('open-lecture', $event)"
       @delete-item="$emit('delete-item', $event)"
       @show-menu="$emit('show-menu', $event)"
+      @set-title="$emit('set-title', $event)"
       @open-select-curriculum="$emit('open-select-curriculum')"
     />
     <!-- /.테이블 영역 -->

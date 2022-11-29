@@ -84,6 +84,10 @@ export default {
     'assets/css/base.css',
     'assets/css/common.css',
     'assets/css/custom.css',
+    'quill/dist/quill.core.css',
+    'quill/dist/quill.bubble.css',
+    'quill/dist/quill.snow.css',
+    'vue2-editor/dist/vue2-editor.css',
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -131,6 +135,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    'vue2-editor/nuxt',
     // '@nuxtjs/dayjs',
   ],
 

@@ -12,7 +12,7 @@
       <div class="background_close" />
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-          <ModalHeader title="자료 등록" @close="$emit('close')" />
+          <ModalHeader :title="modalTitle" @close="$emit('close')" />
 
           <div class="modal-body">
             <div class="modal_dataquiz datanote row">
@@ -72,6 +72,10 @@ export default {
   },
   props: {
     open: Boolean,
+    modalTitle: {
+      type: String,
+      default: '',
+    },
     reference: {
       type: Object,
       default: () => {},

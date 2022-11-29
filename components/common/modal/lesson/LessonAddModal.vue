@@ -12,7 +12,7 @@
       <div class="background_close" />
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-          <ModalHeader title="레슨 등록" @close="$emit('close')" />
+          <ModalHeader :title="modalTitle" @close="$emit('close')" />
           <div class="modal-body">
             <div class="modal_Lessonregi">
               <!-- 모달 내용 구분 class-->
@@ -150,7 +150,8 @@
                 <!-- 오른쪽 영역 -->
                 <RightSection
                   ref="right"
-                  :lessonData="createLessonData"
+                  :modalTitle="modalTitle"
+                  :lessonData="lessonData"
                   :referenceList="referenceList"
                   :pushKeyword="pushKeyword"
                   @change-lesson="$emit('change-lesson', $event)"
@@ -197,11 +198,12 @@ export default {
   },
   props: {
     open: { type: Boolean, default: false },
+    modalTitle: { type: String, default: '' },
     identity: { type: String, default: '' },
     isLesson: { type: Boolean, default: false },
     receiveInstitutionLessonData: { type: Array, default: () => [] },
     receiveFranchiseLessonData: { type: Array, default: () => [] },
-    createLessonData: { type: Object, default: () => {} },
+    lessonData: { type: Object, default: () => {} },
     referenceList: { type: Array, default: () => [] },
     receiveInstitutionData: { type: Array, default: () => [] },
     receiveFranchiseData: { type: Array, default: () => [] },

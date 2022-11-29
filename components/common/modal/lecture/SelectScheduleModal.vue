@@ -8,7 +8,7 @@
   >
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content">
-        <Header />
+        <Header :title="modalTitle" />
 
         <div class="modal-body">
           <!-- [개발참조] 학생관리의 출결팝업 캘린더와 동일 함 -->
@@ -120,7 +120,7 @@ import WeekDaySelectField from '~/components/lecture/schedule/WeekDaySelectField
 import ScheduleTable from '~/components/lecture/schedule/ScheduleTable.vue'
 import TimeSelectBox from '~/components/lecture/custom/TimeSelectBox.vue'
 import CustomModalBtn from '~/components/lecture/custom/CustomModalBtn.vue'
-import Header from '~/components/lecture/schedule/ScheduleHeader.vue'
+import Header from '~/components/common/ModalHeader.vue'
 export default {
   name: 'SelectScheduleModal',
   components: {
@@ -131,6 +131,10 @@ export default {
     Header,
   },
   props: {
+    modalTitle: {
+      type: String,
+      default: '',
+    },
     hourData: { type: Array, default: () => [] },
     scheduleItem: { type: Object, default: () => {} },
     timeList: { type: Array, default: () => [] },

@@ -10,6 +10,7 @@
         :institutionData="institutionData"
         :franchiseData="franchiseData"
         :identity="identity"
+        :pageType="pageType"
         @open-data="$emit('open-data', $event)"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @download-data="$emit('download-data', $event)"
@@ -26,6 +27,7 @@
       <RightTreeTab
         ref="myData"
         :myDataList="myDataList"
+        :pageType="pageType"
         @open-data="$emit('open-data', $event)"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @download-data="$emit('download-data', $event)"
@@ -62,6 +64,10 @@ export default {
     identity: {
       type: String,
       default: 'teacher',
+    },
+    pageType: {
+      type: String,
+      default: '',
     },
     myDataList: {
       type: Array,

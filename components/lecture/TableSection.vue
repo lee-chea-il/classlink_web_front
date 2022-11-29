@@ -86,6 +86,7 @@
                     data-target="#modalLectureRegi02
 													"
                     data-dismiss="modal"
+                    @click="$emit('set-title', '강좌 수정')"
                   >
                     커리큘럼 선택
                   </li>
@@ -94,6 +95,7 @@
                     data-target="#modalLectureRegi04
 													"
                     data-dismiss="modal"
+                    @click="$emit('set-title', '강좌 수정')"
                   >
                     커리큘럼 배정
                   </li>

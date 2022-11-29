@@ -6,8 +6,9 @@
         :id="name"
         class="btn dropdown-toggle"
         :name="name"
-        :value="lectureInfo[name]"
-        @input="$emit('change-lecture', $event)"
+        :data-target="target"
+        :value="value"
+        @input="$emit('change-input', $event)"
       >
         <option class="dropdown-item" value="5분">5분</option>
         <option class="dropdown-item" value="10분">10분</option>
@@ -39,7 +40,8 @@ export default {
     title: { type: String, default: '' },
     desc: { type: String, default: '' },
     name: { type: String, default: '' },
-    lectureInfo: { type: Object, default: () => {} },
+    value: { type: String, default: '' },
+    target: { type: String, default: '' },
   },
 }
 </script>

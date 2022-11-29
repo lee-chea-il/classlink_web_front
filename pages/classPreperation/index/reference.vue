@@ -21,6 +21,7 @@
         <!-- 2단 분류 컨텐츠 -->
         <TreeSection
           ref="mainEducation"
+          :pageType="pageType"
           :institutionData="receiveInstitutionData"
           :franchiseData="receiveFranchiseData"
           :identity="identity"
@@ -36,7 +37,6 @@
 
     <!-- 등록 파일 선택 -->
     <ReferenceSelectModal
-      :uploadType="uploadType"
       @add-quiz="onOpenQuizAddModal"
       @add-test="onOpenNoteTestAddModal"
     />
@@ -58,8 +58,7 @@
     <!-- 파일 등록 (동영상,문서,유튜브,url) -->
     <ReferenceAddModal
       :open="isReferenceAddModal"
-      :uploadType="uploadType"
-      :uploadFile="uploadFile"
+      :modalTitle="modalTitle"
       :reference="referenceData"
       :pushKeyword="pushKeyword"
       @change-keyword="changePushKeyword"
@@ -73,6 +72,7 @@
     <!-- 퀴즈 등록 -->
     <QuizAddModal
       :open="isQuizAddModal"
+      :modalTitle="modalTitle"
       :reference="referenceData"
       :quizList="referenceData.quizList"
       :currentPageIdx="currentPageIdx"
@@ -97,6 +97,7 @@
     <!-- 쪽지시험 등록 -->
     <NoteTestAddModal
       :open="isNoteTestAddModal"
+      :modalTitle="modalTitle"
       :reference="referenceData"
       :currentPageIdx="currentPageIdx"
       :pushKeyword="pushKeyword"
@@ -179,66 +180,6 @@
       @pagination="onClickQuizPagination"
     />
 
-    <!-- 자료 수정 -->
-    <ReferenceChangeModal
-      :open="isReferenceChange"
-      :reference="referenceData"
-      :pushKeyword="pushKeyword"
-      @close="onCloseReferenceChangeModal"
-      @change-input="onChangeUploadFile"
-      @change-keyword="changePushKeyword"
-      @set-keyword="setKeyword"
-      @delete-keyword="deleteKeyword"
-      @open-save-path="onOpenSavePathModal"
-    />
-
-    <!-- 퀴즈 수정 -->
-    <QuizChangeModal
-      :open="isQuizChange"
-      :quiz="referenceData"
-      :currentPageIdx="currentPageIdx"
-      :pushKeyword="pushKeyword"
-      @close="onCloseQuizChangeModal"
-      @change-input="onChangeUploadFile"
-      @change-item="onChangeQuiz"
-      @change-keyword="changePushKeyword"
-      @change-number="onClickPagination"
-      @delete-quiz="onDeleteQuizItem"
-      @delete-keyword="deleteKeyword"
-      @open-save-path="onOpenSavePathModal"
-      @pagination="onClickQuizPagination"
-      @plus-item="onPlusQuizList"
-      @preview="onOpenQuizPreviewModal"
-      @select-dificultade="onSelectDificultade"
-      @select-type="onClickQuizType"
-      @select-ox="onSelectOx"
-      @set-keyword="setKeyword"
-    />
-
-    <!-- 쪽지시험 수정 -->
-    <NoteTestChangeModal
-      :open="isNoteTestChange"
-      :reference="referenceData"
-      :currentPageIdx="currentPageIdx"
-      :pushKeyword="pushKeyword"
-      @close="onCloseNoteTestChangeModal"
-      @change-item="onChangeTest"
-      @change-input="onChangeUploadFile"
-      @change-number="onClickPagination"
-      @change-dificultade="onSelectDificultadeTest"
-      @delete-item="onDeleteNoteTest"
-      @pagination="onClickQuizPagination"
-      @select-answer="onSelectAnswer"
-      @plus-item="onPlusNoteTestList"
-      @preview="onOpenNoteTestPreviewModal"
-      @change-keyword="changePushKeyword"
-      @set-keyword="setKeyword"
-      @delete-keyword="deleteKeyword"
-      @open-save-path="onOpenSavePathModal"
-      @add-example="plusExampleList"
-      @delete-example="deleteExample"
-    />
-
     <!-- 공유하기 -->
     <ShareViewModal
       :open="isShareViewModal.open"
@@ -301,6 +242,8 @@
       v-show="isNoteTestPrint"
       :noteTestList="referenceData.noteTestList"
     />
+
+    <CustomSnackbar :show="isSnackbar.open" :message="isSnackbar.message" />
   </div>
 </template>
 
@@ -317,7 +260,6 @@ import NoteTestPrintPage from '~/components/reference/NoteTestPrintPage.vue'
 import QuizAddModal from '~/components/common/modal/reference/QuizAddModal.vue'
 import ShareViewModal from '~/components/common/modal/reference/ShareViewModal.vue'
 import QuizBrowseModal from '~/components/common/modal/reference/QuizBrowseModal.vue'
-import QuizChangeModal from '~/components/common/modal/reference/QuizChangeModal.vue'
 import NoteTestAddModal from '~/components/common/modal/reference/NoteTestAddModal.vue'
 import VideoBrowseModal from '~/components/common/modal/reference/VideoBrowseModal.vue'
 import QuizPreviewModal from '~/components/common/modal/reference/QuizPreviewModal.vue'
@@ -325,15 +267,14 @@ import ReferenceAddModal from '~/components/common/modal/reference/ReferenceAddM
 import SearchResultModal from '~/components/common/modal/reference/SearchResultModal.vue'
 import YoutubeUploadModal from '~/components/common/modal/reference/YoutubeUploadModal.vue'
 import NoteTestBrowseModal from '~/components/common/modal/reference/NoteTestBrowseModal.vue'
-import NoteTestChangeModal from '~/components/common/modal/reference/NoteTestChangeModal.vue'
 import ReferenceSelectModal from '~/components/common/modal/reference/ReferenceSelectModal.vue'
 import VideoFileUploadModal from '~/components/common/modal/reference/VideoFileUploadModal.vue'
 import ReferenceFilterModal from '~/components/common/modal/reference/ReferenceFilterModal.vue'
-import ReferenceChangeModal from '~/components/common/modal/reference/ReferenceChangeModal.vue'
 import NoteTestPreviewModal from '~/components/common/modal/reference/NoteTestPreviewModal.vue'
 import { apiReference } from '~/services'
 import { urlRegex, youtubeRegex, setNewArray, jsonItem } from '~/utiles/common'
 import initialState from '~/data/reference/initialState'
+import CustomSnackbar from '~/components/common/CustomSnackbar.vue'
 
 export default {
   name: 'ReferenceRoom',
@@ -348,7 +289,6 @@ export default {
     QuizPrintPage,
     ShareViewModal,
     QuizBrowseModal,
-    QuizChangeModal,
     NoteTestAddModal,
     VideoBrowseModal,
     QuizPreviewModal,
@@ -356,19 +296,22 @@ export default {
     ReferenceAddModal,
     NoteTestPrintPage,
     YoutubeUploadModal,
-    NoteTestChangeModal,
     NoteTestBrowseModal,
     ReferenceSelectModal,
     VideoFileUploadModal,
     ReferenceFilterModal,
-    ReferenceChangeModal,
     NoteTestPreviewModal,
+    CustomSnackbar,
   },
   layout: 'EducationLayout',
   data() {
     return initialState()
   },
   methods: {
+    initReference() {
+      const init = jsonItem(this.initReferenceData)
+      setTimeout(() => (this.referenceData = init), 400)
+    },
     // Modal Event
     openModalDesc(tit, msg) {
       this.modalDesc = {
@@ -400,8 +343,8 @@ export default {
     },
 
     onCloseReferenceAddModal() {
-      this.initAddReferenceData()
       this.isReferenceAddModal = false
+      this.initReference()
     },
 
     onOpenQuizAddModal() {
@@ -412,16 +355,19 @@ export default {
         uploadType: 'quiz',
         fileVolume: '0',
       }
+      this.setModalTitle('자료 등록')
       this.referenceData.createAt = new Date()
       document.getElementById('referenceSelectClose').click()
       this.isQuizAddModal = true
     },
 
     onCloseQuizAddModal() {
-      this.initAddReferenceData()
       this.isQuizAddModal = false
+      this.initReference()
     },
+
     onOpenNoteTestAddModal() {
+      this.setModalTitle('자료 등록')
       this.referenceData = {
         ...this.referenceData,
         fileDivision: '교육기관',
@@ -443,6 +389,7 @@ export default {
 
     onCloseNoteTestAddModal() {
       this.isNoteTestAddModal = false
+      this.initReference()
     },
 
     onOpenQuizBrowseModal() {
@@ -463,40 +410,29 @@ export default {
       this.isNoteTestBrowse = false
     },
 
+    // 자료 수정 할때 모달 타이틀 변경
     onOpenReferenceChangeModal() {
+      this.setModalTitle('자료 수정')
       if (this.isReferenceBrowse) {
         this.onCloseReferenceBrowseModal()
       }
-      this.isReferenceChange = true
-    },
-
-    onCloseReferenceChangeModal() {
-      this.initAddReferenceData()
-      this.isReferenceChange = false
+      this.isReferenceAddModal = true
     },
 
     onOpenQuizChangeModal() {
+      this.setModalTitle('자료 수정')
       if (this.isQuizBrowse) {
         this.onCloseQuizBrowseModal()
       }
-      this.isQuizChange = true
-    },
-
-    onCloseQuizChangeModal() {
-      this.initAddReferenceData()
-      this.isQuizChange = false
+      this.isQuizAddModal = true
     },
 
     onOpenNoteTestChangeModal() {
+      this.setModalTitle('자료 수정')
       if (this.isNoteTestBrowse) {
         this.onCloseNoteTestBrowseModal()
       }
-      this.isNoteTestChange = true
-    },
-
-    onCloseNoteTestChangeModal() {
-      this.initAddReferenceData()
-      this.isNoteTestChange = false
+      this.isNoteTestAddModal = true
     },
 
     onOpenQuizPreviewModal(prevPath, page) {
@@ -590,6 +526,16 @@ export default {
       this[this.isSavePathModal.prevPage] = true
     },
 
+    openSnackbar(msg) {
+      this.isSnackbar.open = {
+        open: true,
+        message: msg,
+      }
+    },
+    closeSnackbar() {
+      this.isSnackbar.open = false
+    },
+
     // 필터 모달
     openFilterModal(path) {
       if (this.isSearchListModal) {
@@ -625,8 +571,13 @@ export default {
       return (this.isSearchListModal = false)
     },
 
+    setModalTitle(str) {
+      this.modalTitle = str
+    },
+
     // 자료 선택 모달
     openSelectReferenceType() {
+      this.setModalTitle('자료 등록')
       this.isSelectType = true
     },
 
@@ -775,37 +726,15 @@ export default {
       return (this.referenceData.saveFolder = path)
     },
 
-    // 비디오 업로드 시 미리보기 보여주기
-    setThumbnail(files) {
-      const _video = document.querySelector('#video')
-      const _canvas = document.querySelector('#thumb_canvas')
-      const _ctx = _canvas.getContext('2d')
-      _video.setAttribute('src', URL.createObjectURL(files[0]))
-      _video.addEventListener('loadedmetadata', function () {
-        // 비디오 태그의 메타데이터가 들어오면
-        _canvas.width = _video.videoWidth
-        _canvas.height = _video.videoHeight
-        const time = Math.random() * _video.duration // 비디오의 영상길이 중 랜덤 타임을 뽑음
-        _video.currentTime = time // 해당 시간으로 이동
-        setTimeout(() => {
-          // 바로 출력하면 비디오가 불러오기 전이라 동작이 안됨. 잠깐의 기다림 후 캔버스에 해당 이미지를 그림.
-          _ctx.drawImage(_video, 0, 0, _video.videoWidth, _video.videoHeight)
-        }, 400)
-      })
-    },
-
     // 비디오 업로드
     onUploadVideo(e) {
       const {
         target: { files },
       } = e
-      this.uploadType = 'video'
-      this.uploadFile = {}
       if (files[0] && files[0].type === 'video/mp4') {
         document.getElementById('selectClose').click()
         this.onOpenReferenceAddModal()
-        this.setThumbnail(files)
-        this.uploadFile = files[0]
+        console.log(files[0])
         this.referenceData = {
           ...this.referenceData,
           name: files[0].name,
@@ -815,6 +744,7 @@ export default {
           uploadType: 'video',
           fileVolume: files[0].size,
           createAt: files[0].lastModifiedDate,
+          savePath: URL.createObjectURL(files[0]),
         }
       } else {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
@@ -822,36 +752,29 @@ export default {
       return (e.target.value = '')
     },
 
-    // 호출 성공시 미리보기 만들기
-    getPreviewData(payload) {
-      const _embed = document.querySelector('#embed')
-      _embed.setAttribute('src', payload)
-    },
-
     // PDF 업로드
     onUploadPdf(e) {
       const {
         target: { files },
       } = e
-      this.uploadType = 'pdf'
-      this.uploadFile = {}
-      if (files[0] && files[0].type === 'application/pdf') {
+      const target = files[0]
+      console.log(target)
+      if (
+        (target && target.type === 'application/pdf') ||
+        target.type.includes('image')
+      ) {
         document.getElementById('selectClose').click()
-        this.uploadFile = files[0]
         this.referenceData = {
           ...this.referenceData,
-          name: files[0].name,
-          fileName: files[0].name,
+          name: target.name,
+          fileName: target.name,
           fileDivision: '교육기관',
-          fileType: files[0].type,
+          fileType: target.type,
           uploadType: 'pdf',
-          fileVolume: files[0].size,
-          createAt: files[0].lastModifiedDate,
+          fileVolume: target.size,
+          createAt: target.lastModifiedDate,
+          savePath: URL.createObjectURL(target),
         }
-        this.onOpenReferenceAddModal()
-        this.getPreviewData(
-          URL.createObjectURL(files[0]) + '#toolbar=0&navpanes=0&scrollbar=0'
-        )
         this.onOpenReferenceAddModal()
       } else {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
@@ -864,12 +787,6 @@ export default {
       await apiReference
         .getYoutubeData(youtubeUrl)
         .then(({ data: { items } }) => {
-          this.uploadFile = {
-            name: items[0].snippet.title,
-            type: 'YOUTUBE',
-            lastModifiedDate: new Date(),
-            size: 0,
-          }
           this.referenceData = {
             ...this.referenceData,
             name: items[0].snippet.title,
@@ -879,21 +796,16 @@ export default {
             uploadType: 'youtube',
             fileVolume: 0,
             createAt: new Date(),
+            savePath: `https://www.youtube.com/embed/${youtubeUrl}`,
           }
           document.getElementById('selectCloseYoutube').click()
           this.onOpenReferenceAddModal()
-          this.getPreviewData(`https://www.youtube.com/embed/${youtubeUrl}`)
         })
-        .catch((err) => {
-          console.log(err)
-          this.openModalDesc('실패', '유효하지 않은 주소입니다.')
-          return false
-        })
+        .catch(() => this.openModalDesc('실패', '유효하지 않은 주소입니다.'))
     },
 
     // 유튜브 업로드
     onUploadYoutube() {
-      this.uploadType = 'youtube'
       const youtubeUrl = this.urlData.youtube.replace('https://youtu.be/', '')
       if (youtubeRegex.test(this.urlData.youtube) === true) {
         this.getYoutubeData(youtubeUrl)
@@ -904,14 +816,7 @@ export default {
 
     // URL 업로드
     onUploadUrl() {
-      this.uploadType = 'file'
       const url = this.urlData.page
-      this.uploadFile = {
-        name: '',
-        type: 'WEB',
-        lastModifiedDate: new Date(),
-        size: 0,
-      }
       if (urlRegex.test(this.urlData.page) === true) {
         this.referenceData = {
           ...this.referenceData,
@@ -922,9 +827,8 @@ export default {
           uploadType: 'url',
           fileVolume: 0,
           createAt: new Date(),
+          savePath: url,
         }
-        const _iframe = document.querySelector('#iframe')
-        _iframe.setAttribute('src', url)
         document.getElementById('selectCloseYoutube').click()
         this.onOpenReferenceAddModal()
       } else {
@@ -1072,6 +976,9 @@ export default {
     },
 
     delData() {
+      // console.log(
+      //   this.$refs.mainEducation.$refs.myData.$refs.curriculum.datas
+      // )
       this.$refs.mainEducation.$refs.myData.$refs.curriculum.delData()
     },
 
@@ -1129,8 +1036,10 @@ export default {
       const newItem = jsonItem(data)
       this.referenceData = newItem
       const type = newItem.uploadType
-      if (type === 'quiz') return this.exportPdf('quiz')
-      else if (type === 'test') return this.exportPdf('test')
+      // if (type === 'quiz') return this.exportPdf('quiz')
+      // else if (type === 'test') return this.exportPdf('test')
+      if (type === 'quiz') return false
+      else if (type === 'test') return false
       return this.createAtag(newItem.savePath)
     },
 
@@ -1138,9 +1047,10 @@ export default {
     updateSelectData(data) {
       this.referenceData = jsonItem(data)
       const type = data.uploadType
-      if (type === 'quiz') return this.onOpenQuizChangeModal()
-      else if (type === 'test') return this.onOpenNoteTestChangeModal()
-      else return this.onOpenReferenceChangeModal()
+      this.setModalTitle('자료 수정')
+      if (type === 'quiz') return this.onOpenQuizAddModal()
+      else if (type === 'test') return this.onOpenNoteTestAddModal()
+      else return this.onOpenReferenceAddModal()
     },
   },
 }

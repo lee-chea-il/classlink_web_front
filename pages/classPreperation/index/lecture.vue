@@ -15,6 +15,7 @@
         @open-lecture="setChangeLecture"
         @delete-item="openDeleteModal"
         @show-menu="showDetailMenu"
+        @set-title="setModalTitle"
         @paging-derection="paginationDerection"
         @pagination="onClickPagination"
         @open-select-curriculum="openSelectCurriculumTeacher"
@@ -23,12 +24,16 @@
       <NoListSection v-else :identity="identity" />
     </div>
 
-    <!-- 강좌 생성 -->
+    <!-- 강좌 생성 수정 -->
     <CreateLectureModal
+      :modalTitle="modalTitle"
       :lectureInfo="lectureInfo"
       :teacherList="teacherList"
       :classList="classList"
-      @change-lecture="onChangeLecture"
+      :searchData="searchData"
+      @clear-teacher="clearSearchTeacher"
+      @clear-class="clearSearchClass"
+      @change-input="handleChange"
       @show-menu="showTeacherMenu"
       @add-teacher="addTeacher"
       @add-spare-teacher="addSpareTeacher"
@@ -37,44 +42,20 @@
       @add-class="addClassData"
       @delete-class="deleteClassData"
       @next-btn="onSubmitCreateClass"
-      @close="initAddReferenceData"
-    />
-
-    <!-- 강좌 변경 -->
-    <ChangeLectureModal
-      :open="isChangeLecture.open"
-      :lecture="lectureInfo"
-      :teacherList="teacherList"
-      :classList="classList"
-      @show-menu="showTeacherMenu"
-      @change-lecture="onChangeLecture"
-      @delete-teacher="deleteTeacher"
-      @delete-spare-teacher="deleteSpareTeacher"
-      @add-teacher="addTeacher"
-      @add-spare-teacher="addSpareTeacher"
-      @add-class="addClassData"
-      @delete-class="deleteClassData"
-      @close="closeChangeLectureModal"
-      @next-button="moveToChangeSecond"
     />
 
     <!-- 커리큘럼 선택 -->
     <SelectCurriculumModal
+      :modalTitle="modalTitle"
       :curriculumList="curriculumList"
+      :myCurriculumList="lectureInfo.curriculumList"
       :teacherList="teacherList"
-    />
-
-    <!-- 커리큘럼 선택 변경 -->
-    <ChangeSelectCurriculumModal
-      :open="isChangeSelectCurriculum.open"
       :identity="identity"
-      @close="closeChangeCurriculum"
-      @next-button="moveToChangeThird"
-      @prev-button="backToChangeFirst"
     />
 
     <!-- 수업시간 선택 -->
     <SelectScheduleModal
+      :modalTitle="modalTitle"
       :hourData="hourData"
       :scheduleItem="scheduleItem"
       :scheduleWeekList="lectureInfo.scheduleWeekList"
@@ -84,35 +65,10 @@
       @open-calendar="openModalCalendar"
       @add-schedule="addSchedule"
       @delete-schedule="deleteSchedule"
-    />
-
-    <!-- 수업시간 변경 -->
-    <ChangeScheduleModal
-      :open="isChangeSchedule.open"
-      :hourData="hourData"
-      :scheduleItem="scheduleItem"
-      :scheduleWeekList="lectureInfo.scheduleWeekList"
-      :timeList="timeList"
-      @select-day="onSelectWeekDay"
-      @change-time="onChangeSchedule"
-      @open-calendar="openModalCalendar"
-      @add-schedule="addSchedule"
-      @delete-schedule="deleteSchedule"
-      @close="closeChangeSchedule"
-      @prev-button="backToChangeSecond"
-      @next-button="moToChangeFourth"
     />
 
     <!-- 커리큘럼 배정 -->
-    <CurriculumAssignmentModal />
-
-    <!-- 커리큘럼 배정 변경 -->
-    <ChangeCurriculumAssignmentModal
-      :open="isChangeCurriculumAssignment.open"
-      :identity="identity"
-      @close="closeChangeCurriculumAssignmentModal"
-      @prev-button="backToChangeThird"
-    />
+    <CurriculumAssignmentModal :identity="identity" :modalTitle="modalTitle" />
 
     <!-- 커리큘럼 리스트 상세 -->
     <SelectCurriculumListModal />
@@ -138,6 +94,9 @@
       @close="closeDeleteModal"
       @submit="deleteLecture"
     />
+
+    <!-- 스넥바 -->
+    <CustomSnackbar :show="isSnackber.open" :message="isSnackber.message" />
   </div>
 </template>
 
@@ -148,17 +107,14 @@ import DeleteModal from '~/components/common/modal/DeleteModal.vue'
 import LectureList from '~/components/lecture/LectureList.vue'
 import NoListSection from '~/components/lecture/NoListSection.vue'
 import CustomDataPicker from '~/components/common/modal/RangeDataPicker.vue'
-import ChangeLectureModal from '~/components/common/modal/lecture/ChangeLectureModal.vue'
 import CreateLectureModal from '~/components/common/modal/lecture/CreateLectureModal.vue'
 import SelectScheduleModal from '~/components/common/modal/lecture/SelectScheduleModal.vue'
-import ChangeScheduleModal from '~/components/common/modal/lecture/ChangeScheduleModal.vue'
 import SelectCurriculumModal from '~/components/common/modal/lecture/SelectCurriculumModal.vue'
 import CurriculumAssignmentModal from '~/components/common/modal/lecture/CurriculumAssignmentModal.vue'
 import SelectCurriculumListModal from '~/components/common/modal/lecture/SelectCurriculumListModal.vue'
-import ChangeSelectCurriculumModal from '~/components/common/modal/lecture/ChangeSelectCurriculumModal.vue'
-import ChangeCurriculumAssignmentModal from '~/components/common/modal/lecture/ChangeCurriculumAssignmentModal.vue'
 import initialState from '~/data/lecture/initialState'
 import { setNewArray, deepCopy } from '~/utiles/common'
+import CustomSnackbar from '~/components/common/CustomSnackbar.vue'
 
 export default {
   name: 'LecturePage',
@@ -171,13 +127,10 @@ export default {
     SelectCurriculumListModal,
     NoListSection,
     LectureList,
-    ChangeLectureModal,
     CustomDataPicker,
     ModalDesc,
-    ChangeCurriculumAssignmentModal,
     DeleteModal,
-    ChangeSelectCurriculumModal,
-    ChangeScheduleModal,
+    CustomSnackbar,
   },
   data() {
     return initialState()
@@ -233,12 +186,17 @@ export default {
   },
   methods: {
     // 취소시 등록 하려고했던 데이터 지우기
-    initAddReferenceData() {
-      Object.assign(this.$data, initialState())
+    // initAddReferenceData() {
+    //   Object.assign(this.$data, initialState())
+    // },
+
+    setModalTitle(str) {
+      this.modalTitle = str
     },
 
     // 강좌 등록
     openCreateLecture() {
+      this.setModalTitle('강좌 등록')
       this.lectureInfo = deepCopy(this.initLectureInfo)
     },
 
@@ -266,45 +224,10 @@ export default {
 
     // 선택한 강좌 변경 설정
     setChangeLecture(data) {
+      document.getElementById('lecture_modal').click()
       const newItem = deepCopy(data)
-      this.openChangeLectrueModal()
+      this.setModalTitle('강좌 수정')
       return Object.assign(this.lectureInfo, newItem)
-    },
-
-    // 강좌 변경 모달
-    openChangeLectrueModal() {
-      this.isChangeLecture.open = true
-    },
-
-    closeChangeLectureModal() {
-      return (this.isChangeLecture.open = false)
-    },
-
-    // 커리큘럼 변경 모달
-    openChangeCurriculum() {
-      this.isChangeSelectCurriculum.open = true
-    },
-
-    closeChangeCurriculum() {
-      this.isChangeSelectCurriculum.open = false
-    },
-
-    // 시간표 변경 모달
-    openChangeSchedule() {
-      this.isChangeSchedule.open = true
-    },
-
-    closeChangeSchedule() {
-      this.isChangeSchedule.open = false
-    },
-
-    // 커리큘럼 배정 보달
-    openChangeCurriculumAssignmentModal() {
-      this.isChangeCurriculumAssignment.open = true
-    },
-
-    closeChangeCurriculumAssignmentModal() {
-      this.isChangeCurriculumAssignment.open = false
     },
 
     // 삭제 확인 모달
@@ -313,7 +236,10 @@ export default {
         if (this.checkLectureList.length) {
           this.isDeleteModal.list = list
         } else {
-          this.openModalDesc('실패', '삭제할 데이터를 선택해주세요')
+          this.openSnackbar('삭제할 데이터를 선택해주세요')
+          setTimeout(() => {
+            this.closeSnackber()
+          }, 2000)
           return false
         }
       } else {
@@ -326,55 +252,48 @@ export default {
       this.isDeleteModal.open = false
     },
 
-    // 변경 모달 이동 Event
-    // 2 -> 1
-    backToChangeFirst() {
-      this.closeChangeCurriculum()
-      this.openChangeLectrueModal()
+    openSnackbar(msg) {
+      this.isSnackber = {
+        open: true,
+        message: msg,
+      }
     },
 
-    // 3 -> 2
-    backToChangeSecond() {
-      this.closeChangeSchedule()
-      this.openChangeCurriculum()
+    closeSnackber() {
+      this.isSnackber.open = false
     },
 
-    // 4 -> 3
-    backToChangeThird() {
-      this.closeChangeCurriculumAssignmentModal()
-      this.openChangeSchedule()
+    // input 변경 Event
+    handleChange({
+      target: {
+        name,
+        value,
+        id,
+        dataset: { target },
+      },
+    }) {
+      if (id === 'name') {
+        this.lectureInfo[id] = value
+      } else {
+        this[target][name] = value
+      }
     },
 
-    // 1 -> 2
-    moveToChangeSecond() {
-      this.closeChangeLectureModal()
-      this.openChangeCurriculum()
+    // 선생님 필터링 지우기
+    clearSearchTeacher() {
+      this.searchData.teacher = ''
     },
 
-    // 2 -> 3
-    moveToChangeThird() {
-      this.closeChangeCurriculum()
-      this.openChangeSchedule()
-    },
-
-    // 3 -> 4
-    moToChangeFourth() {
-      this.closeChangeSchedule()
-      this.openChangeCurriculumAssignmentModal()
-    },
-
-    // 강좌 변경 Event
-    onChangeLecture({ target: { name, value } }) {
-      this.lectureInfo[name] = value
+    // 반 필터링 지우기
+    clearSearchClass() {
+      this.searchData.class = ''
     },
 
     // 배정 메뉴 보여줄때 다른 메뉴 닫기
     closeTeacherMenu() {
       for (const index in this.teacherList) {
         const allTarget = document.getElementById(`teacher_list${index}`)
-        const allTargetTwo = document.getElementById(`teacher_list_${index}`)
         allTarget.style.display = 'none'
-        allTargetTwo.style.display = 'none'
       }
     },
 
@@ -392,9 +311,9 @@ export default {
       const isNone = targetStyle.display === 'none'
       if (isNone) {
         this.closeTeacherMenu()
-        return (targetStyle.display = 'block')
+        targetStyle.display = 'block'
       } else {
-        return (targetStyle.display = 'none')
+        targetStyle.display = 'none'
       }
     },
 
