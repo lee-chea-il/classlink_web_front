@@ -21,14 +21,17 @@
             data-toggle="dropdown"
             aria-expanded="false"
           >
-            최신 등록순
+            {{ rangeList[isRangeFlag].title }}
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">최신 등록순</a>
-            <a class="dropdown-item" href="#">이름 오름차순</a>
-            <a class="dropdown-item" href="#">이름 내림차순</a>
-            <a class="dropdown-item" href="#">학년 오름차순</a>
-            <a class="dropdown-item" href="#">학년 내림차순</a>
+            <a
+              v-for="(item, idx) in rangeList"
+              :key="idx"
+              class="dropdown-item"
+              href="#"
+              @click="$emit('select-range', item.id)"
+              >{{ item.title }}</a
+            >
           </div>
         </div>
         <div class="dropdown form-inline">
@@ -38,12 +41,17 @@
             data-toggle="dropdown"
             aria-expanded="false"
           >
-            학생
+            {{ identityList[isIdentityFlag].title }}
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">학생</a>
-            <a class="dropdown-item" href="#">학부모</a>
-            <a class="dropdown-item" href="#">학부모&학생</a>
+            <a
+              v-for="(item, idx) in identityList"
+              :key="idx"
+              class="dropdown-item"
+              href="#"
+              @click="$emit('select-identity', item.id)"
+              >{{ item.title }}</a
+            >
           </div>
         </div>
         <div class="dropdown form-inline">
@@ -53,11 +61,17 @@
             data-toggle="dropdown"
             aria-expanded="false"
           >
-            활성화
+            {{ statusList[isStatusFlag].title }}
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">활성화</a>
-            <a class="dropdown-item" href="#">비활성화</a>
+            <a
+              v-for="(item, idx) in statusList"
+              :key="idx"
+              class="dropdown-item"
+              href="#"
+              @click="$emit('select-status', item.id)"
+              >{{ item.title }}</a
+            >
           </div>
         </div>
         <div class="dropdown form-inline">
@@ -67,14 +81,20 @@
             data-toggle="dropdown"
             aria-expanded="false"
           >
-            재원
+            {{ studentStatusList[isStudentStatusFlag].title }}
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">재원</a>
-            <a class="dropdown-item" href="#">퇴원</a>
+            <a
+              v-for="(item, idx) in studentStatusList"
+              :key="idx"
+              class="dropdown-item"
+              href="#"
+              @click="$emit('select-studentStatus', item.id)"
+              >{{ item.title }}</a
+            >
           </div>
         </div>
-        <div class="info_txt">9,999명</div>
+        <div class="info_txt">{{ studentList.length }}명</div>
       </div>
       <div class="right_area">
         <div class="input-group input-search form-inline">
@@ -82,9 +102,16 @@
             type="text"
             class="form-control"
             placeholder="학생 이름 검색"
+            :value="searchStudentText"
+            @input="$emit('change-input', $event)"
+            @keyup.enter="$emit('search-student')"
           />
           <div class="input-group-append">
-            <button class="btn icons_search_off" type="button"></button>
+            <button
+              class="btn icons_search_off"
+              type="button"
+              @click="$emit('search-student')"
+            ></button>
           </div>
         </div>
         <button
@@ -143,18 +170,23 @@
               ></i>
             </td>
             <td>
-              <i class="btn icons_mu_off more_mu">
-                <div class="more_list" style="display: none">
+              <i
+                class="btn icons_mu_off more_mu"
+                @click="$emit('click-more', idx)"
+              >
+                <div
+                  class="more_list"
+                  style="display: none"
+                  :class="expandIdx.includes(idx) ? 'expand-more' : ''"
+                >
                   <ul>
-                    <li data-toggle="modal" data-target="#modalMoreCourse">
+                    <li @click="$emit('click-lectureInfo', item.id)">
                       수강 정보
                     </li>
                     <li data-toggle="modal" data-target="#modalMoreAttendance">
                       출결
                     </li>
-                    <li data-toggle="modal" data-target="#modalMoreMemo">
-                      메모
-                    </li>
+                    <li @click="$emit('click-memo', item.id)">메모</li>
                     <li data-toggle="modal" data-target="#modalMoreReports">
                       학습 리포트
                     </li>
@@ -196,7 +228,47 @@
 export default {
   name: 'StudentListBox',
   props: {
+    identityList: {
+      type: Array,
+      default: () => [],
+    },
+    statusList: {
+      type: Array,
+      default: () => [],
+    },
+    studentStatusList: {
+      type: Array,
+      default: () => [],
+    },
+    rangeList: {
+      type: Array,
+      default: () => [],
+    },
     studentList: {
+      type: Array,
+      default: () => [],
+    },
+    isRangeFlag: {
+      type: Number,
+      default: 0,
+    },
+    isIdentityFlag: {
+      type: Number,
+      default: 0,
+    },
+    isStatusFlag: {
+      type: Number,
+      default: 0,
+    },
+    isStudentStatusFlag: {
+      type: Number,
+      default: 0,
+    },
+    searchStudentText: {
+      type: String,
+      default: '',
+    },
+    expandIdx: {
       type: Array,
       default: () => [],
     },
@@ -212,4 +284,8 @@ export default {
   },
 }
 </script>
-<style scoped></style>
+<style scoped>
+.expand-more {
+  display: block !important;
+}
+</style>

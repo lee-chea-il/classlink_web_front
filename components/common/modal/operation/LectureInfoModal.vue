@@ -1,21 +1,20 @@
 <template>
-  <div
+  <Transition name="modal">
+    <div
+      v-show="open"
       id="modalMoreCourse"
-      class="modal fade"
+      class="modal modal-mask modal-index"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
+      style="display: block"
     >
+      <div class="background_close"></div>
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <h5 id="exampleModalLabel" class="modal-title">수강 정보</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
+            <button type="button" class="close" @click="$emit('close')">
               <i class="icons_close"></i>
             </button>
           </div>
@@ -31,7 +30,7 @@
 								</colgroup> -->
                   <thead>
                     <tr>
-                      <th class="th01">커리큘럼</th>
+                      <th class="th01">강좌</th>
                       <th class="th02">납부일</th>
                       <th class="th03">수강 시작일</th>
                       <th class="th04">메모</th>
@@ -47,108 +46,117 @@
 									<col width="100">
 									<col width="55">
 								</colgroup> -->
-                  <tbody>
+                  <tbody v-for="(item, idx) in lectureInfo" :key="idx">
                     <tr>
-                      <td class="td01">영어리딩심화</td>
+                      <td class="td01">{{ item.lectureTitle }}</td>
                       <td class="td02">
                         <div class="date">
-                          <div class="box01 mr-1">2022.08.05</div>
-                          <i class="icons_calendar_off mr-1"></i>
-                          <div class="btn btn_crud_default disabled">
+                          <div class="box01 mr-1">{{ item.dueDate }}</div>
+                          <i
+                            class="icons_calendar_off mr-1"
+                            @click="$emit('click-date', item.id)"
+                          ></i>
+                          <div
+                            class="btn btn_crud_default"
+                            :class="idx == 0 ? 'disabled' : ''"
+                            @click="$emit('click-sameBtn', item.id)"
+                          >
                             위와 동일
                           </div>
                         </div>
                       </td>
-                      <td class="date02">2022.08.05</td>
+                      <td class="date02">{{ item.lectureDate }}</td>
                       <td class="i td04">
-                        <i class="icons_plus_circle_off"></i>
+                        <i
+                          class="icons_plus_circle_off"
+                          @click="$emit('click-newMemo', item.id)"
+                        ></i>
                       </td>
                     </tr>
 
                     <!-- 메모입력 TR : 메모입력 전 -->
-                    <tr class="memo">
+                    <tr
+                      v-if="isNewLectureMemoFlag && item.id === lectureId"
+                      class="memo"
+                    >
                       <td colspan="4" class="memo02">
-                        <textarea placeholder="메모입력"></textarea>
-                        <button class="btn btn_crud_point" type="button">
+                        <textarea
+                          placeholder="메모입력"
+                          :value="lectureInfoMemo.contents"
+                          @input="$emit('change-input', $event)"
+                        ></textarea>
+                        <button
+                          class="btn btn_crud_point"
+                          type="button"
+                          @click="$emit('add-memo', item.id)"
+                        >
                           등록
                         </button>
                       </td>
                     </tr>
 
                     <!-- 메모입력 TR : 메모입력 후-->
-                    <tr class="memo view">
-                      <td colspan="4" class="memo02">
+                    <tr
+                      v-for="(child_item, child_idx) in lectureInfo[idx].memo"
+                      :key="child_idx"
+                      class="memo"
+                    >
+                      <td
+                        v-if="
+                          isUpdateLectureMemoFlag &&
+                          child_item.id === lectureMemoId
+                        "
+                        colspan="4"
+                        class="memo02"
+                      >
+                        <textarea
+                          placeholder="메모입력"
+                          :value="lectureInfoMemo.contents"
+                          @input="$emit('change-input', $event)"
+                        ></textarea>
+                        <button
+                          class="btn btn_crud_point"
+                          type="button"
+                          @click="$emit('update-memo', item.id, child_item.id)"
+                        >
+                          저장
+                        </button>
+                      </td>
+                      <td v-else colspan="4" class="memo02">
                         <div class="box02">
-                          홍길동 학생 학원비 납부 관련해서 학부모와 면담 금일
-                          진행함.
+                          {{ child_item.contents }}
                         </div>
                         <div class="memo03">
-                          최신 업데이트 : <span>2022.08.05</span> 최신 작성자 :
-                          <span>서유진 선생님</span>
+                          최신 업데이트 :
+                          <span>{{ child_item.updatedAt }}</span> 최신 작성자 :
+                          <span>{{ child_item.writer }} 선생님</span>
                         </div>
                       </td>
+
                       <td>
                         <i class="btn icons_mu_off more_mu">
-                          <div class="more_list" style="display: none">
+                          <div class="more_list">
                             <ul>
-                              <li>수정</li>
-                              <li>삭제</li>
+                              <li
+                                @click="
+                                  $emit('click-update', item.id, child_item.id)
+                                "
+                              >
+                                수정
+                              </li>
+                              <li
+                                data-toggle="modal"
+                                data-target="#modalLectureMemoDelete"
+                                @click="
+                                  $emit('click-delete', item.id, child_item.id)
+                                "
+                              >
+                                삭제
+                              </li>
                             </ul>
                           </div>
                         </i>
                       </td>
-                    </tr>
-
-                    <tr>
-                      <td>영어리딩심화</td>
-                      <td>
-                        <div class="date">
-                          <div class="box01 mr-1">2022.08.05</div>
-                          <i class="icons_calendar_off mr-1"></i>
-                          <div class="btn btn_crud_default">위와 동일</div>
-                        </div>
-                      </td>
-                      <td class="date02">2022.08.05</td>
-                      <td class="i"><i class="icons_plus_circle_off"></i></td>
-                    </tr>
-
-                    <tr>
-                      <td>영어리딩심화</td>
-                      <td>
-                        <div class="date">
-                          <div class="box01 mr-1">2022.08.05</div>
-                          <i class="icons_calendar_off mr-1"></i>
-                          <div class="btn btn_crud_default">위와 동일</div>
-                        </div>
-                      </td>
-                      <td class="date02">2022.08.05</td>
-                      <td class="i"><i class="icons_plus_circle_off"></i></td>
-                    </tr>
-
-                    <tr>
-                      <td>영어리딩심화</td>
-                      <td>
-                        <div class="date">
-                          <div class="box01 mr-1">2022.08.05</div>
-                          <i class="icons_calendar_off mr-1"></i>
-                          <div class="btn btn_crud_default">위와 동일</div>
-                        </div>
-                      </td>
-                      <td class="date02">2022.08.05</td>
-                      <td class="i"><i class="icons_plus_circle_off"></i></td>
-                    </tr>
-
-                    <tr>
-                      <td>영어리딩심화</td>
-                      <td>
-                        <div class="date">
-                          <div class="box01 mr-1">2022.08.05</div>
-                          <i class="icons_calendar_off mr-1"></i>
-                          <div class="btn btn_crud_default">위와 동일</div>
-                        </div>
-                      </td>
-                      <td class="date02">2022.08.05</td>
-                      <td class="i"><i class="icons_plus_circle_off"></i></td>
                     </tr>
                   </tbody>
                 </table>
@@ -158,10 +166,45 @@
         </div>
       </div>
     </div>
+  </Transition>
 </template>
 <script>
 export default {
   name: 'LectureInfoModal',
+  props: {
+    open: {
+      type: Boolean,
+      default: false,
+    },
+    lectureInfo: {
+      type: Array,
+      default: () => [],
+    },
+    isNewLectureMemoFlag: {
+      type: Boolean,
+      default: false,
+    },
+    lectureId: {
+      type: Number,
+      default: 0,
+    },
+    isUpdateLectureMemoFlag: {
+      type: Boolean,
+      default: false,
+    },
+    lectureMemoId: {
+      type: Number,
+      default: 0,
+    },
+    lectureInfoMemo: {
+      type: Object,
+      default: () => {},
+    },
+  },
 }
 </script>
-<style scoped></style>
+<style scoped>
+.modal-index {
+  z-index: 999;
+}
+</style>
