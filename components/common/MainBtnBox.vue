@@ -4,7 +4,7 @@
       <ButtonItem
         title="복사"
         color="default"
-        @click-item="$emit('copyData')"
+        @click-item="$emit('copy')"
       />
       <ButtonItem
         title="붙여넣기"

@@ -4,24 +4,13 @@
     <div class="tab-content depth03 ac_manage_dtr">
       <div class="tab-pane active">
         <!-- 컨트롤 버튼 영역 -->
-        <div class="search_section">
-          <div class="left_area">
-            <div class="btn btn_crud_default" @click="copyData">복사</div>
-            <button class="btn btn_crud_default" @click="pasteData">
-              붙여넣기
-            </button>
-            <button class="btn btn_crud_default" @click="delData">삭제</button>
-          </div>
-          <div class="right_area">
-            <button
-              class="btn btn_crud_point"
-              data-toggle="modal"
-              data-target="#modalCuriRegi"
-            >
-              등록
-            </button>
-          </div>
-        </div>
+        <MainBtnBox
+          pageType="lesson"
+          @open-add="openCurriculumAdd"
+          @copy="copyData"
+          @paste="pasteData"
+          @delete="delData"
+        />
         <!-- /.컨트롤 버튼 영역 -->
 
         <!-- [개발참조] 커리큘럼 : 컨텐츠구성 자료실과 동일 -->
@@ -157,8 +146,10 @@
     </div>
     <CurriculumUpdateModal
       ref="curriculumUpdateModal"
+      :open="isShowOpenAddModal"
       @open-file-path="()=>{isShowOpenPathModal=true}"
       @open-save-path="()=>{isShowSavePathModal=true}"
+      @close="()=>{isShowOpenAddModal=false}"
     />
     <OpenSearchFileModal
       :open="isShowOpenPathModal"
@@ -180,6 +171,7 @@
 </template>
 
 <script>
+import MainBtnBox from '~/components/common/MainBtnBox.vue'
 import PageHeader from '~/components/common/PageHeader.vue'
 import TreeView from '@/components/common/custom/CustomTreeView.vue'
 import initialState from '~/data/curriculum/initialState'
@@ -194,12 +186,28 @@ export default {
     TreeView,
     CurriculumUpdateModal,
     SavePathSearchModal,
-    OpenSearchFileModal
+    OpenSearchFileModal,
+    MainBtnBox
   },
   data() {
     return initialState()
   },
   methods: {
+    openCurriculumAdd(){
+      const createLessonData = {
+        name: '',
+        role: '',
+        desc: '',
+        savePath: '',
+        keyword: [],
+        isOpenEducation: true,
+        isContinuedRegist: true,
+        createAt: '',
+        referenceList: [],
+      }
+      console.log(createLessonData)
+      this.isShowOpenAddModal = true
+    },
     copyData() {
       const instiTab = document.getElementById('institute')
       if (instiTab.classList.contains('show')) {

@@ -948,6 +948,14 @@ export default {
 
     // [트리]
     delData() {
+      if(this.identity==='master'){
+        const instiTab = document.getElementById('institute')
+        if (instiTab.classList.contains('show')) {
+          this.$refs.mainEducation.$refs.education.$refs.institution.delData()
+        }else{
+          this.$refs.mainEducation.$refs.education.$refs.franchise.delData()
+        }
+      }
       this.$refs.mainEducation.$refs.myData.$refs.curriculum.delData()
     },
 
