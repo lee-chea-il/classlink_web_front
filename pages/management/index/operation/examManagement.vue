@@ -234,6 +234,17 @@
       @close="onCloseDatePickerModalDesc"
       @confirm="onClickConfirmBtn"
     /> -->
+    <RangeDataPicker
+      :open="datePickerModalDesc.open"
+      @select-date="onClickConfirmBtn"
+      @close="onCloseDatePickerModalDesc"
+    />
+
+    <RangeDataPicker
+      :open="filterDatePickerModalDesc.open"
+      @select-date="filterOnClickConfirmBtn"
+      @close="filterOnCloseDatePickerModalDesc"
+    />
   </div>
 </template>
 
@@ -242,7 +253,7 @@ import NavBox from '@/components/operation/NavBox.vue'
 import ExamFilterModal from '@/components/common/modal/operation/ExamFilterModal.vue'
 import ExamResult from '@/components/common/modal/operation/ExamResult.vue'
 import ClassAverage from '@/components/common/modal/operation/ClassAverage.vue'
-// import DatePickerModal from '@/components/common/modal/attendance/DatePickerModal.vue'
+import RangeDataPicker from '@/components/common/modal/RangeDataPicker.vue'
 
 export default {
   name: 'TestManagement',
@@ -251,7 +262,7 @@ export default {
     ExamFilterModal,
     ExamResult,
     ClassAverage,
-    // DatePickerModal,
+    RangeDataPicker,
   },
   data() {
     return {
@@ -503,42 +514,32 @@ export default {
         name: '영어리딩심화',
         lesson: 3,
         type: '퀴즈',
-        question: [
+        questionList: [
           {
-            num: 1,
-            difficult: 2,
+            id: 0,
+            problem: '<p>1번 문제</p>',
+            exampleList: [
+              { id: '', example: '<p>답 1임</p>' },
+              { id: '', example: '<p>답 2임</p>' },
+              { id: '', example: '<p>답 3임</p>' },
+              { id: '', example: '<p>답 4임</p>' },
+            ],
+            dificultade: 0,
+            limitTime: '',
+            answer: 0,
           },
           {
-            num: 2,
-            difficult: 1,
-          },
-          {
-            num: 3,
-            difficult: 0,
-          },
-          {
-            num: 4,
-            difficult: 2,
-          },
-          {
-            num: 5,
-            difficult: 1,
-          },
-          {
-            num: 6,
-            difficult: 0,
-          },
-          {
-            num: 7,
-            difficult: 1,
-          },
-          {
-            num: 8,
-            difficult: 0,
-          },
-          {
-            num: 9,
-            difficult: 0,
+            id: 1,
+            problem: '<p>2번 문제</p>',
+            exampleList: [
+              { id: '', example: '<p>답 5임</p>' },
+              { id: '', example: '<p>답 6임</p>' },
+              { id: '', example: '<p>답 7임</p>' },
+              { id: '', example: '<p>답 8임</p>' },
+            ],
+            dificultade: 2,
+            limitTime: '',
+            answer: 2,
           },
         ],
       },
@@ -617,14 +618,12 @@ export default {
       const dateString = year + '.' + month + '.' + day
       return dateString
     },
-    onClickConfirmBtn() {
+    onClickConfirmBtn({ start, end }) {
+      const setDate = (date) =>
+        `${date?.getFullYear()}.${date?.getMonth() + 1}.${date?.getDate()}`
+      this.studentSearchDate.date_range_start = setDate(start)
+      this.studentSearchDate.date_range_end = setDate(end)
       this.datePickerModalDesc.open = false
-      this.studentSearchDate.date_range_start = this.changeDateFormat(
-        this.range.start
-      )
-      this.studentSearchDate.date_range_end = this.changeDateFormat(
-        this.range.end
-      )
     },
 
     // 상세검색 날짜 지정
@@ -639,14 +638,12 @@ export default {
     filterOnCloseDatePickerModalDesc() {
       this.filterDatePickerModalDesc.open = false
     },
-    filterOnClickConfirmBtn() {
+    filterOnClickConfirmBtn({ start, end }) {
+      const setDate = (date) =>
+        `${date?.getFullYear()}.${date?.getMonth() + 1}.${date?.getDate()}`
+      this.filterStudentSearchDate.date_range_start = setDate(start)
+      this.filterStudentSearchDate.date_range_end = setDate(end)
       this.filterDatePickerModalDesc.open = false
-      this.filterStudentSearchDate.date_range_start = this.changeDateFormat(
-        this.filterRange.start
-      )
-      this.filterStudentSearchDate.date_range_end = this.changeDateFormat(
-        this.filterRange.end
-      )
     },
 
     // 시험결과 상세버튼

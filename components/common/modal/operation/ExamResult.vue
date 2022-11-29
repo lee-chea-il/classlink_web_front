@@ -39,10 +39,7 @@
                 <div class="questions_area">
                   <!-- 문제 BOX(퀴즈)-->
                   <div
-                    v-for="(item, idx) in examQuestion.question.filter(
-                      (items) =>
-                        items.num <= Math.ceil(examQuestion.question.length / 2)
-                    )"
+                    v-for="(item, idx) in examQuestion.questionList"
                     :key="idx"
                     class="question_box"
                   >
@@ -98,10 +95,7 @@
                 <div class="questions_area">
                   <!-- 문제 BOX(퀴즈)-->
                   <div
-                    v-for="(item, idx) in examQuestion.question.filter(
-                      (items) =>
-                        items.num > Math.ceil(examQuestion.question.length / 2)
-                    )"
+                    v-for="(item, idx) in examQuestion.questionList"
                     :key="idx"
                     class="question_box"
                   >
@@ -159,10 +153,7 @@
                 <div class="questions_area">
                   <!-- 문제 BOX(쪽지)-->
                   <div
-                    v-for="(item, idx) in examQuestion.question.filter(
-                      (items) =>
-                        items.num <= Math.ceil(examQuestion.question.length / 2)
-                    )"
+                    v-for="(item, idx) in examQuestion.questionList"
                     :key="idx"
                     class="question_box"
                   >
@@ -263,10 +254,7 @@
                 <div class="questions_area">
                   <!-- 문제 BOX(쪽지)-->
                   <div
-                    v-for="(item, idx) in examQuestion.question.filter(
-                      (items) =>
-                        items.num > Math.ceil(examQuestion.question.length / 2)
-                    )"
+                    v-for="(item, idx) in examQuestion.questionList"
                     :key="idx"
                     class="question_box"
                   >

@@ -19,7 +19,7 @@
                       class="keyword01"
                     >
                       <span class="keyword01-1">{{ item }}</span>
-                      <span class="x" @click="onClick"></span>
+                      <span class="x" @click="onClickFilterDelete(idx)"></span>
                     </span>
                   </div>
                 </div>
@@ -584,6 +584,10 @@ export default {
     // 모든 필터 해제
     onClickAllFilterDelete() {
       this.noticeList.targetSetting = []
+    },
+    // 필터 해제
+    onClickFilterDelete(idx) {
+      this.noticeList.targetSetting.splice(idx, 1)
     },
   },
 }
