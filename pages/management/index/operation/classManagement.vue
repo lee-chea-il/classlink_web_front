@@ -29,13 +29,10 @@
           <!-- 컨트롤 버튼 영역 -->
           <div class="search_section">
             <div class="left_area">
-              <div
-                class="btn btn_crud_default"
-                onClick="toasts('반을 선택해주세요.')"
-              >
+              <div class="btn btn_crud_default" @click="onClickClassCopy">
                 복사
               </div>
-              <button class="btn btn_crud_default" @click="onOpenClassMove">
+              <button class="btn btn_crud_default" @click="onClickClassMove">
                 이동
               </button>
               <button class="btn btn_crud_danger" @click="onClickClassDelete">
@@ -282,7 +279,7 @@
       @close="onCloseDeleteModalDesc"
     />
 
-    <Toast :show="openToast.open" :message="message" />
+    <CustomSnackbar :show="openToast.open" :message="message" />
   </div>
 </template>
 
@@ -292,7 +289,7 @@ import ClassModifyModal from '@/components/common/modal/operation/ClassModifyMod
 import ClassDetailModal from '@/components/common/modal/operation/ClassDetailModal.vue'
 import ClassMoveModal from '@/components/common/modal/operation/ClassMoveModal.vue'
 import DeleteModal from '@/components/lecturecourse/DeletePlanModal.vue'
-import Toast from '@/components/common/Toast.vue'
+import CustomSnackbar from '@/components/common/CustomSnackbar.vue'
 export default {
   name: 'ClassManagement',
   components: {
@@ -301,7 +298,7 @@ export default {
     ClassDetailModal,
     ClassMoveModal,
     DeleteModal,
-    Toast,
+    CustomSnackbar,
   },
   data() {
     return {
@@ -794,9 +791,27 @@ export default {
       }
     },
     // 이동 버튼 클릭
-    onClickClassMove() {},
+    onClickClassMove() {
+      if (this.checkList.length === 0) {
+        this.onOpenToast('반을 선택해주세요.')
+        setTimeout(() => {
+          this.onCloseToast()
+        }, 2000)
+      } else {
+        this.onOpenClassMove()
+      }
+    },
     // 복사 버튼 클릭
-    onClickClassCopy() {},
+    onClickClassCopy() {
+      if (this.checkList.length === 0) {
+        this.onOpenToast('반을 선택해주세요.')
+        setTimeout(() => {
+          this.onCloseToast()
+        }, 2000)
+      } else {
+        console.log('복사')
+      }
+    },
 
     // 반 수정/만들기 모달
     // 반 선생님 추가/삭제
