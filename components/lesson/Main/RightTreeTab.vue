@@ -15,6 +15,7 @@
         :pidNum="2000"
         :isHideDownload="isHideDownload"
         @open-data="setOpenData"
+        @un-active="$emit('un-active')"
         @update-data="$emit('update-data', $event)"
       />
     </div>

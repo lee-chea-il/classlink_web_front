@@ -37,6 +37,7 @@
         @open-data="$emit('open-data', $event)"
         @update-data="$emit('update-data', $event)"
         @download-data="$emit('download-data', $event)"
+        @un-active="$emit('un-active')"
       />
     </div>
     <!-- /.탭 내용02 -->

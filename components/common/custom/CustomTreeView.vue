@@ -6,7 +6,9 @@
     :is-drop="identity == 'master' ? true : false"
     :is-show-option="identity == 'master' ? true : false"
     :isHideDownload="isHideDownload"
-    @click="onClick"
+    @leaf-name-click="$emit('un-active')"
+    @click="$emit('un-active')"
+    @drag-start="$emit('un-active')"
     @change-name="onChangeName"
     @more-menu="moreMenu"
     @more-menu-down="moreMenuDown"
@@ -113,6 +115,7 @@ export default {
 
     onClick(params) {
       console.log(params)
+      this.$emit('un-active')
     },
 
     addNode() {
@@ -145,6 +148,7 @@ export default {
         }
         return newNode
       }
+      this.$emit('un-active')
       this.$emit('copyDataCallBack', _dfs(this.datas))
     },
     pasteData(copyCheckData) {
@@ -211,6 +215,7 @@ export default {
         }
         oldNode.paste = false
       }
+      this.$emit('un-active')
       if (copyCheckData.children && copyCheckData.children.length > 0) {
         _checkPasteData(this.datas)
         _pasteData(this.datas)
@@ -218,6 +223,7 @@ export default {
       }
     },
     delData() {
+      this.$emit('un-active')
       function _dell(oldNode) {
         if (
           !oldNode.isChecked &&
@@ -235,6 +241,7 @@ export default {
       _dell(this.datas)
     },
     moreMenu({ e }) {
+      this.$emit('un-active')
       const hasOffClass = e.target.classList.contains('icons_mu_off')
       const iLists = document.querySelectorAll('.more_mu ')
       let i = 0
@@ -267,6 +274,17 @@ export default {
     moreMenuCopy(node) {
       console.log(`copy ${node}`)
     },
+    unActiveAll() {
+      function _unActiveAll(oldNode) {
+        oldNode.active=false
+        if (oldNode.children) {
+          for (let i = 0, len = oldNode.children.length; i < len; i++) {
+            _unActiveAll(oldNode.children[i])
+          }
+        }
+      }
+      _unActiveAll(this.datas)
+    }
   },
 }
 </script>

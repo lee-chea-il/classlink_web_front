@@ -14,6 +14,7 @@
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @download-data="$emit('download-data', $event)"
         @update-data="$emit('update-data', $event)"
+        @un-active="unActive"
       />
       <!-- /.탭 컨텐츠 -->
     </div>
@@ -30,6 +31,7 @@
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @download-data="$emit('download-data', $event)"
         @update-data="$emit('update-data', $event)"
+        @un-active="unActive"
       />
       <!-- /.탭 컨텐츠 -->
     </div>
@@ -68,6 +70,14 @@ export default {
       default: () => [],
     },
   },
+  methods: {
+    unActive(){
+      console.log("feafefaw")
+      this.$refs.education.$refs.institution.unActiveAll()
+      this.$refs.education.$refs.franchise.unActiveAll()
+      this.$refs.myData.$refs.curriculum.unActiveAll()
+    }
+  }
 }
 </script>
 

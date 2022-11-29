@@ -17,6 +17,7 @@
         @update-data="$emit('update-data', $event)"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @download-data="$emit('download-data', $event)"
+        @un-active="$emit('un-active')"
       />
     </div>
     <!-- /.탭 내용01 -->

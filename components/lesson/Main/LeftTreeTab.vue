@@ -18,6 +18,7 @@
         @open-data="setOpenData"
         @update-data="$emit('update-data', $event)"
         @download-data="$emit('download-data', $emit)"
+        @un-active="$emit('un-active')"
       />
     </div>
     <!-- /.탭 내용01 -->

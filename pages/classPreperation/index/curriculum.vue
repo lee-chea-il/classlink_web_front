@@ -67,6 +67,7 @@
                   :identity="identity"
                   :pidNum="0"
                   :isHideDownload="false"
+                  @un-active="unActive"
                   @copyDataCallBack="copyDataCallBack"
                 />
               </div>
@@ -86,6 +87,7 @@
                   :identity="identity"
                   :pidNum="1000"
                   :isHideDownload="false"
+                  @un-active="unActive"
                   @copyDataCallBack="copyDataCallBack"
                 />
               </div>
@@ -131,6 +133,7 @@
                   identity="master"
                   :pidNum="2000"
                   :isHideDownload="false"
+                  @un-active="unActive"
                 />
                 <br />
                 <br />
@@ -194,19 +197,18 @@ export default {
   },
   methods: {
     openCurriculumAdd(){
-      const createLessonData = {
-        name: '',
-        role: '',
+      const createCurriculumData = {
+        subTitle: '',
         desc: '',
+        openFileInfo: '',
         savePath: '',
-        keyword: [],
+        cwInfo: {},
         isOpenEducation: true,
         isContinuedRegist: true,
-        createAt: '',
-        referenceList: [],
+        lessonInfo: {},
       }
-      console.log(createLessonData)
-      this.isShowOpenAddModal = true
+      this.isShowOpenAddModal=true
+      this.$refs.curriculumUpdateModal.setData(createCurriculumData)
     },
     copyData() {
       const instiTab = document.getElementById('institute')
@@ -241,6 +243,11 @@ export default {
     openFileInfo(fileInfo){
       this.$refs.curriculumUpdateModal.setFileInfo(fileInfo)
       this.isShowOpenPathModal=false
+    },
+    unActive(){
+      this.$refs.institution.unActiveAll()
+      this.$refs.franchise.unActiveAll()
+      this.$refs.curriculum.unActiveAll()
     }
   },
 }
