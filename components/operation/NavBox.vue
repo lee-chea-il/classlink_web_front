@@ -19,7 +19,11 @@
       </NuxtLink>
     </li>
     <li class="nav-item">
-      <NuxtLink class="nav-link" :to="url3">
+      <NuxtLink
+        class="nav-link"
+        :to="url3"
+        :class="{ active: $route.fullPath.includes('/classmanagement') }"
+      >
         {{ title3 }}
       </NuxtLink>
     </li>

@@ -9,7 +9,7 @@
       aria-hidden="true"
       style="display: block"
     >
-      <div class="background_close" @click="$emit('close')"></div>
+      <div class="background_close" />
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <ModalHeader title="자료 수정" @close="$emit('close')" />
@@ -99,20 +99,7 @@
               </div>
             </div>
           </div>
-          <div class="modal-footer">
-            <!-- [개발참조] 자료등록일때 출력되는 버튼 -->
-            <button class="btn btn_crud_point">등록</button>
-            <button
-              class="btn btn_crud_default"
-              data-dismiss="modal"
-              @click="$emit('close')"
-            >
-              취소
-            </button>
-            <!-- [개발참조] 자료수정일때 출력되는 버튼 -->
-            <!-- 	<button class="btn btn_crud_point">완료</button>
-					<button class="btn btn_crud_default" data-dismiss="modal">취소</button> -->
-          </div>
+          <ModalBtnBox submitTxt="저장" @close="$emit('close')" />
         </div>
       </div>
     </div>
@@ -121,11 +108,12 @@
 
 <script>
 import ModalHeader from '../../ModalHeader.vue'
+import ModalBtnBox from '../../ModalBtnBox.vue'
 import ReferenceAddLeftField from '@/components/reference/ReferenceAddLeftField.vue'
 
 export default {
   name: 'ReferenceChangeModal',
-  components: { ReferenceAddLeftField, ModalHeader },
+  components: { ReferenceAddLeftField, ModalHeader, ModalBtnBox },
   props: {
     open: {
       type: Boolean,

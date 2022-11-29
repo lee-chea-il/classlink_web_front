@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import ModalHeader from '../../ModalHeader.vue'
+import ModalHeader from '../ModalHeader.vue'
 
 export default {
   name: 'DeleteModal',

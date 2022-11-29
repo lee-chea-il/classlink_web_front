@@ -2,31 +2,19 @@
   <Transition name="modal">
     <div
       v-show="open"
-      class="modal modal-mask modal-third"
+      class="modal double modal-mask"
       tabindex="-1"
-      aria-labelledby="exampleModalLabel"
       aria-hidden="true"
       style="display: block"
-      x-index="-1"
     >
       <div class="background_close" @click="$emit('close')"></div>
       <div class="dataWrap">
-        <DatePicker
-          :value="range"
-          :masks="{ title: 'YYYY MMM' }"
-          trim-weeks
-          is-expanded
-          is-range
-          @input="$emit('select-range', $event)"
+        <DatePicker v-model="range" is-range />
+        <ModalBtnBox
+          submitTxt="확인"
+          @submit="$emit('select-date', range)"
+          @close="$emit('close')"
         />
-        <div class="modal-footer">
-          <button class="btn btn_crud_default" @click="$emit('close')">
-            취소
-          </button>
-          <button class="btn btn_crud_point" @click="$emit('confirm')">
-            확인
-          </button>
-        </div>
       </div>
     </div>
   </Transition>
@@ -34,20 +22,26 @@
 
 <script>
 import DatePicker from 'v-calendar/lib/components/date-picker.umd'
+import ModalBtnBox from '../ModalBtnBox.vue'
 export default {
-  name: 'CustomDataPicker',
+  name: 'RangeDataPicker',
   components: {
     DatePicker,
+    ModalBtnBox,
   },
   props: {
     open: {
       type: Boolean,
       default: false,
     },
-    range: {
-      type: Object,
-      default: () => {},
-    },
+  },
+  data() {
+    return {
+      range: {
+        start: new Date(),
+        end: new Date(),
+      },
+    }
   },
 }
 </script>
@@ -66,9 +60,5 @@ export default {
 
 .modal .modal-footer {
   padding-bottom: 0;
-}
-
-.modal-third {
-  z-index: 9999 !important;
 }
 </style>

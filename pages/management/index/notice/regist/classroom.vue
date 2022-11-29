@@ -3,17 +3,54 @@
     <div class="content_area">
       <!--  3Depth -->
       <CustomPageHeader />
-      <div class="tab-content depth03 ac_manage_notice notice_rigi">
+
+      <div
+        class="tab-content depth03 ac_manage_notice notice_rigi notice_regi_class"
+      >
         <div class="tab-pane active">
+          <div class="search_section02">
+            <div class="left_area">
+              <div class="row">
+                <div class="keyword_area left_area">
+                  <div class="keyword_area_01">
+                    <span
+                      v-for="(item, idx) in noticeList.targetSetting"
+                      :key="idx"
+                      class="keyword01"
+                    >
+                      <span class="keyword01-1">{{ item }}</span>
+                      <span class="x" @click="onClick"></span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="right_area">
+              <button
+                class="btn btn_filter"
+                @click="onOpenClassNoticeTargetModal"
+              >
+                필터
+              </button>
+              <button
+                class="btn btn_crud_default filter_lift"
+                :disabled="noticeList.targetSetting.length === 0"
+                @click="onClickAllFilterDelete"
+              >
+                필터 해제
+              </button>
+            </div>
+          </div>
+          <div class="line"></div>
           <div class="setting_section">
             <div class="left_section">
               <div class="subject_area">
                 <span class="title">제목</span>
                 <input
-                  v-model="noticeList.title"
                   type="text"
                   placeholder="제목을 입력해주세요."
                   class="form-control form-inline"
+                  value="컴플레인 이슈사항 공지드립니다."
                 />
                 <span class="content">작성자는 자동으로 기록에 남습니다.</span>
               </div>
@@ -50,7 +87,7 @@
                   </span>
                 </span>
               </div>
-              <div class="target_area">
+              <!-- <div class="target_area">
                 <button
                   class="btn btn_crud_default"
                   data-toggle="modal"
@@ -59,22 +96,12 @@
                   대상 설정
                 </button>
                 <span class="box02">
-                  <span class="content02">
-                    <span
-                      v-for="(item, idx) in noticeList.targetSetting"
-                      :key="idx"
-                    >
-                      {{ item }}
-                      <span v-if="noticeList.targetSetting.length - 1 !== idx"
-                        >|</span
-                      >
-                    </span>
-                  </span>
+                  <span class="content02"> 선생님 | 학부모 | 학생</span>
                 </span>
-              </div>
+              </div> -->
             </div>
           </div>
-          <div class="file_list mb-3">
+          <div class="file_list">
             <div id="searchTable" class="search_result">
               <table class="table table-borderless">
                 <!-- <colgroup>
@@ -102,18 +129,87 @@
 										</td>
 									</tr> -->
 
-                  <tr v-for="(item, idx) in 5" :key="idx">
+                  <tr>
                     <td>
                       <div class="custom-control custom-checkbox form-inline">
                         <input
-                          :id="`chk${idx}`"
+                          id="chk01"
                           type="checkbox"
                           class="custom-control-input"
                         />
-                        <label
-                          class="custom-control-label"
-                          :for="`chk${idx}`"
-                        ></label>
+                        <label class="custom-control-label" for="chk01"></label>
+                      </div>
+                    </td>
+                    <td class="table001">영어리딩심화.pdf</td>
+                    <td></td>
+                    <td>4MB</td>
+                    <td>대용량첨부</td>
+                    <td>~22/08/01(30일간)</td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <div class="custom-control custom-checkbox form-inline">
+                        <input
+                          id="chk01"
+                          type="checkbox"
+                          class="custom-control-input"
+                        />
+                        <label class="custom-control-label" for="chk01"></label>
+                      </div>
+                    </td>
+                    <td class="table001">영어리딩심화.pdf</td>
+                    <td></td>
+                    <td>4MB</td>
+                    <td>대용량첨부</td>
+                    <td>~22/08/01(30일간)</td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <div class="custom-control custom-checkbox form-inline">
+                        <input
+                          id="chk01"
+                          type="checkbox"
+                          class="custom-control-input"
+                        />
+                        <label class="custom-control-label" for="chk01"></label>
+                      </div>
+                    </td>
+                    <td class="table001">영어리딩심화.pdf</td>
+                    <td></td>
+                    <td>4MB</td>
+                    <td>대용량첨부</td>
+                    <td>~22/08/01(30일간)</td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <div class="custom-control custom-checkbox form-inline">
+                        <input
+                          id="chk01"
+                          type="checkbox"
+                          class="custom-control-input"
+                        />
+                        <label class="custom-control-label" for="chk01"></label>
+                      </div>
+                    </td>
+                    <td class="table001">영어리딩심화.pdf</td>
+                    <td></td>
+                    <td>4MB</td>
+                    <td>대용량첨부</td>
+                    <td>~22/08/01(30일간)</td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <div class="custom-control custom-checkbox form-inline">
+                        <input
+                          id="chk01"
+                          type="checkbox"
+                          class="custom-control-input"
+                        />
+                        <label class="custom-control-label" for="chk01"></label>
                       </div>
                     </td>
                     <td class="table001">영어리딩심화.pdf</td>
@@ -131,17 +227,34 @@
             :editorOptions="editorOptions"
             :editorToolbar="editorToolbar"
           />
+          <div class="reply_onoff">
+            <div class="custom-control custom-switch">
+              <input
+                id="customSwitch1"
+                type="checkbox"
+                class="custom-control-input"
+                :checked="noticeList.commentCheck"
+              />
+              <label class="custom-control-label" for="customSwitch1"
+                >댓글 기능 ON/OFF</label
+              >
+            </div>
+          </div>
           <div class="btn_area">
             <button class="btn btn_crud_point" @click="onClickNoticeRegist">
               등록
             </button>
-            <NuxtLink to="/management/notice/class" class="btn btn_crud_default"
+            <NuxtLink
+              to="/management/notice/classroom"
+              class="btn btn_crud_default"
               >취소</NuxtLink
             >
           </div>
         </div>
       </div>
     </div>
+
+    <!-- 기한 설정 모달 -->
     <SettingNoticeDeadline
       :noticeList="noticeList"
       :range="range"
@@ -154,7 +267,8 @@
       @notice-alarm="onClickNoticeAlarmCheck"
     />
     <!-- @click-date="onDayClick" -->
-    <SettingNoticeTarget
+    <!-- ? -->
+    <!-- <SettingNoticeTarget
       :noticeList="noticeList"
       :target="target"
       :targetList="targetList"
@@ -162,6 +276,11 @@
       @onClickTargetAllCheck="onClickTargetAllCheck"
       @target-setting="onClickTargetSetting"
       @complete="onClickTargetSeleted"
+    /> -->
+    <!-- 공지 대상자 설정 모달 -->
+    <ClassNoticeTargetModal
+      :show="openClassNoticeTargetModal.open"
+      @close="onCloseClassNoticeTargetModal"
     />
 
     <ModalDesc
@@ -177,7 +296,8 @@
 // import PageHeader from '~/components/common/PageHeader.vue'
 import CustomPageHeader from '~/components/notice/CustomPageHeader.vue'
 import SettingNoticeDeadline from '~/components/common/modal/notice/SettingNoticeDeadline.vue'
-import SettingNoticeTarget from '~/components/common/modal/notice/SettingNoticeTarget.vue'
+// import SettingNoticeTarget from '~/components/common/modal/notice/SettingNoticeTarget.vue'
+import ClassNoticeTargetModal from '@/components/common/modal/notice/ClassNoticeTargetModal.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 
 export default {
@@ -185,7 +305,8 @@ export default {
   components: {
     CustomPageHeader,
     SettingNoticeDeadline,
-    SettingNoticeTarget,
+    // SettingNoticeTarget,
+    ClassNoticeTargetModal,
     ModalDesc,
   },
   data() {
@@ -202,7 +323,27 @@ export default {
         time_range_end_m: 0,
         after_deadline: true,
         notice_alarm: false,
-        targetSetting: ['심화A', '심화B', '심화C'],
+        commentCheck: true,
+        targetSetting: [
+          '홍길동',
+          '기초A반',
+          '홍길동',
+          '기초A반',
+          '홍길동',
+          '기초A반',
+          '홍길동',
+          '기초A반',
+          '홍길동',
+          '기초A반',
+          '홍길동',
+          '기초A반',
+          '홍길동',
+          '기초A반',
+          '홍길동',
+          '기초A반',
+          '홍길동',
+          '기초A반',
+        ],
       },
       target: ['심화A', '심화B', '심화C'],
       targetList: ['심화A', '심화B', '심화C'],
@@ -250,6 +391,9 @@ export default {
         open: false,
         title: '',
         desc: '',
+      },
+      openClassNoticeTargetModal: {
+        open: false,
       },
     }
   },
@@ -351,16 +495,25 @@ export default {
       this.modalDesc.open = false
     },
 
+    // 공지대상자설정 열기
+    onOpenClassNoticeTargetModal() {
+      this.openClassNoticeTargetModal.open = true
+    },
+    onCloseClassNoticeTargetModal() {
+      this.openClassNoticeTargetModal.open = false
+    },
+
     // 공지사항 등록
     onClickNoticeRegist() {
-      if (
-        this.noticeList.title === '' ||
-        this.noticeList.content === '' ||
-        this.noticeList.targetSetting.length === 0
-      ) {
+      if (this.noticeList.title === '' || this.noticeList.content === '') {
         this.openModalDesc(
           '공지사항 등록 실패',
           '공지사항을 작성하고 클릭해주세요.'
+        )
+      } else if (this.noticeList.targetSetting === 0) {
+        this.openModalDesc(
+          '공지사항 등록 실패',
+          '공지 대상자(반/개인)를 먼저 설정해주세요.'
         )
       } else {
         this.openModalDesc('공지사항 등록', '공지사항이 등록되었습니다.')
@@ -427,6 +580,11 @@ export default {
       console.log('asdfsa')
       this.noticeList.targetSetting = this.targetList
     },
+
+    // 모든 필터 해제
+    onClickAllFilterDelete() {
+      this.noticeList.targetSetting = []
+    },
   },
 }
 </script>
@@ -459,7 +617,7 @@ export default {
 .cursor {
   cursor: pointer;
 }
-.custom-control-label::after {
+/* .custom-control-label::after {
   left: -1.65rem !important;
-}
+} */
 </style>

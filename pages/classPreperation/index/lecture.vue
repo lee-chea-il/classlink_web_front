@@ -120,7 +120,6 @@
     <!-- 달력 모달 호출 -->
     <CustomDataPicker
       :open="isCalendar"
-      :scheduleItem="scheduleItem"
       @select-date="onChangeDate"
       @close="closeModalCalendar"
     />
@@ -143,21 +142,21 @@
 </template>
 
 <script>
-import ChangeCurriculumAssignmentModal from '~/components/common/modal/lecture/ChangeCurriculumAssignmentModal.vue'
-import ChangeLectureModal from '~/components/common/modal/lecture/ChangeLectureModal.vue'
-import ChangeScheduleModal from '~/components/common/modal/lecture/ChangeScheduleModal.vue'
-import ChangeSelectCurriculumModal from '~/components/common/modal/lecture/ChangeSelectCurriculumModal.vue'
-import CreateLectureModal from '~/components/common/modal/lecture/CreateLectureModal.vue'
-import CurriculumAssignmentModal from '~/components/common/modal/lecture/CurriculumAssignmentModal.vue'
-import SelectCurriculumListModal from '~/components/common/modal/lecture/SelectCurriculumListModal.vue'
-import SelectCurriculumModal from '~/components/common/modal/lecture/SelectCurriculumModal.vue'
-import SelectScheduleModal from '~/components/common/modal/lecture/SelectScheduleModal.vue'
-import ModalDesc from '~/components/common/modal/ModalDesc.vue'
-import DeleteModal from '~/components/common/modal/reference/DeleteModal.vue'
 import PageHeader from '~/components/common/PageHeader.vue'
-import CustomDataPicker from '~/components/lecture/custom/CustomDataPicker.vue'
+import ModalDesc from '~/components/common/modal/ModalDesc.vue'
+import DeleteModal from '~/components/common/modal/DeleteModal.vue'
 import LectureList from '~/components/lecture/LectureList.vue'
 import NoListSection from '~/components/lecture/NoListSection.vue'
+import CustomDataPicker from '~/components/common/modal/RangeDataPicker.vue'
+import ChangeLectureModal from '~/components/common/modal/lecture/ChangeLectureModal.vue'
+import CreateLectureModal from '~/components/common/modal/lecture/CreateLectureModal.vue'
+import SelectScheduleModal from '~/components/common/modal/lecture/SelectScheduleModal.vue'
+import ChangeScheduleModal from '~/components/common/modal/lecture/ChangeScheduleModal.vue'
+import SelectCurriculumModal from '~/components/common/modal/lecture/SelectCurriculumModal.vue'
+import CurriculumAssignmentModal from '~/components/common/modal/lecture/CurriculumAssignmentModal.vue'
+import SelectCurriculumListModal from '~/components/common/modal/lecture/SelectCurriculumListModal.vue'
+import ChangeSelectCurriculumModal from '~/components/common/modal/lecture/ChangeSelectCurriculumModal.vue'
+import ChangeCurriculumAssignmentModal from '~/components/common/modal/lecture/ChangeCurriculumAssignmentModal.vue'
 import initialState from '~/data/lecture/initialState'
 import { setNewArray, deepCopy } from '~/utiles/common'
 

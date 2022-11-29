@@ -29,37 +29,24 @@
             <!-- 오른쪽 SECTION -->
           </div>
         </div>
-        <div class="modal-footer">
-          <button
-            class="btn btn_crud_default"
-            data-dismiss="modal"
-            data-toggle="modal"
-            data-target="#modalLectureRegi"
-          >
-            이전
-          </button>
-          <button
-            class="btn btn_crud_point"
-            data-dismiss="modal"
-            data-toggle="modal"
-            data-target="#modalLectureRegi03"
-          >
-            다음
-          </button>
-        </div>
+        <ReverseBtnBox
+          prevTarget="#modalLectureRegi"
+          nextTarget="#modalLectureRegi03"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import ReverseBtnBox from '../../ReverseBtnBox.vue'
 import LeftSection from '~/components/lecture/selectCurriculum/SelectCurriculumLeftSection.vue'
 import RightSection from '~/components/lecture/selectCurriculum/SelectCurriculumRightSection.vue'
 import Header from '~/components/lecture/selectCurriculum/SelectCurriculumHeader.vue'
 let isAddActiveStype = false
 export default {
   name: 'SelectCurriculumModal',
-  components: { LeftSection, RightSection, Header },
+  components: { LeftSection, RightSection, Header, ReverseBtnBox },
   props: {
     curriculumList: {
       type: Array,
@@ -70,19 +57,19 @@ export default {
       default: () => [],
     },
   },
-  methods:{
-    plusEventClick(copyData){
+  methods: {
+    plusEventClick(copyData) {
       isAddActiveStype = true
       this.$refs.rightSection.$refs.myCurriculum.pasteData(copyData)
     },
-    removeActiveStyle(){
-      if(isAddActiveStype){
-        isAddActiveStype=false
+    removeActiveStyle() {
+      if (isAddActiveStype) {
+        isAddActiveStype = false
         this.$refs.leftSection.$refs.curriculum.resetActiveStyle()
         this.$refs.rightSection.$refs.myCurriculum.resetActiveStyle()
       }
-    }
-  }
+    },
+  },
 }
 </script>
 <style scoped>

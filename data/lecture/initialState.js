@@ -5,7 +5,7 @@ export default function initialState() {
     currentPageNumber: 1,
     postPerPage: 10,
     postPerPageNum: 10,
-    identity: 'teacher',
+    identity: 'master',
     isCalendar: false,
     isChangeLecture: { open: false },
     isCurriculemSelect: false,

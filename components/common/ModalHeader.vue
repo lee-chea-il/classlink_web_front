@@ -2,7 +2,7 @@
   <div class="modal-header">
     <h5 id="exampleModalLabel" class="modal-title">{{ title }}</h5>
     <button
-      id="referenceSelectClose"
+      :id="idProps"
       type="button"
       class="close"
       data-dismiss="modal"
@@ -19,6 +19,14 @@ export default {
   name: 'ModalHeader',
   props: {
     title: {
+      type: String,
+      default: '',
+    },
+    isClose: {
+      type: Boolean,
+      default: false,
+    },
+    idProps: {
       type: String,
       default: '',
     },

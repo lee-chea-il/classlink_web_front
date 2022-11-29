@@ -3,12 +3,23 @@
     <div class="content_area">
       <!--  3Depth -->
       <CustomPageHeader />
-      <div class="tab-content depth03 ac_manage_notice">
+      <div class="tab-content depth03 ac_manage_notice ac_managa_notice_class">
         <div class="tab-pane active">
           <!-- 검색 영역 -->
           <div class="search_section">
             <div class="left_area">
               <div class="dropdown form-inline">
+                <!-- <button
+                  class="btn dropdown-toggle"
+                  type="button"
+                  data-toggle="dropdown"
+                >
+                  조회 높은 순
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">최신순</a>
+                  <a class="dropdown-item" href="#">이름순</a>
+                </div> -->
                 <select class="btn dropdown-toggle" @change="onSelectSort">
                   <option class="dropdown-item" value="조회수 높은 순">
                     조회수 높은 순
@@ -17,42 +28,38 @@
                   <option class="dropdown-item" value="이름순">이름순</option>
                 </select>
               </div>
-              <button class="btn btn_crud_default" @click="onClickDelete">
+              <button class="btn btn_crud_danger" @click="onClickDelete">
                 삭제
               </button>
             </div>
             <div class="right_area">
               <div class="input-group input-search form-inline form-search">
                 <input
-                  v-model="searchText"
                   type="text"
                   class="form-control"
                   placeholder="제목, 내용, 작성자 검색"
-                  @keyup.enter="onClickSearchNotice"
                 />
                 <div class="input-group-append">
-                  <button
-                    class="btn icons_search_off"
-                    type="button"
-                    @click="onClickSearchNotice"
-                  ></button>
+                  <button class="btn icons_search_off" type="button"></button>
                 </div>
               </div>
-              <NuxtLink
+              <button
+                type="button"
                 class="btn btn_crud_point"
-                to="/management/notice/regist/class"
-                >등록</NuxtLink
+                @click="onOpenClassNoticeTargetModal"
               >
+                등록
+              </button>
             </div>
           </div>
           <!-- /.검색 영역 -->
           <!-- 테이블 영역 -->
-          <!-- [개발참조] 데이터 없을 경우 
-					<div class="page_nodata">
-						등록된 공지사항이 없습니다.
-					</div>
-					-->
-          <div class="table_section">
+          <!-- [개발참조] 데이터 없을 경우 -->
+          <div v-if="noticeList.length === 0" class="page_nodata">
+            등록된 공지사항이 없습니다.
+          </div>
+
+          <div v-else class="table_section">
             <table class="table">
               <thead>
                 <tr>
@@ -78,29 +85,18 @@
                   <th></th>
                 </tr>
               </thead>
-              <tbody v-if="noticeList.length === 0">
-                <tr>
-                  <td colspan="9">
-                    <div class="page_nodata">등록된 공지사항이 없습니다.</div>
-                  </td>
-                </tr>
-              </tbody>
-
-              <tbody v-for="(item, idx) in noticeList" v-else :key="idx">
+              <tbody v-for="(item, idx) in noticeList" :key="idx">
                 <tr>
                   <td>
                     <div class="custom-control custom-checkbox form-inline">
                       <input
-                        :id="`${item.id}`"
+                        :id="idx"
                         v-model="item.attributes.check"
                         type="checkbox"
                         class="custom-control-input"
                         @input="onClickCheckBox(item)"
                       />
-                      <label
-                        class="custom-control-label"
-                        :for="`${item.id}`"
-                      ></label>
+                      <label class="custom-control-label" :for="idx"></label>
                     </div>
                   </td>
                   <td>{{ item.attributes.title }}</td>
@@ -136,11 +132,7 @@
                   </td>
                 </tr>
                 <!-- 상세 tr [개발참조] 공지사항 상세 TR 펼치고 접기 -->
-                <tr
-                  v-show="idx === open_detail"
-                  id="trExpand"
-                  class="tr_expand"
-                >
+                <tr v-if="idx === open_detail" id="trExpand" class="tr_expand">
                   <td></td>
                   <td class="td_expand" colspan="8">
                     <div class="file_info">
@@ -166,20 +158,16 @@
                         <div class="thumbnail"></div>
                         <div class="thumbnail"></div>
                         <div class="thumbnail"></div>
-                        <!-- <div class="thumbnail"></div>
-												<div class="thumbnail"></div>
-												<div class="thumbnail"></div>
-												<div class="thumbnail"></div> -->
+                        <div class="thumbnail"></div>
+                        <div class="thumbnail"></div>
+                        <div class="thumbnail"></div>
+                        <div class="thumbnail"></div>
                         <div class="thumbnail">
                           <div class="more_cover">+3</div>
                         </div>
                       </div>
                       <div class="btns_area">
-                        <NuxtLink
-                          class="btn btn_crud_default"
-                          :to="`/management/notice/modify/class/${item.id}`"
-                          >수정</NuxtLink
-                        >
+                        <a class="btn btn_crud_default">수정</a>
                         <button
                           class="btn btn_crud_default"
                           @click="onOpenNoticeDetailModal(item.attributes)"
@@ -196,37 +184,275 @@
                         </button>
                       </div>
                     </div>
-                  </td>
-                </tr>
+                    <!-- [개발참조]댓글이 있는 경우 출력됨 -->
+                    <div v-if="item.attributes.commentCheck === true">
+                      <div
+                        v-if="item.attributes.comments.length !== 0"
+                        class="reply_o"
+                      >
+                        <div class="ReplyBox">
+                          <div class="button_comment">
+                            <span class="icon_reply_new"></span>
+                            댓글
+                            <strong class="num">{{
+                              item.attributes.comments.length
+                            }}</strong>
+                          </div>
+                        </div>
+                        <div class="CommentBox">
+                          <div class="comment_option">
+                            <h3 class="comment_title">댓글</h3>
+                            <div class="comment_tab">
+                              <ul class="comment_tab_list">
+                                <li class="comment_tab_item">
+                                  <a
+                                    href="#"
+                                    role="button"
+                                    aria-selected="true"
+                                    class="comment_tab_button"
+                                    >등록순</a
+                                  >
+                                </li>
+                                <li class="comment_tab_item">
+                                  <a
+                                    href="#"
+                                    role="button"
+                                    aria-selected="false"
+                                    class="comment_tab_button"
+                                    >최신순</a
+                                  >
+                                </li>
+                              </ul>
+                              <span type="button"
+                                ><i class="icons_refresh"></i
+                              ></span>
+                            </div>
+                          </div>
+                        </div>
+                        <ul class="comment_list">
+                          <li
+                            v-for="(items, id) in item.attributes.comments"
+                            :key="id"
+                            class="CommentItem"
+                          >
+                            <div
+                              class="comment_area"
+                              :class="
+                                items.name === item.attributes.writer
+                                  ? 'CommentItem--mine'
+                                  : ''
+                              "
+                            >
+                              <i class="icons_user comment_thumb"></i>
+                              <div class="comment_box">
+                                <div class="comment_nick_box">
+                                  <div class="comment_nick_info">
+                                    <a
+                                      href="#"
+                                      role="button"
+                                      aria-haspopup="true"
+                                      aria-expanded="false"
+                                      class="comment_nickname"
+                                      >{{ items.name }}</a
+                                    >
+                                    <!-- [개발참조]작성자일 경우에 붙는 아이콘 -->
+                                    <span
+                                      v-if="
+                                        items.name === item.attributes.writer
+                                      "
+                                      class="comment_badge_writer"
+                                      >작성자</span
+                                    >
+                                  </div>
+                                </div>
+                                <div class="comment_text_box">
+                                  <p class="comment_text_view">
+                                    <span class="text_comment">{{
+                                      items.content
+                                    }}</span>
+                                  </p>
+                                </div>
+                                <div class="comment_info_box">
+                                  <span class="comment_info_date"
+                                    >{{ items.date }} {{ items.time }}</span
+                                  >
+                                  <a
+                                    href="#"
+                                    role="button"
+                                    class="comment_info_button"
+                                    >답글쓰기</a
+                                  >
+                                </div>
+                                <!-- [개발참조]본인 댓글일때 출력되는 메뉴버튼 -->
+                                <div class="comment_tool">
+                                  <i class="btn icons_mu_off more_mu">
+                                    <div
+                                      class="more_list"
+                                      style="display: none"
+                                    >
+                                      <ul>
+                                        <li data-toggle="modal">수정</li>
+                                        <li data-toggle="modal">삭제</li>
+                                      </ul>
+                                    </div>
+                                  </i>
+                                </div>
+                              </div>
+                            </div>
+                            <ul>
+                              <li
+                                v-for="(iteme, idxd) in items.reply"
+                                :key="idxd"
+                                class="CommentItem CommentItem--reply"
+                              >
+                                <div class="comment_area">
+                                  <i class="icons_user comment_thumb"></i>
+                                  <div class="comment_box">
+                                    <div class="comment_nick_box">
+                                      <div class="comment_nick_info">
+                                        <a
+                                          href="#"
+                                          role="button"
+                                          aria-haspopup="true"
+                                          aria-expanded="false"
+                                          class="comment_nickname"
+                                          >{{ iteme.name }}</a
+                                        >
+                                        <!-- [개발참조]작성자일 경우에 붙는 아이콘 -->
+                                        <span
+                                          v-if="
+                                            iteme.name ===
+                                            item.attributes.writer
+                                          "
+                                          class="comment_badge_writer"
+                                          >작성자</span
+                                        >
+                                      </div>
+                                    </div>
+                                    <div class="comment_text_box">
+                                      <p class="comment_text_view">
+                                        <span class="text_comment"
+                                          >안녕하십니까? 홍길동 학원장입니다.
+                                          컴플레인 관련 이슈사항
+                                          공지드립니다.</span
+                                        >
+                                      </p>
+                                    </div>
+                                    <div class="comment_info_box">
+                                      <span class="comment_info_date"
+                                        >2022.11.24. 23:55</span
+                                      >
+                                      <a
+                                        href="#"
+                                        role="button"
+                                        class="comment_info_button"
+                                        >답글쓰기</a
+                                      >
+                                    </div>
+                                    <!-- [개발참조]본인 댓글일때 출력되는 메뉴버튼 -->
+                                    <div class="comment_tool">
+                                      <i class="btn icons_mu_off more_mu">
+                                        <div
+                                          class="more_list"
+                                          style="display: none"
+                                        >
+                                          <ul>
+                                            <li data-toggle="modal">수정</li>
+                                            <li data-toggle="modal">삭제</li>
+                                          </ul>
+                                        </div>
+                                      </i>
+                                    </div>
+                                  </div>
+                                </div>
+                              </li>
 
-                <!-- /.상세 tr -->
-                <!-- <tr>
-                  <td>
-                    <div class="custom-control custom-checkbox form-inline">
-                      <input
-                        id="chk01"
-                        type="checkbox"
-                        class="custom-control-input"
-                      />
-                      <label class="custom-control-label" for="chk01"></label>
+                              <li
+                                class="CommentItem CommentItem--reply CommentItem--textarea"
+                              >
+                                <div class="CommentWriter">
+                                  <div class="comment_inbox">
+                                    <textarea
+                                      placeholder="댓글을 남겨보세요"
+                                      rows="1"
+                                      class="comment_inbox_text"
+                                    ></textarea>
+                                  </div>
+                                  <div class="comment_attach">
+                                    <div class="register_box">
+                                      <a
+                                        href="#"
+                                        role="button"
+                                        class="btn btn_crud_default text_regi"
+                                        >등록</a
+                                      >
+                                    </div>
+                                  </div>
+                                </div>
+                                <i class="icons_x_circle_off"></i>
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                        <div class="CommentWriter CommentWriter_main">
+                          <div class="comment_inbox">
+                            <textarea
+                              placeholder="댓글을 남겨보세요"
+                              rows="1"
+                              class="comment_inbox_text"
+                            ></textarea>
+                          </div>
+                          <div class="comment_attach">
+                            <div class="register_box">
+                              <a
+                                href="#"
+                                role="button"
+                                class="btn btn_crud_default text_regi"
+                                >등록</a
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- [개발참조]댓글이 없는 경우 출력 -->
+                      <div v-else class="reply_x">
+                        <div class="ReplyBox">
+                          <div class="button_comment">
+                            <span class="icon_reply"></span>
+                            댓글
+                            <strong class="num">0</strong>
+                          </div>
+                        </div>
+                        <div class="CommentBox">
+                          <div class="comment_option">
+                            <h3 class="comment_title">댓글</h3>
+                          </div>
+                        </div>
+                        <div class="CommentWriter CommentWriter_main">
+                          <div class="comment_inbox">
+                            <textarea
+                              placeholder="댓글을 남겨보세요"
+                              rows="1"
+                              class="comment_inbox_text"
+                            ></textarea>
+                          </div>
+                          <div class="comment_attach">
+                            <div class="register_box">
+                              <a
+                                href="#"
+                                role="button"
+                                class="btn btn_crud_default text_regi"
+                                >등록</a
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </td>
-                  <td>컴플레인 이슈사항 공지드립니다</td>
-                  <td><span class="state warning">D-3</span></td>
-                  <td>
-                    <span class="date">
-                      2022.06.06 - 2022.08.05<br />
-                      오전 09:00 - 오후 11:59
-                    </span>
-                  </td>
-                  <td>홍길동</td>
-                  <td>전체</td>
-                  <td>2022.08.01</td>
-                  <td>222</td>
-                  <td>
-                    <button class="btn icons_arrow_dn btn_expand"></button>
-                  </td>
-                </tr> -->
+                </tr>
+                <!-- /.상세 tr -->
               </tbody>
             </table>
           </div>
@@ -271,11 +497,21 @@
       :data="openNoticeDetailModal.data"
       @close="onCloseNoticeDetailModal"
     />
+    <ClassNoticeTargetModal
+      :show="openClassNoticeTargetModal.open"
+      @close="onCloseClassNoticeTargetModal"
+    />
+
     <ModalDesc
       :open="modalDesc.open"
       :title="modalDesc.title"
       :desc="modalDesc.desc"
       @close="onCloseModalDesc"
+    />
+    <DeleteModal
+      :open="deleteModalDesc.open"
+      :title="deleteModalDesc.title"
+      @close="onCloseDeleteModalDesc"
     />
   </div>
 </template>
@@ -285,7 +521,9 @@
 import CustomPageHeader from '~/components/notice/CustomPageHeader.vue'
 import ShowNoticeDetailModal from '~/components/common/modal/notice/ShowNoticeDetailModal.vue'
 import ShowNoticeConfirmCheck from '~/components/common/modal/notice/ShowNoticeConfirmCheck.vue'
+import ClassNoticeTargetModal from '@/components/common/modal/notice/ClassNoticeTargetModal.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
+import DeleteModal from '@/components/lecturecourse/DeletePlanModal.vue'
 
 export default {
   name: 'Classroom',
@@ -293,7 +531,9 @@ export default {
     CustomPageHeader,
     ShowNoticeDetailModal,
     ShowNoticeConfirmCheck,
+    ClassNoticeTargetModal,
     ModalDesc,
+    DeleteModal,
   },
   data() {
     return {
@@ -319,6 +559,33 @@ export default {
             view_count: 222,
             confirmSearchRadio: 0,
             check: false,
+            commentCheck: true,
+            comments: [
+              {
+                name: '빅토리아',
+                content:
+                  '안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다.',
+                date: '2022.11.24',
+                time: '23:55',
+                reply: [
+                  {
+                    name: '홍길동',
+                    content:
+                      '안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다.',
+                    date: '2022.11.24',
+                    time: '23:55',
+                  },
+                ],
+              },
+              {
+                name: '홍길동',
+                content:
+                  '안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다.',
+                date: '2022.11.24',
+                time: '23:55',
+                reply: [],
+              },
+            ],
             student: [
               {
                 name: '홍길동',
@@ -357,6 +624,8 @@ export default {
             view_count: 87,
             confirmSearchRadio: 0,
             check: false,
+            commentCheck: true,
+            comments: [],
             student: [
               {
                 name: '홍길동',
@@ -395,6 +664,8 @@ export default {
             view_count: 57,
             confirmSearchRadio: 0,
             check: false,
+            commentCheck: false,
+            comments: [],
             student: [
               {
                 name: '홍길동',
@@ -433,6 +704,33 @@ export default {
             view_count: 3,
             confirmSearchRadio: 0,
             check: false,
+            commentCheck: false,
+            comments: [
+              {
+                name: '빅토리아',
+                content:
+                  '안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다.',
+                date: '2022.11.24',
+                time: '23:55',
+                reply: [
+                  {
+                    name: '빅토리아',
+                    content:
+                      '안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다.',
+                    date: '2022.11.24',
+                    time: '23:55',
+                  },
+                ],
+              },
+              {
+                name: '빅토리아',
+                content:
+                  '안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다.',
+                date: '2022.11.24',
+                time: '23:55',
+                reply: [],
+              },
+            ],
             student: [
               {
                 name: '홍길동',
@@ -471,6 +769,33 @@ export default {
             view_count: 16,
             confirmSearchRadio: 0,
             check: false,
+            commentCheck: false,
+            comments: [
+              {
+                name: '빅토리아',
+                content:
+                  '안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다.',
+                date: '2022.11.24',
+                time: '23:55',
+                reply: [
+                  {
+                    name: '빅토리아',
+                    content:
+                      '안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다.',
+                    date: '2022.11.24',
+                    time: '23:55',
+                  },
+                ],
+              },
+              {
+                name: '빅토리아',
+                content:
+                  '안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다.',
+                date: '2022.11.24',
+                time: '23:55',
+                reply: [],
+              },
+            ],
             student: [
               {
                 name: '홍길동',
@@ -511,10 +836,17 @@ export default {
         open: false,
         data: {},
       },
+      openClassNoticeTargetModal: {
+        open: false,
+      },
       modalDesc: {
         open: false,
         title: '',
         desc: '',
+      },
+      deleteModalDesc: {
+        open: false,
+        title: '',
       },
     }
   },
@@ -536,6 +868,24 @@ export default {
     },
     onCloseModalDesc() {
       this.modalDesc.open = false
+    },
+    onClickDelete() {
+      console.log(this.selectNoticeList.length)
+      if (this.selectNoticeList.length === 0) {
+        this.openModalDesc('공지사항 삭제', '삭제할 공지사항을 선택해주세요.')
+      } else {
+        this.openDeleteModalDesc('공지사항')
+      }
+    },
+
+    openDeleteModalDesc(tit) {
+      this.deleteModalDesc = {
+        open: true,
+        title: tit,
+      }
+    },
+    onCloseDeleteModalDesc() {
+      this.deleteModalDesc.open = false
     },
 
     // 공지사항 컨펌체크 열기
@@ -559,6 +909,14 @@ export default {
     onCloseNoticeDetailModal() {
       this.openNoticeDetailModal.open = false
       this.openNoticeDetailModal.data = {}
+    },
+
+    // 공지대상자설정 열기
+    onOpenClassNoticeTargetModal() {
+      this.openClassNoticeTargetModal.open = true
+    },
+    onCloseClassNoticeTargetModal() {
+      this.openClassNoticeTargetModal.open = false
     },
 
     // 자세히보기 열기 닫기
@@ -684,13 +1042,6 @@ export default {
       }
     },
 
-    onClickDelete() {
-      console.log(this.selectNoticeList.length)
-      if (this.selectNoticeList.length === 0) {
-        this.openModalDesc('공지사항 삭제', '삭제할 공지사항을 선택해주세요.')
-      }
-    },
-
     // 컨펌체크 필터 반, 학생 선택
     onClickConfirmRadio({ target: { id } }, data) {
       // console.log(id)
@@ -708,5 +1059,8 @@ export default {
 <style scoped>
 .table tbody + tbody {
   border-top: 0;
+}
+.CommentItem--reply {
+  border-top: 0.4px solid #d1d3d4 !important;
 }
 </style>

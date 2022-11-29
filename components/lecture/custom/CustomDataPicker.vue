@@ -38,10 +38,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    scheduleItem: {
-      type: Object,
-      default: () => {},
-    },
   },
   data() {
     return {

@@ -9,11 +9,12 @@
           :value="searchData.word"
           pageType="reference"
           @open-filter="openFilterModal"
-          @open-search-List="openSearchListModal"
+          @open-search-list="openSearchListModal"
           @change-word="changeSearchData"
           @copy="copyData"
           @paste="pasteData"
           @delete="delData"
+          @open-add="openSelectReferenceType"
         />
         <!-- /.컨트롤 버튼 영역 -->
 
@@ -40,6 +41,20 @@
       @add-test="onOpenNoteTestAddModal"
     />
 
+    <!-- 비디오 & 파일 업로드 선택 -->
+    <VideoFileUploadModal
+      @upload-video="onUploadVideo"
+      @upload-pdf="onUploadPdf"
+    />
+
+    <!-- 유튜브 & url 업로드 선택 -->
+    <YoutubeUploadModal
+      :urlData="urlData"
+      @change-url="onChangeUrl"
+      @upload-youtube="onUploadYoutube"
+      @upload-page="onUploadUrl"
+    />
+
     <!-- 파일 등록 (동영상,문서,유튜브,url) -->
     <ReferenceAddModal
       :open="isReferenceAddModal"
@@ -53,20 +68,6 @@
       @set-keyword="setKeyword"
       @delete-keyword="deleteKeyword"
       @open-save-path="onOpenSavePathModal"
-    />
-
-    <!-- 비디오 & 파일 업로드 선택 -->
-    <VideoFileUploadModal
-      @upload-video="onUploadVideo"
-      @upload-pdf="onUploadPdf"
-    />
-
-    <!-- 유튜브 & url 업로드 선택 -->
-    <YoutubeUploadModal
-      :urlData="urlData"
-      @change-url="onChangeUrl"
-      @upload-youtube="onUploadYoutube"
-      @upload-page="onUploadUrl"
     />
 
     <!-- 퀴즈 등록 -->
@@ -305,63 +306,63 @@
 
 <script>
 import html2pdf from 'html2pdf.js'
+import MainBtnBox from '~/components/common/MainBtnBox.vue'
 import PageHeader from '~/components/common/PageHeader.vue'
+import TreeSection from '~/components/common/TreeSection.vue'
 import ModalDesc from '~/components/common/modal/ModalDesc.vue'
+import DeleteModal from '~/components/common/modal/DeleteModal.vue'
 import SavePathModal from '~/components/common/modal/SavePathModal.vue'
-import ReferenceSelectModal from '~/components/common/modal/reference/ReferenceSelectModal.vue'
-import ReferenceAddModal from '~/components/common/modal/reference/ReferenceAddModal.vue'
-import VideoFileUploadModal from '~/components/common/modal/reference/VideoFileUploadModal.vue'
-import YoutubeUploadModal from '~/components/common/modal/reference/YoutubeUploadModal.vue'
-import QuizAddModal from '~/components/common/modal/reference/QuizAddModal.vue'
-import NoteTestAddModal from '~/components/common/modal/reference/NoteTestAddModal.vue'
-import ReferenceFilterModal from '~/components/common/modal/reference/ReferenceFilterModal.vue'
-import SearchResultModal from '~/components/common/modal/reference/SearchResultModal.vue'
-import VideoBrowseModal from '~/components/common/modal/reference/VideoBrowseModal.vue'
-import QuizBrowseModal from '~/components/common/modal/reference/QuizBrowseModal.vue'
-import NoteTestBrowseModal from '~/components/common/modal/reference/NoteTestBrowseModal.vue'
-import ShareViewModal from '~/components/common/modal/reference/ShareViewModal.vue'
-import DeleteModal from '~/components/common/modal/reference/DeleteModal.vue'
-import ReferenceChangeModal from '~/components/common/modal/reference/ReferenceChangeModal.vue'
-import QuizChangeModal from '~/components/common/modal/reference/QuizChangeModal.vue'
-import NoteTestChangeModal from '~/components/common/modal/reference/NoteTestChangeModal.vue'
-import QuizPreviewModal from '~/components/common/modal/reference/QuizPreviewModal.vue'
-import NoteTestPreviewModal from '~/components/common/modal/reference/NoteTestPreviewModal.vue'
 import QuizPrintPage from '~/components/reference/QuizPrintPage.vue'
 import NoteTestPrintPage from '~/components/reference/NoteTestPrintPage.vue'
-import initialState from '~/data/reference/initialState'
-import TreeSection from '~/components/common/TreeSection.vue'
-import MainBtnBox from '~/components/common/MainBtnBox.vue'
+import QuizAddModal from '~/components/common/modal/reference/QuizAddModal.vue'
+import ShareViewModal from '~/components/common/modal/reference/ShareViewModal.vue'
+import QuizBrowseModal from '~/components/common/modal/reference/QuizBrowseModal.vue'
+import QuizChangeModal from '~/components/common/modal/reference/QuizChangeModal.vue'
+import NoteTestAddModal from '~/components/common/modal/reference/NoteTestAddModal.vue'
+import VideoBrowseModal from '~/components/common/modal/reference/VideoBrowseModal.vue'
+import QuizPreviewModal from '~/components/common/modal/reference/QuizPreviewModal.vue'
+import ReferenceAddModal from '~/components/common/modal/reference/ReferenceAddModal.vue'
+import SearchResultModal from '~/components/common/modal/reference/SearchResultModal.vue'
+import YoutubeUploadModal from '~/components/common/modal/reference/YoutubeUploadModal.vue'
+import NoteTestBrowseModal from '~/components/common/modal/reference/NoteTestBrowseModal.vue'
+import NoteTestChangeModal from '~/components/common/modal/reference/NoteTestChangeModal.vue'
+import ReferenceSelectModal from '~/components/common/modal/reference/ReferenceSelectModal.vue'
+import VideoFileUploadModal from '~/components/common/modal/reference/VideoFileUploadModal.vue'
+import ReferenceFilterModal from '~/components/common/modal/reference/ReferenceFilterModal.vue'
+import ReferenceChangeModal from '~/components/common/modal/reference/ReferenceChangeModal.vue'
+import NoteTestPreviewModal from '~/components/common/modal/reference/NoteTestPreviewModal.vue'
 import { apiReference } from '~/services'
 import { urlRegex, youtubeRegex, setNewArray, jsonItem } from '~/utiles/common'
+import initialState from '~/data/reference/initialState'
 
 export default {
   name: 'ReferenceRoom',
   components: {
-    PageHeader,
-    ReferenceSelectModal,
-    ReferenceAddModal,
-    VideoFileUploadModal,
-    YoutubeUploadModal,
     ModalDesc,
-    QuizAddModal,
-    NoteTestAddModal,
-    SavePathModal,
-    ReferenceFilterModal,
-    SearchResultModal,
-    VideoBrowseModal,
-    QuizBrowseModal,
-    NoteTestBrowseModal,
-    ShareViewModal,
-    DeleteModal,
-    ReferenceChangeModal,
-    QuizChangeModal,
-    NoteTestChangeModal,
-    QuizPreviewModal,
-    NoteTestPreviewModal,
-    QuizPrintPage,
-    NoteTestPrintPage,
-    TreeSection,
+    PageHeader,
     MainBtnBox,
+    DeleteModal,
+    TreeSection,
+    QuizAddModal,
+    SavePathModal,
+    QuizPrintPage,
+    ShareViewModal,
+    QuizBrowseModal,
+    QuizChangeModal,
+    NoteTestAddModal,
+    VideoBrowseModal,
+    QuizPreviewModal,
+    SearchResultModal,
+    ReferenceAddModal,
+    NoteTestPrintPage,
+    YoutubeUploadModal,
+    NoteTestChangeModal,
+    NoteTestBrowseModal,
+    ReferenceSelectModal,
+    VideoFileUploadModal,
+    ReferenceFilterModal,
+    ReferenceChangeModal,
+    NoteTestPreviewModal,
   },
   layout: 'EducationLayout',
   data() {
@@ -610,12 +611,27 @@ export default {
     // 검색 모달
     openSearchListModal() {
       this.isFilterModal.prevPage = ''
-      this.closeFilterModal()
-      this.isSearchListModal = true
+      if (this.isFilterModal) {
+        this.closeFilterModal()
+      }
+      if (this.searchData.word !== '') {
+        return (this.isSearchListModal = true)
+      } else {
+        return this.openModalDesc('', '검색어를 입력해주세요')
+      }
     },
 
     closeSearchListModal() {
       return (this.isSearchListModal = false)
+    },
+
+    // 자료 선택 모달
+    openSelectReferenceType() {
+      this.isSelectType = true
+    },
+
+    closeSelectReferenceType() {
+      this.isSelectType = false
     },
 
     matchFilterArrayName(name) {

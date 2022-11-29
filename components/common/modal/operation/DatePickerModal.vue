@@ -12,7 +12,7 @@
       <div class="background_close" @click="$emit('close')"></div>
       <div class="dataWrap">
         <DatePicker
-          :value="teacherInfo.birthday"
+          :value="date"
           :masks="{ title: 'YYYY MMM' }"
           @dayclick="$emit('select-date', $event)"
         />
@@ -41,9 +41,9 @@ export default {
       type: Boolean,
       default: false,
     },
-    teacherInfo: {
-      type: Object,
-      default: () => {},
+    date: {
+      type: String,
+      default: '',
     },
   },
   data() {

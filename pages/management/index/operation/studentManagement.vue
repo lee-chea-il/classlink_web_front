@@ -11,15 +11,34 @@
           title4="시험관리"
           url1="/management/operation/teachermanagement"
           url2="/management/operation/studentmanagement"
-          url3="/management/operation/teachermanagement"
+          url3="/management/operation/classmanagement"
           url4="/management/operation/exammanagement"
         />
         <div class="tab-content depth03 ac_manage_std">
           <StudentListBox
+            :rangeList="rangeList"
             :studentList="studentList"
+            :identityList="identityList"
+            :isRangeFlag="isRangeFlag"
+            :statusList="statusList"
+            :studentStatusList="studentStatusList"
+            :isIdentityFlag="isIdentityFlag"
+            :isStatusFlag="isStatusFlag"
+            :isStudentStatusFlag="isStudentStatusFlag"
+            :searchStudentText="searchStudentText"
+            :expandIdx="expandIdx"
+            @click-memo="openStudentMemoModalDesc"
+            @click-lectureInfo="openLectureInfoModalDesc"
+            @click-more="onClickExpandBtn"
+            @search-student="searchStudent"
+            @change-input="changeSearchInput"
             @click-detail="openStudentInfoModalDesc"
             @click-addStudent="openNewStudentInfoModalDesc"
             @click-batchStudent="openBatchRegistrationModalDesc"
+            @select-identity="selectIdentityFlag"
+            @select-range="selectRangeFlag"
+            @select-status="selectStatusFlag"
+            @select-studentStatus="selectStudentStatusFlag"
           />
         </div>
       </div>
@@ -123,16 +142,16 @@
     <!-- 생일 날짜 선택 모달 -->
     <DatePickerModal
       :open="datePickerModalDesc.open"
-      :teacherInfo="studentInfo"
+      :date="studentInfo.birthday"
       @close="onCloseDatePickerModalDesc"
-      @select-date="selectBirthday"
+      @select-date="selectDay"
       @confirm="onClickBirthdayConfirm"
     />
 
     <!-- 수강일 선택 모달 -->
     <DatePickerModal
       :open="datePickerLectureDateModalDesc.open"
-      :teacherInfo="studentInfo"
+      :date="studentInfo.lecture_date"
       @close="onCloseDatePickerLectureDateModalDesc"
       @select-date="selectLectureDate"
       @confirm="onClickLectureDateConfirm"
@@ -153,13 +172,41 @@
     <ResetPasswordModal @reset="onClickResetBtn" />
 
     <!-- 수강정보-팝업 M1 -->
-    <LectureInfoModal />
+    <LectureInfoModal
+      :open="lectureInfoModalDesc.open"
+      :lectureInfo="studentInfo.lectureInfo"
+      :isNewLectureMemoFlag="isNewLectureMemoFlag"
+      :lectureId="lectureId"
+      :isUpdateLectureMemoFlag="isUpdateLectureMemoFlag"
+      :lectureMemoId="lectureMemoId"
+      :lectureInfoMemo="lectureInfoMemo"
+      @click-sameBtn="onClickSameDate"
+      @click-date="onClickDueDatePicker"
+      @change-input="changeLectureMemoInput"
+      @add-memo="addLectureMemo"
+      @click-update="onClickUpdateMemoBtn"
+      @click-delete="onClickLectureMemoDelete"
+      @update-memo="updateLectureMemo"
+      @click-newMemo="onClickNewMemoBtn"
+      @close="onCloseLectureInfoModalDesc"
+    />
+
+    <!-- 납부일 설정 모달 -->
+    <DatePickerModal
+      :open="datePickerModalDesc.open"
+      @close="onCloseDatePickerModalDesc"
+      @select-date="selectDay"
+      @confirm="onClickDueDateConfirm"
+    />
 
     <!-- 출결-팝업 L -->
     <StudentAttendanceModal />
 
     <!-- 메모-팝업 L -->
-    <StudentMemoModal />
+    <StudentMemoModal
+      :open="studentMemoModalDesc.open"
+      @close="onCloseStudentMemoModalDesc"
+    />
 
     <!-- [개발참조] : 저장안함은 저장안하고 메모팝업창-L을 닫기 / 취소는 팝업창-S 만 닫기 (메모모달창 모두 닫기 스크립트 찹조)  -->
     <!-- 메모 저장 - 팝업 S2 -->
@@ -182,6 +229,8 @@
     <!-- 토스트메세지 victor.js ------------------------------------->
     <!-- [개발참조] : 출결팝업의 선택날짜범위 밖으로의 이전 다음 버튼 클리 시 노출 -->
     <DeleteFamilyModal @delete-family="deleteFamily" />
+
+    <DeleteLectureMemoModal @delete-memo="deleteLectureMemo" />
 
     <!-- 기본 모달로 대체 예정 -->
     <!-- 팝업 S2- 일촌ID삭제 -->
@@ -236,6 +285,7 @@ import DatePickerModal from '@/components/common/modal/operation/DatePickerModal
 import UploadStudentImg from '@/components/common/modal/operation/UploadTeacherImg.vue'
 import ResetPasswordModal from '@/components/common/modal/operation/ResetPasswordModal.vue'
 import DeleteFamilyModal from '@/components/common/modal/operation/DeleteFamilyModal.vue'
+import DeleteLectureMemoModal from '@/components/common/modal/operation/DeleteLectureMemoModal.vue'
 export default {
   name: 'StudentManagement',
   components: {
@@ -258,6 +308,7 @@ export default {
     UploadStudentImg,
     ResetPasswordModal,
     DeleteFamilyModal,
+    DeleteLectureMemoModal,
   },
   data() {
     return {
@@ -336,9 +387,63 @@ export default {
           email: 'test@naver.com',
           profile_image: require('@/assets/images/mypage/profile1.png'),
           lectureInfo: [
-            '영어리딩심화 | 심화 A반',
-            '영어리딩심화 | 심화 B반',
-            '영어리딩심화 | 심화 C반',
+            {
+              id: 0,
+              lectureTitle: '영어리딩심화1',
+              class: '심화 A반',
+              dueDate: '2022-11-28',
+              lectureDate: '2022-11-29',
+              memo: [
+                {
+                  id: 0,
+                  contents: '안녕하세요 메모입니다.',
+                  updatedAt: '2022-08-05',
+                  writer: '서유진',
+                },
+                {
+                  id: 1,
+                  contents: '안녕하세요 메모일까요.',
+                  updatedAt: '2022-08-05',
+                  writer: '서유진',
+                },
+              ],
+            },
+            {
+              id: 1,
+              lectureTitle: '영어리딩심화2',
+              class: '심화 B반',
+              dueDate: '2022-11-28',
+              lectureDate: '2022-11-29',
+              memo: [],
+            },
+            {
+              id: 2,
+              lectureTitle: '영어리딩심화3',
+              class: '심화 C반',
+              dueDate: '2022-11-28',
+              lectureDate: '2022-11-29',
+              memo: [],
+            },
+          ],
+          memo: [
+            {
+              id: 11,
+              createdAt: '',
+              consultant: '김유진',
+              contents: '상담내용입니다.',
+            },
+            {
+              id: 12,
+              createdAt: '',
+              consultant: '이성국',
+              contents: '학생메모입니다.',
+            },
+            {
+              id: 13,
+              createdAt: '',
+              consultant: '유잔',
+              contents: '학생의 메모',
+            },
           ],
         },
         {
@@ -390,10 +495,46 @@ export default {
           email: 'test@naver.com',
           profile_image: require('@/assets/images/mypage/profile1.png'),
           lectureInfo: [
-            '영어리딩심화 | 심화 A반',
-            '영어리딩심화 | 심화 B반',
-            '영어리딩심화 | 심화 C반',
+            {
+              id: 4,
+              lectureTitle: '영어리딩심화4',
+              class: '심화 D반',
+              dueDate: '2022-11-28',
+              lectureDate: '2022-11-29',
+              memo: [
+                {
+                  id: 3,
+                  contents: '안녕하세요 메모일까요.',
+                  updatedAt: '2022-08-05',
+                  writer: '서유진',
+                },
+              ],
+            },
+            {
+              id: 5,
+              lectureTitle: '영어리딩심화5',
+              class: '심화 E반',
+              dueDate: '2022-11-28',
+              lectureDate: '2022-11-29',
+              memo: [
+                {
+                  id: 4,
+                  contents: '안녕하세요 메모일까요.',
+                  updatedAt: '2022-08-05',
+                  writer: '서유진',
+                },
+              ],
+            },
+            {
+              id: 6,
+              lectureTitle: '영어리딩심화6',
+              class: '심화 F반',
+              dueDate: '2022-11-28',
+              lectureDate: '2022-11-29',
+              memo: [],
+            },
           ],
+          memo: [],
         },
         {
           id: 2,
@@ -464,14 +605,40 @@ export default {
       batchRegistrationModalDesc: {
         open: false,
       },
+      lectureInfoModalDesc: {
+        open: false,
+      },
+      studentMemoModalDesc: {
+        open: false,
+      },
       // 정렬 필터링
       isRangeFlag: 0,
       isIdentityFlag: 0,
       isStatusFlag: 0,
       isStudentStatusFlag: 0,
+      rangeList: [
+        { id: 0, title: '최신 등록순' },
+        { id: 1, title: '이름 오름차순' },
+        { id: 2, title: '이름 내림차순' },
+        { id: 3, title: '학년 오름차순' },
+        { id: 4, title: '학년 내림차순' },
+      ],
+      identityList: [
+        { id: 0, title: '학생' },
+        { id: 1, title: '학부모' },
+        { id: 2, title: '학부모&학생' },
+      ],
+      statusList: [
+        { id: 0, title: '활성화' },
+        { id: 1, title: '비활성화' },
+      ],
+      studentStatusList: [
+        { id: 0, title: '재원' },
+        { id: 1, title: '퇴원' },
+      ],
       // 정보 수정
       nickNameCheck: false,
-      birthday: '',
+      selectedDate: '',
       lectureDate: '',
       resetClassList: [],
       uploadImageFile: '',
@@ -481,10 +648,35 @@ export default {
       deleteFamilyId: 0,
       // 학생 일괄 등록
       uploadFileName: null,
+      // 학생 이름 검색
+      searchStudentText: '',
+      // 더보기
+      expandIdx: [],
+      // 수강 정보 메모
+      lecture: {
+        id: 0,
+        lectureTitle: '',
+        class: '',
+        dueDate: '',
+        lectureDate: '',
+        memo: [],
+      },
+      lectureInfoMemo: {
+        contents: '',
+        updatedAt: '',
+        writer: '',
+      },
+      initLectureMemo: {},
+      isNewLectureMemoFlag: false,
+      lectureId: 0,
+      // 수강 정보 메모 수정하기
+      isUpdateLectureMemoFlag: false,
+      lectureMemoId: 0,
     }
   },
   created() {
     this.initStudent = JSON.parse(JSON.stringify(this.studentInfo))
+    this.initLectureMemo = JSON.parse(JSON.stringify(this.lectureInfoMemo))
   },
   methods: {
     // 모달 이벤트
@@ -540,13 +732,31 @@ export default {
     },
     // 학생 일괄 등록
     openBatchRegistrationModalDesc() {
-      console.log('열렸다')
       this.batchRegistrationModalDesc.open = true
     },
     onCloseBatchRegistrationModalDesc() {
       this.batchRegistrationModalDesc.open = false
     },
-
+    // 수강 정보 모달
+    openLectureInfoModalDesc(id) {
+      const student = this.studentList.find((result) => result.id === id)
+      Object.assign(this.studentInfo, student)
+      this.lectureInfoModalDesc.open = true
+    },
+    onCloseLectureInfoModalDesc() {
+      Object.assign(this.studentInfo, this.initStudent)
+      this.lectureInfoModalDesc.open = false
+    },
+    // 학생 메모 모달
+    openStudentMemoModalDesc(id) {
+      const student = this.studentList.find((result) => result.id === id)
+      Object.assign(this.studentInfo, student)
+      this.studentMemoModalDesc.open = true
+    },
+    onCloseStudentMemoModalDesc() {
+      Object.assign(this.studentInfo, this.initStudent)
+      this.studentMemoModalDesc.open = false
+    },
     // 깊은 복사
     deepCopy(data) {
       return JSON.parse(JSON.stringify(data))
@@ -573,11 +783,11 @@ export default {
       }
     },
     // 생일 수정
-    selectBirthday(e) {
-      this.birthday = e.id
+    selectDay(e) {
+      this.selectedDate = e.id
     },
     onClickBirthdayConfirm() {
-      this.studentInfo.birthday = this.birthday
+      this.studentInfo.birthday = this.selectedDate
       this.datePickerModalDesc.open = false
     },
     // 수강일 수정
@@ -746,15 +956,121 @@ export default {
     },
     // 학생 일괄 등록
     onClickInputFileButton() {
-      console.log('눌렀다')
       const inputBtn = document.getElementById('upload-file')
       inputBtn.click()
     },
     onXlsxFileSelected({ target }) {
       this.uploadFileName = target.files[0].name
     },
-    // 학생 검색
-    
+    // 정렬 필터링
+    selectRangeFlag(idx) {
+      this.isRangeFlag = idx
+    },
+    selectIdentityFlag(idx) {
+      this.isIdentityFlag = idx
+    },
+    selectStatusFlag(idx) {
+      this.isStatusFlag = idx
+    },
+    selectStudentStatusFlag(idx) {
+      this.isStudentStatusFlag = idx
+    },
+    // 학생 이름 검색
+    changeSearchInput({ target: { value } }) {
+      this.searchStudentText = value
+    },
+    searchStudent() {
+      const result = this.studentList.filter((elem) => {
+        return elem.name.includes(this.searchStudentText)
+      })
+      this.studentList = result
+    },
+    // 목록 더보기 버튼
+    onClickExpandBtn(idx) {
+      if (this.expandIdx.includes(idx)) {
+        this.expandIdx.pop()
+      } else {
+        this.expandIdx.push(idx)
+      }
+      if (this.expandIdx.length === 2) {
+        this.expandIdx.splice(0, 1)
+      }
+    },
+    // 수강 정보 - 새 메모 만들기
+    changeLectureMemoInput({ target: { value } }) {
+      this.lectureInfoMemo.contents = value
+    },
+    onClickNewMemoBtn(id) {
+      if (!this.isNewLectureMemoFlag) {
+        this.lectureId = id
+        this.isNewLectureMemoFlag = true
+      } else {
+        this.isNewLectureMemoFlag = false
+      }
+    },
+    addLectureMemo(id) {
+      const lecture = this.studentInfo.lectureInfo.find(
+        (result) => result.id === id
+      )
+      lecture.memo.push(this.lectureInfoMemo)
+      this.lectureInfoMemo = this.initLectureMemo
+      this.isNewLectureMemoFlag = false
+    },
+    // 수강 정보 - 메모 수정
+    onClickUpdateMemoBtn(lectureId, memoId) {
+      this.lectureMemoId = memoId
+      this.isUpdateLectureMemoFlag = true
+      const lecture = this.studentInfo.lectureInfo.find(
+        (result) => result.id === lectureId
+      )
+      const memo = lecture.memo.find((result) => result.id === memoId)
+      this.lectureInfoMemo.contents = memo.contents
+    },
+    updateLectureMemo(lectureId, memoId) {
+      const lecture = this.studentInfo.lectureInfo.find(
+        (result) => result.id === lectureId
+      )
+      const memo = lecture.memo.find((result) => result.id === memoId)
+      memo.contents = this.lectureInfoMemo.contents
+      this.isUpdateLectureMemoFlag = false
+      this.lectureInfoMemo = this.initLectureMemo
+    },
+    // 수강 정보 - 메모 삭제
+    onClickLectureMemoDelete(lectureId, memoId) {
+      this.lectureId = lectureId
+      this.lectureMemoId = memoId
+    },
+    deleteLectureMemo() {
+      const lecture = this.studentInfo.lectureInfo.find(
+        (result) => result.id === this.lectureId
+      )
+      const memo = lecture.memo.find(
+        (result) => result.id === this.lectureMemoId
+      )
+      const idx = lecture.memo.indexOf(memo)
+      lecture.memo.splice(idx, 1)
+    },
+    // 납부일 설정
+    onClickDueDatePicker(lectureId) {
+      this.lectureId = lectureId
+      this.datePickerModalDesc.open = true
+    },
+    onClickDueDateConfirm() {
+      const lecture = this.studentInfo.lectureInfo.find(
+        (result) => result.id === this.lectureId
+      )
+      lecture.dueDate = this.selectedDate
+      this.datePickerModalDesc.open = false
+    },
+    // 납부일 위와 동일
+    onClickSameDate(lectureId) {
+      this.lectureId = lectureId
+      const lecture = this.studentInfo.lectureInfo.find(
+        (result) => result.id === this.lectureId
+      )
+      const idx = this.studentInfo.lectureInfo.indexOf(lecture)
+      lecture.dueDate = this.studentInfo.lectureInfo[idx - 1].dueDate
+    },
   },
 }
 </script>
