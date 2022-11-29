@@ -53,7 +53,7 @@
           </div>
           <div class="list_area">
             <LessonAddTreeView
-              ref="myLessonTreevie"
+              ref="myLessonTreeview"
               list-type="lessonList"
               :dataList="lessonData.referenceList"
               :expanded="false"
@@ -61,6 +61,7 @@
               @moreShowClick="$emit('moreShowClick', $event)"
               @add-reference="$emit('add-reference', $event)"
               @remove-reference="$emit('remove-reference', $event)"
+              @un-active="$emit('un-active')"
             />
           </div>
         </div>

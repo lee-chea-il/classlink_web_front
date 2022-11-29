@@ -121,6 +121,7 @@
                         :pidNum="12000"
                         @moreShowClick="moreShowClickReference"
                         @copyDataCallBack="$emit('call-back')"
+                        @un-active="unActive"
                       />
                     </div>
                     <!-- /.탭 내용01 -->
@@ -132,7 +133,7 @@
                       aria-labelledby="class-tab"
                     >
                       <TreeView
-                        ref="franchise"
+                        ref="myFranchise"
                         listType="lesson"
                         :dataList="receiveFranchiseData"
                         :editable="identity == 'master' ? true : false"
@@ -140,6 +141,7 @@
                         :pidNum="13000"
                         @moreShowClick="moreShowClickReference"
                         @copyDataCallBack="$emit('call-back')"
+                        @un-active="unActive"
                       />
                     </div>
                     <!-- /.탭 내용02 -->
@@ -162,6 +164,7 @@
                   @delete-keyword="$emit('delete-keyword', $event)"
                   @open-save-path="$emit('open-save-path', 'isAddLesson')"
                   @moreShowClick="moreShowClickReference"
+                  @un-active="unActive"
                 />
                 <!-- /.오른쪽 영역 -->
               </div>
@@ -216,6 +219,11 @@ export default {
     moreShowClickReference(data) {
       this.$emit('open-reference', data, 'isAddLesson')
     },
+    unActive(){
+      this.$refs.myLesson.unActiveAll()
+      this.$refs.myFranchise.unActiveAll()
+      this.$refs.right.$refs.myLessonTreeview.unActiveAll()
+    }
   },
 }
 </script>

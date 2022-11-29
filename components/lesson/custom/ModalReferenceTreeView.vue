@@ -8,7 +8,6 @@
     :is-show-option="identity == 'master' ? true : false"
     :list-type="listType"
     @more-show-click="moreShowClick"
-    @click="onClick"
     @change-name="onChangeName"
     @more-menu="moreMenu"
     @more-menu-down="moreMenuDown"
@@ -16,6 +15,9 @@
     @more-menu-view="moreMenuView"
     @more-menu-dell="moreMenuDell"
     @more-menu-copy="copyData"
+    @leaf-name-click="$emit('un-active')"
+    @click="$emit('un-active')"
+    @drag-start="$emit('un-active')"
   >
     <span slot="addTreeNodeIcon" class="icon">＋</span>
     <span slot="addLeafNodeIcon" class="icon"></span>
@@ -337,6 +339,18 @@ export default {
     moreShowClick(node) {
       this.$emit('moreShowClick', node)
     },
+
+    unActiveAll() {
+      function _unActiveAll(oldNode) {
+        oldNode.active=false
+        if (oldNode.children) {
+          for (let i = 0, len = oldNode.children.length; i < len; i++) {
+            _unActiveAll(oldNode.children[i])
+          }
+        }
+      }
+      _unActiveAll(this.datas)
+    }
   },
 }
 </script>

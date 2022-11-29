@@ -4,6 +4,7 @@
     :default-expanded="true"
     listType="file"
     @click="onClick"
+    @leaf-name-click="onClick"
   >
   </vue-tree-list>
 </template>

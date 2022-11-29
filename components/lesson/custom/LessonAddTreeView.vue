@@ -9,6 +9,9 @@
       @more-show-click="moreShowClick"
       @more-remove-click="moreRemoveClick"
       @drop-before="dropBefore"
+      @leaf-name-click="$emit('un-active')"
+      @click="$emit('un-active')"
+      @drag-start="$emit('un-active')"
     >
       <span slot="addTreeNodeIcon" class="icon">＋</span>
       <span slot="addLeafNodeIcon" class="icon"></span>
@@ -73,11 +76,13 @@ export default {
     moreShowClick(node) {
       console.log('show', node)
       this.$emit('moreShowClick', node)
+      this.$emit('un-active')
     },
     moreRemoveClick(node) {
       this.$emit('remove-reference', node)
       node.remove()
       this.setEmptyAreaHeight()
+      this.$emit('un-active')
     },
     copyData(data) {
       const newStr = JSON.stringify(data)
@@ -134,6 +139,18 @@ export default {
       const target = $(`#list_${this.pidNum}`).find('.vtl-border')
       target.css({ height: nHei + 'px' })
     },
+    unActiveAll() {
+      console.log("fffff")
+      function _unActiveAll(oldNode) {
+        oldNode.active=false
+        if (oldNode.children) {
+          for (let i = 0, len = oldNode.children.length; i < len; i++) {
+            _unActiveAll(oldNode.children[i])
+          }
+        }
+      }
+      _unActiveAll(this.datas)
+    }
   },
 }
 </script>
