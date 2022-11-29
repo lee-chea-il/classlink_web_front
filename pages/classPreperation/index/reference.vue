@@ -963,22 +963,34 @@ export default {
 
     copyData() {
       const instiTab = document.getElementById('institute')
-      if (instiTab.classList.contains('show'))
+      if (instiTab.classList.contains('show')){
+        this.isCopyType = 'institution'
         return this.$refs.mainEducation.$refs.education.$refs.institution.copyData()
-      else
+      } else {
+        this.isCopyType = 'franchise'
         return this.$refs.mainEducation.$refs.education.$refs.franchise.copyData()
+      }
     },
 
     pasteData() {
       this.$refs.mainEducation.$refs.myData.$refs.curriculum.pasteData(
         this.copyCheckData
       )
+      if(this.isCopyType==='institution'){
+        this.$refs.mainEducation.$refs.education.$refs.institution.copyComp()
+      }else if(this.isCopyType==='franchise'){
+        this.$refs.mainEducation.$refs.education.$refs.franchise.copyComp()
+      }
     },
 
     delData() {
-      // console.log(
-      //   this.$refs.mainEducation.$refs.myData.$refs.curriculum.datas
-      // )
+      if(this.identity==='master'){
+        const instiTab = document.getElementById('institute')
+        if (instiTab.classList.contains('show'))
+          this.$refs.mainEducation.$refs.education.$refs.institution.delData()
+        else
+          this.$refs.mainEducation.$refs.education.$refs.franchise.delData()
+      }
       this.$refs.mainEducation.$refs.myData.$refs.curriculum.delData()
     },
 

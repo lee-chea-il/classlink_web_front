@@ -128,7 +128,7 @@ export default {
       function _dfs(oldNode) {
         const newNode={}
         if (oldNode.isChecked) {
-          oldNode.active=true
+          oldNode.isactive=true
           for(const item in oldNode){
             newNode[item] = oldNode[item]
           }
@@ -137,7 +137,7 @@ export default {
           newNode.isChecked = false
           idNum++
         }else{
-          oldNode.active=false
+          oldNode.isactive=false
         }
         if (oldNode.children && oldNode.children.length > 0) {
           const list = []
@@ -151,6 +151,21 @@ export default {
       this.$emit('un-active')
       this.$emit('copyDataCallBack', _dfs(this.datas))
     },
+    copyComp(){
+      function _copyComp(oldNode) {
+        if (oldNode.isactive) {
+          oldNode.active=true
+        }else{
+          oldNode.active=false
+        }
+        if (oldNode.children && oldNode.children.length > 0) {
+          for (let i = 0, len = oldNode.children.length; i < len; i++) {
+            _copyComp(oldNode.children[i])
+          }
+        }
+      }
+      _copyComp(this.datas)
+    },
     pasteData(copyCheckData) {
       let idNum = new Date().valueOf()
       function _addNode(parentNode, oldNode) {
@@ -160,6 +175,7 @@ export default {
           for(const item in oldNode){
             newNode[item] = oldNode[item]
           }
+          newNode.active=true
           newNode.children = []
           newNode.id = idNum
           newNode.isChecked = false

@@ -870,8 +870,10 @@ export default {
     copyData() {
       const instiTab = document.getElementById('institute')
       if (instiTab.classList.contains('show')) {
+        this.isCopyType = 'institution'
         this.$refs.mainEducation.$refs.education.$refs.institution.copyData()
       } else {
+        this.isCopyType = 'franchise'
         this.$refs.mainEducation.$refs.education.$refs.franchise.copyData()
       }
     },
@@ -881,6 +883,11 @@ export default {
       this.$refs.mainEducation.$refs.myData.$refs.curriculum.pasteData(
         this.copyCheckData
       )
+      if(this.isCopyType==='institution'){
+        this.$refs.mainEducation.$refs.education.$refs.institution.copyComp()
+      }else if(this.isCopyType==='franchise'){
+        this.$refs.mainEducation.$refs.education.$refs.franchise.copyComp()
+      }
     },
 
     // [트리]

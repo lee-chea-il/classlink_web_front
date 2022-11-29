@@ -233,6 +233,7 @@ export default function initialState() {
     isShowSavePathModal: false,
     isShowOpenPathModal: false,
     isShowOpenAddModal: false,
+    isCopyType: '',
     receiveInstitutionLessonData: [
       {
         name: '마포 학원',

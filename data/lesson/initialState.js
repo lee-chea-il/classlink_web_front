@@ -4,6 +4,7 @@ export default function initialState() {
     pushKeyword: '',
     modalTitle: '',
     identity: 'teacher',
+    isCopyType: '',
     isLesson: false,
     selectReferenceItem: {},
     viewLessonItem: {},

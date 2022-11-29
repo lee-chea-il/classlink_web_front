@@ -6,6 +6,7 @@ export default function initialState() {
     identity: 'teacher',
     pageType: 'reference',
     modalTitle: '자료 등록',
+    isCopyType: '',
     // Modal Flag
 
     isSelectType: false,

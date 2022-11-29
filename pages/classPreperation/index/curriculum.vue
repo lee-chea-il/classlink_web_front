@@ -213,13 +213,20 @@ export default {
     copyData() {
       const instiTab = document.getElementById('institute')
       if (instiTab.classList.contains('show')) {
+        this.isCopyType = 'institution'
         this.$refs.institution.copyData()
       } else {
+        this.isCopyType = 'franchise'
         this.$refs.franchise.copyData()
       }
     },
     pasteData() {
       this.$refs.curriculum.pasteData(this.copyCheckData)
+      if(this.isCopyType==='institution'){
+        this.$refs.institution.copyComp()
+      }else if(this.isCopyType==='franchise'){
+        this.$refs.franchise.copyComp()
+      }
     },
     delData() {
       if(this.identity==='master'){
