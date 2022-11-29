@@ -11,6 +11,7 @@
         :type="type"
         :placeholder="placeholder"
         class="form-control"
+        :data-target="target"
         :class="
           (isError ? 'is-invalid' : classes,
           isBtn || isIdCheckBtn ? 'form-inline' : '')
@@ -42,6 +43,10 @@ export default {
       type: String,
     },
     name: {
+      default: '',
+      type: String,
+    },
+    target: {
       default: '',
       type: String,
     },

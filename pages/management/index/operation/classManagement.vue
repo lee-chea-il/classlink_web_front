@@ -29,34 +29,19 @@
           <!-- 컨트롤 버튼 영역 -->
           <div class="search_section">
             <div class="left_area">
-              <div
-                class="btn btn_crud_default"
-                onClick="toasts('반을 선택해주세요.')"
-              >
+              <div class="btn btn_crud_default" @click="onClickClassCopy">
                 복사
               </div>
-              <button
-                class="btn btn_crud_default"
-                onClick="toasts('반을 선택해주세요.')"
-                data-toggle="modal"
-                data-target="#modalClassMove"
-              >
+              <button class="btn btn_crud_default" @click="onClickClassMove">
                 이동
               </button>
-              <button
-                class="btn btn_crud_danger"
-                onClick="toasts('반을 선택해주세요.')"
-              >
+              <button class="btn btn_crud_danger" @click="onClickClassDelete">
                 삭제
               </button>
               <!-- [개발참조]toasts 메세지 '반을 선택해주세요.'' : 아무런 반을 체크하지 않고 복사를 누르면 -->
             </div>
             <div class="right_area">
-              <button
-                class="btn btn_crud_point"
-                data-toggle="modal"
-                data-target="#modalClassModify"
-              >
+              <button class="btn btn_crud_point" @click="onOpenClassModify()">
                 반 만들기
               </button>
               <button class="btn btn_crud_default">배정 X</button>
@@ -81,7 +66,13 @@
                 </div> -->
                 <select class="btn dropdown-toggle">
                   <option value="all-teacher">선생님 전체</option>
-                  <option value="">홍길동 선생님</option>
+                  <option
+                    v-for="(item, idx) in classList"
+                    :key="idx"
+                    :value="item.teacher"
+                  >
+                    {{ item.teacher }} 선생님
+                  </option>
                 </select>
               </div>
               <div class="dropdown form-inline">
@@ -191,8 +182,7 @@
                   <td>
                     <i
                       class="btn icons_pencil_off"
-                      data-toggle="modal"
-                      data-target="#modalClassModify"
+                      @click="onOpenClassModify(item)"
                     ></i>
                   </td>
                   <td>
@@ -207,38 +197,6 @@
                     <i class="btn icons_move_off"></i>
                   </td>
                 </tr>
-                <!-- <tr>
-                  <td>
-                    <div class="custom-control custom-checkbox form-inline">
-                      <input
-                        id="chk02"
-                        type="checkbox"
-                        class="custom-control-input"
-                      />
-                      <label class="custom-control-label" for="chk02"></label>
-                    </div>
-                  </td>
-                  <td>심화A반</td>
-                  <td>24</td>
-                  <td>홍길동 선생님</td>
-                  <td>
-                    <i
-                      class="btn icons_pencil_off"
-                      data-toggle="modal"
-                      data-target="#modalClassModify"
-                    ></i>
-                  </td>
-                  <td>
-                    <i
-                      class="btn icons_zoom_off"
-                      data-toggle="modal"
-                      data-target="#modalClassDetail"
-                    ></i>
-                  </td>
-                  <td>
-                    <i class="btn icons_move_off"></i>
-                  </td>
-                </tr> -->
               </tbody>
             </table>
           </div>
@@ -271,7 +229,15 @@
     </div>
 
     <!-- 반관리-반등록,수정 - 팝업 L -->
-    <ClassModifyModal />
+    <ClassModifyModal
+      :show="openClassModify"
+      :teacherList="teacherList"
+      :studentList="studentList"
+      :selectedTeacher="selectedTeacher"
+      @add-selected-teacher="onClickAddSelectedTeacher"
+      @delete-selected-teacher="onClickDeleteSelectedTeacher"
+      @close="onCloseClassModify"
+    />
 
     <!-- [개발참조] : 반 상세 모달에서 뜨는 2번째 팝업(학생상세 및 더보기 메뉴의 모달 팝업)은 겹치는 팝업이므로 class="double" 추가 필요 -->
     <!-- 반 상세 팝업 (팝업 L) -->
@@ -305,7 +271,15 @@
     />
 
     <!-- 반관리-반이동 - 팝업 L -->
-    <ClassMoveModal />
+    <ClassMoveModal :show="openClassMove" @close="onCloseClassMove" />
+
+    <DeleteModal
+      :open="deleteModalDesc.open"
+      :title="deleteModalDesc.title"
+      @close="onCloseDeleteModalDesc"
+    />
+
+    <CustomSnackbar :show="openToast.open" :message="message" />
   </div>
 </template>
 
@@ -314,6 +288,8 @@ import NavBox from '@/components/operation/NavBox.vue'
 import ClassModifyModal from '@/components/common/modal/operation/ClassModifyModal.vue'
 import ClassDetailModal from '@/components/common/modal/operation/ClassDetailModal.vue'
 import ClassMoveModal from '@/components/common/modal/operation/ClassMoveModal.vue'
+import DeleteModal from '@/components/lecturecourse/DeletePlanModal.vue'
+import CustomSnackbar from '@/components/common/CustomSnackbar.vue'
 export default {
   name: 'ClassManagement',
   components: {
@@ -321,6 +297,8 @@ export default {
     ClassModifyModal,
     ClassDetailModal,
     ClassMoveModal,
+    DeleteModal,
+    CustomSnackbar,
   },
   data() {
     return {
@@ -329,7 +307,7 @@ export default {
       },
       nickNameCheck: false,
       familySearchText: '',
-
+      // 반 리스트
       classList: [
         {
           class: '심화A반',
@@ -633,13 +611,133 @@ export default {
         lectureInfo: [],
       },
 
+      teacherList: [
+        {
+          id: 1,
+          name: '홍길동',
+        },
+        {
+          id: 2,
+          name: '길동홍',
+        },
+        {
+          id: 3,
+          name: '동홍길',
+        },
+      ],
+      studentList: {
+        gradeList: [
+          {
+            grade: '초1',
+            student: [
+              {
+                id: 1,
+                name: '홍미미',
+              },
+              {
+                id: 2,
+                name: '이미미',
+              },
+              {
+                id: 3,
+                name: '삼삼삼',
+              },
+            ],
+          },
+        ],
+        classList: [
+          {
+            id: 1,
+            className: '영어 심화 A반',
+            student: [
+              {
+                id: 1,
+                name: '홍미미',
+              },
+              {
+                id: 2,
+                name: '이미미',
+              },
+              {
+                id: 3,
+                name: '삼삼삼',
+              },
+            ],
+          },
+        ],
+      },
+      selectedTeacher: [],
+
+      // 상세 모달 더보기
       modalDetailMore: 0,
 
+      // 반 만들기/수정 반 학셍 상세
+      modalModifyDetail: null,
+
+      // 체크박스
       allCheck: false,
       checkList: [],
+
+      // 모달
+      openClassModify: {
+        open: false,
+        data: null,
+      },
+      openClassMove: {
+        open: false,
+        data: null,
+      },
+
+      openToast: {
+        open: false,
+      },
+      message: '',
+
+      deleteModalDesc: {
+        open: false,
+        title: '',
+      },
     }
   },
   methods: {
+    // 토스트
+    onOpenToast(text) {
+      this.openToast.open = true
+      this.message = text
+    },
+    onCloseToast() {
+      this.openToast.open = false
+      this.message = ''
+    },
+    // 삭제모달
+    openDeleteModalDesc(tit) {
+      this.deleteModalDesc = {
+        open: true,
+        title: tit,
+      }
+    },
+    onCloseDeleteModalDesc() {
+      this.deleteModalDesc.open = false
+    },
+
+    // 반 만들기/수정 모달 열기
+    onOpenClassModify(data) {
+      this.openClassModify.open = true
+      this.openClassModify.data = data === undefined ? null : data
+    },
+    onCloseClassModify() {
+      this.openClassModify.open = false
+      this.openClassModify.data = null
+    },
+
+    // 반 이동 모달 열기
+    onOpenClassMove() {
+      this.openClassMove.open = true
+    },
+    onCloseClassMove() {
+      this.openClassMove.open = false
+    },
+
     onClickClassInfo(data) {
       this.modalDetailMore = 0
       this.classInfo = data
@@ -653,6 +751,7 @@ export default {
       }
     },
 
+    // 체크박스
     onClickClassAllCheck() {
       if (this.allCheck) {
         this.checkList.splice(0, this.classList.length)
@@ -678,6 +777,56 @@ export default {
         }
       }
     },
+
+    // 체크 박스 선택 후
+    // 삭제버튼 클릭
+    onClickClassDelete() {
+      if (this.checkList.length === 0) {
+        this.onOpenToast('반을 선택해주세요.')
+        setTimeout(() => {
+          this.onCloseToast()
+        }, 2000)
+      } else {
+        this.openDeleteModalDesc('반')
+      }
+    },
+    // 이동 버튼 클릭
+    onClickClassMove() {
+      if (this.checkList.length === 0) {
+        this.onOpenToast('반을 선택해주세요.')
+        setTimeout(() => {
+          this.onCloseToast()
+        }, 2000)
+      } else {
+        this.onOpenClassMove()
+      }
+    },
+    // 복사 버튼 클릭
+    onClickClassCopy() {
+      if (this.checkList.length === 0) {
+        this.onOpenToast('반을 선택해주세요.')
+        setTimeout(() => {
+          this.onCloseToast()
+        }, 2000)
+      } else {
+        console.log('복사')
+      }
+    },
+
+    // 반 수정/만들기 모달
+    // 반 선생님 추가/삭제
+    onClickAddSelectedTeacher(data) {
+      this.teacherList = this.teacherList.filter((item) => item !== data)
+      this.selectedTeacher.push(data)
+    },
+    onClickDeleteSelectedTeacher(data) {
+      this.selectedTeacher = this.selectedTeacher.filter(
+        (item) => item !== data
+      )
+      this.teacherList.push(data)
+    },
+
+    // 반 만들기/수정 반 학생
 
     // 학생 개별 등록/학생 상세 정보 모달
     // 모달 이벤트

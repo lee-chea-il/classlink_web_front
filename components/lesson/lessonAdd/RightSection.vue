@@ -107,7 +107,7 @@
       </span>
       <!-- [개발참조] 레슨수정시에는 미출력 -->
       <span
-        v-show="!isChange"
+        v-show="modalTitle !== '레슨 수정'"
         class="custom-control custom-checkbox form-inline"
       >
         <input
@@ -141,12 +141,17 @@ export default {
     CustomKeywordArea,
   },
   props: {
-    lessonData: { type: Object, default: () => {} },
-    pushKeyword: { type: String, default: '' },
     isChange: { type: Boolean, default: false },
+    pushKeyword: { type: String, default: '' },
+    modalTitle: { type: String, default: '' },
+    lessonData: { type: Object, default: () => {} },
     referenceList: { type: Array, default: () => [] },
   },
 }
 </script>
 
-<style></style>
+<style scoped>
+.check_sec {
+  display: flex !important;
+}
+</style>

@@ -2,10 +2,10 @@ export default function initialState() {
   return {
     currentIdx: 0,
     pushKeyword: '',
+    modalTitle: '',
     identity: 'teacher',
     isLesson: false,
     selectReferenceItem: {},
-    changeLessonItem: {},
     viewLessonItem: {},
     isAddLesson: { open: false },
     isChangeLesson: { open: false },
@@ -24,8 +24,7 @@ export default function initialState() {
     isShareViewModal: { open: false, path: '', url: '' },
     isSelectModal: { open: false, prevPage: '' },
     isSavePathModal: { open: false, prevPage: '' },
-    treeReferenceList: [],
-    createLessonData: {
+    lessonData: {
       name: '',
       role: '',
       desc: '',
@@ -62,6 +61,7 @@ export default function initialState() {
       answer: 0,
     },
     copyCheckData: [],
+    treeReferenceList: [],
     receiveInstitutionLessonData: [
       {
         name: '마포 학원',

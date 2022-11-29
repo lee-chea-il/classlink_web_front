@@ -32,12 +32,13 @@
     <!-- 레슨 추가 -->
     <LessonAddModal
       ref="lessonAdd"
+      :modalTitle="modalTitle"
       :open="isAddLesson.open"
       :identity="identity"
       :isLesson="isLesson"
       :receiveInstitutionLessonData="receiveInstitutionLessonData"
       :receiveFranchiseLessonData="receiveFranchiseLessonData"
-      :createLessonData="createLessonData"
+      :lessonData="lessonData"
       :referenceList="treeReferenceList"
       :receiveInstitutionData="receiveInstitutionData"
       :receiveFranchiseData="receiveFranchiseData"
@@ -57,37 +58,10 @@
       @submit="onSubmitAddLesson"
     />
 
-    <!-- 레슨 변경 -->
-    <LessonChangeModal
-      :open="isChangeLesson.open"
-      :identity="identity"
-      :isLesson="isLesson"
-      :referenceList="treeReferenceList"
-      :receiveInstitutionLessonData="receiveInstitutionLessonData"
-      :receiveFranchiseLessonData="receiveFranchiseLessonData"
-      :createLessonData="changeLessonItem"
-      :receiveInstitutionData="receiveInstitutionData"
-      :receiveFranchiseData="receiveFranchiseData"
-      :pushKeyword="pushKeyword"
-      @add-reference="addChangePageReferenceOfLesson"
-      @change-lesson="onChangeLesson"
-      @set-lesson="setLessonFlag"
-      @remove-reference="removeReferenceOfLessonItemChange"
-      @call-back="copyDataCallBack"
-      @change-keyword="changeChangePagePushKeyword"
-      @set-keyword="setChangePageKeyword"
-      @delete-keyword="deleteChangePageKeyword"
-      @close="closeLessonChangeModal"
-      @open-data="openLessonBrowseModal"
-      @open-reference="openReference"
-      @open-save-path="openSavePathModal"
-      @submit="onSubmitChangeLesson"
-    />
-
     <!-- 레슨 열람 -->
     <LessonBrowseModal
       :open="isLessonBrowse.open"
-      :lessonItem="viewLessonItem"
+      :lessonItem="lessonData"
       :selectReference="selectReferenceItem"
       :currentIdx="currentIdx"
       @pagination="setPagination"
@@ -161,6 +135,7 @@
 
     <!-- 자료 수정 -->
     <ReferenceChangeModal
+      modalTitle="자료 수정"
       :open="isReferenceChange.open"
       :reference="selectReferenceItem"
       :pushKeyword="pushKeyword"
@@ -174,8 +149,9 @@
 
     <!-- 퀴즈 수정 -->
     <QuizChangeModal
+      modalTitle="자료 수정"
       :open="isQuizChange.open"
-      :quiz="selectReferenceItem"
+      :reference="selectReferenceItem"
       :currentPageIdx="currentIdx"
       :pushKeyword="pushKeyword"
       @close="onCloseQuizChangeModal"
@@ -197,6 +173,7 @@
 
     <!-- 쪽지시험 수정 -->
     <NoteTestChangeModal
+      modalTitle="자료 수정"
       :open="isNoteTestChange.open"
       :reference="selectReferenceItem"
       :currentPageIdx="currentIdx"
@@ -261,25 +238,23 @@ import ReferenceSavePathModal from '~/components/common/modal/SavePathModal.vue'
 import SavePathModal from '~/components/common/modal/lesson/SavePathModal.vue'
 import LessonAddModal from '~/components/common/modal/lesson/LessonAddModal.vue'
 import ShareViewModal from '~/components/common/modal/reference/ShareViewModal.vue'
-import QuizChangeModal from '~/components/common/modal/reference/QuizChangeModal.vue'
 import QuizBrowseModal from '~/components/common/modal/reference/QuizBrowseModal.vue'
 import LessonBrowseModal from '~/components/common/modal/lesson/LessonBrowseModal.vue'
-import LessonChangeModal from '~/components/common/modal/lesson/LessonChangeModal.vue'
 import QuizPreviewModal from '~/components/common/modal/reference/QuizPreviewModal.vue'
 import VideoBrowseModal from '~/components/common/modal/reference/VideoBrowseModal.vue'
 import NoteTestBrowseModal from '~/components/common/modal/reference/NoteTestBrowseModal.vue'
-import NoteTestChangeModal from '~/components/common/modal/reference/NoteTestChangeModal.vue'
 import NoteTestPreviewModal from '~/components/common/modal/reference/NoteTestPreviewModal.vue'
-import ReferenceChangeModal from '~/components/common/modal/reference/ReferenceChangeModal.vue'
-import { setNewArray, jsonItem } from '~/utiles/common'
 import initialState from '~/data/lesson/initialState'
+import QuizChangeModal from '~/components/common/modal/reference/QuizAddModal.vue'
+import NoteTestChangeModal from '~/components/common/modal/reference/NoteTestAddModal.vue'
+import ReferenceChangeModal from '~/components/common/modal/reference/ReferenceAddModal.vue'
+import { setNewArray, jsonItem } from '~/utiles/common'
 
 export default {
   name: 'LessonPage',
   components: {
     PageHeader,
     LessonAddModal,
-    LessonChangeModal,
     LessonBrowseModal,
     QuizPreviewModal,
     NoteTestPreviewModal,
@@ -306,6 +281,10 @@ export default {
       Object.assign(this.$data, initialState())
     },
 
+    setModalTitle(str) {
+      this.modalTitle = str
+    },
+
     // [공통] 페이지 네이션
     setPagination(direction, maxLength) {
       if (direction === 'plus') {
@@ -315,9 +294,9 @@ export default {
 
     // [공통] 키워드 변경
     setKeyword({ target: { value } }) {
-      const keywordList = [...this.createLessonData.keyword, value]
+      const keywordList = [...this.lessonData.keyword, value]
       this.pushKeyword = ''
-      this.createLessonData.keyword = setNewArray(keywordList)
+      this.lessonData.keyword = setNewArray(keywordList)
     },
 
     // [공통] 키워드 내용 변경
@@ -327,7 +306,7 @@ export default {
 
     // [레슨] 레슨 등록 모달
     openLessonAdd() {
-      this.createLessonData = {
+      this.lessonData = {
         name: '',
         role: '',
         desc: '',
@@ -338,6 +317,7 @@ export default {
         createAt: '',
         referenceList: [],
       }
+      this.setModalTitle('레슨 등록')
       this.treeReferenceList = []
       this.isAddLesson.open = true
     },
@@ -348,14 +328,14 @@ export default {
 
     // [레슨] 레슨 수정 모달
     openLessonChangeModal(data) {
-      console.log(data)
       if (this.isLessonBrowse.open) {
         this.closeLessonBrowseModal()
       }
+      this.setModalTitle('레슨 수정')
       const newItem = jsonItem(data)
-      this.changeLessonItem = newItem
+      this.lessonData = newItem
       this.treeReferenceList = newItem.referenceList
-      this.isChangeLesson.open = true
+      this.isAddLesson.open = true
     },
 
     closeLessonChangeModal() {
@@ -366,7 +346,7 @@ export default {
     setViewLesson(item) {
       const newItem = jsonItem(item)
       this.setViewLessonFirstReference(newItem)
-      return (this.viewLessonItem = newItem)
+      return (this.lessonData = newItem)
     },
 
     setViewLessonFirstReference(item) {
@@ -472,13 +452,6 @@ export default {
     addReferenceOfLesson({ children }) {
       const list = jsonItem(children)
       const filterItem = list.filter((item) => item.dbIdx !== -1)
-      this.treeReferenceList = filterItem
-    },
-
-    // [레슨] 수정페이지 레슨에  추가
-    addChangePageReferenceOfLesson({ children }) {
-      const list = jsonItem(children)
-      const filterItem = list.filter((item) => item.dbIdx !== -1)
       return (this.treeReferenceList = filterItem)
     },
 
@@ -489,47 +462,17 @@ export default {
       this.treeReferenceList = filterItem
     },
 
-    // [레슨] 수정 페이지 레슨 지우기
-    removeReferenceOfLessonItemChange({ name }) {
-      console.log(name)
-      const newArray = this.treeReferenceList
-      const filterItem = newArray.filter((data) => data.name !== name)
-      return (this.treeReferenceList = filterItem)
-    },
-
     // [레슨] 레슨 수정
     changeCreateLesson({ target: { id, name, value, checked, type } }) {
       const isCkbox = type === 'checkbox'
-      if (isCkbox) return (this.createLessonData[name] = checked)
-      else return (this.createLessonData[id] = value)
-    },
-
-    // [레슨] 수정페이지 레슨 수정
-    onChangeLesson({ target: { id, name, value, checked, type } }) {
-      const isCkbox = type === 'checkbox'
-      if (isCkbox) return (this.changeLessonItem[name] = checked)
-      else return (this.changeLessonItem[id] = value)
+      if (isCkbox) return (this.lessonData[name] = checked)
+      else return (this.lessonData[id] = value)
     },
 
     // [레슨] 저장경로 수정
     setSaveFilePath(path) {
-      const createElem = this.createLessonData
-      const changeElem = this.changeLessonItem
-      const isAdd = this.isSavePath.prevPage === 'isAddLesson'
-      if (isAdd) return (createElem.savePath = path)
-      else return (changeElem.savePath = path)
-    },
-
-    // [레슨] 페이지키워드 변경
-    setChangePageKeyword({ target: { value } }) {
-      const keywordList = [...this.changeLessonItem.keyword, value]
-      this.pushKeyword = ''
-      this.changeLessonItem.keyword = setNewArray(keywordList)
-    },
-
-    // [레슨] 페이지키워드 삭제
-    deleteChangePageKeyword(idx) {
-      this.changeLessonItem.keyword.splice(idx, 1)
+      const createElem = this.lessonData
+      return (createElem.savePath = path)
     },
 
     // [레슨] 페이지키워드 내용 변경
@@ -539,19 +482,13 @@ export default {
 
     // [레슨] 키워드 삭제
     deleteKeyword(idx) {
-      this.createLessonData.keyword.splice(idx, 1)
+      this.lessonData.keyword.splice(idx, 1)
     },
 
     // [레슨] 레슨 추가 Submit (임시)
     onSubmitAddLesson() {
       // 레슨 추가시 tree자료로 바꾸기 임시
-      return (this.createLessonData.referenceList = this.treeReferenceList)
-    },
-
-    // [레슨] 레슨 수정 Submit (임시)
-    onSubmitChangeLesson() {
-      // 레슨 등록시 tree자료로 바꾸기 임시
-      return (this.changeLessonItem.referenceList = this.treeReferenceList)
+      return (this.lessonData.referenceList = this.treeReferenceList)
     },
 
     // [자료실] 자료 클릭시 해당자료 열기

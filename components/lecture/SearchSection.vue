@@ -22,6 +22,7 @@
       </div>
       <button
         v-if="identity !== 'teacher'"
+        id="lecture_modal"
         class="btn btn_crud_point"
         data-toggle="modal"
         data-target="#modalLectureRegi"

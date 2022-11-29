@@ -29,7 +29,7 @@
               title="문서 및 파일 업로드"
               desc="pdf 파일 형식으로 업로드 해주세요"
               inputId="upload_file"
-              accept="application/pdf"
+              accept="application/pdf,image/*"
               @upload-item="$emit('upload-pdf', $event)"
             />
             <!-- /.문서의 경우 -->

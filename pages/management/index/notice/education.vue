@@ -33,8 +33,10 @@
                   <button class="btn icons_search_off" type="button"></button>
                 </div>
               </div>
-              <a href="(완)공지사항-등록.html" class="btn btn_crud_point"
-                >등록</a
+              <NuxtLink
+                to="/management/notice/regist/all"
+                class="btn btn_crud_point"
+                >등록</NuxtLink
               >
             </div>
           </div>
@@ -162,10 +164,10 @@
                         </div>
                       </div>
                       <div class="btns_area">
-                        <a
-                          href="(완)공지사항-등록.html"
+                        <NuxtLink
+                          :to="`/management/notice/modify/all/${item.id}`"
                           class="btn btn_crud_default"
-                          >수정</a
+                          >수정</NuxtLink
                         >
                         <button
                           class="btn btn_crud_default"

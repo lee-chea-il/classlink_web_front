@@ -12,7 +12,7 @@
       <div class="background_close" />
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-          <ModalHeader title="자료 등록" @close="$emit('close')" />
+          <ModalHeader :title="modalTitle" @close="$emit('close')" />
 
           <div class="modal-body">
             <div class="modal_dataregi row">
@@ -31,8 +31,6 @@
 
               <!-- 오른쪽 영역 -->
               <ReferenceRightModal
-                :uploadType="uploadType"
-                :uploadFile="uploadFile"
                 :reference="reference"
               />
             </div>
@@ -80,6 +78,7 @@ export default {
       type: String,
       default: '',
     },
+    modalTitle: { type: String, default: '' },
   },
 }
 </script>

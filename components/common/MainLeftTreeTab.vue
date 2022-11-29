@@ -13,6 +13,7 @@
         :editable="identity == 'master' ? true : false"
         :identity="identity"
         :pidNum="0"
+        :isHideDownload="pageType === 'reference' ? true : false"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @open-data="$emit('open-data', $event)"
         @update-data="$emit('update-data', $event)"
@@ -33,6 +34,7 @@
         :editable="identity == 'master' ? true : false"
         :identity="identity"
         :pidNum="1000"
+        :isHideDownload="pageType === 'reference' ? true : false"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @open-data="$emit('open-data', $event)"
         @update-data="$emit('update-data', $event)"
@@ -62,6 +64,10 @@ export default {
       default: () => [],
     },
     identity: {
+      type: String,
+      default: '',
+    },
+    pageType: {
       type: String,
       default: '',
     },

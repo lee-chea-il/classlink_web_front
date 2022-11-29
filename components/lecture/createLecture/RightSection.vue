@@ -6,8 +6,9 @@
           title="수업을 시작하기"
           desc="전에 알림을 보냅니다."
           name="startAlarmTime"
-          :lectureInfo="lectureInfo"
-          @change-lecture="$emit('change-lecture', $event)"
+          :value="lectureInfo.startAlarmTime"
+          target="lectureInfo"
+          @change-input="$emit('change-input', $event)"
         />
       </div>
       <div class="search_class02">
@@ -15,21 +16,23 @@
           title="수업을 종료하고"
           desc="후에 수업을 자동으로 끝냅니다."
           name="endAlarmTime"
-          :lectureInfo="lectureInfo"
-          @change-lecture="$emit('change-lecture', $event)"
+          :value="lectureInfo.endAlarmTime"
+          target="lectureInfo"
+          @change-input="$emit('change-input', $event)"
         />
       </div>
     </div>
     <div class="tit">수강할 반</div>
     <div class="move_section">
       <div class="list_section">
-        <div class="input-group input-search">
-          <input type="text" placeholder="반 이름" class="form-control" />
-          <div class="input-group-append">
-            <button class="btn icons_x_circle_off" type="button"></button>
-            <button class="btn icons_search_off" type="button"></button>
-          </div>
-        </div>
+        <SearchInput
+          placeholder="반 이름"
+          :value="searchValue"
+          name="class"
+          target="searchData"
+          @delete-item="$emit('clear-class')"
+          @change-input="$emit('change-input', $event)"
+        />
 
         <ClassList
           :listItem="classList"
@@ -54,14 +57,16 @@
 
 <script>
 import CustomSelect from '../custom/CustomSelect.vue'
+import SearchInput from '../custom/SearchInput.vue'
 import ClassList from '~/components/lecture/ClassList.vue'
 
 export default {
   name: 'RightSection',
-  components: { ClassList, CustomSelect },
+  components: { ClassList, CustomSelect, SearchInput },
   props: {
     classList: { type: Array, default: () => [] },
     lectureInfo: { type: Object, default: () => {} },
+    searchValue: { type: String, default: '' },
   },
 }
 </script>

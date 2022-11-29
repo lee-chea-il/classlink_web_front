@@ -13,6 +13,7 @@
         :dataList="myDataList"
         identity="master"
         :pidNum="2000"
+        :isHideDownload="pageType === 'reference' ? true : false"
         @open-data="$emit('open-data', $event)"
         @update-data="$emit('update-data', $event)"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
@@ -35,6 +36,10 @@ export default {
     myDataList: {
       type: Array,
       default: () => [],
+    },
+    pageType: {
+      type: String,
+      default: '',
     },
   },
 }

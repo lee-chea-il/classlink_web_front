@@ -11,6 +11,43 @@
   text-align: initial !important;
 }
 
+/* 에디터 css */
+.ql-align-right {
+  text-align: right;
+}
+.ql-align-center {
+  text-align: center;
+}
+.ql-align-left {
+  text-align: left;
+}
+
+/* 미리보기 영역 */
+#modalPreviewQuiz .question_area04-1,
+#modalPreviewTest .question_area04-1 {
+  min-height: 205px;
+  height: 100%;
+  padding: 12px 0;
+}
+
+#modalPreviewQuiz .answer_area04,
+#modalPreviewTest .answer_area04 {
+  min-height: 257px;
+  height: 100%;
+}
+
+#modalPreviewQuiz .answer_area04 .aa_result,
+#modalPreviewTest .answer_area04 .aa_result {
+  min-height: 45px;
+  height: 100%;
+}
+
+#modalPreviewQuiz .answer_result,
+#modalPreviewTest .answer_result {
+  min-height: 512px;
+  height: 100%;
+}
+
 /* 자료실 모달 vue2용 */
 .background_close {
   position: absolute;

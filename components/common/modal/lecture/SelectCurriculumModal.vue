@@ -8,7 +8,7 @@
   >
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content">
-        <Header />
+        <Header :title="modalTitle" />
         <div class="modal-body">
           <div class="cnts_section">
             <!-- 왼쪽 SECTION -->
@@ -24,15 +24,18 @@
             <!-- 오른쪽 SECTION -->
             <RightSection
               ref="rightSection"
+              :dataList="myCurriculumList"
               @remove-active="removeActiveStyle"
             />
             <!-- 오른쪽 SECTION -->
           </div>
         </div>
         <ReverseBtnBox
+          v-if="identity !== 'teacher'"
           prevTarget="#modalLectureRegi"
           nextTarget="#modalLectureRegi03"
         />
+        <ModalBtnBox v-else submitTxt="저장" />
       </div>
     </div>
   </div>
@@ -40,19 +43,32 @@
 
 <script>
 import ReverseBtnBox from '../../ReverseBtnBox.vue'
+import ModalBtnBox from '../../ModalBtnBox.vue'
 import LeftSection from '~/components/lecture/selectCurriculum/SelectCurriculumLeftSection.vue'
 import RightSection from '~/components/lecture/selectCurriculum/SelectCurriculumRightSection.vue'
-import Header from '~/components/lecture/selectCurriculum/SelectCurriculumHeader.vue'
+import Header from '~/components/common/ModalHeader.vue'
 let isAddActiveStype = false
 export default {
   name: 'SelectCurriculumModal',
-  components: { LeftSection, RightSection, Header, ReverseBtnBox },
+  components: { LeftSection, RightSection, Header, ReverseBtnBox, ModalBtnBox },
   props: {
+    modalTitle: {
+      type: String,
+      default: '',
+    },
     curriculumList: {
       type: Array,
       default: () => [],
     },
     teacherList: {
+      type: Array,
+      default: () => [],
+    },
+    identity: {
+      type: String,
+      default: '',
+    },
+    myCurriculumList: {
       type: Array,
       default: () => [],
     },
