@@ -212,6 +212,14 @@ export default {
       this.$refs.curriculum.pasteData(this.copyCheckData)
     },
     delData() {
+      if(this.identity==='master'){
+        const instiTab = document.getElementById('institute')
+        if (instiTab.classList.contains('show')) {
+          this.$refs.institution.delData()
+        }else{
+          this.$refs.franchise.delData()
+        }
+      }
       this.$refs.curriculum.delData()
     },
     copyDataCallBack(copyData) {

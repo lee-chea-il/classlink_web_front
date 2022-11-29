@@ -125,6 +125,7 @@ export default {
       function _dfs(oldNode) {
         const newNode={}
         if (oldNode.isChecked) {
+          oldNode.active=true
           for(const item in oldNode){
             newNode[item] = oldNode[item]
           }
@@ -132,6 +133,8 @@ export default {
           newNode.id = idNum
           newNode.isChecked = false
           idNum++
+        }else{
+          oldNode.active=false
         }
         if (oldNode.children && oldNode.children.length > 0) {
           const list = []
