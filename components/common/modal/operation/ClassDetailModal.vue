@@ -6,7 +6,7 @@
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-dialog modal-dialog-centered modal-xl zIndex">
       <div class="modal-content">
         <div class="modal-header">
           <h5 id="exampleModalLabel" class="modal-title">
@@ -145,8 +145,7 @@
                     <td>
                       <i
                         class="btn icons_zoom_off"
-                        data-toggle="modal"
-                        data-target="#modalMyinfo"
+                        @click="$emit('open', item)"
                       ></i>
                     </td>
                     <td>
@@ -226,7 +225,7 @@
 
     <!-- [개발참조] : 이하 모달은 학생관리의 모달 팝업들과 동일 / 겹치는 모달팝업이므로 class="double" 추가 -->
     <!-- 학생 개별 등록/학생 상세 정보 -->
-    <!-- <StudentInfoModal
+    <StudentInfoModal
       :studentInfo="studentInfo"
       :open="studentInfoModalDesc.open"
       :nickNameCheck="nickNameCheck"
@@ -249,19 +248,23 @@
       @click-deleteFamily="$emit('click-deleteFamily')"
       @change-familyInput="$emit('change-familyInput')"
       @search-family="$emit('search-family')"
-    /> -->
+    />
   </div>
 </template>
 
 <script>
-// import StudentInfoModal from '@/components/common/modal/operation/StudentInfoModal.vue'
+import StudentInfoModal from '@/components/common/modal/operation/StudentInfoModal.vue'
 export default {
   name: 'ClassDetailModal',
   components: {
-    // StudentInfoModal,
+    StudentInfoModal,
   },
   props: {
     classInfo: {
+      type: Object,
+      default: () => {},
+    },
+    studentInfo: {
       type: Object,
       default: () => {},
     },
@@ -285,4 +288,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.zIndex {
+  z-index: 0;
+}
+</style>

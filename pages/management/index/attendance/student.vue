@@ -142,25 +142,29 @@
       @attendance-close="attendanceOnCloseDatePickerModalDesc"
       @attendance-confirm="attendanceOnClickConfirmBtn"
     />
-    <DatePickerModal
+    <RangeDataPicker
       :open="datePickerModalDesc.open"
-      :range="range"
-      @select-range="selectRange"
+      @select-date="selectRange"
       @close="onCloseDatePickerModalDesc"
-      @confirm="onClickConfirmBtn"
+    />
+
+    <RangeDataPicker
+      :open="attendanceDatePickerModalDesc.open"
+      @select-date="attendanceOnClickConfirmBtn"
+      @close="attendanceOnCloseDatePickerModalDesc"
     />
   </div>
 </template>
 
 <script>
 import MoreAttendanceModal from '@/components/common/modal/attendance/MoreAttendanceModal.vue'
-import DatePickerModal from '@/components/common/modal/attendance/DatePickerModal.vue'
+import RangeDataPicker from '@/components/common/modal/RangeDataPicker.vue'
 
 export default {
   name: 'Student',
   components: {
     MoreAttendanceModal,
-    DatePickerModal,
+    RangeDataPicker,
   },
   data() {
     return {
@@ -254,9 +258,12 @@ export default {
   },
   methods: {
     // 날짜 지정
-    selectRange(e) {
-      this.range.start = e.start
-      this.range.end = e.end
+    selectRange({ start, end }) {
+      const setDate = (date) =>
+        `${date?.getFullYear()}.${date?.getMonth() + 1}.${date?.getDate()}`
+      this.studentSearchDate.date_range_start = setDate(start)
+      this.studentSearchDate.date_range_end = setDate(end)
+      this.datePickerModalDesc.open = false
       // console.log(this.range)
     },
     openDatePickerModalDesc() {
@@ -278,7 +285,7 @@ export default {
         this.range.start
       )
       this.studentSearchDate.date_range_end = this.changeDateFormat(
-        this.range.end  
+        this.range.end
       )
     },
 
@@ -294,14 +301,12 @@ export default {
     attendanceOnCloseDatePickerModalDesc() {
       this.attendanceDatePickerModalDesc.open = false
     },
-    attendanceOnClickConfirmBtn() {
+    attendanceOnClickConfirmBtn({ start, end }) {
+      const setDate = (date) =>
+        `${date?.getFullYear()}.${date?.getMonth() + 1}.${date?.getDate()}`
+      this.attendanceStudentSearchDate.date_range_start = setDate(start)
+      this.attendanceStudentSearchDate.date_range_end = setDate(end)
       this.attendanceDatePickerModalDesc.open = false
-      this.attendanceStudentSearchDate.date_range_start = this.changeDateFormat(
-        this.attendanceRange.start
-      )
-      this.attendanceStudentSearchDate.date_range_end = this.changeDateFormat(
-        this.attendanceRange.end
-      )
     },
 
     // 내역 다운로드 체크박스

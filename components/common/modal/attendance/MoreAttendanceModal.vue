@@ -6,7 +6,7 @@
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-dialog modal-dialog-centered modal-xl zIndex">
       <div class="modal-content">
         <div class="modal-header">
           <h5 id="exampleModalLabel" class="modal-title">출결</h5>
@@ -527,22 +527,27 @@
       </div>
     </div>
 
-    <DatePickerModal
+    <!-- <DatePickerModal
       :open="attendanceOpen.open"
       :range="attendanceRange"
       @select-range="$emit('attendance-select-range', $event)"
       @close="$emit('attendance-close')"
       @confirm="$emit('attendance-confirm')"
-    />
+    /> -->
+    <!-- <RangeDataPicker
+      :open="attendanceOpen.open"
+      @select-date="$emit('attendance-confirm', range)"
+      @close="$emit('attendance-close')"
+    /> -->
   </div>
 </template>
 
 <script>
-import DatePickerModal from '@/components/common/modal/attendance/DatePickerModal.vue'
+// import RangeDataPicker from '@/components/common/modal/RangeDataPicker.vue'
 export default {
   name: 'MoreAttendanceModal',
   components: {
-    DatePickerModal,
+    // RangeDataPicker,
   },
   props: {
     attendanceOpen: {
@@ -605,4 +610,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.zIndex {
+  z-index: 0;
+}
+</style>

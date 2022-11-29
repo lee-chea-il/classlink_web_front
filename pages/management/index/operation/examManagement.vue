@@ -227,13 +227,13 @@
       @open-detail="onClickOpenDetail"
       @close-detail="onClickCloseDetail"
     />
-    <DatePickerModal
+    <!-- <DatePickerModal
       :open="datePickerModalDesc.open"
       :range="range"
       @select-range="selectRange"
       @close="onCloseDatePickerModalDesc"
       @confirm="onClickConfirmBtn"
-    />
+    /> -->
   </div>
 </template>
 
@@ -242,7 +242,7 @@ import NavBox from '@/components/operation/NavBox.vue'
 import ExamFilterModal from '@/components/common/modal/operation/ExamFilterModal.vue'
 import ExamResult from '@/components/common/modal/operation/ExamResult.vue'
 import ClassAverage from '@/components/common/modal/operation/ClassAverage.vue'
-import DatePickerModal from '@/components/common/modal/attendance/DatePickerModal.vue'
+// import DatePickerModal from '@/components/common/modal/attendance/DatePickerModal.vue'
 
 export default {
   name: 'TestManagement',
@@ -251,7 +251,7 @@ export default {
     ExamFilterModal,
     ExamResult,
     ClassAverage,
-    DatePickerModal,
+    // DatePickerModal,
   },
   data() {
     return {

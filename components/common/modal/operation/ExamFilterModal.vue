@@ -393,22 +393,22 @@
       </div>
     </div>
 
-    <DatePickerModal
+    <!-- <DatePickerModal
       :open="filterOpen.open"
       :range="filterRange"
       @select-range="$emit('filter-select-range', $event)"
       @close="$emit('filter-close')"
       @confirm="$emit('filter-confirm')"
-    />
+    /> -->
   </div>
 </template>
 
 <script>
-import DatePickerModal from '@/components/common/modal/attendance/DatePickerModal.vue'
+// import DatePickerModal from '@/components/common/modal/attendance/DatePickerModal.vue'
 export default {
   name: 'ExamFilterModal',
   components: {
-    DatePickerModal,
+    // DatePickerModal,
   },
   props: {
     tagList: {
