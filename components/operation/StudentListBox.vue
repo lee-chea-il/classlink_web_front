@@ -185,9 +185,7 @@
                     </li>
                     <li @click="$emit('click-attendance', item.id)">출결</li>
                     <li @click="$emit('click-memo', item.id)">메모</li>
-                    <li data-toggle="modal" data-target="#modalMoreReports">
-                      학습 리포트
-                    </li>
+                    <li @click="$emit('click-report', item.id)">학습 리포트</li>
                   </ul>
                 </div>
               </i>

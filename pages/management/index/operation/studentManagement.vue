@@ -27,6 +27,7 @@
             :isStudentStatusFlag="isStudentStatusFlag"
             :searchStudentText="searchStudentText"
             :expandIdx="expandIdx"
+            @click-report="openReportFilterModal"
             @click-attendance="openStudentAttendanceModal"
             @click-memo="openStudentMemoModalDesc"
             @click-lectureInfo="openLectureInfoModalDesc"
@@ -228,9 +229,13 @@
     <StudentAttendanceModal
       :open="studentAttendanceModal.open"
       :studentInfo="studentInfo"
+      :dateRange="dateRange"
+      :isLectureTitleIdx="isLectureTitleIdx"
+      @click-lecture="selectAttendanceLecture"
       @click-nextWeek="openCustomSnackbarNext"
       @click-prevWeek="openCustomSnackbarPrev"
       @close="onCloseStudentAttendanceModal"
+      @click-calendar="openModalCalendar"
     />
 
     <!-- [개발참조] : 저장안함은 저장안하고 메모팝업창-L을 닫기 / 취소는 팝업창-S 만 닫기 (메모모달창 모두 닫기 스크립트 찹조)  -->
@@ -238,10 +243,31 @@
     <SaveMemoModal />
 
     <!-- 학습리포트 : 필터 -팝업 L -->
-    <ReportFilterModal />
+    <ReportFilterModal
+      :open="reportFilterModal.open"
+      :dateRange="dateRange"
+      :studentInfo="studentInfo"
+      :filterList="filterList"
+      :tagList="tagList"
+      :searchTextList="searchTextList"
+      @search-filter="searchFilterList"
+      @change-input="changeReportSearchInput"
+      @click-calendar="openModalCalendar"
+      @click-search="openReportDetailModal"
+      @close="onCloseReportFilterModal"
+      @all-check="onClickTagAllCheck"
+      @add-tag="onClickTagList"
+      @complete="onClickAddFilterTag"
+    />
 
     <!-- 학습리포트 : 리포트열람 -팝업 L -->
-    <ReportDetailModal />
+    <ReportDetailModal
+      :open="reportDetailModal.open"
+      :reportList="reportList"
+      :studentInfo="studentInfo"
+      :bgList="bgList"
+      @close="onCloseReportDetailModal"
+    />
 
     <!-- 설명 모달 -->
     <ModalDesc
@@ -252,8 +278,9 @@
     />
 
     <!-- 달력 기간 모달 호출 -->
-    <CustomDataPicker
-      :open="isCalendar"
+    <RangeDataPicker
+      :open="isRangeCalendar"
+      :isMonthRange="isMonthRange"
       @select-date="onChangeDate"
       @close="closeModalCalendar"
     />
@@ -340,7 +367,7 @@ import UploadStudentImg from '@/components/common/modal/operation/UploadTeacherI
 import ResetPasswordModal from '@/components/common/modal/operation/ResetPasswordModal.vue'
 import DeleteSimpleModal from '@/components/common/modal/operation/DeleteSimpleModal.vue'
 import CustomSnackbar from '@/components/common/CustomSnackbar.vue'
-import CustomDataPicker from '~/components/common/modal/RangeDataPicker.vue'
+import RangeDataPicker from '~/components/common/modal/RangeDataPicker.vue'
 export default {
   name: 'StudentManagement',
   components: {
@@ -364,7 +391,7 @@ export default {
     ResetPasswordModal,
     DeleteSimpleModal,
     CustomSnackbar,
-    CustomDataPicker
+    RangeDataPicker,
   },
   data() {
     return {
@@ -657,6 +684,42 @@ export default {
       ],
       // 교육기관 반 리스트
       classList: ['심화 A반', '심화 B반', '심화 C반', '심화 D반', '심화 E반'],
+      // 학습리포트
+      reportList: [
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어리딩심화',
+          class: '심화A',
+          attendancePercent: '80%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 80,
+          classAverage: '70',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어리딩기초',
+          class: '심화A',
+          attendancePercent: '70%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 20,
+          classAverage: '70',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어회화기초',
+          class: '심화A',
+          attendancePercent: '20%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 50,
+          classAverage: '60',
+          question: '12/15',
+        },
+      ],
       // 모달
       modalDesc: {
         open: false,
@@ -704,6 +767,12 @@ export default {
         message: '',
       },
       studentAttendanceModal: {
+        open: false,
+      },
+      reportFilterModal: {
+        open: true,
+      },
+      reportDetailModal: {
         open: false,
       },
       // 정렬 필터링
@@ -784,12 +853,106 @@ export default {
       isStudentMemoMoreFlag: false,
       isUpdateStudentMemoFlag: false,
       isMemoRangeFlag: 0,
+      // 출결
+      isRangeCalendar: false,
+      dateRange: {
+        start: '',
+        end: '',
+      },
+      isLectureTitleIdx: 0,
+      // 학습리포트
+      monthRange: {
+        start: '',
+        end: '',
+      },
+      isMonthRange: false,
+      filterList: {
+        class: ['심화A반', '심화B반', '심화C반'],
+        subject: ['수학', '국어', '영어', '사회'],
+        course: ['영어리딩심화', '영어리딩기초', '영어리딩기초1'],
+        exam: ['쪽지시험', '퀴즈', '정기시험'],
+      },
+      initFilterList: {
+        class: ['심화A반', '심화B반', '심화C반'],
+        subject: ['수학', '국어', '영어', '사회'],
+        course: ['영어리딩심화', '영어리딩기초', '영어리딩기초1'],
+        exam: ['쪽지시험', '퀴즈', '정기시험'],
+      },
+      tagList: {
+        classList: [],
+        subjectList: [],
+        courseList: [],
+        examList: [],
+      },
+      filterDateRange: {},
+      searchTextList: {
+        classSearchText: '',
+        subjectSearchText: '',
+        courseSearchText: '',
+        examSearchText: '',
+      },
+      bgList: ['color01', 'color02', 'color03'],
     }
   },
+  watch: {
+    // 현재 날짜와 한달 전 기간
+    isMonthRange() {
+      const setDate = (date) =>
+        `${date?.getFullYear()}.${date?.getMonth() + 1}.${date?.getDate()}`
+      if (this.isMonthRange) {
+        this.dateRange = {
+          start: setDate(
+            new Date(new Date().setMonth(new Date().getMonth() - 1))
+          ),
+          end: setDate(new Date()),
+        }
+      }
+    },
+    reportDetailModal() {
+      if (this.reportDetailModal) {
+        const array = []
+        for (let i = 0; i < this.reportList.length; i++) {
+          const count = i
+          if (array.length === this.reportList.length) {
+            break
+          } else if (count === this.bgList.length) {
+            i = -1
+          } else {
+            array.push(this.bgList[count])
+          }
+        }
+        this.bgList = array
+      }
+    },
+  },
   created() {
+    // 빈 객체(배열)
     this.initStudent = JSON.parse(JSON.stringify(this.studentInfo))
     this.initLectureMemo = JSON.parse(JSON.stringify(this.lectureInfoMemo))
     this.initStudentMemo = JSON.parse(JSON.stringify(this.studentMemo))
+    // 현재 날짜의 월요일, 일요일 구하기
+    const setDate = (date) =>
+      `${date?.getFullYear()}.${date?.getMonth() + 1}.${date?.getDate()}`
+    this.dateRange = {
+      start: setDate(
+        new Date(
+          new Date().setDate(
+            new Date().getDate() -
+              new Date().getDay() +
+              (new Date().getDay() === 0 ? -6 : 1)
+          )
+        )
+      ),
+      end: setDate(
+        new Date(
+          new Date().setDate(
+            new Date().getDate() -
+              new Date().getDay() +
+              (new Date().getDay() === 0 ? -6 : 7)
+          )
+        )
+      ),
+    }
   },
   methods: {
     // 모달 이벤트
@@ -930,6 +1093,31 @@ export default {
     },
     onCloseStudentAttendanceModal() {
       this.studentAttendanceModal.open = false
+    },
+    // 기간 달력 모달
+    openModalCalendar() {
+      this.isRangeCalendar = true
+    },
+    closeModalCalendar() {
+      this.isRangeCalendar = false
+    },
+    // 학습리포트
+    openReportFilterModal(id) {
+      const student = this.studentList.find((result) => result.id === id)
+      Object.assign(this.studentInfo, student)
+      this.reportFilterModal.open = true
+      this.isMonthRange = true
+    },
+    onCloseReportFilterModal() {
+      this.reportFilterModal.open = false
+      this.isMonthRange = false
+    },
+    openReportDetailModal() {
+      this.onCloseReportFilterModal()
+      this.reportDetailModal.open = true
+    },
+    onCloseReportDetailModal() {
+      this.reportDetailModal.open = false
     },
     // 깊은 복사
     deepCopy(data) {
@@ -1313,6 +1501,163 @@ export default {
     // 메모 정렬
     selectMemoRange(id) {
       this.isMemoRangeFlag = id
+    },
+    // 출결
+    // 달력 날짜 설정
+    onChangeDate({ start, end }) {
+      const setDate = (date) =>
+        `${date?.getFullYear()}.${date?.getMonth() + 1}.${date?.getDate()}`
+      console.log(setDate(start), setDate(end))
+      this.dateRange.start = setDate(start)
+      this.dateRange.end = setDate(end)
+      this.isRangeCalendar = false
+    },
+    selectAttendanceLecture(idx) {
+      this.isLectureTitleIdx = idx + 1
+    },
+    // 학습리포트
+    // 필터 태그
+    onClickTagAllCheck(title) {
+      if (title === 'classList') {
+        this.tagList.classList = []
+      } else if (title === 'subjectList') {
+        this.tagList.subjectList = []
+      } else if (title === 'courseList') {
+        this.tagList.courseList = []
+      } else if (title === 'examList') {
+        this.tagList.examList = []
+      }
+      console.log(this.tagList.classList)
+    },
+    onClickTagList(text, title, e) {
+      if (title === 'classList') {
+        if (this.tagList.classList.includes(text)) {
+          this.tagList.classList = this.tagList.class.filter(
+            (item) => item !== text
+          )
+        } else {
+          console.log(text)
+          this.tagList.classList.push(text)
+          if (this.tagList.classList.length === this.filterList.class.length) {
+            this.tagList.classList = []
+            e.target.checked = false
+          }
+        }
+      } else if (title === 'subjectList') {
+        if (this.tagList.subjectList.includes(text)) {
+          this.tagList.subjectList = this.tagList.subjectList.filter(
+            (item) => item !== text
+          )
+        } else {
+          console.log(text)
+          this.tagList.subjectList.push(text)
+          if (
+            this.tagList.subjectList.length === this.filterList.subject.length
+          ) {
+            this.tagList.subjectList = []
+            e.target.checked = false
+          }
+        }
+      } else if (title === 'courseList') {
+        if (this.tagList.courseList.includes(text)) {
+          this.tagList.courseList = this.tagList.courseList.filter(
+            (item) => item !== text
+          )
+        } else {
+          console.log(text)
+          this.tagList.courseList.push(text)
+          if (
+            this.tagList.courseList.length === this.filterList.course.length
+          ) {
+            this.tagList.courseList = []
+            e.target.checked = false
+          }
+        }
+      } else if (title === 'examList') {
+        if (this.tagList.examList.includes(text)) {
+          this.tagList.examList = this.tagList.examList.filter(
+            (item) => item !== text
+          )
+        } else {
+          console.log(text)
+          this.tagList.examList.push(text)
+          if (this.tagList.examList.length === this.filterList.exam.length) {
+            this.tagList.examList = []
+            e.target.checked = false
+          }
+        }
+      }
+      console.log(
+        this.tagList.subjectList.length,
+        this.filterList.subject.length
+      )
+      console.log(this.tagList)
+    },
+    onClickAddFilterTag() {
+      if (
+        this.tagList.classList.length !== 0 ||
+        this.tagList.subjectList.length !== 0 ||
+        this.tagList.courseList.length !== 0 ||
+        this.tagList.examList.length !== 0 ||
+        this.tagList.studentList.length !== 0
+      ) {
+        for (const value in this.tagList.classList) {
+          this.filterTag.push(this.tagList.classList[value])
+        }
+        for (const value in this.tagList.subjectList) {
+          this.filterTag.push(this.tagList.subjectList[value])
+        }
+        for (const value in this.tagList.courseList) {
+          this.filterTag.push(this.tagList.courseList[value])
+        }
+        for (const value in this.tagList.examList) {
+          this.filterTag.push(this.tagList.examList[value])
+        }
+        for (const value in this.tagList.studentList) {
+          this.filterTag.push(this.tagList.studentList[value])
+        }
+        this.tagList = {
+          classList: [],
+          subjectList: [],
+          courseList: [],
+          examList: [],
+          studentList: [],
+        }
+      }
+      this.openReportDetailModal()
+    },
+    onClickDeleteFilterTag(idx) {
+      this.filterTag.splice(idx, 1)
+    },
+    changeReportSearchInput({ target: { value, id } }) {
+      this.searchTextList[id] = value
+    },
+    searchFilterList(id) {
+      if (id === 'classSearchText') {
+        this.filterList.class = this.deepCopy(this.initFilterList.class)
+        const result = this.filterList.class.filter((elem) => {
+          return elem.includes(this.searchTextList.classSearchText)
+        })
+        this.filterList.class = result
+      } else if (id === 'subjectSearchText') {
+        this.filterList.subject = this.deepCopy(this.initFilterList.subject)
+        const result = this.filterList.subject.filter((elem) => {
+          return elem.includes(this.searchTextList.subjectSearchText)
+        })
+        this.filterList.subject = result
+      } else if (id === 'courseSearchText') {
+        this.filterList.course = this.deepCopy(this.initFilterList.course)
+        const result = this.filterList.course.filter((elem) => {
+          return elem.includes(this.searchTextList.courseSearchText)
+        })
+        this.filterList.course = result
+      } else if (id === 'examSearchText') {
+        this.filterList.exam = this.deepCopy(this.initFilterList.exam)
+        const result = this.filterList.exam.filter((elem) => {
+          return elem.includes(this.searchTextList.examSearchText)
+        })
+        this.filterList.exam = result
+      }
     },
   },
 }

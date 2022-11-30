@@ -31,7 +31,7 @@
                     ></i>
                     <span class="date_info">2022년 8월 1주</span>
                     <i
-                      class="icons_arrow_square_r cursor                 "
+                      class="icons_arrow_square_r cursor"
                       @click="$emit('click-nextWeek')"
                     ></i>
                   </div>
@@ -43,23 +43,37 @@
                         data-toggle="dropdown"
                         aria-expanded="false"
                       >
-                        전체
+                        {{
+                          isLectureTitleIdx === 0
+                            ? '전체'
+                            : studentInfo.lectureInfo[isLectureTitleIdx - 1]
+                                .lectureTitle
+                        }}
                       </button>
                       <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">전체</a>
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          @click="$emit('click-lecture', -1)"
+                          >전체</a
+                        >
                         <a
                           v-for="(item, idx) in studentInfo.lectureInfo"
                           :key="idx"
                           class="dropdown-item"
                           href="#"
+                          @click="$emit('click-lecture', idx)"
                           >{{ item.lectureTitle }}</a
                         >
                       </div>
                     </div>
                     <div class="calendar_date_bluebox">
-                      2022.08.07 - 2022.08.13
+                      {{ dateRange.start }} - {{ dateRange.end }}
                     </div>
-                    <i class="icons_calendar_off mr-2"></i>
+                    <i
+                      class="icons_calendar_off mr-2"
+                      @click="$emit('click-calendar')"
+                    ></i>
                     <div class="input-group input-search form-inline">
                       <input
                         type="text"
@@ -531,6 +545,14 @@ export default {
     studentInfo: {
       type: Object,
       default: () => {},
+    },
+    dateRange: {
+      type: Object,
+      default: () => {},
+    },
+    isLectureTitleIdx: {
+      type: Number,
+      default: 0,
     },
   },
 }

@@ -9,7 +9,7 @@
     >
       <div class="background_close" @click="$emit('close')"></div>
       <div class="dataWrap">
-        <DatePicker v-model="range" is-range />
+        <DatePicker v-model="range" is-range :masks="{ title: 'YYYY MMM' }" />
         <ModalBtnBox
           submitTxt="확인"
           @submit="$emit('select-date', range)"
@@ -34,14 +34,40 @@ export default {
       type: Boolean,
       default: false,
     },
+    isMonthRange: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       range: {
-        start: new Date(),
-        end: new Date(),
+        start: new Date(
+          new Date().setDate(
+            new Date().getDate() -
+              new Date().getDay() +
+              (new Date().getDay() === 0 ? -6 : 1)
+          )
+        ),
+        end: new Date(
+          new Date().setDate(
+            new Date().getDate() -
+              new Date().getDay() +
+              (new Date().getDay() === 0 ? -6 : 7)
+          )
+        ),
       },
     }
+  },
+  watch: {
+    isMonthRange() {
+      if (this.isMonthRange) {
+        this.range = {
+          start: new Date(new Date().setMonth(new Date().getMonth() - 1)),
+          end: new Date(),
+        }
+      }
+    },
   },
 }
 </script>

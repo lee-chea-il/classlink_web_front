@@ -833,4 +833,7 @@ export default {
   margin-right: 10px;
   margin-bottom: 10px;
 }
+.modal-index {
+  z-index: 999 !important;
+}
 </style>

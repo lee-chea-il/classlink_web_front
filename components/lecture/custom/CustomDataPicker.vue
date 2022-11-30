@@ -41,11 +41,12 @@ export default {
   },
   data() {
     return {
-      range: {
-        start: '2022-11-01',
-        end: '2022-11-02',
-      },
+      range: '2022-11-01',
+      end: '2022-11-02',
     }
+  },
+  created() {
+    console.log(this.range)
   },
 }
 </script>
