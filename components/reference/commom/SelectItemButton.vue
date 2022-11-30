@@ -23,7 +23,7 @@
             @input="$emit('upload-item', $event)"
           />
           <div>{{ title }}</div>
-          <div class="sub02">{{ desc }}</div>
+          <div class="sub02" v-html="setDesc" />
         </form>
       </div>
     </label>
@@ -53,6 +53,11 @@ export default {
     accept: {
       type: String,
       default: '',
+    },
+  },
+  computed: {
+    setDesc() {
+      return this.desc.split('\n').join('<br />')
     },
   },
 }

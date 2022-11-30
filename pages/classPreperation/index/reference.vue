@@ -39,10 +39,12 @@
     <ReferenceSelectModal
       @add-quiz="onOpenQuizAddModal"
       @add-test="onOpenNoteTestAddModal"
+      @set-type="setUploadType"
     />
 
     <!-- 비디오 & 파일 업로드 선택 -->
     <VideoFileUploadModal
+      :uploadType="uploadType"
       @upload-video="onUploadVideo"
       @upload-pdf="onUploadPdf"
     />
@@ -50,6 +52,7 @@
     <!-- 유튜브 & url 업로드 선택 -->
     <YoutubeUploadModal
       :urlData="urlData"
+      :uploadType="uploadType"
       @change-url="onChangeUrl"
       @upload-youtube="onUploadYoutube"
       @upload-page="onUploadUrl"
@@ -308,10 +311,12 @@ export default {
     return initialState()
   },
   methods: {
+    // 등록 자료 초기화
     initReference() {
       const init = jsonItem(this.initReferenceData)
       setTimeout(() => (this.referenceData = init), 400)
     },
+
     // Modal Event
     openModalDesc(tit, msg) {
       this.modalDesc = {
@@ -325,6 +330,7 @@ export default {
       this.modalDesc.open = false
     },
 
+    // 등록 유형 선택 모달
     openSelectModal(url) {
       this[url] = false
       this.isSelectModal = {
@@ -338,6 +344,7 @@ export default {
       this.isSelectModal.open = false
     },
 
+    // 자료 추가 모달
     onOpenReferenceAddModal() {
       this.isReferenceAddModal = true
     },
@@ -347,6 +354,7 @@ export default {
       this.initReference()
     },
 
+    // 퀴즈 추가 모달
     onOpenQuizAddModal() {
       this.referenceData = {
         ...this.referenceData,
@@ -366,6 +374,7 @@ export default {
       this.initReference()
     },
 
+    // 쪽지시험 추가 모달
     onOpenNoteTestAddModal() {
       this.setModalTitle('자료 등록')
       this.referenceData = {
@@ -379,6 +388,12 @@ export default {
       this.isNoteTestAddModal = true
     },
 
+    onCloseNoteTestAddModal() {
+      this.isNoteTestAddModal = false
+      this.initReference()
+    },
+
+    // 자료 조회
     onOpenReferenceBrowseModal() {
       this.isReferenceBrowse = true
     },
@@ -387,11 +402,7 @@ export default {
       this.isReferenceBrowse = false
     },
 
-    onCloseNoteTestAddModal() {
-      this.isNoteTestAddModal = false
-      this.initReference()
-    },
-
+    // 퀴즈 조회
     onOpenQuizBrowseModal() {
       this.isQuizBrowse = true
     },
@@ -401,6 +412,7 @@ export default {
       this.isQuizBrowse = false
     },
 
+    // 쪽지시험 조회
     onOpenNoteTestBrowseModal() {
       this.isNoteTestBrowse = true
     },
@@ -410,15 +422,7 @@ export default {
       this.isNoteTestBrowse = false
     },
 
-    // 자료 수정 할때 모달 타이틀 변경
-    onOpenReferenceChangeModal() {
-      this.setModalTitle('자료 수정')
-      if (this.isReferenceBrowse) {
-        this.onCloseReferenceBrowseModal()
-      }
-      this.isReferenceAddModal = true
-    },
-
+    // 퀴즈 수정 셋팅
     onOpenQuizChangeModal() {
       this.setModalTitle('자료 수정')
       if (this.isQuizBrowse) {
@@ -427,6 +431,7 @@ export default {
       this.isQuizAddModal = true
     },
 
+    // 쪽지시험 셋팅
     onOpenNoteTestChangeModal() {
       this.setModalTitle('자료 수정')
       if (this.isNoteTestBrowse) {
@@ -435,6 +440,7 @@ export default {
       this.isNoteTestAddModal = true
     },
 
+    // 퀴즈 미리보기 모달
     onOpenQuizPreviewModal(prevPath, page) {
       this.isQuizPreviewModal = {
         open: true,
@@ -467,6 +473,7 @@ export default {
       }
     },
 
+    // 쪽지시험 미리보기 모달
     onOpenNoteTestPreviewModal(prevPath, page) {
       this.isNoteTestPreviewModal = {
         open: true,
@@ -495,6 +502,7 @@ export default {
       else return (this.isNoteTestChange = true)
     },
 
+    // 공유하기 모달
     onOpenShareViewModal(path, url) {
       if (this[path]) {
         this[path] = false
@@ -511,6 +519,7 @@ export default {
       this[this.isShareViewModal.path] = true
     },
 
+    // 저장 경로 모달
     onOpenSavePathModal(path) {
       if (this[path]) {
         this[path] = false
@@ -524,16 +533,6 @@ export default {
     onCloseSavePathModal() {
       this.isSavePathModal.open = false
       this[this.isSavePathModal.prevPage] = true
-    },
-
-    openSnackbar(msg) {
-      this.isSnackbar.open = {
-        open: true,
-        message: msg,
-      }
-    },
-    closeSnackbar() {
-      this.isSnackbar.open = false
     },
 
     // 필터 모달
@@ -585,6 +584,34 @@ export default {
       this.isSelectType = false
     },
 
+    // 스넥바 오픈
+    openSnackbar(msg) {
+      this.isSnackbar.open = {
+        open: true,
+        message: msg,
+      }
+    },
+
+    closeSnackbar() {
+      this.isSnackbar.open = false
+    },
+
+    // Event Listener
+    // 자료 수정 할때 모달 타이틀 변경
+    onOpenReferenceChangeModal() {
+      this.setModalTitle('자료 수정')
+      if (this.isReferenceBrowse) {
+        this.onCloseReferenceBrowseModal()
+      }
+      this.isReferenceAddModal = true
+    },
+
+    // 등록 유형 설정하기
+    setUploadType(type) {
+      this.uploadType = type
+    },
+
+    // 필터링 리턴값 변경 이벤트
     matchFilterArrayName(name) {
       if (name === 'type') return 'typeList'
       else if (name === 'subject') return 'subjectList'
@@ -758,11 +785,20 @@ export default {
         target: { files },
       } = e
       const target = files[0]
-      console.log(target)
       if (
         (target && target.type === 'application/pdf') ||
-        target.type.includes('image')
+        target.type.includes('image') ||
+        target.name.includes('.pptx') ||
+        target.name.includes('.pptm') ||
+        target.type.includes('.wordprocessingml.document') ||
+        target.type === 'text/plain'
       ) {
+        console.log(target)
+        const viewer = (url) => {
+          // return `https://docs.google.com/viewer?url=${url}&embedded=true`
+          return `https://docs.google.com/viewer?url=http://112.171.101.31:58080/fire-safety/test14.xlsx&embedded=true`
+        }
+        const item = URL.createObjectURL(target)
         document.getElementById('selectClose').click()
         this.referenceData = {
           ...this.referenceData,
@@ -773,9 +809,10 @@ export default {
           uploadType: 'pdf',
           fileVolume: target.size,
           createAt: target.lastModifiedDate,
-          savePath: URL.createObjectURL(target),
+          savePath: viewer(item),
         }
         this.onOpenReferenceAddModal()
+        console.log(item)
       } else {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
       }

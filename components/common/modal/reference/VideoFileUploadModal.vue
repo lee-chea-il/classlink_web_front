@@ -15,6 +15,7 @@
             <!-- 모달 내용 구분 class-->
             <!-- 동영상의 경우 -->
             <SelectItemButton
+              v-show="uploadType === 'video'"
               id="video_target"
               title="동영상 업로드"
               desc="mp4 파일 형식으로 업로드 해주세요"
@@ -25,13 +26,16 @@
             <!-- /.동영상의 경우 -->
             <!-- 문서의 경우 -->
             <SelectItemButton
+              v-show="uploadType === 'pdf'"
               id="pdf_target"
               title="문서 및 파일 업로드"
-              desc="pdf 파일 형식으로 업로드 해주세요"
+              desc="pdf, ppt, doc, xls, hwp,txt등의
+              문서 파일을 업로드할 수 있습니다.
+              "
               inputId="upload_file"
-              accept="application/pdf,image/*"
               @upload-item="$emit('upload-pdf', $event)"
             />
+            <!-- accept="application/pdf,image/*" -->
             <!-- /.문서의 경우 -->
           </div>
         </div>
@@ -49,6 +53,12 @@ import SelectItemButton from '~/components/reference/commom/SelectItemButton.vue
 export default {
   name: 'VideoFileUploadModal',
   components: { ModalHeader, SelectItemButton },
+  props: {
+    uploadType: {
+      type: String,
+      default: '',
+    },
+  },
 }
 </script>
 

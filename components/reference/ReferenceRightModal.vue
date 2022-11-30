@@ -16,21 +16,16 @@
             <iframe
               v-show="
                 reference.uploadType === 'pdf' ||
-                reference.uploadType === 'youtube'
+                reference.uploadType === 'youtube' ||
+                reference.uploadType === 'url'
               "
               id="embed"
               class="embed"
               :src="reference.savePath"
-            />
-            <!-- type="application/pdf" -->
-
-            <iframe
-              v-show="reference.uploadType === 'url'"
-              id="iframe"
-              class="iframe"
-              :src="reference.savePath"
               frameborder="0"
-            ></iframe>
+            />
+            <!-- src="https://docs.google.com/viewer?url=http://112.171.101.31:58080/fire-safety/item4.pptx&embedded=true" -->
+            <!-- type="application/pdf" -->
           </div>
           <label for="" class="data_title name cont">자료 구분</label>
           <div class="col name cont">
@@ -115,5 +110,11 @@ export default {
 .iframe {
   width: 100%;
   height: 100%;
+}
+</style>
+
+<style>
+.ndfHFb-c4YZDc-DARUcf-NnAfwf-i5oIFb {
+  font-size: 10px !important;
 }
 </style>

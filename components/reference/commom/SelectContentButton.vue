@@ -5,7 +5,7 @@
     data-dismiss="modal"
     data-toggle="modal"
     :data-target="target"
-    @click="$emit('click-item')"
+    @click="$emit('click-item', $event)"
   >
     <span :class="icon" />
     <div>{{ title }}</div>
