@@ -183,9 +183,7 @@
                     <li @click="$emit('click-lectureInfo', item.id)">
                       수강 정보
                     </li>
-                    <li data-toggle="modal" data-target="#modalMoreAttendance">
-                      출결
-                    </li>
+                    <li @click="$emit('click-attendance', item.id)">출결</li>
                     <li @click="$emit('click-memo', item.id)">메모</li>
                     <li data-toggle="modal" data-target="#modalMoreReports">
                       학습 리포트

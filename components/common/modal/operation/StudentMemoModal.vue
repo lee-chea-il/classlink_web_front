@@ -27,16 +27,22 @@
                   data-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  최신 등록순
+                  {{ memoRangeList[isMemoRangeFlag].title }}
                 </button>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">이름 오름차순</a>
-                  <a class="dropdown-item" href="#">이름 내림차순</a>
-                  <a class="dropdown-item" href="#">학년 오름차순</a>
-                  <a class="dropdown-item" href="#">학년 내림차순</a>
+                  <a
+                    v-for="(item, idx) in memoRangeList"
+                    :key="idx"
+                    class="dropdown-item"
+                    href="#"
+                    @click="$emit('select-range', item.id)"
+                    >{{ item.title }}</a
+                  >
                 </div>
               </div>
-              <button class="btn btn_crud_point">등록</button>
+              <button class="btn btn_crud_point" @click="$emit('click-add')">
+                등록
+              </button>
             </div>
             <div class="table_area">
               <div class="table_thead">
@@ -70,16 +76,20 @@
 									<col width="10%">
 								</colgroup> -->
                   <tbody>
-                    <tr>
-                      <td class="td01">1</td>
+                    <tr v-if="isNewStudentMemoFlag">
+                      <td class="td01">0</td>
                       <td class="td02">2022.08.17 PM 09:00</td>
-                      <td class="td03">홍길동</td>
+                      <td class="td03">본인 이름</td>
                       <td class="memo td04">
                         <input
                           type="text"
                           placeholder="내용 입력"
                           class="form-control"
+                          :value="studentMemo.contents"
+                          @input="$emit('change-input', $event)"
                         />
+                        <button @click="$emit('add-memo')">등록</button>
+                        <button @click="$emit('click-cancel')">엑스</button>
                       </td>
                       <td>
                         <i class="btn icons_mu_off more_mu">
@@ -93,40 +103,47 @@
                       </td>
                     </tr>
 
-                    <tr>
-                      <td>2</td>
-                      <td>2022.08.17 PM 09:00</td>
-                      <td>홍길동</td>
-                      <td class="memo">금일 홍길동 학생 어머니와 면담 진행</td>
-                      <td>
-                        <i class="btn icons_mu_off more_mu">
-                          <div class="more_list" style="display: none">
-                            <ul>
-                              <li>수정</li>
-                              <li>삭제</li>
-                            </ul>
-                          </div>
-                        </i>
+                    <tr v-for="(item, idx) in memoList" :key="idx">
+                      <td class="td01">{{ item.id }}</td>
+                      <td class="td02">{{ item.createdAt }}</td>
+                      <td class="td03">{{ item.consultant }}</td>
+                      <td
+                        v-if="
+                          isUpdateStudentMemoFlag && studentMemoId === item.id
+                        "
+                        class="memo td04"
+                      >
+                        <input
+                          type="text"
+                          placeholder="내용 입력"
+                          class="form-control"
+                          :value="studentMemo.contents"
+                          @input="$emit('change-input', $event)"
+                        />
+                        <button @click="$emit('update-memo')">저장</button>
+                        <button @click="$emit('click-cancel')">엑스</button>
                       </td>
-                    </tr>
-
-                    <tr>
-                      <td>3</td>
-                      <td>2022.08.17 PM 09:00</td>
-                      <td>홍길동</td>
-                      <td class="memo memo02">
-                        금일 홍길동 학생 어머니와 면담 진행 금일 홍길동 학생
-                        어머니와 면담 진행금일 홍길동 학생 어머니와 면담
-                        진행금일 홍길동 학생 어머니와 면담 진행금일 홍길동 학생
-                        어머니와 면담 진행금일 홍길동 학생 어머니와 면담
-                        진행금일 홍길동 학생 어머니와 면담 진행
+                      <td v-else class="memo td04">
+                        {{ item.contents }}
                       </td>
                       <td>
-                        <i class="btn icons_mu_off more_mu">
-                          <div class="more_list" style="display: none">
+                        <i
+                          class="btn icons_mu_off more_mu"
+                          @click="$emit('click-more', item.id)"
+                        >
+                          <div
+                            class="more_list"
+                            :class="
+                              isStudentMemoMoreFlag === true &&
+                              studentMemoId === item.id
+                                ? 'show-more'
+                                : ''
+                            "
+                            style="display: none"
+                          >
                             <ul>
-                              <li>수정</li>
-                              <li>삭제</li>
+                              <li @click="$emit('click-update')">수정</li>
+                              <li @click="$emit('click-delete')">삭제</li>
                             </ul>
                           </div>
                         </i>
@@ -167,11 +184,49 @@ export default {
       type: Boolean,
       default: false,
     },
+    memoList: {
+      type: Array,
+      default: () => [],
+    },
+    isNewStudentMemoFlag: {
+      type: Boolean,
+      default: false,
+    },
+    studentMemoId: {
+      type: Number,
+      default: 0,
+    },
+    studentMemo: {
+      type: Object,
+      default: () => {},
+    },
+    isStudentMemoMoreFlag: {
+      type: Boolean,
+      default: false,
+    },
+    isUpdateStudentMemoFlag: {
+      type: Boolean,
+      default: false,
+    },
+    memoRangeList: {
+      type: Array,
+      default: () => [],
+    },
+    isMemoRangeFlag: {
+      type: Number,
+      default: 0,
+    },
   },
 }
 </script>
 <style scoped>
 .modal-index {
   z-index: 999;
+}
+#modalMoreMemo td {
+  white-space: normal !important;
+}
+.show-more {
+  display: block !important;
 }
 </style>

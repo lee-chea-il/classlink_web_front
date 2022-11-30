@@ -92,6 +92,7 @@
                         >
                           등록
                         </button>
+                        <button @click="$emit('click-cancel')">x</button>
                       </td>
                     </tr>
 
@@ -121,6 +122,7 @@
                         >
                           저장
                         </button>
+                        <button @click="$emit('click-cancel')">x</button>
                       </td>
                       <td v-else colspan="4" class="memo02">
                         <div class="box02">
@@ -206,5 +208,8 @@ export default {
 <style scoped>
 .modal-index {
   z-index: 999;
+}
+#modalMoreCourse .table_area .table_tbody tr.memo textarea {
+  width: 607px !important;
 }
 </style>

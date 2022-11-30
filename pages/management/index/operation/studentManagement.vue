@@ -27,6 +27,7 @@
             :isStudentStatusFlag="isStudentStatusFlag"
             :searchStudentText="searchStudentText"
             :expandIdx="expandIdx"
+            @click-attendance="openStudentAttendanceModal"
             @click-memo="openStudentMemoModalDesc"
             @click-lectureInfo="openLectureInfoModalDesc"
             @click-more="onClickExpandBtn"
@@ -180,14 +181,15 @@
       :isUpdateLectureMemoFlag="isUpdateLectureMemoFlag"
       :lectureMemoId="lectureMemoId"
       :lectureInfoMemo="lectureInfoMemo"
+      @click-cancel="onClickLectureMemoCancelBtn"
       @click-sameBtn="onClickSameDate"
       @click-date="onClickDueDatePicker"
       @change-input="changeLectureMemoInput"
       @add-memo="addLectureMemo"
-      @click-update="onClickUpdateMemoBtn"
+      @click-update="onClickUpdateLectureMemoBtn"
       @click-delete="onClickLectureMemoDelete"
       @update-memo="updateLectureMemo"
-      @click-newMemo="onClickNewMemoBtn"
+      @click-newMemo="onClickNewLectureMemoBtn"
       @close="onCloseLectureInfoModalDesc"
     />
 
@@ -199,13 +201,36 @@
       @confirm="onClickDueDateConfirm"
     />
 
-    <!-- 출결-팝업 L -->
-    <StudentAttendanceModal />
-
     <!-- 메모-팝업 L -->
     <StudentMemoModal
       :open="studentMemoModalDesc.open"
+      :memoList="studentInfo.memo"
+      :isNewStudentMemoFlag="isNewStudentMemoFlag"
+      :studentMemoId="studentMemoId"
+      :studentMemo="studentMemo"
+      :isStudentMemoMoreFlag="isStudentMemoMoreFlag"
+      :isUpdateStudentMemoFlag="isUpdateStudentMemoFlag"
+      :memoRangeList="memoRangeList"
+      :isMemoRangeFlag="isMemoRangeFlag"
+      @click-more="onClickMoreBtn"
+      @change-input="changeStudentMemoInput"
+      @click-add="onClickNewStudentMemoBtn"
+      @click-update="onClickUpdateStudentMemoBtn"
+      @update-memo="updateStudentMemo"
+      @click-cancel="onClickCancelBtn"
+      @click-delete="openDeleteStudentMemoModalDesc"
+      @add-memo="addStudentMemo"
+      @select-range="selectMemoRange"
       @close="onCloseStudentMemoModalDesc"
+    />
+
+    <!-- 출결-팝업 L -->
+    <StudentAttendanceModal
+      :open="studentAttendanceModal.open"
+      :studentInfo="studentInfo"
+      @click-nextWeek="openCustomSnackbarNext"
+      @click-prevWeek="openCustomSnackbarPrev"
+      @close="onCloseStudentAttendanceModal"
     />
 
     <!-- [개발참조] : 저장안함은 저장안하고 메모팝업창-L을 닫기 / 취소는 팝업창-S 만 닫기 (메모모달창 모두 닫기 스크립트 찹조)  -->
@@ -228,12 +253,34 @@
 
     <!-- 토스트메세지 victor.js ------------------------------------->
     <!-- [개발참조] : 출결팝업의 선택날짜범위 밖으로의 이전 다음 버튼 클리 시 노출 -->
-    <DeleteFamilyModal @delete-family="deleteFamily" />
+    <CustomSnackbar
+      :show="customSnackbarDesc.show"
+      :message="customSnackbarDesc.message"
+    />
 
-    <DeleteLectureMemoModal @delete-memo="deleteLectureMemo" />
-
-    <!-- 기본 모달로 대체 예정 -->
     <!-- 팝업 S2- 일촌ID삭제 -->
+    <DeleteSimpleModal
+      :open="deleteSimpleModalDesc.open"
+      :message="deleteSimpleModalDesc.message"
+      @delete="deleteFamily"
+      @close="onCloseDeleteSimpleModalDesc"
+    />
+
+    <!-- 수강정보 메모 삭제 -->
+    <DeleteSimpleModal
+      :open="deleteLectureMemoModalDesc.open"
+      :message="deleteLectureMemoModalDesc.message"
+      @delete="deleteLectureMemo"
+      @close="onCloseDeleteLectureMemoModal"
+    />
+
+    <!-- 학생 메모 삭제 -->
+    <DeleteSimpleModal
+      :open="deleteStudentMemoDesc.open"
+      :message="deleteStudentMemoDesc.message"
+      @delete="deleteStudentMemo"
+      @close="onCloseDeleteStudentMemoModal"
+    />
 
     <!-- 학생 개별 등록2(학생등록완료) - 팝업 S2 -->
     <div
@@ -284,8 +331,8 @@ import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 import DatePickerModal from '@/components/common/modal/operation/DatePickerModal.vue'
 import UploadStudentImg from '@/components/common/modal/operation/UploadTeacherImg.vue'
 import ResetPasswordModal from '@/components/common/modal/operation/ResetPasswordModal.vue'
-import DeleteFamilyModal from '@/components/common/modal/operation/DeleteFamilyModal.vue'
-import DeleteLectureMemoModal from '@/components/common/modal/operation/DeleteLectureMemoModal.vue'
+import DeleteSimpleModal from '@/components/common/modal/operation/DeleteSimpleModal.vue'
+import CustomSnackbar from '@/components/common/CustomSnackbar.vue'
 export default {
   name: 'StudentManagement',
   components: {
@@ -307,8 +354,8 @@ export default {
     DatePickerModal,
     UploadStudentImg,
     ResetPasswordModal,
-    DeleteFamilyModal,
-    DeleteLectureMemoModal,
+    DeleteSimpleModal,
+    CustomSnackbar,
   },
   data() {
     return {
@@ -335,6 +382,7 @@ export default {
         email: '',
         profile_image: '',
         lectureInfo: [],
+        memo: [],
       },
       initStudent: {},
       studentList: [
@@ -428,19 +476,19 @@ export default {
           memo: [
             {
               id: 11,
-              createdAt: '',
+              createdAt: '2022.08.17 PM 09:00',
               consultant: '김유진',
               contents: '상담내용입니다.',
             },
             {
               id: 12,
-              createdAt: '',
+              createdAt: '2022.08.17 PM 09:00',
               consultant: '이성국',
               contents: '학생메모입니다.',
             },
             {
               id: 13,
-              createdAt: '',
+              createdAt: '2022.08.17 PM 09:00',
               consultant: '유잔',
               contents: '학생의 메모',
             },
@@ -534,7 +582,26 @@ export default {
               memo: [],
             },
           ],
-          memo: [],
+          memo: [
+            {
+              id: 14,
+              createdAt: '',
+              consultant: '이성국 ',
+              contents: '상담내용입니까??.',
+            },
+            {
+              id: 15,
+              createdAt: '',
+              consultant: '이성국',
+              contents: '학생메모입니다요',
+            },
+            {
+              id: 16,
+              createdAt: '',
+              consultant: '성국',
+              contents: '학생의 메모',
+            },
+          ],
         },
         {
           id: 2,
@@ -611,6 +678,25 @@ export default {
       studentMemoModalDesc: {
         open: false,
       },
+      deleteSimpleModalDesc: {
+        open: false,
+        message: '',
+      },
+      deleteStudentMemoDesc: {
+        open: false,
+        message: '',
+      },
+      deleteLectureMemoModalDesc: {
+        open: false,
+        message: '',
+      },
+      customSnackbarDesc: {
+        show: false,
+        message: '',
+      },
+      studentAttendanceModal: {
+        open: false,
+      },
       // 정렬 필터링
       isRangeFlag: 0,
       isIdentityFlag: 0,
@@ -635,6 +721,10 @@ export default {
       studentStatusList: [
         { id: 0, title: '재원' },
         { id: 1, title: '퇴원' },
+      ],
+      memoRangeList: [
+        { id: 0, title: '최신 등록순' },
+        { id: 1, title: '오래된 순' },
       ],
       // 정보 수정
       nickNameCheck: false,
@@ -672,11 +762,25 @@ export default {
       // 수강 정보 메모 수정하기
       isUpdateLectureMemoFlag: false,
       lectureMemoId: 0,
+      // 학생 메모
+      studentMemo: {
+        id: 0,
+        createdAt: '2022.11.29',
+        consultant: '본인 이름',
+        contents: '',
+      },
+      initStudentMemo: {},
+      isNewStudentMemoFlag: false,
+      studentMemoId: 0,
+      isStudentMemoMoreFlag: false,
+      isUpdateStudentMemoFlag: false,
+      isMemoRangeFlag: 0,
     }
   },
   created() {
     this.initStudent = JSON.parse(JSON.stringify(this.studentInfo))
     this.initLectureMemo = JSON.parse(JSON.stringify(this.lectureInfoMemo))
+    this.initStudentMemo = JSON.parse(JSON.stringify(this.studentMemo))
   },
   methods: {
     // 모달 이벤트
@@ -689,6 +793,12 @@ export default {
     },
     onCloseModalDesc() {
       this.modalDesc.open = false
+    },
+    openDeleteSimpleModalDesc(msg) {
+      this.deleteSimpleModalDesc = { open: true, message: msg }
+    },
+    onCloseDeleteSimpleModalDesc() {
+      this.deleteSimpleModalDesc.open = false
     },
     // 학생 상세 정보 / 수정
     openStudentInfoModalDesc(id) {
@@ -746,6 +856,18 @@ export default {
     onCloseLectureInfoModalDesc() {
       Object.assign(this.studentInfo, this.initStudent)
       this.lectureInfoModalDesc.open = false
+      this.isNewLectureMemoFlag = false
+      this.isUpdateLectureMemoFlag = false
+    },
+
+    openDeleteLectureMemoModalDesc() {
+      this.deleteLectureMemoModalDesc = {
+        open: true,
+        message: '메모를 삭제하시겠습니까?',
+      }
+    },
+    onCloseDeleteLectureMemoModal() {
+      this.deleteLectureMemoModalDesc.open = false
     },
     // 학생 메모 모달
     openStudentMemoModalDesc(id) {
@@ -755,7 +877,41 @@ export default {
     },
     onCloseStudentMemoModalDesc() {
       Object.assign(this.studentInfo, this.initStudent)
+      console.log(this.studentInfo)
       this.studentMemoModalDesc.open = false
+      this.isNewStudentMemoFlag = false
+      this.isUpdateStudentMemoFlag = false
+    },
+    openDeleteStudentMemoModalDesc() {
+      this.deleteStudentMemoDesc = {
+        open: true,
+        message: '메모를 삭제하시겠습니까?',
+      }
+    },
+    onCloseDeleteStudentMemoModal() {
+      this.deleteStudentMemoDesc.open = false
+    },
+    // 커스텀 스낵바
+    openCustomSnackbarNext() {
+      this.customSnackbarDesc = {
+        show: true,
+        message: '다음 주로 이동할 수 없습니다.',
+      }
+    },
+    openCustomSnackbarPrev() {
+      this.customSnackbarDesc = {
+        show: true,
+        message: '지난 주로 이동할 수 없습니다.',
+      }
+    },
+    // 학생 출결관리
+    openStudentAttendanceModal(id) {
+      const student = this.studentList.find((result) => result.id === id)
+      Object.assign(this.studentInfo, student)
+      this.studentAttendanceModal.open = true
+    },
+    onCloseStudentAttendanceModal() {
+      this.studentAttendanceModal.open = false
     },
     // 깊은 복사
     deepCopy(data) {
@@ -941,6 +1097,7 @@ export default {
     },
     onClickFamilyDeleteBtn(id) {
       this.deleteFamilyId = id
+      this.openDeleteSimpleModalDesc('일촌 ID를 삭제하시겠습니까?')
     },
     deleteFamily() {
       for (let i = 0; i < this.studentInfo.family.length; i++) {
@@ -948,6 +1105,7 @@ export default {
           this.studentInfo.family.splice(i, 1)
         }
       }
+      this.deleteSimpleModalDesc.open = false
     },
     onClickSearchBtn() {
       const btn = document.getElementById('modalFamilySearch')
@@ -985,7 +1143,6 @@ export default {
       })
       this.studentList = result
     },
-    // 목록 더보기 버튼
     onClickExpandBtn(idx) {
       if (this.expandIdx.includes(idx)) {
         this.expandIdx.pop()
@@ -1000,7 +1157,8 @@ export default {
     changeLectureMemoInput({ target: { value } }) {
       this.lectureInfoMemo.contents = value
     },
-    onClickNewMemoBtn(id) {
+    onClickNewLectureMemoBtn(id) {
+      this.lectureInfoMemo = this.deepCopy(this.initLectureMemo)
       if (!this.isNewLectureMemoFlag) {
         this.lectureId = id
         this.isNewLectureMemoFlag = true
@@ -1013,11 +1171,16 @@ export default {
         (result) => result.id === id
       )
       lecture.memo.push(this.lectureInfoMemo)
-      this.lectureInfoMemo = this.initLectureMemo
       this.isNewLectureMemoFlag = false
     },
+    onClickLectureMemoCancelBtn() {
+      if (this.isNewLectureMemoFlag || this.isUpdateLectureMemoFlag) {
+        this.isNewLectureMemoFlag = false
+        this.isUpdateLectureMemoFlag = false
+      }
+    },
     // 수강 정보 - 메모 수정
-    onClickUpdateMemoBtn(lectureId, memoId) {
+    onClickUpdateLectureMemoBtn(lectureId, memoId) {
       this.lectureMemoId = memoId
       this.isUpdateLectureMemoFlag = true
       const lecture = this.studentInfo.lectureInfo.find(
@@ -1033,12 +1196,12 @@ export default {
       const memo = lecture.memo.find((result) => result.id === memoId)
       memo.contents = this.lectureInfoMemo.contents
       this.isUpdateLectureMemoFlag = false
-      this.lectureInfoMemo = this.initLectureMemo
     },
     // 수강 정보 - 메모 삭제
     onClickLectureMemoDelete(lectureId, memoId) {
       this.lectureId = lectureId
       this.lectureMemoId = memoId
+      this.openDeleteLectureMemoModalDesc()
     },
     deleteLectureMemo() {
       const lecture = this.studentInfo.lectureInfo.find(
@@ -1049,6 +1212,7 @@ export default {
       )
       const idx = lecture.memo.indexOf(memo)
       lecture.memo.splice(idx, 1)
+      this.deleteLectureMemoModalDesc.open = false
     },
     // 납부일 설정
     onClickDueDatePicker(lectureId) {
@@ -1070,6 +1234,67 @@ export default {
       )
       const idx = this.studentInfo.lectureInfo.indexOf(lecture)
       lecture.dueDate = this.studentInfo.lectureInfo[idx - 1].dueDate
+    },
+
+    // 학생 메모 - 새 메모
+    changeStudentMemoInput({ target: { value } }) {
+      this.studentMemo.contents = value
+    },
+    onClickNewStudentMemoBtn() {
+      this.studentMemo = this.deepCopy(this.initStudentMemo)
+      if (!this.isNewStudentMemoFlag) {
+        this.isNewStudentMemoFlag = true
+      } else {
+        this.isNewStudentMemoFlag = false
+      }
+    },
+    addStudentMemo() {
+      this.studentInfo.memo.push(this.studentMemo)
+      this.isNewStudentMemoFlag = false
+    },
+    onClickCancelBtn() {
+      if (this.isNewStudentMemoFlag || this.isUpdateStudentMemoFlag) {
+        this.isNewStudentMemoFlag = false
+        this.isUpdateStudentMemoFlag = false
+      }
+    },
+    // 학생 메모 - 더보기
+    onClickMoreBtn(memoId) {
+      if (this.isStudentMemoMoreFlag && this.studentMemoId === memoId) {
+        this.isStudentMemoMoreFlag = false
+        return false
+      }
+      this.studentMemoId = memoId
+      this.isStudentMemoMoreFlag = true
+      this.isUpdateStudentMemoFlag = false
+    },
+    // 학생 메모 - 수정
+    onClickUpdateStudentMemoBtn() {
+      this.isUpdateStudentMemoFlag = true
+      const memo = this.studentInfo.memo.find(
+        (result) => result.id === this.studentMemoId
+      )
+      this.studentMemo.contents = memo.contents
+    },
+    updateStudentMemo() {
+      const memo = this.studentInfo.memo.find(
+        (result) => result.id === this.studentMemoId
+      )
+      memo.contents = this.studentMemo.contents
+      this.isUpdateStudentMemoFlag = false
+    },
+    // 학생 메모 - 삭제
+    deleteStudentMemo() {
+      const memo = this.studentInfo.memo.find(
+        (result) => result.id === this.studentMemoId
+      )
+      const idx = this.studentInfo.memo.indexOf(memo)
+      this.studentInfo.memo.splice(idx, 1)
+      this.deleteStudentMemoDesc.open = false
+    },
+    // 메모 정렬
+    selectMemoRange(id) {
+      this.isMemoRangeFlag = id
     },
   },
 }

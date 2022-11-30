@@ -433,8 +433,6 @@
                       <button
                         class="btn icons_minus_circle_off"
                         type="button"
-                        data-toggle="modal"
-                        data-target="#modalFriendsDelete"
                         @click="$emit('click-deleteFamily', item.id)"
                       ></button>
                     </div>
