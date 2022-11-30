@@ -251,6 +251,13 @@
       @close="onCloseModalDesc"
     />
 
+    <!-- 달력 기간 모달 호출 -->
+    <CustomDataPicker
+      :open="isCalendar"
+      @select-date="onChangeDate"
+      @close="closeModalCalendar"
+    />
+
     <!-- 토스트메세지 victor.js ------------------------------------->
     <!-- [개발참조] : 출결팝업의 선택날짜범위 밖으로의 이전 다음 버튼 클리 시 노출 -->
     <CustomSnackbar
@@ -333,6 +340,7 @@ import UploadStudentImg from '@/components/common/modal/operation/UploadTeacherI
 import ResetPasswordModal from '@/components/common/modal/operation/ResetPasswordModal.vue'
 import DeleteSimpleModal from '@/components/common/modal/operation/DeleteSimpleModal.vue'
 import CustomSnackbar from '@/components/common/CustomSnackbar.vue'
+import CustomDataPicker from '~/components/common/modal/RangeDataPicker.vue'
 export default {
   name: 'StudentManagement',
   components: {
@@ -356,6 +364,7 @@ export default {
     ResetPasswordModal,
     DeleteSimpleModal,
     CustomSnackbar,
+    CustomDataPicker
   },
   data() {
     return {
@@ -897,12 +906,21 @@ export default {
         show: true,
         message: '다음 주로 이동할 수 없습니다.',
       }
+      setTimeout(() => {
+        this.onCloseCustomSnackbar()
+      }, 2000)
+    },
+    onCloseCustomSnackbar() {
+      this.customSnackbarDesc.show = false
     },
     openCustomSnackbarPrev() {
       this.customSnackbarDesc = {
         show: true,
         message: '지난 주로 이동할 수 없습니다.',
       }
+      setTimeout(() => {
+        this.onCloseCustomSnackbar()
+      }, 2000)
     },
     // 학생 출결관리
     openStudentAttendanceModal(id) {

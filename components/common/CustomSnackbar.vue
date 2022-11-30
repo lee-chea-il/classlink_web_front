@@ -1,13 +1,6 @@
 <template>
-  <Transition name="modal">
-    <div
-      v-if="show"
-      class="toast"
-      role="alert"
-      aria-live="assertive"
-      aria-atomic="true"
-      data-delay="2000"
-    >
+  <Transition name="fade">
+    <div v-if="show" class="toast" role="alert">
       <div class="toast-body">
         <span id="toastMsg" class="message">{{ message }}</span>
       </div>
@@ -40,5 +33,12 @@ export default {
 }
 .toast .toast-body {
   background-color: #fb5353;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
