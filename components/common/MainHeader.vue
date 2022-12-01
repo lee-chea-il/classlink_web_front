@@ -239,7 +239,7 @@
                 active: $route.fullPath.includes('/world/reference'),
               }"
               to="/world/reference"
-              >건물 자료실</NuxtLink
+              >자료실</NuxtLink
             >
           </li>
           <li class="nav-item">
@@ -249,7 +249,7 @@
                 active: $route.fullPath === '/world/package',
               }"
               to="/world/package"
-              >건물 패키지</NuxtLink
+              >패키지</NuxtLink
             >
           </li>
           <li class="nav-item">

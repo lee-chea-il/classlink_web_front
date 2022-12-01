@@ -36,48 +36,26 @@
     </div>
     <div class="div_line01"></div>
     <div class="div_cont02">
-      <div class="row">
-        <label for="" class="col-3 col-lg-3 col-sm-2 cont">자료 구분</label>
-        <div class="col cont">
-          <span>{{ reference.fileDivision }}</span>
-        </div>
-      </div>
-
-      <div class="row">
-        <label for="" class="col-3 col-lg-3 col-sm-2 cont">유형</label>
-        <div class="col cont">
-          <span>{{ reference.fileType }}</span>
-        </div>
-      </div>
-
-      <div class="row">
-        <label for="" class="col-3 col-lg-3 col-sm-2 cont">등록 일시</label>
-        <div class="col cont">
-          <span>{{ reference.createAt }}</span>
-        </div>
-      </div>
-
-      <div class="row">
-        <label for="" class="col-3 col-lg-3 col-sm-2 cont">용량</label>
-        <div class="col cont">
-          <span>{{ reference.fileVolume }}</span>
-        </div>
-      </div>
-
-      <div class="row">
-        <label for="" class="col-3 col-lg-3 col-sm-2 cont">등록자</label>
-        <div class="col cont">
-          <span>{{ reference.registrant }}</span>
-        </div>
-      </div>
+      <BrowseLabel title="자료 구분" :value="reference.fileDivision" />
+      <BrowseLabel
+        v-if="pageRoot !== 'world'"
+        title="과목"
+        :value="reference.subject"
+      />
+      <BrowseLabel title="공개 여부" :value="setOpen(reference)" />
+      <BrowseLabel title="콘텐츠 유형" :value="reference.fileType" />
+      <BrowseLabel title="경로" :value="reference.savePath" />
     </div>
   </div>
   <!-- /. 동영상,문서 컨텐츠 -->
 </template>
 
 <script>
+import BrowseLabel from '../custom/BrowseLabel.vue'
+
 export default {
   name: 'LessonBrowseContent',
+  components: { BrowseLabel },
   props: {
     show: {
       type: Boolean,
@@ -86,6 +64,19 @@ export default {
     reference: {
       type: Object,
       default: () => {},
+    },
+    pageRoot: {
+      type: String,
+      default: '',
+    },
+  },
+  methods: {
+    setOpen(item) {
+      const education = item.isOpenEducation ? '교육기관 ON' : '교육기관 OFF'
+      const reference = item.isOpenReference
+        ? '공개자료실 ON'
+        : '공개자료실 OFF'
+      return `${education} / ${reference}`
     },
   },
 }
@@ -96,6 +87,10 @@ export default {
 .embed,
 .iframe {
   width: 100%;
+  height: 100%;
+}
+
+#modalLessonView .div_cont02 {
   height: 100%;
 }
 </style>

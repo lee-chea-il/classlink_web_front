@@ -135,7 +135,7 @@
 
     <!-- 자료 수정 -->
     <ReferenceChangeModal
-      modalTitle="자료 수정"
+      modalTitle="수정"
       :open="isReferenceChange.open"
       :reference="selectReferenceItem"
       :pushKeyword="pushKeyword"
@@ -149,7 +149,7 @@
 
     <!-- 퀴즈 수정 -->
     <QuizChangeModal
-      modalTitle="자료 수정"
+      modalTitle="수정"
       :open="isQuizChange.open"
       :reference="selectReferenceItem"
       :currentPageIdx="currentIdx"
@@ -173,7 +173,7 @@
 
     <!-- 쪽지시험 수정 -->
     <NoteTestChangeModal
-      modalTitle="자료 수정"
+      modalTitle="수정"
       :open="isNoteTestChange.open"
       :reference="selectReferenceItem"
       :currentPageIdx="currentIdx"
@@ -304,7 +304,7 @@ export default {
       this.pushKeyword = value
     },
 
-    // [레슨] 레슨 등록 모달
+    // [레슨]  모달
     openLessonAdd() {
       this.lessonData = {
         name: '',
@@ -317,7 +317,7 @@ export default {
         createAt: '',
         referenceList: [],
       }
-      this.setModalTitle('레슨 등록')
+      this.setModalTitle('등록')
       this.treeReferenceList = []
       this.isAddLesson.open = true
     },
@@ -331,7 +331,7 @@ export default {
       if (this.isLessonBrowse.open) {
         this.closeLessonBrowseModal()
       }
-      this.setModalTitle('레슨 수정')
+      this.setModalTitle('수정')
       const newItem = jsonItem(data)
       this.lessonData = newItem
       this.treeReferenceList = newItem.referenceList

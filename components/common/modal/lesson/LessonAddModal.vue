@@ -12,7 +12,7 @@
       <div class="background_close" />
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-          <ModalHeader :title="modalTitle" @close="$emit('close')" />
+          <ModalHeader :title="`레슨 ${modalTitle}`" @close="$emit('close')" />
           <div class="modal-body">
             <div class="modal_Lessonregi">
               <!-- 모달 내용 구분 class-->
@@ -172,7 +172,7 @@
             </div>
           </div>
           <ModalBtnBox
-            submitTxt="등록"
+            :submitTxt="modalTitle"
             @submit="$emit('submit')"
             @close="$emit('close')"
           />
@@ -219,11 +219,11 @@ export default {
     moreShowClickReference(data) {
       this.$emit('open-reference', data, 'isAddLesson')
     },
-    unActive(){
+    unActive() {
       this.$refs.myLesson.unActiveAll()
       this.$refs.myFranchise.unActiveAll()
       this.$refs.right.$refs.myLessonTreeview.unActiveAll()
-    }
+    },
   },
 }
 </script>

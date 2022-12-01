@@ -345,6 +345,7 @@ export default {
 
     // 자료 추가 모달
     onOpenReferenceAddModal() {
+      this.setModalTitle('등록')
       this.isReferenceAddModal = true
     },
 
@@ -355,6 +356,7 @@ export default {
 
     // 퀴즈 추가 모달
     onOpenQuizAddModal() {
+      this.setModalTitle('등록')
       this.referenceData = {
         ...this.referenceData,
         fileDivision: '교육기관',
@@ -362,7 +364,6 @@ export default {
         uploadType: 'quiz',
         fileVolume: '0',
       }
-      this.setModalTitle('자료 등록')
       this.referenceData.createAt = new Date()
       document.getElementById('referenceSelectClose').click()
       this.isQuizAddModal = true
@@ -375,7 +376,7 @@ export default {
 
     // 쪽지시험 추가 모달
     onOpenNoteTestAddModal() {
-      this.setModalTitle('자료 등록')
+      this.setModalTitle('등록')
       this.referenceData = {
         ...this.referenceData,
         fileDivision: '교육기관',
@@ -407,8 +408,8 @@ export default {
     },
 
     onCloseQuizBrowseModal() {
-      this.initAddReferenceData()
       this.isQuizBrowse = false
+      this.initReference()
     },
 
     // 쪽지시험 조회
@@ -417,13 +418,13 @@ export default {
     },
 
     onCloseNoteTestBrowseModal() {
-      this.initAddReferenceData()
       this.isNoteTestBrowse = false
+      this.initReference()
     },
 
     // 퀴즈 수정 셋팅
     onOpenQuizChangeModal() {
-      this.setModalTitle('자료 수정')
+      this.setModalTitle('수정')
       if (this.isQuizBrowse) {
         this.onCloseQuizBrowseModal()
       }
@@ -432,7 +433,7 @@ export default {
 
     // 쪽지시험 셋팅
     onOpenNoteTestChangeModal() {
-      this.setModalTitle('자료 수정')
+      this.setModalTitle('수정')
       if (this.isNoteTestBrowse) {
         this.onCloseNoteTestBrowseModal()
       }
@@ -573,7 +574,7 @@ export default {
 
     // 자료 선택 모달
     openSelectReferenceType() {
-      this.setModalTitle('자료 등록')
+      this.setModalTitle('등록')
       this.isSelectType = true
     },
 
@@ -596,7 +597,7 @@ export default {
     // Event Listener
     // 자료 수정 할때 모달 타이틀 변경
     onOpenReferenceChangeModal() {
-      this.setModalTitle('자료 수정')
+      this.setModalTitle('수정')
       if (this.isReferenceBrowse) {
         this.onCloseReferenceBrowseModal()
       }
@@ -968,11 +969,7 @@ export default {
       else return this.onOpenReferenceBrowseModal()
     },
 
-    // 취소시 등록 하려고했던 데이터 지우기
-    initAddReferenceData() {
-      Object.assign(this.$data, initialState())
-    },
-
+    // 자료 조회
     onClickView(params) {
       this.referenceData = jsonItem(params)
       const type = params.uploadType
@@ -1067,8 +1064,6 @@ export default {
       const newItem = jsonItem(data)
       this.referenceData = newItem
       const type = newItem.uploadType
-      // if (type === 'quiz') return this.exportPdf('quiz')
-      // else if (type === 'test') return this.exportPdf('test')
       if (type === 'quiz') return false
       else if (type === 'test') return false
       return this.createAtag(newItem.savePath)
@@ -1076,12 +1071,12 @@ export default {
 
     // tree menu change button
     updateSelectData(data) {
+      this.setModalTitle('수정')
       this.referenceData = jsonItem(data)
       const type = data.uploadType
-      this.setModalTitle('자료 수정')
-      if (type === 'quiz') return this.onOpenQuizAddModal()
-      else if (type === 'test') return this.onOpenNoteTestAddModal()
-      else return this.onOpenReferenceAddModal()
+      if (type === 'quiz') return this.onOpenQuizChangeModal()
+      else if (type === 'test') return this.onOpenNoteTestChangeModal()
+      else return this.onOpenReferenceChangeModal()
     },
   },
 }

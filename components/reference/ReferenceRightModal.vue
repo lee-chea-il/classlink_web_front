@@ -27,55 +27,38 @@
               :src="reference.savePath"
               frameborder="0"
             />
-            <!-- src="https://docs.google.com/viewer?url=http://112.171.101.31:58080/fire-safety/item4.pptx&embedded=true" -->
-            <!-- type="application/pdf" -->
-          </div>
-          <label for="" class="data_title name cont">자료 구분</label>
-          <div class="col name cont">
-            <span>{{ reference.fileDivision }}</span>
           </div>
         </div>
+        <div style="padding-top: 30px"></div>
+        <ContentLabel title="자료 구분" :value="reference.fileDivision" />
+        <ContentLabel title="유형" :value="reference.fileType" />
+        <ContentLabel title="등록 일시" :value="getDate" />
 
-        <div class="row">
-          <label for="" class="data_title cont">유형</label>
-          <div class="col cont">
-            <span>{{ reference.fileType }}</span>
-          </div>
-        </div>
+        <ContentLabel
+          v-if="
+            reference.uploadType === 'youtube' || reference.uploadType === 'url'
+          "
+          title="주소"
+          :value="reference.savePath"
+        />
 
-        <div class="row">
-          <label for="" class="data_title cont">등록 일시</label>
-          <div class="col cont">
-            <span>{{ getDate }}</span>
-          </div>
-        </div>
-
-        <div class="row">
-          <label for="" class="data_title cont">용량</label>
-          <div class="col cont">
-            <span>{{ getByteSize(reference.fileVolume) }}</span>
-          </div>
-        </div>
-
-        <div class="row">
-          <label for="" class="data_title cont">등록자</label>
-          <div class="col cont">
-            <span>홍길동</span>
-          </div>
-        </div>
-
-        <!-- [개발참조] 자료수정일때 출력되는 버튼 -->
-        <!-- <div class="row">
-										<button for="" class="btn btn_crud_default fileChange">파일 교체</button>
-									</div> -->
+        <ContentLabel
+          v-else
+          title="용량"
+          :value="getByteSize(reference.fileVolume)"
+        />
+        <ContentLabel title="등록자" value="홍길동" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import ContentLabel from './commom/ContentLabel.vue'
+
 export default {
   name: 'ReferenceRightModal',
+  components: { ContentLabel },
   props: {
     reference: {
       type: Object,
@@ -95,10 +78,8 @@ export default {
   methods: {
     getByteSize(size) {
       const byteUnits = ['KB', 'MB', 'GB', 'TB']
-
       for (let i = 0; i < byteUnits.length; i++) {
         size = Math.floor(size / 1024)
-
         if (size < 1024) return size.toFixed(1) + byteUnits[i]
       }
     },

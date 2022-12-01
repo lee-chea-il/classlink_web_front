@@ -28,7 +28,7 @@
         :first="true"
       />
       <CustomData title="콘텐츠 유형" :value="reference.fileType" />
-      <CustomData title="과목" value="수학" />
+      <CustomData v-if="pageRoot !== 'world'" title="과목" value="수학" />
       <CustomData title="공개 여부" value="ON" />
       <CustomData title="경로" :value="reference.savePath" />
     </div>
@@ -62,6 +62,10 @@ export default {
     reference: {
       type: Object,
       default: () => {},
+    },
+    pageRoot: {
+      type: String,
+      default: '',
     },
   },
   methods: {

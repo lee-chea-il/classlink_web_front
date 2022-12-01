@@ -20,6 +20,7 @@
               <div class="divide_section">
                 <!-- 왼쪽 영역 -->
                 <LessonBrowseLeftField
+                  :pageRoot="pageRoot"
                   :lessonItem="lessonItem"
                   @select-reference="$emit('select-reference', $event)"
                 />
@@ -27,6 +28,7 @@
 
                 <!-- 오른쪽 영역 -->
                 <LessonBrowseRightField
+                  :pageRoot="pageRoot"
                   :referenceItem="selectReference"
                   :currentIdx="currentIdx"
                   @pagination="paginationEmit"
@@ -40,6 +42,7 @@
           </div>
 
           <ModalBtnBox
+            :pageRoot="pageRoot"
             submitTxt="수정"
             @submit="$emit('lesson-change', lessonItem)"
             @close="$emit('close')"
@@ -80,6 +83,10 @@ export default {
     lessonItem: {
       type: [Array, Object],
       default: () => [],
+    },
+    pageRoot: {
+      type: String,
+      default: '',
     },
   },
   methods: {

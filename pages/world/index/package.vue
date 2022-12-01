@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageHeader title="건물 패키지" />
+    <PageHeader title="패키지" />
 
     <div class="tab-content depth03 ac_manage_dtr">
       <div class="tab-pane active">
@@ -64,6 +64,7 @@
       :lessonItem="lessonViewData"
       :selectReference="selectReferenceItem"
       :currentIdx="currentIdx"
+      :pageRoot="pageRoot"
       @pagination="setPagination"
       @select-reference="setSelectReference"
       @close="closeLessonBrowseModal"
@@ -94,6 +95,7 @@
     <VideoBrowseModal
       :open="isReferenceBrowse.open"
       :selectData="selectReferenceItem"
+      :pageRoot="pageRoot"
       @close="closeReferenceBrowse"
       @reference-change="onOpenReferenceChangeModal"
       @view-url="onOpenShareViewModal"
@@ -135,7 +137,7 @@
 
     <!-- 자료 수정 -->
     <ReferenceChangeModal
-      modalTitle="자료 수정"
+      modalTitle="수정"
       :open="isReferenceChange.open"
       :reference="selectReferenceItem"
       :pushKeyword="pushKeyword"
@@ -149,7 +151,7 @@
 
     <!-- 퀴즈 수정 -->
     <QuizChangeModal
-      modalTitle="자료 수정"
+      modalTitle="수정"
       :open="isQuizChange.open"
       :reference="selectReferenceItem"
       :currentPageIdx="currentIdx"
@@ -173,7 +175,7 @@
 
     <!-- 쪽지시험 수정 -->
     <NoteTestChangeModal
-      modalTitle="자료 수정"
+      modalTitle="수정"
       :open="isNoteTestChange.open"
       :reference="selectReferenceItem"
       :currentPageIdx="currentIdx"
@@ -316,7 +318,7 @@ export default {
         createAt: '',
         referenceList: [],
       }
-      this.setModalTitle('레슨 등록')
+      this.setModalTitle('등록')
       this.treeReferenceList = []
       this.isAddLesson.open = true
     },
@@ -330,7 +332,7 @@ export default {
       if (this.isLessonBrowse.open) {
         this.closeLessonBrowseModal()
       }
-      this.setModalTitle('레슨 수정')
+      this.setModalTitle('수정')
       const newItem = jsonItem(data)
       this.lessonData = newItem
       this.treeReferenceList = newItem.referenceList
@@ -380,9 +382,9 @@ export default {
       if (this.isLessonBrowse.prevPage) {
         this[this.isLessonBrowse.prevPage].open = true
       }
-      this.isLessonBrowse={
-        prevPage:'',
-        open:false
+      this.isLessonBrowse = {
+        prevPage: '',
+        open: false,
       }
     },
 

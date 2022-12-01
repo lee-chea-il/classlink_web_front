@@ -4,6 +4,7 @@ export default function initialState() {
     pushKeyword: '',
     modalTitle: '',
     identity: 'teacher',
+    pageRoot: 'world',
     isCopyType: '',
     isLesson: false,
     selectReferenceItem: {},
@@ -75,7 +76,7 @@ export default function initialState() {
                 name: '1단원',
                 children: [
                   {
-                    name: '2-1반 수학 수업자료.pack',
+                    name: '본사 스프링 시즌용.pack',
                     type: 'institution',
                     dbIdx: 1,
                     title: '2-1반 수업',
@@ -324,7 +325,7 @@ export default function initialState() {
                     ],
                   },
                   {
-                    name: '고등교육 영어자료.pack',
+                    name: '본사 썸머시즌용.pack',
                     type: 'institution',
                     dbIdx: 2,
                     title: '고등교육 영어자료',
@@ -551,7 +552,7 @@ export default function initialState() {
                     ],
                   },
                   {
-                    name: '수학적 귀납법 설명자료.pack',
+                    name: '본사 윈터 시즌용.pack',
                     type: 'institution',
                     dbIdx: 3,
                     title: '수학적 귀납법 설명자료',
@@ -778,7 +779,7 @@ export default function initialState() {
                     ],
                   },
                   {
-                    name: '6학년 영재반 수업자료.pack',
+                    name: '본사 윈터 시즌용 part2.pack',
                     type: 'institution',
                     dbIdx: 4,
                     title: '6학년 영재반 수업자료',

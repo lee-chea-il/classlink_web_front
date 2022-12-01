@@ -12,7 +12,7 @@
       <div class="background_close" />
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-          <ModalHeader :title="modalTitle" @close="$emit('close')" />
+          <ModalHeader :title="`자료 ${modalTitle}`" @close="$emit('close')" />
 
           <div class="modal-body">
             <div class="modal_dataregi row">
@@ -37,7 +37,7 @@
           </div>
 
           <ModalBtnBox
-            submitTxt="등록"
+            :submitTxt="modalTitle"
             @submit="$emit('submit')"
             @close="$emit('close')"
           />

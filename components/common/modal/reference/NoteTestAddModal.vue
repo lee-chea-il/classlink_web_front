@@ -12,7 +12,7 @@
       <div class="background_close" />
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-          <ModalHeader :title="modalTitle" @close="$emit('close')" />
+          <ModalHeader :title="`자료 ${modalTitle}`" @close="$emit('close')" />
 
           <div class="modal-body">
             <div class="modal_dataquiz datanote row">
@@ -51,7 +51,7 @@
               <!-- /.오른쪽 영역 -->
             </div>
           </div>
-          <ModalBtnBox submitTxt="등록" @close="$emit('close')" />
+          <ModalBtnBox :submitTxt="modalTitle" @close="$emit('close')" />
         </div>
       </div>
     </div>

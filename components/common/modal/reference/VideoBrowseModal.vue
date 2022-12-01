@@ -68,7 +68,7 @@
             </div>
 
             <!-- [개발참조] 하단 info_section 부분은 열람 팝업 공통 -->
-            <FileInfoSection :fileInfo="selectData" />
+            <FileInfoSection :pageRoot="pageRoot" :fileInfo="selectData" />
           </div>
         </div>
       </div>
@@ -99,6 +99,10 @@ export default {
     open: {
       type: Boolean,
       default: false,
+    },
+    pageRoot: {
+      type: String,
+      default: '',
     },
     selectData: {
       type: Object,

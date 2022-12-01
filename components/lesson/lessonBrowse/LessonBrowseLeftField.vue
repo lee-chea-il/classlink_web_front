@@ -12,7 +12,11 @@
     <LessonKeywordField :keyword="lessonItem?.keyword" />
 
     <CustomData title="구분" :value="lessonItem?.type" :first="true" />
-    <CustomData title="과목" :value="lessonItem?.subject" />
+    <CustomData
+      v-if="pageRoot !== 'world'"
+      title="과목"
+      :value="lessonItem?.subject"
+    />
     <CustomData title="등록자" :value="lessonItem?.registrant" />
     <CustomData title="등록일" :value="lessonItem?.createAt" />
     <CustomData title="저장 경로" :value="lessonItem?.savePath" />
@@ -52,6 +56,10 @@ export default {
     lessonItem: {
       type: Object,
       default: () => {},
+    },
+    pageRoot: {
+      type: String,
+      default: '',
     },
   },
 }

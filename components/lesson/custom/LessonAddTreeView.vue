@@ -18,7 +18,6 @@
       <span slot="addTreeNodeIcon" class="icon"></span>
       <span slot="delNodeIcon" class="icon"></span>
     </vue-tree-list>
-    {{ isEmptyData }}
   </div>
 </template>
 

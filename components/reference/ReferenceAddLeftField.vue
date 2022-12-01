@@ -80,7 +80,6 @@
       </div>
 
       <CheckboxGroup
-        v-if="pageRoot === 'world'"
         :isOpenEducation="reference.isOpenEducation"
         :isOpenReference="reference.isOpenReference"
         :pageRoot="pageRoot"

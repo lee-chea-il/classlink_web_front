@@ -5,7 +5,7 @@ export default function initialState() {
     pushKeyword: '',
     identity: 'teacher',
     pageType: 'reference',
-    modalTitle: '자료 등록',
+    modalTitle: '등록',
     isCopyType: '',
     // Modal Flag
 
@@ -198,7 +198,7 @@ export default function initialState() {
                     keyword: ['국어', '수학'],
                     registrant: '등록인',
                     savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
-                    saveFolder: '12341',
+                    saveFolder: '',
                     isOpenEducation: true,
                     isOpenReference: true,
                     fileName: '',

@@ -134,6 +134,7 @@
     <VideoBrowseModal
       :open="isReferenceBrowse"
       :selectData="referenceData"
+      :pageRoot="pageRoot"
       @close="onCloseReferenceBrowseModal"
       @reference-change="onOpenReferenceChangeModal"
       @view-url="onOpenShareViewModal"
@@ -353,6 +354,7 @@ export default {
 
     // 자료 추가 모달
     onOpenReferenceAddModal() {
+      this.setModalTitle('등록')
       this.isReferenceAddModal = true
     },
 
@@ -363,6 +365,7 @@ export default {
 
     // 퀴즈 추가 모달
     onOpenQuizAddModal() {
+      this.setModalTitle('등록')
       this.referenceData = {
         ...this.referenceData,
         fileDivision: '교육기관',
@@ -370,7 +373,6 @@ export default {
         uploadType: 'quiz',
         fileVolume: '0',
       }
-      this.setModalTitle('자료 등록')
       this.referenceData.createAt = new Date()
       document.getElementById('referenceSelectClose').click()
       this.isQuizAddModal = true
@@ -383,7 +385,7 @@ export default {
 
     // 쪽지시험 추가 모달
     onOpenNoteTestAddModal() {
-      this.setModalTitle('자료 등록')
+      this.setModalTitle('등록')
       this.referenceData = {
         ...this.referenceData,
         fileDivision: '교육기관',
@@ -431,7 +433,7 @@ export default {
 
     // 퀴즈 수정 셋팅
     onOpenQuizChangeModal() {
-      this.setModalTitle('자료 수정')
+      this.setModalTitle('수정')
       if (this.isQuizBrowse) {
         this.onCloseQuizBrowseModal()
       }
@@ -440,7 +442,7 @@ export default {
 
     // 쪽지시험 셋팅
     onOpenNoteTestChangeModal() {
-      this.setModalTitle('자료 수정')
+      this.setModalTitle('수정')
       if (this.isNoteTestBrowse) {
         this.onCloseNoteTestBrowseModal()
       }
@@ -580,7 +582,7 @@ export default {
 
     // 자료 선택 모달
     openSelectReferenceType() {
-      this.setModalTitle('자료 등록')
+      this.setModalTitle('등록')
       this.isSelectType = true
     },
 
@@ -603,7 +605,7 @@ export default {
     // Event Listener
     // 자료 수정 할때 모달 타이틀 변경
     onOpenReferenceChangeModal() {
-      this.setModalTitle('자료 수정')
+      this.setModalTitle('수정')
       if (this.isReferenceBrowse) {
         this.onCloseReferenceBrowseModal()
       }
@@ -771,6 +773,7 @@ export default {
 
     // 비디오 업로드
     onUploadVideo(e) {
+      this.setModalTitle('등록')
       const {
         target: { files },
       } = e
@@ -796,6 +799,7 @@ export default {
 
     // PDF 업로드
     onUploadPdf(e) {
+      this.setModalTitle('등록')
       const {
         target: { files },
       } = e
@@ -822,6 +826,7 @@ export default {
     },
 
     uploadMusic(e) {
+      this.setModalTitle('등록')
       const {
         target: { files },
       } = e
@@ -870,6 +875,7 @@ export default {
 
     // 유튜브 업로드
     onUploadYoutube() {
+      this.setModalTitle('등록')
       const youtubeUrl = this.urlData.youtube.replace('https://youtu.be/', '')
       if (youtubeRegex.test(this.urlData.youtube) === true) {
         this.getYoutubeData(youtubeUrl)
@@ -880,6 +886,7 @@ export default {
 
     // URL 업로드
     onUploadUrl() {
+      this.setModalTitle('등록')
       const url = this.urlData.page
       if (urlRegex.test(this.urlData.page) === true) {
         this.referenceData = {
@@ -1111,8 +1118,6 @@ export default {
       const newItem = jsonItem(data)
       this.referenceData = newItem
       const type = newItem.uploadType
-      // if (type === 'quiz') return this.exportPdf('quiz')
-      // else if (type === 'test') return this.exportPdf('test')
       if (type === 'quiz') return false
       else if (type === 'test') return false
       return this.createAtag(newItem.savePath)
@@ -1120,12 +1125,12 @@ export default {
 
     // tree menu change button
     updateSelectData(data) {
+      this.setModalTitle('수정')
       this.referenceData = jsonItem(data)
       const type = data.uploadType
-      this.setModalTitle('자료 수정')
-      if (type === 'quiz') return this.onOpenQuizAddModal()
-      else if (type === 'test') return this.onOpenNoteTestAddModal()
-      else return this.onOpenReferenceAddModal()
+      if (type === 'quiz') return this.onOpenQuizChangeModal()
+      else if (type === 'test') return this.onOpenNoteTestChangeModal()
+      else return this.onOpenReferenceChangeModal()
     },
   },
 }

@@ -5,6 +5,7 @@
       :show="referenceItem.uploadType === 'quiz'"
       :reference="referenceItem"
       :currentIdx="currentIdx"
+      :pageRoot="pageRoot"
       @pagination="paginationEmit"
       @quiz-preview="$emit('quiz-preview', $event)"
     />
@@ -15,6 +16,7 @@
       :show="referenceItem.uploadType === 'test'"
       :reference="referenceItem"
       :currentIdx="currentIdx"
+      :pageRoot="pageRoot"
       @pagination="paginationEmit"
       @test-preview="$emit('test-preview', $event)"
     />
@@ -22,6 +24,7 @@
 
     <!-- [개발참조] 동영상,문서 컨텐츠 -->
     <LessonBrowseContent
+      :pageRoot="pageRoot"
       :show="isContent(referenceItem.uploadType)"
       :reference="referenceItem"
     />
@@ -48,6 +51,10 @@ export default {
     currentIdx: {
       type: Number,
       default: 0,
+    },
+    pageRoot: {
+      type: String,
+      default: '',
     },
   },
   methods: {
