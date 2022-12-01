@@ -262,7 +262,7 @@
 
     <!-- 학습리포트 : 리포트열람 -팝업 L -->
     <ReportDetailModal
-      :open="reportDetailModal.open"
+      :open="reportDetailModalDesc.open"
       :reportList="reportList"
       :studentInfo="studentInfo"
       :bgList="bgList"
@@ -719,6 +719,105 @@ export default {
           classAverage: '60',
           question: '12/15',
         },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어리딩심화',
+          class: '심화A',
+          attendancePercent: '80%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 80,
+          classAverage: '70',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어리딩기초',
+          class: '심화A',
+          attendancePercent: '70%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 20,
+          classAverage: '70',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어회화기초',
+          class: '심화A',
+          attendancePercent: '20%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 50,
+          classAverage: '60',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어리딩심화',
+          class: '심화A',
+          attendancePercent: '80%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 80,
+          classAverage: '70',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어리딩기초',
+          class: '심화A',
+          attendancePercent: '70%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 20,
+          classAverage: '70',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어회화기초',
+          class: '심화A',
+          attendancePercent: '20%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 50,
+          classAverage: '60',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어리딩심화',
+          class: '심화A',
+          attendancePercent: '80%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 80,
+          classAverage: '70',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어리딩기초',
+          class: '심화A',
+          attendancePercent: '70%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 20,
+          classAverage: '70',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어회화기초',
+          class: '심화A',
+          attendancePercent: '20%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 50,
+          classAverage: '60',
+          question: '12/15',
+        },
       ],
       // 모달
       modalDesc: {
@@ -770,9 +869,9 @@ export default {
         open: false,
       },
       reportFilterModal: {
-        open: true,
+        open: false,
       },
-      reportDetailModal: {
+      reportDetailModalDesc: {
         open: false,
       },
       // 정렬 필터링
@@ -906,22 +1005,6 @@ export default {
           ),
           end: setDate(new Date()),
         }
-      }
-    },
-    reportDetailModal() {
-      if (this.reportDetailModal) {
-        const array = []
-        for (let i = 0; i < this.reportList.length; i++) {
-          const count = i
-          if (array.length === this.reportList.length) {
-            break
-          } else if (count === this.bgList.length) {
-            i = -1
-          } else {
-            array.push(this.bgList[count])
-          }
-        }
-        this.bgList = array
       }
     },
   },
@@ -1113,11 +1196,24 @@ export default {
       this.isMonthRange = false
     },
     openReportDetailModal() {
+      const array = []
+      for (let i = 0; i < this.reportList.length; i++) {
+        const count = i
+        if (array.length === this.reportList.length) {
+          break
+        } else if (count === this.bgList.length) {
+          i = -1
+        } else {
+          array.push(this.bgList[count])
+        }
+      }
+      this.bgList = array
+      console.log(this.bgList)
       this.onCloseReportFilterModal()
-      this.reportDetailModal.open = true
+      this.reportDetailModalDesc.open = true
     },
     onCloseReportDetailModal() {
-      this.reportDetailModal.open = false
+      this.reportDetailModalDesc.open = false
     },
     // 깊은 복사
     deepCopy(data) {

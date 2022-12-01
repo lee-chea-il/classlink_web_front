@@ -207,7 +207,14 @@
             >
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">결제관리</a>
+            <NuxtLink
+              :class="{
+                'nav-link': true,
+                active: $route.fullPath.includes('/management/payment'),
+              }"
+              to="/management/payment"
+              >결제관리</NuxtLink
+            >
           </li>
           <li class="nav-item">
             <NuxtLink

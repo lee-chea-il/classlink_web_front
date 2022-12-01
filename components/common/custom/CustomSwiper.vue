@@ -86,7 +86,7 @@ export default {
       swiperOption: {
         direction: this.isHorizontal ? 'horizontal' : 'vertical',
         slidesPerView: 3.4,
-        spaceBetween: this.isHorizontal ? 10 : 0,
+        spaceBetween: this.isHorizontal ? 20 : 0,
         scrollbar: {
           el: '.swiper-scrollbar',
           hide: true,
