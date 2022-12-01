@@ -21,18 +21,18 @@
               <ReferenceAddLeftField
                 :reference="reference"
                 :pushKeyword="pushKeyword"
+                :pageRoot="pageRoot"
                 @change-input="$emit('change-input', $event)"
                 @set-keyword="$emit('set-keyword', $event)"
                 @change-keyword="$emit('changePushKeyword', $event)"
                 @delete-keyword="$emit('delete-keyword', $event)"
                 @open-save-path="$emit('open-save-path', $event)"
+                @delete-thumbnail="$emit('delete-thumbnail')"
               />
               <!-- /.왼쪽 영역 -->
 
               <!-- 오른쪽 영역 -->
-              <ReferenceRightModal
-                :reference="reference"
-              />
+              <ReferenceRightModal :reference="reference" />
             </div>
           </div>
 
@@ -62,6 +62,10 @@ export default {
   },
   props: {
     open: Boolean,
+    pageRoot: {
+      type: String,
+      default: '',
+    },
     uploadType: {
       type: String,
       default: '',

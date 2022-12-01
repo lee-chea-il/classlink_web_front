@@ -7,7 +7,10 @@
           <div class="title">미리보기</div>
           <div class="thumbnail_view">
             <video
-              v-show="reference.uploadType === 'video'"
+              v-show="
+                reference.uploadType === 'video' ||
+                reference.uploadType === 'music'
+              "
               id="video"
               class="video"
               :src="reference.savePath"

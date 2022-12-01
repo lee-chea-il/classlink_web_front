@@ -88,4 +88,16 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+#modalDatafilter .modal-body {
+  min-height: 260px;
+  height: 100%;
+}
+.filter_box {
+  height: 100% !important;
+}
+
+#modalDatafilter .modal-footer {
+  padding-top: 40px;
+}
+</style>

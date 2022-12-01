@@ -14,7 +14,10 @@
         >교육기관에 해당 자료를 공개합니다.</label
       >
     </span>
-    <span class="custom-control custom-checkbox form-inline">
+    <span
+      v-show="pageRoot !== 'world'"
+      class="custom-control custom-checkbox form-inline"
+    >
       <input
         :id="setTargetTwo"
         type="checkbox"
@@ -42,6 +45,10 @@ export default {
     isOpenReference: {
       type: Boolean,
       default: true,
+    },
+    pageRoot: {
+      type: String,
+      default: '',
     },
   },
   computed: {

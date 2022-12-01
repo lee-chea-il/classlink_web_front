@@ -1,13 +1,12 @@
 <template>
   <div class="search_section">
     <div class="left_area">
-      <button
+      <ButtonItem
         v-if="identity !== 'teacher'"
-        class="btn btn_crud_default"
-        @click="$emit('delete-item')"
-      >
-        삭제
-      </button>
+        title="삭제"
+        color="delete"
+        @click-item="$emit('delete-item')"
+      />
     </div>
     <div class="right_area">
       <div class="input-group input-search form-inline form-lec">
@@ -35,8 +34,11 @@
 </template>
 
 <script>
+import ButtonItem from '../reference/commom/ButtonItem.vue'
+
 export default {
   name: 'SearchSection',
+  components: { ButtonItem },
   props: {
     identity: {
       type: String,

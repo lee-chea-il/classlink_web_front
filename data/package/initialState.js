@@ -75,7 +75,7 @@ export default function initialState() {
                 name: '1단원',
                 children: [
                   {
-                    name: '2-1반 수학 수업자료.lesson',
+                    name: '2-1반 수학 수업자료.pack',
                     type: 'institution',
                     dbIdx: 1,
                     title: '2-1반 수업',
@@ -299,10 +299,32 @@ export default function initialState() {
                         dbIdx: 6,
                         type: 'institution',
                       },
+                      {
+                        id: 6,
+                        name: '과학 수업 참고용 개구리송.mp3',
+                        subject: '과학',
+                        desc: '등록한 자료 1',
+                        keyword: ['국어', '음악'],
+                        registrant: '등록인',
+                        savePath: 'http://112.171.101.31:58080/file/test.mp3',
+                        saveFolder: '',
+                        isOpenEducation: true,
+                        isOpenReference: true,
+                        fileName: '',
+                        fileDivision: '교육기관',
+                        fileType: 'music',
+                        uploadType: 'music',
+                        thumbnail: '',
+                        fileVolume: '',
+                        createAt: '',
+                        isLeaf: false,
+                        dbIdx: 7,
+                        type: 'institution',
+                      },
                     ],
                   },
                   {
-                    name: '고등교육 영어자료.lesson',
+                    name: '고등교육 영어자료.pack',
                     type: 'institution',
                     dbIdx: 2,
                     title: '고등교육 영어자료',
@@ -529,7 +551,7 @@ export default function initialState() {
                     ],
                   },
                   {
-                    name: '수학적 귀납법 설명자료.lesson',
+                    name: '수학적 귀납법 설명자료.pack',
                     type: 'institution',
                     dbIdx: 3,
                     title: '수학적 귀납법 설명자료',
@@ -756,7 +778,7 @@ export default function initialState() {
                     ],
                   },
                   {
-                    name: '6학년 영재반 수업자료.lesson',
+                    name: '6학년 영재반 수업자료.pack',
                     type: 'institution',
                     dbIdx: 4,
                     title: '6학년 영재반 수업자료',
@@ -1000,22 +1022,22 @@ export default function initialState() {
                 name: '1단원',
                 children: [
                   {
-                    name: '일산화탄소1.lesson',
+                    name: '일산화탄소1.pack',
                     type: 'franchise',
                     dbIdx: 1,
                   },
                   {
-                    name: '일산화탄소2.lesson',
+                    name: '일산화탄소2.pack',
                     type: 'franchise',
                     dbIdx: 2,
                   },
                   {
-                    name: '일산화탄소3.lesson',
+                    name: '일산화탄소3.pack',
                     type: 'franchise',
                     dbIdx: 3,
                   },
                   {
-                    name: '일산화탄소4.lesson',
+                    name: '일산화탄소4.pack',
                     type: 'franchise',
                     dbIdx: 4,
                   },
@@ -1034,11 +1056,11 @@ export default function initialState() {
             name: '1단원',
             children: [
               {
-                name: '사투리 작문1.lesson',
+                name: '사투리 작문1.pack',
                 type: 'institution',
               },
               {
-                name: '사투리 작문2.lesson',
+                name: '사투리 작문2.pack',
                 type: 'franchise',
               },
             ],
@@ -1047,27 +1069,27 @@ export default function initialState() {
             name: '2단원',
             children: [
               {
-                name: '부산 사투리 작문1.lesson',
+                name: '부산 사투리 작문1.pack',
                 type: 'curriculum',
               },
               {
-                name: '부산 사투리 작문2.lesson',
+                name: '부산 사투리 작문2.pack',
                 type: 'institution',
               },
               {
-                name: '부산 사투리 작문2.lesson',
+                name: '부산 사투리 작문2.pack',
                 type: 'franchise',
               },
               {
-                name: '부산 사투리 작문2.lesson',
+                name: '부산 사투리 작문2.pack',
                 type: 'institution',
               },
               {
-                name: '부산 사투리 작문2.lesson',
+                name: '부산 사투리 작문2.pack',
                 type: 'franchise',
               },
               {
-                name: '네이버란.lesson',
+                name: '네이버란.pack',
                 type: 'curriculum',
               },
             ],

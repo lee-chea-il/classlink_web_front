@@ -22,11 +22,13 @@
                 :reference="reference"
                 :pushKeyword="pushKeyword"
                 target="noteTest"
+                :pageRoot="pageRoot"
                 @change-input="$emit('change-input', $event)"
                 @set-keyword="$emit('set-keyword', $event)"
                 @change-keyword="$emit('changePushKeyword', $event)"
                 @delete-keyword="$emit('delete-keyword', $event)"
                 @open-save-path="$emit('open-save-path', $event)"
+                @delete-thumbnail="$emit('delete-thumbnail')"
               />
               <!-- /.왼쪽 영역 -->
 
@@ -73,6 +75,10 @@ export default {
   props: {
     open: Boolean,
     modalTitle: {
+      type: String,
+      default: '',
+    },
+    pageRoot: {
       type: String,
       default: '',
     },

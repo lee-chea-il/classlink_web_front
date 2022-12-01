@@ -18,7 +18,7 @@
               v-show="uploadType === 'video'"
               id="video_target"
               title="동영상 업로드"
-              desc="mp4 파일 형식으로 업로드 해주세요"
+              desc="mp4 파일 형식"
               inputId="upload_video"
               accept="video/mp4"
               @upload-item="$emit('upload-video', $event)"
@@ -29,14 +29,26 @@
               v-show="uploadType === 'pdf'"
               id="pdf_target"
               title="문서 및 파일 업로드"
-              desc="pdf, ppt, doc, xls, hwp,txt등의
-              문서 파일을 업로드할 수 있습니다.
+              desc="pdf, ppt, doc, xls, hwp,txt등
               "
               inputId="upload_file"
+              accept="application/pdf"
               @upload-item="$emit('upload-pdf', $event)"
             />
             <!-- accept="application/pdf,image/*" -->
             <!-- /.문서의 경우 -->
+
+            <!-- 배경음의 경우 -->
+            <SelectItemButton
+              v-show="uploadType === 'music'"
+              id="music_target"
+              title="음원 파일 업로드"
+              desc="mp3, wav, aac, flac, dsd 등"
+              inputId="upload_music"
+              accept="audio/*"
+              @upload-item="$emit('upload-music', $event)"
+            />
+            <!-- /.배경음의 경우 -->
           </div>
         </div>
 

@@ -18,6 +18,7 @@
       <span slot="addTreeNodeIcon" class="icon"></span>
       <span slot="delNodeIcon" class="icon"></span>
     </vue-tree-list>
+    {{ isEmptyData }}
   </div>
 </template>
 
@@ -57,6 +58,7 @@ export default {
           this.isEmptyData = true
           this.setEmptyArea()
         } else {
+          this.isEmptyData = false
           this.datas = new Tree(false, this.dataMapping(value, false))
         }
       },
@@ -140,9 +142,9 @@ export default {
       target.css({ height: nHei + 'px' })
     },
     unActiveAll() {
-      console.log("fffff")
+      console.log('fffff')
       function _unActiveAll(oldNode) {
-        oldNode.active=false
+        oldNode.active = false
         if (oldNode.children) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
             _unActiveAll(oldNode.children[i])
@@ -150,7 +152,7 @@ export default {
         }
       }
       _unActiveAll(this.datas)
-    }
+    },
   },
 }
 </script>

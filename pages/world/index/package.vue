@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageHeader title="레슨" />
+    <PageHeader title="건물 패키지" />
 
     <div class="tab-content depth03 ac_manage_dtr">
       <div class="tab-pane active">
@@ -244,14 +244,14 @@ import QuizPreviewModal from '~/components/common/modal/reference/QuizPreviewMod
 import VideoBrowseModal from '~/components/common/modal/reference/VideoBrowseModal.vue'
 import NoteTestBrowseModal from '~/components/common/modal/reference/NoteTestBrowseModal.vue'
 import NoteTestPreviewModal from '~/components/common/modal/reference/NoteTestPreviewModal.vue'
-import initialState from '~/data/lesson/initialState'
+import initialState from '~/data/package/initialState'
 import QuizChangeModal from '~/components/common/modal/reference/QuizAddModal.vue'
 import NoteTestChangeModal from '~/components/common/modal/reference/NoteTestAddModal.vue'
 import ReferenceChangeModal from '~/components/common/modal/reference/ReferenceAddModal.vue'
 import { setNewArray, jsonItem } from '~/utiles/common'
 
 export default {
-  name: 'LessonPage',
+  name: 'PackagePage',
   components: {
     PageHeader,
     LessonAddModal,
@@ -271,7 +271,6 @@ export default {
     TreeSection,
     MainBtnBox,
   },
-  layout: 'EducationLayout',
   data() {
     return initialState()
   },
@@ -377,12 +376,13 @@ export default {
     },
 
     closeLessonBrowseModal() {
+      console.log(this.isLessonBrowse)
       if (this.isLessonBrowse.prevPage) {
         this[this.isLessonBrowse.prevPage].open = true
       }
-      this.isLessonBrowse = {
-        prevPage: '',
-        open: false,
+      this.isLessonBrowse={
+        prevPage:'',
+        open:false
       }
     },
 
@@ -457,11 +457,10 @@ export default {
       return (this.treeReferenceList = filterItem)
     },
 
-    // [레슨] 레슨 지우기 수정 필요
-    removeReferenceOfLessonItem(e) {
-      const { name } = e
+    // [레슨] 레슨 지우기
+    removeReferenceOfLessonItem({ id }) {
       const newArray = this.treeReferenceList
-      const filterItem = newArray.filter((data) => data.name !== name)
+      const filterItem = newArray.filter((data) => data.id !== id)
       this.treeReferenceList = filterItem
     },
 

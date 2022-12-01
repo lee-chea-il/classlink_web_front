@@ -25,6 +25,7 @@
         name="isOpen"
         :value="lessonItem?.isOpen"
         :checked="lessonItem?.isOpen"
+        disabled
       />
       <label class="custom-control-label checkbox06" for="isOpen"
         >교육기관에 해당 자료를 공개합니다.</label

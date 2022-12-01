@@ -85,3 +85,63 @@
 #modalLessonView .thumb_box {
   height: 620px;
 }
+
+/* 퀴즈 등록 쪽지시험 등록 */
+#modalDataRegiModi .form-group label,
+#modalDataRegiQuiz .form-group label,
+#modalDataRegiNote .form-group label {
+  line-height: 22px;
+}
+
+#modalDataRegiModi .exp_txt02,
+#modalDataRegiQuiz .exp_txt02,
+#modalDataRegiNote .exp_txt02 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+  color: #a7a9ac;
+}
+
+#modalDataRegiModi .space,
+#modalDataRegiQuiz .space,
+#modalDataRegiNote .space {
+  display: inline-block;
+  height: 115px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(/_nuxt/assets/images/sample_building_frc_noimg.jpg);
+  width: 100%;
+}
+
+#modalDataRegiModi .space,
+#modalDataRegiQuiz .space,
+#modalDataRegiNote .space {
+  background: none;
+}
+
+#modalDataRegiModi .place_box,
+#modalDataRegiQuiz .place_box,
+#modalDataRegiNote .place_box {
+  position: relative;
+  width: 177px;
+  min-height: 115px;
+  margin-bottom: 20px;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+  margin-left: 26%;
+  margin-top: -8px;
+}
+
+#modalDataRegiModi .btn_close,
+#modalDataRegiQuiz .btn_close,
+#modalDataRegiNote .btn_close {
+  position: absolute;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+  top: -10px;
+  right: -10px;
+}

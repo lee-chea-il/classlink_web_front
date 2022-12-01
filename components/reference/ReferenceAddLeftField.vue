@@ -80,9 +80,18 @@
       </div>
 
       <CheckboxGroup
+        v-if="pageRoot === 'world'"
         :isOpenEducation="reference.isOpenEducation"
         :isOpenReference="reference.isOpenReference"
+        :pageRoot="pageRoot"
         @change-input="$emit('isOpenEducation', $event)"
+      />
+      <br />
+      <ThumbnailBox
+        v-if="pageRoot === 'world'"
+        :imgValue="reference.thumbnail"
+        @change-input="$emit('change-input', $event)"
+        @delete-thumbnail="$emit('delete-thumbnail')"
       />
     </div>
   </div>
@@ -93,6 +102,7 @@ import CustomSelect from '../common/custom/CustomSelect.vue'
 import CustomBtnInput from '../common/custom/CustomBtnInput.vue'
 import CustomKeywordBox from './commom/CustomKeywordBox.vue'
 import CheckboxGroup from './commom/CheckboxGroup.vue'
+import ThumbnailBox from './commom/ThumbnailBox.vue'
 import CustomModalInput from '@/components/common/custom/CustomModalInput.vue'
 export default {
   name: 'ReferenceAddLeftField',
@@ -102,6 +112,7 @@ export default {
     CustomBtnInput,
     CustomKeywordBox,
     CheckboxGroup,
+    ThumbnailBox,
   },
   props: {
     reference: {
@@ -113,6 +124,10 @@ export default {
       default: '',
     },
     target: {
+      type: String,
+      default: '',
+    },
+    pageRoot: {
       type: String,
       default: '',
     },

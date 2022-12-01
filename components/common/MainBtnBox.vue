@@ -1,17 +1,13 @@
 <template>
   <div class="search_section">
     <div class="left_area">
-      <ButtonItem
-        title="복사"
-        color="default"
-        @click-item="$emit('copy')"
-      />
+      <ButtonItem title="복사" color="default" @click-item="$emit('copy')" />
       <ButtonItem
         title="붙여넣기"
         color="default"
         @click-item="$emit('paste')"
       />
-      <ButtonItem title="삭제" color="default" @click-item="$emit('delete')" />
+      <ButtonItem title="삭제" color="delete" @click-item="$emit('delete')" />
     </div>
 
     <div class="right_area">

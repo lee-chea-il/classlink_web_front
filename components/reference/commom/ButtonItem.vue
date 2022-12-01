@@ -23,6 +23,7 @@ export default {
       if (name === 'default') return 'btn_crud_default'
       else if (name === 'point') return 'btn_crud_point'
       else if (name === 'filter') return 'btn_filter'
+      else if (name === 'delete') return 'btn_crud_danger'
       return this.data
     },
   },

@@ -1,12 +1,6 @@
 <template>
-  <div
-    :id="id"
-    class="box01"
-    data-dismiss="modal"
-    data-toggle="modal"
-    data-target="#modalDataRegiModi"
-  >
-    <label :for="inputId" class="label" @click.stop>
+  <div :id="id" class="box01">
+    <label :for="inputId" class="label full" @click.stop>
       <div class="sub">
         <form
           id="uploadForm"
@@ -63,4 +57,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+label.full {
+  width: 100%;
+}
+</style>

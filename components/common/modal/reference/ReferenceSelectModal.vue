@@ -37,6 +37,7 @@
                 문서 파일을 업로드할 수 있습니다."
                 @click-item="$emit('set-type', 'pdf')"
               />
+
               <SelectItem
                 title="퀴즈"
                 className="box03"
@@ -75,6 +76,16 @@
                 @click-item="$emit('set-type', 'url')"
               />
             </div>
+            <SelectItem
+              v-if="pageRoot === 'world'"
+              title="배경음"
+              className="box07"
+              icon="regi_icon07"
+              target="#modalDataregi02"
+              desc="mp3, wav, aac, flac, dsd 등의
+              음원 파일을 업로드할 수 있습니다."
+              @click-item="$emit('set-type', 'music')"
+            />
           </div>
         </div>
         <div class="modal-footer" />
@@ -90,6 +101,12 @@ import SelectItem from '~/components/reference/commom/SelectContentButton.vue'
 export default {
   name: 'ReferenceSelectModal',
   components: { ModalHeader, SelectItem },
+  props: {
+    pageRoot: {
+      type: String,
+      default: '',
+    },
+  },
 }
 </script>
 

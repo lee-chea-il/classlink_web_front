@@ -20,7 +20,11 @@
                     'nav-link': true,
                     active: $route.matched[0].path === '/classPreperation',
                   }"
-                  to="/classPreperation/reference"
+                  :to="
+                    $route.matched[0].path === '/classPreperation'
+                      ? ''
+                      : '/classPreperation/reference'
+                  "
                   >수업준비</nuxt-link
                 >
               </li>
@@ -31,7 +35,11 @@
                     'nav-link': true,
                     active: $route.matched[0].path === '/class',
                   }"
-                  to="/class/lecturecourse"
+                  :to="
+                    $route.matched[0].path === '/class'
+                      ? ''
+                      : '/class/lecturecourse'
+                  "
                   >수업</nuxt-link
                 >
               </li>
@@ -41,16 +49,26 @@
                     'nav-link': true,
                     active: $route.matched[0].path === '/management',
                   }"
-                  to="/management/operation/teachermanagement"
+                  :to="
+                    $route.matched[0].path === '/management'
+                      ? ''
+                      : '/management/operation/teachermanagement'
+                  "
                   >관리</NuxtLink
                 >
               </li>
               <li class="nav-item">
-                <a
-                  class="nav-link"
-                  :class="{ active: $store.state.common.activeNavIdx === 4 }"
-                  href="#"
-                  >건물</a
+                <NuxtLink
+                  :class="{
+                    'nav-link': true,
+                    active: $route.matched[0].path === '/world',
+                  }"
+                  :to="
+                    $route.matched[0].path === '/world'
+                      ? ''
+                      : '/world/reference'
+                  "
+                  >월드</NuxtLink
                 >
               </li>
             </ul>
@@ -204,23 +222,58 @@
         </ul>
       </div>
 
-      <div v-show="$store.state.common.activeNavIdx === 4" class="nav_sub">
+      <div v-show="$route.matched[0].path === '/world'" class="nav_sub">
         <ul class="nav nav_dapth02">
           <li class="nav-item">
             <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
-            <a class="nav-link" href="#">건물 자료실</a>
+            <NuxtLink
+              :class="{
+                'nav-link': true,
+                active: $route.fullPath.includes('/world/reference'),
+              }"
+              to="/world/reference"
+              >건물 자료실</NuxtLink
+            >
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">건물 패키지</a>
+            <NuxtLink
+              :class="{
+                'nav-link': true,
+                active: $route.fullPath === '/world/package',
+              }"
+              to="/world/package"
+              >건물 패키지</NuxtLink
+            >
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">건물SET</a>
+            <NuxtLink
+              :class="{
+                'nav-link': true,
+                active: $route.fullPath === '/world/buildingSet',
+              }"
+              to="/world/buildingSet"
+              >건물SET</NuxtLink
+            >
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">빌딩</a>
+            <NuxtLink
+              :class="{
+                'nav-link': true,
+                active: $route.fullPath === '/world/building',
+              }"
+              to="/world/building"
+              >빌딩</NuxtLink
+            >
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">지도교사</a>
+            <NuxtLink
+              :class="{
+                'nav-link': true,
+                active: $route.fullPath === '/world/guidanceTeacher',
+              }"
+              to="/world/guidanceTeacher"
+              >지도교사</NuxtLink
+            >
           </li>
         </ul>
       </div>

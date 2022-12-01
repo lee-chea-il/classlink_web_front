@@ -19,6 +19,10 @@
               :open="selectData.uploadType === 'video'"
               :data="selectData"
             />
+            <MusicView
+              :open="selectData.uploadType === 'music'"
+              :data="selectData"
+            />
 
             <PdfView
               :open="selectData.uploadType === 'pdf'"
@@ -79,6 +83,7 @@ import VideoView from '~/components/reference/referenceBrowse/VideoView.vue'
 import PdfView from '~/components/reference/referenceBrowse/PdfView.vue'
 import YoutubeView from '~/components/reference/referenceBrowse/YoutubeView.vue'
 import UrlView from '~/components/reference/referenceBrowse/UrlView.vue'
+import MusicView from '~/components/reference/referenceBrowse/MusicView.vue'
 export default {
   name: 'VideoBrowseModal',
   components: {
@@ -88,6 +93,7 @@ export default {
     PdfView,
     YoutubeView,
     UrlView,
+    MusicView,
   },
   props: {
     open: {
