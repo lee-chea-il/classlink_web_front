@@ -18,7 +18,7 @@
                   <option class="dropdown-item" value="이름순">이름순</option>
                 </select>
               </div>
-              <button class="btn btn_crud_default" @click="onClickDelete">
+              <button class="btn btn_crud_danger" @click="onClickDelete">
                 삭제
               </button>
             </div>
@@ -244,6 +244,7 @@
       :title="deleteModalDesc.title"
       @close="onCloseDeleteModalDesc"
     />
+    <CustomSnackbar :show="openSnackbar.open" :message="message" />
   </div>
 </template>
 
@@ -253,6 +254,7 @@ import ShowNoticeConfirmCheck from '~/components/common/modal/notice/ShowNoticeC
 import CustomPageHeader from '~/components/notice/CustomPageHeader.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 import DeleteModal from '@/components/lecturecourse/DeletePlanModal.vue'
+import CustomSnackbar from '@/components/common/CustomSnackbar.vue'
 export default {
   name: 'Education',
   components: {
@@ -261,6 +263,7 @@ export default {
     ShowNoticeConfirmCheck,
     ModalDesc,
     DeleteModal,
+    CustomSnackbar,
   },
   data() {
     return {
@@ -473,7 +476,14 @@ export default {
       openNoticeDetailModal: {
         open: false,
         data: {},
+        sortation: '교육기관',
       },
+
+      // 스낵바
+      openSnackbar: {
+        open: false,
+      },
+      message: '',
 
       modalDesc: {
         open: false,
@@ -490,6 +500,15 @@ export default {
     this.noticeList = this.notice
   },
   methods: {
+    // 스낵바
+    onOpenSnackbar(text) {
+      this.openSnackbar.open = true
+      this.message = text
+    },
+    onCloseSnackbar() {
+      this.openSnackbar.open = false
+      this.message = ''
+    },
     // 모달
     openModalDesc(tit, msg) {
       this.modalDesc = {
@@ -504,7 +523,10 @@ export default {
     onClickDelete() {
       console.log(this.selectNoticeList.length)
       if (this.selectNoticeList.length === 0) {
-        this.openModalDesc('공지사항 삭제', '삭제할 공지사항을 선택해주세요.')
+        this.onOpenSnackbar('공지사항을 선택해주세요.')
+        setTimeout(() => {
+          this.onCloseSnackbar()
+        }, 2000)
       } else {
         this.openDeleteModalDesc('공지사항')
       }

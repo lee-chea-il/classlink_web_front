@@ -14,17 +14,19 @@
       />
 
       <div class="tab-content depth03 ac_manage_cls">
-        <div class="tab-pane active">
-          <!-- [개발참조] 등록된 학생이 없는 경우 -->
-          <!-- <div class="nothing_txt">
-            <div class="txt">
-              등록된 반이 없습니다.<br />
-              먼저 반을 등록해주세요.
-            </div>
-            <div class="btn_area">
-              <button class="btn btn_crud_point">반 만들기</button>
-            </div>
-          </div> -->
+        <!-- [개발참조] 등록된 학생이 없는 경우 -->
+        <div v-if="classList.length === 0" class="nothing_txt">
+          <div class="txt">
+            등록된 반이 없습니다.<br />
+            먼저 반을 등록해주세요.
+          </div>
+          <div class="btn_area">
+            <button class="btn btn_crud_point" @click="onOpenClassModify()">
+              반 만들기
+            </button>
+          </div>
+        </div>
+        <div v-else class="tab-pane active">
           <!-- /.등록된 학생이 없는 경우 -->
           <!-- 컨트롤 버튼 영역 -->
           <div class="search_section">
@@ -52,47 +54,47 @@
           <div class="search_section">
             <div class="left_area">
               <div class="dropdown form-inline">
-                <!-- <button
+                <button
                   class="btn dropdown-toggle"
                   type="button"
                   data-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  선생님 전체
+                  {{ sortTeacherSelect }}
                 </button>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item">선생님 전체</a>
-                  <a class="dropdown-item">홍길동 선생님</a>
-                </div> -->
-                <select class="btn dropdown-toggle">
-                  <option value="all-teacher">선생님 전체</option>
-                  <option
+                  <a class="dropdown-item" @click="onChangeTeacherSort"
+                    >선생님 전체</a
+                  >
+                  <a
                     v-for="(item, idx) in classList"
                     :key="idx"
-                    :value="item.teacher"
+                    class="dropdown-item"
+                    @click="onChangeTeacherSort"
+                    >{{ item.teacher }} 선생님</a
                   >
-                    {{ item.teacher }} 선생님
-                  </option>
-                </select>
+                </div>
               </div>
               <div class="dropdown form-inline">
-                <!-- <button
+                <button
                   class="btn dropdown-toggle"
                   type="button"
                   data-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  10개씩 보기
+                  {{ sortNumberSelect }}
                 </button>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item">100개씩 보기</a>
-                  <a class="dropdown-item">200개씩 보기</a>
-                </div> -->
-                <select class="btn dropdown-toggle">
-                  <option value="10">10개씩 보기</option>
-                  <option value="100">100개씩 보기</option>
-                  <option value="200">200개씩 보기</option>
-                </select>
+                  <a class="dropdown-item" @click="onChangeNumberSort"
+                    >10개씩 보기</a
+                  >
+                  <a class="dropdown-item" @click="onChangeNumberSort"
+                    >100개씩 보기</a
+                  >
+                  <a class="dropdown-item" @click="onChangeNumberSort"
+                    >200개씩 보기</a
+                  >
+                </div>
               </div>
             </div>
             <div class="right_area">
@@ -234,9 +236,22 @@
       :teacherList="teacherList"
       :studentList="studentList"
       :selectedTeacher="selectedTeacher"
+      :selectedStudentAll="selectedStudentAll"
+      :modalModifyDetail="modalModifyDetail"
+      :modalModifyClassDetail="modalModifyClassDetail"
+      :modalModifySelectDetail="modalModifySelectDetail"
+      :studentTab="studentTab"
       @add-selected-teacher="onClickAddSelectedTeacher"
       @delete-selected-teacher="onClickDeleteSelectedTeacher"
+      @add-selected-student-all="onClickAddSelectedStudentAll"
+      @delete-selected-student-all="onClickDeleteSelectedStudentAll"
+      @add-selected-student="onClickAddSelectedStudent"
+      @delete-selected-student="onClickDeleteSelectedStudent"
       @close="onCloseClassModify"
+      @modify-detail="onClickModalModifyDetail"
+      @modify-class-detail="onClickModalModifyClassDetail"
+      @modify-selected-detail="onClickModalModifySelectedDetail"
+      @move-student-tab="onMoveStudentTab"
     />
 
     <!-- [개발참조] : 반 상세 모달에서 뜨는 2번째 팝업(학생상세 및 더보기 메뉴의 모달 팝업)은 겹치는 팝업이므로 class="double" 추가 필요 -->
@@ -271,7 +286,12 @@
     />
 
     <!-- 반관리-반이동 - 팝업 L -->
-    <ClassMoveModal :show="openClassMove" @close="onCloseClassMove" />
+    <ClassMoveModal
+      :show="openClassMove"
+      :classList="classList"
+      :checkList="checkList"
+      @close="onCloseClassMove"
+    />
 
     <DeleteModal
       :open="deleteModalDesc.open"
@@ -279,7 +299,7 @@
       @close="onCloseDeleteModalDesc"
     />
 
-    <CustomSnackbar :show="openToast.open" :message="message" />
+    <CustomSnackbar :show="openSnackbar.open" :message="message" />
   </div>
 </template>
 
@@ -610,6 +630,7 @@ export default {
         profile_image: '',
         lectureInfo: [],
       },
+      studentTab: 0,
 
       teacherList: [
         {
@@ -633,14 +654,43 @@ export default {
               {
                 id: 1,
                 name: '홍미미',
+                grade: '초1',
+                class: '영어 심화 A반',
               },
               {
                 id: 2,
                 name: '이미미',
+                grade: '초1',
+                class: '영어 심화 A반',
               },
               {
                 id: 3,
                 name: '삼삼삼',
+                grade: '초1',
+                class: '영어 심화 B반',
+              },
+            ],
+          },
+          {
+            grade: '초2',
+            student: [
+              {
+                id: 1,
+                name: '홍미미',
+                grade: '초2',
+                class: '영어 심화 B반',
+              },
+              {
+                id: 2,
+                name: '이미르',
+                grade: '초2',
+                class: '영어 심화 A반',
+              },
+              {
+                id: 3,
+                name: '삼삼삼',
+                grade: '초2',
+                class: '영어 심화 B반',
               },
             ],
           },
@@ -652,27 +702,64 @@ export default {
             student: [
               {
                 id: 1,
-                name: '홍미미',
+                name: '구글',
+                grade: '초2',
+                class: '영어 심화 A반',
               },
               {
                 id: 2,
-                name: '이미미',
+                name: 'ㄴㅇㅁㄹ',
+                grade: '초3',
+                class: '영어 심화 A반',
               },
               {
                 id: 3,
                 name: '삼삼삼',
+                grade: '초2',
+                class: '영어 심화 A반',
+              },
+            ],
+          },
+          {
+            id: 2,
+            className: '영어 심화 B반',
+            student: [
+              {
+                id: 1,
+                name: '이길동',
+                grade: '초1',
+                class: '영어 심화 A반',
+              },
+              {
+                id: 2,
+                name: '김철수',
+                grade: '초2',
+                class: '영어 심화 A반',
+              },
+              {
+                id: 3,
+                name: '사사사',
+                grade: '초2',
+                class: '영어 심화 A반',
               },
             ],
           },
         ],
       },
       selectedTeacher: [],
+      selectedStudentAll: [],
+
+      // 정렬
+      sortTeacherSelect: '선생님 전체',
+      sortNumberSelect: '10개씩 보기',
 
       // 상세 모달 더보기
       modalDetailMore: 0,
 
-      // 반 만들기/수정 반 학셍 상세
+      // 반 만들기/수정 반 학셍 학년, 반 상세
       modalModifyDetail: null,
+      modalModifyClassDetail: null,
+      modalModifySelectDetail: null,
 
       // 체크박스
       allCheck: false,
@@ -688,7 +775,7 @@ export default {
         data: null,
       },
 
-      openToast: {
+      openSnackbar: {
         open: false,
       },
       message: '',
@@ -700,13 +787,13 @@ export default {
     }
   },
   methods: {
-    // 토스트
-    onOpenToast(text) {
-      this.openToast.open = true
+    // 스낵바
+    onOpenSnackbar(text) {
+      this.openSnackbar.open = true
       this.message = text
     },
-    onCloseToast() {
-      this.openToast.open = false
+    onCloseSnackbar() {
+      this.openSnackbar.open = false
       this.message = ''
     },
     // 삭제모달
@@ -782,9 +869,9 @@ export default {
     // 삭제버튼 클릭
     onClickClassDelete() {
       if (this.checkList.length === 0) {
-        this.onOpenToast('반을 선택해주세요.')
+        this.onOpenSnackbar('반을 선택해주세요.')
         setTimeout(() => {
-          this.onCloseToast()
+          this.onCloseSnackbar()
         }, 2000)
       } else {
         this.openDeleteModalDesc('반')
@@ -793,9 +880,9 @@ export default {
     // 이동 버튼 클릭
     onClickClassMove() {
       if (this.checkList.length === 0) {
-        this.onOpenToast('반을 선택해주세요.')
+        this.onOpenSnackbar('반을 선택해주세요.')
         setTimeout(() => {
-          this.onCloseToast()
+          this.onCloseSnackbar()
         }, 2000)
       } else {
         this.onOpenClassMove()
@@ -804,9 +891,9 @@ export default {
     // 복사 버튼 클릭
     onClickClassCopy() {
       if (this.checkList.length === 0) {
-        this.onOpenToast('반을 선택해주세요.')
+        this.onOpenSnackbar('반을 선택해주세요.')
         setTimeout(() => {
-          this.onCloseToast()
+          this.onCloseSnackbar()
         }, 2000)
       } else {
         console.log('복사')
@@ -816,17 +903,154 @@ export default {
     // 반 수정/만들기 모달
     // 반 선생님 추가/삭제
     onClickAddSelectedTeacher(data) {
-      this.teacherList = this.teacherList.filter((item) => item !== data)
-      this.selectedTeacher.push(data)
+      if (!this.selectedTeacher.includes(data)) {
+        this.selectedTeacher.push(data)
+      }
     },
     onClickDeleteSelectedTeacher(data) {
       this.selectedTeacher = this.selectedTeacher.filter(
         (item) => item !== data
       )
-      this.teacherList.push(data)
+    },
+    // 반 학생 학년 추가/삭제 (학년 전체)
+    onClickAddSelectedStudentAll(data) {
+      for (let i = 0; i < data.student.length; i++) {
+        this.onClickAddSelectedStudent(data.student[i])
+      }
+    },
+    onClickDeleteSelectedStudentAll(data) {
+      this.selectedStudentAll = this.selectedStudentAll.filter(
+        (item) => item !== data
+      )
+    },
+    // 반 학생 반 학년 추가/삭제 (개인)
+    onClickAddSelectedStudent(data) {
+      if (
+        this.selectedStudentAll.find((e) => e.grade === data.grade) ===
+        undefined
+      ) {
+        const student = {
+          grade: data.grade,
+          student: [data],
+        }
+        this.selectedStudentAll.push(student)
+      } else {
+        const students = this.selectedStudentAll.find(
+          (e) => e.grade === data.grade
+        )
+
+        if (
+          !this.selectedStudentAll
+            .find((e) => e.grade === data.grade)
+            .student.includes(data)
+        ) {
+          students.student.push(data)
+        }
+      }
+    },
+    onClickDeleteSelectedStudent(data) {
+      for (let i = 0; i < this.selectedStudentAll.length; i++) {
+        if (this.selectedStudentAll[i].grade === data.grade) {
+          this.selectedStudentAll[i].student = this.selectedStudentAll[
+            i
+          ].student.filter((item) => item !== data)
+
+          if (this.selectedStudentAll[i].student.length === 0) {
+            this.selectedStudentAll = this.selectedStudentAll.filter(
+              (item) => item.student.length !== 0
+            )
+          }
+        }
+      }
+    },
+    // 반 학생 반 추가/삭제 (반 전체)
+    // onClickAddSelectedStudentAllClass(data) {
+    //   for (let i = 0; i < data.student.length; i++) {
+    //     this.onClickAddSelectedStudentClass(data.student[i])
+    //   }
+    // },
+    // onClickDeleteSelectedStudentAllClass(data) {
+    //   this.selectedStudentAll = this.selectedStudentAll.filter(
+    //     (item) => item !== data
+    //   )
+    // },
+    // // 반 학생 반 추가/삭제 (개인)
+    // onClickAddSelectedStudentClass(data) {
+    //   if (
+    //     this.selectedStudentAll.find((e) => e.grade === data.grade) ===
+    //     undefined
+    //   ) {
+    //     const student = {
+    //       grade: data.grade,
+    //       student: [data],
+    //     }
+    //     this.selectedStudentAll.push(student)
+    //   } else {
+    //     const students = this.selectedStudentAll.find(
+    //       (e) => e.grade === data.grade
+    //     )
+
+    //     if (
+    //       !this.selectedStudentAll
+    //         .find((e) => e.grade === data.grade)
+    //         .student.includes(data)
+    //     ) {
+    //       students.student.push(data)
+    //     }
+    //   }
+    // },
+    // onClickDeleteSelectedStudentClass(data) {
+    //   for (let i = 0; i < this.selectedStudentAll.length; i++) {
+    //     if (this.selectedStudentAll[i].grade === data.grade) {
+    //       this.selectedStudentAll[i].student = this.selectedStudentAll[
+    //         i
+    //       ].student.filter((item) => item !== data)
+
+    //       if (this.selectedStudentAll[i].student.length === 0) {
+    //         this.selectedStudentAll = this.selectedStudentAll.filter(
+    //           (item) => item.student.length !== 0
+    //         )
+    //       }
+    //     }
+    //   }
+    // },
+
+    // 반 만들기/수정 반 학생 학년 상세
+    onClickModalModifyDetail(idx) {
+      if (this.modalModifyDetail === idx) {
+        this.modalModifyDetail = null
+      } else {
+        this.modalModifyDetail = idx
+      }
+    },
+    onClickModalModifyClassDetail(idx) {
+      if (this.modalModifyClassDetail === idx) {
+        this.modalModifyClassDetail = null
+      } else {
+        this.modalModifyClassDetail = idx
+      }
+    },
+    // 반 만들기/수정 선택된 학생 상세
+    onClickModalModifySelectedDetail(idx) {
+      if (this.modalModifySelectDetail === idx) {
+        this.modalModifySelectDetail = null
+      } else {
+        this.modalModifySelectDetail = idx
+      }
     },
 
-    // 반 만들기/수정 반 학생
+    // 반 학생 탭 이동
+    onMoveStudentTab(num) {
+      this.studentTab = num
+    },
+
+    // 정렬
+    onChangeTeacherSort(e) {
+      this.sortTeacherSelect = e.target.innerText
+    },
+    onChangeNumberSort(e) {
+      this.sortNumberSelect = e.target.innerText
+    },
 
     // 학생 개별 등록/학생 상세 정보 모달
     // 모달 이벤트

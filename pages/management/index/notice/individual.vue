@@ -17,7 +17,7 @@
                   <option class="dropdown-item" value="이름순">이름순</option>
                 </select>
               </div>
-              <button class="btn btn_crud_default" @click="onClickDelete">
+              <button class="btn btn_crud_danger" @click="onClickDelete">
                 삭제
               </button>
             </div>

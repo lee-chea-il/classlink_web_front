@@ -72,7 +72,7 @@
           <div class="search_section">
             <div class="left_area">
               <div class="dropdown form-inline">
-                <select class="btn dropdown-toggle" @change="onChangeSort">
+                <!-- <select class="btn dropdown-toggle" @change="onChangeSort">
                   <option value="all" class="dropdown-item">전체</option>
                   <option value="highLesson" class="dropdown-item">
                     레슨 높은 순
@@ -86,7 +86,30 @@
                   <option value="lowScore" class="dropdown-item">
                     점수 낮은 순
                   </option>
-                </select>
+                </select> -->
+                <button
+                  class="btn dropdown-toggle"
+                  type="button"
+                  data-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  {{ sortSelect }}
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" @click="onChangeSort">전체</a>
+                  <a class="dropdown-item" @click="onChangeSort"
+                    >레슨 높은 순</a
+                  >
+                  <a class="dropdown-item" @click="onChangeSort"
+                    >레슨 낮은 순</a
+                  >
+                  <a class="dropdown-item" @click="onChangeSort"
+                    >점수 높은 순</a
+                  >
+                  <a class="dropdown-item" @click="onChangeSort"
+                    >점수 낮은 순</a
+                  >
+                </div>
               </div>
             </div>
           </div>
@@ -138,7 +161,15 @@
                     <td class="td02">{{ item.name }}</td>
                     <td class="td03">{{ item.course }}</td>
                     <td class="td04">레슨{{ item.lesson }}</td>
-                    <td class="td05">{{ item.type }}</td>
+                    <td class="td05">
+                      {{
+                        item.type === 'quiz'
+                          ? '퀴즈'
+                          : item.type === 'test'
+                          ? '쪽지시험'
+                          : ''
+                      }}
+                    </td>
                     <td class="td06">
                       <a
                         href=""
@@ -273,7 +304,7 @@ export default {
           name: '홍길동',
           course: '영어리딩심화',
           lesson: 3,
-          type: '퀴즈',
+          type: 'quiz',
           score: 65,
           average: 80,
           date: '2022.01.01',
@@ -334,7 +365,7 @@ export default {
           name: '홍동길',
           course: '영어리딩심화',
           lesson: 1,
-          type: '쪽지시험',
+          type: 'test',
           score: 73,
           average: 76,
           date: '2022.11.22',
@@ -360,7 +391,7 @@ export default {
           name: '홍길순',
           course: '영어리딩심화',
           lesson: 2,
-          type: '쪽지시험',
+          type: 'test',
           score: 56,
           average: 63,
           date: '2022.11.29',
@@ -387,43 +418,62 @@ export default {
           id: 1,
           name: '영어리딩심화',
           lesson: 3,
-          type: '퀴즈',
-          question: [
+          type: 'quiz',
+          questionList: [
             {
-              num: 1,
-              difficult: 2,
+              id: 0,
+              problem: '<p>asdfaaaaasdf</p>',
+              oxAnswer: 0,
+              dificultade: 1,
+              limitTime: '3분',
+              quizType: 0,
+              shortAnswer: '123',
+              subjectiveAnswer: '123',
+              shortWrongAnswer: '123',
             },
             {
-              num: 2,
-              difficult: 1,
+              id: 1,
+              problem: '<p>asdggggg</p>',
+              dificultade: 0,
+              limitTime: '5분',
+              quizType: 0,
+              oxAnswer: 0,
+              shortAnswer: '234',
+              subjectiveAnswer: '234',
+              shortWrongAnswer: '234',
             },
             {
-              num: 3,
-              difficult: 0,
+              id: 2,
+              problem: '<p>234242242424</p>',
+              dificultade: 0,
+              limitTime: '2분',
+              quizType: 0,
+              oxAnswer: 0,
+              shortAnswer: '345',
+              subjectiveAnswer: '345',
+              shortWrongAnswer: '345',
             },
             {
-              num: 4,
-              difficult: 2,
+              id: 3,
+              problem: '<p>555555555</p>',
+              dificultade: 0,
+              limitTime: '4분',
+              quizType: 0,
+              oxAnswer: 0,
+              shortAnswer: '456',
+              subjectiveAnswer: '456',
+              shortWrongAnswer: '456',
             },
             {
-              num: 5,
-              difficult: 1,
-            },
-            {
-              num: 6,
-              difficult: 0,
-            },
-            {
-              num: 7,
-              difficult: 1,
-            },
-            {
-              num: 8,
-              difficult: 0,
-            },
-            {
-              num: 9,
-              difficult: 0,
+              id: 4,
+              problem: '<p>asx c</p>',
+              dificultade: 0,
+              limitTime: '5분',
+              quizType: 0,
+              oxAnswer: 0,
+              shortAnswer: '567',
+              subjectiveAnswer: '567',
+              shortWrongAnswer: '567',
             },
           ],
         },
@@ -431,37 +481,33 @@ export default {
           id: 2,
           name: '영어리딩심화',
           lesson: 1,
-          type: '쪽지시험',
-          question: [
+          type: 'test',
+          questionList: [
             {
-              num: 1,
-              difficult: 2,
-              type: 0,
+              id: 0,
+              problem: '<p>1번 문제</p>',
+              exampleList: [
+                { id: '', example: '<p>답 1임</p>' },
+                { id: '', example: '<p>답 2임</p>' },
+                { id: '', example: '<p>답 3임</p>' },
+                { id: '', example: '<p>답 4임</p>' },
+              ],
+              dificultade: 0,
+              limitTime: '',
+              answer: 0,
             },
             {
-              num: 2,
-              difficult: 1,
-              type: 0,
-            },
-            {
-              num: 3,
-              difficult: 0,
-              type: 1,
-            },
-            {
-              num: 4,
-              difficult: 2,
-              type: 0,
-            },
-            {
-              num: 5,
-              difficult: 1,
-              type: 1,
-            },
-            {
-              num: 6,
-              difficult: 0,
-              type: 0,
+              id: 1,
+              problem: '<p>2번 문제</p>',
+              exampleList: [
+                { id: '', example: '<p>답 5임</p>' },
+                { id: '', example: '<p>답 6임</p>' },
+                { id: '', example: '<p>답 7임</p>' },
+                { id: '', example: '<p>답 8임</p>' },
+              ],
+              dificultade: 2,
+              limitTime: '',
+              answer: 2,
             },
           ],
         },
@@ -469,42 +515,33 @@ export default {
           id: 3,
           name: '영어리딩심화',
           lesson: 2,
-          type: '쪽지시험',
-          question: [
+          type: 'test',
+          questionList: [
             {
-              num: 1,
-              difficult: 2,
-              type: 0,
+              id: 0,
+              problem: '<p>1번 문제</p>',
+              exampleList: [
+                { id: '', example: '<p>답 1임</p>' },
+                { id: '', example: '<p>답 2임</p>' },
+                { id: '', example: '<p>답 3임</p>' },
+                { id: '', example: '<p>답 4임</p>' },
+              ],
+              dificultade: 0,
+              limitTime: '',
+              answer: 0,
             },
             {
-              num: 2,
-              difficult: 1,
-              type: 1,
-            },
-            {
-              num: 3,
-              difficult: 0,
-              type: 1,
-            },
-            {
-              num: 4,
-              difficult: 2,
-              type: 0,
-            },
-            {
-              num: 5,
-              difficult: 1,
-              type: 1,
-            },
-            {
-              num: 6,
-              difficult: 0,
-              type: 1,
-            },
-            {
-              num: 7,
-              difficult: 0,
-              type: 1,
+              id: 1,
+              problem: '<p>2번 문제</p>',
+              exampleList: [
+                { id: '', example: '<p>답 5임</p>' },
+                { id: '', example: '<p>답 6임</p>' },
+                { id: '', example: '<p>답 7임</p>' },
+                { id: '', example: '<p>답 8임</p>' },
+              ],
+              dificultade: 2,
+              limitTime: '',
+              answer: 2,
             },
           ],
         },
@@ -513,7 +550,7 @@ export default {
         id: 1,
         name: '영어리딩심화',
         lesson: 3,
-        type: '퀴즈',
+        type: 'test',
         questionList: [
           {
             id: 0,
@@ -545,6 +582,8 @@ export default {
       },
       selectedExamInfo: {},
       openDetail: null,
+
+      sortSelect: '전체',
 
       filterList: {
         class: ['심화A반', '심화B반', '심화C반'],
@@ -665,19 +704,20 @@ export default {
 
     // 정렬
     onChangeSort(e) {
-      if (e.target.value === 'highLesson') {
+      this.sortSelect = e.target.innerText
+      if (e.target.innerText === '레슨 높은 순') {
         this.examList = this.examList.sort((a, b) => {
           return b.lesson - a.lesson
         })
-      } else if (e.target.value === 'lowLesson') {
+      } else if (e.target.innerText === '레슨 낮은 순') {
         this.examList = this.examList.sort((a, b) => {
           return a.lesson - b.lesson
         })
-      } else if (e.target.value === 'highScore') {
+      } else if (e.target.innerText === '점수 높은 순') {
         this.examList = this.examList.sort((a, b) => {
           return b.score - a.score
         })
-      } else if (e.target.value === 'lowScore') {
+      } else if (e.target.innerText === '점수 낮은 순') {
         this.examList = this.examList.sort((a, b) => {
           return a.score - b.score
         })

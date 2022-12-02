@@ -176,7 +176,7 @@
                   class="btn btn_arrow_square2_l"
                   onClick="toasts('이동할 반을 선택해주세요.')"
                 ></button>
-                <button class="btn btn_crud_default">초기화</button>
+                <!-- <button class="btn btn_crud_default">초기화</button> -->
               </div>
               <!-- /.이동버튼 영역 -->
               <!-- 이름 검색 - 오른쪽 -->
@@ -371,9 +371,9 @@
               <!-- /.이름 검색 - 오른쪽 -->
             </div>
           </div>
-          <div class="modal-footer">
+          <!-- <div class="modal-footer">
             <button class="btn btn_crud_point">저장하기</button>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -387,6 +387,14 @@ export default {
     show: {
       type: Object,
       default: () => {},
+    },
+    classList: {
+      type: Array,
+      default: () => [],
+    },
+    checkList: {
+      type: Array,
+      default: () => [],
     },
   },
 }

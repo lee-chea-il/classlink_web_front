@@ -26,57 +26,68 @@
               <div class="tit_area">
                 <div class="title">
                   {{ selectedExamInfo.course }}
-                  레슨{{ selectedExamInfo.lesson }} {{ selectedExamInfo.type }}
+                  레슨{{ selectedExamInfo.lesson }}
+                  {{
+                    selectedExamInfo.type === 'quiz'
+                      ? '퀴즈'
+                      : selectedExamInfo.type === 'test'
+                      ? '쪽지시험'
+                      : ''
+                  }}
                   <span>정답률60%</span>
                 </div>
                 <div class="date">{{ selectedExamInfo.date }}</div>
               </div>
               <div
-                v-if="selectedExamInfo.type === '퀴즈'"
+                v-if="selectedExamInfo.type === 'quiz'"
                 class="questions_section"
               >
                 <!-- 왼쪽문제들 -->
                 <div class="questions_area">
                   <!-- 문제 BOX(퀴즈)-->
                   <div
-                    v-for="(item, idx) in examQuestion.questionList"
+                    v-for="(item, idx) in examQuestion.questionList.filter(
+                      (items) =>
+                        items.id + 1 <=
+                        Math.ceil(examQuestion.questionList.length / 2)
+                    )"
                     :key="idx"
                     class="question_box"
                   >
                     <div class="num_area">
-                      <div class="num">{{ item.num }}.</div>
+                      <div class="num">{{ item.id + 1 }}.</div>
                       <div
                         class="grade"
                         :class="
-                          item.difficult === 2
+                          item.dificultade === 2
                             ? 'high'
-                            : item.difficult === 1
+                            : item.dificultade === 1
                             ? 'medium'
-                            : item.difficult === 0
+                            : item.dificultade === 0
                             ? 'low'
                             : ''
                         "
                       >
                         {{
-                          item.difficult === 2
+                          item.dificultade === 2
                             ? '상'
-                            : item.difficult === 1
+                            : item.dificultade === 1
                             ? '중'
-                            : item.difficult === 0
+                            : item.dificultade === 0
                             ? '하'
                             : ''
                         }}
                       </div>
                     </div>
                     <div class="questions">
-                      <div class="exam_area">문제 출력 영역</div>
+                      <div class="exam_area">{{ item.problem }}</div>
                       <div class="example_area left blue">보기 출력 영역</div>
                       <div class="example_area right red">보기 출력 영역</div>
                     </div>
                     <button
-                      v-if="openDetail !== item.num"
+                      v-if="openDetail !== item.id"
                       class="btn btn_light3_ss btn_detail_view"
-                      @click="$emit('open-detail', item.num)"
+                      @click="$emit('open-detail', item.id)"
                     >
                       상세
                     </button>
@@ -95,12 +106,16 @@
                 <div class="questions_area">
                   <!-- 문제 BOX(퀴즈)-->
                   <div
-                    v-for="(item, idx) in examQuestion.questionList"
+                    v-for="(item, idx) in examQuestion.questionList.filter(
+                      (items) =>
+                        items.id + 1 >
+                        Math.ceil(examQuestion.questionList.length / 2)
+                    )"
                     :key="idx"
                     class="question_box"
                   >
                     <div class="num_area">
-                      <div class="num">{{ item.num }}.</div>
+                      <div class="num">{{ item.id + 1 }}.</div>
                       <div
                         class="grade"
                         :class="
@@ -125,14 +140,14 @@
                       </div>
                     </div>
                     <div class="questions">
-                      <div class="exam_area">문제 출력 영역</div>
+                      <div class="exam_area">{{ item.problem }}</div>
                       <div class="example_area left blue">보기 출력 영역</div>
                       <div class="example_area right red">보기 출력 영역</div>
                     </div>
                     <button
-                      v-if="openDetail !== item.num"
+                      v-if="openDetail !== item.id"
                       class="btn btn_light3_ss btn_detail_view"
-                      @click="$emit('open-detail', item.num)"
+                      @click="$emit('open-detail', item.id)"
                     >
                       상세
                     </button>
@@ -153,38 +168,42 @@
                 <div class="questions_area">
                   <!-- 문제 BOX(쪽지)-->
                   <div
-                    v-for="(item, idx) in examQuestion.questionList"
+                    v-for="(item, idx) in examQuestion.questionList.filter(
+                      (items) =>
+                        items.id + 1 <=
+                        Math.ceil(examQuestion.questionList.length / 2)
+                    )"
                     :key="idx"
                     class="question_box"
                   >
                     <div class="num_area">
-                      <div class="num">{{ item.num }}.</div>
+                      <div class="num">{{ item.id + 1 }}.</div>
                       <div
                         class="grade"
                         :class="
-                          item.difficult === 2
+                          item.dificultade === 2
                             ? 'high'
-                            : item.difficult === 1
+                            : item.dificultade === 1
                             ? 'medium'
-                            : item.difficult === 0
+                            : item.dificultade === 0
                             ? 'low'
                             : ''
                         "
                       >
                         {{
-                          item.difficult === 2
+                          item.dificultade === 2
                             ? '상'
-                            : item.difficult === 1
+                            : item.dificultade === 1
                             ? '중'
-                            : item.difficult === 0
+                            : item.dificultade === 0
                             ? '하'
                             : ''
                         }}
                       </div>
                     </div>
                     <div class="questions">
-                      <div class="exam_area">문제 출력 영역</div>
-                      <div v-if="item.type === 0" class="popquiz_text">
+                      <div class="exam_area">{{ item.problem }}</div>
+                      <div class="popquiz_text">
                         <!-- 동그란 숫자 : ①②③④ -->
                         <ol>
                           <li>
@@ -213,7 +232,7 @@
                           </li>
                         </ol>
                       </div>
-                      <div v-else class="four_choice">
+                      <!-- <div v-else class="four_choice">
                         <div class="chioce blue">
                           <div class="num">①</div>
                           <div class="img">이미지</div>
@@ -230,12 +249,12 @@
                           <div class="num">④</div>
                           <div class="img">이미지</div>
                         </div>
-                      </div>
+                      </div> -->
                     </div>
                     <button
-                      v-if="openDetail !== item.num"
+                      v-if="openDetail !== item.id"
                       class="btn btn_light3_ss btn_detail_view"
-                      @click="$emit('open-detail', item.num)"
+                      @click="$emit('open-detail', item.id)"
                     >
                       상세
                     </button>
@@ -254,38 +273,42 @@
                 <div class="questions_area">
                   <!-- 문제 BOX(쪽지)-->
                   <div
-                    v-for="(item, idx) in examQuestion.questionList"
+                    v-for="(item, idx) in examQuestion.questionList.filter(
+                      (items) =>
+                        items.id + 1 >
+                        Math.ceil(examQuestion.questionList.length / 2)
+                    )"
                     :key="idx"
                     class="question_box"
                   >
                     <div class="num_area">
-                      <div class="num">{{ item.num }}.</div>
+                      <div class="num">{{ item.id + 1 }}.</div>
                       <div
                         class="grade"
                         :class="
-                          item.difficult === 2
+                          item.dificultade === 2
                             ? 'high'
-                            : item.difficult === 1
+                            : item.dificultade === 1
                             ? 'medium'
-                            : item.difficult === 0
+                            : item.dificultade === 0
                             ? 'low'
                             : ''
                         "
                       >
                         {{
-                          item.difficult === 2
+                          item.dificultade === 2
                             ? '상'
-                            : item.difficult === 1
+                            : item.dificultade === 1
                             ? '중'
-                            : item.difficult === 0
+                            : item.dificultade === 0
                             ? '하'
                             : ''
                         }}
                       </div>
                     </div>
                     <div class="questions">
-                      <div class="exam_area">문제 출력 영역</div>
-                      <div v-if="item.type === 0" class="popquiz_text">
+                      <div class="exam_area">{{ item.problem }}</div>
+                      <div class="popquiz_text">
                         <!-- 동그란 숫자 : ①②③④ -->
                         <ol>
                           <li>
@@ -314,7 +337,7 @@
                           </li>
                         </ol>
                       </div>
-                      <div v-else class="four_choice">
+                      <!-- <div v-else class="four_choice">
                         <div class="chioce blue">
                           <div class="num">①</div>
                           <div class="img">이미지</div>
@@ -331,12 +354,12 @@
                           <div class="num">④</div>
                           <div class="img">이미지</div>
                         </div>
-                      </div>
+                      </div> -->
                     </div>
                     <button
-                      v-if="openDetail !== item.num"
+                      v-if="openDetail !== item.id"
                       class="btn btn_light3_ss btn_detail_view"
-                      @click="$emit('open-detail', item.num)"
+                      @click="$emit('open-detail', item.id)"
                     >
                       상세
                     </button>

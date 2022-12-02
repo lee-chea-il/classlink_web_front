@@ -152,6 +152,7 @@
                             role="tab"
                             aria-controls="home"
                             aria-selected="true"
+                            @click="$emit('move-student-tab', 0)"
                           >
                             학년
                           </button>
@@ -166,6 +167,7 @@
                             role="tab"
                             aria-controls="profile"
                             aria-selected="false"
+                            @click="$emit('move-student-tab', 1)"
                           >
                             반
                           </button>
@@ -174,7 +176,11 @@
                       <div id="myTabContent" class="tab-content">
                         <!-- [개발참조] 등록된 데이터 없는 경우 -->
                         <div
-                          v-if="studentList.gradeList.length === 0"
+                          v-if="
+                            studentTab === 0
+                              ? studentList.gradeList.length === 0
+                              : studentList.classList.length === 0
+                          "
                           class="nothing_txt"
                         >
                           <div class="txt">
@@ -185,7 +191,7 @@
                         <!-- /.등록된 데이터 없는 경우 -->
                         <!-- 학년 탭 내용 -->
                         <div
-                          v-else
+                          v-else-if="studentTab === 0"
                           id="grade"
                           class="tab-pane fade show active"
                           role="tabpanel"
@@ -199,25 +205,45 @@
                               <div class="list">
                                 <i
                                   id="show_sublist2"
-                                  class="btn icons_arrow_r"
+                                  class="btn"
+                                  :class="
+                                    modalModifyDetail === idx
+                                      ? 'icons_arrow_dn'
+                                      : 'icons_arrow_r'
+                                  "
+                                  @click="$emit('modify-detail', idx)"
                                 ></i>
                                 <span class="text">
                                   {{ item.grade }}
-                                  <span class="ss_txt"
-                                    >{{ item.student.length }}명</span
-                                  >
+                                  <span class="ss_txt">
+                                    {{ item.student.length }}명
+                                  </span>
                                 </span>
-                                <i class="icons_plus_circle_off"></i>
+                                <i
+                                  class="icons_plus_circle_off"
+                                  @click="
+                                    $emit('add-selected-student-all', item)
+                                  "
+                                ></i>
                               </div>
                               <!-- 학년에 해당하는 학생 리스트 -->
-                              <div id="list_sub2" class="list_sub">
+                              <div
+                                v-if="modalModifyDetail === idx"
+                                id="list_sub2"
+                                class="list_sub"
+                              >
                                 <ul>
                                   <li
                                     v-for="(items, id) in item.student"
                                     :key="id"
                                   >
                                     <span class="text">{{ items.name }}</span>
-                                    <i class="icons_plus_circle_off"></i>
+                                    <i
+                                      class="icons_plus_circle_off"
+                                      @click="
+                                        $emit('add-selected-student', items)
+                                      "
+                                    ></i>
                                   </li>
                                 </ul>
                               </div>
@@ -228,53 +254,63 @@
                         <!-- /.학년 탭 내용 -->
                         <!-- 반 탭 내용 -->
                         <div
+                          v-else
                           id="class"
                           class="tab-pane fade"
                           role="tabpanel"
                           aria-labelledby="class-tab"
                         >
                           <ul>
-                            <li>
+                            <li
+                              v-for="(item, idx) in studentList.classList"
+                              :key="idx"
+                            >
                               <div class="list">
-                                <i id="" class="btn icons_arrow_r"></i>
+                                <i
+                                  id=""
+                                  class="btn"
+                                  :class="
+                                    modalModifyClassDetail === idx
+                                      ? 'icons_arrow_dn'
+                                      : 'icons_arrow_r'
+                                  "
+                                  @click="$emit('modify-class-detail', idx)"
+                                ></i>
                                 <span class="text"
-                                  >영어 심화 B반<span class="ss_txt"
-                                    >1명</span
+                                  >{{ item.className
+                                  }}<span class="ss_txt"
+                                    >{{ item.student.length }}명</span
                                   ></span
                                 >
-                                <i class="icons_plus_circle_off"></i>
+                                <i
+                                  class="icons_plus_circle_off"
+                                  @click="
+                                    $emit('add-selected-student-all', item)
+                                  "
+                                ></i>
                               </div>
                               <!-- 반에 해당하는 학생 리스트 -->
-                              <div id="" class="list_sub" style="display: none">
+                              <div
+                                v-if="modalModifyClassDetail === idx"
+                                id=""
+                                class="list_sub"
+                              >
                                 <ul>
-                                  <li>
-                                    <span class="text">이미미</span>
-                                    <i class="icons_plus_circle_off"></i>
+                                  <li
+                                    v-for="(items, id) in item.student"
+                                    :key="id"
+                                  >
+                                    <span class="text">{{ items.name }}</span>
+                                    <i
+                                      class="icons_plus_circle_off"
+                                      @click="
+                                        $emit('add-selected-student', items)
+                                      "
+                                    ></i>
                                   </li>
                                 </ul>
                               </div>
                               <!-- /.반에 해당하는 학생 리스트 -->
-                            </li>
-                            <li>
-                              <div class="list">
-                                <i id="" class="btn icons_arrow_r"></i>
-                                <span class="text"
-                                  >영어 심화 C반<span class="ss_txt"
-                                    >1명</span
-                                  ></span
-                                >
-                                <i class="icons_plus_circle_off"></i>
-                              </div>
-                              <!-- 반에 해당하는 학생 리스트 -->
-                              <div id="" class="list_sub" style="display: none">
-                                <ul>
-                                  <li>
-                                    <span class="text">삼삼삼</span>
-                                    <i class="icons_plus_circle_off"></i>
-                                  </li>
-                                </ul>
-                              </div>
-                              <!-- /.학년에 해당하는 학생 리스트 -->
                             </li>
                           </ul>
                         </div>
@@ -284,35 +320,66 @@
                     </div>
                   </div>
                   <div class="list_section selected">
-                    <div class="sum_info">선택된 학생 <span>1</span>명</div>
+                    <div class="sum_info">
+                      선택된 학생 <span>{{ selectedStudentAll.length }}</span
+                      >명
+                    </div>
                     <div class="list_area">
                       <!-- [개발참조] 등록된 데이터 없는 경우 -->
-                      <!-- <div class="nothing_txt">
-											<div class="txt">
-												왼쪽의 +를 눌러<br />
-												학생을 선택하세요.
-											</div>
-										</div> -->
+                      <div
+                        v-if="selectedStudentAll.length === 0"
+                        class="nothing_txt"
+                      >
+                        <div class="txt">
+                          왼쪽의 +를 눌러<br />
+                          학생을 선택하세요.
+                        </div>
+                      </div>
                       <!-- /.등록된 데이터 없는 경우 -->
-                      <ul>
-                        <li>
+                      <ul v-else>
+                        <li
+                          v-for="(item, idx) in selectedStudentAll"
+                          :key="idx"
+                        >
                           <div class="list">
-                            <i id="show_sublist" class="btn icons_arrow_r"></i>
+                            <i
+                              id="show_sublist"
+                              class="btn"
+                              :class="
+                                modalModifySelectDetail === idx
+                                  ? 'icons_arrow_dn'
+                                  : 'icons_arrow_r'
+                              "
+                              @click="$emit('modify-selected-detail', idx)"
+                            ></i>
                             <span class="text"
-                              >초1<span class="ss_txt">1명</span></span
+                              >{{ item.grade
+                              }}<span class="ss_txt"
+                                >{{ item.student.length }}명</span
+                              ></span
                             >
-                            <i class="icons_minus_circle_off"></i>
+                            <i
+                              class="icons_minus_circle_off"
+                              @click="
+                                $emit('delete-selected-student-all', item)
+                              "
+                            ></i>
                           </div>
                           <!-- 해당하는 학생 리스트 -->
                           <div
+                            v-if="modalModifySelectDetail === idx"
                             id="list_sub"
                             class="list_sub"
-                            style="display: none"
                           >
                             <ul>
-                              <li>
-                                <span class="text">홍미미</span>
-                                <i class="icons_minus_circle_off"></i>
+                              <li v-for="(items, id) in item.student" :key="id">
+                                <span class="text">{{ items.name }}</span>
+                                <i
+                                  class="icons_minus_circle_off"
+                                  @click="
+                                    $emit('delete-selected-student', items)
+                                  "
+                                ></i>
                               </li>
                             </ul>
                           </div>
@@ -361,6 +428,26 @@ export default {
     selectedTeacher: {
       type: Array,
       default: () => [],
+    },
+    selectedStudentAll: {
+      type: Array,
+      default: () => [],
+    },
+    modalModifyDetail: {
+      type: Number,
+      default: null,
+    },
+    modalModifyClassDetail: {
+      type: Number,
+      default: null,
+    },
+    modalModifySelectDetail: {
+      type: Number,
+      default: null,
+    },
+    studentTab: {
+      type: Number,
+      default: 0,
     },
   },
 }

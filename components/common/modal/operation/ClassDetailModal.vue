@@ -28,7 +28,7 @@
             <div class="search_section">
               <div class="left_area">
                 <div class="dropdown form-inline">
-                  <!-- <button
+                  <button
                     class="btn dropdown-toggle"
                     type="button"
                     data-toggle="dropdown"
@@ -37,21 +37,15 @@
                     최신 등록순
                   </button>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">이름 오름차순</a>
-                    <a class="dropdown-item" href="#">이름 내림차순</a>
-                    <a class="dropdown-item" href="#">학년 오름차순</a>
-                    <a class="dropdown-item" href="#">학년 내림차순</a>
-                  </div> -->
-                  <select class="btn dropdown-toggle">
-                    <option value="new">최신 등록순</option>
-                    <option value="nameAsc">이름 오름차순</option>
-                    <option value="nameDesc">이름 내림차순</option>
-                    <option value="yearAsc">학년 오름차순</option>
-                    <option value="yearDesc">학년 내림차순</option>
-                  </select>
+                    <a class="dropdown-item">최신 등록순</a>
+                    <a class="dropdown-item">이름 오름차순</a>
+                    <a class="dropdown-item">이름 내림차순</a>
+                    <a class="dropdown-item">학년 오름차순</a>
+                    <a class="dropdown-item">학년 내림차순</a>
+                  </div>
                 </div>
                 <div class="dropdown form-inline">
-                  <!-- <button
+                  <button
                     class="btn dropdown-toggle"
                     type="button"
                     data-toggle="dropdown"
@@ -60,17 +54,13 @@
                     학생
                   </button>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">학부모</a>
-                    <a class="dropdown-item" href="#">학부모&학생</a>
-                  </div> -->
-                  <select class="btn dropdown-toggle">
-                    <option value="student">학생</option>
-                    <option value="parent">학부모</option>
-                    <option value="studentNparent">학부모&학생</option>
-                  </select>
+                    <a class="dropdown-item">학생</a>
+                    <a class="dropdown-item">학부모</a>
+                    <a class="dropdown-item">학부모&학생</a>
+                  </div>
                 </div>
                 <div class="dropdown form-inline">
-                  <!-- <button
+                  <button
                     class="btn dropdown-toggle"
                     type="button"
                     data-toggle="dropdown"
@@ -79,15 +69,11 @@
                     활성화
                   </button>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">비활성화</a>
-                  </div> -->
-                  <select class="btn dropdown-toggle">
-                    <option value="active">활성화</option>
-                    <option value="deactive">비활성화</option>
-                  </select>
+                    <a class="dropdown-item">비활성화</a>
+                  </div>
                 </div>
                 <div class="dropdown form-inline">
-                  <!-- <button
+                  <button
                     class="btn dropdown-toggle"
                     type="button"
                     data-toggle="dropdown"
@@ -96,12 +82,8 @@
                     재원
                   </button>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">퇴원</a>
-                  </div> -->
-                  <select class="btn dropdown-toggle">
-                    <option value="">재원</option>
-                    <option value="">퇴원</option>
-                  </select>
+                    <a class="dropdown-item">퇴원</a>
+                  </div>
                 </div>
                 <div class="info_txt">{{ classInfo.studentList.length }}명</div>
               </div>

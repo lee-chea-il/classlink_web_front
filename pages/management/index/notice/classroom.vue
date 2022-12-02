@@ -513,6 +513,8 @@
       :title="deleteModalDesc.title"
       @close="onCloseDeleteModalDesc"
     />
+
+    <CustomSnackbar :show="openSnackbar.open" :message="message" />
   </div>
 </template>
 
@@ -524,6 +526,7 @@ import ShowNoticeConfirmCheck from '~/components/common/modal/notice/ShowNoticeC
 import ClassNoticeTargetModal from '@/components/common/modal/notice/ClassNoticeTargetModal.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 import DeleteModal from '@/components/lecturecourse/DeletePlanModal.vue'
+import CustomSnackbar from '@/components/common/CustomSnackbar.vue'
 
 export default {
   name: 'Classroom',
@@ -534,6 +537,7 @@ export default {
     ClassNoticeTargetModal,
     ModalDesc,
     DeleteModal,
+    CustomSnackbar,
   },
   data() {
     return {
@@ -835,10 +839,17 @@ export default {
       openNoticeDetailModal: {
         open: false,
         data: {},
+        sortation: '반',
       },
       openClassNoticeTargetModal: {
         open: false,
       },
+
+      openSnackbar: {
+        open: false,
+      },
+      message: '',
+
       modalDesc: {
         open: false,
         title: '',
@@ -858,6 +869,15 @@ export default {
     this.noticeList = this.notice
   },
   methods: {
+    // 스낵바
+    onOpenSnackbar(text) {
+      this.openSnackbar.open = true
+      this.message = text
+    },
+    onCloseSnackbar() {
+      this.openSnackbar.open = false
+      this.message = ''
+    },
     // 모달
     openModalDesc(tit, msg) {
       this.modalDesc = {
@@ -872,7 +892,10 @@ export default {
     onClickDelete() {
       console.log(this.selectNoticeList.length)
       if (this.selectNoticeList.length === 0) {
-        this.openModalDesc('공지사항 삭제', '삭제할 공지사항을 선택해주세요.')
+        this.onOpenSnackbar('공지사항을 선택해주세요.')
+        setTimeout(() => {
+          this.onCloseSnackbar()
+        }, 2000)
       } else {
         this.openDeleteModalDesc('공지사항')
       }
