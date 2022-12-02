@@ -7,37 +7,51 @@
 
       <div class="tab-content depth03 ac_manage_pay">
         <div class="tab-pane active">
-          <!-- [개발참조]구독중 서비스가 없을때 
-					<div class="page_nodata">
-						<p>
-						현재 구독 중인 서비스가 없습니다.<br />
-						서비스를 구독하여 사용해 보세요.
-						</p>
-						<p>
-							<button class="btn btn_crud_point">내 카드 등록</button>
-							<button class="btn btn_crud_point">서비스 구독</button>
-						</p>
-					</div>-->
-          <SelectPaymentPlanBox
-            v-show="isEditStepFlag === 0"
-            :paymentList="paymentList"
-            :myPaymentPlan="myPaymentPlan"
-            :allPrice="allPriceString"
-            :teacherCount="teacherCount"
-            @select-plan="selectPaymentPlan"
-            @change-count="changeTeacherCount"
-            @click-up="onClickCountUpBtn"
-            @click-down="onClickCountDownBtn"
-          />
-          <CardInfoBox v-show="isEditStepFlag === 1" />
-          <ConfirmPaymentPlan v-show="isEditStepFlag === 2" />
+          <!-- [개발참조]구독중 서비스가 없을때  -->
+          <div v-if="!myPaymentPlan.title" class="page_nodata">
+            <p>
+              현재 구독 중인 서비스가 없습니다.<br />
+              서비스를 구독하여 사용해 보세요.
+            </p>
+            <p>
+              <button class="btn btn_crud_point">내 카드 등록</button>
+              <button class="btn btn_crud_point">서비스 구독</button>
+            </p>
+          </div>
+          <div v-else>
+            <SelectPaymentPlanBox
+              v-show="isEditStepFlag === 0"
+              :paymentList="paymentList"
+              :myPaymentPlan="myPaymentPlan"
+              :allPrice="allPriceString"
+              :teacherCount="teacherCount"
+              @select-plan="selectPaymentPlan"
+              @change-count="changeTeacherCount"
+              @click-up="onClickCountUpBtn"
+              @click-down="onClickCountDownBtn"
+            />
+            <CardInfoBox
+              v-show="isEditStepFlag === 1"
+              :cardInfo="cardInfo"
+              :myCardInfo="myCardInfo"
+              :isBillingContact="isBillingContact"
+              :isBuyerContact="isBuyerContact"
+              :isPaymentType="isPaymentType"
+              @click-updateIcon="onClickUpdateIcon"
+              @change-input="changeCardInfoInput"
+              @click-save="onClickSaveBtn"
+              @click-cancel="onClickCancelBtn"
+              @click-sameContact="changeSameContact"
+              @click-sameAddress="changeSameAddress"
+            />
+            <ConfirmPaymentPlan v-show="isEditStepFlag === 2" />
+          </div>
           <div class="btn_area">
-            <button class="btn btn_crud_default">취소</button>
-            <button
-              class="btn btn_crud_point"
-              onclick="location.href = '(완)결제관리-현재요금제편집02.html'"
-            >
-              다음
+            <button class="btn btn_crud_default" @click="onClickPrevBtn">
+              {{ isEditStepFlag === 0 ? '취소' : '이전' }}
+            </button>
+            <button class="btn btn_crud_point" @click="onClickNextBtn">
+              {{ isEditStepFlag === 2 ? '결제' : '다음' }}
             </button>
           </div>
         </div>
@@ -61,7 +75,7 @@ export default {
   },
   data() {
     return {
-      isEditStepFlag: 0,
+      isEditStepFlag: 1,
       paymentList: [
         {
           id: 0,
@@ -320,23 +334,81 @@ export default {
       allPrice: '',
       allPriceNumber: 0,
       allPriceString: '',
+      // 카드정보 확인
+      myCardInfo: {
+        billingContact: {
+          name: '김유진',
+          email: 'yoojin@naver.com',
+          phone: '010-1123-1234',
+          groupName: '에듀케이',
+          address: '경기도 이천시 증포동 381',
+          addressDetail: '',
+          city: '',
+          state: '',
+          postCode: '',
+          country: '대한민국',
+        },
+        buyerContact: {
+          name: '유잔',
+          email: 'yoojin@naver.com',
+          phone: '010-1123-1234',
+          groupName: '에듀케이',
+          address: '경기도 이천시 증포동 381',
+          addressDetail: '',
+          city: '',
+          state: '',
+          postCode: '',
+          country: '대한민국',
+          businessNumber: '',
+        },
+        paymentType: {
+          paymentType: '신용카드',
+          name: '유',
+          cardNumber: '************0000',
+          cvv: '',
+          expirationDateYear: '',
+          expirationDateMonth: '',
+          address: '경기도 이천시 증포동 381',
+          addressDetail: '',
+          city: '',
+          state: '',
+          postCode: '',
+          country: '대한민국',
+        },
+      },
+      isBillingContact: false,
+      isBuyerContact: false,
+      isPaymentType: false,
+      cardInfo: {},
     }
   },
   created() {
+    // 선생님 수 추가 총 결제액
     this.allPrice = JSON.parse(JSON.stringify(this.myPaymentPlan.price))
     this.allPriceString = this.allPrice
+    // 유저 카드 정보 가져오기
+    this.cardInfo = JSON.parse(JSON.stringify(this.myCardInfo))
   },
   methods: {
+    // 깊은 복사
+    deepCopy(data) {
+      return JSON.parse(JSON.stringify(data))
+    },
+    // 요금제 선택
     selectPaymentPlan(idx) {
       this.myPaymentPlan = this.paymentList[idx]
       this.allPrice = JSON.parse(JSON.stringify(this.myPaymentPlan.price))
       this.allPriceString = this.allPrice
     },
+    // 선생님 추가
     changeTeacherCount({ target: { value } }) {
       const count = parseInt(value)
       this.teacherCount = count
     },
     onClickCountUpBtn() {
+      if (this.myPaymentPlan.title === 'Free') {
+        return false
+      }
       this.teacherCount++
       this.allPriceNumber = parseInt(this.allPrice)
       this.allPriceNumber = this.allPriceNumber + this.teacherCount * 50000
@@ -344,11 +416,110 @@ export default {
       console.log(this.allPriceString)
     },
     onClickCountDownBtn() {
-      this.teacherCount--
-      this.allPriceNumber = parseInt(this.allPrice)
-      this.allPriceNumber = this.allPriceNumber + this.teacherCount * 50000
-      this.allPriceString = String(this.allPriceNumber)
-      console.log(this.allPriceString)
+      if (this.teacherCount === 0) {
+        return false
+      } else {
+        this.teacherCount--
+        this.allPriceNumber = parseInt(this.allPrice)
+        this.allPriceNumber = this.allPriceNumber + this.teacherCount * 50000
+        this.allPriceString = String(this.allPriceNumber)
+        console.log(this.allPriceString)
+      }
+    },
+    // 다음 버튼
+    onClickNextBtn() {
+      if (this.isEditStepFlag === 2) {
+        return false
+      } else {
+        this.isEditStepFlag++
+      }
+    },
+    // 뒤로 버튼
+    onClickPrevBtn() {
+      if (this.isEditStepFlag === 0) {
+        this.$router.push('/management/payment')
+        return false
+      } else {
+        this.isEditStepFlag--
+      }
+    },
+    // 정보 수정
+    onClickUpdateIcon(id) {
+      if (id === 0) {
+        if (this.isBillingContact) {
+          this.isBillingContact = false
+        } else {
+          this.isBillingContact = true
+        }
+      } else if (id === 1) {
+        if (this.isBuyerContact) {
+          this.isBuyerContact = false
+        } else {
+          this.isBuyerContact = true
+        }
+      } else if (this.isPaymentType) {
+        this.isPaymentType = false
+      } else {
+        this.isPaymentType = true
+      }
+    },
+    changeCardInfoInput({ target: { value, name, id } }) {
+      if (id === 'billingContact') {
+        this.cardInfo.billingContact[name] = value
+      } else if (id === 'buyerContact') {
+        this.cardInfo.buyerContact[name] = value
+      } else {
+        this.cardInfo.paymentType[name] = value
+      }
+    },
+    onClickSaveBtn(id) {
+      if (id === 'billingContact') {
+        this.myCardInfo.billingContact = this.deepCopy(
+          this.cardInfo.billingContact
+        )
+        this.isBillingContact = false
+      } else if (id === 'buyerContact') {
+        this.myCardInfo.buyerContact = this.deepCopy(this.cardInfo.buyerContact)
+        this.isBuyerContact = false
+      } else {
+        this.myCardInfo.paymentType = this.deepCopy(this.cardInfo.paymentType)
+        this.isPaymentType = false
+      }
+    },
+    onClickCancelBtn(id) {
+      if (id === 'billingContact') {
+        this.cardInfo.billingContact = this.myCardInfo.billingContact
+
+        this.isBillingContact = false
+      } else if (id === 'buyerContact') {
+        this.cardInfo.buyerContact = this.myCardInfo.buyerContact
+        this.isBuyerContact = false
+      } else {
+        this.cardInfo.paymentType = this.myCardInfo.paymentType
+        this.isPaymentType = false
+      }
+    },
+    changeSameContact({ target: { checked } }) {
+      if (checked) {
+        Object.assign(
+          this.cardInfo.buyerContact,
+          this.myCardInfo.billingContact
+        )
+      }
+    },
+    changeSameAddress({ target: { checked } }) {
+      if (checked) {
+        this.cardInfo.paymentType.address =
+          this.myCardInfo.billingContact.address
+        this.cardInfo.paymentType.addressDetail =
+          this.myCardInfo.billingContact.addressDetail
+        this.cardInfo.paymentType.city = this.myCardInfo.billingContact.city
+        this.cardInfo.paymentType.state = this.myCardInfo.billingContact.state
+        this.cardInfo.paymentType.postCode =
+          this.myCardInfo.billingContact.postCode
+        this.cardInfo.paymentType.country =
+          this.myCardInfo.billingContact.country
+      }
     },
   },
 }

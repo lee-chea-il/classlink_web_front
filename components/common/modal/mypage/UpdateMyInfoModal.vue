@@ -59,7 +59,7 @@
           </div>
           <ValidationObserver>
             <div class="divid_section">
-              <div class="info_area">
+              <div class="info_area info_width">
                 <CustomMypageInput
                   id="name"
                   name="이름"
@@ -175,5 +175,10 @@ export default {
 .profile_photo {
   background-size: cover;
   background-position: center;
+}
+
+.info_width {
+  width: 73%;
+  border: 0;
 }
 </style>

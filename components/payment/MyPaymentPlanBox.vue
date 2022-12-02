@@ -64,7 +64,7 @@
               </tbody>
             </table>
             <button
-              class="btn btn_crud_default unpay"
+              class="btn btn_crud_default unpay btn_pd"
               type="button"
               data-toggle="modal"
               data-target="#modalCancleSub"
@@ -89,4 +89,8 @@ export default {
   },
 }
 </script>
-<style scoped></style>
+<style scoped>
+.btn_pd {
+  padding: 7px 23px !important;
+}
+</style>
