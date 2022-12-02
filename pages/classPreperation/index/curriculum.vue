@@ -117,7 +117,7 @@
                 </button>
               </li>
             </ul>
-            
+
             <div id="myTabContent" class="tab-content">
               <!-- 탭 내용01 -->
               <div
@@ -150,16 +150,32 @@
     <CurriculumUpdateModal
       ref="curriculumUpdateModal"
       :open="isShowOpenAddModal"
-      @open-file-path="()=>{isShowOpenPathModal=true}"
-      @open-save-path="()=>{isShowSavePathModal=true}"
-      @close="()=>{isShowOpenAddModal=false}"
+      @open-file-path="
+        () => {
+          isShowOpenPathModal = true
+        }
+      "
+      @open-save-path="
+        () => {
+          isShowSavePathModal = true
+        }
+      "
+      @close="
+        () => {
+          isShowOpenAddModal = false
+        }
+      "
     />
     <OpenSearchFileModal
       :open="isShowOpenPathModal"
       :institutionData="receiveInstitutionLessonData"
       :franchiseData="receiveFranchiseLessonData"
       :myData="receiveLessonList"
-      @close="()=>{isShowOpenPathModal=false}"
+      @close="
+        () => {
+          isShowOpenPathModal = false
+        }
+      "
       @open-file-info="openFileInfo"
     />
     <SavePathSearchModal
@@ -167,7 +183,11 @@
       :institutionData="receiveInstitutionData"
       :franchiseData="receiveFranchiseData"
       :myData="receiveCurriculumData"
-      @close="()=>{isShowSavePathModal=false}"
+      @close="
+        () => {
+          isShowSavePathModal = false
+        }
+      "
       @save-file-path="saveFilePath"
     />
   </div>
@@ -177,7 +197,7 @@
 import MainBtnBox from '~/components/common/MainBtnBox.vue'
 import PageHeader from '~/components/common/PageHeader.vue'
 import TreeView from '@/components/common/custom/CustomTreeView.vue'
-import initialState from '~/data/curriculum/initialState'
+import initialState from '~/data/classPreperation/curriculum/initialState'
 import CurriculumUpdateModal from '@/components/common/modal/curriculum/CurriculumUpdateModal.vue'
 import SavePathSearchModal from '@/components/common/modal/curriculum/SavePathSearchModal.vue'
 import OpenSearchFileModal from '@/components/common/modal/curriculum/OpenSearchFileModal.vue'
@@ -190,13 +210,13 @@ export default {
     CurriculumUpdateModal,
     SavePathSearchModal,
     OpenSearchFileModal,
-    MainBtnBox
+    MainBtnBox,
   },
   data() {
     return initialState()
   },
   methods: {
-    openCurriculumAdd(){
+    openCurriculumAdd() {
       const createCurriculumData = {
         subTitle: '',
         desc: '',
@@ -207,7 +227,7 @@ export default {
         isContinuedRegist: true,
         lessonInfo: {},
       }
-      this.isShowOpenAddModal=true
+      this.isShowOpenAddModal = true
       this.$refs.curriculumUpdateModal.setData(createCurriculumData)
     },
     copyData() {
@@ -222,18 +242,18 @@ export default {
     },
     pasteData() {
       this.$refs.curriculum.pasteData(this.copyCheckData)
-      if(this.isCopyType==='institution'){
+      if (this.isCopyType === 'institution') {
         this.$refs.institution.copyComp()
-      }else if(this.isCopyType==='franchise'){
+      } else if (this.isCopyType === 'franchise') {
         this.$refs.franchise.copyComp()
       }
     },
     delData() {
-      if(this.identity==='master'){
+      if (this.identity === 'master') {
         const instiTab = document.getElementById('institute')
         if (instiTab.classList.contains('show')) {
           this.$refs.institution.delData()
-        }else{
+        } else {
           this.$refs.franchise.delData()
         }
       }
@@ -243,19 +263,19 @@ export default {
       this.copyCheckData = copyData
       console.log(this.copyCheckData)
     },
-    saveFilePath(pathInfo){
+    saveFilePath(pathInfo) {
       this.$refs.curriculumUpdateModal.setSavePath(pathInfo)
-      this.isShowSavePathModal=false
+      this.isShowSavePathModal = false
     },
-    openFileInfo(fileInfo){
+    openFileInfo(fileInfo) {
       this.$refs.curriculumUpdateModal.setFileInfo(fileInfo)
-      this.isShowOpenPathModal=false
+      this.isShowOpenPathModal = false
     },
-    unActive(){
+    unActive() {
       this.$refs.institution.unActiveAll()
       this.$refs.franchise.unActiveAll()
       this.$refs.curriculum.unActiveAll()
-    }
+    },
   },
 }
 </script>

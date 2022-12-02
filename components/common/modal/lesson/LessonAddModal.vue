@@ -41,6 +41,7 @@
                         aria-controls="home"
                         aria-selected="true"
                       >
+                        <span class="icon_institute"></span>
                         교육기관
                       </button>
                     </li>
@@ -57,6 +58,7 @@
                         aria-controls="profile"
                         aria-selected="false"
                       >
+                        <span class="icon_fran"></span>
                         프랜차이즈
                       </button>
                     </li>

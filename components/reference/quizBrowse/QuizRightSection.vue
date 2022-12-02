@@ -17,12 +17,8 @@
                 <label class="custom-control-label" for="rad01">OX 유형</label>
               </div>
             </div>
+            <QuizCustomCheckbox title="O" :className="item.oxAnswer" :idx="0" />
             <div class="cnt">
-              <QuizCustomCheckbox
-                title="O"
-                :className="item.oxAnswer"
-                :idx="0"
-              />
               <QuizCustomCheckbox
                 title="X"
                 :className="item.oxAnswer"

@@ -1,5 +1,5 @@
 <template>
-  <div class="col-12">
+  <div class="quiz_area02">
     <div class="tit">
       <div class="custom-control custom-radio custom-control-inline">
         <input

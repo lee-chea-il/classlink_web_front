@@ -285,7 +285,7 @@ import ReferenceFilterModal from '~/components/common/modal/reference/ReferenceF
 import NoteTestPreviewModal from '~/components/common/modal/reference/NoteTestPreviewModal.vue'
 import { apiReference } from '~/services'
 import { urlRegex, youtubeRegex, setNewArray, jsonItem } from '~/utiles/common'
-import initialState from '~/data/worldReference/initialState'
+import initialState from '~/data/world/worldReference/initialState'
 import CustomSnackbar from '~/components/common/CustomSnackbar.vue'
 
 export default {

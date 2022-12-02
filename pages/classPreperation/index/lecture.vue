@@ -112,7 +112,7 @@ import SelectScheduleModal from '~/components/common/modal/lecture/SelectSchedul
 import SelectCurriculumModal from '~/components/common/modal/lecture/SelectCurriculumModal.vue'
 import CurriculumAssignmentModal from '~/components/common/modal/lecture/CurriculumAssignmentModal.vue'
 import SelectCurriculumListModal from '~/components/common/modal/lecture/SelectCurriculumListModal.vue'
-import initialState from '~/data/lecture/initialState'
+import initialState from '~/data/classPreperation/lecture/initialState'
 import { setNewArray, deepCopy } from '~/utiles/common'
 import CustomSnackbar from '~/components/common/CustomSnackbar.vue'
 

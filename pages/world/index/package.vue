@@ -246,7 +246,7 @@ import QuizPreviewModal from '~/components/common/modal/reference/QuizPreviewMod
 import VideoBrowseModal from '~/components/common/modal/reference/VideoBrowseModal.vue'
 import NoteTestBrowseModal from '~/components/common/modal/reference/NoteTestBrowseModal.vue'
 import NoteTestPreviewModal from '~/components/common/modal/reference/NoteTestPreviewModal.vue'
-import initialState from '~/data/package/initialState'
+import initialState from '~/data/world/package/initialState'
 import QuizChangeModal from '~/components/common/modal/reference/QuizAddModal.vue'
 import NoteTestChangeModal from '~/components/common/modal/reference/NoteTestAddModal.vue'
 import ReferenceChangeModal from '~/components/common/modal/reference/ReferenceAddModal.vue'

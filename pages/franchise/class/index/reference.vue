@@ -276,11 +276,11 @@ import ReferenceFilterModal from '~/components/common/modal/reference/ReferenceF
 import NoteTestPreviewModal from '~/components/common/modal/reference/NoteTestPreviewModal.vue'
 import { apiReference } from '~/services'
 import { urlRegex, youtubeRegex, setNewArray, jsonItem } from '~/utiles/common'
-import initialState from '~/data/classPreperation/reference/initialState'
+import initialState from '~/data/franchise/reference/initialState'
 import CustomSnackbar from '~/components/common/CustomSnackbar.vue'
 
 export default {
-  name: 'ReferenceRoom',
+  name: 'FranchiseReference',
   components: {
     ModalDesc,
     PageHeader,

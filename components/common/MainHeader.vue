@@ -4,306 +4,17 @@
     <div class="nav_web">
       <div class="nav_top_wrap">
         <div class="nav_top">
-          <div
-            class="logo_area"
-            @click="$store.commit('common/setActiveNavIdx', 0)"
-          >
-            <NuxtLink to="/"
-              ><img src="@/assets/images/ClassLink_logo.svg" alt="ClassLink"
-            /></NuxtLink>
-          </div>
-          <div class="nav_area">
-            <ul class="nav nav_dapth01">
-              <li class="nav-item">
-                <nuxt-link
-                  :class="{
-                    'nav-link': true,
-                    active: $route.matched[0].path === '/classPreperation',
-                  }"
-                  :to="
-                    $route.matched[0].path === '/classPreperation'
-                      ? ''
-                      : '/classPreperation/reference'
-                  "
-                  >수업준비</nuxt-link
-                >
-              </li>
-              <li class="nav-item">
-                <nuxt-link
-                  class="nav-link"
-                  :class="{
-                    'nav-link': true,
-                    active: $route.matched[0].path === '/class',
-                  }"
-                  :to="
-                    $route.matched[0].path === '/class'
-                      ? ''
-                      : '/class/lecturecourse'
-                  "
-                  >수업</nuxt-link
-                >
-              </li>
-              <li class="nav-item">
-                <NuxtLink
-                  :class="{
-                    'nav-link': true,
-                    active: $route.matched[0].path === '/management',
-                  }"
-                  :to="
-                    $route.matched[0].path === '/management'
-                      ? ''
-                      : '/management/operation/teachermanagement'
-                  "
-                  >관리</NuxtLink
-                >
-              </li>
-              <li class="nav-item">
-                <NuxtLink
-                  :class="{
-                    'nav-link': true,
-                    active: $route.matched[0].path === '/world',
-                  }"
-                  :to="
-                    $route.matched[0].path === '/world'
-                      ? ''
-                      : '/world/reference'
-                  "
-                  >월드</NuxtLink
-                >
-              </li>
-            </ul>
-          </div>
-          <div class="function_area">
-            <button
-              type="button"
-              class="btn btn-refresh"
-              @click="ReloadPage"
-            ></button>
-
-            <!-- [개발참조]버튼 활성 : class="active" 추가 -->
-            <nuxt-link
-              to="/"
-              class="btn btn_nav_myhome"
-              :class="{
-                active: $route.fullPath === '/',
-              }"
-              >마이홈</nuxt-link
-            >
-            <nuxt-link
-              to="/mypage"
-              class="btn btn_nav_user"
-              :class="{
-                active: $route.fullPath !== '/',
-              }"
-              >홍길동 선생님</nuxt-link
-            >
-            <!-- [개발참조]신규알림표시 : class="newlabel" 추가 -->
-            <button class="btn btn_alert icons_bell_off newlabel"></button>
-          </div>
+          <MainLogo to="/" />
+          <EducationMainNav :mainNavList="mainNavList" />
+          <MyItem myHome="/" myPage="/mypage" @reload="ReloadPage" />
         </div>
       </div>
-      <div
-        v-show="$route.matched[0].path === '/classPreperation'"
-        class="nav_sub"
-      >
-        <ul class="nav nav_dapth02">
-          <li class="nav-item">
-            <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
-            <NuxtLink
-              to="/classPreperation/reference"
-              :class="{
-                'nav-link': true,
-                active: $route.fullPath === '/classPreperation/reference',
-              }"
-              href="#"
-              >자료실</NuxtLink
-            >
-          </li>
-          <li class="nav-item">
-            <NuxtLink
-              :class="{
-                'nav-link': true,
-                active: $route.fullPath === '/classPreperation/lesson',
-              }"
-              to="/classPreperation/lesson"
-              >레슨</NuxtLink
-            >
-          </li>
-          <li class="nav-item">
-            <NuxtLink
-              :class="{
-                'nav-link': true,
-                active: $route.fullPath === '/classPreperation/curriculum',
-              }"
-              to="/classPreperation/curriculum"
-              >커리큘럼</NuxtLink
-            >
-          </li>
-          <li class="nav-item">
-            <NuxtLink
-              :class="{
-                'nav-link': true,
-                active: $route.fullPath === '/classPreperation/lecture',
-              }"
-              to="/classPreperation/lecture"
-              >강좌</NuxtLink
-            >
-          </li>
-        </ul>
-      </div>
 
-      <div v-show="$route.matched[0].path === '/class'" class="nav_sub">
-        <ul class="nav nav_dapth02">
-          <li class="nav-item">
-            <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
-            <NuxtLink
-              to="/class/lecturecourse"
-              :class="{
-                'nav-link': true,
-                active: $route.fullPath.includes('/class/lecturecourse'),
-              }"
-              href="#"
-              >강의 코스</NuxtLink
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">학습함</a>
-          </li>
-        </ul>
-      </div>
-
-      <div v-show="$route.matched[0].path === '/management'" class="nav_sub">
-        <ul class="nav nav_dapth02">
-          <li class="nav-item">
-            <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
-            <NuxtLink
-              :class="{
-                'nav-link': true,
-                active: $route.fullPath.includes('/management/operation'),
-              }"
-              to="/management/operation/teachermanagement"
-              >운영관리</NuxtLink
-            >
-          </li>
-          <li class="nav-item">
-            <NuxtLink
-              :class="{
-                'nav-link': true,
-                active: $route.fullPath.includes('/management/attendance'),
-              }"
-              to="/management/attendance/student"
-              >출결</NuxtLink
-            >
-            <!-- <a class="nav-link" href="#">출결</a> -->
-          </li>
-          <li class="nav-item">
-            <NuxtLink
-              :class="{
-                'nav-link': true,
-                active: $route.fullPath.includes('/management/franchise'),
-              }"
-              to="/management/franchise/list"
-              >프랜차이즈 가입관리</NuxtLink
-            >
-          </li>
-          <li class="nav-item">
-            <NuxtLink
-              :class="{
-                'nav-link': true,
-                active: $route.fullPath.includes('/management/payment'),
-              }"
-              to="/management/payment"
-              >결제관리</NuxtLink
-            >
-          </li>
-          <li class="nav-item">
-            <NuxtLink
-              :class="{
-                'nav-link': true,
-                active: $route.fullPath.includes('/management/notice'),
-              }"
-              to="/management/notice/all"
-              >공지사항</NuxtLink
-            >
-          </li>
-        </ul>
-      </div>
-
-      <div v-show="$route.matched[0].path === '/world'" class="nav_sub">
-        <ul class="nav nav_dapth02">
-          <li class="nav-item">
-            <!-- [개발참조]버튼 활성 : class="nav-link에 active" 추가 -->
-            <NuxtLink
-              :class="{
-                'nav-link': true,
-                active: $route.fullPath.includes('/world/reference'),
-              }"
-              to="/world/reference"
-              >자료실</NuxtLink
-            >
-          </li>
-          <li class="nav-item">
-            <NuxtLink
-              :class="{
-                'nav-link': true,
-                active: $route.fullPath === '/world/package',
-              }"
-              to="/world/package"
-              >패키지</NuxtLink
-            >
-          </li>
-          <li class="nav-item">
-            <NuxtLink
-              :class="{
-                'nav-link': true,
-                active: $route.fullPath === '/world/buildingSet',
-              }"
-              to="/world/buildingSet"
-              >건물SET</NuxtLink
-            >
-          </li>
-          <li class="nav-item">
-            <NuxtLink
-              :class="{
-                'nav-link': true,
-                active: $route.fullPath === '/world/building',
-              }"
-              to="/world/building"
-              >빌딩</NuxtLink
-            >
-          </li>
-          <li class="nav-item">
-            <NuxtLink
-              :class="{
-                'nav-link': true,
-                active: $route.fullPath === '/world/guidanceTeacher',
-              }"
-              to="/world/guidanceTeacher"
-              >지도교사</NuxtLink
-            >
-          </li>
-        </ul>
-      </div>
+      <EducationNavList :navList="navList" />
     </div>
 
     <!-- 작은탬, 모바일 상단메뉴 < 991.98-->
-    <div class="nav_mobile">
-      <div class="nav_top_wrap">
-        <div class="nav_top">
-          <div class="mobile_navbtn_area left">
-            <button
-              id="mobilebackBtn"
-              class="btn icons_arrow2_l"
-              onclick="history.back();"
-            ></button>
-          </div>
-          <div class="title_area">마이홈</div>
-          <div class="mobile_navbtn_area">
-            <button id="mobilemuBtn" class="btn icons_mobilemu"></button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <NavMobile />
     <!-- 알림창 -->
     <!-- goTop 버튼 -->
     <button class="btn btn_gotop"></button>
@@ -311,8 +22,157 @@
 </template>
 
 <script>
+import EducationMainNav from './EducationMainNav.vue'
+import EducationNavList from './EducationNavList.vue'
+import MainLogo from './MainLogo.vue'
+import MyItem from './MyItem.vue'
+import NavMobile from './NavMobile.vue'
+
 export default {
   name: 'EduHeader',
+  components: {
+    MainLogo,
+    EducationNavList,
+    NavMobile,
+    MyItem,
+    EducationMainNav,
+  },
+  data() {
+    return {
+      mainNavList: [
+        {
+          id: 1,
+          name: '수업준비',
+          active: '/classPreperation',
+          path: '/classPreperation/reference',
+        },
+        {
+          id: 2,
+          name: '수업',
+          active: '/class',
+          path: '/class/lecturecourse',
+        },
+        {
+          id: 3,
+          name: '관리',
+          active: '/management',
+          path: '/management/operation/teachermanagement',
+        },
+        {
+          id: 4,
+          name: '월드',
+          active: '/world',
+          path: '/world/reference',
+        },
+      ],
+      navList: [
+        {
+          id: 1,
+          isShow: '/classPreperation',
+          children: [
+            {
+              name: '자료실',
+              to: '/classPreperation/reference',
+              active: '/classPreperation/reference',
+            },
+            {
+              name: '레슨',
+              to: '/classPreperation/lesson',
+              active: '/classPreperation/lesson',
+            },
+            {
+              name: '커리큘럼',
+              to: '/classPreperation/curriculum',
+              active: '/classPreperation/curriculum',
+            },
+            {
+              name: '커리큘럼',
+              to: '/classPreperation/lecture',
+              active: '/classPreperation/lecture',
+            },
+          ],
+        },
+        {
+          id: 2,
+          isShow: '/class',
+          children: [
+            {
+              name: '강의 코스',
+              to: '/class/lecturecourse',
+              active: '/class/lecturecourse',
+            },
+            {
+              name: '학습함',
+              to: '',
+              active: 'none',
+            },
+          ],
+        },
+        {
+          id: 3,
+          isShow: '/management',
+          children: [
+            {
+              name: '운영관리',
+              to: '/management/operation/teachermanagement',
+              active: '/management/operation',
+            },
+            {
+              name: '출결',
+              to: '/management/attendance/student',
+              active: '/management/attendance',
+            },
+            {
+              name: '프랜차이즈 가입관리',
+              to: '/management/franchise/list',
+              active: '/management/franchise',
+            },
+            {
+              name: '결제관리',
+              to: '/management/payment',
+              active: '/management/payment',
+            },
+            {
+              name: '공지사항',
+              to: '/management/notice/all',
+              active: '/management/notice',
+            },
+          ],
+        },
+        {
+          id: 4,
+          isShow: '/world',
+          children: [
+            {
+              name: '자료실',
+              to: '/world/reference',
+              active: '/world/reference',
+            },
+            {
+              name: '패키지',
+              to: '/world/package',
+              active: '/world/package',
+            },
+            {
+              name: '월드SET',
+              to: '/world/worldSet',
+              active: '/world/worldSet',
+            },
+            {
+              name: '빌딩',
+              to: '/world/building',
+              active: '/world/building',
+            },
+            {
+              name: '지도교사',
+              to: '/world/guidanceTeacher',
+              active: '/world/guidanceTeacher',
+            },
+          ],
+        },
+      ],
+    }
+  },
   methods: {
     ReloadPage() {
       location.reload()
@@ -320,5 +180,3 @@ export default {
   },
 }
 </script>
-
-<style></style>

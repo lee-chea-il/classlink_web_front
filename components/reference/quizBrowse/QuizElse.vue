@@ -1,7 +1,7 @@
 <template>
   <div class="col-6">
     <div class="mult">
-      <div class="tit">난이도</div>
+      <div class="tit stit">난이도</div>
       <div class="cnt">
         <QuizCustomCheckbox title="상" :className="quiz.dificultade" :idx="0" />
         <QuizCustomCheckbox title="중" :className="quiz.dificultade" :idx="1" />

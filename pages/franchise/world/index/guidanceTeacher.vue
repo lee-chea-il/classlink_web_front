@@ -1,10 +1,10 @@
 <template>
-  <h1>빌딩set입니다.</h1>
+  <h1>지도교사</h1>
 </template>
 
 <script>
 export default {
-  name: 'WordBuildingSet',
+  name: 'GuidanceTeacher',
 }
 </script>
 
