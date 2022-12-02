@@ -20,13 +20,18 @@
                   <div class="form-group">
                     <label for="">제목</label>
                     <div class="col">
-                      <input id="curriculumSubTitle" type="text" placeholder="입력해 주세요" class="form-control" value="">
+                      <input
+                        v-model="curriculumData.subTitle"
+                        type="text"
+                        placeholder="입력해 주세요"
+                        class="form-control"
+                      >
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="">설명</label>
                     <div class="col">
-                      <textarea id="curriculumDesc" placeholder="메모입력"></textarea>
+                      <textarea v-model="curriculumData.desc" placeholder="메모입력"></textarea>
                     </div>
                   </div>
 
@@ -82,7 +87,12 @@
                     <label for="">불러오기</label>
                     <div class="col">
                       <div class="input_file">
-                        <input id="openFileNameTxt" type="text" class="file_input_textbox" readonly >
+                        <input
+                          v-model="curriculumData.openFilePath"
+                          type="text"
+                          class="file_input_textbox"
+                          readonly
+                        >
                         <div
                           class="file_input_div"
                           @click="()=>{$emit('open-file-path')}"
@@ -95,26 +105,26 @@
                   <div class="form-group">
                     <label for="">제목</label>
                     <div class="col">
-                      {{lessonDataList.title}}
+                      {{curriculumData.lessonDataList.title}}
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="">설명</label>
                     <div class="col">
-                      {{lessonDataList.desc}}
+                      {{curriculumData.lessonDataList.desc}}
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="">교육 목표</label>
                     <div class="col">
-                      {{lessonDataList.role}}
+                      {{curriculumData.lessonDataList.role}}
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="" style="place-self: flex-start">레슨 자료</label>
                     <div class="col">
                       <div class="list_box">
-                        <div v-if="lessonDataList.title===undefined" class="nothing_txt">
+                        <div v-if="curriculumData.lessonDataList.title===''" class="nothing_txt">
                           현재 불러온 레슨이 없습니다.
                         </div>
                         <div v-else class="section">
@@ -142,7 +152,7 @@
                     <label for="">저장 경로</label>
                     <div class="col">
                       <input
-                        id="inputSavePathTxt"
+                        v-model="curriculumData.savePathInfo.path"
                         type="text"
                         placeholder="저장할 폴더를 선택해 주세요"
                         class="form-control form-inline front_button"
@@ -187,7 +197,6 @@
 </template>
 
 <script>
-import $ from 'jquery'
 import CustomListView from '@/components/common/custom/CustomListView.vue'
 import CustomImgListView from '@/components/common/custom/CustomImgListView.vue'
 import CustomCurriculumSwiper from '@/components/common/custom/CustomCurriculumSwiper.vue'
@@ -216,14 +225,28 @@ export default {
       dropMenuList: [],
       dropMenuListData: [],
       cwData: null,
-      lessonDataList:{},
       linkDataCnt:0,
       currentClassName:'교실선택',
-      savePathInfo:{
-        path: '',
-        type: ''
+      fileInfo: {},
+
+      curriculumData: {
+        subTitle: '',
+        desc: '',
+        openFilePath: "",
+        savePathInfo: {
+          type:'',
+          path:''
+        },
+        cwInfo: {},
+        isOpenEducation: true,
+        isContinuedRegist: true,
+        lessonInfo: {},
+        lessonDataList:{
+          title: "",
+          desc: "",
+          role: "",
+        },
       },
-      fileInfo: {}
     }
   },
   mounted() {
@@ -1797,23 +1820,24 @@ export default {
       }
     },
     setData(curriculumData){
-      const createCurriculumData = {
-        subTitle: '',
-        desc: '',
-        openFileInfo: '',
-        savePath: '',
+      this.curriculumData = {
+        subTitle: 'subTitle',
+        desc: 'desc',
+        openFilePath: "",
+        savePathInfo: {
+          type:'',
+          path:''
+        },
         cwInfo: {},
         isOpenEducation: true,
         isContinuedRegist: true,
         lessonInfo: {},
+        lessonDataList:{
+          title: "",
+          desc: "",
+          role: "",
+        },
       }
-      /* curriculumSubTitle
-      curriculumDesc
-      openFileNameTxt
-      inputSavePathTxt
-      lessonDataList */
-      console.log(curriculumData)
-      console.log(createCurriculumData)
     },
     linkData(listIdx,imgIdx){
       this.$refs.listView.linkData(listIdx,imgIdx)
@@ -1838,15 +1862,14 @@ export default {
       this.$refs.imgListViewSwiper.unLinkAllItem()
     },
     setSavePath(pathInfo){
-      this.savePathInfo=pathInfo
-      $("#inputSavePathTxt").val(this.savePathInfo.path)
+      this.curriculumData.savePathInfo=pathInfo
     },
     setFileInfo(fileInfo){
       this.unLinkAllItem()
       this.fileInfo=fileInfo
-      this.lessonDataList=fileInfo.data
-      $("#openFileNameTxt").val(this.fileInfo.path+' > '+this.fileInfo.data.name)
-      this.$refs.listView.setDataList(this.lessonDataList)
+      this.curriculumData.lessonDataList=fileInfo.data
+      this.curriculumData.openFilePath=this.fileInfo.path+' > '+this.fileInfo.data.name
+      this.$refs.listView.setDataList(this.curriculumData.lessonDataList)
     },
     imgResize(perRatio){
       this.$refs.imgListViewSwiper.imgResize(perRatio)
