@@ -7,20 +7,24 @@
           <div class="form-group">
             <label for="userid" class="hide">아이디</label>
             <input
-              id="userid"
+              id="mem_id"
               type="text"
               placeholder="아이디 입력"
               class="form-control"
-              autocomplete="on"
+              autocomplete="off"
+              :value="userInfo.mem_id"
+              @input="changeInput($event)"
             />
           </div>
           <div class="form-group">
             <label for="password" class="hide">비밀번호</label>
             <input
-              id="password"
+              id="mem_pw"
               :type="!isPwEyeOn ? 'password' : 'text'"
               placeholder="비밀번호 입력"
               class="form-control form_password"
+              :value="userInfo.mem_pw"
+              @input="changeInput($event)"
             />
             <i
               id="eyeOff"
@@ -82,19 +86,27 @@ export default {
   data() {
     return {
       userInfo: {
-        memId: '',
-        memPwd: '',
+        mem_id: 'test7777',
+        mem_pw: 'test7777',
       },
       isPwEyeOn: false,
     }
   },
   methods: {
-    async postLogin() {
-      const payload = {
-        account: 'manager',
-        account_type_id: 1,
-        password: 'thqkddkswjs1!',
+    // 비밀번호 타입 바꾸기
+    changePwType() {
+      if (this.isPwEyeOn === false) {
+        this.isPwEyeOn = true
+      } else {
+        this.isPwEyeOn = false
       }
+    },
+    changeInput({ target: { value, id } }) {
+      this.userInfo[id] = value
+    },
+    // api호출
+    async postLogin() {
+      const payload = this.userInfo
       await apiLogin
         .postLogin(payload)
         .then((res) => {
@@ -104,13 +116,7 @@ export default {
           console.log(err, '에러수정 전입니다.')
         })
     },
-    changePwType() {
-      if (this.isPwEyeOn === false) {
-        this.isPwEyeOn = true
-      } else {
-        this.isPwEyeOn = false
-      }
-    },
+    // 로그인
     onSubtmit() {
       console.log('로그인 시도')
     },
@@ -118,5 +124,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
