@@ -1,7 +1,7 @@
 import http from './http'
 
 async function postLogin(userPayload) {
-  return await http.post('/postLogin', userPayload)
+  return await http.post('/api/v1/account/login', userPayload)
 }
 
 const apiLogin = {
