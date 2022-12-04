@@ -215,6 +215,7 @@ export default {
                 oldNode.isPaste = true
               }
             } else {
+              oldNode.children[len - i - 1].isPaste = false
               _checkPasteData(oldNode.children[len - i - 1])
             }
           }
@@ -226,7 +227,8 @@ export default {
       function _resetPasteData(oldNode) {
         if (oldNode.children && oldNode.children.length > 0) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            if (!oldNode.children[len - i - 1].isLeaf) oldNode.paste = false
+            /* if (!oldNode.children[len - i - 1].isLeaf) oldNode.paste = false */
+            _resetPasteData(oldNode.children[i])
           }
         }
         oldNode.paste = false
