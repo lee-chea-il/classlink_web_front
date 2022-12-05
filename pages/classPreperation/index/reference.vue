@@ -47,7 +47,7 @@
       :uploadType="uploadType"
       @upload-video="onUploadVideo"
       @upload-pdf="onUploadPdf"
-    />
+  />
 
     <!-- 유튜브 & url 업로드 선택 -->
     <YoutubeUploadModal

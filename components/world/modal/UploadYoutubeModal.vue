@@ -11,7 +11,7 @@
         <div class="modal-header">
           <h5 id="exampleModalLabel" class="modal-title">자료 등록</h5>
           <button
-            id="selectCloseYoutube"
+            id="selectCloseWorldYoutube"
             type="button"
             class="close"
             data-dismiss="modal"
@@ -53,11 +53,15 @@
 </template>
 
 <script>
-import InputBox from '~/components/reference/commom/UrlInputBox.vue'
+// import ModalHeader from '../../common/EducationNavList.vue'
+import InputBox from '../common/UrlInputBox.vue'
 
 export default {
-  name: 'YoutubeUploadModal',
-  components: { InputBox },
+  name: 'UploadYoutubeModal',
+  components: {
+    //  ModalHeader,
+    InputBox,
+  },
   props: {
     urlData: {
       type: Object,
