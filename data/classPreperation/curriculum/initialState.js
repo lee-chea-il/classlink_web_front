@@ -233,6 +233,8 @@ export default function initialState() {
     isShowSavePathModal: false,
     isShowOpenPathModal: false,
     isShowOpenAddModal: false,
+    isShowModalDesc: false,
+    modalDescMsg: '',
     isCopyType: '',
     receiveInstitutionLessonData: [
       {

@@ -77,6 +77,9 @@ export default {
         }
       }
     },
+    resetData(){
+      this.datas = null
+    },
     setData(cwData) {
       const dataMapping = (data) => {
         const result = []
@@ -96,32 +99,35 @@ export default {
       }
       this.isImgLoadComp=false
       if(this.datas){
-        this.datas = null
+        this.datas = new Tree(false, [])
       }
       this.pid=0
-      this.datas = new Tree( false, dataMapping(cwData.interactionObjects, false) )
-      $("#cwBoxBackImg").attr("src",cwData.backImg_url)
-      $('.cw_box> .vtl').css('opacity',0)
-
-      setTimeout(() => {
-        let target
-        for (let i = 0; i < this.pid; i++) {
-          target=$("#imgListView_"+i).find(".vtl-node-main")
-          target.html(`<img src="${cwData.interactionObjects[i].nomal_url}" class="inter_action_object" style="left:${cwData.interactionObjects[i].left}px;top:${cwData.interactionObjects[i].top}px;" />`)
-        }
+      if(cwData.interactionObjects&&cwData.interactionObjects.length>0){
+        this.datas = new Tree( false, dataMapping(cwData.interactionObjects, false) )
+        $("#cwBoxBackImg").attr("src",cwData.backImg_url)
+        $('.cw_box> .vtl').css('opacity',0)
         setTimeout(() => {
-          let target, tHei
+          let target
           for (let i = 0; i < this.pid; i++) {
-            target=$("#imgListView_"+i).find(".inter_action_object")
-            this.datas.children[i].height=target.height()
-            tHei=target.height()*this.defaultRatio
-            target.css({'height':tHei+'px'})
+            target=$("#imgListView_"+i).find(".vtl-node-main")
+            target.html(`<img src="${cwData.interactionObjects[i].nomal_url}" class="inter_action_object" style="left:${cwData.interactionObjects[i].left}px;top:${cwData.interactionObjects[i].top}px;" />`)
           }
-          $('.cw_box> .vtl').css('opacity',1)
-          this.isImgLoadComp=true
-          this.imgReSize()
+          setTimeout(() => {
+            let target, tHei
+            for (let i = 0; i < this.pid; i++) {
+              target=$("#imgListView_"+i).find(".inter_action_object")
+              this.datas.children[i].height=target.height()
+              tHei=target.height()*this.defaultRatio
+              target.css({'height':tHei+'px'})
+            }
+            $('.cw_box> .vtl').css('opacity',1)
+            this.isImgLoadComp=true
+            this.imgReSize()
+          }, 500)
         }, 500)
-      }, 500)
+      }else{
+        $("#cwBoxBackImg").attr("src","")
+      }
     },
     dragImgEnter(node) {
       if(!node.isLink){

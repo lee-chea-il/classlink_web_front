@@ -51,6 +51,7 @@
           isShowOpenAddModal = false
         }
       "
+      @change-desc="changeModalDescMsg"
     />
     <OpenSearchFileModal
       :open="isShowOpenPathModal"
@@ -76,6 +77,15 @@
       "
       @save-file-path="saveFilePath"
     />
+    <ModalDesc
+      :open="isShowModalDesc"
+      :desc="modalDescMsg"
+      @close="
+        () => {
+          isShowModalDesc = false
+        }
+      "
+    />
   </div>
 </template>
 
@@ -87,6 +97,7 @@ import CurriculumUpdateModal from '@/components/common/modal/curriculum/Curricul
 import SavePathSearchModal from '@/components/common/modal/curriculum/SavePathSearchModal.vue'
 import OpenSearchFileModal from '@/components/common/modal/curriculum/OpenSearchFileModal.vue'
 import DivideSection from '~/components/curriculum/DivideSection.vue'
+import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 
 export default {
   name: 'MyCurriculum',
@@ -97,24 +108,15 @@ export default {
     OpenSearchFileModal,
     MainBtnBox,
     DivideSection,
+    ModalDesc,
   },
   data() {
     return initialState()
   },
   methods: {
     openCurriculumAdd() {
-      const createCurriculumData = {
-        subTitle: '',
-        desc: '',
-        openFileInfo: '',
-        savePath: '',
-        cwInfo: {},
-        isOpenEducation: true,
-        isContinuedRegist: true,
-        lessonInfo: {},
-      }
       this.isShowOpenAddModal = true
-      this.$refs.curriculumUpdateModal.setData(createCurriculumData)
+      this.$refs.curriculumUpdateModal.setData(null)
     },
     copyData() {
       const instiTab = document.getElementById('institute')
@@ -161,6 +163,10 @@ export default {
       this.$refs.leftSection.$refs.institution.unActiveAll()
       this.$refs.leftSection.$refs.franchise.unActiveAll()
       this.$refs.rightSection.$refs.curriculum.unActiveAll()
+    },
+    changeModalDescMsg(msg){
+      this.isShowModalDesc=true
+      this.modalDescMsg=msg
     }
   },
 }

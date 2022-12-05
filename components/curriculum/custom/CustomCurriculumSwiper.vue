@@ -74,18 +74,20 @@
     methods: {
       setData(data){
         this.dataList=data
-        setTimeout(()=>{
-          let target
-          const len=this.dataList.length
-          for (let i = 0; i < len; i++) {
-            target=$("#imgIcon"+i).find("img")
-            if(this.dataList[i].linkListIdx===-1){
-              target.attr({"src":this.dataList[i].icon_dim_url})
-            }else{
-              target.attr({"src":this.dataList[i].icon_normal_url})
+        if(data.length>0){
+          setTimeout(()=>{
+            let target
+            const len=this.dataList.length
+            for (let i = 0; i < len; i++) {
+              target=$("#imgIcon"+i).find("img")
+              if(this.dataList[i].linkListIdx===-1){
+                target.attr({"src":this.dataList[i].icon_dim_url})
+              }else{
+                target.attr({"src":this.dataList[i].icon_normal_url})
+              }
             }
-          }
-        },500)
+          },500)
+        }
       },
       linkData(linkListIdx,imgIdx){
         this.selectListImg(imgIdx)
@@ -144,6 +146,9 @@
         const distanceX=($("#imgIcon0").parent().width()).toFixed(2)
         const moveX=imgIdx*-(Number(distanceX)+10)
         $(".swiper-wrapper").css({"transform":`translate3d(${moveX}px, 0px, 0px)`})
+      },
+      resetData(){
+        this.datas = null
       }
     }
   }

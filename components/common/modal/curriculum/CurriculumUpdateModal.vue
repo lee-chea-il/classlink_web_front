@@ -152,7 +152,7 @@
                     <label for="">저장 경로</label>
                     <div class="col">
                       <input
-                        v-model="curriculumData.savePathInfo.path"
+                        v-model="saveFileFullPath"
                         type="text"
                         placeholder="저장할 폴더를 선택해 주세요"
                         class="form-control form-inline front_button"
@@ -168,12 +168,12 @@
 
                   <div class="check_sec">
                     <span class="custom-control custom-checkbox form-inline">
-                      <input id="checkbox06" type="checkbox" class="custom-control-input" checked>
-                      <label class="custom-control-label checkbox06" for="checkbox06">교육기관에 해당 자료를 공개합니다.</label>
+                      <input id="checkbox60" type="checkbox" class="custom-control-input" checked>
+                      <label class="custom-control-label checkbox60" for="checkbox06">교육기관에 해당 자료를 공개합니다.</label>
                     </span>
                     <span class="custom-control custom-checkbox form-inline">
-                      <input id="checkbox07" type="checkbox" class="custom-control-input" checked>
-                      <label class="custom-control-label checkbox07" for="checkbox07">계속 등록하기</label>
+                      <input id="checkbox61" type="checkbox" class="custom-control-input" checked>
+                      <label class="custom-control-label checkbox61" for="checkbox07">계속 등록하기</label>
                     </span>
                   </div>
 
@@ -184,11 +184,11 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button v-if="!isUpdate" class="btn btn_crud_point">등록</button>
-            <button v-if="!isUpdate" class="btn btn_crud_default" data-dismiss="modal">취소</button>
-            <!-- [개발참조] 커리큘럼 수정 시 출력되는 버튼 -->
-            <button v-if="isUpdate" class="btn btn_crud_point">수정</button>
-            <button v-if="isUpdate" class="btn btn_crud_danger" data-dismiss="modal">삭제</button>
+            <ModalBtnBox
+              v-if="!isUpdate"
+              submitTxt="등록"
+              @submit="checkUpload"
+            />
           </div>
         </div>
       </div>
@@ -198,15 +198,17 @@
 
 <script>
 import CustomListView from '@/components/common/custom/CustomListView.vue'
-import CustomImgListView from '@/components/common/custom/CustomImgListView.vue'
-import CustomCurriculumSwiper from '@/components/common/custom/CustomCurriculumSwiper.vue'
+import CustomImgListView from '@/components/curriculum/custom/CustomImgListView.vue'
+import CustomCurriculumSwiper from '@/components/curriculum/custom/CustomCurriculumSwiper.vue'
+import ModalBtnBox from '@/components/common/ModalBtnBox.vue'
 
 export default {
   name: 'CurriculumUpdateModal',
   components: {
     CustomListView,
     CustomImgListView,
-    CustomCurriculumSwiper
+    CustomCurriculumSwiper,
+    ModalBtnBox,
   },
   props: {
     open: Boolean,
@@ -224,20 +226,20 @@ export default {
     return {
       dropMenuList: [],
       dropMenuListData: [],
-      cwData: null,
       linkDataCnt:0,
       currentClassName:'교실선택',
+      saveFileFullPath:'',
       fileInfo: {},
-
       curriculumData: {
         subTitle: '',
         desc: '',
         openFilePath: "",
         savePathInfo: {
           type:'',
-          path:''
+          path:'',
+          fileName: ''
         },
-        cwInfo: {},
+        cwInfo: null,
         isOpenEducation: true,
         isContinuedRegist: true,
         lessonInfo: {},
@@ -246,7 +248,7 @@ export default {
           desc: "",
           role: "",
         },
-      },
+      }
     }
   },
   mounted() {
@@ -1802,41 +1804,50 @@ export default {
     for(let i=0;i<this.dropMenuListData.length;i++){
       this.dropMenuList.push(this.dropMenuListData[i].name)
     }
+
+
+    /* curriculumData.isOpenEducation=true,
+    curriculumData.isContinuedRegist=true, */
   },
   methods: {
     selectDropMenu(value) {
-      this.cwData=null
       for(let i=0;i<this.dropMenuListData.length;i++){
         if(value===this.dropMenuListData[i].name){
-          this.cwData=this.dropMenuListData[i]
+          this.curriculumData.cwInfo=this.dropMenuListData[i]
           break
         }
       }
       this.currentClassName=value
-      if(this.cwData){
-        this.$refs.listView.unLinkAllItem()
-        this.$refs.imgListView.setData(this.cwData.data)
-        this.$refs.imgListViewSwiper.setData(this.cwData.data.interactionObjects)
-      }
+      this.$refs.listView.unLinkAllItem()
+      this.$refs.imgListView.setData(this.curriculumData.cwInfo.data)
+      this.$refs.imgListViewSwiper.setData(this.curriculumData.cwInfo.data.interactionObjects)
     },
     setData(curriculumData){
-      this.curriculumData = {
-        subTitle: 'subTitle',
-        desc: 'desc',
-        openFilePath: "",
-        savePathInfo: {
-          type:'',
-          path:''
-        },
-        cwInfo: {},
-        isOpenEducation: true,
-        isContinuedRegist: true,
-        lessonInfo: {},
-        lessonDataList:{
-          title: "",
-          desc: "",
-          role: "",
-        },
+      if(curriculumData){
+        console.log('fff')
+      }else{
+        this.curriculumData = {
+          subTitle: '',
+          desc: '',
+          openFilePath: "",
+          savePathInfo: {
+            type:'',
+            path:'',
+            fileName: ''
+          },
+          cwInfo: {
+            data: {},
+          },
+          lessonInfo: {},
+          lessonDataList:{
+            title: "",
+            desc: "",
+            role: "",
+          },
+        }
+        this.currentClassName='교실선택'
+        this.$refs.imgListView.setData({})
+        this.$refs.imgListViewSwiper.setData([])
       }
     },
     linkData(listIdx,imgIdx){
@@ -1863,6 +1874,7 @@ export default {
     },
     setSavePath(pathInfo){
       this.curriculumData.savePathInfo=pathInfo
+      this.saveFileFullPath=this.curriculumData.savePathInfo.path+' > '+this.curriculumData.savePathInfo.fileName+'.link'
     },
     setFileInfo(fileInfo){
       this.unLinkAllItem()
@@ -1881,6 +1893,59 @@ export default {
     selectListImg(imgIdx){
       this.$refs.imgListView.selectListImg(imgIdx)
       this.$refs.imgListViewSwiper.selectListImg(imgIdx)
+    },
+    checkUpload(){
+      let isAllClear = true
+      if(this.curriculumData.subTitle===''){
+        isAllClear=false
+        this.$emit('change-desc','제목을 입력해 주세요.')
+      }
+      if(isAllClear&&this.curriculumData.desc===''){
+        isAllClear=false
+        this.$emit('change-desc','설명을 입력해 주세요.')
+      }
+      if(isAllClear&&this.curriculumData.openFilePath===''){
+        isAllClear=false
+        this.$emit('change-desc','불러온 레슨정보가 없습니다.')
+      }
+      if(isAllClear&&this.curriculumData.savePathInfo.path===''){
+        isAllClear=false
+        this.$emit('change-desc','저장할 경로를 선택해주세요.')
+      }
+      if(isAllClear&&this.currentClassName==='교실선택'){
+        isAllClear=false
+        this.$emit('change-desc','CW 교실 정보가 없습니다.')
+      }
+      if(isAllClear){
+        /* this.curriculumData.cwInfo.data */
+        const newStr = JSON.stringify(this.curriculumData)
+        const nObj = JSON.parse(newStr)
+        console.log(nObj)
+        this.curriculumData = {
+          subTitle: '',
+          desc: '',
+          openFilePath: "",
+          savePathInfo: {
+            type:'',
+            path:''
+          },
+          cwInfo: {
+            data: {},
+          },
+          lessonInfo: {},
+          lessonDataList:{
+            title: "",
+            desc: "",
+            role: "",
+          },
+        }
+      }
+    },
+    checkUpdate(){
+      console.log(1)
+    },
+    checkDell(){
+      console.log(1)
     }
   }
 }
