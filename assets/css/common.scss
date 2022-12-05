@@ -23,7 +23,7 @@
 16. std_class.scss      : 학생사용자-수업:시간표,질문함,필기함,리포트
 17. std_class2.scss     : 학생사용자-강의코스:강의계획서,과제함,노트함
 18. std_manage.scss     : 학생사용자-관리:시험결과,출결,공지사항,다운로드
-100.main.scss           : 메인 홈페이지
+100.main.scss           : 메인 홈페이지 - 메인페이지
 -----------------------------------------*/
 @use "_reset.scss";
 @use "incommon.scss";
@@ -56,6 +56,7 @@
 
 //메인홈페이지
 @use "main.scss";
+
 
 @import url('../plugins/bootstrap/bootstrap.min.css');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap')

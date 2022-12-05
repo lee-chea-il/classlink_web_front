@@ -109,8 +109,13 @@ export default {
       const payload = this.userInfo
       await apiLogin
         .postLogin(payload)
-        .then((res) => {
-          console.log(res)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          localStorage.setItem('token', data.refresh_token)
+          this.$store.commit('userInfo/setUser', this.userInfo)
+          this.$store.commit('userInfo/setUserLogin')
+          this.goIdentitySelectPage()
+          console.log(this.$store.state.userInfo.userInfo)
         })
         .catch((err) => {
           console.log(err, '에러수정 전입니다.')
@@ -119,6 +124,9 @@ export default {
     // 로그인
     onSubtmit() {
       console.log('로그인 시도')
+    },
+    goIdentitySelectPage() {
+      this.$router.push('/login/identity')
     },
   },
 }

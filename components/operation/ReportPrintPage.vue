@@ -20,8 +20,13 @@
               <i class="icons_close"></i>
             </button>
           </div>
-          <div id="pdfSave" class="modal-body">
-            <div id="pdfArea" class="modal_morereports02">
+          <div id="pdfPrintSave" class="modal-body" style="overflow: hidden">
+            <div
+              id="pdfPrintArea"
+              class="modal_morereports02"
+              style="overflow: auto"
+              :style="`height: ${reportHeight}`"
+            >
               <div class="title_name">
                 <span>{{ studentInfo.name }}</span> 학생의 학습 리포트
               </div>
@@ -135,7 +140,7 @@
           <div class="modal-footer">
             <button
               class="btn btn_crud_default"
-              @click="$emit('click-save', studentInfo.name)"
+              @click="exportPdf(studentInfo.name)"
             >
               저장
             </button>
@@ -146,9 +151,10 @@
     </div>
   </Transition>
 </template>
+
 <script>
 export default {
-  name: 'ReportDetailModal',
+  name: 'ReportPrintPage',
   props: {
     open: {
       type: Boolean,
@@ -166,7 +172,26 @@ export default {
       type: Array,
       default: () => [],
     },
+    reportHeight: {
+      type: String,
+      default: '',
+    },
   },
 }
 </script>
-<style scoped></style>
+
+<style scoped>
+.background {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0%;
+  top: 0%;
+  background: rgba(0, 0, 0, 0.5);
+  overflow-y: scroll;
+  z-index: 99;
+}
+.pdf_save .question_area:not(:first-of-type) {
+  padding-top: 18px;
+}
+</style>
