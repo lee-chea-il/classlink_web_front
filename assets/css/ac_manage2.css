@@ -2896,13 +2896,16 @@ ol {
 .ac_manage_pay .first_name {
   margin-top: 20px;
 }
-.ac_manage_pay .credit {
+.ac_manage_pay .credit_account {
   width: 240px;
   height: 80px;
   background: #FFFFFF;
-  border: 1px solid #7391FA;
+  border: 0.4px solid #A7A9AC;
   border-radius: 10px;
   cursor: pointer;
+}
+.ac_manage_pay .credit_account:hover, .ac_manage_pay .credit_account:focus, .ac_manage_pay .credit_account:active, .ac_manage_pay .credit_account.active {
+  border: 1px solid #7391FA;
 }
 .ac_manage_pay .font03 {
   font-weight: 500;

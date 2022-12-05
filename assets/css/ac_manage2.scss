@@ -1151,13 +1151,20 @@
 		margin-top: 20px;
 	}
 
-	.credit {
+	.credit_account {
 		width: 240px;
 		height: 80px;
 		background: theme.$color_white;
-		border: 1px solid theme.$color_light1;
+		border: 0.4px solid theme.$text_unselected_color;
 		border-radius: 10px;
 		cursor: pointer;
+
+		&:hover,
+		&:focus,
+		&:active,
+		&.active {
+			border: 1px solid theme.$color_light1;
+		}
 	}
 
 	.font03 {

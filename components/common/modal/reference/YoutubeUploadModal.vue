@@ -8,7 +8,19 @@
   >
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content">
-        <ModalHeader idProps="selectCloseYoutube" title="자료 등록" />
+        <div class="modal-header">
+          <h5 id="exampleModalLabel" class="modal-title">자료 등록</h5>
+          <button
+            id="selectCloseYoutube"
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            @click="$emit('close')"
+          >
+            <i class="icons_close"></i>
+          </button>
+        </div>
 
         <div class="modal-body">
           <div class="modal_dataregi">
@@ -41,12 +53,11 @@
 </template>
 
 <script>
-import ModalHeader from '../../ModalHeader.vue'
 import InputBox from '~/components/reference/commom/UrlInputBox.vue'
 
 export default {
   name: 'YoutubeUploadModal',
-  components: { ModalHeader, InputBox },
+  components: { InputBox },
   props: {
     urlData: {
       type: Object,

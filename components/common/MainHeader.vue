@@ -86,7 +86,7 @@ export default {
               active: '/classPreperation/curriculum',
             },
             {
-              name: '커리큘럼',
+              name: '강좌',
               to: '/classPreperation/lecture',
               active: '/classPreperation/lecture',
             },

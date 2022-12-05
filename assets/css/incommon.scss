@@ -1077,7 +1077,11 @@ $navtopHeight: 60px;
 
 /* goTop 버튼 */
 .btn_gotop {
-	display: none;
+	// display: none;
+	position: fixed;
+	bottom: 80px;
+	right: 10px;
+	z-index: 9999;
 
 	@media (max-width: 575.98px) {
 		position: fixed;

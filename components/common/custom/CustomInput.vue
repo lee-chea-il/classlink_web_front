@@ -51,6 +51,7 @@
         v-if="isIdCheckBtn"
         class="btn btn_crud_point button"
         :class="classes['is-valid'] ? '' : 'disabled'"
+        @click="$emit('click-idCheck')"
       >
         중복체크
       </button>

@@ -266,7 +266,16 @@
       :reportList="reportList"
       :studentInfo="studentInfo"
       :bgList="bgList"
+      @click-save="exportPdf"
       @close="onCloseReportDetailModal"
+    />
+
+    <!-- 학습 리포트 pdf-->
+    <ReportPrintPage
+      :reportList="reportList"
+      :studentInfo="studentInfo"
+      :reportHeight="reportHeight"
+      :bgList="bgList"
     />
 
     <!-- 설명 모달 -->
@@ -347,8 +356,10 @@
   </div>
 </template>
 <script>
+import html2pdf from 'html2pdf.js'
 import NavBox from '@/components/operation/NavBox.vue'
 import StudentListBox from '@/components/operation/StudentListBox.vue'
+import ReportPrintPage from '@/components/operation/ReportPrintPage.vue'
 import BatchRegistrationModal from '@/components/common/modal/operation/BatchRegistrationModal.vue'
 import BatchSuccessModal from '@/components/common/modal/operation/BatchSuccessModal.vue'
 import BatchFailedModal from '@/components/common/modal/operation/BatchFailedModal.vue'
@@ -392,6 +403,7 @@ export default {
     DeleteSimpleModal,
     CustomSnackbar,
     RangeDataPicker,
+    ReportPrintPage,
   },
   data() {
     return {
@@ -991,6 +1003,8 @@ export default {
         examSearchText: '',
       },
       bgList: ['color01', 'color02', 'color03'],
+      reportQuery: '',
+      reportHeight: '',
     }
   },
   watch: {
@@ -1208,7 +1222,6 @@ export default {
         }
       }
       this.bgList = array
-      console.log(this.bgList)
       this.onCloseReportFilterModal()
       this.reportDetailModalDesc.open = true
     },
@@ -1754,6 +1767,39 @@ export default {
         })
         this.filterList.exam = result
       }
+    },
+    // PDF변환
+    exportPdf(name) {
+      window.scrollTo(0, 0)
+      const targetElem = document.querySelector('#pdfPrintSave')
+      console.log(targetElem)
+      const el = document.getElementById('pdfArea')
+      this.reportHeight = el.scrollHeight + 'px'
+      console.log(el.style.height)
+      html2pdf(targetElem, {
+        margin: [10, 0, 10, 0],
+        filename: `${name}_report.pdf`,
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: {
+          scrollY: 0,
+          scale: 1,
+          dpi: 300,
+          letterRendering: true,
+          allowTaint: false,
+          ignoreElements(element) {
+            // pdf에 출력하지 않아야할 dom이 있다면 해당 옵션 사용
+            if (element.id === 'noneItem') {
+              return true
+            }
+          },
+        },
+        jsPDF: {
+          orientation: 'landscape',
+          unit: 'mm',
+          format: 'a4',
+          compressPDF: true,
+        },
+      })
     },
   },
 }

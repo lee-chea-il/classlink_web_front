@@ -2339,6 +2339,10 @@ ol {
   font-weight: 400;
   color: #A7A9AC;
 }
+.modal_moreattendance .icons_arrow_square_l,
+.modal_moreattendance .icons_arrow_square_r {
+  cursor: pointer;
+}
 
 .modal_morereports {
   position: relative;
@@ -2390,7 +2394,7 @@ ol {
 .modal_morereports02 .contents_section {
   position: relative;
   height: 580px;
-  overflow-y: auto;
+  overflow-y: unset;
 }
 .modal_morereports02 .title_name {
   margin-bottom: 25px;
@@ -2487,7 +2491,7 @@ ol {
   position: absolute;
   z-index: 1;
   width: 64px;
-  top: 2px;
+  top: 52px;
   font-size: 14px;
   text-align: right;
   background-color: rgb(255, 255, 255);
@@ -3430,8 +3434,11 @@ ol {
 }
 #modalMoreCourse .more_mu {
   position: absolute;
-  top: 249px;
+  top: 46px;
   left: 706px;
+}
+#modalMoreCourse tr.view {
+  position: relative;
 }
 #modalMoreCourse .input-search {
   width: 65%;
@@ -3536,6 +3543,14 @@ ol {
 }
 #modalMoreCourse .table_area .table_tbody tr.memo {
   border-top: none;
+  position: relative;
+}
+#modalMoreCourse .table_area .table_tbody tr.memo .icons_x_circle_off {
+  position: absolute;
+  top: 48px;
+  right: 26px;
+  width: 20px;
+  height: 20px;
 }
 #modalMoreCourse .table_area .table_tbody tr.memo textarea {
   border: 0.4px solid rgba(167, 169, 172, 0.4);
@@ -3544,9 +3559,10 @@ ol {
   text-align: left;
   overflow: auto;
   resize: vertical;
-  width: 635px;
   height: 88px;
   position: relative;
+  width: 76%;
+  margin-left: -58px;
 }
 #modalMoreCourse .table_area .table_tbody tr.memo .btn_crud_point {
   min-width: 70px;
@@ -3582,17 +3598,20 @@ ol {
   white-space: normal;
   width: 670px;
   height: 88px;
-  position: relative;
   background: #FFFFFF;
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
   padding: 15px 5px;
   margin-left: 14px;
+  overflow-y: scroll;
 }
 
 /* jeh-2022.09.13 끝 */
 /* jeh-2022.09.14 시작 */
 /* 메모-팝업 L */
+#modalMoreMemo .memo_form {
+  width: 80%;
+}
 #modalMoreMemo .th01 {
   width: 10%;
 }
@@ -3615,7 +3634,10 @@ ol {
   width: 12%;
 }
 #modalMoreMemo .td04 {
-  width: 50%;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 #modalMoreMemo .more_mu {
   position: absolute;
@@ -3712,9 +3734,10 @@ ol {
 #modalMoreMemo .memo02 {
   height: 100px;
   line-height: 26px;
-  display: inline-block;
+  display: block;
   white-space: inherit;
   overflow: inherit;
+  width: 80%;
 }
 #modalMoreMemo tr {
   border-top: 0.4px solid #E6E7E8;

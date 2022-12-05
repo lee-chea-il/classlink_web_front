@@ -470,6 +470,11 @@
 		font-weight: 400;
 		color: theme.$text_unselected_color;
 	}
+
+	.icons_arrow_square_l,
+	.icons_arrow_square_r {
+		cursor: pointer;
+	}
 }
 
 //학생관리-학습리포트1모달
@@ -529,7 +534,7 @@
 	.contents_section {
 		position: relative;
 		height: 580px;
-		overflow-y: auto;
+		overflow-y: unset;
 	}
 
 	.title_name {
@@ -641,7 +646,7 @@
 				position: absolute;
 				z-index: 1;
 				width: 64px;
-				top: 2px;
+				top: 52px;
 				font-size: 14px;
 				text-align: right;
 				background-color: rgba(255, 255, 255, 1);
@@ -1801,8 +1806,12 @@
 
 	.more_mu {
 		position: absolute;
-		top: 249px;
+		top: 46px;
 		left: 706px;
+	}
+
+	tr.view {
+		position: relative;
 	}
 
 	.input-search {
@@ -1869,6 +1878,7 @@
 		vertical-align: middle;
 		padding-top: 10px;
 		padding-bottom: 15px;
+		// position: relative;
 	}
 
 	td .date {
@@ -1931,6 +1941,15 @@
 
 		tr.memo {
 			border-top: none;
+			position: relative;
+
+			.icons_x_circle_off {
+				position: absolute;
+				top: 48px;
+				right: 26px;
+				width: 20px;
+				height: 20px;
+			}
 
 			textarea {
 				@include mixin.border_common;
@@ -1938,9 +1957,10 @@
 				text-align: left;
 				overflow: auto;
 				resize: vertical;
-				width: 635px;
 				height: 88px;
 				position: relative;
+				width: 76%;
+				margin-left: -58px;
 			}
 
 			.btn_crud_point {
@@ -1987,12 +2007,13 @@
 		white-space: normal;
 		width: 670px;
 		height: 88px;
-		position: relative;
+		// position: relative;
 		background: #FFFFFF;
 		border: 0.4px solid rgba(167, 169, 172, 0.4);
 		border-radius: 5px;
 		padding: 15px 5px;
 		margin-left: 14px;
+		overflow-y: scroll;
 	}
 }
 
@@ -2002,6 +2023,9 @@
 
 /* 메모-팝업 L */
 #modalMoreMemo {
+	.memo_form {
+		width: 80%;
+	}
 
 	.th01 {
 		width: 10%;
@@ -2032,7 +2056,10 @@
 	}
 
 	.td04 {
-		width: 50%;
+		width: 80%;
+		display: flex;
+		align-items: center;
+		gap: 10px;
 	}
 
 	.more_mu {
@@ -2145,9 +2172,10 @@
 	.memo02 {
 		height: 100px;
 		line-height: 26px;
-		display: inline-block;
+		display: block;
 		white-space: inherit;
 		overflow: inherit;
+		width: 80%;
 	}
 
 	tr {

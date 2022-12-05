@@ -1,0 +1,118 @@
+<template>
+  <div class="right_area">
+    <div class="question_area">
+      <div class="qa_title row">
+        <div class="qa_title_font">
+          퀴즈 | <span>과목이름</span> | <span>홍미미</span> 선생님
+        </div>
+        <div class="qa_title_font02">
+          <span>{{ currentIdx + 1 }}</span
+          >/<span>{{ length }}</span>
+        </div>
+      </div>
+
+      <div v-for="(quiz, idx) in itemList" :key="idx">
+        <div v-if="idx === currentIdx" class="question_area02">
+          <div class="limit_time">
+            <span class="limit_time_font"
+              >제한시간 : <span>{{ quiz.limitTime }}</span>
+              <span>초</span></span
+            >
+            <span class="icon_timer"></span>
+          </div>
+          <div>
+            <div class="qusetion_area03 row">
+              <div class="qa_num">
+                <div class="qa_num_font">
+                  {{ currentIdx + 1 }}
+                </div>
+              </div>
+              <div class="qa_cnts" v-html="quiz.problem"></div>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="idx === currentIdx">
+          <!-- ox 유형일때 -->
+          <div v-if="quiz.quizType === 0" class="answer_area row">
+            <div v-if="quiz.oxAnswer === 0">
+              <div class="icon_o_correct"></div>
+              &emsp;&emsp;&emsp;&emsp;
+              <div class="icon_xx"></div>
+            </div>
+            <div v-if="quiz.oxAnswer === 1">
+              <div class="icon_o"></div>
+              <div class="icon_xx_correct"></div>
+            </div>
+          </div>
+
+          <!-- 주관식 단답형일때 -->
+          <div v-if="quiz.quizType === 1" class="answer_area03 row">
+            <div class="aa_question row">
+              <div class="aa_number_select">
+                <div class="aa_num_font01">정답</div>
+              </div>
+              <div class="aa_result_select">
+                <div class="aa_correct">
+                  {{ quiz.subjectiveAnswer }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 단답형일때 -->
+          <div v-if="quiz.quizType === 2" class="answer_area02 row">
+            <div class="aa_question row">
+              <!-- [개발참조]문제 선택 시 출력  -->
+              <div class="aa_number_select">
+                <div class="aa_num_font01">정답</div>
+              </div>
+              <!-- [개발참조]정답일때 출력 : class="aa_num_correct"  -->
+              <div class="aa_result_select">
+                <div class="aa_correct">{{ quiz.shortAnswer }}</div>
+              </div>
+            </div>
+            <div class="aa_question row">
+              <div class="aa_number">
+                <div class="aa_num_font01">2</div>
+              </div>
+              <div class="aa_result">
+                <div class="aa_wrong">
+                  {{ quiz.shortWrongAnswer }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'PreviewRightSection',
+  props: {
+    currentIdx: {
+      type: Number,
+      default: 0,
+    },
+    itemList: {
+      type: Array,
+      default: () => [],
+    },
+    length: {
+      type: Number,
+      default: 0,
+    },
+  },
+}
+</script>
+
+<style scoped>
+#modalPreviewQuiz .right_area,
+#modalPreviewTest .right_area {
+  width: 67%;
+  margin: 0;
+}
+</style>

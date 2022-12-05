@@ -21,11 +21,11 @@
             </button>
           </div>
           <div id="pdfSave" class="modal-body">
-            <div class="modal_morereports02">
+            <div id="pdfArea" class="modal_morereports02">
               <div class="title_name">
                 <span>{{ studentInfo.name }}</span> 학생의 학습 리포트
               </div>
-              <div id="padArea" class="contents_section">
+              <div class="contents_section">
                 <div class="table_area">
                   <div class="search_result">
                     <table class="table table-borderless">
@@ -135,7 +135,7 @@
           <div class="modal-footer">
             <button
               class="btn btn_crud_default"
-              @click="exportPdf(studentInfo.name)"
+              @click="$emit('click-save', studentInfo.name)"
             >
               저장
             </button>
@@ -147,7 +147,6 @@
   </Transition>
 </template>
 <script>
-import html2pdf from 'html2pdf.js'
 export default {
   name: 'ReportDetailModal',
   props: {
@@ -166,44 +165,6 @@ export default {
     bgList: {
       type: Array,
       default: () => [],
-    },
-  },
-  methods: {
-    // PDF변환
-    exportPdf(name) {
-      // scroll 전체 높이
-      // const w = document.getElementById('padArea').offsetWidth
-      // const h = document.getElementById('padArea').offsetHeight
-
-      window.scrollTo(0, 0)
-      const targetElem = document.querySelector('#padArea')
-      setTimeout(() => {
-        html2pdf(targetElem, {
-          margin: 0,
-          filename: `${name}_report.pdf`,
-          image: { type: 'jpeg', quality: 0.95 },
-          html2canvas: {
-            scrollY: 0,
-            scale: 1,
-            dpi: 300,
-            innerHeight: 3000,
-            letterRendering: true,
-            allowTaint: false,
-            ignoreElements(element) {
-              // pdf에 출력하지 않아야할 dom이 있다면 해당 옵션 사용
-              if (element.id === 'noneItem') {
-                return true
-              }
-            },
-          },
-          jsPDF: {
-            orientation: 'portrait',
-            unit: 'mm',
-            format: 'a4',
-            compressPDF: true,
-          },
-        })
-      }, 1500)
     },
   },
 }

@@ -44,8 +44,3 @@ export default {
 </script>
 
 <style></style>
-
-matchFilterArrayName(name){ if(name==='type') return 'typeList' else
-if(name==='subject') return 'subjectList' else return 'categoryList' }, else if
-( result[name].length === this[this.matchFilterArrayName(name)].length ) return
-(result[name] = []) (result[name] = [...result[name], dataset.value])
