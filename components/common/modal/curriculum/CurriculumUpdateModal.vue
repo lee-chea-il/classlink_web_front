@@ -2,7 +2,15 @@
   <Transition name="modal">
     <!-- 모달 팝업 ------------------------------------->
 	  <!-- 커리큘럼등록/수정 (팝업 L) -->
-    <div id="modalCuriRegi" class="modal fade modal_ac_manage_curi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div
+      v-if="open"
+      id="modalCuriRegi"
+      class="modal fade modal_ac_manage_curi"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+      style="display: block"
+    >
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
@@ -88,7 +96,7 @@
                     <div class="col">
                       <div class="input_file">
                         <input
-                          v-model="curriculumData.openFilePath"
+                          v-model="curriculumData.lessonInfo.pathTxt"
                           type="text"
                           class="file_input_textbox"
                           readonly
@@ -105,26 +113,26 @@
                   <div class="form-group">
                     <label for="">제목</label>
                     <div class="col">
-                      {{curriculumData.lessonDataList.title}}
+                      {{curriculumData.lessonInfo.data.title}}
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="">설명</label>
                     <div class="col">
-                      {{curriculumData.lessonDataList.desc}}
+                      {{curriculumData.lessonInfo.data.desc}}
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="">교육 목표</label>
                     <div class="col">
-                      {{curriculumData.lessonDataList.role}}
+                      {{curriculumData.lessonInfo.data.role}}
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="" style="place-self: flex-start">레슨 자료</label>
                     <div class="col">
                       <div class="list_box">
-                        <div v-if="curriculumData.lessonDataList.title===''" class="nothing_txt">
+                        <div v-if="curriculumData.lessonInfo.title===''" class="nothing_txt">
                           현재 불러온 레슨이 없습니다.
                         </div>
                         <div v-else class="section">
@@ -188,6 +196,7 @@
               v-if="!isUpdate"
               submitTxt="등록"
               @submit="checkUpload"
+              @close="$emit('close')"
             />
           </div>
         </div>
@@ -197,6 +206,7 @@
 </template>
 
 <script>
+import $ from 'jquery'
 import CustomListView from '@/components/common/custom/CustomListView.vue'
 import CustomImgListView from '@/components/curriculum/custom/CustomImgListView.vue'
 import CustomCurriculumSwiper from '@/components/curriculum/custom/CustomCurriculumSwiper.vue'
@@ -229,11 +239,9 @@ export default {
       linkDataCnt:0,
       currentClassName:'교실선택',
       saveFileFullPath:'',
-      fileInfo: {},
       curriculumData: {
         subTitle: '',
         desc: '',
-        openFilePath: "",
         savePathInfo: {
           type:'',
           path:'',
@@ -242,11 +250,13 @@ export default {
         cwInfo: null,
         isOpenEducation: true,
         isContinuedRegist: true,
-        lessonInfo: {},
-        lessonDataList:{
+        lessonInfo: {
           title: "",
           desc: "",
           role: "",
+          data: [],
+          path: '',
+          pathTxt: '',
         },
       }
     }
@@ -1824,30 +1834,29 @@ export default {
     },
     setData(curriculumData){
       if(curriculumData){
-        console.log('fff')
+        this.curriculumData=curriculumData
       }else{
         this.curriculumData = {
           subTitle: '',
           desc: '',
-          openFilePath: "",
           savePathInfo: {
             type:'',
             path:'',
             fileName: ''
           },
-          cwInfo: {
-            data: {},
-          },
-          lessonInfo: {},
-          lessonDataList:{
+          cwInfo: null,
+          isOpenEducation: true,
+          isContinuedRegist: true,
+          lessonInfo: {
             title: "",
             desc: "",
             role: "",
+            data: [],
+            path: '',
           },
         }
+        this.saveFileFullPath=''
         this.currentClassName='교실선택'
-        this.$refs.imgListView.setData({})
-        this.$refs.imgListViewSwiper.setData([])
       }
     },
     linkData(listIdx,imgIdx){
@@ -1876,12 +1885,12 @@ export default {
       this.curriculumData.savePathInfo=pathInfo
       this.saveFileFullPath=this.curriculumData.savePathInfo.path+' > '+this.curriculumData.savePathInfo.fileName+'.link'
     },
-    setFileInfo(fileInfo){
+    setFileInfo(lessonInfo){
       this.unLinkAllItem()
-      this.fileInfo=fileInfo
-      this.curriculumData.lessonDataList=fileInfo.data
-      this.curriculumData.openFilePath=this.fileInfo.path+' > '+this.fileInfo.data.name
-      this.$refs.listView.setDataList(this.curriculumData.lessonDataList)
+      this.curriculumData.lessonInfo=lessonInfo
+      console.log(this.curriculumData.lessonInfo)
+      this.curriculumData.lessonInfo.pathTxt=lessonInfo.path+' > '+lessonInfo.data.name
+      this.$refs.listView.setDataList(this.curriculumData.lessonInfo.data)
     },
     imgResize(perRatio){
       this.$refs.imgListViewSwiper.imgResize(perRatio)
@@ -1904,7 +1913,7 @@ export default {
         isAllClear=false
         this.$emit('change-desc','설명을 입력해 주세요.')
       }
-      if(isAllClear&&this.curriculumData.openFilePath===''){
+      if(isAllClear&&this.curriculumData.lessonInfo.path===''){
         isAllClear=false
         this.$emit('change-desc','불러온 레슨정보가 없습니다.')
       }
@@ -1917,28 +1926,40 @@ export default {
         this.$emit('change-desc','CW 교실 정보가 없습니다.')
       }
       if(isAllClear){
-        /* this.curriculumData.cwInfo.data */
-        const newStr = JSON.stringify(this.curriculumData)
-        const nObj = JSON.parse(newStr)
-        console.log(nObj)
-        this.curriculumData = {
-          subTitle: '',
-          desc: '',
-          openFilePath: "",
-          savePathInfo: {
-            type:'',
-            path:''
-          },
-          cwInfo: {
-            data: {},
-          },
-          lessonInfo: {},
-          lessonDataList:{
-            title: "",
-            desc: "",
-            role: "",
-          },
+        const newData={}
+        for (const item in this.curriculumData) {
+          if(item==='cwInfo'){
+            newData[item]={}
+            newData[item].codeNum=this.curriculumData[item].codeNum
+            newData[item].name=this.curriculumData[item].name
+            newData[item].data={
+              'backImg_url':this.curriculumData[item].data.backImg_url,
+              'interactionObjects':this.$refs.imgListView.getData()
+            }
+          }else if(item==='lessonInfo'){
+            newData.lessonInfo={}
+            for(const item1 in this.curriculumData[item]){
+              if (item1 !== 'data') {
+                newData.lessonInfo[item1] = this.curriculumData.lessonInfo[item1]
+              }
+            }
+            newData.lessonInfo.data={}
+            for(const item2 in this.curriculumData.lessonInfo.data){
+              if (item2 !== 'referenceList') {
+                newData.lessonInfo.data[item2] = this.curriculumData.lessonInfo.data[item2]
+              }
+            }
+            newData.lessonInfo.data.referenceList=this.$refs.listView.getData()
+          }else{
+            newData[item]=JSON.parse(JSON.stringify(this.curriculumData[item]))
+          }
         }
+        newData.isLeaf=true
+        newData.type=newData.lessonInfo.type
+        newData.name=newData.savePathInfo.fileName+'.link'
+        newData.active=true
+        this.$emit('add-curiiculum-data',newData)
+        $("#modalCuriRegi").modal("hide")
       }
     },
     checkUpdate(){

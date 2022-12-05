@@ -146,9 +146,6 @@
         const distanceX=($("#imgIcon0").parent().width()).toFixed(2)
         const moveX=imgIdx*-(Number(distanceX)+10)
         $(".swiper-wrapper").css({"transform":`translate3d(${moveX}px, 0px, 0px)`})
-      },
-      resetData(){
-        this.datas = null
       }
     }
   }

@@ -21,6 +21,7 @@
             :franchiseData="receiveFranchiseData"
             @un-active="unActive"
             @copyDataCallBack="copyDataCallBack"
+            @update-data="updateData"
           />
           <DivideSection
             ref="rightSection"
@@ -29,6 +30,7 @@
             :curriculumData="receiveCurriculumData"
             @un-active="unActive"
             @copyDataCallBack="copyDataCallBack"
+            @update-data="updateData"
           />
         </div>
       </div>
@@ -52,6 +54,7 @@
         }
       "
       @change-desc="changeModalDescMsg"
+      @add-curiiculum-data="addCuriiculumData"
     />
     <OpenSearchFileModal
       :open="isShowOpenPathModal"
@@ -116,6 +119,7 @@ export default {
   methods: {
     openCurriculumAdd() {
       this.isShowOpenAddModal = true
+      this.$refs.curriculumUpdateModal.isUpdate=false
       this.$refs.curriculumUpdateModal.setData(null)
     },
     copyData() {
@@ -167,6 +171,21 @@ export default {
     changeModalDescMsg(msg){
       this.isShowModalDesc=true
       this.modalDescMsg=msg
+    },
+    addCuriiculumData(data){
+      this.isShowOpenAddModal = false
+      if(data.type==='institution'){
+        this.$refs.leftSection.$refs.institution.addData(data)
+      }else if(data.type==='franchise'){
+        this.$refs.leftSection.$refs.franchise.addData(data)
+      }else{
+        this.$refs.rightSection.$refs.curriculum.addData(data)
+      }
+    },
+    updateData(data){
+      this.isShowOpenAddModal = true
+      this.$refs.curriculumUpdateModal.isUpdate=true
+      this.$refs.curriculumUpdateModal.setData(data)
     }
   },
 }

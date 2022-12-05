@@ -77,8 +77,20 @@ export default {
         }
       }
     },
-    resetData(){
-      this.datas = null
+    getData(){
+      const result = []
+      const list = this.datas.children
+      const len =list.length
+      for (let i = 0; i < len; i++) {
+        const newObj = {}
+        for (const item in list[i]) {
+          if (item !== 'children' && item !== 'parent') {
+            newObj[item] = JSON.stringify(list[i][item])
+          }
+        }
+        result.push(newObj)
+      }
+      return result
     },
     setData(cwData) {
       const dataMapping = (data) => {

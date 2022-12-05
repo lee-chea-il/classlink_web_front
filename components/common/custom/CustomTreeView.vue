@@ -123,6 +123,26 @@ export default {
       if (!this.data.children) this.data.children = []
       this.data.addChildren(node)
     },
+    addData(data){
+      console.log(data.savePathInfo)
+      const sp=data.savePathInfo.path.split(' > ')
+      let depth=0
+      function _checkNode(oldNode){
+        if (oldNode.children && oldNode.children.length > 0) {
+          for (let i = 0, len = oldNode.children.length; i < len; i++) {
+            if(oldNode.children[i].name===sp[depth]){
+              depth++
+              if(sp.length===depth){
+                oldNode.children[i].addChildren(data)
+              }else{
+                _checkNode(oldNode.children[i])
+              }
+            }
+          }
+        }
+      }
+      _checkNode(this.datas)
+    },
     copyData() {
       let idNum = new Date().valueOf()
       function _dfs(oldNode) {
