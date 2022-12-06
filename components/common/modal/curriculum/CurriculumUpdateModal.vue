@@ -3,7 +3,7 @@
     <!-- 모달 팝업 ------------------------------------->
 	  <!-- 커리큘럼등록/수정 (팝업 L) -->
     <div
-      v-if="open"
+      v-show="open"
       id="modalCuriRegi"
       class="modal fade modal_ac_manage_curi"
       tabindex="-1"
@@ -1946,6 +1946,8 @@ export default {
             newData.lessonInfo.data={}
             for(const item2 in this.curriculumData.lessonInfo.data){
               if (item2 !== 'referenceList') {
+                /* console.log('------sssss-----')
+                console.log(`${item2}:${this.curriculumData.lessonInfo.data[item2]}`) */
                 newData.lessonInfo.data[item2] = this.curriculumData.lessonInfo.data[item2]
               }
             }

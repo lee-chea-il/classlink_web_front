@@ -26,6 +26,7 @@
           <DivideSection
             ref="rightSection"
             directionType="right"
+            :isUpdate="isUpdate"
             :identity="identity"
             :curriculumData="receiveCurriculumData"
             @un-active="unActive"
@@ -93,6 +94,7 @@
 </template>
 
 <script>
+import $ from 'jquery'
 import MainBtnBox from '~/components/common/MainBtnBox.vue'
 import PageHeader from '~/components/common/PageHeader.vue'
 import initialState from '~/data/classPreperation/curriculum/initialState'
@@ -116,10 +118,13 @@ export default {
   data() {
     return initialState()
   },
+  mounted(){
+    this.addCuriiculumData(this.testData)
+  },
   methods: {
     openCurriculumAdd() {
       this.isShowOpenAddModal = true
-      this.$refs.curriculumUpdateModal.isUpdate=false
+      this.isUpdate = false
       this.$refs.curriculumUpdateModal.setData(null)
     },
     copyData() {
@@ -184,7 +189,8 @@ export default {
     },
     updateData(data){
       this.isShowOpenAddModal = true
-      this.$refs.curriculumUpdateModal.isUpdate=true
+      this.isUpdate = true
+      $("#modalCuriRegi").modal("show")
       this.$refs.curriculumUpdateModal.setData(data)
     }
   },

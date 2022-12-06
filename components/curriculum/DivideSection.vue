@@ -58,6 +58,7 @@
           :pidNum="0"
           :isHideDownload="false"
           @un-active="$emit('un-active')"
+          @update-data="$emit('update-data',$event)"
           @copyDataCallBack="$emit('copyDataCallBack',$event)"
         />
       </div>
@@ -78,6 +79,7 @@
           :pidNum="1000"
           :isHideDownload="false"
           @un-active="$emit('un-active')"
+          @update-data="$emit('update-data',$event)"
           @copyDataCallBack="copyDataCallBack"
         />
       </div>
@@ -101,7 +103,9 @@
           identity="master"
           :pidNum="2000"
           :isHideDownload="false"
+          :isUpdate="isUpdate"
           @un-active="$emit('un-active')"
+          @update-data="$emit('update-data',$event)"
         />
         <br />
         <br />
@@ -140,7 +144,8 @@ export default {
     curriculumData: {
       type: Array,
       default: () => [],
-    }
+    },
+    isUpdate: Boolean
   },
   data(){
     return {

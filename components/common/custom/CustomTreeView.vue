@@ -62,6 +62,7 @@ export default {
     return {
       datas: new Tree(false, []),
       pid: this.pidNum,
+      originData: {}
     }
   },
   mounted() {
@@ -123,8 +124,12 @@ export default {
       if (!this.data.children) this.data.children = []
       this.data.addChildren(node)
     },
+    getData(){
+      return this.originData
+    },
     addData(data){
-      console.log(data.savePathInfo)
+      this.originData=data
+      /* console.log(data.savePathInfo) */
       const sp=data.savePathInfo.path.split(' > ')
       let depth=0
       function _checkNode(oldNode){
@@ -301,7 +306,8 @@ export default {
       console.log(`down ${node}`)
     },
     moreMenuUpdate(node) {
-      console.log(`update ${node}`)
+      /* console.log(`update ${node}`) */
+      this.$emit('update-data',this.getData())
     },
     moreMenuView(node) {
       console.log(`view ${node}`)
