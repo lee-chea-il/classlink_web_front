@@ -27,7 +27,7 @@
         v-show="pageType === 'reference'"
         title="등록"
         color="point"
-        data-toggle="modal"
+        data-toggle="modal" 
         data-target="#modalDataregi"
       />
       <ButtonItem
@@ -43,8 +43,8 @@
 </template>
 
 <script>
-import ButtonItem from '../reference/commom/ButtonItem.vue'
-import SearchTextBox from '../reference/commom/SearchTextBox.vue'
+import SearchTextBox from './SearchTextBox.vue'
+import ButtonItem from './ButtonItem.vue'
 
 export default {
   name: 'MainBtnBox',

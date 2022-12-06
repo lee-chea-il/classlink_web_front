@@ -5,6 +5,7 @@
 <script>
 export default {
   name: 'FranchiseManagement',
+  layout: 'FranchiseLayout',
 }
 </script>
 

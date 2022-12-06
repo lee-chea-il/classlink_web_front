@@ -36,7 +36,7 @@
     </div>
 
     <!-- 등록 파일 선택 -->
-    <ReferenceSelectModal
+    <SelectReferenceModal
       :pageRoot="pageRoot"
       @add-quiz="onOpenQuizAddModal"
       @add-test="onOpenNoteTestAddModal"
@@ -44,7 +44,7 @@
     />
 
     <!-- 비디오 & 파일 업로드 선택 -->
-    <VideoFileUploadModal
+    <UploadVideoFileModal
       :uploadType="uploadType"
       @upload-video="onUploadVideo"
       @upload-pdf="onUploadPdf"
@@ -52,7 +52,7 @@
     />
 
     <!-- 유튜브 & url 업로드 선택 -->
-    <YoutubeUploadModal
+    <UploadYoutubeModal
       :urlData="urlData"
       :uploadType="uploadType"
       @change-url="onChangeUrl"
@@ -61,7 +61,7 @@
     />
 
     <!-- 파일 등록 (동영상,문서,유튜브,url) -->
-    <ReferenceAddModal
+    <AddReferenceModal
       :open="isReferenceAddModal"
       :modalTitle="modalTitle"
       :reference="referenceData"
@@ -77,7 +77,7 @@
     />
 
     <!-- 퀴즈 등록 -->
-    <QuizAddModal
+    <AddQuizModal
       :open="isQuizAddModal"
       :modalTitle="modalTitle"
       :reference="referenceData"
@@ -104,7 +104,7 @@
     />
 
     <!-- 쪽지시험 등록 -->
-    <NoteTestAddModal
+    <AddNoteTestModal
       :open="isNoteTestAddModal"
       :modalTitle="modalTitle"
       :reference="referenceData"
@@ -131,7 +131,7 @@
     />
 
     <!-- 비디오 & 문서 & 유튜브 & url 보기 -->
-    <VideoBrowseModal
+    <BrowseReferenceModal
       :open="isReferenceBrowse"
       :selectData="referenceData"
       :pageRoot="pageRoot"
@@ -143,7 +143,7 @@
     />
 
     <!-- 퀴즈 보기 -->
-    <QuizBrowseModal
+    <BrowseQuizModal
       :open="isQuizBrowse"
       :selectData="referenceData"
       :currentPageIdx="currentPageIdx"
@@ -159,7 +159,7 @@
     />
 
     <!-- 퀴즈 미리보기 -->
-    <QuizPreviewModal
+    <PreviewQuizModal
       :open="isQuizPreviewModal.open"
       :quizList="referenceData.quizList"
       :currentPageIdx="currentPageIdx"
@@ -168,7 +168,7 @@
     />
 
     <!-- 쪽지시험 보기 -->
-    <NoteTestBrowseModal
+    <BrowseNoteTestModal
       :open="isNoteTestBrowse"
       :selectData="referenceData"
       :currentPageIdx="currentPageIdx"
@@ -184,7 +184,7 @@
     />
 
     <!-- 쪽지시험 미리보기 -->
-    <NoteTestPreviewModal
+    <PreviewNoteTestModal
       :open="isNoteTestPreviewModal.open"
       :testList="referenceData.noteTestList"
       :currentPageIdx="currentPageIdx"
@@ -221,7 +221,7 @@
     />
 
     <!-- 자료실 검색 필터 -->
-    <ReferenceFilterModal
+    <FilterReferenceModal
       :open="isFilterModal.open"
       :searchData="searchData"
       :typeList="typeList"
@@ -247,10 +247,10 @@
     />
 
     <!-- 퀴즈 프린트 영역 -->
-    <QuizPrintPage v-show="isQuizPrint" :quizList="referenceData.quizList" />
+    <PrintQuizModal v-show="isQuizPrint" :quizList="referenceData.quizList" />
 
     <!-- 쪽지시험 프린트 영역 -->
-    <NoteTestPrintPage
+    <PrintNoteTestModal
       v-show="isNoteTestPrint"
       :noteTestList="referenceData.noteTestList"
     />
@@ -263,57 +263,59 @@
 import html2pdf from 'html2pdf.js'
 import MainBtnBox from '~/components/common/MainBtnBox.vue'
 import PageHeader from '~/components/common/PageHeader.vue'
-import TreeSection from '~/components/common/TreeSection.vue'
 import ModalDesc from '~/components/common/modal/ModalDesc.vue'
 import DeleteModal from '~/components/common/modal/DeleteModal.vue'
 import SavePathModal from '~/components/common/modal/SavePathModal.vue'
-import QuizPrintPage from '~/components/reference/QuizPrintPage.vue'
-import NoteTestPrintPage from '~/components/reference/NoteTestPrintPage.vue'
-import QuizAddModal from '~/components/common/modal/reference/QuizAddModal.vue'
-import ShareViewModal from '~/components/common/modal/reference/ShareViewModal.vue'
-import QuizBrowseModal from '~/components/common/modal/reference/QuizBrowseModal.vue'
-import NoteTestAddModal from '~/components/common/modal/reference/NoteTestAddModal.vue'
-import VideoBrowseModal from '~/components/common/modal/reference/VideoBrowseModal.vue'
-import QuizPreviewModal from '~/components/common/modal/reference/QuizPreviewModal.vue'
-import ReferenceAddModal from '~/components/common/modal/reference/ReferenceAddModal.vue'
-import SearchResultModal from '~/components/common/modal/reference/SearchResultModal.vue'
-import YoutubeUploadModal from '~/components/common/modal/reference/YoutubeUploadModal.vue'
-import NoteTestBrowseModal from '~/components/common/modal/reference/NoteTestBrowseModal.vue'
-import ReferenceSelectModal from '~/components/common/modal/reference/ReferenceSelectModal.vue'
-import VideoFileUploadModal from '~/components/common/modal/reference/VideoFileUploadModal.vue'
-import ReferenceFilterModal from '~/components/common/modal/reference/ReferenceFilterModal.vue'
-import NoteTestPreviewModal from '~/components/common/modal/reference/NoteTestPreviewModal.vue'
-import { apiReference } from '~/services'
-import { urlRegex, youtubeRegex, setNewArray, jsonItem } from '~/utiles/common'
-import initialState from '~/data/franchise/world/reference/initialState'
+import TreeSection from '~/components/franchiseWorld/common/TreeSection.vue'
 import CustomSnackbar from '~/components/common/CustomSnackbar.vue'
 
+import AddQuizModal from '~/components/franchiseWorld/modal/AddQuizModal.vue'
+import AddNoteTestModal from '~/components/franchiseWorld/modal/AddNoteTestModal.vue'
+import AddReferenceModal from '~/components/franchiseWorld/modal/AddReferenceModal.vue'
+import BrowseQuizModal from '~/components/franchiseWorld/modal/BrowseQuizModal.vue'
+import BrowseReferenceModal from '~/components/franchiseWorld/modal/BrowseReferenceModal.vue'
+import BrowseNoteTestModal from '~/components/franchiseWorld/modal/BrowseNoteTestModal.vue'
+import FilterReferenceModal from '~/components/franchiseWorld/modal/FilterReferenceModal.vue'
+import PreviewQuizModal from '~/components/franchiseWorld/modal/PreviewQuizModal.vue'
+import PrintQuizModal from '~/components/franchiseWorld/modal/PrintQuizModal.vue'
+import PrintNoteTestModal from '~/components/franchiseWorld/modal/PrintNoteTestModal.vue'
+import PreviewNoteTestModal from '~/components/franchiseWorld/modal/PreviewNoteTestModal.vue'
+import ShareViewModal from '~/components/franchiseWorld/modal/ShareViewModal.vue'
+import SearchResultModal from '~/components/franchiseWorld/modal/SearchResultModal.vue'
+import SelectReferenceModal from '~/components/franchiseWorld/modal/SelectReferenceModal.vue'
+import UploadYoutubeModal from '~/components/franchiseWorld/modal/UploadYoutubeModal.vue'
+import UploadVideoFileModal from '~/components/franchiseWorld/modal/UploadVideoFileModal.vue'
+
+import initialState from '~/data/franchise/world/reference/initialState'
+import { urlRegex, youtubeRegex, setNewArray, jsonItem } from '~/utiles/common'
+import { apiReference } from '~/services'
 export default {
   name: 'FranchiseWorldReference',
   components: {
-    ModalDesc,
-    PageHeader,
     MainBtnBox,
+    PageHeader,
+    ModalDesc,
     DeleteModal,
-    TreeSection,
-    QuizAddModal,
     SavePathModal,
-    QuizPrintPage,
-    ShareViewModal,
-    QuizBrowseModal,
-    NoteTestAddModal,
-    VideoBrowseModal,
-    QuizPreviewModal,
-    SearchResultModal,
-    ReferenceAddModal,
-    NoteTestPrintPage,
-    YoutubeUploadModal,
-    NoteTestBrowseModal,
-    ReferenceSelectModal,
-    VideoFileUploadModal,
-    ReferenceFilterModal,
-    NoteTestPreviewModal,
+    TreeSection,
     CustomSnackbar,
+
+    AddQuizModal,
+    AddNoteTestModal,
+    AddReferenceModal,
+    BrowseQuizModal,
+    BrowseReferenceModal,
+    BrowseNoteTestModal,
+    FilterReferenceModal,
+    PreviewNoteTestModal,
+    PrintQuizModal,
+    PrintNoteTestModal,
+    PreviewQuizModal,
+    ShareViewModal,
+    SearchResultModal,
+    SelectReferenceModal,
+    UploadYoutubeModal,
+    UploadVideoFileModal,
   },
   data() {
     return initialState()
@@ -723,7 +725,7 @@ export default {
         if (checked) return (elem[id] = true)
         else return (elem[id] = false)
       } else if (isCheckbox) return (elem[name] = value)
-      else if (files[0] && id === 'thumbnail') {
+      else if (files && id === 'thumbnail') {
         elem[id] = URL.createObjectURL(files[0])
         e.target.value = ''
       } else {
@@ -778,7 +780,7 @@ export default {
         target: { files },
       } = e
       if (files[0] && files[0].type === 'video/mp4') {
-        document.getElementById('selectClose').click()
+        document.getElementById('selectCloseFranWorld').click()
         this.onOpenReferenceAddModal()
         this.referenceData = {
           ...this.referenceData,
@@ -817,7 +819,7 @@ export default {
           createAt: target.lastModifiedDate,
           savePath: item,
         }
-        document.getElementById('selectClose').click()
+        document.getElementById('selectCloseFranWorld').click()
         this.onOpenReferenceAddModal()
       } else {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
@@ -832,7 +834,7 @@ export default {
       } = e
       console.log(files)
       if (files[0] && files[0].type.includes('audio/')) {
-        document.getElementById('selectClose').click()
+        document.getElementById('selectCloseFranWorld').click()
         this.onOpenReferenceAddModal()
         this.referenceData = {
           ...this.referenceData,
@@ -867,7 +869,7 @@ export default {
             createAt: new Date(),
             savePath: `https://www.youtube.com/embed/${youtubeUrl}`,
           }
-          document.getElementById('selectCloseYoutube').click()
+          document.getElementById('selectCloseFranWorldYoutube').click()
           this.onOpenReferenceAddModal()
         })
         .catch(() => this.openModalDesc('실패', '유효하지 않은 주소입니다.'))
@@ -900,7 +902,7 @@ export default {
           createAt: new Date(),
           savePath: url,
         }
-        document.getElementById('selectCloseYoutube').click()
+        document.getElementById('selectCloseFranWorldYoutube').click()
         this.onOpenReferenceAddModal()
       } else {
         this.openModalDesc('실패', 'URL을 정확히 입력해주세요')

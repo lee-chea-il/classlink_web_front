@@ -30,7 +30,7 @@
     </div>
 
     <!-- 레슨 추가 -->
-    <LessonAddModal
+    <AddLessonModal
       ref="lessonAdd"
       :modalTitle="modalTitle"
       :open="isAddLesson.open"
@@ -43,6 +43,8 @@
       :receiveInstitutionData="receiveInstitutionData"
       :receiveFranchiseData="receiveFranchiseData"
       :pushKeyword="pushKeyword"
+      :receiveMyData="receiveMyData"
+      :receiveLessonList="receiveLessonList"
       @add-reference="addReferenceOfLesson"
       @change-lesson="changeCreateLesson"
       @call-back="copyDataCallBack"
@@ -59,7 +61,7 @@
     />
 
     <!-- 레슨 열람 -->
-    <LessonBrowseModal
+    <BrowseLessonModal
       :open="isLessonBrowse.open"
       :lessonItem="lessonViewData"
       :selectReference="selectReferenceItem"
@@ -73,7 +75,7 @@
     />
 
     <!-- 퀴즈 미리보기 -->
-    <QuizPreviewModal
+    <PreviewQuizModal
       :open="isQuizPreviewModal.open"
       :quizList="selectReferenceItem.quizList"
       :currentPageIdx="currentIdx"
@@ -82,7 +84,7 @@
     />
 
     <!-- 쪽지시험 미리보기 -->
-    <NoteTestPreviewModal
+    <PreviewNoteTestModal
       :open="isNoteTestPreviewModal.open"
       :testList="selectReferenceItem.noteTestList"
       :currentPageIdx="currentIdx"
@@ -91,7 +93,7 @@
     />
 
     <!-- 자료실 자료 열람 -->
-    <VideoBrowseModal
+    <BrowseReferenceModal
       :open="isReferenceBrowse.open"
       :selectData="selectReferenceItem"
       @close="closeReferenceBrowse"
@@ -102,7 +104,7 @@
     />
 
     <!-- 자료실 퀴즈 열람 -->
-    <QuizBrowseModal
+    <BrowseQuizModal
       :open="isQuizBrowse.open"
       :selectData="selectReferenceItem"
       :currentPageIdx="currentIdx"
@@ -118,7 +120,7 @@
     />
 
     <!-- 자료실 쪽지시험 열람 -->
-    <NoteTestBrowseModal
+    <BrowseNoteTestModal
       :open="isNoteTestBrowse.open"
       :selectData="selectReferenceItem"
       :currentPageIdx="currentIdx"
@@ -134,7 +136,7 @@
     />
 
     <!-- 자료 수정 -->
-    <ReferenceChangeModal
+    <ChangeReferenceModal
       modalTitle="수정"
       :open="isReferenceChange.open"
       :reference="selectReferenceItem"
@@ -148,7 +150,7 @@
     />
 
     <!-- 퀴즈 수정 -->
-    <QuizChangeModal
+    <ChangeQuizModal
       modalTitle="수정"
       :open="isQuizChange.open"
       :reference="selectReferenceItem"
@@ -172,7 +174,7 @@
     />
 
     <!-- 쪽지시험 수정 -->
-    <NoteTestChangeModal
+    <ChangeNoteTestModal
       modalTitle="수정"
       :open="isNoteTestChange.open"
       :reference="selectReferenceItem"
@@ -232,44 +234,47 @@
 import html2pdf from 'html2pdf.js'
 import PageHeader from '~/components/common/PageHeader.vue'
 import MainBtnBox from '~/components/common/MainBtnBox.vue'
-import TreeSection from '~/components/common/TreeSection.vue'
 import DeleteModal from '~/components/common/modal/DeleteModal.vue'
 import ReferenceSavePathModal from '~/components/common/modal/SavePathModal.vue'
-import SavePathModal from '~/components/common/modal/lesson/SavePathModal.vue'
-import LessonAddModal from '~/components/common/modal/lesson/LessonAddModal.vue'
-import ShareViewModal from '~/components/common/modal/reference/ShareViewModal.vue'
-import QuizBrowseModal from '~/components/common/modal/reference/QuizBrowseModal.vue'
-import LessonBrowseModal from '~/components/common/modal/lesson/LessonBrowseModal.vue'
-import QuizPreviewModal from '~/components/common/modal/reference/QuizPreviewModal.vue'
-import VideoBrowseModal from '~/components/common/modal/reference/VideoBrowseModal.vue'
-import NoteTestBrowseModal from '~/components/common/modal/reference/NoteTestBrowseModal.vue'
-import NoteTestPreviewModal from '~/components/common/modal/reference/NoteTestPreviewModal.vue'
+
+import AddLessonModal from '~/components/classPreperation/modal/AddLessonModal.vue'
+import BrowseQuizModal from '~/components/classPreperation/modal/BrowseQuizModal.vue'
+import BrowseReferenceModal from '~/components/classPreperation/modal/BrowseReferenceModal.vue'
+import BrowseNoteTestModal from '~/components/classPreperation/modal/BrowseNoteTestModal.vue'
+import BrowseLessonModal from '~/components/classPreperation/modal/BrowseLessonModal.vue'
+import ChangeQuizModal from '~/components/classPreperation/modal/AddQuizModal.vue'
+import ChangeNoteTestModal from '~/components/classPreperation/modal/AddNoteTestModal.vue'
+import ChangeReferenceModal from '~/components/classPreperation/modal/AddReferenceModal.vue'
+import SavePathModal from '~/components/classPreperation/modal/SavePathLessonModal.vue'
+import ShareViewModal from '~/components/classPreperation/modal/ShareViewModal.vue'
+import TreeSection from '~/components/classPreperation/common/TreeSection.vue'
+import PreviewQuizModal from '~/components/classPreperation/modal/PreviewQuizModal.vue'
+import PreviewNoteTestModal from '~/components/classPreperation/modal/PreviewNoteTestModal.vue'
+
 import initialState from '~/data/classPreperation/lesson/initialState'
-import QuizChangeModal from '~/components/common/modal/reference/QuizAddModal.vue'
-import NoteTestChangeModal from '~/components/common/modal/reference/NoteTestAddModal.vue'
-import ReferenceChangeModal from '~/components/common/modal/reference/ReferenceAddModal.vue'
 import { setNewArray, jsonItem } from '~/utiles/common'
 
 export default {
   name: 'LessonPage',
   components: {
     PageHeader,
-    LessonAddModal,
-    LessonBrowseModal,
-    QuizPreviewModal,
-    NoteTestPreviewModal,
-    VideoBrowseModal,
-    QuizBrowseModal,
-    NoteTestBrowseModal,
+    DeleteModal,
+    MainBtnBox,
+    ReferenceSavePathModal,
+
+    AddLessonModal,
+    BrowseQuizModal,
+    BrowseReferenceModal,
+    BrowseNoteTestModal,
+    BrowseLessonModal,
+    ChangeQuizModal,
+    ChangeNoteTestModal,
+    ChangeReferenceModal,
     SavePathModal,
     ShareViewModal,
-    DeleteModal,
-    ReferenceSavePathModal,
-    ReferenceChangeModal,
-    QuizChangeModal,
-    NoteTestChangeModal,
     TreeSection,
-    MainBtnBox,
+    PreviewQuizModal,
+    PreviewNoteTestModal,
   },
   layout: 'EducationLayout',
   data() {

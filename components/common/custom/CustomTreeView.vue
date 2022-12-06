@@ -55,8 +55,8 @@ export default {
     },
     isHideDownload: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
     return {
@@ -71,22 +71,22 @@ export default {
       for (let i = 0; i < len; i++) {
         const newStr = JSON.stringify(data[i])
         const nObj = JSON.parse(newStr)
-        nObj.id=this.pid
-        nObj.pid=this.pid
-        nObj.isChecked=false
-        nObj.readOnly=isReadOnly
-        nObj.active=false
+        nObj.id = this.pid
+        nObj.pid = this.pid
+        nObj.isChecked = false
+        nObj.readOnly = isReadOnly
+        nObj.active = false
 
         if (data[i].children !== undefined) {
-          nObj.isLeaf=false
-          nObj.children=[]
+          nObj.isLeaf = false
+          nObj.children = []
 
           result[i] = nObj
           this.pid++
 
           result[i].children = dataMapping(data[i].children, isReadOnly)
         } else {
-          nObj.isLeaf=true
+          nObj.isLeaf = true
 
           result[i] = nObj
           this.pid++
@@ -123,18 +123,18 @@ export default {
       if (!this.data.children) this.data.children = []
       this.data.addChildren(node)
     },
-    addData(data){
+    addData(data) {
       console.log(data.savePathInfo)
-      const sp=data.savePathInfo.path.split(' > ')
-      let depth=0
-      function _checkNode(oldNode){
+      const sp = data.savePathInfo.path.split(' > ')
+      let depth = 0
+      function _checkNode(oldNode) {
         if (oldNode.children && oldNode.children.length > 0) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            if(oldNode.children[i].name===sp[depth]){
+            if (oldNode.children[i].name === sp[depth]) {
               depth++
-              if(sp.length===depth){
+              if (sp.length === depth) {
                 oldNode.children[i].addChildren(data)
-              }else{
+              } else {
                 _checkNode(oldNode.children[i])
               }
             }
@@ -146,18 +146,18 @@ export default {
     copyData() {
       let idNum = new Date().valueOf()
       function _dfs(oldNode) {
-        const newNode={}
+        const newNode = {}
         if (oldNode.isChecked) {
-          oldNode.isactive=true
-          for(const item in oldNode){
+          oldNode.isactive = true
+          for (const item in oldNode) {
             newNode[item] = oldNode[item]
           }
           newNode.children = []
           newNode.id = idNum
           newNode.isChecked = false
           idNum++
-        }else{
-          oldNode.isactive=false
+        } else {
+          oldNode.isactive = false
         }
         if (oldNode.children && oldNode.children.length > 0) {
           const list = []
@@ -171,12 +171,12 @@ export default {
       this.$emit('un-active')
       this.$emit('copyDataCallBack', _dfs(this.datas))
     },
-    copyComp(){
+    copyComp() {
       function _copyComp(oldNode) {
         if (oldNode.isactive) {
-          oldNode.active=true
-        }else{
-          oldNode.active=false
+          oldNode.active = true
+        } else {
+          oldNode.active = false
         }
         if (oldNode.children && oldNode.children.length > 0) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
@@ -191,11 +191,11 @@ export default {
       function _addNode(parentNode, oldNode) {
         let node, i, len
         if (oldNode.name) {
-          const newNode={}
-          for(const item in oldNode){
+          const newNode = {}
+          for (const item in oldNode) {
             newNode[item] = oldNode[item]
           }
-          newNode.active=true
+          newNode.active = true
           newNode.children = []
           newNode.id = idNum
           newNode.isChecked = false
@@ -314,7 +314,7 @@ export default {
     },
     unActiveAll() {
       function _unActiveAll(oldNode) {
-        oldNode.active=false
+        oldNode.active = false
         if (oldNode.children) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
             _unActiveAll(oldNode.children[i])
@@ -322,9 +322,8 @@ export default {
         }
       }
       _unActiveAll(this.datas)
-    }
+    },
   },
 }
 </script>
-<style scoped>
-</style>
+<style scoped></style>

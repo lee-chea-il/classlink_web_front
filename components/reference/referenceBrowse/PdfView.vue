@@ -1,6 +1,6 @@
 <template>
   <!-- [개발참조] 문서자료 열람 시 -->
-  <div v-if="open" class="pdf">
+  <div v-if="open" ref="pdf_elem" class="pdf">
     <div class="bar">
       <span class="pdf_title">{{ data.name }}</span>
       <span class="list"></span>

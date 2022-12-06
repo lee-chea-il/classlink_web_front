@@ -2169,7 +2169,8 @@
 /* (완)학원_마이페이지(내정보)-기관장(개설전)-edu_head_bef.html */
 /* 팝업 M2- 내정보 수정 - 교육기관 정보 개설 */
 
-#modalInstRegi {
+#modalInstRegi,
+#modalFranRegi {
 	.section {
 		width: 80%;
 		margin: 0 auto;
@@ -2203,7 +2204,8 @@
 
 	.section .question_txt {
 		font-size: 14px;
-		margin-top: 15px;
+		margin-bottom: 15px;
+		margin-top: 5px;
 		text-align: center;
 	}
 

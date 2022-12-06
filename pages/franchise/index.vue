@@ -25,17 +25,17 @@ export default {
         {
           id: 1,
           class: 'btn_favorite_notice',
-          to: '',
+          to: '/franchise/management/notice',
         },
         {
           id: 2,
           class: 'btn_favorite_franchise',
-          to: '',
+          to: '/franchise/management/affilate',
         },
         {
           id: 3,
           class: 'btn_favorite_pay',
-          to: '',
+          to: '/franchise/management/payment',
         },
         {
           id: 4,

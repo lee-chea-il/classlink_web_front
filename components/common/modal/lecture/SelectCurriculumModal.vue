@@ -6,6 +6,7 @@
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
   >
+    <div class="background_close" />
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content">
         <Header :title="modalTitle" />
@@ -100,5 +101,9 @@ export default {
 }
 .main > ul {
   display: none;
+}
+
+.background_close {
+  background: none;
 }
 </style>
