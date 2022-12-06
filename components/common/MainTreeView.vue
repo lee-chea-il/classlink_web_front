@@ -61,8 +61,8 @@ export default {
     },
     isHideDownload: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
     return {
@@ -156,7 +156,7 @@ export default {
       function _dfs(oldNode) {
         const newNode = {}
         if (oldNode.isChecked) {
-          oldNode.isactive=true
+          oldNode.isactive = true
           for (const item in oldNode) {
             newNode[item] = oldNode[item]
           }
@@ -164,8 +164,8 @@ export default {
           newNode.id = idNum
           newNode.isChecked = false
           idNum++
-        }else{
-          oldNode.isactive=false
+        } else {
+          oldNode.isactive = false
         }
         if (oldNode.children && oldNode.children.length > 0) {
           const list = []
@@ -180,12 +180,12 @@ export default {
       this.$emit('copyDataCallBack', _dfs(this.datas))
     },
 
-    copyComp(){
+    copyComp() {
       function _copyComp(oldNode) {
         if (oldNode.isactive) {
-          oldNode.active=true
-        }else{
-          oldNode.active=false
+          oldNode.active = true
+        } else {
+          oldNode.active = false
         }
         if (oldNode.children && oldNode.children.length > 0) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
@@ -205,11 +205,11 @@ export default {
           for (const item in oldNode) {
             newNode[item] = oldNode[item]
           }
-          newNode.active=true
+          newNode.active = true
           newNode.children = []
           newNode.id = idNum
           newNode.isChecked = false
-          
+
           node = new TreeNode(newNode)
           parentNode.addChildren(node)
           idNum++
@@ -367,7 +367,7 @@ export default {
 
     unActiveAll() {
       function _unActiveAll(oldNode) {
-        oldNode.active=false
+        oldNode.active = false
         if (oldNode.children) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
             _unActiveAll(oldNode.children[i])
@@ -375,7 +375,7 @@ export default {
         }
       }
       _unActiveAll(this.datas)
-    }
+    },
   },
 }
 </script>

@@ -28,7 +28,7 @@
                     >
                       <span class="keyword01-1">{{ item }}</span
                       ><span
-                        class="x"
+                        class="x cursor"
                         @click="onClickDeleteFilterTag(idx)"
                       ></span>
                     </span>
@@ -875,5 +875,9 @@ export default {
 }
 .modal-index {
   z-index: 999 !important;
+}
+
+.cursor {
+  cursor: pointer;
 }
 </style>

@@ -74,7 +74,7 @@ export default {
         rel: 'canonical',
         href: 'https://www.metaclasslink.com',
       },
-      { rel: 'shortcut icon', href: 'favicon.png' },
+      { rel: 'shortcut icon', href: '/favicon.png' },
     ],
     script: [],
   },

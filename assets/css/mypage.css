@@ -3771,43 +3771,54 @@ ol {
 
 /* (완)학원_마이페이지(내정보)-기관장(개설전)-edu_head_bef.html */
 /* 팝업 M2- 내정보 수정 - 교육기관 정보 개설 */
-#modalInstRegi .section {
+#modalInstRegi .section,
+#modalFranRegi .section {
   width: 80%;
   margin: 0 auto;
   text-align: left;
 }
-#modalInstRegi .form-inline label {
+#modalInstRegi .form-inline label,
+#modalFranRegi .form-inline label {
   justify-content: flex-start;
   width: 100%;
 }
-#modalInstRegi .form-group.form-inlinebox .form-control + .btn {
+#modalInstRegi .form-group.form-inlinebox .form-control + .btn,
+#modalFranRegi .form-group.form-inlinebox .form-control + .btn {
   display: block;
   float: right;
   width: 95px;
   font-size: 12px;
 }
-#modalInstRegi .form-group.form-inlinebox label + input {
+#modalInstRegi .form-group.form-inlinebox label + input,
+#modalFranRegi .form-group.form-inlinebox label + input {
   width: calc(100% - 100px);
 }
-#modalInstRegi .form-inlinebox {
+#modalInstRegi .form-inlinebox,
+#modalFranRegi .form-inlinebox {
   width: 100%;
 }
-#modalInstRegi .form_section .btn_crud_point {
+#modalInstRegi .form_section .btn_crud_point,
+#modalFranRegi .form_section .btn_crud_point {
   margin-top: 20px;
   width: 100%;
 }
-#modalInstRegi .section .question_txt {
+#modalInstRegi .section .question_txt,
+#modalFranRegi .section .question_txt {
   font-size: 14px;
-  margin-top: 15px;
+  margin-bottom: 15px;
+  margin-top: 5px;
   text-align: center;
 }
-#modalInstRegi #form04 {
+#modalInstRegi #form04,
+#modalFranRegi #form04 {
   margin-top: 7px;
 }
-#modalInstRegi .invalid_text {
+#modalInstRegi .invalid_text,
+#modalFranRegi .invalid_text {
   visibility: visible;
   margin-top: 3px;
 }
-#modalInstRegi .form-inlinebox label {
+#modalInstRegi .form-inlinebox label,
+#modalFranRegi .form-inlinebox label {
   width: 100%;
 }/*# sourceMappingURL=mypage.css.map */

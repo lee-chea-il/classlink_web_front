@@ -46,7 +46,10 @@
           </td>
           <td>{{ lecture.createdAt }}</td>
           <td>{{ lecture.name }}</td>
-          <CustomSpan :dataList="lecture.teacher" />
+          <CustomSpan
+            :dataList="lecture.teacher"
+            :spareList="lecture.spareTeacher"
+          />
           <CustomSpan :dataList="lecture.className" />
           <td>
             <div class="lec_curi">

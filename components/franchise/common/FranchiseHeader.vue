@@ -39,7 +39,12 @@ export default {
           active: '/class',
           to: '/franchise/class/reference',
         },
-        { id: 2, name: '관리', active: 'none', to: '' },
+        {
+          id: 2,
+          name: '관리',
+          active: '/management',
+          to: '/franchise/management/affilate',
+        },
         {
           id: 3,
           name: '월드',
@@ -73,18 +78,23 @@ export default {
           children: [
             {
               name: '가맹관리',
-              to: '',
-              active: '',
+              to: '/franchise/management/affilate',
+              active: '/franchise/management/affilate',
             },
             {
               name: '결제관리',
-              to: '',
-              active: '',
+              to: '/franchise/management/payment',
+              active: '/franchise/management/payment',
+            },
+            {
+              name: '운영관리',
+              to: '/franchise/management/operate',
+              active: '/franchise/management/operate',
             },
             {
               name: '공지사항',
-              to: '',
-              active: '',
+              to: '/franchise/management/notice',
+              active: '/franchise/management/notice',
             },
           ],
         },
@@ -105,16 +115,6 @@ export default {
               name: '월드SET',
               to: '/franchise/world/worldSet',
               active: '/franchise/world/worldSet',
-            },
-            {
-              name: '빌딩',
-              to: '/franchise/world/building',
-              active: '/franchise/world/building',
-            },
-            {
-              name: '지도교사',
-              to: '/franchise/world/guidanceTeacher',
-              active: '/franchise/world/guidanceTeacher',
             },
           ],
         },

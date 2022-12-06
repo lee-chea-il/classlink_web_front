@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import ButtonItem from '../reference/commom/ButtonItem.vue'
+import ButtonItem from '../common/ButtonItem.vue'
 
 export default {
   name: 'SearchSection',

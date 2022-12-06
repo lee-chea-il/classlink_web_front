@@ -179,7 +179,7 @@
                     </div>
                   </td>
                   <td>{{ item.class }}</td>
-                  <td>{{ item.personnel }}</td>
+                  <td>{{ item.studentList.length }}</td>
                   <td>{{ item.teacher }} 선생님</td>
                   <td>
                     <i
@@ -290,7 +290,20 @@
       :show="openClassMove"
       :classList="classList"
       :checkList="checkList"
+      :moveDetail="modalMoveDetail"
+      :copy="modalMoveCopy"
+      :leftCheckbox="selectedMoveModalLeftCheckbox"
+      :moveClassCheckbox="selectedMoveToClassCheckbox"
+      :rightCheckbox="selectedMoveModalRightCheckbox"
+      :moveClassCheckboxRight="selectedMoveToClassCheckboxRight"
       @close="onCloseClassMove"
+      @open-detail="onClickOpenDetail"
+      @move-student="onClickMoveStudent"
+      @copy-check="onClickCopyCheck"
+      @student-list-check="onClickMoveModalLeftCheckbox"
+      @move-to-class="onClickMoveToClass"
+      @student-list-check-right="onClickMoveModalRightCheckbox"
+      @move-to-class-right="onClickMoveToClassRight"
     />
 
     <DeleteModal
@@ -338,11 +351,12 @@ export default {
               id: 1,
               identity: ['학생', '학부모'],
               status: true,
+              new: false,
               grade: '중1',
               grade_type: 0,
-              class: ['심화 A반', '심화 B반'],
-              name: '김유진',
-              nickname: '유진쓰',
+              class: ['심화A반'],
+              name: '홍길동',
+              nickname: 'cocotee',
               family: [
                 {
                   id: 0,
@@ -380,11 +394,12 @@ export default {
               id: 2,
               identity: ['학생', '학부모'],
               status: true,
+              new: false,
               grade: '중1',
               grade_type: 0,
-              class: ['심화 A반', '심화 B반'],
-              name: '김유진',
-              nickname: '유진쓰',
+              class: ['심화A반'],
+              name: '이성국',
+              nickname: 'cocotee',
               family: [
                 {
                   id: 0,
@@ -429,11 +444,12 @@ export default {
               id: 1,
               identity: ['학생', '학부모'],
               status: true,
+              new: false,
               grade: '중1',
               grade_type: 0,
-              class: ['심화 A반', '심화 B반'],
+              class: ['심화B반'],
               name: '이성국',
-              nickname: '유진쓰',
+              nickname: 'cocotee',
               family: [
                 {
                   id: 0,
@@ -471,10 +487,11 @@ export default {
               id: 2,
               identity: ['학생', '학부모'],
               status: true,
+              new: false,
               grade: '중1',
               grade_type: 0,
-              class: ['심화 A반', '심화 B반'],
-              name: '김유진',
+              class: ['심화B반'],
+              name: '홍길동',
               nickname: '유진쓰',
               family: [
                 {
@@ -520,10 +537,11 @@ export default {
               id: 1,
               identity: ['학생', '학부모'],
               status: true,
+              new: false,
               grade: '중1',
               grade_type: 0,
-              class: ['심화 A반', '심화 B반'],
-              name: '김유진',
+              class: ['심화C반'],
+              name: '홍길동',
               nickname: '유진쓰',
               family: [
                 {
@@ -562,10 +580,11 @@ export default {
               id: 2,
               identity: ['학생', '학부모'],
               status: true,
+              new: false,
               grade: '중1',
               grade_type: 0,
-              class: ['심화 A반', '심화 B반'],
-              name: '김유진',
+              class: ['심화C반'],
+              name: '홍길동',
               nickname: '유진쓰',
               family: [
                 {
@@ -749,6 +768,17 @@ export default {
       selectedTeacher: [],
       selectedStudentAll: [],
 
+      // 왼쪽
+      // 반 이동 이동시킬 학생 선택
+      selectedMoveModalLeftCheckbox: [],
+      // 반 이동 이동할 반 선택
+      selectedMoveToClassCheckbox: null,
+      // 오른쪽
+      // 반 이동 이동시킬 학생 선택
+      selectedMoveModalRightCheckbox: [],
+      // 반 이동 이동할 반 선택
+      selectedMoveToClassCheckboxRight: null,
+
       // 정렬
       sortTeacherSelect: '선생님 전체',
       sortNumberSelect: '10개씩 보기',
@@ -760,6 +790,12 @@ export default {
       modalModifyDetail: null,
       modalModifyClassDetail: null,
       modalModifySelectDetail: null,
+
+      // 반 이동 펴기 버튼
+      modalMoveDetail: null,
+
+      // 반 이동 복사 여부
+      modalMoveCopy: false,
 
       // 체크박스
       allCheck: false,
@@ -818,8 +854,9 @@ export default {
     },
 
     // 반 이동 모달 열기
-    onOpenClassMove() {
+    onOpenClassMove(data) {
       this.openClassMove.open = true
+      this.openClassMove.data = data
     },
     onCloseClassMove() {
       this.openClassMove.open = false
@@ -885,10 +922,15 @@ export default {
           this.onCloseSnackbar()
         }, 2000)
       } else {
-        this.onOpenClassMove()
+        const data = []
+        for (let i = 0; i < this.checkList.length; i++) {
+          data.push(this.classList[this.checkList[i]])
+        }
+        console.log(data)
+        this.onOpenClassMove(data)
       }
     },
-    // 복사 버튼 클릭
+    // 복사 버튼
     onClickClassCopy() {
       if (this.checkList.length === 0) {
         this.onOpenSnackbar('반을 선택해주세요.')
@@ -896,7 +938,24 @@ export default {
           this.onCloseSnackbar()
         }, 2000)
       } else {
-        console.log('복사')
+        const data = []
+        for (let i = 0; i < this.checkList.length; i++) {
+          data.push(
+            JSON.parse(JSON.stringify(this.classList[this.checkList[i]]))
+          )
+        }
+        console.log(data)
+        for (let i = 0; i < data.length; i++) {
+          data[i].class =
+            data[i].class +
+            `(${
+              this.classList.filter((item) => item.class === data[i].class)
+                .length
+            })`
+        }
+        for (let i = 0; i < data.length; i++) {
+          this.classList.push(data[i])
+        }
       }
     },
 
@@ -963,57 +1022,6 @@ export default {
         }
       }
     },
-    // 반 학생 반 추가/삭제 (반 전체)
-    // onClickAddSelectedStudentAllClass(data) {
-    //   for (let i = 0; i < data.student.length; i++) {
-    //     this.onClickAddSelectedStudentClass(data.student[i])
-    //   }
-    // },
-    // onClickDeleteSelectedStudentAllClass(data) {
-    //   this.selectedStudentAll = this.selectedStudentAll.filter(
-    //     (item) => item !== data
-    //   )
-    // },
-    // // 반 학생 반 추가/삭제 (개인)
-    // onClickAddSelectedStudentClass(data) {
-    //   if (
-    //     this.selectedStudentAll.find((e) => e.grade === data.grade) ===
-    //     undefined
-    //   ) {
-    //     const student = {
-    //       grade: data.grade,
-    //       student: [data],
-    //     }
-    //     this.selectedStudentAll.push(student)
-    //   } else {
-    //     const students = this.selectedStudentAll.find(
-    //       (e) => e.grade === data.grade
-    //     )
-
-    //     if (
-    //       !this.selectedStudentAll
-    //         .find((e) => e.grade === data.grade)
-    //         .student.includes(data)
-    //     ) {
-    //       students.student.push(data)
-    //     }
-    //   }
-    // },
-    // onClickDeleteSelectedStudentClass(data) {
-    //   for (let i = 0; i < this.selectedStudentAll.length; i++) {
-    //     if (this.selectedStudentAll[i].grade === data.grade) {
-    //       this.selectedStudentAll[i].student = this.selectedStudentAll[
-    //         i
-    //       ].student.filter((item) => item !== data)
-
-    //       if (this.selectedStudentAll[i].student.length === 0) {
-    //         this.selectedStudentAll = this.selectedStudentAll.filter(
-    //           (item) => item.student.length !== 0
-    //         )
-    //       }
-    //     }
-    //   }
-    // },
 
     // 반 만들기/수정 반 학생 학년 상세
     onClickModalModifyDetail(idx) {
@@ -1050,6 +1058,153 @@ export default {
     },
     onChangeNumberSort(e) {
       this.sortNumberSelect = e.target.innerText
+    },
+
+    // 반 이동 모달
+    // 반 펴기
+    onClickOpenDetail(idx) {
+      if (this.modalMoveDetail === idx) {
+        this.modalMoveDetail = null
+      } else {
+        this.modalMoveDetail = idx
+      }
+    },
+    // 반 이동 기능
+    onClickMoveStudent(data, direction) {
+      if (direction) {
+        if (this.selectedMoveToClassCheckbox !== null) {
+          if (this.modalMoveCopy) {
+            for (let i = 0; i < data.length; i++) {
+              const dataList = JSON.parse(JSON.stringify(data))
+              dataList[i].new = true
+              dataList[i].class.push(
+                this.classList[this.selectedMoveToClassCheckbox].class
+              )
+              this.classList[this.selectedMoveToClassCheckbox].studentList.push(
+                dataList[i]
+              )
+            }
+            this.selectedMoveToClassCheckbox = null
+            this.selectedMoveModalLeftCheckbox = []
+          } else {
+            for (let i = 0; i < data.length; i++) {
+              const dataList = JSON.parse(JSON.stringify(data))
+              console.log(dataList)
+              dataList[i].new = true
+              dataList[i].class = [
+                this.classList[this.selectedMoveToClassCheckbox].class,
+              ]
+              this.classList[this.selectedMoveToClassCheckbox].studentList.push(
+                dataList[i]
+              )
+              this.classList.find((e) =>
+                data[i].class.includes(e.class)
+              ).studentList = this.classList
+                .find((e) => data[i].class.includes(e.class))
+                .studentList.filter((item) => item.name !== data[i].name)
+
+              // console.log(
+              //   this.classList.find((e) => data[i].class.includes(e.class))
+              // )
+            }
+
+            this.selectedMoveToClassCheckbox = null
+            this.selectedMoveModalLeftCheckbox = []
+          }
+        } else {
+          this.onOpenSnackbar('이동할 반을 선택해주세요.')
+          setTimeout(() => {
+            this.onCloseSnackbar()
+          }, 2000)
+        }
+      } else {
+        const dataList = JSON.parse(JSON.stringify(data))
+        if (this.selectedMoveToClassCheckboxRight !== null) {
+          // console.log(dataList)
+          if (this.modalMoveCopy) {
+            for (let i = 0; i < data.length; i++) {
+              // dataList = JSON.parse(JSON.stringify(data))
+              dataList[i].new = true
+              dataList[i].class.push(
+                this.classList[this.selectedMoveToClassCheckboxRight].class
+              )
+              this.classList[
+                this.selectedMoveToClassCheckboxRight
+              ].studentList.push(dataList[i])
+            }
+            this.selectedMoveToClassCheckbox = null
+            this.selectedMoveModalLeftCheckbox = []
+          } else {
+            for (let i = 0; i < data.length; i++) {
+              // dataList = JSON.parse(JSON.stringify(data))
+              dataList[i].new = true
+              dataList[i].class.push(
+                this.classList[this.selectedMoveToClassCheckboxRight].class
+              )
+              this.classList[
+                this.selectedMoveToClassCheckboxRight
+              ].studentList.push(dataList[i])
+
+              this.classList.find((e) =>
+                data[i].class.includes(e.class)
+              ).studentList = this.classList
+                .find((e) => data[i].class.includes(e.class))
+                .studentList.filter((item) => item.name !== data[i].name)
+            }
+            this.selectedMoveToClassCheckbox = null
+            this.selectedMoveModalLeftCheckbox = []
+          }
+        } else {
+          this.onOpenSnackbar('이동할 반을 선택해주세요.')
+          setTimeout(() => {
+            this.onCloseSnackbar()
+          }, 2000)
+        }
+      }
+    },
+    // 반 이동 시 복사 체크박스
+    onClickCopyCheck() {
+      if (this.modalMoveCopy) {
+        this.modalMoveCopy = false
+      } else {
+        this.modalMoveCopy = true
+      }
+    },
+    // 학생 체크박스
+    onClickMoveModalLeftCheckbox(items) {
+      if (this.selectedMoveModalLeftCheckbox.includes(items)) {
+        this.selectedMoveModalLeftCheckbox =
+          this.selectedMoveModalLeftCheckbox.filter((item) => item !== items)
+      } else {
+        this.selectedMoveModalLeftCheckbox.push(items)
+      }
+      console.log(this.selectedMoveModalLeftCheckbox)
+    },
+    // 이동할 반 선택 (오른쪽으로)
+    onClickMoveToClass(idx) {
+      if (this.selectedMoveToClassCheckbox === idx) {
+        this.selectedMoveToClassCheckbox = null
+      } else {
+        this.selectedMoveToClassCheckbox = idx
+      }
+    },
+    // 학생 체크박스
+    onClickMoveModalRightCheckbox(items) {
+      if (this.selectedMoveModalRightCheckbox.includes(items)) {
+        this.selectedMoveModalRightCheckbox =
+          this.selectedMoveModalRightCheckbox.filter((item) => item !== items)
+      } else {
+        this.selectedMoveModalRightCheckbox.push(items)
+      }
+      console.log(this.selectedMoveModalRightCheckbox)
+    },
+    // 이동할 반 선택 (오른쪽으로)
+    onClickMoveToClassRight(idx) {
+      if (this.selectedMoveToClassCheckboxRight === idx) {
+        this.selectedMoveToClassCheckboxRight = null
+      } else {
+        this.selectedMoveToClassCheckboxRight = idx
+      }
     },
 
     // 학생 개별 등록/학생 상세 정보 모달

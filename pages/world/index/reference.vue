@@ -19,7 +19,7 @@
         <!-- /.컨트롤 버튼 영역 -->
 
         <!-- 2단 분류 컨텐츠 -->
-        <TreeSection
+      <TreeSection
           ref="mainEducation"
           :pageType="pageType"
           :institutionData="receiveInstitutionData"
@@ -44,7 +44,7 @@
     />
 
     <!-- 비디오 & 파일 업로드 선택 -->
-    <VideoFileUploadModal
+    <UploadVideoFileModal
       :uploadType="uploadType"
       @upload-video="onUploadVideo"
       @upload-pdf="onUploadPdf"
@@ -61,7 +61,7 @@
     />
 
     <!-- 파일 등록 (동영상,문서,유튜브,url) -->
-    <ReferenceAddModal
+    <AddReferenceModal
       :open="isReferenceAddModal"
       :modalTitle="modalTitle"
       :reference="referenceData"
@@ -184,7 +184,7 @@
     />
 
     <!-- 쪽지시험 미리보기 -->
-    <NoteTestPreviewModal
+    <PreviewNoteTestModal
       :open="isNoteTestPreviewModal.open"
       :testList="referenceData.noteTestList"
       :currentPageIdx="currentPageIdx"
@@ -221,7 +221,7 @@
     />
 
     <!-- 자료실 검색 필터 -->
-    <ReferenceFilterModal
+    <FilterReferenceModal
       :open="isFilterModal.open"
       :searchData="searchData"
       :typeList="typeList"
@@ -263,58 +263,60 @@
 import html2pdf from 'html2pdf.js'
 import MainBtnBox from '~/components/common/MainBtnBox.vue'
 import PageHeader from '~/components/common/PageHeader.vue'
-import TreeSection from '~/components/common/TreeSection.vue'
 import ModalDesc from '~/components/common/modal/ModalDesc.vue'
 import DeleteModal from '~/components/common/modal/DeleteModal.vue'
 import SavePathModal from '~/components/common/modal/SavePathModal.vue'
+import TreeSection from '~/components/world/common/TreeSection.vue'
+import CustomSnackbar from '~/components/common/CustomSnackbar.vue'
+
 import AddQuizModal from '~/components/world/modal/AddQuizModal.vue'
-import BrowseQuizModal from '~/components/world/modal/BrowseQuizModal.vue'
 import AddNoteTestModal from '~/components/world/modal/AddNoteTestModal.vue'
+import AddReferenceModal from '~/components/world/modal/AddReferenceModal.vue'
+import BrowseQuizModal from '~/components/world/modal/BrowseQuizModal.vue'
 import BrowseReferenceModal from '~/components/world/modal/BrowseReferenceModal.vue'
-import ReferenceAddModal from '~/components/world/modal/AddReferenceModal.vue'
-import UploadYoutubeModal from '~/components/world/modal/UploadYoutubeModal.vue'
-import SelectReferenceModal from '~/components/world/modal/SelectReferenceModal.vue'
-import VideoFileUploadModal from '~/components/world/modal/UploadVideoFileModal.vue'
-import ShareViewModal from '~/components/world/modal/ShareViewModal.vue'
-import PreviewQuizModal from '~/components/world/modal/PreviewQuizModal.vue'
 import BrowseNoteTestModal from '~/components/world/modal/BrowseNoteTestModal.vue'
+import FilterReferenceModal from '~/components/world/modal/FilterReferenceModal.vue'
+import PreviewQuizModal from '~/components/world/modal/PreviewQuizModal.vue'
 import PrintQuizModal from '~/components/world/modal/PrintQuizModal.vue'
 import PrintNoteTestModal from '~/components/world/modal/PrintNoteTestModal.vue'
+import PreviewNoteTestModal from '~/components/world/modal/PreviewNoteTestModal.vue'
+import ShareViewModal from '~/components/world/modal/ShareViewModal.vue'
+import SearchResultModal from '~/components/world/modal/SearchResultModal.vue'
+import SelectReferenceModal from '~/components/world/modal/SelectReferenceModal.vue'
+import UploadYoutubeModal from '~/components/world/modal/UploadYoutubeModal.vue'
+import UploadVideoFileModal from '~/components/world/modal/UploadVideoFileModal.vue'
 
-import SearchResultModal from '~/components/common/modal/reference/SearchResultModal.vue'
-import ReferenceFilterModal from '~/components/common/modal/reference/ReferenceFilterModal.vue'
-import NoteTestPreviewModal from '~/components/common/modal/reference/NoteTestPreviewModal.vue'
-import { apiReference } from '~/services'
-import { urlRegex, youtubeRegex, setNewArray, jsonItem } from '~/utiles/common'
 import initialState from '~/data/world/worldReference/initialState'
-import CustomSnackbar from '~/components/common/CustomSnackbar.vue'
+import { urlRegex, youtubeRegex, setNewArray, jsonItem } from '~/utiles/common'
+import { apiReference } from '~/services'
 
 export default {
   name: 'ReferenceRoom',
   components: {
-    ModalDesc,
-    PageHeader,
     MainBtnBox,
+    PageHeader,
+    ModalDesc,
     DeleteModal,
-    TreeSection,
-    AddQuizModal,
     SavePathModal,
-    PrintQuizModal,
-    ShareViewModal,
-    BrowseQuizModal,
-    AddNoteTestModal,
-    BrowseReferenceModal,
-    PreviewQuizModal,
-    SearchResultModal,
-    ReferenceAddModal,
-    PrintNoteTestModal,
-    UploadYoutubeModal,
-    BrowseNoteTestModal,
-    SelectReferenceModal,
-    VideoFileUploadModal,
-    ReferenceFilterModal,
-    NoteTestPreviewModal,
+    TreeSection,
     CustomSnackbar,
+
+    AddQuizModal,
+    AddNoteTestModal,
+    AddReferenceModal,
+    BrowseQuizModal,
+    BrowseReferenceModal,
+    BrowseNoteTestModal,
+    FilterReferenceModal,
+    PreviewNoteTestModal,
+    PrintQuizModal,
+    PrintNoteTestModal,
+    PreviewQuizModal,
+    ShareViewModal,
+    SearchResultModal,
+    SelectReferenceModal,
+    UploadYoutubeModal,
+    UploadVideoFileModal,
   },
   data() {
     return initialState()
