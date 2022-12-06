@@ -51,7 +51,11 @@
                     </div>
                   </div>
                 </div>
-                <div class="table_area">
+                <div
+                  v-for="(item, idx) in show.data"
+                  :key="idx"
+                  class="table_area"
+                >
                   <div class="table_thead">
                     <table class="tb">
                       <!-- <colgroup>
@@ -65,17 +69,19 @@
                               class="custom-control custom-checkbox form-inline"
                             >
                               <input
-                                id="chk02all"
+                                :id="`move0${idx}`"
                                 type="checkbox"
                                 class="custom-control-input"
+                                :checked="moveClassCheckboxRight === idx"
+                                @input="$emit('move-to-class-right', idx)"
                               />
                               <label
                                 class="custom-control-label"
-                                for="chk02all"
+                                :for="`move0${idx}`"
                               ></label>
                             </div>
                           </th>
-                          <th>심화A반</th>
+                          <th>{{ item.class }}</th>
                         </tr>
                       </thead>
                     </table>
@@ -89,65 +95,27 @@
 											<col>
 										</colgroup> -->
                       <tbody>
-                        <tr>
+                        <tr v-for="(items, id) in item.studentList" :key="id">
                           <td class="td01">
                             <div
                               class="custom-control custom-checkbox form-inline"
                             >
                               <input
-                                id="chk0201"
+                                :id="`move1${idx}${id}`"
                                 type="checkbox"
                                 class="custom-control-input"
+                                :checked="leftCheckbox.includes(items)"
+                                @input="$emit('student-list-check', items)"
                               />
                               <label
                                 class="custom-control-label"
-                                for="chk0201"
+                                :for="`move1${idx}${id}`"
                               ></label>
                             </div>
                           </td>
-                          <td class="td02">중1</td>
-                          <td class="td03">홍미미</td>
-                          <td class="td04">010-1111-2222</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <div
-                              class="custom-control custom-checkbox form-inline"
-                            >
-                              <input
-                                id="chk0202"
-                                type="checkbox"
-                                class="custom-control-input"
-                              />
-                              <label
-                                class="custom-control-label"
-                                for="chk0202"
-                              ></label>
-                            </div>
-                          </td>
-                          <td>중3</td>
-                          <td>홍미미</td>
-                          <td>010-1111-2222</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <div
-                              class="custom-control custom-checkbox form-inline"
-                            >
-                              <input
-                                id="chk0203"
-                                type="checkbox"
-                                class="custom-control-input"
-                              />
-                              <label
-                                class="custom-control-label"
-                                for="chk0203"
-                              ></label>
-                            </div>
-                          </td>
-                          <td>중3</td>
-                          <td>홍미미</td>
-                          <td>010-1111-2222</td>
+                          <td class="td02">{{ items.grade }}</td>
+                          <td class="td03">{{ items.name }}</td>
+                          <td class="td04">{{ items.phone }}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -155,30 +123,34 @@
                 </div>
               </div>
               <!-- /.이름 검색 - 왼쪽 -->
+
               <!-- 이동버튼 영역 -->
               <div class="btn_move_area">
                 <div class="custom-control custom-checkbox form-inline">
                   <input
-                    id="checkbox01"
+                    id="copyCheckbox01"
                     type="checkbox"
                     class="custom-control-input"
+                    :checked="copy"
+                    @change="$emit('copy-check')"
                   />
-                  <label class="custom-control-label" for="checkbox01"
+                  <label class="custom-control-label" for="copyCheckbox01"
                     >복사</label
                   >
                 </div>
                 <!-- [개발참조]toasts 메세지 '이동할 반을 선택해주세요.'' : 아무런 반을 체크하지 않고 누르면 -->
                 <button
                   class="btn btn_arrow_square2_r"
-                  onClick="toasts('이동할 반을 선택해주세요.')"
+                  @click="$emit('move-student', leftCheckbox, true)"
                 ></button>
                 <button
                   class="btn btn_arrow_square2_l"
-                  onClick="toasts('이동할 반을 선택해주세요.')"
+                  @click="$emit('move-student', rightCheckbox, false)"
                 ></button>
                 <!-- <button class="btn btn_crud_default">초기화</button> -->
               </div>
               <!-- /.이동버튼 영역 -->
+
               <!-- 이름 검색 - 오른쪽 -->
               <div class="search_std">
                 <div class="search_name">
@@ -212,7 +184,11 @@
                 </div>
                 <div class="table_area right">
                   <!-- 반 list -->
-                  <div class="list_class">
+                  <div
+                    v-for="(item, idx) in classList"
+                    :key="idx"
+                    class="list_class"
+                  >
                     <table class="tb">
                       <!-- <colgroup>
 											<col width="50">
@@ -225,147 +201,88 @@
                               class="custom-control custom-checkbox form-inline"
                             >
                               <input
-                                id="chk03all"
+                                :id="`move2${idx}`"
                                 type="checkbox"
                                 class="custom-control-input"
+                                :checked="moveClassCheckbox === idx"
+                                @input="$emit('move-to-class', idx)"
                               />
                               <label
                                 class="custom-control-label"
-                                for="chk03all"
+                                :for="`move2${idx}`"
                               ></label>
                             </div>
                           </th>
-                          <th colspan="2">심화A반</th>
+                          <th colspan="2">{{ item.class }}</th>
                           <th>
-                            <button id="showStudents01" class="btn btn_filter">
+                            <button
+                              id="showStudents01"
+                              class="btn btn_filter"
+                              :class="{ active: idx === moveDetail }"
+                              @click="$emit('open-detail', idx)"
+                            >
                               펴기
                             </button>
                           </th>
                         </tr>
                       </thead>
                     </table>
-                  </div>
-                  <!-- 반 list -->
-                  <!-- 해당반의학생 list -->
-                  <div
-                    id="listStudents01"
-                    class="list_class_students"
-                    style="display: none"
-                  >
-                    <table class="tb">
-                      <!-- 	<colgroup>
+
+                    <div
+                      v-if="idx === moveDetail"
+                      id="listStudents01"
+                      class="list_class_students"
+                    >
+                      <table class="tb">
+                        <!-- 	<colgroup>
 											<col width="50">
 											<col width="70">
 											<col width="100">
 											<col>
 										</colgroup> -->
-                      <tbody>
-                        <!-- 반 소속 학생리스트 -->
-                        <div class="list_class_students" style="display: none">
-                          <tr>
-                            <td>
-                              <div
-                                class="custom-control custom-checkbox form-inline"
-                              >
-                                <input
-                                  id="chk0301"
-                                  type="checkbox"
-                                  class="custom-control-input"
-                                />
-                                <label
-                                  class="custom-control-label"
-                                  for="chk0301"
-                                ></label>
-                              </div>
-                            </td>
-                            <td class="text-right">
-                              <i class="icons_new"></i> 중1
-                            </td>
-                            <td>홍미미</td>
-                            <td>010-1111-2222</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div
-                                class="custom-control custom-checkbox form-inline"
-                              >
-                                <input
-                                  id="chk0302"
-                                  type="checkbox"
-                                  class="custom-control-input"
-                                />
-                                <label
-                                  class="custom-control-label"
-                                  for="chk0302"
-                                ></label>
-                              </div>
-                            </td>
-                            <td class="text-right">
-                              <i class="icons_new"></i> 중3
-                            </td>
-                            <td>홍미미</td>
-                            <td>010-1111-2222</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div
-                                class="custom-control custom-checkbox form-inline"
-                              >
-                                <input
-                                  id="chk0303"
-                                  type="checkbox"
-                                  class="custom-control-input"
-                                />
-                                <label
-                                  class="custom-control-label"
-                                  for="chk0303"
-                                ></label>
-                              </div>
-                            </td>
-                            <td class="text-right">중3</td>
-                            <td>홍미미</td>
-                            <td>010-1111-2222</td>
-                          </tr>
-                        </div>
-                        <!-- /.반 소속 학생리스트 -->
-                      </tbody>
-                    </table>
+                        <tbody>
+                          <!-- 반 소속 학생리스트 -->
+                          <div class="list_class_students">
+                            <tr
+                              v-for="(items, id) in item.studentList"
+                              :key="id"
+                            >
+                              <td>
+                                <div
+                                  class="custom-control custom-checkbox form-inline"
+                                >
+                                  <input
+                                    :id="`move3${idx}${id}`"
+                                    type="checkbox"
+                                    class="custom-control-input"
+                                    :checked="rightCheckbox.includes(items)"
+                                    @input="
+                                      $emit('student-list-check-right', items)
+                                    "
+                                  />
+                                  <label
+                                    class="custom-control-label"
+                                    :for="`move3${idx}${id}`"
+                                  ></label>
+                                </div>
+                              </td>
+                              <td class="text-right">
+                                <i v-if="items.new" class="icons_new"></i>
+                                {{ items.grade }}
+                              </td>
+                              <td>{{ items.name }}</td>
+                              <td>{{ items.phone }}</td>
+                            </tr>
+                          </div>
+                          <!-- /.반 소속 학생리스트 -->
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
+                  <!-- 반 list -->
                   <!-- 해당반의학생 list -->
 
-                  <!-- 반 list -->
-                  <div class="list_class">
-                    <table class="tb">
-                      <!-- 	<colgroup>
-											<col width="50">
-											<col>
-										</colgroup> -->
-                      <thead>
-                        <tr class="class_tr">
-                          <th>
-                            <div
-                              class="custom-control custom-checkbox form-inline"
-                            >
-                              <input
-                                id="chk03all"
-                                type="checkbox"
-                                class="custom-control-input"
-                              />
-                              <label
-                                class="custom-control-label"
-                                for="chk03all"
-                              ></label>
-                            </div>
-                          </th>
-                          <th colspan="2">심화B반</th>
-                          <th>
-                            <button class="btn btn_filter">펴기</button>
-                          </th>
-                        </tr>
-                      </thead>
-                    </table>
-                  </div>
-                  <!-- 반 list -->
+                  <!-- 해당반의학생 list -->
                 </div>
               </div>
               <!-- /.이름 검색 - 오른쪽 -->
@@ -396,8 +313,40 @@ export default {
       type: Array,
       default: () => [],
     },
+    moveDetail: {
+      type: Number,
+      default: null,
+    },
+    copy: {
+      type: Boolean,
+      default: false,
+    },
+    leftCheckbox: {
+      type: Array,
+      default: () => [],
+    },
+    moveClassCheckbox: {
+      type: Number,
+      default: null,
+    },
+    rightCheckbox: {
+      type: Array,
+      default: () => [],
+    },
+    moveClassCheckboxRight: {
+      type: Number,
+      default: null,
+    },
   },
 }
 </script>
 
-<style></style>
+<style scoped>
+.modal_ac_manage_cls .search_std {
+  overflow-y: auto;
+  height: 560px;
+}
+.modal_ac_manage_cls .search_std .table_area .table_tbody {
+  height: 100%;
+}
+</style>
