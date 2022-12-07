@@ -26,7 +26,6 @@
           <DivideSection
             ref="rightSection"
             directionType="right"
-            :isUpdate="isUpdate"
             :identity="identity"
             :curriculumData="receiveCurriculumData"
             @un-active="unActive"
@@ -119,12 +118,13 @@ export default {
     return initialState()
   },
   mounted(){
-    this.addCuriiculumData(this.testData)
+    setTimeout(() => {
+      this.addCuriiculumData(this.testData)
+    },1000)
   },
   methods: {
     openCurriculumAdd() {
       this.isShowOpenAddModal = true
-      this.isUpdate = false
       this.$refs.curriculumUpdateModal.setData(null)
     },
     copyData() {
@@ -190,7 +190,6 @@ export default {
     updateData(data){
       console.log(data)
       this.isShowOpenAddModal = true
-      this.isUpdate = true
       $("#modalCuriRegi").modal("show")
       this.$refs.curriculumUpdateModal.setData(data)
     }

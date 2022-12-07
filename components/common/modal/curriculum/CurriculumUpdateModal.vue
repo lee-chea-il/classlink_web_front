@@ -176,12 +176,22 @@
 
                   <div class="check_sec">
                     <span class="custom-control custom-checkbox form-inline">
-                      <input id="checkbox60" type="checkbox" class="custom-control-input" checked>
-                      <label class="custom-control-label checkbox60" for="checkbox06">교육기관에 해당 자료를 공개합니다.</label>
+                      <input
+                        id="checkbox60"
+                        :checked="curriculumData.isOpenEducation"
+                        type="checkbox"
+                        class="custom-control-input"
+                      >
+                      <label class="custom-control-label checkbox60" for="checkbox60">교육기관에 해당 자료를 공개합니다.</label>
                     </span>
                     <span class="custom-control custom-checkbox form-inline">
-                      <input id="checkbox61" type="checkbox" class="custom-control-input" checked>
-                      <label class="custom-control-label checkbox61" for="checkbox07">계속 등록하기</label>
+                      <input
+                        id="checkbox61"
+                        :checked="curriculumData.isContinuedRegist"
+                        type="checkbox"
+                        class="custom-control-input"
+                      >
+                      <label class="custom-control-label checkbox61" for="checkbox61">계속 등록하기</label>
                     </span>
                   </div>
 
@@ -193,10 +203,11 @@
           </div>
           <div class="modal-footer">
             <ModalBtnBox
-              v-if="!isUpdate"
-              submitTxt="등록"
+              :submitTxt="submitBtnName"
+              :isUpdate="isUpdate"
               @submit="checkUpload"
               @close="$emit('close')"
+              @dell="$emit('close')"
             />
           </div>
         </div>
@@ -229,11 +240,12 @@ export default {
     desc: {
       type: String,
       default: '',
-    },
-    isUpdate: Boolean,
+    }
   },
   data() {
     return {
+      isUpdate:false,
+      submitBtnName:'등록',
       dropMenuList: [],
       dropMenuListData: [],
       linkDataCnt:0,
@@ -1816,10 +1828,6 @@ export default {
     for(let i=0;i<this.dropMenuListData.length;i++){
       this.dropMenuList.push(this.dropMenuListData[i].name)
     }
-
-
-    /* curriculumData.isOpenEducation=true,
-    curriculumData.isContinuedRegist=true, */
   },
   methods: {
     selectDropMenu(value) {
@@ -1837,6 +1845,8 @@ export default {
     setData(curriculumData){
       $('#modalCuriRegi .modal-body').scrollTop(0)
       if(curriculumData){
+        this.isUpdate=true
+        this.submitBtnName='수정'
         this.$refs.listView.unLinkAllItem()
         this.curriculumData=curriculumData
         this.currentClassName=this.curriculumData.cwInfo.name
@@ -1847,6 +1857,8 @@ export default {
         this.$refs.listView.setDataList(this.curriculumData.lessonInfo.lesson)
         this.$refs.listView.checkLinkDataCnt()
       }else{
+        this.isUpdate=false
+        this.submitBtnName='등록'
         this.curriculumData = {
           subTitle: '',
           desc: '',
@@ -1976,6 +1988,9 @@ export default {
     },
     checkDell(){
       console.log(1)
+    },
+    changeCheckbox(e){
+      console.log(e.target.checked)
     }
   }
 }

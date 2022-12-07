@@ -1,15 +1,27 @@
 <template>
   <div class="modal-footer">
-    <button class="btn btn_crud_point" @click="$emit('submit')">
+    <button
+      class="btn btn_crud_point"
+      @click="$emit('submit')"
+    >
       {{ submitTxt }}
     </button>
     <button
+      v-show="!isUpdate"
       id="close"
       class="btn btn_crud_default"
       data-dismiss="modal"
       @click="$emit('close')"
     >
       취소
+    </button>
+    <button
+      v-show="isUpdate"
+      class="btn btn_crud_danger"
+      data-dismiss="modal"
+      @click="$emit('dell')"
+    >
+      삭제
     </button>
   </div>
 </template>
@@ -22,6 +34,9 @@ export default {
       type: String,
       default: '',
     },
+    isUpdate: {
+      type: Boolean
+    }
   },
 }
 </script>

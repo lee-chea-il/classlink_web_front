@@ -1,7 +1,6 @@
 export default function initialState() {
   return {
     identity: 'teacher',
-    isUpdate: false,
     copyCheckData: [],
     testData: {
       subTitle: 'sub1',
