@@ -188,6 +188,7 @@ export default {
       }
     },
     updateData(data){
+      console.log(data)
       this.isShowOpenAddModal = true
       this.isUpdate = true
       $("#modalCuriRegi").modal("show")

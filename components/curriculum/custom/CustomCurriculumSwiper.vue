@@ -80,10 +80,10 @@
             const len=this.dataList.length
             for (let i = 0; i < len; i++) {
               target=$("#imgIcon"+i).find("img")
-              if(this.dataList[i].linkListIdx===-1){
-                target.attr({"src":this.dataList[i].icon_dim_url})
+              if(parseInt(this.dataList[i].linkListIdx)===-1){
+                target.attr({"src":this.setRequire(this.dataList[i].icon_dim_url)})
               }else{
-                target.attr({"src":this.dataList[i].icon_normal_url})
+                target.attr({"src":this.setRequire(this.dataList[i].icon_normal_url)})
               }
             }
           },500)
@@ -95,7 +95,7 @@
         for (let i = 0; i < len; i++) {
           if(this.dataList[i].imgIdx===imgIdx){
             this.dataList[i].linkListIdx=linkListIdx
-            $("#imgIcon"+i).find("img").attr({"src":this.dataList[i].icon_normal_url})
+            $("#imgIcon"+i).find("img").attr({"src":this.setRequire(this.dataList[i].icon_normal_url)})
             break
           }
         }
@@ -106,7 +106,7 @@
           if(this.dataList[i].imgIdx===imgIdx){
             this.dataList[i].linkListIdx=-1
             const target=$("#imgIcon"+i).find("img")
-            target.attr({"src":this.dataList[i].icon_dim_url})
+            target.attr({"src":this.setRequire(this.dataList[i].icon_dim_url)})
             break
           }
         }
@@ -114,10 +114,9 @@
       unLinkEvent(e){
         const target=e.target.parentElement
         const imgIdx=Number(target.id.split('imgIcon')[1])
-        console.log(imgIdx)
-        const tIdx=this.dataList[imgIdx].linkListIdx
+        const tIdx=parseInt(this.dataList[imgIdx].linkListIdx)
         if(tIdx!==-1){
-          $(`#${target.id}`).find("img").attr({"src":this.dataList[imgIdx].icon_dim_url})
+          $(`#${target.id}`).find("img").attr({"src":this.setRequire(this.dataList[imgIdx].icon_dim_url)})
           this.dataList[imgIdx].linkListIdx=-1
           this.$emit('unLink-event',tIdx,imgIdx)
         }
@@ -146,7 +145,10 @@
         const distanceX=($("#imgIcon0").parent().width()).toFixed(2)
         const moveX=imgIdx*-(Number(distanceX)+10)
         $(".swiper-wrapper").css({"transform":`translate3d(${moveX}px, 0px, 0px)`})
-      }
+      },
+      setRequire(imgPath){
+        return require('@/assets/images/'+imgPath)
+      },
     }
   }
 </script>

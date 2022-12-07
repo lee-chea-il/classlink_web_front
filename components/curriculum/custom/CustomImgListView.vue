@@ -116,13 +116,13 @@ export default {
       this.pid=0
       if(cwData.interactionObjects&&cwData.interactionObjects.length>0){
         this.datas = new Tree( false, dataMapping(cwData.interactionObjects, false) )
-        $("#cwBoxBackImg").attr("src",cwData.backImg_url)
+        $("#cwBoxBackImg").attr("src",this.setRequire(cwData.backImg_url))
         $('.cw_box> .vtl').css('opacity',0)
         setTimeout(() => {
           let target
           for (let i = 0; i < this.pid; i++) {
             target=$("#imgListView_"+i).find(".vtl-node-main")
-            target.html(`<img src="${cwData.interactionObjects[i].nomal_url}" class="inter_action_object" style="left:${cwData.interactionObjects[i].left}px;top:${cwData.interactionObjects[i].top}px;" />`)
+            target.html(`<img src="${this.setRequire(cwData.interactionObjects[i].nomal_url)}" class="inter_action_object" style="left:${cwData.interactionObjects[i].left}px;top:${cwData.interactionObjects[i].top}px;" />`)
           }
           setTimeout(() => {
             let target, tHei
@@ -141,18 +141,21 @@ export default {
         $("#cwBoxBackImg").attr("src","")
       }
     },
+    setRequire(imgPath){
+      return require('@/assets/images/'+imgPath)
+    },
     dragImgEnter(node) {
       if(!node.isLink){
-        $('#'+node.id).find('img').css('opacity',1).attr("src",node.over_url)
+        $('#'+node.id).find('img').css('opacity',1).attr("src",this.setRequire(node.over_url))
       }
     },
     dragImgLeave(node) {
       if(!node.isLink){
-        $('#'+node.id).find('img').css('opacity',0.3).attr("src",node.nomal_url)
+        $('#'+node.id).find('img').css('opacity',0.3).attr("src",this.setRequire(node.nomal_url))
       }
     },
     dragImgDrop(node,dragTaget) {
-      $('#'+node.id).find('img').css('opacity',1).attr("src",node.nomal_url)
+      $('#'+node.id).find('img').css('opacity',1).attr("src",this.setRequire(node.nomal_url))
       if(node.isLink){
         this.$emit('unlink-data-to-list', node.linkListIdx)
       }
