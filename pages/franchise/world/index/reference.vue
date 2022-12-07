@@ -22,9 +22,10 @@
         <TreeSection
           ref="mainEducation"
           :pageType="pageType"
+          :identity="identity"
           :institutionData="receiveInstitutionData"
           :franchiseData="receiveFranchiseData"
-          :identity="identity"
+          :openData="receiveOpenData"
           :myDataList="receiveMyData"
           @open-data="onClickView"
           @copyDataCallBack="copyDataCallBack"

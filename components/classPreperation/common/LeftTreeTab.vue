@@ -44,6 +44,28 @@
       />
     </div>
     <!-- /.탭 내용02 -->
+    <!-- 탭 내용03 -->
+    <div
+      id="open"
+      class="tab-pane fade"
+      role="tabpanel"
+      aria-labelledby="class-tab"
+    >
+      <TreeView
+        ref="open"
+        :dataList="openData"
+        :editable="identity == 'master' ? true : false"
+        :identity="identity"
+        :pidNum="1000"
+        :isHideDownload="pageType === 'reference' ? true : false"
+        @copyDataCallBack="$emit('copyDataCallBack', $event)"
+        @open-data="$emit('open-data', $event)"
+        @update-data="$emit('update-data', $event)"
+        @download-data="$emit('download-data', $event)"
+        @un-active="$emit('un-active')"
+      />
+    </div>
+    <!-- /.탭 내용03 -->
   </div>
 </template>
 
@@ -64,6 +86,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    openData: {
+      type: Array,
+      default: () => [],
+    },
     identity: {
       type: String,
       default: '',
@@ -81,6 +107,9 @@ export default {
   height: 349px;
 }
 #franchise > .vtl {
+  height: 349px;
+}
+#open > .vtl {
   height: 349px;
 }
 #mydata > .vtl {

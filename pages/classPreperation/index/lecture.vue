@@ -60,11 +60,14 @@
       :scheduleItem="scheduleItem"
       :scheduleWeekList="lectureInfo.scheduleWeekList"
       :timeList="timeList"
+      :toWeekArray="getToWeek(scheduleItem.startDay)"
+      :toWeekIdx="getWeekNumber(getToWeek(scheduleItem.startDay)[0])"
       @select-day="onSelectWeekDay"
       @change-time="onChangeSchedule"
       @open-calendar="openModalCalendar"
       @add-schedule="addSchedule"
       @delete-schedule="deleteSchedule"
+      @change-week="paginationWeek"
     />
 
     <!-- 커리큘럼 배정 -->
@@ -76,6 +79,13 @@
     <!-- 달력 모달 호출 -->
     <CustomDataPicker
       :open="isCalendar"
+      :scheduleItem="scheduleItem"
+      :start="getToWeek(scheduleItem.startDay)[0]"
+      :end="
+        getToWeek(scheduleItem.startDay)[
+          getToWeek(scheduleItem.startDay).length - 1
+        ]
+      "
       @select-date="onChangeDate"
       @close="closeModalCalendar"
     />
@@ -106,7 +116,7 @@ import ModalDesc from '~/components/common/modal/ModalDesc.vue'
 import DeleteModal from '~/components/common/modal/DeleteModal.vue'
 import LectureList from '~/components/lecture/LectureList.vue'
 import NoListSection from '~/components/lecture/NoListSection.vue'
-import CustomDataPicker from '~/components/common/modal/RangeDataPicker.vue'
+import CustomDataPicker from '~/components/lecture/custom/CustomDataPicker.vue'
 import CreateLectureModal from '~/components/common/modal/lecture/CreateLectureModal.vue'
 import SelectScheduleModal from '~/components/common/modal/lecture/SelectScheduleModal.vue'
 import SelectCurriculumModal from '~/components/common/modal/lecture/SelectCurriculumModal.vue'
@@ -161,12 +171,19 @@ export default {
       })
       return timeArr
     },
+
     getToday() {
       const year = new Date().getFullYear()
       const month = new Date().getMonth() + 1
       const day = new Date().getDate()
       return { year, month, day }
     },
+
+    // 강좌 등록시 주차 보여주기
+    getScheduleWeek() {
+      return `${this.getToday.year}년 ${this.getToday.month}월, ${this.getWeekNumber}주차`
+    },
+
     lastIdx() {
       return this.currentPage * this.postPerPage
     },
@@ -183,6 +200,14 @@ export default {
       const length = Math.ceil(this.lectureList.length / this.postPerPage)
       return Array.from({ length }, (i, j) => j + 1)
     },
+  },
+  mounted() {
+    const yearMonth = `${this.getToday.year}-${this.getToday.month}`
+    this.scheduleItem = {
+      ...this.scheduleItem,
+      startDay: `${yearMonth}-${this.getToday.day}`,
+      endDay: `${yearMonth}-${this.getToday.day + 7}`,
+    }
   },
   methods: {
     // 취소시 등록 하려고했던 데이터 지우기
@@ -202,6 +227,7 @@ export default {
 
     // 달력 모달
     openModalCalendar() {
+      console.log(this.scheduleItem)
       this.isCalendar = true
     },
 
@@ -419,6 +445,110 @@ export default {
     },
 
     // 스케줄
+    // 월 단위 주차
+    getWeekNumber(dateItem) {
+      // 해당 날짜 (일)
+      const newDate = new Date(dateItem)
+      const currentDate = newDate.getDate()
+
+      // 이번 달 1일로 지정
+      const startOfMonth = new Date(newDate.setDate(1))
+      // // 이번 달 1일이 무슨 요일인지 확인
+      const weekDay = startOfMonth.getDay() // 0: Sun ~ 6: Sat
+      // // ((요일 - 1) + 해당 날짜) / 7일로 나누기 = N 주차
+      return parseInt((weekDay - 1 + currentDate) / 7) + 1
+    },
+
+    // 달력 날자
+    getToWeek(dateItem) {
+      const date = new Date(dateItem)
+      const calendarYear = date.getFullYear()
+      // 달력 월
+      const calendarMonth = date.getMonth() + 1
+      // // 달력 일
+      const calendarToday = date.getDate()
+
+      const monthLastDate = new Date(calendarYear, calendarMonth, 0)
+      // // 달력 월의 마지막 일
+      const calendarMonthLastDate = monthLastDate.getDate()
+
+      // // 달력 이전 월의 마지막 일
+      const prevMonthLastDate = new Date(calendarYear, calendarMonth - 1, 0)
+
+      // // 달력 다음 월의 시작 일
+      const nextMonthStartDate = new Date(calendarYear, calendarMonth, 1)
+
+      // // 달력 현재 요일
+      const calendarMonthTodayDay = date.getDay()
+
+      // 주간 배열
+      const arWeek = ['', '', '', '', '', '', '']
+
+      let weekYear = calendarYear
+      let weekMonth = calendarMonth
+      let weekDay = calendarToday
+
+      for (let index = calendarMonthTodayDay; index < 7; index++) {
+        arWeek[index] = weekYear + '-' + weekMonth + '-' + weekDay
+        weekDay++
+        // 날짜가 현재 월의 마지막 일보다 크면 다음 월의 1일로 변경
+        if (weekDay > calendarMonthLastDate) {
+          weekYear = nextMonthStartDate.getFullYear()
+          weekMonth = nextMonthStartDate.getMonth() + 1
+          weekDay = 1
+        }
+      }
+
+      weekYear = calendarYear
+      weekMonth = calendarMonth
+      weekDay = calendarToday
+      // 현재 요일부터 꺼꾸로 주간 배열에 날짜를 추가
+      for (let index = calendarMonthTodayDay - 1; index >= 0; index--) {
+        weekDay--
+        // 날짜가 현재 월의 1일이면 작으면 이전 월의 마지막 일로 변경
+        if (weekDay === 0) {
+          weekYear = prevMonthLastDate.getFullYear()
+          weekMonth = prevMonthLastDate.getMonth() + 1
+          weekDay = prevMonthLastDate.getDate()
+        }
+        arWeek[index] = weekYear + '-' + weekMonth + '-' + weekDay
+      }
+
+      return arWeek
+    },
+
+    changeDayForm(date) {
+      const year = new Date(date).getFullYear()
+      const month = new Date(date).getMonth() + 1
+      const day = new Date(date).getDate()
+      return `${year}-${month}-${day}`
+    },
+
+    // changeEndForm(date) {
+    //   const year = new Date(date).getFullYear()
+    //   const month = new Date(date).getMonth() + 1
+    //   const day = new Date(date).getDate()
+    //   return `${year}-${month}-${day}`
+    // },
+
+    // 주차 변경 Event
+    paginationWeek(direction) {
+      const target = this.scheduleItem
+      const result = new Date(target.startDay)
+      const resultEnd = new Date(target.endDay)
+      if (direction === 'plus') {
+        const newItem = result.setDate(result.getDate() + 7)
+        const newEndItem = resultEnd.setDate(resultEnd.getDate() + 7)
+        target.startDay = this.changeDayForm(newItem)
+        target.endDay = this.changeDayForm(newEndItem)
+      } else {
+        const newItem = result.setDate(result.getDate() - 7)
+        const newEndItem = resultEnd.setDate(resultEnd.getDate() - 7)
+        target.startDay = this.changeDayForm(newItem)
+        target.endDay = this.changeDayForm(newEndItem)
+      }
+    },
+
     // 스케줄 요일 토글 이벤트
     onSelectWeekDay({ target: { classList, innerHTML } }) {
       let newArr = []
@@ -438,6 +568,7 @@ export default {
 
     // 달력 날자 설정
     onChangeDate({ start, end }) {
+      console.log('start', start, 'end', end)
       const setDate = (date) =>
         `${date?.getFullYear()}.${date?.getMonth() + 1}.${date?.getDate()}`
       this.scheduleItem.startDay = setDate(start)

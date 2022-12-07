@@ -1,41 +1,7 @@
 <template>
   <table class="table">
     <TableColGroup />
-    <thead>
-      <tr>
-        <th
-          class="weeks sun"
-          style="
-            border: none;
-            background: #f8f8fc;
-            border-top: 1px solid #dee2e6;
-          "
-        />
-        <th class="weeks sun">
-          <div class="tit_week" style="border-left: 1px solid #dfe0e4">
-            일<br />08
-          </div>
-        </th>
-        <th class="weeks">
-          <div class="tit_week">월<br />08</div>
-        </th>
-        <th class="weeks">
-          <div class="tit_week">화<br />08</div>
-        </th>
-        <th class="weeks">
-          <div class="tit_week">수<br />08</div>
-        </th>
-        <th class="weeks">
-          <div class="tit_week">목<br />08</div>
-        </th>
-        <th class="weeks">
-          <div class="tit_week">금<br />08</div>
-        </th>
-        <th class="weeks sat">
-          <div class="tit_week">토<br />08</div>
-        </th>
-      </tr>
-    </thead>
+    <WeekName :toWeekArray="toWeekArray" />
     <tbody>
       <tr v-for="(item, idx) in hourData" :key="idx" class="line_box">
         <td class="weeks" style="border: none; background: #f8f8fc">
@@ -101,14 +67,16 @@
 
 <script>
 import TableColGroup from './TableColGroup.vue'
+import WeekName from './WeekName.vue'
 import CustomTableCell from '~/components/lecture/custom/CustomTableCell.vue'
 
 export default {
   name: 'ScheduleTable',
-  components: { TableColGroup, CustomTableCell },
+  components: { TableColGroup, CustomTableCell, WeekName },
   props: {
     hourData: { type: Array, default: () => [] },
     scheduleWeekList: { type: Object, default: () => {} },
+    toWeekArray: { type: Array, default: () => [] },
   },
   methods: {
     // 테이블 아이템 시간으로 설정

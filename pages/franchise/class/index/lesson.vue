@@ -349,13 +349,14 @@ export default {
 
     // [레슨] 열람 데이터 초기 설정
     setViewLesson(item) {
-      const newItem = jsonItem(item)
-      this.setViewLessonFirstReference(newItem)
-      return (this.lessonViewData = newItem)
+      this.setViewLessonFirstReference(jsonItem(item))
+      return (this.lessonViewData = jsonItem(item))
     },
 
     setViewLessonFirstReference(item) {
-      this.selectReferenceItem = item?.referenceList[0]
+      const result = item.referenceList
+      if (result) return (this.selectReferenceItem = result[0])
+      else return (this.selectReferenceItem = {})
     },
 
     // 트리에서 레슨 열때

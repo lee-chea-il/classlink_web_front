@@ -12,10 +12,10 @@
       </button>
     </div>
     <div v-for="(item, idx) in noteTestList" :key="idx">
-      <div v-if="idx === currentIdx" class="write_area">
+      <div v-if="idx === currentIdx" ref="problemNoteTest" class="write_area">
         <div class="edit_area edit_area_padding_12">
           <div v-html="item.problem"></div>
-          <button class="btn icons_fullscreen"></button>
+          <button class="btn icons_fullscreen" @click="getFullscreen"></button>
         </div>
       </div>
     </div>
@@ -48,8 +48,20 @@ export default {
     setPagination(e, idx) {
       this.$emit('pagination', e, idx)
     },
+    getFullscreen() {
+      this.$refs.problemNoteTest[0].requestFullscreen()
+    },
   },
 }
 </script>
 
-<style></style>
+<style scoped>
+.modal_ac_manage_dtr
+  .modal-body
+  .reading_section.modal_dataquiz
+  .write_area
+  .edit_area {
+  height: 100%;
+  min-height: 275px;
+}
+</style>

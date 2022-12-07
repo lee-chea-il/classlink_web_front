@@ -22,10 +22,12 @@
         <TreeSection
           ref="mainEducation"
           :pageType="pageType"
+          :identity="identity"
           :institutionData="receiveInstitutionData"
           :franchiseData="receiveFranchiseData"
-          :identity="identity"
+          :openData="receiveOpenData"
           :myDataList="receiveMyData"
+          @update-my-tree="updateMyTree"
           @open-data="onClickView"
           @copyDataCallBack="copyDataCallBack"
           @download-data="downloadSelectData"
@@ -312,6 +314,12 @@ export default {
     return initialState()
   },
   methods: {
+    updateMyTree(newTree) {
+      const item = jsonItem(newTree)
+      this.receiveMyData = [item.children]
+      console.log(this.receiveMyData)
+    },
+
     // 등록 자료 초기화
     initReference() {
       const init = jsonItem(this.initReferenceData)

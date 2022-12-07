@@ -30,6 +30,8 @@ export default function initialState() {
       image: '',
       startAlarmTime: '5분',
       endAlarmTime: '5분',
+      startDay: '',
+      endDay: '',
       scheduleWeekList: {
         sun: [],
         mon: [],
@@ -66,8 +68,8 @@ export default function initialState() {
     scheduleItem: {
       startTime: '0000',
       endTime: '',
-      startDay: '2022-11-01',
-      endDay: '2022-11-02',
+      startDay: new Date(),
+      endDay: '',
       selectWeekDay: [],
       isRepeat: false,
       bgColor: '#8fa7fb',
@@ -94,6 +96,8 @@ export default function initialState() {
         endAlarmTime: '5분',
         createdAt: '2020-07-10',
         scheduleWeekList: {
+          startDay: '',
+          endDay: '',
           sun: [],
           mon: [
             {

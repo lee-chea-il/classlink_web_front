@@ -256,3 +256,45 @@
     margin-top: 100px;
   }
 }
+
+
+/* (완)운영관리-프랜관리자.html */
+.fran_manage {
+  .right_area {
+    display: flex;
+    margin-right: 0;
+  }
+
+  .btn_franmanage {
+    width: 220px;
+    margin-left: 5px;
+  }
+
+  .input-search {
+    width: 40%;
+  }
+}
+
+/* (완)운영관리-프랜관리자.html */
+/* 프랜관리자 생성 및 수정-팝업 L */
+#modalFranManage {
+  .class_section {
+    width: 80%;
+    margin: 0 auto;
+
+    .tit {
+      text-align: left;
+    }
+
+    .tit_section {
+      width: 100%;
+      display: flex;
+      margin-bottom: 10px;
+    }
+
+    .tit_left,
+    .tit_right {
+      width: 50%;
+    }
+  }
+}

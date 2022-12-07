@@ -3,12 +3,12 @@
     <!-- 왼쪽 영역 -->
     <div class="divide_area left">
       <!-- 탭 컨텐츠 -->
-      <EducationTabMenu />
-
+      <EducationTabMenu :isOpenData="openData.length > 0" />
       <LeftTreeTab
         ref="education"
         :institutionData="institutionData"
         :franchiseData="franchiseData"
+        :openData="openData"
         :identity="identity"
         :pageType="pageType"
         @open-data="$emit('open-data', $event)"
@@ -33,6 +33,7 @@
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @download-data="$emit('download-data', $event)"
         @update-data="$emit('update-data', $event)"
+        @update-my-tree="$emit('update-my-tree', $event)"
         @un-active="unActive"
       />
       <!-- /.탭 컨텐츠 -->
@@ -55,6 +56,14 @@ export default {
     RightTreeTab,
   },
   props: {
+    identity: {
+      type: String,
+      default: 'teacher',
+    },
+    pageType: {
+      type: String,
+      default: '',
+    },
     institutionData: {
       type: Array,
       default: () => [],
@@ -63,13 +72,9 @@ export default {
       type: Array,
       default: () => [],
     },
-    identity: {
-      type: String,
-      default: 'teacher',
-    },
-    pageType: {
-      type: String,
-      default: '',
+    openData: {
+      type: Array,
+      default: () => [],
     },
     myDataList: {
       type: Array,
@@ -81,6 +86,7 @@ export default {
       console.log('feafefaw')
       this.$refs.education.$refs.institution.unActiveAll()
       this.$refs.education.$refs.franchise.unActiveAll()
+      this.$refs.education.$refs.open.unActiveAll()
       this.$refs.myData.$refs.curriculum.unActiveAll()
     },
   },

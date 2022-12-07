@@ -30,12 +30,33 @@
         프랜차이즈
       </button>
     </li>
+    <li v-if="isOpenData" class="nav-item" role="presentation">
+      <button
+        id="class-tab"
+        class="nav-link"
+        data-toggle="tab"
+        data-target="#open"
+        type="button"
+        role="tab"
+        aria-controls="profile"
+        aria-selected="false"
+      >
+        <span class="icon_open"></span>
+        공개 자료실
+      </button>
+    </li>
   </ul>
 </template>
 
 <script>
 export default {
   name: 'EducationTabMenu',
+  props: {
+    isOpenData: {
+      type: Boolean,
+      default: false,
+    },
+  },
 }
 </script>
 

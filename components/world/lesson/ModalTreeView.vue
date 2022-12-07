@@ -42,6 +42,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    dragDisabled: {
+      type: Boolean,
+      default: true,
+    },
     identity: {
       type: String,
       default: '',
@@ -76,6 +80,7 @@ export default {
         nObj.pid = this.pid
         nObj.isChecked = false
         nObj.readOnly = isReadOnly
+        nObj.dragDisabled = this.dragDisabled
 
         if (data[i].children !== undefined) {
           nObj.isLeaf = false

@@ -19,6 +19,7 @@
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @download-data="$emit('download-data', $event)"
         @un-active="$emit('un-active')"
+        @update-my-tree="$emit('update-my-tree', $event)"
       />
     </div>
     <!-- /.탭 내용01 -->
