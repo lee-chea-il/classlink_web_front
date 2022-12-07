@@ -212,7 +212,11 @@ export default {
     },
     saveOpenFileInfo() {
       this.openFileInfo.fileName = $('#inputOpenPath').val()
-      this.$emit('open-file-info', this.openFileInfo)
+      const newObj = {}
+      for(const item in this.openFileInfo){
+        newObj[item] = this.openFileInfo[item]
+      }
+      this.$emit('open-file-info', newObj)
     },
   },
 }

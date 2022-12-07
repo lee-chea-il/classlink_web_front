@@ -1835,6 +1835,7 @@ export default {
       this.$refs.imgListViewSwiper.setData(this.curriculumData.cwInfo.data.interactionObjects)
     },
     setData(curriculumData){
+      $('#modalCuriRegi .modal-body').scrollTop(0)
       if(curriculumData){
         this.$refs.listView.unLinkAllItem()
         this.curriculumData=curriculumData
@@ -1844,6 +1845,7 @@ export default {
         this.saveFileFullPath=this.curriculumData.savePathInfo.path+' > '+this.curriculumData.savePathInfo.fileName+'.link'
         this.curriculumData.lessonInfo.pathTxt=this.curriculumData.lessonInfo.path+' > '+this.curriculumData.lessonInfo.lesson.name
         this.$refs.listView.setDataList(this.curriculumData.lessonInfo.lesson)
+        this.$refs.listView.checkLinkDataCnt()
       }else{
         this.curriculumData = {
           subTitle: '',
@@ -1869,6 +1871,9 @@ export default {
         }
         this.saveFileFullPath=''
         this.currentClassName='교실선택'
+
+        this.$refs.imgListView.setData([])
+        this.$refs.imgListViewSwiper.setData([])
       }
     },
     linkData(listIdx,imgIdx){
@@ -1916,7 +1921,7 @@ export default {
     },
     checkUpload(){
       let isAllClear = true
-      /* if(this.curriculumData.subTitle===''){
+      if(this.curriculumData.subTitle===''){
         isAllClear=false
         this.$emit('change-desc','제목을 입력해 주세요.')
       }
@@ -1935,7 +1940,7 @@ export default {
       if(isAllClear&&this.currentClassName==='교실선택'){
         isAllClear=false
         this.$emit('change-desc','CW 교실 정보가 없습니다.')
-      } */
+      }
       isAllClear = true
       if(isAllClear){
         const newData={}
@@ -1953,15 +1958,15 @@ export default {
             for(const item1 in this.curriculumData[item]){
               newData.lessonInfo[item1] = this.curriculumData.lessonInfo[item1]
             }
+            newData.lessonInfo.lesson.referenceList=this.$refs.listView.getData()
           }else{
-            newData[item]=JSON.parse(JSON.stringify(this.curriculumData[item]))
+            newData[item]=this.curriculumData[item]
           }
         }
         newData.isLeaf=true
         newData.type=newData.lessonInfo.type
         newData.name=newData.savePathInfo.fileName+'.link'
         newData.active=true
-        /* console.log(newData) */
         this.$emit('add-curiiculum-data',newData)
         $("#modalCuriRegi").modal("hide")
       }

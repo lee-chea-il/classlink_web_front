@@ -45,9 +45,11 @@ export default {
       for (let i = 0; i < len; i++) {
         const newObj = {}
         for (const item in list[i]) {
-          if (item !== 'children' && item !== 'parent') {
-            newObj[item] = JSON.stringify(list[i][item])
-          }
+          /* if (item !== 'children' && item !== 'parent') {
+            /* newObj[item] = JSON.stringify(list[i][item]) * /
+            newObj[item] = list[i][item]
+          } */
+          newObj[item] = list[i][item]
         }
         result.push(newObj)
       }
@@ -57,15 +59,20 @@ export default {
       this.pid=this.pidNum
       this.receiveDataList=listData
       const copyData = (data) => {
-        const newStr = JSON.stringify(data)
-        const nObj = JSON.parse(newStr)
+        /* const newStr = JSON.stringify(data)
+        const nObj = JSON.parse(newStr) */
+        const nObj = data
         nObj.isLeaf=true
         nObj.readOnly=false
         nObj.isChecked=false
-        if(!nObj.isLink){
+        if(nObj.isLink===undefined){
           nObj.isLink=false
           nObj.linkIdx=-1
         }
+        /* if(!nObj.isLink){
+          nObj.isLink=false
+          nObj.linkIdx=-1
+        } */
         nObj.id="list_"+this.pid
         nObj.addTreeNodeDisabled=true
         nObj.addLeafNodeDisabled=true

@@ -84,9 +84,7 @@ export default {
       for (let i = 0; i < len; i++) {
         const newObj = {}
         for (const item in list[i]) {
-          if (item !== 'children' && item !== 'parent') {
-            newObj[item] = JSON.stringify(list[i][item])
-          }
+          newObj[item]=list[i][item]
         }
         result.push(newObj)
       }
@@ -97,12 +95,13 @@ export default {
         const result = []
         const len = data.length
         for (let i = 0; i < len; i++) {
-          const newStr = JSON.stringify(data[i])
-          const nObj = JSON.parse(newStr)
+          const nObj = data[i]
           nObj.id='imgListView_'+this.pid
           nObj.pid=this.pid
-          nObj.isLink=false
-          nObj.linkListIdx=-1
+          if(nObj.isLink===undefined){
+            nObj.isLink=false
+            nObj.linkListIdx=-1
+          }
           nObj.height=0
           result[i]=nObj
           this.pid++
@@ -122,7 +121,11 @@ export default {
           let target
           for (let i = 0; i < this.pid; i++) {
             target=$("#imgListView_"+i).find(".vtl-node-main")
-            target.html(`<img src="${this.setRequire(cwData.interactionObjects[i].nomal_url)}" class="inter_action_object" style="left:${cwData.interactionObjects[i].left}px;top:${cwData.interactionObjects[i].top}px;" />`)
+            if(cwData.interactionObjects[i].isLink){
+              target.html(`<img src="${this.setRequire(cwData.interactionObjects[i].nomal_url)}" class="inter_action_object" style="opacity:1;left:${cwData.interactionObjects[i].left}px;top:${cwData.interactionObjects[i].top}px;" />`)
+            }else{
+              target.html(`<img src="${this.setRequire(cwData.interactionObjects[i].nomal_url)}" class="inter_action_object" style="left:${cwData.interactionObjects[i].left}px;top:${cwData.interactionObjects[i].top}px;" />`)
+            }
           }
           setTimeout(() => {
             let target, tHei
