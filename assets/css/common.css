@@ -15,7 +15,7 @@
 8.  ac_class2.scss      : 학원관리-2.수업-(2)학습함:질문함,리포트
 9.  ac_building.scss    : 학원관리-건물관리:자료실,패키지,건물SET,빌딩
 10. ac_building.scss    : 학원관리-건물관리:자료실,패키지,건물SET,빌딩
-11. fr_manage.scss      : 프랜차이즈관리-관리:가맹관리,결제관리,공지사항
+11. fr_manage.scss      : 프랜차이즈관리-관리:가맹관리,결제관리,운영관리,공지사항
 12. fr_class.scss       : 프랜차이즈관리-수업:자료실,레슨,커리큘럼
 13. fr_building.scss    : 프랜차이즈관리-건물:자료실,패키지,건물SET
 14. cl_manage.scss      : CL관리자-관리:FC이용현황, 교육기관이용현황, 결제 관리, 공지사항
@@ -1357,6 +1357,7 @@ ol {
   color: #7391FA;
 }
 .btn_login.active::before, .btn_login:hover::before, .btn_login:focus::before {
+  /* background: url("../images/icons/.svg") no-repeat center; */
   background-size: contain;
 }
 
@@ -14671,6 +14672,48 @@ a {
   margin-bottom: 10px;
 }
 
+/* (완)공지사항-개인.html */
+.ac_manage_notice_personal .chat_list_search {
+  position: relative;
+  padding: 27px 0 11px;
+  background: #7391FA;
+  border-radius: 5px 5px 0px 0px;
+}
+.ac_manage_notice_personal .chat_list_search .alarm_header {
+  display: flex;
+}
+.ac_manage_notice_personal .chat_list_search .alarm_header > li {
+  display: flex;
+  flex: 1 0;
+  text-align: center;
+}
+.ac_manage_notice_personal .chat_list_search .alarm_header > li.active .btn_alarm_menu {
+  opacity: 1;
+}
+.ac_manage_notice_personal .chat_list_search .text_alarm {
+  display: block;
+  margin-top: 8px;
+  font-weight: 600;
+  line-height: 17px;
+}
+.ac_manage_notice_personal .chat_list_search .btn_alarm_menu {
+  display: block;
+  width: 100%;
+  opacity: 0.5;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+.ac_manage_notice_personal .chat_list_search button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.ac_manage_notice_personal .chat_list_search .btn_alarm_menu > span {
+  display: block;
+  line-height: 0;
+}
+
 /*---------------------------------------*/
 /*--------  7. ac_class.scss    ---------*/
 /*---------------------------------------*/
@@ -16203,6 +16246,38 @@ a {
   display: flex;
   justify-content: center;
   margin-top: 100px;
+}
+
+/* (완)운영관리-프랜관리자.html */
+.fran_manage .right_area {
+  display: flex;
+  margin-right: 0;
+}
+.fran_manage .btn_franmanage {
+  width: 220px;
+  margin-left: 5px;
+}
+.fran_manage .input-search {
+  width: 40%;
+}
+
+/* (완)운영관리-프랜관리자.html */
+/* 프랜관리자 생성 및 수정-팝업 L */
+#modalFranManage .class_section {
+  width: 80%;
+  margin: 0 auto;
+}
+#modalFranManage .class_section .tit {
+  text-align: left;
+}
+#modalFranManage .class_section .tit_section {
+  width: 100%;
+  display: flex;
+  margin-bottom: 10px;
+}
+#modalFranManage .class_section .tit_left,
+#modalFranManage .class_section .tit_right {
+  width: 50%;
 }
 
 /*---------------------------------------*/

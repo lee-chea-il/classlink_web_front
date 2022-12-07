@@ -38,15 +38,32 @@ export default {
       type: Boolean,
       default: false,
     },
+    scheduleItem: {
+      type: Object,
+      default: () => {},
+    },
+    start: {
+      type: String,
+      default: '',
+    },
+    end: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
-      range: '2022-11-01',
-      end: '2022-11-02',
+      range: {
+        // start: new Date(this.scheduleItem.startDay),
+        // end: new Date(
+        //   new Date(this.scheduleItem.startDay).setDate(
+        //     new Date(this.scheduleItem.startDay).getDate() + 7
+        //   )
+        // ),
+        start: new Date(this.start),
+        end: new Date(this.end),
+      },
     }
-  },
-  created() {
-    console.log(this.range)
   },
 }
 </script>

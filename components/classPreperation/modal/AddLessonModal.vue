@@ -214,6 +214,7 @@
                   :modalTitle="modalTitle"
                   :lessonData="lessonData"
                   :referenceList="receiveMyData"
+                  :treeReference="referenceList"
                   :pushKeyword="pushKeyword"
                   @change-lesson="$emit('change-lesson', $event)"
                   @add-reference="$emit('add-reference', $event)"
@@ -320,11 +321,17 @@ export default {
 #myTabContent {
   padding: 30px 15px;
   border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-top: 0px;
   border-radius: 5px;
 }
 
 #myTabContent {
   height: 550px !important;
+}
+
+#modalCuriRegi .icon_mydata,
+#modalLessonRegi .icon_mydata {
+  margin: 0;
 }
 </style>
 

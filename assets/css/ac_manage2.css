@@ -3912,4 +3912,46 @@ ol {
   font-size: 17px;
   font-weight: 700;
   margin-bottom: 10px;
+}
+
+/* (완)공지사항-개인.html */
+.ac_manage_notice_personal .chat_list_search {
+  position: relative;
+  padding: 27px 0 11px;
+  background: #7391FA;
+  border-radius: 5px 5px 0px 0px;
+}
+.ac_manage_notice_personal .chat_list_search .alarm_header {
+  display: flex;
+}
+.ac_manage_notice_personal .chat_list_search .alarm_header > li {
+  display: flex;
+  flex: 1 0;
+  text-align: center;
+}
+.ac_manage_notice_personal .chat_list_search .alarm_header > li.active .btn_alarm_menu {
+  opacity: 1;
+}
+.ac_manage_notice_personal .chat_list_search .text_alarm {
+  display: block;
+  margin-top: 8px;
+  font-weight: 600;
+  line-height: 17px;
+}
+.ac_manage_notice_personal .chat_list_search .btn_alarm_menu {
+  display: block;
+  width: 100%;
+  opacity: 0.5;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+.ac_manage_notice_personal .chat_list_search button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.ac_manage_notice_personal .chat_list_search .btn_alarm_menu > span {
+  display: block;
+  line-height: 0;
 }/*# sourceMappingURL=ac_manage2.css.map */

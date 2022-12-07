@@ -20,9 +20,23 @@
                 <div class="left_area">
                   <div class="title">수업시간 선택</div>
                   <div class="move_calendar">
-                    <i class="icons_arrow_square_l"></i>
-                    <span class="date_info">2022년 8월 1주</span>
-                    <i class="icons_arrow_square_r"></i>
+                    <i
+                      class="icons_arrow_square_l"
+                      @click="$emit('change-week', 'min')"
+                    ></i>
+                    <span class="date_info">
+                      <!-- 2022년 8월 1주 -->
+                      {{
+                        toWeekArray[0].replace(
+                          /(\d+)(\-)(\d+)(\-)(\d+)/,
+                          '$1년 $3월'
+                        )
+                      }}&ensp;{{ toWeekIdx }}주차
+                    </span>
+                    <i
+                      class="icons_arrow_square_r"
+                      @click="$emit('change-week', 'plus')"
+                    ></i>
                   </div>
                 </div>
                 <div class="right_area">
@@ -95,6 +109,7 @@
                     :hourData="hourData"
                     :scheduleItem="scheduleItem"
                     :scheduleWeekList="scheduleWeekList"
+                    :toWeekArray="toWeekArray"
                     @set-time="$emit('set-time', $event)"
                     @delete-schedule="setDeleteSchedule"
                   />
@@ -132,10 +147,9 @@ export default {
     Header,
   },
   props: {
-    modalTitle: {
-      type: String,
-      default: '',
-    },
+    modalTitle: { type: String, default: '' },
+    toWeekIdx: { type: Number, default: 0 },
+    toWeekArray: { type: Array, default: () => [] },
     hourData: { type: Array, default: () => [] },
     scheduleItem: { type: Object, default: () => {} },
     timeList: { type: Array, default: () => [] },

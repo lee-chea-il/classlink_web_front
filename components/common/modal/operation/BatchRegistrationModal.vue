@@ -33,9 +33,9 @@
               (내용 형식을 수정하면 등록이 불가능합니다.)
             </div>
 
+            <!-- :href="getImgUrl('~/assets/images/mypage/test.xlsx')" -->
             <a
               class="file_down"
-              href="@/assets/images/mypage/test.xlsx"
               download=""
               ><span class="icon_download"></span>파일 다운로드</a
             >
@@ -104,6 +104,12 @@ export default {
       default: null,
     },
   },
+  // methods: {
+  //   getImgUrl(pic) {
+  //     const context = require.context('~/assets/', false, /^(?!.*\.(?:md)$).*/)
+  //     return context('./' + pic)
+  //   },
+  // },
 }
 </script>
 <style scoped>

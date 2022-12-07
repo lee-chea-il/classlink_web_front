@@ -1,9 +1,17 @@
 <template>
   <div class="right_area">
     <div class="write_area">
-      <div v-for="(item, idx) in answerList" :key="idx" class="edit_area02">
+      <div
+        v-for="(item, idx) in answerList"
+        :key="idx"
+        :ref="`example_${idx}`"
+        class="edit_area02"
+      >
         <div v-html="item.example" />
-        <button class="btn icons_fullscreen"></button>
+        <button
+          class="btn icons_fullscreen"
+          @click="getFullscreen(idx)"
+        ></button>
       </div>
     </div>
   </div>
@@ -16,6 +24,11 @@ export default {
     answerList: {
       type: Array,
       default: () => [],
+    },
+  },
+  methods: {
+    getFullscreen(idx) {
+      this.$refs[`example_${idx}`][0].requestFullscreen()
     },
   },
 }

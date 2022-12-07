@@ -77,13 +77,13 @@ export default {
     },
   },
   methods: {
-    unActive(){
-      console.log("feafefaw")
+    unActive() {
+      console.log('feafefaw')
       this.$refs.education.$refs.institution.unActiveAll()
       this.$refs.education.$refs.franchise.unActiveAll()
       this.$refs.myData.$refs.curriculum.unActiveAll()
-    }
-  }
+    },
+  },
 }
 </script>
 

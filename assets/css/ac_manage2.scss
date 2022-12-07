@@ -2330,3 +2330,56 @@
 	}
 
 }
+
+/* (완)공지사항-개인.html */
+.ac_manage_notice_personal {
+	.chat_list_search {
+		position: relative;
+		padding: 27px 0 11px;
+		background: #7391FA;
+		border-radius: 5px 5px 0px 0px;
+
+		.alarm_header {
+			display: flex;
+		}
+
+		.alarm_header>li {
+			display: flex;
+			flex: 1 0;
+			text-align: center;
+		}
+
+		.alarm_header>li.active .btn_alarm_menu {
+			opacity: 1;
+		}
+
+		.text_alarm {
+			display: block;
+			margin-top: 8px;
+			font-weight: 600;
+			line-height: 17px;
+		}
+
+		.btn_alarm_menu {
+			display: block;
+			width: 100%;
+			opacity: .5;
+			font-size: 15px;
+			font-weight: 600;
+			color: #fff;
+		}
+
+		button {
+			border: none;
+			background: none;
+			cursor: pointer;
+		}
+
+		.btn_alarm_menu>span {
+			display: block;
+			line-height: 0;
+		}
+	}
+
+
+}

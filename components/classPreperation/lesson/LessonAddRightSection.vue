@@ -49,7 +49,7 @@
         <div class="list_box">
           <div class="sum">
             등록 개수:
-            {{ referenceList?.length }}개
+            {{ treeReference?.length }}개
           </div>
           <div class="list_area">
             <LessonAddTreeView
@@ -147,6 +147,7 @@ export default {
     modalTitle: { type: String, default: '' },
     lessonData: { type: Object, default: () => {} },
     referenceList: { type: Array, default: () => [] },
+    treeReference: { type: Array, default: () => [] },
   },
 }
 </script>

@@ -42,7 +42,11 @@ export default {
     },
     isSchedule() {
       if (this.weekData) {
-        const { startTime } = this.weekData
+        const {
+          startTime,
+          // startDay, endDay
+        } = this.weekData
+        // console.log(startDay, endDay)
         const start = Number(startTime.replace(':', ''))
         const isTime = this.currentTime === start
         if (isTime) return 1

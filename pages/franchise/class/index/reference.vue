@@ -22,9 +22,10 @@
         <TreeSection
           ref="mainEducation"
           :pageType="pageType"
+          :identity="identity"
           :institutionData="receiveInstitutionData"
           :franchiseData="receiveFranchiseData"
-          :identity="identity"
+          :openData="receiveOpenData"
           :myDataList="receiveMyData"
           @open-data="onClickView"
           @copyDataCallBack="copyDataCallBack"
@@ -257,9 +258,9 @@ import PageHeader from '~/components/common/PageHeader.vue'
 import ModalDesc from '~/components/common/modal/ModalDesc.vue'
 import DeleteModal from '~/components/common/modal/DeleteModal.vue'
 import SavePathModal from '~/components/common/modal/SavePathModal.vue'
-import TreeSection from '~/components/common/TreeSection.vue'
 import CustomSnackbar from '~/components/common/CustomSnackbar.vue'
 
+import TreeSection from '~/components/franchise/common/TreeSection.vue'
 import AddQuizModal from '~/components/franchise/modal/AddQuizModal.vue'
 import AddNoteTestModal from '~/components/franchise/modal/AddNoteTestModal.vue'
 import AddReferenceModal from '~/components/franchise/modal/AddReferenceModal.vue'
