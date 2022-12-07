@@ -113,26 +113,26 @@
                   <div class="form-group">
                     <label for="">제목</label>
                     <div class="col">
-                      {{curriculumData.lessonInfo.title}}
+                      {{curriculumData.lessonInfo.lesson.title}}
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="">설명</label>
                     <div class="col">
-                      {{curriculumData.lessonInfo.desc}}
+                      {{curriculumData.lessonInfo.lesson.desc}}
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="">교육 목표</label>
                     <div class="col">
-                      {{curriculumData.lessonInfo.role}}
+                      {{curriculumData.lessonInfo.lesson.role}}
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="" style="place-self: flex-start">레슨 자료</label>
                     <div class="col">
                       <div class="list_box">
-                        <div v-if="curriculumData.lessonInfo.title===''" class="nothing_txt">
+                        <div v-if="curriculumData.lessonInfo.lesson.title===''" class="nothing_txt">
                           현재 불러온 레슨이 없습니다.
                         </div>
                         <div v-else class="section">
@@ -251,10 +251,12 @@ export default {
         isOpenEducation: true,
         isContinuedRegist: true,
         lessonInfo: {
-          title: "",
-          desc: "",
-          role: "",
-          referenceList: [],
+          lesson:{
+            title: "",
+            desc: "",
+            role: "",
+            referenceList: [],
+          },
           path: '',
           pathTxt: '',
         },
@@ -1840,8 +1842,8 @@ export default {
         this.$refs.imgListView.setData(this.curriculumData.cwInfo.data)
         this.$refs.imgListViewSwiper.setData(this.curriculumData.cwInfo.data.interactionObjects)
         this.saveFileFullPath=this.curriculumData.savePathInfo.path+' > '+this.curriculumData.savePathInfo.fileName+'.link'
-        this.curriculumData.lessonInfo.pathTxt=this.curriculumData.lessonInfo.savePath+' > '+this.curriculumData.lessonInfo.name
-        this.$refs.listView.setDataList(this.curriculumData.lessonInfo)
+        this.curriculumData.lessonInfo.pathTxt=this.curriculumData.lessonInfo.path+' > '+this.curriculumData.lessonInfo.lesson.name
+        this.$refs.listView.setDataList(this.curriculumData.lessonInfo.lesson)
       }else{
         this.curriculumData = {
           subTitle: '',
@@ -1855,11 +1857,14 @@ export default {
           isOpenEducation: true,
           isContinuedRegist: true,
           lessonInfo: {
-            title: "",
-            desc: "",
-            role: "",
-            referenceList: [],
+            lesson:{
+              title: "",
+              desc: "",
+              role: "",
+              referenceList: [],
+            },
             path: '',
+            pathTxt: '',
           },
         }
         this.saveFileFullPath=''
@@ -1895,8 +1900,8 @@ export default {
     setFileInfo(lessonInfo){
       this.unLinkAllItem()
       this.curriculumData.lessonInfo=lessonInfo
-      this.curriculumData.lessonInfo.pathTxt=lessonInfo.path+' > '+lessonInfo.data.name
-      this.$refs.listView.setDataList(this.curriculumData.lessonInfo.referenceList)
+      this.curriculumData.lessonInfo.pathTxt=lessonInfo.path+' > '+lessonInfo.lesson.name
+      this.$refs.listView.setDataList(this.curriculumData.lessonInfo.lesson)
     },
     imgResize(perRatio){
       this.$refs.imgListViewSwiper.imgResize(perRatio)
@@ -1946,25 +1951,8 @@ export default {
           }else if(item==='lessonInfo'){
             newData.lessonInfo={}
             for(const item1 in this.curriculumData[item]){
-              if (item1 !== 'data') {
-                newData.lessonInfo[item1] = this.curriculumData.lessonInfo[item1]
-              }
+              newData.lessonInfo[item1] = this.curriculumData.lessonInfo[item1]
             }
-            newData.lessonInfo.referenceList={}
-            console.log('-----1')
-            console.log(this.curriculumData.lessonInfo.referenceList)
-            const lists=this.curriculumData.lessonInfo.referenceList
-            for(let i=0;i<lists.length;i++){
-              console.log(JSON.stringify(lists[i]))
-            }
-            /* for(const item2 in this.curriculumData.lessonInfo.referenceList){
-              if (item2 !== 'referenceList') {
-                /* console.log('------sssss-----')
-                console.log(`${item2}:${this.curriculumData.lessonInfo.data[item2]}`) */
-                /* newData.lessonInfo.referenceList[item2] = this.curriculumData.lessonInfo.referenceList[item2] * /
-              }
-            } */
-            /* newData.lessonInfo.referenceList=this.$refs.listView.getData() */
           }else{
             newData[item]=JSON.parse(JSON.stringify(this.curriculumData[item]))
           }
@@ -1973,7 +1961,7 @@ export default {
         newData.type=newData.lessonInfo.type
         newData.name=newData.savePathInfo.fileName+'.link'
         newData.active=true
-        console.log(newData)
+        /* console.log(newData) */
         this.$emit('add-curiiculum-data',newData)
         $("#modalCuriRegi").modal("hide")
       }

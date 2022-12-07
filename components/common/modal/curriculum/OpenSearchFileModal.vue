@@ -125,7 +125,7 @@
                   type="text"
                   class="form-control form-inline savePathInput"
                   placeholder="파일을 선택해 주세요"
-                  :value="openFileInfo.data.name"
+                  :value="openFileInfo.lesson.name"
                 />
               </div>
             </div>
@@ -190,24 +190,24 @@ export default {
       openFileInfo: {
         path: '',
         type: '',
-        data: {},
+        lesson: {},
       },
     }
   },
   methods: {
     fileClickInsti(pathInfo,fileInfo) {
       this.openFileInfo.path = pathInfo
-      this.openFileInfo.referenceList=fileInfo
+      this.openFileInfo.lesson=fileInfo
       this.openFileInfo.type = 'institution'
     },
     fileClickFran(pathInfo,fileInfo) {
       this.openFileInfo.path = pathInfo
-      this.openFileInfo.referenceList=fileInfo
+      this.openFileInfo.lesson=fileInfo
       this.openFileInfo.type = 'franchise'
     },
     fileClickMyData(pathInfo,fileInfo) {
       this.openFileInfo.path = pathInfo
-      this.openFileInfo.referenceList=fileInfo
+      this.openFileInfo.lesson=fileInfo
       this.openFileInfo.type = 'curriculum'
     },
     saveOpenFileInfo() {

@@ -62,8 +62,10 @@ export default {
         nObj.isLeaf=true
         nObj.readOnly=false
         nObj.isChecked=false
-        nObj.isLink=false
-        nObj.linkIdx=-1
+        if(!nObj.isLink){
+          nObj.isLink=false
+          nObj.linkIdx=-1
+        }
         nObj.id="list_"+this.pid
         nObj.addTreeNodeDisabled=true
         nObj.addLeafNodeDisabled=true
