@@ -126,7 +126,7 @@
         for (let i = 0; i < len; i++) {
           this.dataList[i].linkListIdx=-1
           const target=$("#imgIcon"+i).find("img")
-          target.attr({"src":this.dataList[i].icon_dim_url})
+          target.attr({"src":this.setRequire(this.dataList[i].icon_dim_url)})
         }
       },
       imgResize(perRatio){
@@ -147,7 +147,7 @@
         $(".swiper-wrapper").css({"transform":`translate3d(${moveX}px, 0px, 0px)`})
       },
       setRequire(imgPath){
-        return require('@/assets/images/'+imgPath)
+        return require(`@/assets/images/${imgPath}`)
       },
     }
   }

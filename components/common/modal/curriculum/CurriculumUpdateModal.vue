@@ -254,7 +254,7 @@ export default {
           title: "",
           desc: "",
           role: "",
-          data: [],
+          referenceList: [],
           path: '',
           pathTxt: '',
         },
@@ -1858,7 +1858,7 @@ export default {
             title: "",
             desc: "",
             role: "",
-            data: [],
+            referenceList: [],
             path: '',
           },
         }
@@ -1896,7 +1896,7 @@ export default {
       this.unLinkAllItem()
       this.curriculumData.lessonInfo=lessonInfo
       this.curriculumData.lessonInfo.pathTxt=lessonInfo.path+' > '+lessonInfo.data.name
-      this.$refs.listView.setDataList(this.curriculumData.lessonInfo.data)
+      this.$refs.listView.setDataList(this.curriculumData.lessonInfo.referenceList)
     },
     imgResize(perRatio){
       this.$refs.imgListViewSwiper.imgResize(perRatio)
@@ -1936,19 +1936,13 @@ export default {
         const newData={}
         for (const item in this.curriculumData) {
           if(item==='cwInfo'){
-            /* for (let i=0;i<this.dropMenuListData.length;i++) {
-              if(this.curriculumData[item].name===this.dropMenuListData[i].name){
-                newData[item]=this.dropMenuListData[i]
-              }
-            } */
-            /* newData[item]={}
+            newData[item]={}
             newData[item].codeNum=this.curriculumData[item].codeNum
             newData[item].name=this.curriculumData[item].name
             newData[item].data={
               'backImg_url':this.curriculumData[item].data.backImg_url,
               'interactionObjects':this.$refs.imgListView.getData()
-            } */
-            newData[item]=this.dropMenuListData
+            }
           }else if(item==='lessonInfo'){
             newData.lessonInfo={}
             for(const item1 in this.curriculumData[item]){
@@ -1957,26 +1951,31 @@ export default {
               }
             }
             newData.lessonInfo.referenceList={}
-            for(const item2 in this.curriculumData.lessonInfo.referenceList){
+            console.log('-----1')
+            console.log(this.curriculumData.lessonInfo.referenceList)
+            const lists=this.curriculumData.lessonInfo.referenceList
+            for(let i=0;i<lists.length;i++){
+              console.log(JSON.stringify(lists[i]))
+            }
+            /* for(const item2 in this.curriculumData.lessonInfo.referenceList){
               if (item2 !== 'referenceList') {
                 /* console.log('------sssss-----')
                 console.log(`${item2}:${this.curriculumData.lessonInfo.data[item2]}`) */
-                /* newData.lessonInfo.referenceList[item2] = this.curriculumData.lessonInfo.referenceList[item2] */
+                /* newData.lessonInfo.referenceList[item2] = this.curriculumData.lessonInfo.referenceList[item2] * /
               }
-            }
+            } */
             /* newData.lessonInfo.referenceList=this.$refs.listView.getData() */
           }else{
             newData[item]=JSON.parse(JSON.stringify(this.curriculumData[item]))
           }
         }
-        console.log(newData)
-        $("#modalCuriRegi").modal("show")
-        /* newData.isLeaf=true
+        newData.isLeaf=true
         newData.type=newData.lessonInfo.type
         newData.name=newData.savePathInfo.fileName+'.link'
         newData.active=true
+        console.log(newData)
         this.$emit('add-curiiculum-data',newData)
-        $("#modalCuriRegi").modal("hide") */
+        $("#modalCuriRegi").modal("hide")
       }
     },
     checkUpdate(){

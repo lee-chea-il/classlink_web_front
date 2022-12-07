@@ -197,17 +197,17 @@ export default {
   methods: {
     fileClickInsti(pathInfo,fileInfo) {
       this.openFileInfo.path = pathInfo
-      this.openFileInfo.data=fileInfo
+      this.openFileInfo.referenceList=fileInfo
       this.openFileInfo.type = 'institution'
     },
     fileClickFran(pathInfo,fileInfo) {
       this.openFileInfo.path = pathInfo
-      this.openFileInfo.data=fileInfo
+      this.openFileInfo.referenceList=fileInfo
       this.openFileInfo.type = 'franchise'
     },
     fileClickMyData(pathInfo,fileInfo) {
       this.openFileInfo.path = pathInfo
-      this.openFileInfo.data=fileInfo
+      this.openFileInfo.referenceList=fileInfo
       this.openFileInfo.type = 'curriculum'
     },
     saveOpenFileInfo() {

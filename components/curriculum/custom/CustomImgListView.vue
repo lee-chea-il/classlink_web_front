@@ -142,7 +142,7 @@ export default {
       }
     },
     setRequire(imgPath){
-      return require('@/assets/images/'+imgPath)
+      return require(`@/assets/images/${imgPath}`)
     },
     dragImgEnter(node) {
       if(!node.isLink){
