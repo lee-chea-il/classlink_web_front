@@ -101,6 +101,12 @@ export default {
           if(nObj.isLink===undefined){
             nObj.isLink=false
             nObj.linkListIdx=-1
+          }else if(nObj.isLink==='true'){
+            nObj.isLink=true
+            nObj.linkListIdx=parseInt(nObj.linkListIdx)
+          }else{
+            nObj.isLink=false
+            nObj.linkListIdx=-1
           }
           nObj.height=0
           result[i]=nObj
