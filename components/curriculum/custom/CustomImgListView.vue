@@ -82,11 +82,6 @@ export default {
       const list = this.datas.children
       const len =list.length
       for (let i = 0; i < len; i++) {
-        /* const newObj = {}
-        for (const item in list[i]) {
-          newObj[item]=list[i][item]
-        }
-        result.push(newObj) */
         result.push($.extend(true, {}, list[i]))
       }
       return result
