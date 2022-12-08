@@ -62,7 +62,6 @@ export default {
     return {
       datas: new Tree(false, []),
       pid: this.pidNum,
-      originData: {}
     }
   },
   mounted() {
@@ -124,21 +123,25 @@ export default {
       if (!this.data.children) this.data.children = []
       this.data.addChildren(node)
     },
-    getData(){
-      return this.originData
-    },
     addData(data){
-      this.originData=data
-      /* console.log(data.savePathInfo) */
       const sp=data.savePathInfo.path.split(' > ')
       let depth=0
+      const pidNum=this.pid
+      this.pid++
       function _checkNode(oldNode){
         if (oldNode.children && oldNode.children.length > 0) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
             if (oldNode.children[i].name === sp[depth]) {
               depth++
               if (sp.length === depth) {
-                oldNode.children[i].addChildren(data)
+                const newTreeNode = new TreeNode(data)
+                for (const item in data) {
+                  if(item!=='parent'&&item!=='children'){
+                    newTreeNode[item] = data[item]
+                  }
+                }
+                newTreeNode.id=pidNum
+                oldNode.children[i].addChildren(newTreeNode)
               } else {
                 _checkNode(oldNode.children[i])
               }
@@ -306,8 +309,11 @@ export default {
       console.log(`down ${node}`)
     },
     moreMenuUpdate(node) {
-      /* console.log(`update ${node}`) */
-      this.$emit('update-data',this.getData())
+      const nodeToData = {}
+      for (const item in node) {
+        nodeToData[item] = node[item]
+      }
+      this.$emit('update-data',nodeToData)
     },
     moreMenuView(node) {
       console.log(`view ${node}`)
