@@ -2,6 +2,7 @@ export default function initialState() {
   return {
     identity: 'teacher',
     copyCheckData: [],
+    updateType:'',
     testData: {
       subTitle: 'sub1',
       desc: 'desc1',
@@ -30,7 +31,7 @@ export default function initialState() {
                     "left": "265",
                     "top": "2",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "182"
                 },
                 {
@@ -46,7 +47,7 @@ export default function initialState() {
                     "left": "12",
                     "top": "51",
                     "pid": "0",
-                    "isLink": "true",
+                    "isLink": true,
                     "height": "352"
                 },
                 {
@@ -62,7 +63,7 @@ export default function initialState() {
                     "left": "154",
                     "top": "51",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "220"
                 },
                 {
@@ -78,7 +79,7 @@ export default function initialState() {
                     "left": "328",
                     "top": "51",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "352"
                 },
                 {
@@ -94,7 +95,7 @@ export default function initialState() {
                     "left": "233",
                     "top": "123",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -110,7 +111,7 @@ export default function initialState() {
                     "left": "200",
                     "top": "132",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "97"
                 },
                 {
@@ -126,7 +127,7 @@ export default function initialState() {
                     "left": "158",
                     "top": "153",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "188"
                 },
                 {
@@ -142,7 +143,7 @@ export default function initialState() {
                     "left": "278",
                     "top": "153",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "116"
                 },
                 {
@@ -158,7 +159,7 @@ export default function initialState() {
                     "left": "111",
                     "top": "226",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -174,7 +175,7 @@ export default function initialState() {
                     "left": "146",
                     "top": "223",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -190,7 +191,7 @@ export default function initialState() {
                     "left": "171",
                     "top": "226",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -206,7 +207,7 @@ export default function initialState() {
                     "left": "207",
                     "top": "223",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -222,7 +223,7 @@ export default function initialState() {
                     "left": "234",
                     "top": "226",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -238,7 +239,7 @@ export default function initialState() {
                     "left": "269",
                     "top": "223",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -254,7 +255,7 @@ export default function initialState() {
                     "left": "296",
                     "top": "226",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -270,7 +271,7 @@ export default function initialState() {
                     "left": "332",
                     "top": "223",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -286,7 +287,7 @@ export default function initialState() {
                     "left": "359",
                     "top": "226",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -302,7 +303,7 @@ export default function initialState() {
                     "left": "393",
                     "top": "223",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -318,7 +319,7 @@ export default function initialState() {
                     "left": "111",
                     "top": "281",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -334,7 +335,7 @@ export default function initialState() {
                     "left": "146",
                     "top": "279",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -350,7 +351,7 @@ export default function initialState() {
                     "left": "171",
                     "top": "281",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -366,7 +367,7 @@ export default function initialState() {
                     "left": "207",
                     "top": "279",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -382,7 +383,7 @@ export default function initialState() {
                     "left": "234",
                     "top": "281",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -398,7 +399,7 @@ export default function initialState() {
                     "left": "269",
                     "top": "279",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -414,7 +415,7 @@ export default function initialState() {
                     "left": "296",
                     "top": "281",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -430,7 +431,7 @@ export default function initialState() {
                     "left": "332",
                     "top": "279",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -446,7 +447,7 @@ export default function initialState() {
                     "left": "359",
                     "top": "281",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -462,7 +463,7 @@ export default function initialState() {
                     "left": "393",
                     "top": "279",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -478,7 +479,7 @@ export default function initialState() {
                     "left": "111",
                     "top": "338",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -494,7 +495,7 @@ export default function initialState() {
                     "left": "146",
                     "top": "335",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -510,7 +511,7 @@ export default function initialState() {
                     "left": "171",
                     "top": "338",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -526,7 +527,7 @@ export default function initialState() {
                     "left": "207",
                     "top": "335",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -542,7 +543,7 @@ export default function initialState() {
                     "left": "234",
                     "top": "338",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -558,7 +559,7 @@ export default function initialState() {
                     "left": "269",
                     "top": "335",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -574,7 +575,7 @@ export default function initialState() {
                     "left": "296",
                     "top": "338",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -590,7 +591,7 @@ export default function initialState() {
                     "left": "332",
                     "top": "335",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -606,7 +607,7 @@ export default function initialState() {
                     "left": "359",
                     "top": "338",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -622,7 +623,7 @@ export default function initialState() {
                     "left": "393",
                     "top": "335",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -638,7 +639,7 @@ export default function initialState() {
                     "left": "111",
                     "top": "395",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -654,7 +655,7 @@ export default function initialState() {
                     "left": "146",
                     "top": "392",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -670,7 +671,7 @@ export default function initialState() {
                     "left": "171",
                     "top": "395",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -686,7 +687,7 @@ export default function initialState() {
                     "left": "207",
                     "top": "392",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -702,7 +703,7 @@ export default function initialState() {
                     "left": "234",
                     "top": "395",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -718,7 +719,7 @@ export default function initialState() {
                     "left": "269",
                     "top": "392",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -734,7 +735,7 @@ export default function initialState() {
                     "left": "296",
                     "top": "395",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -750,7 +751,7 @@ export default function initialState() {
                     "left": "332",
                     "top": "392",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -766,7 +767,7 @@ export default function initialState() {
                     "left": "359",
                     "top": "395",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -782,7 +783,7 @@ export default function initialState() {
                     "left": "393",
                     "top": "392",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -798,7 +799,7 @@ export default function initialState() {
                     "left": "111",
                     "top": "453",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -814,7 +815,7 @@ export default function initialState() {
                     "left": "146",
                     "top": "450",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -830,7 +831,7 @@ export default function initialState() {
                     "left": "171",
                     "top": "453",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -846,7 +847,7 @@ export default function initialState() {
                     "left": "207",
                     "top": "450",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -862,7 +863,7 @@ export default function initialState() {
                     "left": "234",
                     "top": "453",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -878,7 +879,7 @@ export default function initialState() {
                     "left": "269",
                     "top": "450",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -894,7 +895,7 @@ export default function initialState() {
                     "left": "296",
                     "top": "453",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -910,7 +911,7 @@ export default function initialState() {
                     "left": "332",
                     "top": "450",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -926,7 +927,7 @@ export default function initialState() {
                     "left": "359",
                     "top": "453",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -942,7 +943,7 @@ export default function initialState() {
                     "left": "393",
                     "top": "450",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -958,7 +959,7 @@ export default function initialState() {
                     "left": "111",
                     "top": "508",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -974,7 +975,7 @@ export default function initialState() {
                     "left": "146",
                     "top": "505",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -990,7 +991,7 @@ export default function initialState() {
                     "left": "171",
                     "top": "508",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -1006,7 +1007,7 @@ export default function initialState() {
                     "left": "207",
                     "top": "505",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -1022,7 +1023,7 @@ export default function initialState() {
                     "left": "234",
                     "top": "508",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -1038,7 +1039,7 @@ export default function initialState() {
                     "left": "269",
                     "top": "505",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -1054,7 +1055,7 @@ export default function initialState() {
                     "left": "296",
                     "top": "508",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -1070,7 +1071,7 @@ export default function initialState() {
                     "left": "332",
                     "top": "505",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -1086,7 +1087,7 @@ export default function initialState() {
                     "left": "359",
                     "top": "508",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -1102,7 +1103,7 @@ export default function initialState() {
                     "left": "393",
                     "top": "505",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -1118,7 +1119,7 @@ export default function initialState() {
                     "left": "111",
                     "top": "559",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -1134,7 +1135,7 @@ export default function initialState() {
                     "left": "146",
                     "top": "556",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -1150,7 +1151,7 @@ export default function initialState() {
                     "left": "171",
                     "top": "559",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -1166,7 +1167,7 @@ export default function initialState() {
                     "left": "207",
                     "top": "556",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -1182,7 +1183,7 @@ export default function initialState() {
                     "left": "234",
                     "top": "559",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -1198,7 +1199,7 @@ export default function initialState() {
                     "left": "269",
                     "top": "556",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -1214,7 +1215,7 @@ export default function initialState() {
                     "left": "296",
                     "top": "559",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -1230,7 +1231,7 @@ export default function initialState() {
                     "left": "332",
                     "top": "556",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -1246,7 +1247,7 @@ export default function initialState() {
                     "left": "359",
                     "top": "559",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "96"
                 },
                 {
@@ -1262,7 +1263,7 @@ export default function initialState() {
                     "left": "393",
                     "top": "556",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "115"
                 },
                 {
@@ -1278,7 +1279,7 @@ export default function initialState() {
                     "left": "70",
                     "top": "247",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "157"
                 },
                 {
@@ -1294,7 +1295,7 @@ export default function initialState() {
                     "left": "67",
                     "top": "362",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "194"
                 },
                 {
@@ -1310,7 +1311,7 @@ export default function initialState() {
                     "left": "60",
                     "top": "451",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "116"
                 },
                 {
@@ -1326,7 +1327,7 @@ export default function initialState() {
                     "left": "283",
                     "top": "597",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "88"
                 },
                 {
@@ -1342,7 +1343,7 @@ export default function initialState() {
                     "left": "111",
                     "top": "609",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "159"
                 },
                 {
@@ -1358,7 +1359,7 @@ export default function initialState() {
                     "left": "146",
                     "top": "612",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "160"
                 },
                 {
@@ -1374,7 +1375,7 @@ export default function initialState() {
                     "left": "201",
                     "top": "609",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "160"
                 },
                 {
@@ -1390,7 +1391,7 @@ export default function initialState() {
                     "left": "241",
                     "top": "610",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "160"
                 },
                 {
@@ -1406,7 +1407,7 @@ export default function initialState() {
                     "left": "332",
                     "top": "612",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "160"
                 },
                 {
@@ -1422,7 +1423,7 @@ export default function initialState() {
                     "left": "375",
                     "top": "612",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "160"
                 },
                 {
@@ -1438,7 +1439,7 @@ export default function initialState() {
                     "left": "61",
                     "top": "658",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "145"
                 },
                 {
@@ -1454,7 +1455,7 @@ export default function initialState() {
                     "left": "198",
                     "top": "656",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "163"
                 },
                 {
@@ -1470,7 +1471,7 @@ export default function initialState() {
                     "left": "258",
                     "top": "656",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "164"
                 },
                 {
@@ -1486,7 +1487,7 @@ export default function initialState() {
                     "left": "346",
                     "top": "658",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "146"
                 },
                 {
@@ -1502,7 +1503,7 @@ export default function initialState() {
                     "left": "411",
                     "top": "239",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "117"
                 },
                 {
@@ -1518,7 +1519,7 @@ export default function initialState() {
                     "left": "408",
                     "top": "290",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "117"
                 },
                 {
@@ -1534,7 +1535,7 @@ export default function initialState() {
                     "left": "409",
                     "top": "337",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "117"
                 },
                 {
@@ -1550,7 +1551,7 @@ export default function initialState() {
                     "left": "403",
                     "top": "377",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "117"
                 },
                 {
@@ -1566,7 +1567,7 @@ export default function initialState() {
                     "left": "405",
                     "top": "438",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "117"
                 },
                 {
@@ -1582,7 +1583,7 @@ export default function initialState() {
                     "left": "408",
                     "top": "499",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "117"
                 },
                 {
@@ -1598,7 +1599,7 @@ export default function initialState() {
                     "left": "435",
                     "top": "353",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "120"
                 },
                 {
@@ -1614,7 +1615,7 @@ export default function initialState() {
                     "left": "426",
                     "top": "403",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "126"
                 },
                 {
@@ -1630,7 +1631,7 @@ export default function initialState() {
                     "left": "470",
                     "top": "258",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "353"
                 },
                 {
@@ -1646,7 +1647,7 @@ export default function initialState() {
                     "left": "469",
                     "top": "402",
                     "pid": "0",
-                    "isLink": "false",
+                    "isLink": false,
                     "height": "352"
                 }
             ]

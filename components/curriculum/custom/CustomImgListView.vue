@@ -82,11 +82,12 @@ export default {
       const list = this.datas.children
       const len =list.length
       for (let i = 0; i < len; i++) {
-        const newObj = {}
+        /* const newObj = {}
         for (const item in list[i]) {
           newObj[item]=list[i][item]
         }
-        result.push(newObj)
+        result.push(newObj) */
+        result.push($.extend(true, {}, list[i]))
       }
       return result
     },
@@ -100,13 +101,12 @@ export default {
           nObj.pid=this.pid
           if(nObj.isLink===undefined){
             nObj.isLink=false
-            nObj.linkListIdx=-1
-          }else if(nObj.isLink==='true'){
+            nObj.linkListIdx=''
+          }else if(nObj.isLink){
             nObj.isLink=true
-            nObj.linkListIdx=parseInt(nObj.linkListIdx)
           }else{
             nObj.isLink=false
-            nObj.linkListIdx=-1
+            nObj.linkListIdx=''
           }
           nObj.height=0
           result[i]=nObj
@@ -180,6 +180,7 @@ export default {
       console.log('dragImgClick', node.id)
     },
     unLinkData(imgIdx){
+      console.log(`unLinkData   ${imgIdx}`)
       this.datas.children[imgIdx].isLink=false
       $('#imgListView_'+imgIdx).find('img').css('opacity',0.3)
     },
@@ -187,7 +188,7 @@ export default {
       if(this.datas.children){
         for(let i=0;i<this.datas.children.length;i++){
           this.datas.children[i].isLink=false
-          this.datas.children[i].linkListIdx=-1
+          this.datas.children[i].linkListIdx=''
           $('#imgListView_'+i).find('img').css('opacity',0.3)
         }
       }

@@ -254,7 +254,7 @@
               :isUpdate="isUpdate"
               @submit="checkUpload"
               @close="$emit('close')"
-              @dell="$emit('close')"
+              @del="$emit('update-file-del')"
             />
           </div>
         </div>
@@ -2043,19 +2043,14 @@ export default {
         newData.type = newData.lessonInfo.type
         newData.name = newData.savePathInfo.fileName + '.link'
         newData.active = true
-        this.$emit('add-curiiculum-data', newData)
+        if(!this.isUpdate){
+          this.$emit('add-curiiculum-data', newData)
+        }else{
+          this.$emit('update-curiiculum-data', newData)
+        }
         $('#modalCuriRegi').modal('hide')
       }
-    },
-    checkUpdate() {
-      console.log(1)
-    },
-    checkDell() {
-      console.log(1)
-    },
-    changeCheckbox(e) {
-      console.log(e.target.checked)
-    },
+    }
   },
 }
 </script>

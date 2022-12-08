@@ -43,10 +43,11 @@ export default {
       const list = this.datas.children
       const len =list.length
       for (let i = 0; i < len; i++) {
-        const newObj = {}
+        /* const newObj = {}
         for (const item in list[i]) {
           newObj[item] = list[i][item]
-        }
+        } */
+        const newObj = $.extend(true, {}, list[i])
         result.push(newObj)
       }
       return result
@@ -62,8 +63,9 @@ export default {
         if(nObj.isLink===undefined){
           nObj.isLink=false
           nObj.linkIdx=-1
+          nObj.id="list_"+this.pid
         }
-        nObj.id="list_"+this.pid
+        console.log(`setDataList   ${nObj.id}`)
         nObj.addTreeNodeDisabled=true
         nObj.addLeafNodeDisabled=true
         nObj.editNodeDisabled=true
@@ -93,6 +95,7 @@ export default {
       this.checkLinkDataCnt()
     },
     unLinkData(listIdx){
+      console.log(`listIdx   ${listIdx}`)
       this.removeActive()
       for(let i=0;i<this.datas.children.length;i++){
         if(listIdx===this.datas.children[i].id){

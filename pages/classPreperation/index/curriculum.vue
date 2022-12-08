@@ -55,6 +55,8 @@
       "
       @change-desc="changeModalDescMsg"
       @add-curiiculum-data="addCuriiculumData"
+      @update-file-del="updateFileDel"
+      @update-curiiculum-data="updateCuriiculumData"
     />
     <OpenSearchFileModal
       :open="isShowOpenPathModal"
@@ -187,11 +189,29 @@ export default {
         this.$refs.rightSection.$refs.curriculum.addData(data)
       }
     },
-    updateData(data){
-      console.log(data)
+    updateData(data,type){
+      this.updateType=type
       this.isShowOpenAddModal = true
       $("#modalCuriRegi").modal("show")
       this.$refs.curriculumUpdateModal.setData(data)
+    },
+    updateFileDel(){
+      if(this.updateType==='institution'){
+        this.$refs.leftSection.$refs.institution.updateFileDel()
+      }else if(this.updateType==='franchise'){
+        this.$refs.leftSection.$refs.franchise.updateFileDel()
+      }else{
+        this.$refs.rightSection.$refs.curriculum.updateFileDel()
+      }
+    },
+    updateCuriiculumData(data){
+      if(this.updateType==='institution'){
+        this.$refs.leftSection.$refs.institution.updateFile(data)
+      }else if(this.updateType==='franchise'){
+        this.$refs.leftSection.$refs.franchise.updateFile(data)
+      }else{
+        this.$refs.rightSection.$refs.curriculum.updateFile(data)
+      }
     }
   },
 }

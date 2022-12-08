@@ -58,7 +58,7 @@
           :pidNum="0"
           :isHideDownload="false"
           @un-active="$emit('un-active')"
-          @update-data="$emit('update-data',$event)"
+          @update-data="$emit('update-data',$event,'institution')"
           @copyDataCallBack="$emit('copyDataCallBack',$event)"
         />
       </div>
@@ -79,7 +79,7 @@
           :pidNum="1000"
           :isHideDownload="false"
           @un-active="$emit('un-active')"
-          @update-data="$emit('update-data',$event)"
+          @update-data="$emit('update-data',$event,'franchise')"
           @copyDataCallBack="copyDataCallBack"
         />
       </div>
@@ -105,7 +105,7 @@
           :isHideDownload="false"
           :isUpdate="isUpdate"
           @un-active="$emit('un-active')"
-          @update-data="$emit('update-data',$event)"
+          @update-data="$emit('update-data',$event,'curriculum')"
         />
         <br />
         <br />

@@ -62,6 +62,7 @@ export default {
     return {
       datas: new Tree(false, []),
       pid: this.pidNum,
+      updateNode: null
     }
   },
   mounted() {
@@ -286,6 +287,13 @@ export default {
       }
       _dell(this.datas)
     },
+    updateFile(data){
+      for (const item in data) {
+        if(item!=='parent'&&item!=='children'){
+          this.updateNode[item] = data[item]
+        }
+      }
+    },
     moreMenu({ e }) {
       this.$emit('un-active')
       const hasOffClass = e.target.classList.contains('icons_mu_off')
@@ -309,6 +317,7 @@ export default {
       console.log(`down ${node}`)
     },
     moreMenuUpdate(node) {
+      this.updateNode=node
       const nodeToData = {}
       for (const item in node) {
         nodeToData[item] = node[item]
@@ -323,6 +332,10 @@ export default {
     },
     moreMenuCopy(node) {
       console.log(`copy ${node}`)
+    },
+    updateFileDel(){
+      console.log(this.updateNode)
+      this.updateNode.remove()
     },
     unActiveAll() {
       function _unActiveAll(oldNode) {

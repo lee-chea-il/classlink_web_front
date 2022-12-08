@@ -80,7 +80,8 @@
             const len=this.dataList.length
             for (let i = 0; i < len; i++) {
               target=$("#imgIcon"+i).find("img")
-              if(parseInt(this.dataList[i].linkListIdx)===-1){
+              console.log(this.dataList[i].linkListIdx)
+              if(this.dataList[i].linkListIdx===''){
                 target.attr({"src":this.setRequire(this.dataList[i].icon_dim_url)})
               }else{
                 target.attr({"src":this.setRequire(this.dataList[i].icon_normal_url)})
@@ -104,7 +105,7 @@
         const len=this.dataList.length
         for (let i = 0; i < len; i++) {
           if(this.dataList[i].imgIdx===imgIdx){
-            this.dataList[i].linkListIdx=-1
+            this.dataList[i].linkListIdx=''
             const target=$("#imgIcon"+i).find("img")
             target.attr({"src":this.setRequire(this.dataList[i].icon_dim_url)})
             break
@@ -114,17 +115,17 @@
       unLinkEvent(e){
         const target=e.target.parentElement
         const imgIdx=Number(target.id.split('imgIcon')[1])
-        const tIdx=parseInt(this.dataList[imgIdx].linkListIdx)
-        if(tIdx!==-1){
+        const tIdx=this.dataList[imgIdx].linkListIdx
+        if(tIdx!==''){
           $(`#${target.id}`).find("img").attr({"src":this.setRequire(this.dataList[imgIdx].icon_dim_url)})
-          this.dataList[imgIdx].linkListIdx=-1
+          this.dataList[imgIdx].linkListIdx=''
           this.$emit('unLink-event',tIdx,imgIdx)
         }
       },
       unLinkAllItem(){
         const len=this.dataList.length
         for (let i = 0; i < len; i++) {
-          this.dataList[i].linkListIdx=-1
+          this.dataList[i].linkListIdx=''
           const target=$("#imgIcon"+i).find("img")
           target.attr({"src":this.setRequire(this.dataList[i].icon_dim_url)})
         }

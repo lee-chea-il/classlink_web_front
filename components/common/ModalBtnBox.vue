@@ -19,7 +19,7 @@
       v-show="isUpdate"
       class="btn btn_crud_danger"
       data-dismiss="modal"
-      @click="$emit('dell')"
+      @click="$emit('del')"
     >
       삭제
     </button>
