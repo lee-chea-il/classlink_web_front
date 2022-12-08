@@ -1,3 +1,4 @@
+problem
 <template>
   <div class="right_area">
     <div class="question_area">
@@ -12,7 +13,7 @@
       </div>
 
       <div v-for="(quiz, idx) in itemList" :key="idx">
-        <div v-if="idx === currentIdx" class="question_area02">
+        <div v-if="idx === currentIdx" class="question_area04-1">
           <div class="limit_time">
             <span class="limit_time_font"
               >제한시간 : <span>{{ quiz.limitTime }}</span>
@@ -21,13 +22,18 @@
             <span class="icon_timer"></span>
           </div>
           <div>
-            <div class="qusetion_area03 row">
+            <div class="qusetion_area04-2">
               <div class="qa_num">
                 <div class="qa_num_font">
                   {{ currentIdx + 1 }}
                 </div>
               </div>
-              <div class="qa_cnts" v-html="quiz.problem"></div>
+              <div
+                style="width: 90%; margin: auto"
+                class="qa_cnts"
+                :class="{ img_field: isImg(quiz.problem) }"
+                v-html="addClassImg(quiz.problem)"
+              ></div>
             </div>
           </div>
         </div>
@@ -106,6 +112,15 @@ export default {
       default: 0,
     },
   },
+  methods: {
+    isImg(quizItem) {
+      return quizItem.includes('<img')
+    },
+    addClassImg(item) {
+      const setP = item.replace(/<p/g, '<p class="set_note_p"')
+      return setP.replace(/<img/g, '<img class="fix_img"')
+    },
+  },
 }
 </script>
 
@@ -114,5 +129,10 @@ export default {
 #modalPreviewTest .right_area {
   width: 67%;
   margin: 0;
+}
+.img_field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

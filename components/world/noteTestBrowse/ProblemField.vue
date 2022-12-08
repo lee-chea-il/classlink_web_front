@@ -63,5 +63,7 @@ export default {
   .edit_area {
   height: 100%;
   min-height: 275px;
+  max-height: 330px !important;
+  overflow: scroll !important;
 }
 </style>

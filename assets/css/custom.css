@@ -150,3 +150,24 @@
 .custom-control-label {
   cursor: pointer !important;
 }
+
+.fix_size {
+  object-fit: contain !important;
+  height: 90%;
+}
+
+.fix_p {
+  height: 67px;
+  padding: 2px;
+  overflow: hidden;
+}
+
+.set_note_p {
+  padding: 12px;
+}
+
+.fix_img {
+  width: 225px;
+  height: 135px;
+  margin-right: 15px;
+}

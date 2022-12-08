@@ -1,9 +1,12 @@
 <template>
-  <div class="answer_area04">
+  <div
+    :class="isImg(exampleList[0].example) ? 'answer_area05' : 'answer_area04'"
+  >
+    <!-- isImg(example.example) ? 'answer_area05' -->
     <div
       v-for="(example, index) in exampleList"
       :key="index"
-      class="aa_question row"
+      class="aa_question"
     >
       <!-- [개발참조]문제 선택 시 출력  -->
       <div
@@ -23,7 +26,9 @@
       >
         <div
           :class="noteTest.answer === index + 1 ? 'aa_correct' : 'aa_wrong'"
-          v-html="example.example"
+          v-html="
+            isImg(example.example) ? setImg(example.example) : example.example
+          "
         ></div>
       </div>
     </div>
@@ -43,7 +48,36 @@ export default {
       default: () => {},
     },
   },
+  computed: {},
+  methods: {
+    isImg(item) {
+      const isTrue = item.includes('<img')
+      return isTrue
+    },
+    setImg(item) {
+      const resizeItem = item.replace(/<p/g, '<p class="fix_p"')
+      return resizeItem.replace(/<img/g, '<img class="fix_size"')
+    },
+  },
 }
 </script>
 
-<style></style>
+<style scoped>
+#modalPreviewQuiz .answer_area05,
+#modalPreviewTest .answer_area05 {
+  display: flex !important;
+}
+
+#modalPreviewQuiz .answer_area05 .aa_result,
+#modalPreviewQuiz .answer_area05 .aa_result_select,
+#modalPreviewTest .answer_area05 .aa_result,
+#modalPreviewTest .answer_area05 .aa_result_select {
+  width: 150px;
+  margin-top: 12px;
+}
+
+#modalPreviewQuiz .answer_area04 .aa_question,
+#modalPreviewTest .answer_area04 .aa_question {
+  display: flex;
+}
+</style>

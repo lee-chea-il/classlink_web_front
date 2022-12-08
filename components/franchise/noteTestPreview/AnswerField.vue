@@ -22,7 +22,12 @@
         <div class="qa_num">
           <div class="qa_num_font">{{ currentIdx + 1 }}</div>
         </div>
-        <div class="qa_cnts" v-html="noteTest.problem"></div>
+        <div
+          style="width: 90%; margin: auto"
+          class="qa_cnts"
+          :class="{ img_field: isImg }"
+          v-html="addClassImg(noteTest.problem)"
+        ></div>
       </div>
     </div>
   </div>
@@ -49,7 +54,24 @@ export default {
       default: () => {},
     },
   },
+  computed: {
+    isImg() {
+      return this.noteTest.problem.includes('<img')
+    },
+  },
+  methods: {
+    addClassImg(item) {
+      const setP = item.replace(/<p/g, '<p class="set_note_p"')
+      return setP.replace(/<img/g, '<img class="fix_img"')
+    },
+  },
 }
 </script>
 
-<style></style>
+<style scoped>
+.img_field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+</style>

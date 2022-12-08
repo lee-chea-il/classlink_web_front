@@ -1,8 +1,10 @@
 <template>
   <div>
     <PageHeader title="강좌 리스트" />
+
     <div class="tab-content depth03 ac_manage_lec">
       <!-- 데이터 있을 경우 -->
+
       <LectureList
         v-if="lectureList.length"
         :lectureList="currentList(lectureList)"
@@ -58,6 +60,7 @@
       :modalTitle="modalTitle"
       :hourData="hourData"
       :scheduleItem="scheduleItem"
+      :lectureInfo="lectureInfo"
       :scheduleWeekList="lectureInfo.scheduleWeekList"
       :timeList="timeList"
       :toWeekArray="getToWeek(scheduleItem.startDay)"
@@ -80,12 +83,7 @@
     <CustomDataPicker
       :open="isCalendar"
       :scheduleItem="scheduleItem"
-      :start="getToWeek(scheduleItem.startDay)[0]"
-      :end="
-        getToWeek(scheduleItem.startDay)[
-          getToWeek(scheduleItem.startDay).length - 1
-        ]
-      "
+      :range="range"
       @select-date="onChangeDate"
       @close="closeModalCalendar"
     />
@@ -179,9 +177,25 @@ export default {
       return { year, month, day }
     },
 
+    getTodayFull() {
+      const year = new Date().getFullYear()
+      const month = new Date().getMonth() + 1
+      const day = new Date().getDate()
+      return `${year}-${month}-${day}`
+    },
+
+    getEndDayFull() {
+      const year = new Date().getFullYear()
+      const month = new Date().getMonth() + 1
+      const day = new Date().getDate() + 7
+      return String(`${year}-${month}-${day}`)
+    },
+
     // 강좌 등록시 주차 보여주기
     getScheduleWeek() {
-      return `${this.getToday.year}년 ${this.getToday.month}월, ${this.getWeekNumber}주차`
+      return String(
+        `${this.getToday.year}년 ${this.getToday.month}월, ${this.getWeekNumber}주차`
+      )
     },
 
     lastIdx() {
@@ -202,11 +216,10 @@ export default {
     },
   },
   mounted() {
-    const yearMonth = `${this.getToday.year}-${this.getToday.month}`
     this.scheduleItem = {
       ...this.scheduleItem,
-      startDay: `${yearMonth}-${this.getToday.day}`,
-      endDay: `${yearMonth}-${this.getToday.day + 7}`,
+      startDay: String(this.getTodayFull),
+      endDay: String(this.getEndDayFull),
     }
   },
   methods: {
@@ -228,6 +241,11 @@ export default {
     // 달력 모달
     openModalCalendar() {
       console.log(this.scheduleItem)
+      this.range = {
+        start: this.scheduleItem.startDay,
+        end: this.scheduleItem.endDay,
+      }
+      console.log(this.range)
       this.isCalendar = true
     },
 
@@ -523,13 +541,6 @@ export default {
       const day = new Date(date).getDate()
       return `${year}-${month}-${day}`
     },
-
-    // changeEndForm(date) {
-    //   const year = new Date(date).getFullYear()
-    //   const month = new Date(date).getMonth() + 1
-    //   const day = new Date(date).getDate()
-    //   return `${year}-${month}-${day}`
-    // },
 
     // 주차 변경 Event
     paginationWeek(direction) {

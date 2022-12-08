@@ -19,6 +19,7 @@ export default function initialState() {
     isSnackber: { open: false, message: '' },
     searchData: { word: '', teacher: '', class: '' },
     deleteItem: {},
+    range: { start: '', end: '' },
     initLectureInfo: {
       name: '',
       teacher: [],
@@ -95,9 +96,9 @@ export default function initialState() {
         startAlarmTime: '5분',
         endAlarmTime: '5분',
         createdAt: '2020-07-10',
+        startDay: '2022-11-01',
+        endDay: '2022-11-02',
         scheduleWeekList: {
-          startDay: '',
-          endDay: '',
           sun: [],
           mon: [
             {
@@ -115,8 +116,8 @@ export default function initialState() {
             {
               startTime: '0130',
               endTime: '0600',
-              startDay: '2022.11.24',
-              endDay: '2022.11.25',
+              startDay: '2022-11-24',
+              endDay: '2022-11-25',
               selectWeekDay: ['수'],
               bgColor: '#8fa7fb',
               isRepeat: false,
@@ -138,6 +139,8 @@ export default function initialState() {
         startAlarmTime: '5분',
         endAlarmTime: '5분',
         createdAt: '2020-07-10',
+        startDay: '2022-12-08',
+        endDay: '2022-12-09',
         scheduleWeekList: {
           sun: [],
           mon: [
@@ -156,8 +159,8 @@ export default function initialState() {
             {
               startTime: '0100',
               endTime: '0630',
-              startDay: '2022.11.24',
-              endDay: '2022.11.25',
+              startDay: '2022-11-24',
+              endDay: '2022-11-25',
               selectWeekDay: ['수'],
               bgColor: '#8fa7fb',
               isRepeat: false,
@@ -179,6 +182,8 @@ export default function initialState() {
         startAlarmTime: '5분',
         endAlarmTime: '5분',
         createdAt: '2020-07-10',
+        startDay: '2022-12-08',
+        endDay: '2022-12-09',
         scheduleWeekList: {
           sun: [
             {
@@ -200,8 +205,8 @@ export default function initialState() {
             {
               startTime: '0100',
               endTime: '0630',
-              startDay: '2022.11.24',
-              endDay: '2022.11.25',
+              startDay: '2022-11-24',
+              endDay: '2022-11-25',
               selectWeekDay: ['토'],
               bgColor: '#8fa7fb',
               isRepeat: false,

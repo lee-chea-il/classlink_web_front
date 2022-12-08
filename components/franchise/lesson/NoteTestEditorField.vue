@@ -43,6 +43,11 @@ export default {
 .thumbnail_view02 {
   padding: 12px !important;
 }
+.thumbnail_view01 {
+  padding: 12px !important;
+  max-height: 246px;
+  overflow: scroll;
+}
 
 #modalLessonView .notetest .left_area {
   margin: 0;

@@ -107,6 +107,7 @@
 
                   <ScheduleTable
                     :hourData="hourData"
+                    :lectureInfo="lectureInfo"
                     :scheduleItem="scheduleItem"
                     :scheduleWeekList="scheduleWeekList"
                     :toWeekArray="toWeekArray"
@@ -154,6 +155,7 @@ export default {
     scheduleItem: { type: Object, default: () => {} },
     timeList: { type: Array, default: () => [] },
     scheduleWeekList: { type: Object, default: () => {} },
+    lectureInfo: { type: Object, default: () => {} },
   },
   methods: {
     setDeleteSchedule(e, idx) {

@@ -26,6 +26,7 @@ export default {
     currentTime: { type: Number, default: 0 },
     weekName: { type: String, default: '' },
     scheduleWeekList: { type: Object, default: () => {} },
+    lectureInfo: { type: Object, default: () => {} },
     idx: { type: Number, default: 0 },
   },
   computed: {
@@ -42,11 +43,7 @@ export default {
     },
     isSchedule() {
       if (this.weekData) {
-        const {
-          startTime,
-          // startDay, endDay
-        } = this.weekData
-        // console.log(startDay, endDay)
+        const { startTime } = this.weekData
         const start = Number(startTime.replace(':', ''))
         const isTime = this.currentTime === start
         if (isTime) return 1

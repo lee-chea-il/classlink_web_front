@@ -16,6 +16,7 @@
           :idx="idx"
           :currentTime="setTimeList(item)"
           :scheduleWeekList="scheduleWeekList"
+          :lectureInfo="lectureInfo"
           @delete-schedule="setDeleteSchedule"
         />
         <CustomTableCell
@@ -23,6 +24,7 @@
           :idx="idx"
           :currentTime="setTimeList(item)"
           :scheduleWeekList="scheduleWeekList"
+          :lectureInfo="lectureInfo"
           @delete-schedule="setDeleteSchedule"
         />
         <CustomTableCell
@@ -30,6 +32,7 @@
           :idx="idx"
           :currentTime="setTimeList(item)"
           :scheduleWeekList="scheduleWeekList"
+          :lectureInfo="lectureInfo"
           @delete-schedule="setDeleteSchedule"
         />
         <CustomTableCell
@@ -37,6 +40,7 @@
           :idx="idx"
           :currentTime="setTimeList(item)"
           :scheduleWeekList="scheduleWeekList"
+          :lectureInfo="lectureInfo"
           @delete-schedule="setDeleteSchedule"
         />
         <CustomTableCell
@@ -44,6 +48,7 @@
           :idx="idx"
           :currentTime="setTimeList(item)"
           :scheduleWeekList="scheduleWeekList"
+          :lectureInfo="lectureInfo"
           @delete-schedule="setDeleteSchedule"
         />
         <CustomTableCell
@@ -51,6 +56,7 @@
           :idx="idx"
           :currentTime="setTimeList(item)"
           :scheduleWeekList="scheduleWeekList"
+          :lectureInfo="lectureInfo"
           @delete-schedule="setDeleteSchedule"
         />
         <CustomTableCell
@@ -58,6 +64,7 @@
           :idx="idx"
           :currentTime="setTimeList(item)"
           :scheduleWeekList="scheduleWeekList"
+          :lectureInfo="lectureInfo"
           @delete-schedule="setDeleteSchedule"
         />
       </tr>
@@ -77,6 +84,7 @@ export default {
     hourData: { type: Array, default: () => [] },
     scheduleWeekList: { type: Object, default: () => {} },
     toWeekArray: { type: Array, default: () => [] },
+    lectureInfo: { type: Object, default: () => {} },
   },
   methods: {
     // 테이블 아이템 시간으로 설정

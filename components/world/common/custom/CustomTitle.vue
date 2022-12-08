@@ -21,4 +21,20 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+#modalLessonView .cont {
+  display: block !important;
+}
+
+#modalLessonView span {
+  color: #454545 !important;
+}
+
+#modalLessonView .title {
+  display: inline-block !important;
+  width: 105px !important;
+  font-size: 14px !important;
+  margin: 5px 0 !important;
+  color: #454545 !important;
+}
+</style>

@@ -1,7 +1,7 @@
 <template>
   <Transition name="modal">
     <!-- 모달 팝업 ------------------------------------->
-	  <!-- 커리큘럼등록/수정 (팝업 L) -->
+    <!-- 커리큘럼등록/수정 (팝업 L) -->
     <div
       v-show="open"
       id="modalCuriRegi"
@@ -14,13 +14,21 @@
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 id="exampleModalLabel" class="modal-title">커리큘럼 등록 / 수정</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <h5 id="exampleModalLabel" class="modal-title">
+              커리큘럼 등록 / 수정
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               <i class="icons_close"></i>
             </button>
           </div>
           <div class="modal-body">
-            <div class="modal_curiregi"><!-- 모달 내용 구분 class-->
+            <div class="modal_curiregi">
+              <!-- 모달 내용 구분 class-->
               <!-- 2단 분류 컨텐츠 -->
               <div class="divide_section">
                 <!-- 왼쪽 영역 -->
@@ -33,24 +41,32 @@
                         type="text"
                         placeholder="입력해 주세요"
                         class="form-control"
-                      >
+                      />
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="">설명</label>
                     <div class="col">
-                      <textarea v-model="curriculumData.desc" placeholder="메모입력"></textarea>
+                      <textarea
+                        v-model="curriculumData.desc"
+                        placeholder="메모입력"
+                      ></textarea>
                     </div>
                   </div>
 
                   <div class="title">
                     CW 교실
                     <div class="dropdown form-inline">
-                      <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-                        {{currentClassName}}
+                      <button
+                        class="btn dropdown-toggle"
+                        type="button"
+                        data-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        {{ currentClassName }}
                       </button>
                       <div class="dropdown-menu">
-                        <a 
+                        <a
                           v-for="dropMenu in dropMenuList"
                           :key="dropMenu"
                           class="dropdown-item"
@@ -58,7 +74,7 @@
                           :value="dropMenu"
                           @click="selectDropMenu(dropMenu)"
                         >
-                          {{dropMenu}}
+                          {{ dropMenu }}
                         </a>
                       </div>
                     </div>
@@ -100,10 +116,14 @@
                           type="text"
                           class="file_input_textbox"
                           readonly
-                        >
+                        />
                         <div
                           class="file_input_div"
-                          @click="()=>{$emit('open-file-path')}"
+                          @click="
+                            () => {
+                              $emit('open-file-path')
+                            }
+                          "
                         >
                           <button class="btn btn_crud_default">찾아보기</button>
                         </div>
@@ -113,37 +133,51 @@
                   <div class="form-group">
                     <label for="">제목</label>
                     <div class="col">
-                      {{curriculumData.lessonInfo.lesson.title}}
+                      {{ curriculumData.lessonInfo.lesson.title }}
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="">설명</label>
                     <div class="col">
-                      {{curriculumData.lessonInfo.lesson.desc}}
+                      {{ curriculumData.lessonInfo.lesson.desc }}
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="">교육 목표</label>
                     <div class="col">
-                      {{curriculumData.lessonInfo.lesson.role}}
+                      {{ curriculumData.lessonInfo.lesson.role }}
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="" style="place-self: flex-start">레슨 자료</label>
+                    <label for="" style="place-self: flex-start"
+                      >레슨 자료</label
+                    >
                     <div class="col">
                       <div class="list_box">
-                        <div v-if="curriculumData.lessonInfo.lesson.title===''" class="nothing_txt">
+                        <div
+                          v-if="curriculumData.lessonInfo.lesson.title === ''"
+                          class="nothing_txt"
+                        >
                           현재 불러온 레슨이 없습니다.
                         </div>
                         <div v-else class="section">
                           <!-- 커리큘럼 등록 시 출력됨 -->
-                          <span v-if="!isUpdate" class="sum">연결 개수: {{linkDataCnt}}개</span>
+                          <span v-if="!isUpdate" class="sum"
+                            >연결 개수: {{ linkDataCnt }}개</span
+                          >
                           <button
                             class="btn btn_crud_default cancel"
                             @click="unLinkAllItem"
-                          >전체 해제</button>
+                          >
+                            전체 해제
+                          </button>
                           <!-- 커리큘럼 수정 시 출력됨 -->
-                          <button v-if="isUpdate" class="btn btn_crud_default cancel">초기화</button>
+                          <button
+                            v-if="isUpdate"
+                            class="btn btn_crud_default cancel"
+                          >
+                            초기화
+                          </button>
                         </div>
                         <div class="list_area">
                           <CustomListView
@@ -164,13 +198,19 @@
                         type="text"
                         placeholder="저장할 폴더를 선택해 주세요"
                         class="form-control form-inline front_button"
-                      >
+                      />
                       <button
                         class="btn btn_crud_default"
                         data-toggle="modal"
                         data-target="#modalStoragepath"
-                        @click="()=>{$emit('open-save-path')}"
-                      >찾아보기</button> 
+                        @click="
+                          () => {
+                            $emit('open-save-path')
+                          }
+                        "
+                      >
+                        찾아보기
+                      </button>
                     </div>
                   </div>
 
@@ -181,8 +221,12 @@
                         :checked="curriculumData.isOpenEducation"
                         type="checkbox"
                         class="custom-control-input"
+                      />
+                      <label
+                        class="custom-control-label checkbox60"
+                        for="checkbox60"
+                        >교육기관에 해당 자료를 공개합니다.</label
                       >
-                      <label class="custom-control-label checkbox60" for="checkbox60">교육기관에 해당 자료를 공개합니다.</label>
                     </span>
                     <span class="custom-control custom-checkbox form-inline">
                       <input
@@ -190,11 +234,14 @@
                         :checked="curriculumData.isContinuedRegist"
                         type="checkbox"
                         class="custom-control-input"
+                      />
+                      <label
+                        class="custom-control-label checkbox61"
+                        for="checkbox61"
+                        >계속 등록하기</label
                       >
-                      <label class="custom-control-label checkbox61" for="checkbox61">계속 등록하기</label>
                     </span>
                   </div>
-
                 </div>
                 <!-- /.오른쪽 영역 -->
               </div>
@@ -240,59 +287,59 @@ export default {
     desc: {
       type: String,
       default: '',
-    }
+    },
   },
   data() {
     return {
-      isUpdate:false,
-      submitBtnName:'등록',
+      isUpdate: false,
+      submitBtnName: '등록',
       dropMenuList: [],
       dropMenuListData: [],
-      linkDataCnt:0,
-      currentClassName:'교실선택',
-      saveFileFullPath:'',
+      linkDataCnt: 0,
+      currentClassName: '교실선택',
+      saveFileFullPath: '',
       curriculumData: {
         subTitle: '',
         desc: '',
         savePathInfo: {
-          type:'',
-          path:'',
-          fileName: ''
+          type: '',
+          path: '',
+          fileName: '',
         },
         cwInfo: null,
         isOpenEducation: true,
         isContinuedRegist: true,
         lessonInfo: {
-          lesson:{
-            title: "",
-            desc: "",
-            role: "",
+          lesson: {
+            title: '',
+            desc: '',
+            role: '',
             referenceList: [],
           },
           path: '',
           pathTxt: '',
         },
-      }
+      },
     }
   },
   mounted() {
-    this.dropMenuListData=[
+    this.dropMenuListData = [
       {
-        codeNum:'CW_001',
-        name:'CW_001',
+        codeNum: 'CW_001',
+        name: 'CW_001',
         data: {
           backImg_url: 'cw/type1/cw_bg.png',
-          interactionObjects:[
+          interactionObjects: [
             {
               nomal_url: 'cw/type1/object/40.png',
               over_url: 'cw/type1/object/over/40.png',
               icon_normal_url: 'cw/type1/icon/40.png',
               icon_dim_url: 'cw/type1/icon/dim/40_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 0,
-              left:265,
-              top:2
+              left: 265,
+              top: 2,
             },
             {
               nomal_url: 'cw/type1/object/101.png',
@@ -301,8 +348,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/101_dim.png',
               linkListIdx: -1,
               imgIdx: 1,
-              left:12,
-              top:51
+              left: 12,
+              top: 51,
             },
             {
               nomal_url: 'cw/type1/object/99.png',
@@ -311,8 +358,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/99_dim.png',
               linkListIdx: -1,
               imgIdx: 2,
-              left:154,
-              top:51
+              left: 154,
+              top: 51,
             },
             {
               nomal_url: 'cw/type1/object/102.png',
@@ -321,8 +368,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/102_dim.png',
               linkListIdx: -1,
               imgIdx: 3,
-              left:328,
-              top:51
+              left: 328,
+              top: 51,
             },
             {
               nomal_url: 'cw/type1/object/184.png',
@@ -331,8 +378,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/184_dim.png',
               linkListIdx: -1,
               imgIdx: 4,
-              left:233,
-              top:123
+              left: 233,
+              top: 123,
             },
             {
               nomal_url: 'cw/type1/object/36.png',
@@ -341,8 +388,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/36_dim.png',
               linkListIdx: -1,
               imgIdx: 5,
-              left:200,
-              top:132
+              left: 200,
+              top: 132,
             },
             {
               nomal_url: 'cw/type1/object/11.png',
@@ -351,8 +398,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/11_dim.png',
               linkListIdx: -1,
               imgIdx: 6,
-              left:158,
-              top:153
+              left: 158,
+              top: 153,
             },
             {
               nomal_url: 'cw/type1/object/4.png',
@@ -361,8 +408,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/4_dim.png',
               linkListIdx: -1,
               imgIdx: 7,
-              left:278,
-              top:153
+              left: 278,
+              top: 153,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -371,8 +418,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 8,
-              left:111,
-              top:226
+              left: 111,
+              top: 226,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -381,8 +428,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 9,
-              left:146,
-              top:223
+              left: 146,
+              top: 223,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -391,8 +438,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 10,
-              left:171,
-              top:226
+              left: 171,
+              top: 226,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -401,8 +448,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 11,
-              left:207,
-              top:223
+              left: 207,
+              top: 223,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -411,8 +458,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 12,
-              left:234,
-              top:226
+              left: 234,
+              top: 226,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -421,8 +468,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 13,
-              left:269,
-              top:223
+              left: 269,
+              top: 223,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -431,8 +478,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 14,
-              left:296,
-              top:226
+              left: 296,
+              top: 226,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -441,8 +488,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 15,
-              left:332,
-              top:223
+              left: 332,
+              top: 223,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -451,8 +498,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 16,
-              left:359,
-              top:226
+              left: 359,
+              top: 226,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -461,8 +508,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 17,
-              left:393,
-              top:223
+              left: 393,
+              top: 223,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -471,8 +518,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 18,
-              left:111,
-              top:281
+              left: 111,
+              top: 281,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -481,8 +528,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 19,
-              left:146,
-              top:279
+              left: 146,
+              top: 279,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -491,8 +538,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 20,
-              left:171,
-              top:281
+              left: 171,
+              top: 281,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -501,8 +548,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 21,
-              left:207,
-              top:279
+              left: 207,
+              top: 279,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -511,8 +558,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 22,
-              left:234,
-              top:281
+              left: 234,
+              top: 281,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -521,8 +568,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 23,
-              left:269,
-              top:279
+              left: 269,
+              top: 279,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -531,8 +578,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 24,
-              left:296,
-              top:281
+              left: 296,
+              top: 281,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -541,8 +588,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 25,
-              left:332,
-              top:279
+              left: 332,
+              top: 279,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -551,8 +598,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 26,
-              left:359,
-              top:281
+              left: 359,
+              top: 281,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -561,8 +608,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 27,
-              left:393,
-              top:279
+              left: 393,
+              top: 279,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -571,8 +618,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 28,
-              left:111,
-              top:338
+              left: 111,
+              top: 338,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -581,8 +628,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 29,
-              left:146,
-              top:335
+              left: 146,
+              top: 335,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -591,8 +638,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 30,
-              left:171,
-              top:338
+              left: 171,
+              top: 338,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -601,8 +648,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 31,
-              left:207,
-              top:335
+              left: 207,
+              top: 335,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -611,8 +658,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 32,
-              left:234,
-              top:338
+              left: 234,
+              top: 338,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -621,8 +668,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 33,
-              left:269,
-              top:335
+              left: 269,
+              top: 335,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -631,8 +678,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 34,
-              left:296,
-              top:338
+              left: 296,
+              top: 338,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -641,8 +688,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 35,
-              left:332,
-              top:335
+              left: 332,
+              top: 335,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -651,8 +698,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 36,
-              left:359,
-              top:338
+              left: 359,
+              top: 338,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -661,8 +708,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 37,
-              left:393,
-              top:335
+              left: 393,
+              top: 335,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -671,8 +718,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 38,
-              left:111,
-              top:395
+              left: 111,
+              top: 395,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -681,8 +728,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 39,
-              left:146,
-              top:392
+              left: 146,
+              top: 392,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -691,8 +738,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 40,
-              left:171,
-              top:395
+              left: 171,
+              top: 395,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -701,8 +748,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 41,
-              left:207,
-              top:392
+              left: 207,
+              top: 392,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -711,8 +758,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 42,
-              left:234,
-              top:395
+              left: 234,
+              top: 395,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -721,8 +768,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 43,
-              left:269,
-              top:392
+              left: 269,
+              top: 392,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -731,8 +778,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 44,
-              left:296,
-              top:395
+              left: 296,
+              top: 395,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -741,8 +788,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 45,
-              left:332,
-              top:392
+              left: 332,
+              top: 392,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -751,8 +798,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 46,
-              left:359,
-              top:395
+              left: 359,
+              top: 395,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -761,8 +808,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 47,
-              left:393,
-              top:392
+              left: 393,
+              top: 392,
             },
 
             {
@@ -772,8 +819,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 48,
-              left:111,
-              top:453
+              left: 111,
+              top: 453,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -782,8 +829,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 49,
-              left:146,
-              top:450
+              left: 146,
+              top: 450,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -792,8 +839,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 50,
-              left:171,
-              top:453
+              left: 171,
+              top: 453,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -802,8 +849,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 51,
-              left:207,
-              top:450
+              left: 207,
+              top: 450,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -812,8 +859,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 52,
-              left:234,
-              top:453
+              left: 234,
+              top: 453,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -822,8 +869,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 53,
-              left:269,
-              top:450
+              left: 269,
+              top: 450,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -832,8 +879,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 54,
-              left:296,
-              top:453
+              left: 296,
+              top: 453,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -842,8 +889,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 55,
-              left:332,
-              top:450
+              left: 332,
+              top: 450,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -852,8 +899,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 56,
-              left:359,
-              top:453
+              left: 359,
+              top: 453,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -862,8 +909,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 57,
-              left:393,
-              top:450
+              left: 393,
+              top: 450,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -872,8 +919,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 58,
-              left:111,
-              top:508
+              left: 111,
+              top: 508,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -882,8 +929,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 59,
-              left:146,
-              top:505
+              left: 146,
+              top: 505,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -892,8 +939,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 60,
-              left:171,
-              top:508
+              left: 171,
+              top: 508,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -902,8 +949,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 61,
-              left:207,
-              top:505
+              left: 207,
+              top: 505,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -912,8 +959,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 62,
-              left:234,
-              top:508
+              left: 234,
+              top: 508,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -922,8 +969,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 63,
-              left:269,
-              top:505
+              left: 269,
+              top: 505,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -932,8 +979,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 64,
-              left:296,
-              top:508
+              left: 296,
+              top: 508,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -942,8 +989,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 65,
-              left:332,
-              top:505
+              left: 332,
+              top: 505,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -952,8 +999,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 66,
-              left:359,
-              top:508
+              left: 359,
+              top: 508,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -962,8 +1009,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 67,
-              left:393,
-              top:505
+              left: 393,
+              top: 505,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -972,8 +1019,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 68,
-              left:111,
-              top:559
+              left: 111,
+              top: 559,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -982,8 +1029,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 69,
-              left:146,
-              top:556
+              left: 146,
+              top: 556,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -992,8 +1039,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 70,
-              left:171,
-              top:559
+              left: 171,
+              top: 559,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -1002,8 +1049,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 71,
-              left:207,
-              top:556
+              left: 207,
+              top: 556,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -1012,8 +1059,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 72,
-              left:234,
-              top:559
+              left: 234,
+              top: 559,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -1022,8 +1069,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 73,
-              left:269,
-              top:556
+              left: 269,
+              top: 556,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -1032,8 +1079,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 74,
-              left:296,
-              top:559
+              left: 296,
+              top: 559,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -1042,8 +1089,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 75,
-              left:332,
-              top:556
+              left: 332,
+              top: 556,
             },
             {
               nomal_url: 'cw/type1/object/202.png',
@@ -1052,8 +1099,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/202_dim.png',
               linkListIdx: -1,
               imgIdx: 76,
-              left:359,
-              top:559
+              left: 359,
+              top: 559,
             },
             {
               nomal_url: 'cw/type1/object/34.png',
@@ -1062,8 +1109,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/34_dim.png',
               linkListIdx: -1,
               imgIdx: 77,
-              left:393,
-              top:556
+              left: 393,
+              top: 556,
             },
             {
               nomal_url: 'cw/type1/object/191.png',
@@ -1072,8 +1119,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/191_dim.png',
               linkListIdx: -1,
               imgIdx: 78,
-              left:70,
-              top:247
+              left: 70,
+              top: 247,
             },
             {
               nomal_url: 'cw/type1/object/189.png',
@@ -1082,8 +1129,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/189_dim.png',
               linkListIdx: -1,
               imgIdx: 79,
-              left:67,
-              top:362
+              left: 67,
+              top: 362,
             },
             {
               nomal_url: 'cw/type1/object/192.png',
@@ -1092,8 +1139,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/192_dim.png',
               linkListIdx: -1,
               imgIdx: 80,
-              left:60,
-              top:451
+              left: 60,
+              top: 451,
             },
             {
               nomal_url: 'cw/type1/object/194.png',
@@ -1102,8 +1149,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/194_dim.png',
               linkListIdx: -1,
               imgIdx: 81,
-              left:283,
-              top:597
+              left: 283,
+              top: 597,
             },
             {
               nomal_url: 'cw/type1/object/183.png',
@@ -1112,8 +1159,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/183_dim.png',
               linkListIdx: -1,
               imgIdx: 82,
-              left:111,
-              top:609
+              left: 111,
+              top: 609,
             },
             {
               nomal_url: 'cw/type1/object/183-1.png',
@@ -1122,8 +1169,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/183_dim.png',
               linkListIdx: -1,
               imgIdx: 83,
-              left:146,
-              top:612
+              left: 146,
+              top: 612,
             },
             {
               nomal_url: 'cw/type1/object/183-2.png',
@@ -1132,8 +1179,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/183_dim.png',
               linkListIdx: -1,
               imgIdx: 84,
-              left:201,
-              top:609
+              left: 201,
+              top: 609,
             },
             {
               nomal_url: 'cw/type1/object/183-3.png',
@@ -1142,8 +1189,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/183_dim.png',
               linkListIdx: -1,
               imgIdx: 85,
-              left:241,
-              top:610
+              left: 241,
+              top: 610,
             },
             {
               nomal_url: 'cw/type1/object/183-4.png',
@@ -1152,8 +1199,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/183_dim.png',
               linkListIdx: -1,
               imgIdx: 86,
-              left:332,
-              top:612
+              left: 332,
+              top: 612,
             },
             {
               nomal_url: 'cw/type1/object/183-5.png',
@@ -1162,8 +1209,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/183_dim.png',
               linkListIdx: -1,
               imgIdx: 87,
-              left:375,
-              top:612
+              left: 375,
+              top: 612,
             },
             {
               nomal_url: 'cw/type1/object/13.png',
@@ -1172,8 +1219,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/13_dim.png',
               linkListIdx: -1,
               imgIdx: 88,
-              left:61,
-              top:658
+              left: 61,
+              top: 658,
             },
             {
               nomal_url: 'cw/type1/object/20.png',
@@ -1182,8 +1229,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/20_dim.png',
               linkListIdx: -1,
               imgIdx: 89,
-              left:198,
-              top:656
+              left: 198,
+              top: 656,
             },
             {
               nomal_url: 'cw/type1/object/20-1.png',
@@ -1192,8 +1239,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/20_dim.png',
               linkListIdx: -1,
               imgIdx: 90,
-              left:258,
-              top:656
+              left: 258,
+              top: 656,
             },
             {
               nomal_url: 'cw/type1/object/13-1.png',
@@ -1202,8 +1249,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/13_dim.png',
               linkListIdx: -1,
               imgIdx: 91,
-              left:346,
-              top:658
+              left: 346,
+              top: 658,
             },
             {
               nomal_url: 'cw/type1/object/5.png',
@@ -1212,8 +1259,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/5_dim.png',
               linkListIdx: -1,
               imgIdx: 92,
-              left:411,
-              top:239
+              left: 411,
+              top: 239,
             },
             {
               nomal_url: 'cw/type1/object/5.png',
@@ -1222,8 +1269,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/5_dim.png',
               linkListIdx: -1,
               imgIdx: 93,
-              left:408,
-              top:290
+              left: 408,
+              top: 290,
             },
             {
               nomal_url: 'cw/type1/object/5.png',
@@ -1232,8 +1279,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/5_dim.png',
               linkListIdx: -1,
               imgIdx: 94,
-              left:409,
-              top:337
+              left: 409,
+              top: 337,
             },
             {
               nomal_url: 'cw/type1/object/5.png',
@@ -1242,8 +1289,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/5_dim.png',
               linkListIdx: -1,
               imgIdx: 95,
-              left:403,
-              top:377
+              left: 403,
+              top: 377,
             },
             {
               nomal_url: 'cw/type1/object/5.png',
@@ -1252,8 +1299,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/5_dim.png',
               linkListIdx: -1,
               imgIdx: 96,
-              left:405,
-              top:438
+              left: 405,
+              top: 438,
             },
             {
               nomal_url: 'cw/type1/object/5.png',
@@ -1262,8 +1309,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/5_dim.png',
               linkListIdx: -1,
               imgIdx: 97,
-              left:408,
-              top:499
+              left: 408,
+              top: 499,
             },
             {
               nomal_url: 'cw/type1/object/29.png',
@@ -1272,8 +1319,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/29_dim.png',
               linkListIdx: -1,
               imgIdx: 98,
-              left:435,
-              top:353
+              left: 435,
+              top: 353,
             },
             {
               nomal_url: 'cw/type1/object/6.png',
@@ -1282,8 +1329,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/6_dim.png',
               linkListIdx: -1,
               imgIdx: 99,
-              left:426,
-              top:403
+              left: 426,
+              top: 403,
             },
             {
               nomal_url: 'cw/type1/object/13-2.png',
@@ -1292,8 +1339,8 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/13_dim.png',
               linkListIdx: -1,
               imgIdx: 100,
-              left:470,
-              top:258
+              left: 470,
+              top: 258,
             },
             {
               nomal_url: 'cw/type1/object/13-3.png',
@@ -1302,28 +1349,28 @@ export default {
               icon_dim_url: 'cw/type1/icon/dim/13_dim.png',
               linkListIdx: -1,
               imgIdx: 101,
-              left:469,
-              top:402
-            }
-          ]
-        }
+              left: 469,
+              top: 402,
+            },
+          ],
+        },
       },
       {
-        codeNum:'CW_002',
-        name:'CW_002',
+        codeNum: 'CW_002',
+        name: 'CW_002',
         data: {
           backImg_url: 'cw/type2/cw_class_bg.png',
-          interactionObjects:[
+          interactionObjects: [
             {
               nomal_url: 'cw/type2/object/40.png',
               over_url: 'cw/type2/object/over/40.png',
               icon_normal_url: 'cw/type2/icon/40.png',
               icon_dim_url: 'cw/type2/icon/dim/40_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 0,
-              left:88,
-              top:10
+              left: 88,
+              top: 10,
             },
             {
               nomal_url: 'cw/type2/object/186.png',
@@ -1331,10 +1378,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/186.png',
               icon_dim_url: 'cw/type2/icon/dim/186_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 1,
-              left:63,
-              top:72
+              left: 63,
+              top: 72,
             },
             {
               nomal_url: 'cw/type2/object/185.png',
@@ -1342,10 +1389,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/185.png',
               icon_dim_url: 'cw/type2/icon/dim/185_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 2,
-              left:192,
-              top:72
+              left: 192,
+              top: 72,
             },
             {
               nomal_url: 'cw/type2/object/186_2.png',
@@ -1353,10 +1400,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/186.png',
               icon_dim_url: 'cw/type2/icon/dim/186_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 3,
-              left:365,
-              top:72
+              left: 365,
+              top: 72,
             },
             {
               nomal_url: 'cw/type2/object/58.png',
@@ -1364,10 +1411,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/58.png',
               icon_dim_url: 'cw/type2/icon/dim/58_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 4,
-              left:-5,
-              top:105
+              left: -5,
+              top: 105,
             },
             {
               nomal_url: 'cw/type2/object/52.png',
@@ -1375,10 +1422,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/52.png',
               icon_dim_url: 'cw/type2/icon/dim/52_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 5,
-              left:271,
-              top:154
+              left: 271,
+              top: 154,
             },
             {
               nomal_url: 'cw/type2/object/202_1.png',
@@ -1386,10 +1433,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/202.png',
               icon_dim_url: 'cw/type2/icon/dim/202_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 6,
-              left:117,
-              top:276
+              left: 117,
+              top: 276,
             },
             {
               nomal_url: 'cw/type2/object/47_3.png',
@@ -1397,10 +1444,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/47.png',
               icon_dim_url: 'cw/type2/icon/dim/47_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 7,
-              left:136,
-              top:246
+              left: 136,
+              top: 246,
             },
             {
               nomal_url: 'cw/type2/object/35_5.png',
@@ -1408,10 +1455,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/35.png',
               icon_dim_url: 'cw/type2/icon/dim/35_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 8,
-              left:170,
-              top:273
+              left: 170,
+              top: 273,
             },
             {
               nomal_url: 'cw/type2/object/4_1.png',
@@ -1419,10 +1466,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/4.png',
               icon_dim_url: 'cw/type2/icon/dim/4_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 9,
-              left:193,
-              top:272
+              left: 193,
+              top: 272,
             },
             {
               nomal_url: 'cw/type2/object/33_5.png',
@@ -1430,10 +1477,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/33.png',
               icon_dim_url: 'cw/type2/icon/dim/33_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 10,
-              left:213,
-              top:244
+              left: 213,
+              top: 244,
             },
             {
               nomal_url: 'cw/type2/object/35_1.png',
@@ -1441,10 +1488,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/35.png',
               icon_dim_url: 'cw/type2/icon/dim/35_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 11,
-              left:316,
-              top:246
+              left: 316,
+              top: 246,
             },
             {
               nomal_url: 'cw/type2/object/33_4.png',
@@ -1452,10 +1499,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/33.png',
               icon_dim_url: 'cw/type2/icon/dim/33_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 12,
-              left:330,
-              top:273
+              left: 330,
+              top: 273,
             },
             {
               nomal_url: 'cw/type2/object/202_2.png',
@@ -1463,10 +1510,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/202.png',
               icon_dim_url: 'cw/type2/icon/dim/202_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 13,
-              left:341,
-              top:247
+              left: 341,
+              top: 247,
             },
             {
               nomal_url: 'cw/type2/object/4_2.png',
@@ -1474,10 +1521,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/4.png',
               icon_dim_url: 'cw/type2/icon/dim/4_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 14,
-              left:384,
-              top:277
+              left: 384,
+              top: 277,
             },
             {
               nomal_url: 'cw/type2/object/47_2.png',
@@ -1485,10 +1532,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/47.png',
               icon_dim_url: 'cw/type2/icon/dim/47_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 15,
-              left:399,
-              top:242
+              left: 399,
+              top: 242,
             },
             {
               nomal_url: 'cw/type2/object/33_6.png',
@@ -1496,10 +1543,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/33.png',
               icon_dim_url: 'cw/type2/icon/dim/33_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 16,
-              left:137,
-              top:380
+              left: 137,
+              top: 380,
             },
             {
               nomal_url: 'cw/type2/object/184_1.png',
@@ -1507,10 +1554,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/184.png',
               icon_dim_url: 'cw/type2/icon/dim/184_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 17,
-              left:165,
-              top:377
+              left: 165,
+              top: 377,
             },
             {
               nomal_url: 'cw/type2/object/35_6.png',
@@ -1518,10 +1565,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/35.png',
               icon_dim_url: 'cw/type2/icon/dim/35_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 18,
-              left:202,
-              top:355
+              left: 202,
+              top: 355,
             },
             {
               nomal_url: 'cw/type2/object/184_2.png',
@@ -1529,10 +1576,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/184.png',
               icon_dim_url: 'cw/type2/icon/dim/184_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 19,
-              left:318,
-              top:377
+              left: 318,
+              top: 377,
             },
             {
               nomal_url: 'cw/type2/object/35_2.png',
@@ -1540,10 +1587,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/35.png',
               icon_dim_url: 'cw/type2/icon/dim/35_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 20,
-              left:329,
-              top:355
+              left: 329,
+              top: 355,
             },
             {
               nomal_url: 'cw/type2/object/33_4.png',
@@ -1551,10 +1598,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/33.png',
               icon_dim_url: 'cw/type2/icon/dim/33_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 21,
-              left:364,
-              top:373
+              left: 364,
+              top: 373,
             },
             {
               nomal_url: 'cw/type2/object/48_1.png',
@@ -1562,10 +1609,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/48.png',
               icon_dim_url: 'cw/type2/icon/dim/48_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 22,
-              left:387,
-              top:352
+              left: 387,
+              top: 352,
             },
             {
               nomal_url: 'cw/type2/object/202_3.png',
@@ -1573,10 +1620,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/202.png',
               icon_dim_url: 'cw/type2/icon/dim/202_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 23,
-              left:388,
-              top:386
+              left: 388,
+              top: 386,
             },
             {
               nomal_url: 'cw/type2/object/4_4.png',
@@ -1584,10 +1631,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/4.png',
               icon_dim_url: 'cw/type2/icon/dim/4_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 24,
-              left:112,
-              top:489
+              left: 112,
+              top: 489,
             },
             {
               nomal_url: 'cw/type2/object/202_4.png',
@@ -1595,10 +1642,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/202.png',
               icon_dim_url: 'cw/type2/icon/dim/202_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 25,
-              left:133,
-              top:461
+              left: 133,
+              top: 461,
             },
             {
               nomal_url: 'cw/type2/object/48_3.png',
@@ -1606,10 +1653,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/48.png',
               icon_dim_url: 'cw/type2/icon/dim/48_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 26,
-              left:175,
-              top:484
+              left: 175,
+              top: 484,
             },
             {
               nomal_url: 'cw/type2/object/33_7.png',
@@ -1617,10 +1664,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/33.png',
               icon_dim_url: 'cw/type2/icon/dim/33_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 27,
-              left:205,
-              top:460
+              left: 205,
+              top: 460,
             },
             {
               nomal_url: 'cw/type2/object/35_8.png',
@@ -1628,10 +1675,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/35.png',
               icon_dim_url: 'cw/type2/icon/dim/35_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 28,
-              left:211,
-              top:488
+              left: 211,
+              top: 488,
             },
             {
               nomal_url: 'cw/type2/object/33_6.png',
@@ -1639,10 +1686,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/33.png',
               icon_dim_url: 'cw/type2/icon/dim/33_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 29,
-              left:313,
-              top:480
+              left: 313,
+              top: 480,
             },
             {
               nomal_url: 'cw/type2/object/4.png',
@@ -1650,10 +1697,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/4.png',
               icon_dim_url: 'cw/type2/icon/dim/4_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 30,
-              left:334,
-              top:492
+              left: 334,
+              top: 492,
             },
             {
               nomal_url: 'cw/type2/object/202_5.png',
@@ -1661,10 +1708,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/202.png',
               icon_dim_url: 'cw/type2/icon/dim/202_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 31,
-              left:366,
-              top:463
+              left: 366,
+              top: 463,
             },
             {
               nomal_url: 'cw/type2/object/47_1.png',
@@ -1672,10 +1719,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/47.png',
               icon_dim_url: 'cw/type2/icon/dim/47_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 32,
-              left:371,
-              top:493
+              left: 371,
+              top: 493,
             },
             {
               nomal_url: 'cw/type2/object/35_3.png',
@@ -1683,10 +1730,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/35.png',
               icon_dim_url: 'cw/type2/icon/dim/35_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 33,
-              left:409,
-              top:458
+              left: 409,
+              top: 458,
             },
             {
               nomal_url: 'cw/type2/object/33_8.png',
@@ -1694,10 +1741,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/33.png',
               icon_dim_url: 'cw/type2/icon/dim/33_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 34,
-              left:131,
-              top:569
+              left: 131,
+              top: 569,
             },
             {
               nomal_url: 'cw/type2/object/47_4.png',
@@ -1705,10 +1752,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/47.png',
               icon_dim_url: 'cw/type2/icon/dim/47_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 35,
-              left:160,
-              top:598
+              left: 160,
+              top: 598,
             },
             {
               nomal_url: 'cw/type2/object/35_7.png',
@@ -1716,10 +1763,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/35.png',
               icon_dim_url: 'cw/type2/icon/dim/35_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 36,
-              left:187,
-              top:575
+              left: 187,
+              top: 575,
             },
             {
               nomal_url: 'cw/type2/object/35_4.png',
@@ -1727,10 +1774,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/35.png',
               icon_dim_url: 'cw/type2/icon/dim/35_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 37,
-              left:310,
-              top:572
+              left: 310,
+              top: 572,
             },
             {
               nomal_url: 'cw/type2/object/184_3.png',
@@ -1738,10 +1785,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/184.png',
               icon_dim_url: 'cw/type2/icon/dim/184_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 38,
-              left:323,
-              top:592
+              left: 323,
+              top: 592,
             },
             {
               nomal_url: 'cw/type2/object/48_2.png',
@@ -1749,10 +1796,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/48.png',
               icon_dim_url: 'cw/type2/icon/dim/48_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 39,
-              left:365,
-              top:583
+              left: 365,
+              top: 583,
             },
             {
               nomal_url: 'cw/type2/object/33_1.png',
@@ -1760,10 +1807,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/33.png',
               icon_dim_url: 'cw/type2/icon/dim/33_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 40,
-              left:403,
-              top:568
+              left: 403,
+              top: 568,
             },
             {
               nomal_url: 'cw/type2/object/22_1.png',
@@ -1771,10 +1818,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/22.png',
               icon_dim_url: 'cw/type2/icon/dim/22_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 41,
-              left:1,
-              top:365
+              left: 1,
+              top: 365,
             },
             {
               nomal_url: 'cw/type2/object/22_2.png',
@@ -1782,10 +1829,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/22.png',
               icon_dim_url: 'cw/type2/icon/dim/22_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 42,
-              left:1,
-              top:551
+              left: 1,
+              top: 551,
             },
             {
               nomal_url: 'cw/type2/object/57_2.png',
@@ -1793,10 +1840,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/57.png',
               icon_dim_url: 'cw/type2/icon/dim/57_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 43,
-              left:57,
-              top:331
+              left: 57,
+              top: 331,
             },
             {
               nomal_url: 'cw/type2/object/57_3.png',
@@ -1804,10 +1851,10 @@ export default {
               icon_normal_url: 'cw/type2/icon/57.png',
               icon_dim_url: 'cw/type2/icon/dim/57_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 44,
-              left:57,
-              top:520
+              left: 57,
+              top: 520,
             },
             {
               nomal_url: 'cw/type2/object/57_1.png',
@@ -1815,184 +1862,201 @@ export default {
               icon_normal_url: 'cw/type2/icon/57.png',
               icon_dim_url: 'cw/type2/icon/dim/57_dim.png',
               linkListIdx: -1,
-              lessonData:{},
+              lessonData: {},
               imgIdx: 45,
-              left:466,
-              top:376
-            }
-          ]
-        }
+              left: 466,
+              top: 376,
+            },
+          ],
+        },
       },
     ]
-    this.dropMenuList=[]
-    for(let i=0;i<this.dropMenuListData.length;i++){
+    this.dropMenuList = []
+    for (let i = 0; i < this.dropMenuListData.length; i++) {
       this.dropMenuList.push(this.dropMenuListData[i].name)
     }
   },
   methods: {
     selectDropMenu(value) {
-      for(let i=0;i<this.dropMenuListData.length;i++){
-        if(value===this.dropMenuListData[i].name){
-          this.curriculumData.cwInfo=this.dropMenuListData[i]
+      for (let i = 0; i < this.dropMenuListData.length; i++) {
+        if (value === this.dropMenuListData[i].name) {
+          this.curriculumData.cwInfo = this.dropMenuListData[i]
           break
         }
       }
-      this.currentClassName=value
+      this.currentClassName = value
       this.$refs.listView.unLinkAllItem()
       this.$refs.imgListView.setData(this.curriculumData.cwInfo.data)
-      this.$refs.imgListViewSwiper.setData(this.curriculumData.cwInfo.data.interactionObjects)
+      this.$refs.imgListViewSwiper.setData(
+        this.curriculumData.cwInfo.data.interactionObjects
+      )
     },
-    setData(curriculumData){
+    setData(curriculumData) {
       $('#modalCuriRegi .modal-body').scrollTop(0)
-      if(curriculumData){
-        this.isUpdate=true
-        this.submitBtnName='수정'
+      if (curriculumData) {
+        this.isUpdate = true
+        this.submitBtnName = '수정'
         this.$refs.listView.unLinkAllItem()
-        this.curriculumData=curriculumData
-        this.currentClassName=this.curriculumData.cwInfo.name
+        this.curriculumData = curriculumData
+        this.currentClassName = this.curriculumData.cwInfo.name
         this.$refs.imgListView.setData(this.curriculumData.cwInfo.data)
-        this.$refs.imgListViewSwiper.setData(this.curriculumData.cwInfo.data.interactionObjects)
-        this.saveFileFullPath=this.curriculumData.savePathInfo.path+' > '+this.curriculumData.savePathInfo.fileName+'.link'
-        this.curriculumData.lessonInfo.pathTxt=this.curriculumData.lessonInfo.path+' > '+this.curriculumData.lessonInfo.lesson.name
+        this.$refs.imgListViewSwiper.setData(
+          this.curriculumData.cwInfo.data.interactionObjects
+        )
+        this.saveFileFullPath =
+          this.curriculumData.savePathInfo.path +
+          ' > ' +
+          this.curriculumData.savePathInfo.fileName +
+          '.link'
+        this.curriculumData.lessonInfo.pathTxt =
+          this.curriculumData.lessonInfo.path +
+          ' > ' +
+          this.curriculumData.lessonInfo.lesson.name
         this.$refs.listView.setDataList(this.curriculumData.lessonInfo.lesson)
         this.$refs.listView.checkLinkDataCnt()
-      }else{
-        this.isUpdate=false
-        this.submitBtnName='등록'
+      } else {
+        this.isUpdate = false
+        this.submitBtnName = '등록'
         this.curriculumData = {
           subTitle: '',
           desc: '',
           savePathInfo: {
-            type:'',
-            path:'',
-            fileName: ''
+            type: '',
+            path: '',
+            fileName: '',
           },
           cwInfo: null,
           isOpenEducation: true,
           isContinuedRegist: true,
           lessonInfo: {
-            lesson:{
-              title: "",
-              desc: "",
-              role: "",
+            lesson: {
+              title: '',
+              desc: '',
+              role: '',
               referenceList: [],
             },
             path: '',
             pathTxt: '',
           },
         }
-        this.saveFileFullPath=''
-        this.currentClassName='교실선택'
+        this.saveFileFullPath = ''
+        this.currentClassName = '교실선택'
 
         this.$refs.imgListView.setData([])
         this.$refs.imgListViewSwiper.setData([])
       }
     },
-    linkData(listIdx,imgIdx){
-      this.$refs.listView.linkData(listIdx,imgIdx)
-      this.$refs.imgListViewSwiper.linkData(listIdx,imgIdx)
+    linkData(listIdx, imgIdx) {
+      this.$refs.listView.linkData(listIdx, imgIdx)
+      this.$refs.imgListViewSwiper.linkData(listIdx, imgIdx)
     },
-    unLinkDataToList(listIdx){
+    unLinkDataToList(listIdx) {
       this.$refs.listView.unLinkData(listIdx)
     },
-    unLinkDataToImg(imgIdx){
+    unLinkDataToImg(imgIdx) {
       this.$refs.imgListViewSwiper.unLinkData(imgIdx)
     },
-    unLinkEvent(listIdx,imgIdx){
+    unLinkEvent(listIdx, imgIdx) {
       this.$refs.listView.unLinkData(listIdx)
       this.$refs.imgListView.unLinkData(imgIdx)
     },
-    updateLinkCnt(cnt){
-      this.linkDataCnt=cnt
+    updateLinkCnt(cnt) {
+      this.linkDataCnt = cnt
     },
-    unLinkAllItem(){
+    unLinkAllItem() {
       this.$refs.listView.unLinkAllItem()
       this.$refs.imgListView.unLinkAllItem()
       this.$refs.imgListViewSwiper.unLinkAllItem()
     },
-    setSavePath(pathInfo){
-      this.curriculumData.savePathInfo=pathInfo
-      this.saveFileFullPath=this.curriculumData.savePathInfo.path+' > '+this.curriculumData.savePathInfo.fileName+'.link'
+    setSavePath(pathInfo) {
+      this.curriculumData.savePathInfo = pathInfo
+      this.saveFileFullPath =
+        this.curriculumData.savePathInfo.path +
+        ' > ' +
+        this.curriculumData.savePathInfo.fileName +
+        '.link'
     },
-    setFileInfo(lessonInfo){
+    setFileInfo(lessonInfo) {
       this.unLinkAllItem()
-      this.curriculumData.lessonInfo=lessonInfo
-      this.curriculumData.lessonInfo.pathTxt=lessonInfo.path+' > '+lessonInfo.lesson.name
+      this.curriculumData.lessonInfo = lessonInfo
+      this.curriculumData.lessonInfo.pathTxt =
+        lessonInfo.path + ' > ' + lessonInfo.lesson.name
       this.$refs.listView.setDataList(this.curriculumData.lessonInfo.lesson)
     },
-    imgResize(perRatio){
+    imgResize(perRatio) {
       this.$refs.imgListViewSwiper.imgResize(perRatio)
     },
-    itemClick(imgIdx){
+    itemClick(imgIdx) {
       this.$refs.imgListView.itemClick(imgIdx)
       this.$refs.listView.itemClick(imgIdx)
     },
-    selectListImg(imgIdx){
+    selectListImg(imgIdx) {
       this.$refs.imgListView.selectListImg(imgIdx)
       this.$refs.imgListViewSwiper.selectListImg(imgIdx)
     },
-    checkUpload(){
+    checkUpload() {
       let isAllClear = true
-      if(this.curriculumData.subTitle===''){
-        isAllClear=false
-        this.$emit('change-desc','제목을 입력해 주세요.')
+      if (this.curriculumData.subTitle === '') {
+        isAllClear = false
+        this.$emit('change-desc', '제목을 입력해 주세요.')
       }
-      if(isAllClear&&this.curriculumData.desc===''){
-        isAllClear=false
-        this.$emit('change-desc','설명을 입력해 주세요.')
+      if (isAllClear && this.curriculumData.desc === '') {
+        isAllClear = false
+        this.$emit('change-desc', '설명을 입력해 주세요.')
       }
-      if(isAllClear&&this.curriculumData.lessonInfo.path===''){
-        isAllClear=false
-        this.$emit('change-desc','불러온 레슨정보가 없습니다.')
+      if (isAllClear && this.curriculumData.lessonInfo.path === '') {
+        isAllClear = false
+        this.$emit('change-desc', '불러온 레슨정보가 없습니다.')
       }
-      if(isAllClear&&this.curriculumData.savePathInfo.path===''){
-        isAllClear=false
-        this.$emit('change-desc','저장할 경로를 선택해주세요.')
+      if (isAllClear && this.curriculumData.savePathInfo.path === '') {
+        isAllClear = false
+        this.$emit('change-desc', '저장할 경로를 선택해주세요.')
       }
-      if(isAllClear&&this.currentClassName==='교실선택'){
-        isAllClear=false
-        this.$emit('change-desc','CW 교실 정보가 없습니다.')
+      if (isAllClear && this.currentClassName === '교실선택') {
+        isAllClear = false
+        this.$emit('change-desc', 'CW 교실 정보가 없습니다.')
       }
       isAllClear = true
-      if(isAllClear){
-        const newData={}
+      if (isAllClear) {
+        const newData = {}
         for (const item in this.curriculumData) {
-          if(item==='cwInfo'){
-            newData[item]={}
-            newData[item].codeNum=this.curriculumData[item].codeNum
-            newData[item].name=this.curriculumData[item].name
-            newData[item].data={
-              'backImg_url':this.curriculumData[item].data.backImg_url,
-              'interactionObjects':this.$refs.imgListView.getData()
+          if (item === 'cwInfo') {
+            newData[item] = {}
+            newData[item].codeNum = this.curriculumData[item].codeNum
+            newData[item].name = this.curriculumData[item].name
+            newData[item].data = {
+              backImg_url: this.curriculumData[item].data.backImg_url,
+              interactionObjects: this.$refs.imgListView.getData(),
             }
-          }else if(item==='lessonInfo'){
-            newData.lessonInfo={}
-            for(const item1 in this.curriculumData[item]){
+          } else if (item === 'lessonInfo') {
+            newData.lessonInfo = {}
+            for (const item1 in this.curriculumData[item]) {
               newData.lessonInfo[item1] = this.curriculumData.lessonInfo[item1]
             }
-            newData.lessonInfo.lesson.referenceList=this.$refs.listView.getData()
-          }else{
-            newData[item]=this.curriculumData[item]
+            newData.lessonInfo.lesson.referenceList =
+              this.$refs.listView.getData()
+          } else {
+            newData[item] = this.curriculumData[item]
           }
         }
-        newData.isLeaf=true
-        newData.type=newData.lessonInfo.type
-        newData.name=newData.savePathInfo.fileName+'.link'
-        newData.active=true
-        this.$emit('add-curiiculum-data',newData)
-        $("#modalCuriRegi").modal("hide")
+        newData.isLeaf = true
+        newData.type = newData.lessonInfo.type
+        newData.name = newData.savePathInfo.fileName + '.link'
+        newData.active = true
+        this.$emit('add-curiiculum-data', newData)
+        $('#modalCuriRegi').modal('hide')
       }
     },
-    checkUpdate(){
+    checkUpdate() {
       console.log(1)
     },
-    checkDell(){
+    checkDell() {
       console.log(1)
     },
-    changeCheckbox(e){
+    changeCheckbox(e) {
       console.log(e.target.checked)
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -2022,13 +2086,18 @@ export default {
   padding: 5px 10px;
   cursor: grab;
 }
-#modalCuriRegi .form-inline{
+#modalCuriRegi .form-inline {
   width: initial;
 }
-#modalCuriRegi .modal_curiregi .divide_area.right .list_box .vtl-node-main .custom-control-label::after{
+#modalCuriRegi
+  .modal_curiregi
+  .divide_area.right
+  .list_box
+  .vtl-node-main
+  .custom-control-label::after {
   margin: -8px 0px 0px 15px;
 }
-#modalCuriRegi{
+#modalCuriRegi {
   pointer-events: none;
 }
 </style>

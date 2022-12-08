@@ -9,14 +9,14 @@
     >
       <div class="background_close" @click="$emit('close')"></div>
       <div class="dataWrap">
-        <DatePicker v-model="range" is-range />
+        <DatePicker v-model="rangeitem" is-range />
         <div class="modal-footer">
           <button class="btn btn_crud_default" @click="$emit('close')">
             취소
           </button>
           <button
             class="btn btn_crud_point"
-            @click="$emit('select-date', range)"
+            @click="$emit('select-date', rangeitem)"
           >
             확인
           </button>
@@ -38,32 +38,30 @@ export default {
       type: Boolean,
       default: false,
     },
-    scheduleItem: {
+    range: {
       type: Object,
       default: () => {},
-    },
-    start: {
-      type: String,
-      default: '',
-    },
-    end: {
-      type: String,
-      default: '',
     },
   },
   data() {
     return {
-      range: {
-        // start: new Date(this.scheduleItem.startDay),
-        // end: new Date(
-        //   new Date(this.scheduleItem.startDay).setDate(
-        //     new Date(this.scheduleItem.startDay).getDate() + 7
-        //   )
-        // ),
-        start: new Date(this.start),
-        end: new Date(this.end),
+      rangeitem: {
+        start: this.range.start,
+        end: this.range.end,
       },
     }
+  },
+  watch: {
+    range: {
+      handler(value) {
+        if (value) {
+          this.rangeitem = {
+            start: value.start,
+            end: value.end,
+          }
+        }
+      },
+    },
   },
 }
 </script>
