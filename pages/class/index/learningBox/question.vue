@@ -68,7 +68,7 @@
               </div>
             </div>
             <div class="right_area">
-              <button class="btn btn_crud_default">삭제</button>
+              <button class="btn btn_crud_danger">삭제</button>
               <div class="input-group input-search form-inline form-lec">
                 <input
                   type="text"
@@ -79,12 +79,7 @@
                   <button class="btn icons_search_off" type="button"></button>
                 </div>
               </div>
-              <button
-                class="btn btn_filter"
-                data-toggle="modal"
-                data-target="#modalQueFilter"
-                data-dismiss="modal"
-              >
+              <button class="btn btn_filter" @click="onOpenQueFilterModal">
                 필터
               </button>
               <button class="btn btn_crud_default filter_lift" disabled>
@@ -128,11 +123,7 @@
                       <label class="custom-control-label" for="chk01"></label>
                     </div>
                   </td>
-                  <td
-                    data-toggle="modal"
-                    data-target="#modalNoticeView"
-                    data-dismiss="modal"
-                  >
+                  <td @click="onOpenQuestionViewModal">
                     <div class="study_qustion">
                       성격심리학 레슨1 관련 질문드립니다 성격심리학 레슨1 관련
                       질문드립니다성격심리학 레슨1 관련 질문드립니다성격심리학
@@ -156,12 +147,7 @@
                       <label class="custom-control-label" for="chk01"></label>
                     </div>
                   </td>
-                  <td
-                    data-toggle="modal"
-                    data-target="#modalReplyView"
-                    data-dismiss="modal"
-                    class="study_qustion"
-                  >
+                  <td class="study_qustion" @click="onOpenReplyViewModal">
                     └─ 답변드립니다.
                   </td>
                   <td>정미미 선생님</td>
@@ -225,12 +211,69 @@
         </div>
       </div>
     </div>
+
+    <QueFilterModal
+      :open="openQueFilterModal.open"
+      @close="onCloseQueFilterModal"
+    />
+
+    <QuestionViewModal
+      :open="openQuestionViewModal.open"
+      @close="onCloseQuestionViewModal"
+    />
+    <ReplyViewModal
+      :open="openReplyViewModal.open"
+      @close="onCloseReplyViewModal"
+    />
   </div>
 </template>
 
 <script>
+import QueFilterModal from '@/components/common/modal/learningbox/QueFilterModal.vue'
+import QuestionViewModal from '@/components/common/modal/learningbox/QuestionViewModal.vue'
+import ReplyViewModal from '@/components/common/modal/learningbox/ReplyViewModal.vue'
+
 export default {
   name: 'Question',
+  components: {
+    QueFilterModal,
+    QuestionViewModal,
+    ReplyViewModal,
+  },
+  data() {
+    return {
+      openQueFilterModal: {
+        open: false,
+      },
+      openQuestionViewModal: {
+        open: false,
+      },
+      openReplyViewModal: {
+        open: false,
+      },
+    }
+  },
+  methods: {
+    // 모달
+    onOpenQueFilterModal() {
+      this.openQueFilterModal.open = true
+    },
+    onCloseQueFilterModal() {
+      this.openQueFilterModal.open = false
+    },
+    onOpenQuestionViewModal() {
+      this.openQuestionViewModal.open = true
+    },
+    onCloseQuestionViewModal() {
+      this.openQuestionViewModal.open = false
+    },
+    onOpenReplyViewModal() {
+      this.openReplyViewModal.open = true
+    },
+    onCloseReplyViewModal() {
+      this.openReplyViewModal.open = false
+    },
+  },
 }
 </script>
 

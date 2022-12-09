@@ -104,7 +104,7 @@ export default {
             {
               name: '학습함',
               to: '/class/learningBox/question',
-              active: '/class/learningBox/question',
+              active: '/class/learningBox',
             },
           ],
         },
