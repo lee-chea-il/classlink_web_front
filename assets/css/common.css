@@ -14673,6 +14673,108 @@ a {
 }
 
 /* (완)공지사항-개인.html */
+.ac_manage_notice_personal a {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.ac_manage_notice_personal .notice_person {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+}
+.ac_manage_notice_personal .snb {
+  width: 30%;
+  height: 540px;
+  background: #F9F9FB;
+  position: relative;
+}
+.ac_manage_notice_personal .content_chat {
+  width: 70%;
+  height: 540px;
+}
+.ac_manage_notice_personal .icon_person_w {
+  display: inline-block;
+  width: 29px;
+  height: 37px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_person_w.png);
+}
+.ac_manage_notice_personal .icon_talk_off {
+  display: inline-block;
+  width: 37px;
+  height: 37px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_talk_off.png);
+}
+.ac_manage_notice_personal .icon_talk_off:hover, .ac_manage_notice_personal .icon_talk_off:focus, .ac_manage_notice_personal .icon_talk_off:active, .ac_manage_notice_personal .icon_talk_off.active {
+  background-image: url(../images/icon_talk_on.png);
+  cursor: pointer;
+}
+.ac_manage_notice_personal .icon_talk_on {
+  display: inline-block;
+  width: 37px;
+  height: 37px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_talk_on.png);
+}
+.ac_manage_notice_personal .icon_before {
+  display: inline-block;
+  width: 18px;
+  height: 16px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_before.png);
+}
+.ac_manage_notice_personal .icon_arrow_right_blue {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_arrow_right_blue.png);
+  margin-top: 2px;
+}
+.ac_manage_notice_personal .icon_emoticon_off_large {
+  display: inline-block;
+  width: 79px;
+  height: 79px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_emoticon_off_large.png);
+}
+.ac_manage_notice_personal .search_wrap {
+  display: flex;
+}
+.ac_manage_notice_personal .input-search {
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+.ac_manage_notice_personal .alarm_header > li + li {
+  border-left: 0.4px solid #fff;
+}
 .ac_manage_notice_personal .chat_list_search {
   position: relative;
   padding: 27px 0 11px;
@@ -14686,6 +14788,7 @@ a {
   display: flex;
   flex: 1 0;
   text-align: center;
+  justify-content: center;
 }
 .ac_manage_notice_personal .chat_list_search .alarm_header > li.active .btn_alarm_menu {
   opacity: 1;
@@ -14704,14 +14807,766 @@ a {
   font-weight: 600;
   color: #fff;
 }
-.ac_manage_notice_personal .chat_list_search button {
+.ac_manage_notice_personal .chat_list_search .button {
   border: none;
   background: none;
   cursor: pointer;
 }
 .ac_manage_notice_personal .chat_list_search .btn_alarm_menu > span {
-  display: block;
+  display: inline-block;
   line-height: 0;
+}
+.ac_manage_notice_personal .chat_list > li:first-child .chat_list_link {
+  padding-top: 19px;
+}
+.ac_manage_notice_personal .chat_list_link {
+  display: block;
+  overflow: hidden;
+  padding: 17px 16px 21px 18px;
+}
+.ac_manage_notice_personal .chat_list_link .status_area .count {
+  padding: 1px 8px 1px;
+  border-radius: 20px;
+  background: #FB5353;
+  font-weight: 500;
+  color: #fff;
+}
+.ac_manage_notice_personal .info_area {
+  display: flex;
+  align-items: center;
+}
+.ac_manage_notice_personal .check_wrap {
+  display: none;
+  margin: 0 14px 0 -4px;
+}
+.ac_manage_notice_personal .check_wrap > input {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+}
+.ac_manage_notice_personal .check_wrap input[type=checkbox] + label .check_delete {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border: 1px solid #d4d4d4;
+  vertical-align: top;
+  box-sizing: border-box;
+}
+.ac_manage_notice_personal .img_alarm_checkbox_on {
+  height: 13px;
+  background-position: 0 -60px;
+}
+.ac_manage_notice_personal .thumbnail_wrap {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+.ac_manage_notice_personal .thumbnail_wrap:before {
+  border-radius: 50%;
+}
+.ac_manage_notice_personal .thumbnail_wrap {
+  flex: none;
+  position: relative;
+  overflow: hidden;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+.ac_manage_notice_personal .text_wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1;
+  overflow: hidden;
+  margin: 3px 0 0 9px;
+}
+.ac_manage_notice_personal .text_wrap .name {
+  font-size: 17px;
+  font-weight: 600;
+}
+.ac_manage_notice_personal .text_wrap > div {
+  display: flex;
+}
+.ac_manage_notice_personal .chat_list_link .name {
+  flex: 0 1 auto;
+  font-size: 15px;
+  font-weight: 600;
+  color: #000;
+}
+.ac_manage_notice_personal .date_area {
+  flex: 1 0 auto;
+  margin: 2px 0 0 5px;
+  font-size: 12px;
+  color: #D1D3D4;
+  word-break: break-all;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+.ac_manage_notice_personal .text_area {
+  margin-top: 8px;
+}
+.ac_manage_notice_personal .message {
+  flex: 1 1 auto;
+  min-height: 15px;
+  font-size: 13px;
+  color: #999;
+  display: inline-block;
+  width: 100px;
+  height: 25px;
+  line-height: 24px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ac_manage_notice_personal .chat_list_area {
+  height: 339px;
+  overflow-y: scroll;
+  flex: 1 1 450px;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-color: #e0e3e6;
+  border-style: solid;
+  border-width: 0 1px;
+}
+.ac_manage_notice_personal .chat_list > li {
+  border-bottom: 1px solid #E6E7E8;
+}
+.ac_manage_notice_personal .chat_list > li.on:after,
+.ac_manage_notice_personal .chat_list > li.on:before {
+  right: 0;
+  left: 0;
+  background-color: #e8f0f8;
+}
+.ac_manage_notice_personal .chat_list_footer {
+  display: flex;
+  min-height: 49px;
+  border: 1px solid #D1D3D4;
+  background: #F9F9FC;
+  z-index: 10;
+  justify-content: space-between;
+  align-items: center;
+}
+.ac_manage_notice_personal .chat_list_footer.delete .check_wrap {
+  display: flex;
+}
+.ac_manage_notice_personal .chat_list li.active {
+  background: #E7EDFF;
+}
+.ac_manage_notice_personal .check_wrap {
+  display: none;
+  align-items: center;
+  margin-left: 14px;
+}
+.ac_manage_notice_personal .check_wrap input[type=checkbox] {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+}
+.ac_manage_notice_personal .check_wrap input[type=checkbox] + label .check_box {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border: 1px solid #d4d4d4;
+  vertical-align: top;
+  box-sizing: border-box;
+}
+.ac_manage_notice_personal .chat_list_footer .btn_delete_wrap {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 10px;
+}
+.ac_manage_notice_personal .btn_delete_icon {
+  flex: 0 0 42px;
+}
+.ac_manage_notice_personal .icon_bin {
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_bin.png);
+  cursor: pointer;
+}
+.ac_manage_notice_personal .input_btn_wrap .icons_thumbnail:hover, .ac_manage_notice_personal .input_btn_wrap .icons_thumbnail:focus, .ac_manage_notice_personal .input_btn_wrap .icons_thumbnail:active {
+  background-image: url(../images/icon_thumbnail_on.png);
+  cursor: pointer;
+}
+.ac_manage_notice_personal .icons_mobilemu {
+  margin-right: 30px;
+}
+.ac_manage_notice_personal .chat_delete {
+  display: inline-block;
+  margin-top: -1px;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 23px;
+  color: #000;
+  cursor: pointer;
+}
+.ac_manage_notice_personal .delete_cancel {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 23px;
+  color: #A7A9AC;
+  cursor: pointer;
+}
+.ac_manage_notice_personal .btn_delete_cancel {
+  position: relative;
+  color: #999;
+  margin-right: 15px;
+  display: flex;
+  width: 100%;
+}
+.ac_manage_notice_personal .btn_delete_cancel .form-inline {
+  margin-left: 18px;
+}
+.ac_manage_notice_personal .btn_delete_cancel .right_area {
+  margin-left: auto;
+  width: 40%;
+}
+.ac_manage_notice_personal .talk_pc_user .chat_list_footer .btn_delete_cancel {
+  flex: 0 0 54px;
+  position: relative;
+  color: #999;
+}
+.ac_manage_notice_personal input,
+.ac_manage_notice_personal select,
+.ac_manage_notice_personal table,
+.ac_manage_notice_personal textarea {
+  font-size: 14px;
+}
+.ac_manage_notice_personal .chat_section {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+  background: #f0f2f5;
+  box-sizing: border-box;
+}
+.ac_manage_notice_personal .chat_header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1000;
+  padding: 15px 0 15px 15px;
+  border-bottom: 1px solid #dfe1e2;
+  background-color: rgba(240, 242, 245, 0.95);
+}
+.ac_manage_notice_personal .chat_header_top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ac_manage_notice_personal .info_area {
+  display: flex;
+  align-items: center;
+}
+.ac_manage_notice_personal .info_area .icons_user {
+  width: 40px;
+  height: 40px;
+}
+.ac_manage_notice_personal .thumbnail_area {
+  position: relative;
+}
+.ac_manage_notice_personal .chat_header_top .thumbnail_wrap {
+  width: 41px;
+  height: 41px;
+  border-color: #ededed;
+}
+.ac_manage_notice_personal .thumbnail_wrap,
+.ac_manage_notice_personal .thumbnail_wrap:before {
+  border-radius: 50%;
+}
+.ac_manage_notice_personal .thumbnail_wrap {
+  flex: none;
+  position: relative;
+  overflow: hidden;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+.ac_manage_notice_personal .text_wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1;
+  overflow: hidden;
+  margin: 3px 0 0 9px;
+}
+.ac_manage_notice_personal .name_area {
+  display: flex;
+  align-items: center;
+}
+.ac_manage_notice_personal .chat_header_menu {
+  display: flex;
+  flex: none;
+  align-items: center;
+}
+.ac_manage_notice_personal .chat_menu_wrap {
+  position: relative;
+}
+.ac_manage_notice_personal .chat_menu_wrap .ly_setting_wrap {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 20px;
+  z-index: 5;
+  width: 242px;
+  padding-top: 17px;
+  box-sizing: border-box;
+  background: #FFFFFF;
+  border: 1px solid #D1D3D4;
+  border-radius: 5px;
+}
+.ac_manage_notice_personal .title_section {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+.ac_manage_notice_personal .btn_setting_close {
+  margin-left: auto;
+  margin-right: 20px;
+}
+.ac_manage_notice_personal .btn_setting_close .icons_close {
+  width: 15px;
+  margin-top: -7px;
+  cursor: pointer;
+}
+.ac_manage_notice_personal .btn_setting_item {
+  border: 0.4px solid #D1D3D4;
+}
+.ac_manage_notice_personal .ly_setting_title {
+  margin: 0 20px;
+  padding-bottom: 19px;
+  border-bottom: 1px solid #ebebeb;
+}
+.ac_manage_notice_personal .title_text {
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.ac_manage_notice_personal .btn_setting_item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 17px 20px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  text-align: left;
+  box-sizing: border-box;
+}
+.ac_manage_notice_personal .setting_item_wrap {
+  display: inline-block;
+  flex: 1;
+  position: relative;
+}
+.ac_manage_notice_personal .btn_text {
+  font-weight: 500;
+  line-height: 1.5;
+}
+.ac_manage_notice_personal .btn_text:hover, .ac_manage_notice_personal .btn_text:focus, .ac_manage_notice_personal .btn_text:active {
+  color: #7391FA;
+}
+.ac_manage_notice_personal .lst_setting_menu > li + li:before,
+.ac_manage_notice_personal .lst_setting_menu > li:last-child:after {
+  position: absolute;
+  right: 20px;
+  left: 20px;
+  background-color: #f7f7f7;
+  content: "";
+}
+.ac_manage_notice_personal .chat_area {
+  flex: 1 1 auto;
+  position: relative;
+  z-index: 100;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.ac_manage_notice_personal .group_message_balloon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 14px;
+  padding: 90px 14px 24px 0;
+}
+.ac_manage_notice_personal .group_message_balloon .rgt .txt_confirm {
+  display: flex;
+  right: 100%;
+  left: inherit;
+  margin: 0 -8px 0 0;
+  text-align: right;
+}
+.ac_manage_notice_personal .date_check {
+  margin-bottom: 12px;
+  text-align: center;
+  margin-top: 20px;
+}
+.ac_manage_notice_personal .date_check em {
+  display: inline-block;
+  height: 25px;
+  font-size: 12px;
+  color: #fff;
+  line-height: 25px;
+}
+.ac_manage_notice_personal .date_check > span {
+  display: inline-block;
+  padding: 0 12px 1px;
+  border: 1px solid #c9cfd5;
+  border-radius: 15px;
+  background: #cdd3d8;
+}
+.ac_manage_notice_personal .new_message_balloon_area {
+  position: relative;
+}
+.ac_manage_notice_personal .new_message_balloon_area .thumbnail_profile {
+  position: absolute;
+  top: 5px;
+  left: 0;
+}
+.ac_manage_notice_personal .thumbnail_profile .icons_user {
+  width: 32px;
+  height: 32px;
+}
+.ac_manage_notice_personal .message_balloon {
+  position: relative;
+  float: left;
+  max-width: 73%;
+  margin-bottom: 0;
+  margin-left: 40px;
+  border: 1px solid #dfdfdf;
+  border-radius: 12px;
+  background-color: #fff;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+.ac_manage_notice_personal .txt_confirm {
+  position: absolute;
+  bottom: 1px;
+  left: 100%;
+  min-width: 60px;
+  margin-left: 10px;
+  font-size: 11px;
+  color: #aeb1b4;
+}
+.ac_manage_notice_personal .group_message_balloon .new_message_balloon_area:after,
+.ac_manage_notice_personal .group_message_balloon .new_message_balloon_area:after {
+  display: block;
+  clear: both;
+  content: "";
+}
+.ac_manage_notice_personal .message_balloon.card_message.space {
+  margin-top: 8px !important;
+}
+.ac_manage_notice_personal .message_balloon.rgt.card_message {
+  background: #E7EDFF;
+  border: 1px solid #D1DBFF;
+  margin-top: 30px;
+}
+.ac_manage_notice_personal .message_balloon.rgt {
+  float: right;
+  max-width: 80%;
+  margin-right: 5px;
+}
+.ac_manage_notice_personal .message_balloon > p {
+  padding: 11px 13px;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #1e1e23;
+}
+.ac_manage_notice_personal .chat_write {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 100;
+}
+.ac_manage_notice_personal .chat_write_area {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+}
+.ac_manage_notice_personal .chat_write_wrap {
+  display: flex;
+  flex: 1;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+}
+.ac_manage_notice_personal .input_btn_wrap {
+  display: flex;
+  align-items: stretch;
+  height: 49px;
+  padding-left: 10px;
+}
+.ac_manage_notice_personal .input_btn_wrap [class*=btn_] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+}
+.ac_manage_notice_personal .chat_layer_sticker {
+  z-index: 100;
+  margin: 0 -1px;
+}
+.ac_manage_notice_personal .chat_sticker {
+  width: 100%;
+  height: 100px;
+}
+.ac_manage_notice_personal .chat_sticker_list {
+  position: absolute;
+  top: -6px;
+  left: 0;
+  z-index: 10;
+  float: left;
+  overflow: hidden;
+  width: 100%;
+  height: 107px;
+  border: 1px solid #dee0e5;
+  background: #fff;
+  text-align: center;
+}
+.ac_manage_notice_personal .chat_sticker_list ul {
+  overflow-y: auto;
+  max-height: 100%;
+}
+.ac_manage_notice_personal .chat_sticker_list li {
+  width: 14.285%;
+  margin-bottom: 20px;
+}
+.ac_manage_notice_personal .chat_lst_sticker_set {
+  overflow: hidden;
+  height: 135px;
+  padding-top: 15px;
+  padding-right: 15px;
+  padding-left: 15px;
+  white-space: nowrap;
+}
+.ac_manage_notice_personal .chat_lst_sticker_set > li {
+  float: left;
+}
+.ac_manage_notice_personal .imageUploader {
+  height: 0px;
+  position: fixed;
+}
+.ac_manage_notice_personal .chat_input_area {
+  flex: 1 0;
+  height: 50px;
+  margin-left: 1px;
+  padding: 15px 0 14px;
+  display: flex;
+}
+.ac_manage_notice_personal .chat_input {
+  overflow-y: auto;
+  width: 100%;
+  height: 100%;
+  padding: 0 17px 0 6px;
+  font-size: 15px;
+  color: #454545;
+  line-height: 1.35;
+  box-sizing: border-box;
+}
+.ac_manage_notice_personal .chat_input::-moz-placeholder {
+  color: #A7A9AC;
+}
+.ac_manage_notice_personal .chat_input:-ms-input-placeholder {
+  color: #A7A9AC;
+}
+.ac_manage_notice_personal .chat_input::placeholder {
+  color: #A7A9AC;
+}
+.ac_manage_notice_personal textarea {
+  border: none;
+  outline: none;
+  resize: none;
+}
+.ac_manage_notice_personal .submit_btn_wrap {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+.ac_manage_notice_personal .icon_emoticon_off {
+  display: inline-block;
+  width: 24px;
+  height: 27px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_emoticon_off.png);
+}
+.ac_manage_notice_personal .icon_emoticon_off:hover, .ac_manage_notice_personal .icon_emoticon_off:focus, .ac_manage_notice_personal .icon_emoticon_off:active {
+  background-image: url(../images/icon_emoticon_on.png);
+  cursor: pointer;
+}
+.ac_manage_notice_personal .icon_send_off {
+  display: inline-block;
+  width: 24px;
+  height: 27px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_send_off.png);
+}
+.ac_manage_notice_personal .icon_send_off:hover, .ac_manage_notice_personal .icon_send_off:focus, .ac_manage_notice_personal .icon_send_off:active {
+  background-image: url(../images/icon_send_on.png);
+  cursor: pointer;
+}
+.ac_manage_notice_personal .new_mark {
+  width: 35px;
+  height: 19px;
+  background: #4FCED0;
+  border-radius: 9px;
+  margin-left: 5px;
+}
+.ac_manage_notice_personal .new_font {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 17px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #FFFFFF;
+  justify-content: center;
+}
+.ac_manage_notice_personal .stu_num {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #A7A9AC;
+  margin: 10px 0px 10px 20px;
+}
+.ac_manage_notice_personal .message_image {
+  width: 300px;
+  height: 225px;
+  background: #FFFFFF;
+  border: 0.4px solid #A7A9AC;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.ac_manage_notice_personal .message_image .icons_thumbnail {
+  width: 52px;
+  height: 52px;
+}
+.ac_manage_notice_personal .message_image .icons_thumbnail:hover, .ac_manage_notice_personal .message_image .icons_thumbnail:focus, .ac_manage_notice_personal .message_image .icons_thumbnail:active {
+  cursor: pointer;
+}
+.ac_manage_notice_personal .strong_blue {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 23px;
+  color: #7391FA;
+}
+.ac_manage_notice_personal .sch_none_text {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  color: #A7A9AC;
+  margin-bottom: 10px;
+}
+.ac_manage_notice_personal .sch_none_wrap {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 131px 0;
+}
+.ac_manage_notice_personal .btn_sch_none {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #7391FA;
+  gap: 4px;
+}
+.ac_manage_notice_personal .btn_sch_back {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #A7A9AC;
+  gap: 5px;
+  justify-content: end;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+.ac_manage_notice_personal .btn_delete {
+  display: flex;
+  width: 100%;
+}
+.ac_manage_notice_personal .btn_delete .form-inline {
+  margin-left: 18px;
+}
+.ac_manage_notice_personal .btn_delete .delete_cancel {
+  margin-left: auto;
+  width: 12%;
+}
+.ac_manage_notice_personal .nodata {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 23px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #A7A9AC;
+  justify-content: center;
+  margin: 248px auto;
+}
+
+/* 팝업 S2- 채팅하기 팝업창
+[개발참조] 학생탭에서 학생 프로필이미지 클릭 시 출력되는 팝업 */
+.modal_chat .icons_user {
+  width: 110px;
+  height: 110px;
+}
+.modal_chat .user_name {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 23px;
+  margin-top: 20px;
+  margin-bottom: -20px;
+}
+.modal_chat .icon_talk_on {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_talk_on.png);
+}
+.modal_chat .btn_chat {
+  width: 200px;
+  height: 50px;
+}
+.modal_chat .modal-content {
+  width: 80%;
 }
 
 /*---------------------------------------*/
