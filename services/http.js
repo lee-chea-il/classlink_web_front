@@ -5,7 +5,7 @@ axios.defaults.baseURL = 'http://112.171.101.31:45490'
 axios.defaults.headers = { 'Content-Type': 'application/json' }
 const http = axios.create({
   headers: {
-    'Content-type': 'application/json',
+    'Content-Type': 'application/json',
   },
   baseURL: 'http://112.171.101.31:45490',
   timeout: 10000,

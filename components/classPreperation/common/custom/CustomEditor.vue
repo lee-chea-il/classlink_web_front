@@ -4,14 +4,19 @@
       <VueEditor
         v-if="currentIdx === idx"
         v-model="item.problem"
-        :editorOptions="editorOptions"
         :editorToolbar="editorToolbar"
+        :editorOptions="editorOptions"
+        :useCustomImageHandler="true"
+        @image-added="handleImageAdded"
       />
+      {{ item.problem }}
     </client-only>
   </div>
 </template>
 
 <script>
+import { api } from '~/services'
+
 export default {
   name: 'CustomEditor',
   props: {
@@ -44,6 +49,26 @@ export default {
         ['image', 'code-block'],
       ],
     }
+  },
+  methods: {
+    handleImageAdded(file, Editor, cursorLocation, resetUploader) {
+      console.log(file)
+      const formData = new FormData()
+      formData.append('file', file)
+
+      api
+        .postFile(formData)
+        .then((res) => {
+          console.log(res)
+          // console.log(idt_name)
+          // const url = result.data.url // Get url from response
+          // Editor.insertEmbed(cursorLocation, 'image', url)
+          // resetUploader()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
   },
 }
 </script>

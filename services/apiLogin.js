@@ -14,10 +14,15 @@ async function getIdCheck(id) {
   return await http.get(`/api/v1/account/sign-up/id-check?id=${id}`)
 }
 
+async function getUserInfo() {
+  return await http.get('/api/v1/account/me')
+}
+
 const apiLogin = {
   postLogin,
   postSignup,
   getIdCheck,
+  getUserInfo,
 }
 
 export default apiLogin
