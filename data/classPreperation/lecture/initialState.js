@@ -20,6 +20,7 @@ export default function initialState() {
     searchData: { word: '', teacher: '', class: '' },
     deleteItem: {},
     range: { start: '', end: '' },
+    selectCurriculumInfo:{},
     initLectureInfo: {
       name: '',
       teacher: [],

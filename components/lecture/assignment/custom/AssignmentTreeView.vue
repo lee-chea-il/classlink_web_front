@@ -50,14 +50,11 @@ export default {
         if (data[i].children !== undefined) {
           nObj.isLeaf = false
           nObj.children = []
-
           result[i] = nObj
           this.pid++
-
           result[i].children = dataMapping(data[i].children, isReadOnly)
         } else {
           nObj.isLeaf = true
-
           result[i] = nObj
           this.pid++
         }
@@ -68,9 +65,6 @@ export default {
       true,
       dataMapping(this.dataList, true)
     )
-  },
-  methods: {
-    
   },
 }
 </script>

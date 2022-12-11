@@ -6,6 +6,7 @@
       class="btn over_num"
       data-toggle="modal"
       data-target="#modalLectureRegi05"
+      @click="sendSelectCurriculumData"
     >
       {{`+${dayData.length}`}}
     </button>
@@ -37,6 +38,10 @@ export default {
       type:Number,
       default:1
     },
+    idx:{
+      type:Number,
+      default:0
+    },
     isSun:{
       type:Boolean,
       default: false,
@@ -49,10 +54,14 @@ export default {
       type:Boolean,
       default: false,
     },
+    dataList: {
+      type: Array,
+      default: () => [],
+    },
   },
   data(){
     return {
-      dayData:[],
+      dayData:this.dataList,
     }
   },
   methods:{
@@ -60,10 +69,11 @@ export default {
       this.dayData.push(data)
     },
     removeData(e){
-      console.log(e)
-      console.log(e.target.id)
       const idx=parseInt(e.target.id.split('_')[1])
       this.dayData.splice(idx,1)
+    },
+    sendSelectCurriculumData(){
+      this.$emit('select-curriculum-data',{day:this.idx,dayData:this.dayData})
     }
   }
 }

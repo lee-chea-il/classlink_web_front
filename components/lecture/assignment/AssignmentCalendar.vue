@@ -33,29 +33,13 @@
             </thead>
             <tbody>
               <AssignmentCalendarWeek
-                ref="first"
-                weekType="first"
-                :numberList="firstNumberList"
-              />
-              <AssignmentCalendarWeek
-                ref="second"
-                weekType="second"
-                :numberList="secondNumberList"
-              />
-              <AssignmentCalendarWeek
-                ref="third"
-                weekType="third"
-                :numberList="thirdNumberList"
-              />
-              <AssignmentCalendarWeek
-                ref="fourth"
-                weekType="fourth"
-                :numberList="fourthNumberList"
-              />
-              <AssignmentCalendarWeek
-                ref="last"
-                weekType="last"
-                :numberList="lastNumberList"
+                v-for="(item,index) in ['first','second','third','fourth','last']"
+                :key="`week_${index}`"
+                ref="weeks"
+                :weekType="item"
+                :numberList="numberList[index]"
+                :idx="index"
+                @select-curriculum-data="sendSelectCurriculumData"
               />
             </tbody>
           </table>
@@ -77,16 +61,6 @@ import AssignmentDragAreaTreeView from '@/components/lecture/assignment/custom/A
 export default {
   name: 'AssignmentCalendar',
   components: { AssignmentCalendarWeek, AssignmentDragAreaTreeView },
-  props: {
-    listItem: {
-      type: Array,
-      default: () => [],
-    },
-    add: {
-      type: Boolean,
-      default: false,
-    },
-  },
   data(){
     return {
       lectureData:{},
@@ -94,17 +68,14 @@ export default {
       currentYear:2022,
       currentMonth:8,
       currentDate:1,
-      firstNumberList:[],
-      secondNumberList:[],
-      thirdNumberList:[],
-      fourthNumberList:[],
-      lastNumberList:[],
+      numberList:[[],[],[],[],[]],
       monthStartIdx:0,
       monthLastIdx:0
     }
   },
   created() {
     this.today=new Date()
+    this.resetDate()
     setTimeout(() => {
       this.setToday()
     },300)
@@ -116,35 +87,56 @@ export default {
       this.currentDate=this.today.getDate()
       this.setMonthInfo()
     },
+    resetDate(){
+      this.numberList=[[],[],[],[],[]]
+      for(let i=0;i<5;i++){
+        for(let j=0;j<7;j++){
+          this.numberList[i][j]={num:1,prev:false,next:false,data:{data:[],linkIdx:-1}}
+        }
+      }
+    },
     setMonthInfo(){
-      this.firstNumberList=[]
-      this.secondNumberList=[]
-      this.thirdNumberList=[]
-      this.fourthNumberList=[]
-      this.lastNumberList=[]
+      this.resetDate()
       const firstDate=new Date(`${this.currentYear}-${this.currentMonth}-01`)
       this.monthStartIdx=firstDate.getDay()
       const lastDate=new Date(this.currentYear,this.currentMonth,0)
       this.monthLastIdx=lastDate.getDay()
+      let cNum
+      let tCnt=0
+      const keyId=this.currentYear+'_'+this.currentMonth+'_'
       for(let i=0;i<7;i++){
         if(i<this.monthStartIdx){
           const cha=i-this.monthStartIdx
           const tempDate=new Date(`${this.currentYear}-${this.currentMonth}-01`)
           tempDate.setDate(tempDate.getDate()+cha)
-          this.firstNumberList[i]={num:tempDate.getDate(),prev:true,next:false}
+          this.numberList[0][i]={keyId:keyId+tCnt,num:tempDate.getDate(),prev:true,next:false,data:{data:[]}}
         }else{
-          this.firstNumberList[i]={num:i-this.monthStartIdx+1,prev:false,next:false}
+          cNum=i-this.monthStartIdx+1
+          this.numberList[0][i]={keyId:keyId+tCnt,num:cNum,prev:false,next:false,data:this.getData(cNum)}
         }
-        this.secondNumberList[i]={num:(7-this.monthStartIdx+1+i),prev:false,next:false}
-        this.thirdNumberList[i]={num:(this.secondNumberList[i].num+7),prev:false,next:false}
-        this.fourthNumberList[i]={num:(this.thirdNumberList[i].num+7),prev:false,next:false}
+        cNum=7-this.monthStartIdx+1+i
+        this.numberList[1][i]={keyId:keyId+tCnt,num:cNum,prev:false,next:false,data:this.getData(cNum)}
+
+        cNum=this.numberList[1][i].num+7
+        this.numberList[2][i]={keyId:keyId+tCnt,num:cNum,prev:false,next:false,data:this.getData(cNum)}
+
+        cNum=this.numberList[2][i].num+7
+        this.numberList[3][i]={keyId:keyId+tCnt,num:cNum,prev:false,next:false,data:this.getData(cNum)}
+
         if(i>this.monthLastIdx){
-          this.lastNumberList[i]={num:(i-this.monthLastIdx),prev:false,next:true}
+          this.numberList[4][i]={keyId:keyId+tCnt,num:(i-this.monthLastIdx),prev:false,next:true,data:{data:[]}}
         }else{
-          this.lastNumberList[i]={num:(this.fourthNumberList[i].num+7),prev:false,next:false}
+          cNum=this.numberList[3][i].num+7
+          this.numberList[4][i]={keyId:keyId+tCnt,num:cNum,prev:false,next:false,data:this.getData(cNum)}
         }
+        tCnt++
       }
       this.$refs.assignmentDragArea.update(this.monthStartIdx,this.monthLastIdx)
+    },
+    getData(day){
+      const cDay=`${this.currentYear}_${this.currentMonth}_${day}`
+      if(this.lectureData[cDay]===undefined)this.lectureData[cDay]={data:[],linkIdx:-1}
+      return this.lectureData[cDay]
     },
     prevMonth(){
       this.today.setMonth(this.today.getMonth()-1)
@@ -155,19 +147,15 @@ export default {
       this.setToday()
     },
     linkActive(dragData,dayData){
-      const dayListIdx=parseInt(parseInt(dayData.id.split('_')[1])/7)
-      if(dayListIdx===0){
-        this.$refs.first.linkActive(dragData,dayData)
-      }else if(dayListIdx===1){
-        this.$refs.second.linkActive(dragData,dayData)
-      }else if(dayListIdx===2){
-        this.$refs.third.linkActive(dragData,dayData)
-      }else if(dayListIdx===3){
-        this.$refs.fourth.linkActive(dragData,dayData)
-      }else{
-        this.$refs.last.linkActive(dragData,dayData)
-      }
+      const weekIdx=parseInt(parseInt(dayData.id.split('_')[1])/7)
+      const dayIdx=parseInt(dayData.id.split('_')[1])%7
+      const cDay=`${this.currentYear}_${this.currentMonth}_${this.numberList[weekIdx][dayIdx].num}`
+      this.lectureData[cDay].data.push(dragData)
+      console.log(this.lectureData)
     },
+    sendSelectCurriculumData(data){
+      this.$emit('select-curriculum-data',data)
+    }
   }
 }
 </script>

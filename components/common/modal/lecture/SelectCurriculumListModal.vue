@@ -21,32 +21,18 @@
         </div>
         <div class="modal-body">
           <div class="bar_sec">
-            <div class="bar">
-              <div class="text">소단원1</div>
-              <span class="minus"></span>
-            </div>
-            <div class="bar">
-              <div class="text">
-                자연수의 혼합 계산 이해 자연수의 혼합 계산 이해 자연수의 혼합
-                계산 이해 자연수
-              </div>
-              <span class="minus"></span>
-            </div>
-            <div class="bar">
-              <div class="text">자연수의 혼합 계산 개념</div>
-              <span class="minus"></span>
-            </div>
-            <div class="bar">
-              <div class="text">소단원1</div>
-              <span class="minus"></span>
-            </div>
-            <div class="bar">
-              <div class="text">소단원1</div>
-              <span class="minus"></span>
-            </div>
-            <div class="bar">
-              <div class="text">소단원1</div>
-              <span class="minus"></span>
+            <div
+              v-for="(item,index) in dataList"
+              :key="`key_modal_${index}`"
+              :idx="index"
+              class="bar"
+            >
+              <div class="text">{{item.name}}</div>
+              <span
+                :id="`modalRemoveIdx_${index}`"
+                class="minus"
+                @click="removeData"
+              ></span>
             </div>
           </div>
         </div>
@@ -61,6 +47,20 @@
 <script>
 export default {
   name: 'SelectCurriculumListModal',
+  data(){
+    return {
+      dataList:[]
+    }
+  },
+  methods:{
+    setData(data){
+      this.dataList=data
+    },
+    removeData(e){
+      const idx=parseInt(e.target.id.split('_')[1])
+      this.dataList.splice(idx,1)
+    },
+  }
 }
 </script>
 

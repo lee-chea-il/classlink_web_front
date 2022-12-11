@@ -22,6 +22,7 @@
             />
             <AssignmentCalendar
               ref="calendar"
+              @select-curriculum-data="sendSelectCurriculumData"
             />
           </div>
         </div>
@@ -61,6 +62,10 @@ export default {
       type: String,
       default: '',
     },
+    curriculumList:{
+      type: Array,
+      default: () => [],
+    }
   },
   data(){
     return {
@@ -191,6 +196,10 @@ export default {
     dragEnd(){
       this.$refs.calendar.$refs.assignmentDragArea.showHideDragArea(false)
     },
+    sendSelectCurriculumData(data){
+      console.log(data)
+      this.$emit('select-curriculum-data',data)
+    }
   },
 }
 </script>

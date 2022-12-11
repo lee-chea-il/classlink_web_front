@@ -3,11 +3,14 @@
     <AssignmentCalendarDay
       v-for="(item,index) in numberList"
       ref="daysList"
-      :key="`key_${item.num}`"
+      :key="item.keyId"
+      :idx="index"
       :dayNum="item.num"
       :prev="item.prev"
       :next="item.next"
+      :dataList="item.data.data"
       :isSun="(index===0)?true:false"
+      @select-curriculum-data="sendSelectCurriculumData"
     />
   </tr>
 </template>
@@ -26,11 +29,19 @@ export default {
       type: Array,
       default: () => [],
     },
+    idx:{
+      type:Number,
+      default:0
+    },
   },
   methods:{
     linkActive(dragData,dayData){
       const dayIdx=parseInt(dayData.id.split('_')[1])%7
       this.$refs.daysList[dayIdx].setData(dragData)
+    },
+    sendSelectCurriculumData(data){
+      data.week=this.idx
+      this.$emit('select-curriculum-data',data)
     }
   }
 }

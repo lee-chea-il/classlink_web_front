@@ -74,10 +74,17 @@
     />
 
     <!-- 커리큘럼 배정 -->
-    <CurriculumAssignmentModal :identity="identity" :modalTitle="modalTitle" />
+    <CurriculumAssignmentModal
+      :identity="identity"
+      :modalTitle="modalTitle"
+      :curriculumList="curriculumList"
+      @select-curriculum-data="getSelectCurriculumData"
+    />
 
     <!-- 커리큘럼 리스트 상세 -->
-    <SelectCurriculumListModal />
+    <SelectCurriculumListModal
+      ref="SelectCurriculumListModal"
+    />
 
     <!-- 달력 모달 호출 -->
     <CustomDataPicker
@@ -778,6 +785,11 @@ export default {
       this.lectureInfo = deepCopy(data)
       this.isChangeCurriculumAssignment = true
     },
+
+    getSelectCurriculumData(data){
+      this.selectCurriculumInfo=data
+      this.$refs.SelectCurriculumListModal.setData(this.selectCurriculumInfo.dayData)
+    }
   },
 }
 </script>
