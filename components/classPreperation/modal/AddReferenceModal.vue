@@ -38,7 +38,7 @@
 
           <ModalBtnBox
             :submitTxt="modalTitle"
-            @submit="$emit('submit')"
+            @submit="$emit('submit-btn')"
             @close="$emit('close')"
           />
         </div>
@@ -86,3 +86,5 @@ export default {
   },
 }
 </script>
+
+<style></style>

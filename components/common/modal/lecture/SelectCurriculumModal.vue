@@ -78,6 +78,7 @@ export default {
     plusEventClick(copyData) {
       isAddActiveStype = true
       this.$refs.rightSection.$refs.myCurriculum.pasteData(copyData)
+      this.$emit('add-curriculum', copyData)
     },
     removeActiveStyle() {
       if (isAddActiveStype) {

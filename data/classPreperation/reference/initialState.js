@@ -24,7 +24,7 @@ export default function initialState() {
     isSelectModal: { open: false, prevPage: '' },
     isFilterModal: { open: false, prevPage: '' },
     isSavePathModal: { open: false, prevPage: '' },
-    modalDesc: { open: false, title: '', desc: '' },
+    modalDesc: { open: false, title: '', desc: '', path: '' },
     isShareViewModal: { open: false, path: '', url: '' },
     isQuizPreviewModal: { open: false, prevPage: '', select: false },
     isNoteTestPreviewModal: { open: false, prevPage: '', select: false },

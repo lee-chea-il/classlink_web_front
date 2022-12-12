@@ -53,8 +53,8 @@
   position: absolute;
   left: 0;
   top: 0;
-  width: 100%;
-  height: 100%;
+  width: 120%;
+  height: 120%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 9997;
 }
@@ -170,4 +170,8 @@
   width: 225px;
   height: 135px;
   margin-right: 15px;
+}
+
+p > strong {
+  font-weight: bold;
 }

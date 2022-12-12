@@ -49,16 +49,16 @@ export default {
     },
     isHideDownload: {
       type: Boolean,
-      default: true
+      default: true,
     },
     isPlus: {
       type: Boolean,
-      default: true
+      default: true,
     },
     isMy: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -73,24 +73,24 @@ export default {
       for (let i = 0; i < len; i++) {
         const newStr = JSON.stringify(data[i])
         const nObj = JSON.parse(newStr)
-        nObj.id="lectureTree_"+this.pid
-        nObj.pid=this.pid
-        nObj.isChecked=false
-        nObj.readOnly=isReadOnly
-        nObj.isCurriculum=this.isPlus
-        nObj.isMy=this.isMy
-        nObj.active=false
+        nObj.id = 'lectureTree_' + this.pid
+        nObj.pid = this.pid
+        nObj.isChecked = false
+        nObj.readOnly = isReadOnly
+        nObj.isCurriculum = this.isPlus
+        nObj.isMy = this.isMy
+        nObj.active = false
 
         if (data[i].children !== undefined) {
-          nObj.isLeaf=false
-          nObj.children=[]
+          nObj.isLeaf = false
+          nObj.children = []
 
           result[i] = nObj
           this.pid++
 
           result[i].children = dataMapping(data[i].children, isReadOnly)
         } else {
-          nObj.isLeaf=true
+          nObj.isLeaf = true
 
           result[i] = nObj
           this.pid++
@@ -104,7 +104,7 @@ export default {
     )
   },
   methods: {
-    resetActiveStyle(){
+    resetActiveStyle() {
       function _resetActiveStyle(oldNode) {
         oldNode.active = false
         if (oldNode.children && oldNode.children.length > 0) {
@@ -120,17 +120,17 @@ export default {
       function _dfs(oldNode) {
         oldNode.active = true
         console.log(oldNode)
-        const newNode={}
-        for(const item in oldNode){
+        const newNode = {}
+        for (const item in oldNode) {
           newNode[item] = oldNode[item]
         }
         newNode.children = []
-        newNode.id = "lectureTree_"+idNum
+        newNode.id = 'lectureTree_' + idNum
         newNode.isChecked = false
-        newNode.isCurriculum=false
-        newNode.isMy=true
+        newNode.isCurriculum = false
+        newNode.isMy = true
         idNum++
-        
+
         if (oldNode.children && oldNode.children.length > 0) {
           const list = []
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
@@ -153,16 +153,16 @@ export default {
     },
     pasteData(copyCheckData) {
       let idNum = new Date().valueOf()
-      let checkCnt=0
+      let checkCnt = 0
       function _addNode(parentNode, oldNode) {
         let node, i, len
         if (oldNode.name) {
-          const newNode={}
-          for(const item in oldNode){
+          const newNode = {}
+          for (const item in oldNode) {
             newNode[item] = oldNode[item]
           }
           newNode.children = []
-          newNode.id = "lectureTree_"+idNum
+          newNode.id = 'lectureTree_' + idNum
           newNode.isChecked = false
           node = new TreeNode(newNode)
           parentNode.addChildren(node)
@@ -218,20 +218,19 @@ export default {
         }
         oldNode.paste = false
       }
-      if(this.datas.children&&this.datas.children.length>0){
+      if (this.datas.children && this.datas.children.length > 0) {
         _checkPasteData(this.datas)
-        if(checkCnt===0){
+        if (checkCnt === 0) {
           _addNode(this.datas, copyCheckData)
-        }else{
+        } else {
           _pasteData(this.datas)
           _resetPasteData(this.datas)
         }
-      }else{
+      } else {
         _addNode(this.datas, copyCheckData)
       }
     },
   },
 }
 </script>
-<style>
-</style>
+<style></style>

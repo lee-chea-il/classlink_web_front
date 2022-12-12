@@ -72,6 +72,7 @@
       @set-keyword="setKeyword"
       @delete-keyword="deleteKeyword"
       @open-save-path="onOpenSavePathModal"
+      @submit-btn="onSubmitReference"
     />
 
     <!-- 퀴즈 등록 -->
@@ -97,6 +98,7 @@
       @set-keyword="setKeyword"
       @delete-keyword="deleteKeyword"
       @open-save-path="onOpenSavePathModal"
+      @submit-btn="onSubmitReference"
     />
 
     <!-- 쪽지시험 등록 -->
@@ -261,7 +263,6 @@ import DeleteModal from '~/components/common/modal/DeleteModal.vue'
 import SavePathModal from '~/components/common/modal/SavePathModal.vue'
 import TreeSection from '~/components/classPreperation/common/TreeSection.vue'
 import CustomSnackbar from '~/components/common/CustomSnackbar.vue'
-
 import AddQuizModal from '~/components/classPreperation/modal/AddQuizModal.vue'
 import AddNoteTestModal from '~/components/classPreperation/modal/AddNoteTestModal.vue'
 import AddReferenceModal from '~/components/classPreperation/modal/AddReferenceModal.vue'
@@ -323,20 +324,30 @@ export default {
     // 등록 자료 초기화
     initReference() {
       const init = jsonItem(this.initReferenceData)
-      setTimeout(() => (this.referenceData = init), 400)
+      setTimeout(() => {
+        this.currentPageIdx = 0
+        this.referenceData = init
+      }, 300)
     },
 
     // Modal Event
-    openModalDesc(tit, msg) {
+    openModalDesc(tit, msg, to) {
+      if (to) {
+        this[to] = false
+      }
       this.modalDesc = {
         open: true,
         title: tit,
         desc: msg,
+        path: to,
       }
     },
 
     onCloseModalDesc() {
       this.modalDesc.open = false
+      if (this.modalDesc.path) {
+        this[this.modalDesc.path] = true
+      }
     },
 
     // 등록 유형 선택 모달
@@ -867,6 +878,125 @@ export default {
       }
     },
 
+    // 자료 등록&수정 모달 상태 확인
+    setAddModalPath() {
+      if (this.isReferenceAddModal) {
+        return 'isReferenceAddModal'
+      } else if (this.isQuizAddModal) {
+        return 'isQuizAddModal'
+      } else if (this.isNoteTestAddModal) {
+        return 'isNoteTestAddModal'
+      } else {
+        return false
+      }
+    },
+
+    // 자료 공통부분 유효성 검사
+    checkReferenceInfo() {
+      const target = this.referenceData
+      const addPath = this.setAddModalPath()
+      if (target.name === '') {
+        this.openModalDesc('', '제목을 입력해 주세요.', addPath)
+        return false
+      }
+      if (target.subject === '') {
+        this.openModalDesc('', '과목을 선택해 주세요.', addPath)
+        return false
+      }
+      if (target.desc === '') {
+        this.openModalDesc('', '설명을 입력해 주세요.', addPath)
+        return false
+      }
+      if (target.keyword.length === 0) {
+        this.openModalDesc('', '키워드를 입력해 주세요.', addPath)
+        return false
+      }
+      if (target.registrant === 0) {
+        this.openModalDesc('', '등록자를 입력해 주세요.', addPath)
+        return false
+      }
+      if (target.saveFolder === '') {
+        this.openModalDesc('', '저장경로를 선택해 주세요.', addPath)
+        return false
+      }
+      return true
+    },
+
+    // 자료 등록 퀴즈 유효성 검사
+    checkQuizInfo() {
+      const target = this.referenceData
+      const quiz = target.quizList
+      const addPath = this.setAddModalPath()
+      let isQuiz = ''
+      const setTxt = (tit) => `${tit}번 ${isQuiz}를 입력해주세요`
+      for (const i in quiz) {
+        const idx = Number(i)
+        if (quiz[idx].problem === '') {
+          isQuiz = '문제'
+          this.openModalDesc('실패', setTxt(idx + 1), addPath)
+          console.log('문제야 문제' + idx + '번째')
+          return false
+        }
+        if (quiz[idx].limitTime === 0) {
+          isQuiz = '시간'
+          console.log('시간' + idx + '번째')
+          return false
+        }
+        if (quiz[idx].quizType === 1) {
+          if (quiz[idx].subjectiveAnswer === '') {
+            isQuiz = '정답'
+            console.log('정답' + idx + '번째')
+            return false
+          }
+        }
+
+        if (quiz[i].quizType === 2) {
+          if (quiz[i].shortAnswer === '') {
+            isQuiz = '짧은 정답'
+            console.log('짧은 정답' + i + '번째')
+            return false
+          }
+
+          if (quiz[i].shortWrongAnswer === '') {
+            isQuiz = '짧은 오답'
+            console.log('짧은 오답' + i + '번째')
+            return false
+          }
+        }
+      }
+      if (isQuiz === '') {
+        return true
+      }
+    },
+
+    // 자료 등록시 유효성 검사
+    onSubmitReference() {
+      const submitTxt = this.modalTitle === '등록' ? '등록' : '수정'
+      console.log(
+        this.isReferenceAddModal,
+        this.isQuizAddModal,
+        this.isNoteTestAddModal
+      )
+      if (this.isReferenceAddModal) {
+        if (this.checkReferenceInfo()) {
+          this.onCloseReferenceAddModal() // api연동 후 catch에 적용
+          this.openModalDesc('성공', `${submitTxt}되었습니다.`)
+        }
+      } else if (this.isQuizAddModal) {
+        if (this.checkReferenceInfo() && this.checkQuizInfo()) {
+          this.onCloseQuizAddModal() // api연동 후 catch에 적용
+          this.openModalDesc('성공', `${submitTxt}되었습니다.`)
+        }
+      } else if (this.isNoteTestAddModal) {
+        return 'isNoteTestAddModal'
+      } else {
+        return false
+      }
+    },
+
+    // 퀴즈 등록시 유효성 검사
+    onSubmitQuiz() {},
+
     // 퀴즈 변경 UI
     onClickPagination(idx) {
       this.currentPageIdx = idx
@@ -982,6 +1112,7 @@ export default {
     // 자료 조회
     onClickView(params) {
       this.referenceData = jsonItem(params)
+
       const type = params.uploadType
       if (type === 'quiz') return this.onOpenQuizBrowseModal()
       else if (type === 'test') return this.onOpenNoteTestBrowseModal()

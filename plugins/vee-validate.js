@@ -82,6 +82,19 @@ Object.keys(rules).forEach((rule) => {
     }
     return true
   })
+
+  // editor에 유효성 검사 추가
+  extend('edit_required', {
+    ...required,
+    message: '문제를 입력해주세요.',
+  })
+
+  extend('edit_limit', (value) => {
+    if (value.length < Number(17)) {
+      return `문제를 10자 이상 입력해 주세요.`
+    }
+    return true
+  })
 })
 
 // config setting

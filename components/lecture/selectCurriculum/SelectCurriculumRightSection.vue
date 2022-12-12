@@ -36,9 +36,9 @@ import CustomSelectLectureTreeView from '~/components/common/custom/CustomSelect
 export default {
   name: 'SelectCurriculumRightSection',
   components: {
-    CustomSelectLectureTreeView
+    CustomSelectLectureTreeView,
   },
-  data(){
+  data() {
     return {
       dataList: [],
     }

@@ -5,7 +5,7 @@ export default function initialState() {
     currentPageNumber: 1,
     postPerPage: 10,
     postPerPageNum: 10,
-    identity: 'lecture',
+    identity: 'master',
     modalTitle: '강좌 등록',
     isCalendar: false,
     isSchedule: false,
@@ -20,7 +20,7 @@ export default function initialState() {
     searchData: { word: '', teacher: '', class: '' },
     deleteItem: {},
     range: { start: '', end: '' },
-    selectCurriculumInfo:{},
+    selectCurriculumInfo: {},
     initLectureInfo: {
       name: '',
       teacher: [],

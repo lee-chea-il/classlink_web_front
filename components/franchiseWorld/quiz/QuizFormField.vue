@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <ValidationProvider>
     <div v-for="(item, idx) in quizList" :key="idx" class="info_area">
       <div v-if="currentIdx === idx" class="row">
         <div class="quiz_area">
@@ -158,12 +158,16 @@
         </div>
       </div>
     </div>
-  </div>
+  </ValidationProvider>
 </template>
 
 <script>
+import { ValidationProvider } from 'vee-validate'
 export default {
   name: 'QuizFormField',
+  components: {
+    ValidationProvider,
+  },
   props: {
     quizList: {
       type: Array,

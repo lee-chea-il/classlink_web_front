@@ -53,6 +53,7 @@
       :myCurriculumList="lectureInfo.curriculumList"
       :teacherList="teacherList"
       :identity="identity"
+      @add-curriculum="addMyCurriculum"
     />
 
     <!-- 수업시간 선택 -->
@@ -82,9 +83,7 @@
     />
 
     <!-- 커리큘럼 리스트 상세 -->
-    <SelectCurriculumListModal
-      ref="SelectCurriculumListModal"
-    />
+    <SelectCurriculumListModal ref="SelectCurriculumListModal" />
 
     <!-- 달력 모달 호출 -->
     <CustomDataPicker
@@ -469,6 +468,17 @@ export default {
       }
     },
 
+    // 커리큘럼 선택하기
+    addMyCurriculum(data) {
+      const arr = [...this.lectureInfo.curriculumList, data]
+      const newArr = arr.filter(
+        (item, i, callback) =>
+          i === callback.findIndex(({ name }) => name === item.name)
+      )
+      console.log(newArr)
+      this.lectureInfo.curriculumList = newArr
+    },
+
     // 스케줄
     // 월 단위 주차
     getWeekNumber(dateItem) {
@@ -586,7 +596,7 @@ export default {
 
     // 달력 날자 설정
     onChangeDate({ start, end }) {
-      console.log('start', start, 'end', end)
+      // console.log('start', start, 'end', end)
       const setDate = (date) =>
         `${date?.getFullYear()}.${date?.getMonth() + 1}.${date?.getDate()}`
       this.scheduleItem.startDay = setDate(start)
@@ -786,10 +796,12 @@ export default {
       this.isChangeCurriculumAssignment = true
     },
 
-    getSelectCurriculumData(data){
-      this.selectCurriculumInfo=data
-      this.$refs.SelectCurriculumListModal.setData(this.selectCurriculumInfo.dayData)
-    }
+    getSelectCurriculumData(data) {
+      this.selectCurriculumInfo = data
+      this.$refs.SelectCurriculumListModal.setData(
+        this.selectCurriculumInfo.dayData
+      )
+    },
   },
 }
 </script>
