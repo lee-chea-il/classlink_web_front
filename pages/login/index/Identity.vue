@@ -8,7 +8,7 @@
       <div class="status_section">
         <AuthorityButton
           :authList="authList"
-          :userPermition="userPermition"
+          :userPermission="userPermission"
           @select-auth="onClickAuthority"
         />
       </div>
@@ -67,7 +67,7 @@ export default {
           path: '/franchise',
         },
       ],
-      userPermition: [],
+      userPermission: [],
     }
   },
   mounted() {
@@ -79,8 +79,15 @@ export default {
       await apiLogin
         .getUserInfo()
         .then(({ data: { data } }) => {
-          const { idt_name } = data
-          this.userPermition = idt_name
+          console.log(data)
+          this.$store.commit('userInfo/setUserLogin')
+          this.$store.commit('userInfo/setUser', data)
+          if (data.idt_name === null) {
+            this.userPermission = ['I', 'T']
+          } else {
+            const { idt_name } = data
+            this.userPermission = idt_name
+          }
         })
         .catch((err) => {
           console.log(err)
@@ -98,6 +105,7 @@ export default {
     },
     moveToHome() {
       const pathItem = this.authList.filter((item) => item.checked)[0]
+      this.$store.commit('userInfo/setUserIdentity', pathItem.account)
       this.$router.push(pathItem.path)
     },
   },

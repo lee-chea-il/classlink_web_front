@@ -75,14 +75,38 @@
         >
       </div>
     </div>
+    <!-- 아이디 찾기 모달-->
+    <FindIdModal
+      :findIdInput="findIdInput"
+      :findIdList="findIdList"
+      @change-input="changeFindIdInput"
+      @find-id="getFindId"
+      @select-id="selectId"
+    />
+    <!-- 비밀번호 찾기 모달-->
+    <FindPwModal
+      :findPwInput="findPwInput"
+      @change-input="changeFindPwInput"
+      @find-pw="getFindPw"
+    />
+    <!-- 설명 모달 -->
+    <ModalDesc
+      :open="modalDesc.open"
+      :title="modalDesc.title"
+      :desc="modalDesc.desc"
+      @close="onCloseModalDesc"
+    />
   </div>
 </template>
 
 <script>
 import { apiLogin } from '@/services'
-
+import FindIdModal from '@/components/common/modal/login/FindIdModal.vue'
+import FindPwModal from '@/components/common/modal/login/FindPwModal.vue'
+import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 export default {
   name: 'SignUpForm',
+  components: { FindIdModal, FindPwModal, ModalDesc },
   data() {
     return {
       userInfo: {
@@ -90,9 +114,33 @@ export default {
         mem_pw: 'test7777',
       },
       isPwEyeOn: false,
+      findIdInput: '',
+      findIdList: [],
+      findPwInput: {
+        pw_mem_id: '',
+        pw_mem_email: '',
+      },
+      // 모달
+      modalDesc: {
+        open: false,
+        title: '',
+        desc: '',
+      },
     }
   },
   methods: {
+    // 모달 이벤트
+    openModalDesc(tit, msg) {
+      this.modalDesc = {
+        open: true,
+        title: tit,
+        desc: msg,
+      }
+    },
+    onCloseModalDesc() {
+      this.modalDesc.open = false
+    },
+
     // 비밀번호 타입 바꾸기
     changePwType() {
       if (this.isPwEyeOn === false) {
@@ -112,21 +160,76 @@ export default {
         .then(({ data: { data } }) => {
           console.log(data)
           localStorage.setItem('token', data.refresh_token)
-          this.$store.commit('userInfo/setUser', this.userInfo)
-          this.$store.commit('userInfo/setUserLogin')
+          // this.$store.commit('userInfo/setUser', this.userInfo)
+          // this.$store.commit('userInfo/setUserLogin')
           this.goIdentitySelectPage()
-          console.log(this.$store.state.userInfo.userInfo)
+          // console.log(this.$store.state.userInfo.userInfo)
         })
         .catch((err) => {
           console.log(err, '에러수정 전입니다.')
         })
     },
     // 로그인
-    onSubtmit() {
-      console.log('로그인 시도')
-    },
     goIdentitySelectPage() {
       this.$router.push('/login/identity')
+    },
+
+    // 아이디 찾기
+    changeFindIdInput({ target: { value } }) {
+      this.findIdInput = value
+    },
+    async getFindId() {
+      await apiLogin
+        .getFindId(this.findIdInput)
+        .then(({ data }) => {
+          if (data.statusCode === 400) {
+            this.openModalDesc('아이디 찾기', '일치하는 회원이 없습니다.')
+            return false
+          } else {
+            this.findIdList.push(data.data)
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    selectId() {
+      if (this.findIdList.length === 0) {
+        this.userInfo.mem_id = ''
+      } else {
+        this.userInfo.mem_id = this.findIdList[0].mem_id
+        this.findIdInput = ''
+        this.findIdList = []
+      }
+    },
+
+    // 비밀번호 찾기
+    changeFindPwInput({ target: { id, value } }) {
+      this.findPwInput[id] = value
+    },
+    async getFindPw() {
+      await apiLogin
+        .getFindPw(this.findPwInput.pw_mem_email, this.findPwInput.pw_mem_id)
+        .then(({ data }) => {
+          if (data.statusCode === 400) {
+            this.openModalDesc('비밀번호 찾기', '일치하는 회원이 없습니다.')
+            return false
+          } else {
+            this.$store.commit(
+              'userInfo/setUserEmail',
+              this.findPwInput.pw_mem_email
+            )
+            document.getElementById('modal_close').click()
+            this.$router.push('/resetpw')
+            this.findPwInput = {
+              pw_mem_id: '',
+              pw_mem_email: '',
+            }
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
   },
 }

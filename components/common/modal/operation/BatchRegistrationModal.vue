@@ -33,10 +33,11 @@
               (내용 형식을 수정하면 등록이 불가능합니다.)
             </div>
 
-            <!-- :href="getImgUrl('~/assets/images/mypage/test.xlsx')" -->
+            <!--  -->
             <a
               class="file_down"
               download=""
+              href="~/assets/images/mypage/test.xlsx"
               ><span class="icon_download"></span>파일 다운로드</a
             >
 

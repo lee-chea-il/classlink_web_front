@@ -29,14 +29,16 @@
         :type="type"
         :placeholder="placeholder"
         class="form-control"
-        :maxlength="id === 'phone' ? '13' : ''"
+        :maxlength="id.includes('phone') ? '13' : ''"
         :class="
           (isError ? 'is-invalid' : classes,
           isBtn || isIdCheckBtn || isCheckBox || isAddressBtn
             ? 'form-inline'
             : '')
         "
+        :readonly="id.includes('address1')"
         autocomplete="off"
+        @click="$emit('click-address', $event)"
         @input="$emit('change-input', $event)"
       />
       <!-- [개발참조]:class="disabled"제거시 활성 -->
@@ -51,7 +53,7 @@
         v-if="isIdCheckBtn"
         class="btn btn_crud_point button"
         :class="classes['is-valid'] ? '' : 'disabled'"
-        @click="$emit('click-idCheck')"
+        @click="$emit('click-check')"
       >
         중복체크
       </button>
@@ -183,5 +185,10 @@ button {
 }
 .form-inlinebox {
   width: 100%;
+}
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: white;
+  opacity: 1;
 }
 </style>

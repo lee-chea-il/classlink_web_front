@@ -8,25 +8,23 @@
         <ValidationObserver v-slot="{ invalid }">
           <form>
             <CustomInput
-              id="edu_title"
+              id="ins_name"
               name="교육기관 이름"
               placeholder="교육기관 이름 입력"
               rules="required"
               type="text"
-              :inputValue="eduInfo.edu_title"
+              :inputValue="institutionInfo.ins_name"
               @change-input="onChangeEduInfoInput"
             />
-
             <CustomInput
-              id="tel"
+              id="ins_phone"
               name="연락처"
               placeholder="연락처 입력"
               rules="required"
               type="text"
-              :inputValue="eduInfo.tel"
+              :inputValue="institutionInfo.ins_phone"
               @change-input="onChangeEduInfoInput"
             />
-
             <!-- <div class="form-group">
                       <label for="reg-form02">연락처</label>
                       <input
@@ -36,37 +34,35 @@
                         class="form-control"
                       />
                     </div> -->
-
             <CustomInput
-              id="address"
+              id="ins_address1"
               name="교육기관 주소"
               placeholder="교육기관 주소 입력"
               rules="required"
               type="text"
               :isAddressBtn="true"
-              :inputValue="eduInfo.address"
+              :inputValue="institutionInfo.ins_address1"
               @change-input="onChangeEduInfoInput"
               @click-address="openModalAddress"
             />
 
             <CustomInput
-              id="address"
+              id="ins_address2"
               name="교육기관 상세 주소"
               placeholder="교육기관 상세 주소 입력"
               rules="required"
               type="text"
-              :inputValue="eduInfo.address"
+              :inputValue="institutionInfo.ins_address2"
               @change-input="onChangeEduInfoInput"
-              @click-address="openModalAddress"
             />
 
             <CustomInput
-              id="description"
+              id="ins_desc"
               name="교육기관 설명"
               placeholder="교육기관 설명 입력"
               rules="required"
               type="text"
-              :inputValue="eduInfo.description"
+              :inputValue="institutionInfo.ins_desc"
               @change-input="onChangeEduInfoInput"
             />
 
@@ -75,6 +71,7 @@
               :class="{ disabled: invalid }"
               data-dismiss="modal"
               @click.prevent
+              @click="OpenInstitution"
             >
               교육기관 개설하기
             </button>
@@ -91,35 +88,78 @@
       @openMap="addressSearched"
       @close="onCloseModalAddress"
     />
+    <!-- 설명 모달 -->
+    <SuccessModalDesc
+      :open="successModalDesc.open"
+      :title="successModalDesc.title"
+      :desc="successModalDesc.desc"
+      @close="onCloseSuccessModalDesc"
+      @confirm="goMainPage"
+    />
   </div>
 </template>
 <script>
 import { ValidationObserver } from 'vee-validate'
 import CustomInput from '@/components/common/custom/CustomInput.vue'
 import MapSearchModal from '@/components/common/modal/mypage/MapSearchModal.vue'
+import { apiLogin } from '@/services'
+import SuccessModalDesc from '@/components/common/modal/signup/SuccessModalDesc.vue'
 export default {
-  name: 'RegistEdu',
-  components: { ValidationObserver, CustomInput, MapSearchModal },
+  name: 'RegisterInstitution',
+  components: {
+    ValidationObserver,
+    CustomInput,
+    MapSearchModal,
+    SuccessModalDesc,
+  },
   layout: 'LoginLayout',
   data() {
     return {
-      eduInfo: {
-        edu_title: '',
-        tel: '',
-        address: '',
-        address_detail: '',
-        description: '',
+      institutionInfo: {
+        fra_code: '',
+        ins_address1: '',
+        ins_address2: '',
+        ins_desc: '',
+        ins_name: '',
+        ins_phone: '',
+        zone_code: '',
       },
       mapSearchModal: {
         open: false,
         target: '',
       },
+      // 모달
+      successModalDesc: {
+        open: false,
+        title: '',
+        desc: '',
+      },
     }
   },
   methods: {
+    // 모달 이벤트
+    openSuccessModalDesc(tit, msg) {
+      this.successModalDesc = {
+        open: true,
+        title: tit,
+        desc: msg,
+      }
+    },
+    onCloseSuccessModalDesc() {
+      this.successModalDesc.open = false
+    },
+
     // 교육기관 정보 수정
     onChangeEduInfoInput({ target: { value, id } }) {
-      this.eduInfo[id] = value
+      this.institutionInfo[id] = value
+      if (id === 'ins_phone') {
+        this.institutionInfo[id] = value
+          .replace(/[^0-9]/g, '')
+          .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
+          .replace(/(-{1,2})$/g, '')
+          .replace(/ /g, '')
+          .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
+      }
     },
 
     // 주소 검색 api
@@ -129,20 +169,41 @@ export default {
       this.mapSearchModal.open = true
       this.mapSearchModal.target = dataset.target
     },
-
     onCloseModalAddress() {
       this.mapSearchModal.open = false
     },
-
     addressSearched(data) {
+      this.institutionInfo.zone_code = data.zonecode
       const selectAddress = data.userSelectedType
       console.log(selectAddress)
       if (selectAddress === 'J') {
-        this.eduInfo.address = data.jibunAddress
+        this.institutionInfo.ins_address1 = data.jibunAddress
       } else if (selectAddress === 'R') {
-        this.eduInfo.address = data.roadAddress
+        this.institutionInfo.ins_address1 = data.roadAddress
       }
       this.mapSearchModal.open = false
+    },
+
+    // 교육기관 개설 api
+    async OpenInstitution() {
+      const payload = this.institutionInfo
+      await apiLogin
+        .postOpenInstitution(payload)
+        .then((res) => {
+          console.log(res)
+          this.openSuccessModalDesc(
+            '교육기관 개설',
+            '교육기관이 개설되었습니다.'
+          )
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
+    // 메인 페이지로 이동
+    goMainPage() {
+      this.$router.push('/')
     },
   },
 }

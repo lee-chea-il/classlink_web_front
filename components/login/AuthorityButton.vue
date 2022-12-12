@@ -2,7 +2,7 @@
   <div class="status_section">
     <div
       v-for="(item, idx) in authList"
-      v-show="userPermition.includes(item.account)"
+      v-show="userPermission.includes(item.account)"
       :key="idx"
       class="status"
       aria-hidden
@@ -33,7 +33,7 @@ export default {
       type: Array,
       default: () => [],
     },
-    userPermition: {
+    userPermission: {
       type: Array,
       default: () => [],
     },

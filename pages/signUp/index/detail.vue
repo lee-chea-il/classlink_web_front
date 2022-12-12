@@ -41,7 +41,7 @@
               :inputValue="userInfo.mem_id"
               :isIdCheckBtn="true"
               @change-input="onChangeInput"
-              @click-idCheck="onClickIdCheck"
+              @click-check="onClickIdCheck"
             />
 
             <CustomInput
@@ -81,8 +81,10 @@
               rules="required|email"
               placeholder="이메일 입력"
               type="email"
+              :isIdCheckBtn="true"
               :inputValue="userInfo.mem_email"
               @change-input="onChangeInput"
+              @click-check="onClickEmailCheck"
             />
 
             <!-- [개발참조]:예외처리 문구
@@ -172,6 +174,7 @@ export default {
       isError: false,
       nickNameCheck: false,
       isIdCheck: false,
+      isEmailCheck: false,
       isSignUpSuccess: false,
       // 모달
       modalDesc: {
@@ -260,28 +263,55 @@ export default {
         })
     },
 
+    // 이메일 중복확인 api
+    async onClickEmailCheck() {
+      await apiLogin
+        .getEmailCheck(this.userInfo.mem_email)
+        .then(({ data: { data } }) => {
+          if (data) {
+            this.isEmailCheck = true
+            this.openModalDesc('이메일 중복확인', '사용가능한 이메일입니다.')
+          } else {
+            this.isEmailCheck = false
+            this.openModalDesc('이메일 중복확인', '중복된 이메일입니다.')
+          }
+        })
+    },
+
     // 회원가입 api 연동
     async handleSubmit() {
-      if (this.isIdCheck) {
+      if (this.isIdCheck && this.isEmailCheck) {
         const payload = this.userInfo
         await apiLogin
           .postSignup(payload)
           .then(() => {
-            this.openSuccessModalDesc(
-              '회원가입',
-              '회원가입되었습니다. \n 메인페이지로 이동합니다.'
-            )
+            this.openSuccessModalDesc('회원가입', '회원가입되었습니다.')
           })
           .catch(() => {
             return false
           })
-      } else {
+      } else if (!this.isIdCheck) {
         this.openModalDesc('회원가입', '아이디 중복확인을 해주세요.')
+      } else {
+        this.openModalDesc('회원가입', '이메일 중복확인을 해주세요.')
       }
     },
-    // 메인페이지 이동
-    goMainPage() {
-      this.$router.push('/')
+    // 로그인 후 교육기관 개설 페이지로 이동
+    async goMainPage() {
+      const payload = {
+        mem_id: this.userInfo.mem_id,
+        mem_pw: this.userInfo.mem_pwd,
+      }
+      await apiLogin
+        .postLogin(payload)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          localStorage.setItem('token', data.refresh_token)
+        })
+        .catch((err) => {
+          console.log(err, '에러수정 전입니다.')
+        })
+      this.$router.push('/registerins')
     },
   },
 }

@@ -1,6 +1,6 @@
 <template>
   <ValidationProvider v-slot="{ errors, classes }" :rules="rules">
-    <div class="form-group">
+    <div class="form-group form-mb">
       <label v-if="name === '비밀번호'" for="name">{{ name }}</label>
       <input
         :id="id"
@@ -27,10 +27,10 @@
       ></i>
       <!-- [개발참조]:class="disabled"제거시 활성 -->
     </div>
-    <div v-if="isError && inputValue !== ''" class="invalid_text">
+    <div v-if="isError && inputValue !== ''" class="invalid_text text_margin">
       비밀번호가 일치하지 않습니다.
     </div>
-    <div class="invalid_text">
+    <div class="invalid_text text_margin">
       {{ errors[0] }}
     </div>
   </ValidationProvider>
@@ -83,5 +83,12 @@ export default {
   cursor: pointer;
   bottom: 12px;
   right: 10px;
+}
+.form-mb {
+  margin-top: 10px !important;
+  margin-bottom: 0px !important;
+}
+.text_margin {
+  margin-top: 0px !important;
 }
 </style>

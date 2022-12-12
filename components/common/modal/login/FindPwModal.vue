@@ -31,32 +31,36 @@
             <div class="form-group">
               <label for="userID">아이디</label>
               <input
-                id="userID"
+                id="pw_mem_id"
                 type="text"
                 class="form-control form-inline"
-                placeholder="아이디 입력"
+                placeholder="아이디"
+                :value="findPwInput.pw_mem_id"
+                @input="$emit('change-input', $event)"
               />
             </div>
             <div class="form-group">
               <label for="userEmail">이메일</label>
               <input
-                id="userEmail"
+                id="pw_mem_email"
                 type="text"
                 class="form-control form-inline"
                 placeholder="이메일 주소 입력"
+                :value="findPwInput.pw_mem_email"
+                @input="$emit('change-input', $event)"
               />
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button
-            class="btn btn_crud_point"
-            data-dismiss="modal"
-            @click="confirmBtnEvent"
-          >
+          <button class="btn btn_crud_point" @click="$emit('find-pw')">
             확인
           </button>
-          <button class="btn btn_crud_default" data-dismiss="modal">
+          <button
+            id="modal_close"
+            class="btn btn_crud_default"
+            data-dismiss="modal"
+          >
             취소
           </button>
         </div>
@@ -68,9 +72,10 @@
 <script>
 export default {
   name: 'FindPwModal',
-  methods: {
-    confirmBtnEvent() {
-      this.$router.push('/resetpw')
+  props: {
+    findPwInput: {
+      type: Object,
+      default: () => {},
     },
   },
 }
