@@ -491,6 +491,9 @@ export default {
       uploadImageFile: '',
     }
   },
+  mounted() {
+    console.log(this.$store.state.userInfo.userInfo)
+  },
   methods: {
     // 모달 이벤트
     openModalDesc(tit, msg) {

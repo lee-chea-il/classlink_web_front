@@ -75,7 +75,7 @@ export default {
   },
   data() {
     return {
-      isEditStepFlag: 1,
+      isEditStepFlag: 0,
       paymentList: [
         {
           id: 0,
