@@ -52,6 +52,7 @@ export default {
     HomeWorkDetailModal,
     NoteDetailModal,
   },
+  middleware: 'auth',
   data() {
     return {
       newContentList: [

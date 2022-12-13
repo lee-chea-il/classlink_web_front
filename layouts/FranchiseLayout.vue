@@ -15,6 +15,7 @@ import FranchiseHeader from '~/components/franchise/common/FranchiseHeader.vue'
 export default {
   name: 'FranchiseLayout',
   components: { FranchiseHeader },
+  middleware: 'auth',
 }
 </script>
 

@@ -15,6 +15,7 @@ import ClassLinkHeader from '~/components/classLinkAdmin/common/ClassLinkHeader.
 export default {
   name: 'ClassLinkLayout',
   components: { ClassLinkHeader },
+  middleware: 'auth',
 }
 </script>
 
