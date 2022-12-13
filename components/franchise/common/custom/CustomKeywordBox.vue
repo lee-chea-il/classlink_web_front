@@ -8,7 +8,7 @@
         name="keyword"
         placeholder="입력"
         :value="pushKeyword"
-        @input="$emit('changePushKeyword', $event)"
+        @input="$emit('change-keyword', $event)"
         @keyup.enter="$emit('set-keyword', $event)"
       />
       <div v-show="keyword?.length" class="keyword_area_01">
@@ -38,4 +38,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+#modalLessonRegi .x {
+  cursor: pointer;
+}
+</style>

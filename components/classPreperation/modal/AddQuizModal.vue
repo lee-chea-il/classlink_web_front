@@ -29,7 +29,7 @@
                   target="quiz"
                   @change-input="$emit('change-input', $event)"
                   @set-keyword="$emit('set-keyword', $event)"
-                  @change-keyword="$emit('changePushKeyword', $event)"
+                  @change-keyword="$emit('change-keyword', $event)"
                   @delete-keyword="$emit('delete-keyword', $event)"
                   @open-save-path="$emit('open-save-path', $event)"
                   @delete-thumbnail="$emit('delete-thumbnail')"
@@ -54,18 +54,12 @@
                 <!-- /.오른쪽 영역 -->
               </div>
             </div>
-            <div class="modal-footer">
-              <button class="btn btn_crud_point" :class="{ disabled: invalid }">
-                등록
-              </button>
-              <button class="btn btn_crud_point">취소</button>
-            </div>
-            <!-- 
-              <ModalBtnBox
+            <ModalBtnBox
+              :invalid="invalid"
               :submitTxt="modalTitle"
-              @close="$emit('close')"
               @submit="$emit('submit-btn')"
-            /> -->
+              @close="$emit('close')"
+            />
           </ValidationObserver>
         </div>
       </div>
@@ -76,7 +70,7 @@
 <script>
 import { ValidationObserver } from 'vee-validate'
 import ModalHeader from '../../common/ModalHeader.vue'
-// import ModalBtnBox from '../../common/ModalBtnBox.vue'
+import ModalBtnBox from '../../common/ModalBtnBox.vue'
 import QuizRightField from '../quiz/QuizRightField.vue'
 import ReferenceAddLeftField from '../reference/ReferenceLeftField.vue'
 
@@ -85,7 +79,7 @@ export default {
   components: {
     ReferenceAddLeftField,
     ModalHeader,
-    // ModalBtnBox,
+    ModalBtnBox,
     QuizRightField,
     ValidationObserver,
   },

@@ -175,3 +175,7 @@
 p > strong {
   font-weight: bold;
 }
+
+.x {
+  cursor: pointer !important;
+}

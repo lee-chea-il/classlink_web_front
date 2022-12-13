@@ -89,11 +89,34 @@ Object.keys(rules).forEach((rule) => {
     message: '문제를 입력해주세요.',
   })
 
-  extend('edit_limit', (value) => {
-    if (value.length < Number(17)) {
+  extend('start_limit', (value) => {
+    const newValue = value.replace(/<[^>]*>?/g, '')
+    if (newValue.length < Number(10)) {
       return `문제를 10자 이상 입력해 주세요.`
     }
     return true
+  })
+
+  extend('end_limit', (value) => {
+    const newValue = value.replace(/<[^>]*>?/g, '')
+    if (newValue.length > Number(500)) {
+      return `문제를 500자 이하로 입력해 주세요.`
+    }
+    return true
+  })
+
+  extend('end_limit_desc', (value) => {
+    const newValue = value.replace(/<[^>]*>?/g, '')
+    if (newValue.length > Number(300)) {
+      return `보기를 300자 이하로 입력해 주세요.`
+    }
+    return true
+  })
+
+  // 퀴즈에 유효성 검사 추가
+  extend('required_quiz', {
+    ...required,
+    message: '{_field_}을 입력해주세요.',
   })
 })
 

@@ -1,25 +1,22 @@
 <template>
-  <ValidationProvider
-    v-slot="{ errors }"
-    rules="start_limit|end_limit|edit_required"
-  >
-    <div class="edit_area">
-      <client-only v-for="(item, idx) in itemList" :key="idx" class="edit_wrap">
-        <VueEditor
-          v-if="currentIdx === idx"
-          id="quiz_editor"
-          v-model="item.problem"
-          :editorToolbar="editorToolbar"
-          :editorOptions="editorOptions"
-          :useCustomImageHandler="true"
-          @image-added="handleImageAdded"
-        />
-        <div v-if="currentIdx === idx && errors[0] !== ''" class="invalid_text">
-          {{ errors[0] }}
-        </div>
-      </client-only>
-    </div>
+  <!-- <div> -->
+  <ValidationProvider v-slot="{ errors }" :rules="rules">
+    <client-only v-for="(item, idx) in itemList" :key="idx">
+      <VueEditor
+        v-if="currentIdx === idx"
+        v-model="item.problem"
+        :name="name"
+        :editorToolbar="editorToolbar"
+        :editorOptions="editorOptions"
+        :useCustomImageHandler="true"
+        @image-added="handleImageAdded"
+      />
+      <div class="invalid_text">
+        {{ errors[0] }}
+      </div>
+    </client-only>
   </ValidationProvider>
+  <!-- </div> -->
 </template>
 
 <script>
@@ -41,6 +38,10 @@ export default {
       default: 0,
     },
     rules: {
+      type: String,
+      default: '',
+    },
+    name: {
       type: String,
       default: '',
     },
@@ -68,15 +69,15 @@ export default {
   },
   methods: {
     handleImageAdded(file, Editor, cursorLocation, resetUploader) {
+      console.log(file)
       const formData = new FormData()
       formData.append('file', file)
+      console.log(file)
 
       api
         .postFile(formData)
-        .then(({ data: { data } }) => {
-          const img = `http://112.171.101.31:45290/file/${data}`
-          Editor.insertEmbed(cursorLocation, 'image', img)
-          resetUploader()
+        .then((res) => {
+          console.log(res)
         })
         .catch((err) => {
           console.log(err)
@@ -85,11 +86,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.invalid_text {
-  position: absolute;
-  left: 2%;
-  bottom: 22px;
-}
-</style>

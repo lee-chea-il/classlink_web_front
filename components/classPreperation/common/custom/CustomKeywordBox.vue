@@ -8,7 +8,7 @@
         name="keyword"
         placeholder="입력"
         :value="pushKeyword"
-        @input="$emit('changePushKeyword', $event)"
+        @input="$emit('change-keyword', $event)"
         @keyup.enter="$emit('set-keyword', $event)"
       />
       <div v-show="keyword?.length" class="keyword_area_01">
@@ -17,7 +17,9 @@
           ><span class="x span" @click="$emit('delete-keyword', idx)"></span>
         </span>
       </div>
-      <span class="info">키워드는 엔터로 구분할 수 있습니다</span>
+      <span v-show="!keyword?.length" class="info"
+        >키워드는 엔터로 구분할 수 있습니다</span
+      >
     </div>
   </div>
 </template>
@@ -38,4 +40,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+#modalLessonRegi .x {
+  cursor: pointer;
+}
+</style>

@@ -12,45 +12,55 @@
       <div class="background_close" />
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-          <ModalHeader :title="`자료 ${modalTitle}`" @close="$emit('close')" />
-          <div class="modal-body">
-            <div class="modal_dataquiz row">
-              <!-- 모달 내용 구분 class-->
+          <ValidationObserver v-slot="{ invalid }">
+            <ModalHeader
+              :title="`자료 ${modalTitle}`"
+              @close="$emit('close')"
+            />
+            <div class="modal-body">
+              <div class="modal_dataquiz row">
+                <!-- 모달 내용 구분 class-->
 
-              <!-- 왼쪽 영역 -->
-              <ReferenceAddLeftField
-                :reference="reference"
-                :pushKeyword="pushKeyword"
-                :pageRoot="pageRoot"
-                target="quiz"
-                @change-input="$emit('change-input', $event)"
-                @set-keyword="$emit('set-keyword', $event)"
-                @change-keyword="$emit('changePushKeyword', $event)"
-                @delete-keyword="$emit('delete-keyword', $event)"
-                @open-save-path="$emit('open-save-path', $event)"
-                @delete-thumbnail="$emit('delete-thumbnail')"
-              />
-              <!-- /.왼쪽 영역 -->
+                <!-- 왼쪽 영역 -->
+                <ReferenceAddLeftField
+                  :reference="reference"
+                  :pushKeyword="pushKeyword"
+                  :pageRoot="pageRoot"
+                  target="quiz"
+                  @change-input="$emit('change-input', $event)"
+                  @set-keyword="$emit('set-keyword', $event)"
+                  @change-keyword="$emit('change-keyword', $event)"
+                  @delete-keyword="$emit('delete-keyword', $event)"
+                  @open-save-path="$emit('open-save-path', $event)"
+                  @delete-thumbnail="$emit('delete-thumbnail')"
+                />
+                <!-- /.왼쪽 영역 -->
 
-              <!-- 오른쪽 영역 -->
-              <QuizRightField
-                :isCreate="true"
-                :quizList="reference.quizList"
-                :currentPageIdx="currentPageIdx"
-                @change-item="onChangeItem"
-                @pagination="setPagination"
-                @select-type="setSelectType"
-                @select-ox="setSelectOx"
-                @select-dificultade="setSelectDificultade"
-                @preview="setPreview"
-                @change-number="$emit('change-number', $event)"
-                @plus-item="$emit('plus-item', $event)"
-                @delete-quiz="$emit('delete-quiz', $event)"
-              />
-              <!-- /.오른쪽 영역 -->
+                <!-- 오른쪽 영역 -->
+                <QuizRightField
+                  :isCreate="true"
+                  :quizList="reference.quizList"
+                  :currentPageIdx="currentPageIdx"
+                  @change-item="onChangeItem"
+                  @pagination="setPagination"
+                  @select-type="setSelectType"
+                  @select-ox="setSelectOx"
+                  @select-dificultade="setSelectDificultade"
+                  @preview="setPreview"
+                  @change-number="$emit('change-number', $event)"
+                  @plus-item="$emit('plus-item', $event)"
+                  @delete-quiz="$emit('delete-quiz', $event)"
+                />
+                <!-- /.오른쪽 영역 -->
+              </div>
             </div>
-          </div>
-          <ModalBtnBox :submitTxt="modalTitle" @close="$emit('close')" />
+            <ModalBtnBox
+              :invalid="invalid"
+              :submitTxt="modalTitle"
+              @submit="$emit('submit-btn')"
+              @close="$emit('close')"
+            />
+          </ValidationObserver>
         </div>
       </div>
     </div>
@@ -58,6 +68,7 @@
 </template>
 
 <script>
+import { ValidationObserver } from 'vee-validate'
 import ModalHeader from '../../common/ModalHeader.vue'
 import ModalBtnBox from '../../common/ModalBtnBox.vue'
 import QuizRightField from '../quiz/QuizRightField.vue'
@@ -70,6 +81,7 @@ export default {
     ModalHeader,
     ModalBtnBox,
     QuizRightField,
+    ValidationObserver,
   },
   props: {
     open: Boolean,

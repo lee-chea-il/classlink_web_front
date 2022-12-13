@@ -2,6 +2,7 @@
   <div class="modal-footer">
     <button
       class="btn btn_crud_point"
+      :class="{ disabled: invalid }"
       @click="$emit('submit')"
     >
       {{ submitTxt }}
@@ -35,8 +36,12 @@ export default {
       default: '',
     },
     isUpdate: {
-      type: Boolean
-    }
+      type: Boolean,
+    },
+    invalid: {
+      type: Boolean,
+      default: false,
+    },
   },
 }
 </script>

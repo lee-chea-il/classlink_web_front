@@ -11,9 +11,11 @@
       <div class="write_area">
         <PreviewField :currentPageIdx="currentPageIdx" @preview="setPreview" />
 
-        <div class="edit_area">
-          <CustomEditor :itemList="quizList" :currentIdx="currentPageIdx" />
-        </div>
+        <CustomEditor
+          rules="start_limit|end_limit|edit_required"
+          :itemList="quizList"
+          :currentIdx="currentPageIdx"
+        />
 
         <PaginationDelBtn
           :currentIdx="currentPageIdx"
@@ -85,4 +87,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.write_area {
+  position: relative;
+}
+</style>

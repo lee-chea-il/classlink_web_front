@@ -1,5 +1,5 @@
 <template>
-  <ValidationProvider>
+  <div>
     <div v-for="(item, idx) in quizList" :key="idx" class="info_area">
       <div v-if="currentIdx === idx" class="row">
         <div class="quiz_area">
@@ -37,7 +37,7 @@
           </div>
         </div>
         <div class="quiz_area">
-          <div class="tit">난이도</div>
+          <div class="tit w-100">난이도</div>
           <div class="cnt">
             <button
               class="btn btn_activated"
@@ -79,37 +79,33 @@
               >
             </div>
           </div>
-          <div class="cnt">
-            <input
-              id="subjectiveAnswer"
-              type="text"
-              placeholder="정답 입력"
-              class="form-control form-inline"
-              name="subjectiveAnswer"
-              :value="item.subjectiveAnswer"
-              :disabled="item.quizType !== 1"
-              @input="$emit('change-item', $event, idx)"
-            />
-          </div>
+          <QuizInput
+            rules="required_quiz"
+            idProp="subjectiveAnswer"
+            nameProp="정답"
+            :idx="idx"
+            :value="item.subjectiveAnswer"
+            :disabled="item.quizType !== 1"
+            placeholder="정답 입력"
+            @change-item="setChangeInput"
+          />
         </div>
         <div class="quiz_area">
-          <div class="tit">제한시간</div>
-          <div class="cnt">
-            <input
-              id="limitTime"
-              type="text"
-              name="limitTime"
-              :value="item.limitTime"
-              placeholder="문제당 제한시간(초)"
-              class="form-control form-inline"
-              @input="$emit('change-item', $event, idx)"
-            />
-          </div>
+          <div class="tit">문제당 제한시간</div>
+          <QuizInput
+            rules="required_quiz"
+            idProp="limitTime"
+            nameProp="제한시간"
+            :idx="idx"
+            :value="item.limitTime"
+            placeholder="제한시간(초)"
+            @change-item="setChangeInput"
+          />
         </div>
         <div class="quiz_area">
           <div>
-            <div class="tit">
-              <div class="custom-control custom-radio custom-control-inline">
+            <div class="custom-control custom-radio custom-control-inline">
+              <div class="tit">
                 <input
                   id="isSubjective"
                   type="radio"
@@ -127,47 +123,42 @@
           </div>
           <div class="mult">
             <div class="tit stit">정답</div>
-            <div class="cnt">
-              <input
-                id="shortAnswer"
-                type="text"
-                placeholder="정답 입력"
-                name="shortAnswer"
-                :value="item.shortAnswer"
-                class="form-control form-inline"
-                :disabled="item.quizType !== 2"
-                @input="$emit('change-item', $event, idx)"
-              />
-            </div>
+            <QuizInput
+              rules="required_quiz"
+              idProp="shortAnswer"
+              nameProp="정답"
+              :idx="idx"
+              :value="item.shortAnswer"
+              placeholder="정답 입력"
+              :disabled="item.quizType !== 2"
+              @change-item="setChangeInput"
+            />
           </div>
           <div class="mult">
             <div class="tit stit">오답</div>
-            <div class="cnt">
-              <input
-                id="shortWrongAnswer"
-                name="shortWrongAnswer"
-                :value="item.shortWrongAnswer"
-                type="text"
-                placeholder="오답 입력"
-                class="form-control form-inline"
-                :disabled="item.quizType !== 2"
-                @input="$emit('change-item', $event, idx)"
-              />
-            </div>
+            <QuizInput
+              rules="required_quiz"
+              idProp="shortWrongAnswer"
+              nameProp="오답"
+              :idx="idx"
+              :value="item.shortWrongAnswer"
+              placeholder="오답 입력"
+              :disabled="item.quizType !== 2"
+              @change-item="setChangeInput"
+            />
           </div>
         </div>
       </div>
     </div>
-  </ValidationProvider>
+  </div>
 </template>
 
 <script>
-import { ValidationProvider } from 'vee-validate'
+import QuizInput from '../common/custom/QuizInput.vue'
+
 export default {
   name: 'QuizFormField',
-  components: {
-    ValidationProvider,
-  },
+  components: { QuizInput },
   props: {
     quizList: {
       type: Array,
@@ -179,7 +170,16 @@ export default {
     },
     isCreate: { type: Boolean, default: false },
   },
+  methods: {
+    setChangeInput(e, idx) {
+      this.$emit('change-item', e, idx)
+    },
+  },
 }
 </script>
 
-<style></style>
+<style scoped>
+.w-100 {
+  width: 118px !important;
+}
+</style>

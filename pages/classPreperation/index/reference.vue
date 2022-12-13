@@ -7,7 +7,7 @@
         <!-- 컨트롤 버튼 영역 -->
         <MainBtnBox
           :value="searchData.word"
-          pageType="reference"
+          pageType="data"
           @open-filter="openFilterModal"
           @open-search-list="openSearchListModal"
           @change-word="changeSearchData"
@@ -72,7 +72,6 @@
       @set-keyword="setKeyword"
       @delete-keyword="deleteKeyword"
       @open-save-path="onOpenSavePathModal"
-      @submit-btn="onSubmitReference"
     />
 
     <!-- 퀴즈 등록 -->
@@ -98,7 +97,6 @@
       @set-keyword="setKeyword"
       @delete-keyword="deleteKeyword"
       @open-save-path="onOpenSavePathModal"
-      @submit-btn="onSubmitReference"
     />
 
     <!-- 쪽지시험 등록 -->
@@ -256,6 +254,7 @@
 
 <script>
 import html2pdf from 'html2pdf.js'
+import $ from 'jquery'
 import MainBtnBox from '~/components/common/MainBtnBox.vue'
 import PageHeader from '~/components/common/PageHeader.vue'
 import ModalDesc from '~/components/common/modal/ModalDesc.vue'
@@ -741,22 +740,45 @@ export default {
       return (this.urlData[name] = value)
     },
 
-    onChangeQuiz({ target: { value, name } }, idx) {
-      return (this.referenceData.quizList[idx][name] = value)
+    // 퀴즈 변경 핸들러
+    onChangeQuiz({ target: { value, id } }, idx) {
+      const numberOnly = value.replace(/[^0-9.]/g, '').replace(/ /g, '')
+      if (id === 'limitTime') {
+        return (this.referenceData.quizList[idx][id] = numberOnly)
+      } else {
+        return (this.referenceData.quizList[idx][id] = value)
+      }
     },
 
-    onChangeTest({ target: { value, name, type, checked } }, idx) {
+    // 쪽지시험 변경 핸들러
+    onChangeTest({ target: { value, name, type, checked, id } }, idx) {
+      const numberOnly = value.replace(/[^0-9.]/g, '').replace(/ /g, '')
       const testElem = this.referenceData.noteTestList[idx]
       if (type === 'checkbox') {
         if (checked) return (testElem[name] = true)
-        else return (testElem[name] = false)
-      } else return (testElem[name] = value)
+        else {
+          if (name === 'isCommentary') {
+            testElem.commentary = ''
+          }
+          testElem[name] = false
+        }
+      } else if (id === 'limitTime') return (testElem[id] = numberOnly)
+      else {
+        console.log(testElem)
+        testElem[id] = value
+      }
     },
 
+    // 키워드 변경 핸들러
     setKeyword({ target: { value } }) {
-      const keywordList = [...this.referenceData.keyword, value]
-      this.pushKeyword = ''
-      this.referenceData.keyword = setNewArray(keywordList)
+      const noSpace = /\s/g
+      if (!noSpace.test(value) && value.length > 0) {
+        const keywordList = [...this.referenceData.keyword, value]
+        this.referenceData.keyword = setNewArray(keywordList)
+        this.pushKeyword = this.pushKeyword.replace(/.+/g, '')
+      } else {
+        this.pushKeyword = ''
+      }
     },
 
     deleteKeyword(idx) {
@@ -764,7 +786,8 @@ export default {
     },
 
     changePushKeyword({ target: { value } }) {
-      this.pushKeyword = value
+      const newVal = value.replace(/\s/g, '')
+      this.pushKeyword = newVal
     },
 
     // 저장 경로 선택 하기
@@ -789,7 +812,7 @@ export default {
           createAt: files[0].lastModifiedDate,
           savePath: URL.createObjectURL(files[0]),
         }
-        document.getElementById('selectClose').click()
+        $('#modalDataregi02').modal('hide')
         this.onOpenReferenceAddModal()
       } else {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
@@ -816,7 +839,7 @@ export default {
           createAt: target.lastModifiedDate,
           savePath: item,
         }
-        document.getElementById('selectClose').click()
+        $('#modalDataregi02').modal('hide')
         this.onOpenReferenceAddModal()
       } else {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
@@ -840,7 +863,7 @@ export default {
             createAt: new Date(),
             savePath: `https://www.youtube.com/embed/${youtubeUrl}`,
           }
-          document.getElementById('selectCloseYoutube').click()
+          $('#modalDataregi03').modal('hide')
           this.onOpenReferenceAddModal()
         })
         .catch(() => this.openModalDesc('실패', '유효하지 않은 주소입니다.'))
@@ -871,170 +894,64 @@ export default {
           createAt: new Date(),
           savePath: url,
         }
-        document.getElementById('selectCloseYoutube').click()
+        $('#modalDataregi03').modal('hide')
         this.onOpenReferenceAddModal()
       } else {
         this.openModalDesc('실패', 'URL을 정확히 입력해주세요')
       }
     },
 
-    // 자료 등록&수정 모달 상태 확인
-    setAddModalPath() {
-      if (this.isReferenceAddModal) {
-        return 'isReferenceAddModal'
-      } else if (this.isQuizAddModal) {
-        return 'isQuizAddModal'
-      } else if (this.isNoteTestAddModal) {
-        return 'isNoteTestAddModal'
-      } else {
-        return false
-      }
-    },
-
-    // 자료 공통부분 유효성 검사
-    checkReferenceInfo() {
-      const target = this.referenceData
-      const addPath = this.setAddModalPath()
-      if (target.name === '') {
-        this.openModalDesc('', '제목을 입력해 주세요.', addPath)
-        return false
-      }
-      if (target.subject === '') {
-        this.openModalDesc('', '과목을 선택해 주세요.', addPath)
-        return false
-      }
-      if (target.desc === '') {
-        this.openModalDesc('', '설명을 입력해 주세요.', addPath)
-        return false
-      }
-      if (target.keyword.length === 0) {
-        this.openModalDesc('', '키워드를 입력해 주세요.', addPath)
-        return false
-      }
-      if (target.registrant === 0) {
-        this.openModalDesc('', '등록자를 입력해 주세요.', addPath)
-        return false
-      }
-      if (target.saveFolder === '') {
-        this.openModalDesc('', '저장경로를 선택해 주세요.', addPath)
-        return false
-      }
-      return true
-    },
-
-    // 자료 등록 퀴즈 유효성 검사
-    checkQuizInfo() {
-      const target = this.referenceData
-      const quiz = target.quizList
-      const addPath = this.setAddModalPath()
-      let isQuiz = ''
-      const setTxt = (tit) => `${tit}번 ${isQuiz}를 입력해주세요`
-      for (const i in quiz) {
-        const idx = Number(i)
-        if (quiz[idx].problem === '') {
-          isQuiz = '문제'
-          this.openModalDesc('실패', setTxt(idx + 1), addPath)
-          console.log('문제야 문제' + idx + '번째')
-          return false
-        }
-        if (quiz[idx].limitTime === 0) {
-          isQuiz = '시간'
-          console.log('시간' + idx + '번째')
-          return false
-        }
-        if (quiz[idx].quizType === 1) {
-          if (quiz[idx].subjectiveAnswer === '') {
-            isQuiz = '정답'
-            console.log('정답' + idx + '번째')
-            return false
-          }
-        }
-
-        if (quiz[i].quizType === 2) {
-          if (quiz[i].shortAnswer === '') {
-            isQuiz = '짧은 정답'
-            console.log('짧은 정답' + i + '번째')
-            return false
-          }
-
-          if (quiz[i].shortWrongAnswer === '') {
-            isQuiz = '짧은 오답'
-            console.log('짧은 오답' + i + '번째')
-            return false
-          }
-        }
-      }
-      if (isQuiz === '') {
-        return true
-      }
-    },
-
-    // 자료 등록시 유효성 검사
-    onSubmitReference() {
-      const submitTxt = this.modalTitle === '등록' ? '등록' : '수정'
-      console.log(
-        this.isReferenceAddModal,
-        this.isQuizAddModal,
-        this.isNoteTestAddModal
-      )
-      if (this.isReferenceAddModal) {
-        if (this.checkReferenceInfo()) {
-          this.onCloseReferenceAddModal() // api연동 후 catch에 적용
-          this.openModalDesc('성공', `${submitTxt}되었습니다.`)
-        }
-      } else if (this.isQuizAddModal) {
-        if (this.checkReferenceInfo() && this.checkQuizInfo()) {
-          this.onCloseQuizAddModal() // api연동 후 catch에 적용
-          this.openModalDesc('성공', `${submitTxt}되었습니다.`)
-        }
-      } else if (this.isNoteTestAddModal) {
-        return 'isNoteTestAddModal'
-      } else {
-        return false
-      }
-    },
-
-    // 퀴즈 등록시 유효성 검사
-    onSubmitQuiz() {},
-
     // 퀴즈 변경 UI
     onClickPagination(idx) {
       this.currentPageIdx = idx
+      this.focusEditorField()
+    },
+
+    // Editor focus
+    focusEditorField() {
+      setTimeout(() => {
+        const targetElem = document.getElementById(`quiz_editor`)
+        targetElem.childNodes[0].focus()
+      }, 200)
     },
 
     // 퀴즈 페이지네이션
     onClickQuizPagination(direction, max) {
       const idx = this.currentPageIdx
       const isPlus = direction === 'plus'
-      if (isPlus) return idx < max - 1 && (this.currentPageIdx += 1)
-      else return idx !== 0 && (this.currentPageIdx -= 1)
+      if (isPlus) {
+        idx < max - 1 && (this.currentPageIdx += 1)
+        this.focusEditorField()
+      } else {
+        idx !== 0 && (this.currentPageIdx -= 1)
+        this.focusEditorField()
+      }
     },
 
     //  퀴즈 추가
     onPlusQuizList() {
       const target = this.referenceData
-      const isLength = target.quizList.length <= 19
-      if (isLength)
-        return (target.quizList = [
+      const len = target.quizList.length
+      const isLength = len <= 19
+      this.currentPageIdx = len
+      if (isLength) {
+        target.quizList = [
           ...target.quizList,
           {
             ...this.quizItem,
             id: target.length + 1,
           },
-        ])
+        ]
+        this.focusEditorField()
+      }
     },
 
     // 선택한 퀴즈 지우기
     onDeleteQuizItem(idx) {
       if (this.referenceData.quizList.length > 1) {
         this.referenceData.quizList.splice(idx, 1)
-      }
-    },
-
-    // 선택한 쪽지시험 지우기
-    onDeleteNoteTest(idx) {
-      if (this.referenceData.noteTestList.length > 1) {
-        this.referenceData.noteTestList.splice(idx, 1)
+        this.currentPageIdx = idx - 1
+        this.focusEditorField()
       }
     },
 
@@ -1075,13 +992,26 @@ export default {
     // 쪽지 시험 추가
     onPlusNoteTestList() {
       const target = this.referenceData
-      const isLength = target.noteTestList.length <= 19
-      const setId = target.noteTestList.length + 1
-      if (isLength)
-        return (target.noteTestList = [
+      const len = target.noteTestList.length
+      const isLength = len <= 19
+      const setId = len + 1
+      this.currentPageIdx = len
+      if (isLength) {
+        target.noteTestList = [
           ...target.noteTestList,
           { ...this.testItem, id: setId },
-        ])
+        ]
+        this.focusEditorField()
+      }
+    },
+
+    // 선택한 쪽지시험 지우기
+    onDeleteNoteTest(idx) {
+      if (this.referenceData.noteTestList.length > 1) {
+        this.referenceData.noteTestList.splice(idx, 1)
+        this.currentPageIdx = idx - 1
+        this.focusEditorField()
+      }
     },
 
     // 정답 입력

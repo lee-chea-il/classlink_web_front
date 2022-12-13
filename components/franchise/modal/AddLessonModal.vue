@@ -9,240 +9,255 @@
       aria-hidden="true"
       style="display: block"
     >
-      <div class="background_close" />
-      <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content">
-          <ModalHeader :title="`레슨 ${modalTitle}`" @close="$emit('close')" />
-          <div class="modal-body">
-            <div class="modal_Lessonregi">
-              <!-- 모달 내용 구분 class-->
-              <!-- 2단 분류 컨텐츠 -->
-              <div class="divide_section">
-                <!-- 왼쪽 영역 -->
-                <div class="divide_area left">
-                  <!-- 컨트롤 버튼 영역 [개발참조] 활성화 : active -->
-                  <TopNavigation
-                    :isLesson="isLesson"
-                    @set-lesson="$emit('set-lesson', $event)"
-                  />
-                  <!-- /.컨트롤 버튼 영역 -->
-                  <!-- 탭 컨텐츠 -->
-                  <ul id="myTab" class="nav nav-tabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                      <button
-                        id="grade-tab"
-                        class="nav-link active"
-                        data-toggle="tab"
-                        :data-target="
-                          isLesson ? '#institutePop' : '#institutePop1'
-                        "
-                        type="button"
-                        role="tab"
-                        aria-controls="home"
-                        aria-selected="true"
-                      >
-                        <span class="icon_institute"></span>
-                        교육기관
-                      </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                      <button
-                        id="class-tab"
-                        class="nav-link"
-                        data-toggle="tab"
-                        :data-target="
-                          isLesson ? '#franchisePop' : '#franchisePop1'
-                        "
-                        type="button"
-                        role="tab"
-                        aria-controls="profile"
-                        aria-selected="false"
-                      >
-                        <span class="icon_fran"></span>
-                        프랜차이즈
-                      </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                      <button
-                        id="class-tab"
-                        class="nav-link"
-                        data-toggle="tab"
-                        :data-target="
-                          isLesson ? '#myLessonPop' : '#myReferencePop'
-                        "
-                        type="button"
-                        role="tab"
-                        aria-controls="profile"
-                        aria-selected="false"
-                      >
-                        <span class="icon_mydata"></span>
-                        내 자료
-                      </button>
-                    </li>
-                  </ul>
-                  <div v-show="isLesson" id="myTabContent" class="tab-content">
-                    <!-- 탭 내용01 -->
+      <ValidationObserver v-slot="{ invalid }">
+        <div class="background_close" />
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+          <div class="modal-content">
+            <ModalHeader
+              :title="`레슨 ${modalTitle}`"
+              @close="$emit('close')"
+            />
+            <div class="modal-body">
+              <div class="modal_Lessonregi">
+                <!-- 모달 내용 구분 class-->
+                <!-- 2단 분류 컨텐츠 -->
+                <div class="divide_section">
+                  <!-- 왼쪽 영역 -->
+                  <div class="divide_area left">
+                    <!-- 컨트롤 버튼 영역 [개발참조] 활성화 : active -->
+                    <TopNavigation
+                      :isLesson="isLesson"
+                      @set-lesson="$emit('set-lesson', $event)"
+                    />
+                    <!-- /.컨트롤 버튼 영역 -->
+                    <!-- 탭 컨텐츠 -->
+                    <ul id="myTab" class="nav nav-tabs" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <button
+                          id="grade-tab"
+                          class="nav-link active"
+                          data-toggle="tab"
+                          :data-target="
+                            isLesson ? '#institutePop' : '#institutePop1'
+                          "
+                          type="button"
+                          role="tab"
+                          aria-controls="home"
+                          aria-selected="true"
+                        >
+                          <span class="icon_institute"></span>
+                          교육기관
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button
+                          id="class-tab"
+                          class="nav-link"
+                          data-toggle="tab"
+                          :data-target="
+                            isLesson ? '#franchisePop' : '#franchisePop1'
+                          "
+                          type="button"
+                          role="tab"
+                          aria-controls="profile"
+                          aria-selected="false"
+                        >
+                          <span class="icon_fran"></span>
+                          프랜차이즈
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button
+                          id="class-tab"
+                          class="nav-link"
+                          data-toggle="tab"
+                          :data-target="
+                            isLesson ? '#myLessonPop' : '#myReferencePop'
+                          "
+                          type="button"
+                          role="tab"
+                          aria-controls="profile"
+                          aria-selected="false"
+                        >
+                          <span class="icon_mydata"></span>
+                          내 자료
+                        </button>
+                      </li>
+                    </ul>
                     <div
-                      id="institutePop"
-                      class="tab-pane fade show active"
-                      role="tabpanel"
-                      aria-labelledby="grade-tab"
+                      v-show="isLesson"
+                      id="myTabContent"
+                      class="tab-content"
                     >
-                      <LessonModalTreeView
-                        ref="institution"
-                        listType="lesson"
-                        :dataList="receiveInstitutionLessonData"
-                        :editable="identity == 'master' ? true : false"
-                        :identity="identity"
-                        :pidNum="10000"
-                        :dragDisabled="true"
-                        @moreShowClick="moreShowClick"
-                        @copyDataCallBack="$emit('call-back')"
-                      />
+                      <!-- 탭 내용01 -->
+                      <div
+                        id="institutePop"
+                        class="tab-pane fade show active"
+                        role="tabpanel"
+                        aria-labelledby="grade-tab"
+                      >
+                        <LessonModalTreeView
+                          ref="institution"
+                          listType="lesson"
+                          :dataList="receiveInstitutionLessonData"
+                          :editable="identity == 'master' ? true : false"
+                          :identity="identity"
+                          :pidNum="10000"
+                          :dragDisabled="true"
+                          @moreShowClick="moreShowClick"
+                          @copyDataCallBack="$emit('call-back')"
+                        />
+                      </div>
+                      <!-- /.탭 내용01 -->
+                      <!-- 탭 내용02 -->
+                      <div
+                        id="franchisePop"
+                        class="tab-pane fade"
+                        role="tabpanel"
+                        aria-labelledby="class-tab"
+                      >
+                        <LessonModalTreeView
+                          ref="franchise"
+                          listType="lesson"
+                          :dataList="receiveFranchiseLessonData"
+                          :editable="identity == 'master' ? true : false"
+                          :identity="identity"
+                          :pidNum="11000"
+                          :dragDisabled="true"
+                          @moreShowClick="moreShowClick"
+                          @copyDataCallBack="$emit('call-back')"
+                        />
+                      </div>
+                      <!-- /.탭 내용02 -->
+                      <!-- 탭 내용03 -->
+                      <div
+                        id="myLessonPop"
+                        class="tab-pane fade"
+                        role="tabpanel"
+                        aria-labelledby="class-tab"
+                      >
+                        <LessonModalTreeView
+                          ref="franchise"
+                          listType="lesson"
+                          :dataList="receiveLessonList"
+                          :editable="identity == 'master' ? true : false"
+                          :identity="identity"
+                          :pidNum="11000"
+                          :dragDisabled="true"
+                          @moreShowClick="moreShowClick"
+                          @copyDataCallBack="$emit('call-back')"
+                        />
+                      </div>
+                      <!-- /.탭 내용03 -->
                     </div>
-                    <!-- /.탭 내용01 -->
-                    <!-- 탭 내용02 -->
-                    <div
-                      id="franchisePop"
-                      class="tab-pane fade"
-                      role="tabpanel"
-                      aria-labelledby="class-tab"
-                    >
-                      <LessonModalTreeView
-                        ref="franchise"
-                        listType="lesson"
-                        :dataList="receiveFranchiseLessonData"
-                        :editable="identity == 'master' ? true : false"
-                        :identity="identity"
-                        :pidNum="11000"
-                        :dragDisabled="true"
-                        @moreShowClick="moreShowClick"
-                        @copyDataCallBack="$emit('call-back')"
-                      />
-                    </div>
-                    <!-- /.탭 내용02 -->
-                    <!-- 탭 내용03 -->
-                    <div
-                      id="myLessonPop"
-                      class="tab-pane fade"
-                      role="tabpanel"
-                      aria-labelledby="class-tab"
-                    >
-                      <LessonModalTreeView
-                        ref="franchise"
-                        listType="lesson"
-                        :dataList="receiveLessonList"
-                        :editable="identity == 'master' ? true : false"
-                        :identity="identity"
-                        :pidNum="11000"
-                        :dragDisabled="true"
-                        @moreShowClick="moreShowClick"
-                        @copyDataCallBack="$emit('call-back')"
-                      />
-                    </div>
-                    <!-- /.탭 내용03 -->
-                  </div>
 
-                  <div v-show="!isLesson" id="myTabContent" class="tab-content">
-                    <!-- 탭 내용01 -->
                     <div
-                      id="institutePop1"
-                      class="tab-pane fade show active"
-                      role="tabpanel"
-                      aria-labelledby="grade-tab"
+                      v-show="!isLesson"
+                      id="myTabContent"
+                      class="tab-content"
                     >
-                      <TreeView
-                        ref="myLesson"
-                        listType="lesson"
-                        :dataList="receiveInstitutionData"
-                        :editable="identity == 'master' ? true : false"
-                        :identity="identity"
-                        :pidNum="12000"
-                        @moreShowClick="moreShowClickReference"
-                        @copyDataCallBack="$emit('call-back')"
-                        @un-active="unActive"
-                      />
+                      <!-- 탭 내용01 -->
+                      <div
+                        id="institutePop1"
+                        class="tab-pane fade show active"
+                        role="tabpanel"
+                        aria-labelledby="grade-tab"
+                      >
+                        <TreeView
+                          ref="myLesson"
+                          listType="lesson"
+                          :dataList="receiveInstitutionData"
+                          :editable="identity == 'master' ? true : false"
+                          :identity="identity"
+                          :pidNum="12000"
+                          @moreShowClick="moreShowClickReference"
+                          @copyDataCallBack="$emit('call-back')"
+                          @un-active="unActive"
+                        />
+                      </div>
+                      <!-- /.탭 내용01 -->
+                      <!-- 탭 내용02 -->
+                      <div
+                        id="franchisePop1"
+                        class="tab-pane fade"
+                        role="tabpanel"
+                        aria-labelledby="class-tab"
+                      >
+                        <TreeView
+                          ref="myFranchise"
+                          listType="lesson"
+                          :dataList="receiveFranchiseData"
+                          :editable="identity == 'master' ? true : false"
+                          :identity="identity"
+                          :pidNum="13000"
+                          @moreShowClick="moreShowClickReference"
+                          @copyDataCallBack="$emit('call-back')"
+                          @un-active="unActive"
+                        />
+                      </div>
+                      <!-- /.탭 내용02 -->
+                      <!-- 탭 내용03 -->
+                      <div
+                        id="myReferencePop"
+                        class="tab-pane fade"
+                        role="tabpanel"
+                        aria-labelledby="class-tab"
+                      >
+                        <TreeView
+                          ref="myFranchise"
+                          listType="lesson"
+                          :dataList="receiveMyData"
+                          :editable="identity == 'master' ? true : false"
+                          :identity="identity"
+                          :pidNum="13000"
+                          @moreShowClick="moreShowClickReference"
+                          @copyDataCallBack="$emit('call-back')"
+                          @un-active="unActive"
+                        />
+                      </div>
+                      <!-- /.탭 내용03 -->
                     </div>
-                    <!-- /.탭 내용01 -->
-                    <!-- 탭 내용02 -->
-                    <div
-                      id="franchisePop1"
-                      class="tab-pane fade"
-                      role="tabpanel"
-                      aria-labelledby="class-tab"
-                    >
-                      <TreeView
-                        ref="myFranchise"
-                        listType="lesson"
-                        :dataList="receiveFranchiseData"
-                        :editable="identity == 'master' ? true : false"
-                        :identity="identity"
-                        :pidNum="13000"
-                        @moreShowClick="moreShowClickReference"
-                        @copyDataCallBack="$emit('call-back')"
-                        @un-active="unActive"
-                      />
-                    </div>
-                    <!-- /.탭 내용02 -->
-                    <!-- 탭 내용03 -->
-                    <div
-                      id="myReferencePop"
-                      class="tab-pane fade"
-                      role="tabpanel"
-                      aria-labelledby="class-tab"
-                    >
-                      <TreeView
-                        ref="myFranchise"
-                        listType="lesson"
-                        :dataList="receiveMyData"
-                        :editable="identity == 'master' ? true : false"
-                        :identity="identity"
-                        :pidNum="13000"
-                        @moreShowClick="moreShowClickReference"
-                        @copyDataCallBack="$emit('call-back')"
-                        @un-active="unActive"
-                      />
-                    </div>
-                    <!-- /.탭 내용03 -->
+                    <!-- /.탭 컨텐츠 -->
                   </div>
-                  <!-- /.탭 컨텐츠 -->
+                  <!-- /.왼쪽 영역 -->
+                  <!-- 오른쪽 영역 -->
+                  <RightSection
+                    ref="right"
+                    :modalTitle="modalTitle"
+                    :lessonData="lessonData"
+                    :referenceList="receiveMyData"
+                    :treeReference="referenceList"
+                    :pushKeyword="pushKeyword"
+                    @change-lesson="$emit('change-lesson', $event)"
+                    @add-reference="$emit('add-reference', $event)"
+                    @remove-reference="$emit('remove-reference', $event)"
+                    @change-keyword="$emit('change-keyword', $event)"
+                    @set-keyword="$emit('set-keyword', $event)"
+                    @delete-keyword="$emit('delete-keyword', $event)"
+                    @open-save-path="$emit('open-save-path', 'isAddLesson')"
+                    @moreShowClick="moreShowClickReference"
+                    @un-active="unActive"
+                  />
+                  <!-- /.오른쪽 영역 -->
                 </div>
-                <!-- /.왼쪽 영역 -->
-                <!-- 오른쪽 영역 -->
-                <RightSection
-                  ref="right"
-                  :modalTitle="modalTitle"
-                  :lessonData="lessonData"
-                  :referenceList="receiveMyData"
-                  :treeReference="referenceList"
-                  :pushKeyword="pushKeyword"
-                  @change-lesson="$emit('change-lesson', $event)"
-                  @add-reference="$emit('add-reference', $event)"
-                  @remove-reference="$emit('remove-reference', $event)"
-                  @changePushKeyword="$emit('changePushKeyword', $event)"
-                  @set-keyword="$emit('set-keyword', $event)"
-                  @delete-keyword="$emit('delete-keyword', $event)"
-                  @open-save-path="$emit('open-save-path', 'isAddLesson')"
-                  @moreShowClick="moreShowClickReference"
-                  @un-active="unActive"
-                />
-                <!-- /.오른쪽 영역 -->
+                <!-- /.2단 분류 컨텐츠 -->
               </div>
-              <!-- /.2단 분류 컨텐츠 -->
             </div>
+            <ModalBtnBox
+              :invalid="invalid"
+              :submitTxt="modalTitle"
+              @submit="$emit('submit')"
+              @close="$emit('close')"
+            />
           </div>
-          <ModalBtnBox
-            :submitTxt="modalTitle"
-            @submit="$emit('submit')"
-            @close="$emit('close')"
-          />
         </div>
-      </div>
+      </ValidationObserver>
     </div>
   </Transition>
 </template>
 
 <script>
+import { ValidationObserver } from 'vee-validate'
 import ModalHeader from '../../common/ModalHeader.vue'
 import ModalBtnBox from '../../common/ModalBtnBox.vue'
 import TopNavigation from '../lesson/TopNavigation.vue'
@@ -254,6 +269,7 @@ export default {
   components: {
     ModalHeader,
     LessonModalTreeView,
+    ValidationObserver,
     RightSection,
     TopNavigation,
     TreeView,

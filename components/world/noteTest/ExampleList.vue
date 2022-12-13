@@ -51,18 +51,16 @@
             </div>
           </div>
           <div class="quiz_area">
-            <div class="tit">제한시간</div>
-            <div class="cnt">
-              <input
-                id="limitTime"
-                type="text"
-                name="limitTime"
-                :value="item.limitTime"
-                placeholder="문제당 제한시간(초)"
-                class="form-control form-inline"
-                @input="$emit('change-item', $event, idx)"
-              />
-            </div>
+            <div class="tit time">문제당 제한시간</div>
+            <NoteTestInput
+              rules="required_quiz"
+              idProp="limitTime"
+              nameProp="제한시간"
+              :idx="idx"
+              :value="item.limitTime"
+              placeholder="제한시간(분)"
+              @change-item="setChangeInput"
+            />
           </div>
           <div class="quiz_area02 comment_area">
             <div class="tit_area">
@@ -84,16 +82,26 @@
                 </div>
               </div>
             </div>
-            <div class="cnt_area">
-              <textarea
-                id="commentary"
-                name="commentary"
-                :value="item.commentary"
-                rows="4"
-                placeholder="입력한 해설"
-                @input="$emit('change-item', $event, idx)"
-              ></textarea>
-            </div>
+            <ValidationProvider
+              v-slot="{ errors }"
+              :rules="item.isCommentary ? 'required_quiz' : ''"
+            >
+              <div class="cnt_area">
+                <textarea
+                  id="commentary"
+                  class="textarea"
+                  name="해설"
+                  :value="item.commentary"
+                  :disabled="!item.isCommentary"
+                  rows="4"
+                  placeholder="입력한 해설"
+                  @input="$emit('change-item', $event, idx)"
+                ></textarea>
+              </div>
+              <div class="error_message">
+                {{ errors[0] }}
+              </div>
+            </ValidationProvider>
           </div>
         </div>
       </div>
@@ -102,12 +110,16 @@
 </template>
 
 <script>
+import { ValidationProvider } from 'vee-validate'
 import CustomDescEditor from '../common/custom/CustomDescEditor.vue'
+import NoteTestInput from '../common/custom/NoteTestInput.vue'
 
 export default {
   name: 'ExampleList',
   components: {
     CustomDescEditor,
+    NoteTestInput,
+    ValidationProvider,
   },
   props: {
     noteTestList: {
@@ -127,8 +139,26 @@ export default {
     setDeleteExample(idx, targetIdx) {
       this.$emit('delete-example', idx, targetIdx)
     },
+    setChangeInput(e, idx) {
+      this.$emit('change-item', e, idx)
+    },
   },
 }
 </script>
 
-<style></style>
+<style scoped>
+.tit.time {
+  font-size: 12px !important;
+}
+
+.error_message {
+  margin: 8px 0 0 8px !important;
+  font-size: 10.5px;
+  color: #fb5353;
+  text-align: left;
+}
+
+.textarea {
+  padding: 10px;
+}
+</style>

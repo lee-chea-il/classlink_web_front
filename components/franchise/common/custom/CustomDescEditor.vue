@@ -24,15 +24,21 @@
         </div>
       </div>
       <div class="edit_area_inline">
-        <div>
+        <ValidationProvider
+          v-slot="{ errors }"
+          rules="end_limit_desc|edit_required"
+        >
           <client-only>
             <VueEditor
               v-model="item.example"
               :editorOptions="editorOptions"
               :editorToolbar="editorToolbar"
+              :useCustomImageHandler="true"
+              @image-added="handleImageAdded"
             />
           </client-only>
-        </div>
+          <div class="invalid_text">{{ errors[0] }}</div>
+        </ValidationProvider>
       </div>
       <button
         v-if="idx !== 0"
@@ -49,8 +55,13 @@
 </template>
 
 <script>
+import { ValidationProvider } from 'vee-validate'
+import { api } from '~/services'
 export default {
   name: 'CustomDescEditor',
+  components: {
+    ValidationProvider,
+  },
   props: {
     itemList: {
       type: Object,
@@ -98,6 +109,23 @@ export default {
       ],
     }
   },
+  methods: {
+    handleImageAdded(file, Editor, cursorLocation, resetUploader) {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      api
+        .postFile(formData)
+        .then(({ data: { data } }) => {
+          const img = `http://112.171.101.31:45290/file/${data}`
+          Editor.insertEmbed(cursorLocation, 'image', img)
+          resetUploader()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+  },
 }
 </script>
 
@@ -106,5 +134,8 @@ div.example {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.invalid_text {
+  margin-top: 12px;
 }
 </style>
