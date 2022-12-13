@@ -450,8 +450,26 @@
           </div>
           <div class="info_area">
             <div class="pay_choice">
-              <div class="credit"><span class="font03">신용카드</span></div>
-              <div class="account"><span class="font03">계좌이체</span></div>
+              <div
+                class="credit_account"
+                :class="
+                  myCardInfo.paymentType.paymentType === '신용카드'
+                    ? 'active'
+                    : ''
+                "
+              >
+                <span class="font03">신용카드</span>
+              </div>
+              <div
+                class="credit_account"
+                :class="
+                  myCardInfo.paymentType.paymentType === '계좌이체'
+                    ? 'active'
+                    : ''
+                "
+              >
+                <span class="font03">계좌이체</span>
+              </div>
             </div>
             <div class="form-group">
               <label for="" class="font04">전체주소</label>

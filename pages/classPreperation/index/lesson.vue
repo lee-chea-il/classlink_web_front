@@ -299,14 +299,20 @@ export default {
 
     // [공통] 키워드 변경
     setKeyword({ target: { value } }) {
-      const keywordList = [...this.lessonData.keyword, value]
-      this.pushKeyword = ''
-      this.lessonData.keyword = setNewArray(keywordList)
+      const noSpace = /\s/g
+      if (!noSpace.test(value) && value.length > 0) {
+        const keywordList = [...this.lessonData.keyword, value]
+        this.lessonData.keyword = setNewArray(keywordList)
+        this.pushKeyword = this.pushKeyword.replace(/.+/g, '')
+      } else {
+        this.pushKeyword = ''
+      }
     },
 
     // [공통] 키워드 내용 변경
     changePushKeyword({ target: { value } }) {
-      this.pushKeyword = value
+      const newVal = value.replace(/\s/g, '')
+      this.pushKeyword = newVal
     },
 
     // [레슨]  모달

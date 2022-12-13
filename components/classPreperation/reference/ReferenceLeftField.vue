@@ -44,7 +44,7 @@
       <CustomKeywordBox
         :pushKeyword="pushKeyword"
         :keyword="reference.keyword"
-        @changePushKeyword="$emit('changePushKeyword', $event)"
+        @change-keyword="$emit('change-keyword', $event)"
         @set-keyword="$emit('set-keyword', $event)"
         @delete-keyword="$emit('delete-keyword', $event)"
       />

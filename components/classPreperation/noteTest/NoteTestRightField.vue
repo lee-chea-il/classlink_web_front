@@ -1,7 +1,6 @@
 <template>
   <div class="right_area">
     <div class="regi_area right">
-      <!-- <div v-if="currentIdx === idx"> -->
       <PageNumberList
         :itemList="noteTestList"
         :currentIdx="currentIdx"
@@ -11,9 +10,11 @@
       <div class="write_area">
         <PreviewField :currentPageIdx="currentIdx" @preview="setPreview" />
 
-        <div class="edit_area">
-          <CustomEditor :itemList="noteTestList" :currentIdx="currentIdx" />
-        </div>
+        <CustomEditor
+          rules="start_limit|end_limit|edit_required"
+          :itemList="noteTestList"
+          :currentIdx="currentIdx"
+        />
 
         <PaginationDelBtn
           :currentIdx="currentIdx"
@@ -21,7 +22,8 @@
           @pagination="setPagination"
           @delete-quiz="$emit('delete-item', $event)"
         />
-
+      </div>
+      <div class="write_area">
         <ExampleList
           :isCreate="isCreate"
           :noteTestList="noteTestList"
@@ -33,7 +35,6 @@
           @delete-example="setDeleteExample"
         />
       </div>
-      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -94,5 +95,8 @@ export default {
   },
 }
 </script>
-
-<style></style>
+<style scoped>
+.write_area {
+  position: relative;
+}
+</style>

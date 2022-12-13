@@ -1,4 +1,4 @@
-import http from './http'
+import httpFile from './httpFile'
 
 // 파일 업로드
 const postFile = async (file) => {
@@ -7,7 +7,7 @@ const postFile = async (file) => {
       'Content-Type': 'multipart/form-data',
     },
   }
-  return await http.post('/fileupload', file, config)
+  return await httpFile.post('/fileupload', file, config)
 }
 
 const api = {

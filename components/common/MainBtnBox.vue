@@ -12,22 +12,22 @@
 
     <div class="right_area">
       <SearchTextBox
-        :open="pageType === 'reference'"
+        :open="pageType === 'data'"
         :value="value"
         @open-search-list="$emit('open-search-list')"
         @change-word="$emit('change-word', $event)"
       />
       <ButtonItem
-        v-show="pageType === 'reference'"
+        v-show="pageType === 'data'"
         title="필터"
         color="filter"
         @click-item="$emit('open-filter', $event)"
       />
       <ButtonItem
-        v-show="pageType === 'reference'"
+        v-show="pageType === 'data'"
         title="등록"
         color="point"
-        data-toggle="modal" 
+        data-toggle="modal"
         data-target="#modalDataregi"
       />
       <ButtonItem

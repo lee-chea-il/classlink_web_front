@@ -11,30 +11,11 @@
       <div class="write_area">
         <PreviewField :currentPageIdx="currentPageIdx" @preview="setPreview" />
 
-        <div class="edit_area">
-          <client-only v-for="(item, idx) in quizList" :key="idx">
-            <ValidationProvider
-              v-slot="{ errors }"
-              rules="edit_limit|edit_required"
-            >
-              <VueEditor
-                v-if="currentPageIdx === idx"
-                v-model="item.problem"
-                :editorToolbar="editorToolbar"
-                :editorOptions="editorOptions"
-                :useCustomImageHandler="true"
-                @image-added="handleImageAdded"
-              />
-              <div
-                v-if="currentPageIdx === idx && errors[0]"
-                class="invalid_text"
-                style="margin: -16px 0 0 8px"
-              >
-                {{ errors[0] }}
-              </div>
-            </ValidationProvider>
-          </client-only>
-        </div>
+        <CustomEditor
+          rules="start_limit|end_limit|edit_required"
+          :itemList="quizList"
+          :currentIdx="currentPageIdx"
+        />
 
         <PaginationDelBtn
           :currentIdx="currentPageIdx"
@@ -57,23 +38,20 @@
 </template>
 
 <script>
-import { ValidationProvider } from 'vee-validate'
-// import CustomEditor from '../common/custom/CustomEditor.vue'
+import CustomEditor from '../common/custom/CustomEditor.vue'
 import PreviewField from './PreviewField.vue'
 import PageNumberList from './PageNumberList.vue'
 import QuizFormField from './QuizFormField.vue'
 import PaginationDelBtn from './PaginationDelBtn.vue'
-// import { api } from '~/services'
 
 export default {
   name: 'QuizRightField',
   components: {
-    // CustomEditor,
+    CustomEditor,
     PageNumberList,
     PaginationDelBtn,
     QuizFormField,
     PreviewField,
-    ValidationProvider,
   },
   props: {
     quizList: {
@@ -85,27 +63,6 @@ export default {
       default: 0,
     },
     isCreate: { type: Boolean, default: false },
-  },
-  data() {
-    return {
-      editorOptions: {
-        modules: {
-          imageDrop: true,
-          imageEdit: true,
-        },
-      },
-      editorToolbar: [
-        ['bold', 'italic', 'underline', 'strike'],
-        [
-          { align: '' },
-          { align: 'center' },
-          { align: 'right' },
-          { align: 'justify' },
-        ],
-        [{ list: 'ordered' }, { list: 'bullet' }],
-        ['image', 'code-block'],
-      ],
-    }
   },
   methods: {
     setPreview(prev, isFirst) {
@@ -130,4 +87,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.write_area {
+  position: relative;
+}
+</style>
