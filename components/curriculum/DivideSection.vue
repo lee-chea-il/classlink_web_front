@@ -1,7 +1,7 @@
 <template>
   <div :class="`divide_area ${directionType}`">
     <ul
-      v-show="directionType==='left'"
+      v-if="directionType==='left'"
       id="myTab"
       class="nav nav-tabs"
       role="tablist"
@@ -23,7 +23,7 @@
       />
     </ul>
     <ul
-    v-show="directionType!=='left'"
+      v-else
       id="myTab"
       class="nav nav-tabs"
       role="tablist"
@@ -34,7 +34,7 @@
         dataTarget="mydata"
         ariaControls="home"
         ariaSelected="true"
-        tabName="내 커리큘럼"
+        :tabName="rightListTitle"
       />
     </ul>
 
@@ -43,7 +43,6 @@
       id="myTabContent"
       class="tab-content"
     >
-      <!-- 탭 내용01 -->
       <div
         id="institute"
         class="tab-pane fade show active"
@@ -62,9 +61,6 @@
           @copyDataCallBack="$emit('copyDataCallBack',$event)"
         />
       </div>
-      <!-- /.탭 내용01 -->
-
-      <!-- 탭 내용02 -->
       <div
         id="franchise"
         class="tab-pane fade"
@@ -145,7 +141,11 @@ export default {
       type: Array,
       default: () => [],
     },
-    isUpdate: Boolean
+    isUpdate: Boolean,
+    rightListTitle:{
+      type: String,
+      default: ''
+    },
   },
   data(){
     return {

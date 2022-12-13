@@ -26,6 +26,7 @@
           <DivideSection
             ref="rightSection"
             directionType="right"
+            rightListTitle="내 커리큘럼"
             :identity="identity"
             :curriculumData="receiveCurriculumData"
             @un-active="unActive"
@@ -37,6 +38,14 @@
     </div>
     <CurriculumUpdateModal
       ref="curriculumUpdateModal"
+      :txtInfo="{
+        'fileSet':'link',
+        'modatTitle':'커리큘럼 등록 / 수정',
+        'ioTitle':'CW 교실',
+        'rightTitle':'레슨정보',
+        'listTitle':'레슨 자료',
+        'listEmptyTxt':'현재 불러온 레슨이 없습니다.'
+      }"
       :open="isShowOpenAddModal"
       @open-file-path="
         () => {

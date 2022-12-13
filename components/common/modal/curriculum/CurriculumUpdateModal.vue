@@ -15,7 +15,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 id="exampleModalLabel" class="modal-title">
-              커리큘럼 등록 / 수정
+              {{txtInfo.modatTitle}}
             </h5>
             <button
               type="button"
@@ -55,7 +55,7 @@
                   </div>
 
                   <div class="title">
-                    CW 교실
+                    {{txtInfo.ioTitle}}
                     <div class="dropdown form-inline">
                       <button
                         class="btn dropdown-toggle"
@@ -105,8 +105,7 @@
                 <!-- /.왼쪽 영역 -->
                 <!-- 오른쪽 영역 -->
                 <div class="divide_area right">
-                  <div class="title">레슨정보</div>
-
+                  <div class="title">{{txtInfo.rightTitle}}</div>
                   <div class="form-group">
                     <label for="">불러오기</label>
                     <div class="col">
@@ -150,15 +149,15 @@
                   </div>
                   <div class="form-group">
                     <label for="" style="place-self: flex-start"
-                      >레슨 자료</label
-                    >
+                      >{{txtInfo.listTitle}}
+                      </label>
                     <div class="col">
                       <div class="list_box">
                         <div
                           v-if="curriculumData.lessonInfo.lesson.title === ''"
                           class="nothing_txt"
                         >
-                          현재 불러온 레슨이 없습니다.
+                        {{txtInfo.listEmptyTxt}}
                         </div>
                         <div v-else class="section">
                           <!-- 커리큘럼 등록 시 출력됨 -->
@@ -288,6 +287,10 @@ export default {
       type: String,
       default: '',
     },
+    txtInfo: {
+      type: Object,
+      default: ()=>{},
+    }
   },
   data() {
     return {
@@ -1907,7 +1910,7 @@ export default {
           this.curriculumData.savePathInfo.path +
           ' > ' +
           this.curriculumData.savePathInfo.fileName +
-          '.link'
+          '.'+this.txtInfo.fileSet
         this.curriculumData.lessonInfo.pathTxt =
           this.curriculumData.lessonInfo.path +
           ' > ' +
@@ -1974,7 +1977,7 @@ export default {
         this.curriculumData.savePathInfo.path +
         ' > ' +
         this.curriculumData.savePathInfo.fileName +
-        '.link'
+        '.'+this.txtInfo.fileSet
     },
     setFileInfo(lessonInfo) {
       this.unLinkAllItem()
