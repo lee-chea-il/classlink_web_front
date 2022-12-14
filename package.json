@@ -41,6 +41,8 @@
     "vue-tree-list": "^1.5.0",
     "vue-xlsx": "^0.2.1",
     "vue2-editor": "^2.10.3",
+    "vuex": "^3.6.2",
+    "vuex-persistedstate": "^4.1.0",
     "webpack": "^4.46.0",
     "youtube-captions-scraper": "^2.0.0"
   },

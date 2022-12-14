@@ -113,6 +113,7 @@ export default {
       crossorigin: 'anonymous',
     },
     { src: 'plugins/vue2-editor', ssr: false, defer: true },
+    { src: '~/plugins/persistedState.client.js' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
