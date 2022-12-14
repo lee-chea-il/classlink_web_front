@@ -33,10 +33,3 @@ export const mutations = {
     state.userEmail = email
   },
 }
-
-// export const actions = {
-//   async fetchUser(payload) {
-//     const response = await http.postLogin('/getLogin', payload)
-//     state.commit('setUser', response.data)
-//   },
-// }

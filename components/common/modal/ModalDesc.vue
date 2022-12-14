@@ -57,7 +57,7 @@ export default {
   display: table-cell;
   vertical-align: middle;
   position: absolute;
-  z-index: 9998;
+  z-index: 9999;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

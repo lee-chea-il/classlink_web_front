@@ -72,6 +72,7 @@
       @set-keyword="setKeyword"
       @delete-keyword="deleteKeyword"
       @open-save-path="onOpenSavePathModal"
+      @submit="onSubmitAddData"
     />
 
     <!-- 퀴즈 등록 -->
@@ -1042,11 +1043,25 @@ export default {
     // 자료 조회
     onClickView(params) {
       this.referenceData = jsonItem(params)
-
       const type = params.uploadType
       if (type === 'quiz') return this.onOpenQuizBrowseModal()
       else if (type === 'test') return this.onOpenNoteTestBrowseModal()
       else return this.onOpenReferenceBrowseModal()
+    },
+
+    // 자료 등록 Submit
+    onSubmitAddData() {
+      if (this.referenceData.keyword.length > 0) {
+        // api연동후 api요청 함수 넣을예정
+        this.isReferenceAddModal = false
+        this.openModalDesc('등록 성공', '자료를 등록했습니다.(임시기능)')
+      } else {
+        this.openModalDesc(
+          '등록 실패',
+          '키워드를 입력해주세요.',
+          'isReferenceAddModal'
+        )
+      }
     },
 
     copyData() {

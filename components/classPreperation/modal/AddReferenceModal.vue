@@ -43,7 +43,7 @@
             <ModalBtnBox
               :invalid="invalid"
               :submitTxt="modalTitle"
-              @submit="$emit('submit-btn')"
+              @submit="$emit('submit')"
               @close="$emit('close')"
             />
           </ValidationObserver>
