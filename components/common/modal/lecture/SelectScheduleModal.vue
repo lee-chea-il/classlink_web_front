@@ -126,6 +126,7 @@
         <CustomModalBtn
           prevTarget="#modalLectureRegi02"
           nextTarget="#modalLectureRegi04"
+          :isDisabled="isDisabled(lectureInfo.scheduleWeekList)"
         />
       </div>
     </div>
@@ -160,6 +161,20 @@ export default {
   methods: {
     setDeleteSchedule(e, idx) {
       this.$emit('delete-schedule', e, idx)
+    },
+    isDisabled(obj) {
+      const { sun, mon, tue, wed, thu, fri, set } = obj
+      if (
+        sun.length ||
+        mon.length ||
+        tue.length ||
+        wed.length ||
+        thu.length ||
+        fri.length ||
+        set.length
+      ) {
+        return false
+      } else return true
     },
   },
 }

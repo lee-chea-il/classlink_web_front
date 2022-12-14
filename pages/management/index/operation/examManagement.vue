@@ -508,7 +508,7 @@ export default {
               ],
               dificultade: 0,
               limitTime: '',
-              answer: 0,
+              answer: 1,
               isCommentary: true,
               commentary: '',
             },
@@ -584,7 +584,7 @@ export default {
               ],
               dificultade: 0,
               limitTime: '',
-              answer: 0,
+              answer: 1,
             },
             {
               id: 1,
@@ -633,7 +633,7 @@ export default {
             ],
             dificultade: 0,
             limitTime: '',
-            answer: 0,
+            answer: 1,
           },
           {
             id: 1,

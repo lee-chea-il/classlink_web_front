@@ -33,7 +33,6 @@
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @download-data="$emit('download-data', $event)"
         @update-data="$emit('update-data', $event)"
-        @update-my-tree="$emit('update-my-tree', $event)"
         @un-active="unActive"
       />
       <!-- /.탭 컨텐츠 -->

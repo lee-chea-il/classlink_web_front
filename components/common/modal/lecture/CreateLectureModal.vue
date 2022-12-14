@@ -9,7 +9,7 @@
     <div class="background_close" />
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content">
-        <ModalHeader :title="modalTitle"/>
+        <ModalHeader :title="modalTitle" />
         <div class="modal-body">
           <div class="cnts_section">
             <!-- 왼쪽 SECTION -->
@@ -39,7 +39,7 @@
             <!-- /.오른쪽 SECTION -->
           </div>
         </div>
-        <CreateLectureBtn @next-btn="$emit('next-btn')" />
+        <CreateLectureBtn :isDisabled="isDisabled(lectureInfo)" />
       </div>
     </div>
   </div>
@@ -65,6 +65,17 @@ export default {
     teacherList: { type: Array, default: () => [] },
     classList: { type: Array, default: () => [] },
     searchData: { type: Object, default: () => {} },
+  },
+  methods: {
+    isDisabled(obj) {
+      if (
+        obj.name !== '' &&
+        obj.teacher.length > 0 &&
+        obj.className.length > 0
+      ) {
+        return false
+      } else return true
+    },
   },
 }
 </script>

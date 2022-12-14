@@ -7,7 +7,7 @@
         <!-- 컨트롤 버튼 영역 -->
         <MainBtnBox
           :value="searchData.word"
-          pageType="data"
+          pageType="reference"
           @open-filter="openFilterModal"
           @open-search-list="openSearchListModal"
           @change-word="changeSearchData"
@@ -27,7 +27,6 @@
           :franchiseData="receiveFranchiseData"
           :openData="receiveOpenData"
           :myDataList="receiveMyData"
-          @update-my-tree="updateMyTree"
           @open-data="onClickView"
           @copyDataCallBack="copyDataCallBack"
           @download-data="downloadSelectData"
@@ -73,6 +72,7 @@
       @delete-keyword="deleteKeyword"
       @open-save-path="onOpenSavePathModal"
       @submit="onSubmitAddData"
+      @change-file="changeFile"
     />
 
     <!-- 퀴즈 등록 -->
@@ -98,6 +98,7 @@
       @set-keyword="setKeyword"
       @delete-keyword="deleteKeyword"
       @open-save-path="onOpenSavePathModal"
+      @submit="onSubmitAddQuiz"
     />
 
     <!-- 쪽지시험 등록 -->
@@ -123,6 +124,7 @@
       @open-save-path="onOpenSavePathModal"
       @add-example="plusExampleList"
       @delete-example="deleteExample"
+      @submit="onSubmitAddTest"
     />
 
     <!-- 비디오 & 문서 & 유튜브 & url 보기 -->
@@ -279,7 +281,6 @@ import SearchResultModal from '~/components/classPreperation/modal/SearchResultM
 import SelectReferenceModal from '~/components/classPreperation/modal/SelectReferenceModal.vue'
 import UploadYoutubeModal from '~/components/classPreperation/modal/UploadYoutubeModal.vue'
 import UploadVideoFileModal from '~/components/classPreperation/modal/UploadVideoFileModal.vue'
-
 import initialState from '~/data/classPreperation/reference/initialState'
 import { urlRegex, youtubeRegex, setNewArray, jsonItem } from '~/utiles/common'
 import { apiReference } from '~/services'
@@ -293,7 +294,6 @@ export default {
     SavePathModal,
     TreeSection,
     CustomSnackbar,
-
     AddQuizModal,
     AddNoteTestModal,
     AddReferenceModal,
@@ -315,12 +315,6 @@ export default {
     return initialState()
   },
   methods: {
-    updateMyTree(newTree) {
-      const item = jsonItem(newTree)
-      this.receiveMyData = [item.children]
-      console.log(this.receiveMyData)
-    },
-
     // 등록 자료 초기화
     initReference() {
       const init = jsonItem(this.initReferenceData)
@@ -765,7 +759,6 @@ export default {
         }
       } else if (id === 'limitTime') return (testElem[id] = numberOnly)
       else {
-        console.log(testElem)
         testElem[id] = value
       }
     },
@@ -864,6 +857,15 @@ export default {
             createAt: new Date(),
             savePath: `https://www.youtube.com/embed/${youtubeUrl}`,
           }
+          // 유튜브 재생시간 가져오기
+          console.log(
+            items[0].contentDetails.duration
+              .replace(/H|M/g, ':')
+              .replace(/PT|S/g, '')
+          )
+          // .replace(/H|M|S/g, ':')
+          this.youtubePlayTime = items[0].contentDetails.duration
+
           $('#modalDataregi03').modal('hide')
           this.onOpenReferenceAddModal()
         })
@@ -899,6 +901,26 @@ export default {
         this.onOpenReferenceAddModal()
       } else {
         this.openModalDesc('실패', 'URL을 정확히 입력해주세요')
+      }
+    },
+
+    // [자료실]수정 페이지 파일 변경
+    changeFile(e) {
+      const {
+        target: { files, name },
+      } = e
+      if (files[0]) {
+        this.referenceData = {
+          ...this.referenceData,
+          name: files[0].name,
+          fileName: files[0].name,
+          fileDivision: '교육기관',
+          fileType: files[0].type,
+          uploadType: name,
+          fileVolume: files[0].size,
+          createAt: files[0].lastModifiedDate,
+          savePath: URL.createObjectURL(files[0]),
+        }
       }
     },
 
@@ -1051,17 +1073,23 @@ export default {
 
     // 자료 등록 Submit
     onSubmitAddData() {
-      if (this.referenceData.keyword.length > 0) {
-        // api연동후 api요청 함수 넣을예정
-        this.isReferenceAddModal = false
-        this.openModalDesc('등록 성공', '자료를 등록했습니다.(임시기능)')
-      } else {
-        this.openModalDesc(
-          '등록 실패',
-          '키워드를 입력해주세요.',
-          'isReferenceAddModal'
-        )
-      }
+      // api연동후 api요청 함수 넣을예정
+      this.onCloseReferenceAddModal()
+      this.openModalDesc('등록 성공', '자료를 등록했습니다.(임시기능)')
+    },
+
+    // 퀴즈 등록 Submit
+    onSubmitAddQuiz() {
+      // api연동후 api요청 함수 넣을예정
+      this.onCloseQuizAddModal()
+      this.openModalDesc('등록 성공', '자료를 등록했습니다.(임시기능)')
+    },
+
+    // 쪽지시험 등록 Submit
+    onSubmitAddTest() {
+      // api연동후 api요청 함수 넣을예정
+      this.onCloseNoteTestAddModal()
+      this.openModalDesc('등록 성공', '자료를 등록했습니다.(임시기능)')
     },
 
     copyData() {

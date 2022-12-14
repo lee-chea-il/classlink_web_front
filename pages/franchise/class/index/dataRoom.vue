@@ -7,7 +7,7 @@
         <!-- 컨트롤 버튼 영역 -->
         <MainBtnBox
           :value="searchData.word"
-          pageType="data"
+          pageType="reference"
           @open-filter="openFilterModal"
           @open-search-list="openSearchListModal"
           @change-word="changeSearchData"
@@ -71,6 +71,7 @@
       @set-keyword="setKeyword"
       @delete-keyword="deleteKeyword"
       @open-save-path="onOpenSavePathModal"
+      @change-file="changeFile"
     />
 
     <!-- 퀴즈 등록 -->
@@ -260,7 +261,6 @@ import ModalDesc from '~/components/common/modal/ModalDesc.vue'
 import DeleteModal from '~/components/common/modal/DeleteModal.vue'
 import SavePathModal from '~/components/common/modal/SavePathModal.vue'
 import CustomSnackbar from '~/components/common/CustomSnackbar.vue'
-
 import TreeSection from '~/components/franchise/common/TreeSection.vue'
 import AddQuizModal from '~/components/franchise/modal/AddQuizModal.vue'
 import AddNoteTestModal from '~/components/franchise/modal/AddNoteTestModal.vue'
@@ -278,11 +278,9 @@ import SearchResultModal from '~/components/franchise/modal/SearchResultModal.vu
 import SelectReferenceModal from '~/components/franchise/modal/SelectReferenceModal.vue'
 import UploadYoutubeModal from '~/components/franchise/modal/UploadYoutubeModal.vue'
 import UploadVideoFileModal from '~/components/franchise/modal/UploadVideoFileModal.vue'
-
 import initialState from '~/data/franchise/reference/initialState'
 import { apiReference } from '~/services'
 import { urlRegex, youtubeRegex, setNewArray, jsonItem } from '~/utiles/common'
-
 export default {
   name: 'FranchiseReference',
   components: {
@@ -293,7 +291,6 @@ export default {
     SavePathModal,
     TreeSection,
     CustomSnackbar,
-
     AddQuizModal,
     AddNoteTestModal,
     AddReferenceModal,
@@ -318,20 +315,30 @@ export default {
     // 등록 자료 초기화
     initReference() {
       const init = jsonItem(this.initReferenceData)
-      setTimeout(() => (this.referenceData = init), 400)
+      setTimeout(() => {
+        this.currentPageIdx = 0
+        this.referenceData = init
+      }, 300)
     },
 
     // Modal Event
-    openModalDesc(tit, msg) {
+    openModalDesc(tit, msg, to) {
+      if (to) {
+        this[to] = false
+      }
       this.modalDesc = {
         open: true,
         title: tit,
         desc: msg,
+        path: to,
       }
     },
 
     onCloseModalDesc() {
       this.modalDesc.open = false
+      if (this.modalDesc.path) {
+        this[this.modalDesc.path] = true
+      }
     },
 
     // 등록 유형 선택 모달
@@ -772,7 +779,6 @@ export default {
 
     changePushKeyword({ target: { value } }) {
       const newVal = value.replace(/\s/g, '')
-
       this.pushKeyword = newVal
     },
 
@@ -884,6 +890,26 @@ export default {
         this.onOpenReferenceAddModal()
       } else {
         this.openModalDesc('실패', 'URL을 정확히 입력해주세요')
+      }
+    },
+
+    // [자료실]수정 페이지 파일 변경
+    changeFile(e) {
+      const {
+        target: { files, name },
+      } = e
+      if (files[0]) {
+        this.referenceData = {
+          ...this.referenceData,
+          name: files[0].name,
+          fileName: files[0].name,
+          fileDivision: '교육기관',
+          fileType: files[0].type,
+          uploadType: name,
+          fileVolume: files[0].size,
+          createAt: files[0].lastModifiedDate,
+          savePath: URL.createObjectURL(files[0]),
+        }
       }
     },
 
@@ -1032,6 +1058,27 @@ export default {
       if (type === 'quiz') return this.onOpenQuizBrowseModal()
       else if (type === 'test') return this.onOpenNoteTestBrowseModal()
       else return this.onOpenReferenceBrowseModal()
+    },
+
+    // 자료 등록 Submit
+    onSubmitAddData() {
+      // api연동후 api요청 함수 넣을예정
+      this.onCloseReferenceAddModal()
+      this.openModalDesc('등록 성공', '자료를 등록했습니다.(임시기능)')
+    },
+
+    // 퀴즈 등록 Submit
+    onSubmitAddQuiz() {
+      // api연동후 api요청 함수 넣을예정
+      this.onCloseQuizAddModal()
+      this.openModalDesc('등록 성공', '자료를 등록했습니다.(임시기능)')
+    },
+
+    // 쪽지시험 등록 Submit
+    onSubmitAddTest() {
+      // api연동후 api요청 함수 넣을예정
+      this.onCloseNoteTestAddModal()
+      this.openModalDesc('등록 성공', '자료를 등록했습니다.(임시기능)')
     },
 
     copyData() {

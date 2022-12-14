@@ -25,7 +25,7 @@ export default function initialState() {
       name: '',
       teacher: [],
       spareTeacher: [],
-      className: [],
+    className: [],
       classTime: '',
       curriculum: '',
       createdAt: '',

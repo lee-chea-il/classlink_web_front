@@ -62,7 +62,10 @@ export default {
           { align: 'justify' },
         ],
         [{ list: 'ordered' }, { list: 'bullet' }],
-        ['image', 'code-block'],
+        [
+          'image',
+          // 'code-block'
+        ],
       ],
     }
   },

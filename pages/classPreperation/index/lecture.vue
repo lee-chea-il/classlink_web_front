@@ -43,7 +43,6 @@
       @delete-spare-teacher="deleteSpareTeacher"
       @add-class="addClassData"
       @delete-class="deleteClassData"
-      @next-btn="onSubmitCreateClass"
     />
 
     <!-- 커리큘럼 선택 -->
@@ -229,11 +228,6 @@ export default {
     }
   },
   methods: {
-    // 취소시 등록 하려고했던 데이터 지우기
-    // initAddReferenceData() {
-    //   Object.assign(this.$data, initialState())
-    // },
-
     setModalTitle(str) {
       this.modalTitle = str
     },
@@ -444,29 +438,29 @@ export default {
     },
 
     // 강좌 만들기 Submit
-    onSubmitCreateClass() {
-      const nextBtnTarget = document.getElementById('create_chapter_1')
-      if (this.lectureInfo.name === '') {
-        this.openModalDesc('실패', '강좌 이름을 입력해주세요.')
-        return false
-      }
-      if (this.lectureInfo.teacher.length === 0) {
-        this.openModalDesc('실패', '담임 선생님을 배정해주세요.')
-        return false
-      }
-      if (this.lectureInfo.className.length === 0) {
-        this.openModalDesc('실패', '반을 배정해주세요.')
-        return false
-      }
+    // onSubmitCreateClass() {
+    //   const nextBtnTarget = document.getElementById('create_chapter_1')
+    //   if (this.lectureInfo.name === '') {
+    //     this.openModalDesc('실패', '강좌 이름을 입력해주세요.')
+    //     return false
+    //   }
+    //   if (this.lectureInfo.teacher.length === 0) {
+    //     this.openModalDesc('실패', '담임 선생님을 배정해주세요.')
+    //     return false
+    //   }
+    //   if (this.lectureInfo.className.length === 0) {
+    //     this.openModalDesc('실패', '반을 배정해주세요.')
+    //     return false
+    //   }
 
-      if (
-        this.lectureInfo.name !== '' &&
-        this.lectureInfo.teacher.length > 0 &&
-        this.lectureInfo.className.length > 0
-      ) {
-        nextBtnTarget.click()
-      }
-    },
+    //   if (
+    //     this.lectureInfo.name !== '' &&
+    //     this.lectureInfo.teacher.length > 0 &&
+    //     this.lectureInfo.className.length > 0
+    //   ) {
+    //     nextBtnTarget.click()
+    //   }
+    // },
 
     // 커리큘럼 선택하기
     addMyCurriculum(data) {

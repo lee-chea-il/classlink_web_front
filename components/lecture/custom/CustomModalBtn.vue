@@ -10,9 +10,11 @@
     </button>
     <button
       class="btn btn_crud_point"
+      :class="{ disabled: isDisabled }"
       data-dismiss="modal"
       data-toggle="modal"
       :data-target="nextTarget"
+      :disabled="isDisabled"
     >
       다음
     </button>
@@ -25,6 +27,7 @@ export default {
   props: {
     prevTarget: { type: String, default: '' },
     nextTarget: { type: String, default: '' },
+    isDisabled: { type: Boolean, default: true },
   },
 }
 </script>

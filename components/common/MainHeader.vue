@@ -44,7 +44,7 @@ export default {
           id: 1,
           name: '수업준비',
           active: '/classPreperation',
-          path: '/classPreperation/reference',
+          path: '/classPreperation/dataRoom',
         },
         {
           id: 2,
@@ -62,7 +62,7 @@ export default {
           id: 4,
           name: '월드',
           active: '/world',
-          path: '/world/reference',
+          path: '/world/dataRoom',
         },
       ],
       navList: [
@@ -72,8 +72,8 @@ export default {
           children: [
             {
               name: '자료실',
-              to: '/classPreperation/reference',
-              active: '/classPreperation/reference',
+              to: '/classPreperation/dataRoom',
+              active: '/classPreperation/dataRoom',
             },
             {
               name: '레슨',
@@ -145,8 +145,8 @@ export default {
           children: [
             {
               name: '자료실',
-              to: '/world/reference',
-              active: '/world/reference',
+              to: '/world/dataRoom',
+              active: '/world/dataRoom',
             },
             {
               name: '패키지',

@@ -55,9 +55,9 @@
               </div>
             </div>
             <ModalBtnBox
-              :invalid="invalid"
+              :invalid="isDisabled(invalid, reference.keyword?.length === 0)"
               :submitTxt="modalTitle"
-              @submit="$emit('submit-btn')"
+              @submit="$emit('submit')"
               @close="$emit('close')"
             />
           </ValidationObserver>
@@ -124,6 +124,11 @@ export default {
     },
     setPreview(prev, isFirst) {
       this.$emit('preview', 'add', isFirst)
+    },
+    isDisabled(aFlag, bFlag) {
+      if (!aFlag && !bFlag) {
+        return false
+      } else return true
     },
   },
 }

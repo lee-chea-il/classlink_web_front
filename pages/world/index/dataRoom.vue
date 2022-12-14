@@ -7,7 +7,7 @@
         <!-- 컨트롤 버튼 영역 -->
         <MainBtnBox
           :value="searchData.word"
-          pageType="data"
+          pageType="reference"
           @open-filter="openFilterModal"
           @open-search-list="openSearchListModal"
           @change-word="changeSearchData"
@@ -63,11 +63,11 @@
 
     <!-- 파일 등록 (동영상,문서,유튜브,url) -->
     <AddReferenceModal
+      :pageRoot="pageRoot"
       :open="isReferenceAddModal"
       :modalTitle="modalTitle"
       :reference="referenceData"
       :pushKeyword="pushKeyword"
-      :pageRoot="pageRoot"
       @change-keyword="changePushKeyword"
       @change-input="onChangeUploadFile"
       @close="onCloseReferenceAddModal"
@@ -75,6 +75,8 @@
       @delete-keyword="deleteKeyword"
       @open-save-path="onOpenSavePathModal"
       @delete-thumbnail="deleteThumbnail"
+      @submit="onSubmitAddData"
+      @change-file="changeFile"
     />
 
     <!-- 퀴즈 등록 -->
@@ -102,6 +104,7 @@
       @delete-keyword="deleteKeyword"
       @open-save-path="onOpenSavePathModal"
       @delete-thumbnail="deleteThumbnail"
+      @submit="onSubmitAddQuiz"
     />
 
     <!-- 쪽지시험 등록 -->
@@ -129,6 +132,7 @@
       @add-example="plusExampleList"
       @delete-example="deleteExample"
       @delete-thumbnail="deleteThumbnail"
+      @submit="onSubmitAddTest"
     />
 
     <!-- 비디오 & 문서 & 유튜브 & url 보기 -->
@@ -327,20 +331,30 @@ export default {
     // 등록 자료 초기화
     initReference() {
       const init = jsonItem(this.initReferenceData)
-      setTimeout(() => (this.referenceData = init), 400)
+      setTimeout(() => {
+        this.currentPageIdx = 0
+        this.referenceData = init
+      }, 400)
     },
 
     // Modal Event
-    openModalDesc(tit, msg) {
+    openModalDesc(tit, msg, to) {
+      if (to) {
+        this[to] = false
+      }
       this.modalDesc = {
         open: true,
         title: tit,
         desc: msg,
+        path: to,
       }
     },
 
     onCloseModalDesc() {
       this.modalDesc.open = false
+      if (this.modalDesc.path) {
+        this[this.modalDesc.path] = true
+      }
     },
 
     // 등록 유형 선택 모달
@@ -422,7 +436,7 @@ export default {
     },
 
     onCloseQuizBrowseModal() {
-      this.initAddReferenceData()
+      this.initReference()
       this.isQuizBrowse = false
     },
 
@@ -432,7 +446,7 @@ export default {
     },
 
     onCloseNoteTestBrowseModal() {
-      this.initAddReferenceData()
+      this.initReference()
       this.isNoteTestBrowse = false
     },
 
@@ -569,6 +583,7 @@ export default {
 
     // 검색 모달
     openSearchListModal() {
+      this.isFilterModal.prevPage = ''
       if (this.isFilterModal.open) {
         this.closeFilterModal()
       }
@@ -791,7 +806,6 @@ export default {
 
     changePushKeyword({ target: { value } }) {
       const newVal = value.replace(/\s/g, '')
-
       this.pushKeyword = newVal
     },
 
@@ -854,6 +868,7 @@ export default {
       e.target.value = ''
     },
 
+    // 배경음악 업로드
     uploadMusic(e) {
       this.setModalTitle('등록')
       const {
@@ -939,9 +954,30 @@ export default {
       }
     },
 
+    // [자료실]수정 페이지 파일 변경
+    changeFile(e) {
+      const {
+        target: { files, name },
+      } = e
+      if (files[0]) {
+        this.referenceData = {
+          ...this.referenceData,
+          name: files[0].name,
+          fileName: files[0].name,
+          fileDivision: '교육기관',
+          fileType: files[0].type,
+          uploadType: name,
+          fileVolume: files[0].size,
+          createAt: files[0].lastModifiedDate,
+          savePath: URL.createObjectURL(files[0]),
+        }
+      }
+    },
+
     // 퀴즈 변경 UI
     onClickPagination(idx) {
       this.currentPageIdx = idx
+      this.focusEditorField()
     },
 
     // Editor focus
@@ -1076,17 +1112,34 @@ export default {
       else return this.onOpenReferenceBrowseModal()
     },
 
-    // 취소시 등록 하려고했던 데이터 지우기
-    initAddReferenceData() {
-      Object.assign(this.$data, initialState())
-    },
-
+    // 자료 조회
     onClickView(params) {
       this.referenceData = jsonItem(params)
       const type = params.uploadType
       if (type === 'quiz') return this.onOpenQuizBrowseModal()
       else if (type === 'test') return this.onOpenNoteTestBrowseModal()
       else return this.onOpenReferenceBrowseModal()
+    },
+
+    // 자료 등록 Submit
+    onSubmitAddData() {
+      // api연동후 api요청 함수 넣을예정
+      this.onCloseReferenceAddModal()
+      this.openModalDesc('등록 성공', '자료를 등록했습니다.(임시기능)')
+    },
+
+    // 퀴즈 등록 Submit
+    onSubmitAddQuiz() {
+      // api연동후 api요청 함수 넣을예정
+      this.onCloseQuizAddModal()
+      this.openModalDesc('등록 성공', '자료를 등록했습니다.(임시기능)')
+    },
+
+    // 쪽지시험 등록 Submit
+    onSubmitAddTest() {
+      // api연동후 api요청 함수 넣을예정
+      this.onCloseNoteTestAddModal()
+      this.openModalDesc('등록 성공', '자료를 등록했습니다.(임시기능)')
     },
 
     copyData() {

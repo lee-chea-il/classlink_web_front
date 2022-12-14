@@ -244,7 +244,7 @@
               </div>
             </div>
             <ModalBtnBox
-              :invalid="invalid"
+              :invalid="isDisabled(invalid, lessonData.keyword.length === 0)"
               :submitTxt="modalTitle"
               @submit="$emit('submit')"
               @close="$emit('close')"
@@ -301,6 +301,10 @@ export default {
       this.$refs.myLesson.unActiveAll()
       this.$refs.myFranchise.unActiveAll()
       this.$refs.right.$refs.myLessonTreeview.unActiveAll()
+    },
+    isDisabled(aFlag, bFlag) {
+      if (!aFlag && !bFlag) return false
+      else return true
     },
   },
 }

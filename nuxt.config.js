@@ -114,6 +114,7 @@ export default {
     },
     { src: 'plugins/vue2-editor', ssr: false, defer: true },
     { src: '~/plugins/persistedState.client.js' },
+    // { src: '~/plugins/youtube.js' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

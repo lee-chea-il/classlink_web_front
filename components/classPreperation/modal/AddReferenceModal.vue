@@ -36,12 +36,15 @@
                 <!-- /.왼쪽 영역 -->
 
                 <!-- 오른쪽 영역 -->
-                <ReferenceRightField :reference="reference" />
+                <ReferenceRightField
+                  :reference="reference"
+                  @change-file="$emit('change-file', $event)"
+                />
               </div>
             </div>
 
             <ModalBtnBox
-              :invalid="invalid"
+              :invalid="isDisabled(invalid, reference.keyword?.length === 0)"
               :submitTxt="modalTitle"
               @submit="$emit('submit')"
               @close="$emit('close')"
@@ -91,6 +94,13 @@ export default {
       default: '',
     },
     modalTitle: { type: String, default: '' },
+  },
+  methods: {
+    isDisabled(aFlag, bFlag) {
+      if (!aFlag && !bFlag) {
+        return false
+      } else return true
+    },
   },
 }
 </script>

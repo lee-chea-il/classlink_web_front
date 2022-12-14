@@ -4,7 +4,15 @@
       <div class="thumb_box">
         <!-- [개발참조] 동영상, 문서 미리보기 칸 -->
         <div class="row">
-          <div class="title">미리보기</div>
+          <ChangeFileTitle
+            :show="
+              reference.uploadType === 'video' ||
+              reference.uploadType === 'music' ||
+              reference.uploadType === 'pdf'
+            "
+            :name="reference.uploadType"
+            @change-file="$emit('change-file', $event)"
+          />
           <div class="thumbnail_view">
             <video
               v-show="
@@ -22,7 +30,7 @@
                 reference.uploadType === 'youtube' ||
                 reference.uploadType === 'url'
               "
-              id="embed"
+              id="movie_player"
               class="embed"
               :src="reference.savePath"
               frameborder="0"
@@ -55,10 +63,11 @@
 
 <script>
 import ContentLabel from '../common/ContentLabel.vue'
+import ChangeFileTitle from './ChangeFileTitle.vue'
 
 export default {
   name: 'ReferenceRightModal',
-  components: { ContentLabel },
+  components: { ContentLabel, ChangeFileTitle },
   props: {
     reference: {
       type: Object,
@@ -74,6 +83,9 @@ export default {
         return null
       }
     },
+    player() {
+      return this.$refs.youtube.player
+    },
   },
   methods: {
     getByteSize(size) {
@@ -82,6 +94,9 @@ export default {
         size = Math.floor(size / 1024)
         if (size < 1024) return size.toFixed(1) + byteUnits[i]
       }
+    },
+    async playVideo() {
+      await this.player.playVideo()
     },
   },
 }
@@ -97,8 +112,16 @@ export default {
 }
 </style>
 
-<style>
+<style scoped>
 .ndfHFb-c4YZDc-DARUcf-NnAfwf-i5oIFb {
   font-size: 10px !important;
+}
+
+.title {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 12px 0 !important;
 }
 </style>

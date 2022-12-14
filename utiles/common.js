@@ -33,3 +33,5 @@ export const setNewArray = (item) => {
 export const deepCopy = (item) => {
   return JSON.parse(JSON.stringify(item))
 }
+
+export const log = console.log

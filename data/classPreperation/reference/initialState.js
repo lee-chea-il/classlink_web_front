@@ -8,7 +8,6 @@ export default function initialState() {
     modalTitle: '등록',
     isCopyType: '',
     // Modal Flag
-
     isSelectType: false,
     isQuizPrint: false,
     isNoteTestPrint: false,
@@ -19,6 +18,7 @@ export default function initialState() {
     isQuizBrowse: false,
     isNoteTestBrowse: false,
     isSearchListModal: false,
+    youtubePlayTime: '',
     isSnackbar: { open: false, message: '' },
     urlData: { youtube: '', page: '' },
     isSelectModal: { open: false, prevPage: '' },
@@ -72,7 +72,7 @@ export default function initialState() {
           ],
           dificultade: 0,
           limitTime: '',
-          answer: 0,
+          answer: 1,
           isCommentary: true,
           commentary: '',
         },
@@ -119,7 +119,7 @@ export default function initialState() {
           ],
           dificultade: 0,
           limitTime: '',
-          answer: 0,
+          answer: 1,
           isCommentary: true,
           commentary: '',
         },
@@ -150,7 +150,7 @@ export default function initialState() {
       ],
       dificultade: 0,
       limitTime: '',
-      answer: 0,
+      answer: 1,
     },
     typeList: [
       { id: 0, name: '전체' },
@@ -480,7 +480,7 @@ export default function initialState() {
                         ],
                         dificultade: 0,
                         limitTime: '',
-                        answer: 0,
+                        answer: 1,
                       },
                       {
                         id: 1,
@@ -1037,7 +1037,7 @@ export default function initialState() {
             ],
             dificultade: 0,
             limitTime: '',
-            answer: 0,
+            answer: 1,
           },
           {
             id: 1,

@@ -11,6 +11,7 @@
           :value="inputValue"
           :type="type"
           :placeholder="placeholder"
+          readonly
           class="form-control form-inline front_button"
           :class="
             (isError ? 'is-invalid' : classes,
@@ -87,4 +88,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+input:read-only {
+  background: white;
+}
+</style>

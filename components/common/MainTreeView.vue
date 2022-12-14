@@ -19,7 +19,6 @@
     @leaf-name-click="$emit('un-active')"
     @click="$emit('un-active')"
     @drag-start="$emit('un-active')"
-    @drop-before="updateMyTree"
   >
     <span slot="addTreeNodeIcon" class="icon">＋</span>
     <span slot="addLeafNodeIcon" class="icon"></span>
@@ -107,9 +106,6 @@ export default {
     )
   },
   methods: {
-    updateMyTree() {
-      this.$emit('update-my-tree', this.datas)
-    },
     onDel(node) {
       console.log(node)
       node.remove()

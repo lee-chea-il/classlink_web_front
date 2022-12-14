@@ -147,6 +147,7 @@
       @set-keyword="setReferenceKeyword"
       @delete-keyword="deleteReferenceKeyword"
       @open-save-path="onOpenSavePathModal"
+      @change-file="changeFile"
     />
 
     <!-- 퀴즈 수정 -->
@@ -703,6 +704,26 @@ export default {
       const isCkbox = type === 'checkbox'
       if (isCkbox) return (elem[name] = checked)
       else return (elem[id] = value)
+    },
+
+    // [자료실]수정 페이지 파일 변경
+    changeFile(e) {
+      const {
+        target: { files, name },
+      } = e
+      if (files[0]) {
+        this.selectReferenceItem = {
+          ...this.selectReferenceItem,
+          name: files[0].name,
+          fileName: files[0].name,
+          fileDivision: '교육기관',
+          fileType: files[0].type,
+          uploadType: name,
+          fileVolume: files[0].size,
+          createAt: files[0].lastModifiedDate,
+          savePath: URL.createObjectURL(files[0]),
+        }
+      }
     },
 
     // [자료실] 트리뷰 변경 flag

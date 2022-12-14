@@ -37,7 +37,7 @@ export default {
           id: 1,
           name: '수업',
           active: '/class',
-          to: '/franchise/class/reference',
+          to: '/franchise/class/dataRoom',
         },
         {
           id: 2,
@@ -49,7 +49,7 @@ export default {
           id: 3,
           name: '월드',
           active: '/world',
-          to: '/franchise/world/reference',
+          to: '/franchise/world/dataRoom',
         },
       ],
       navList: [
@@ -58,8 +58,8 @@ export default {
           children: [
             {
               name: '자료실',
-              to: '/franchise/class/reference',
-              active: '/franchise/class/reference',
+              to: '/franchise/class/dataRoom',
+              active: '/franchise/class/dataRoom',
             },
             {
               name: '레슨',
@@ -103,8 +103,8 @@ export default {
           children: [
             {
               name: '자료실',
-              to: '/franchise/world/reference',
-              active: '/franchise/world/reference',
+              to: '/franchise/world/dataRoom',
+              active: '/franchise/world/dataRoom',
             },
             {
               name: '패키지',

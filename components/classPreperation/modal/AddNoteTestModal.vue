@@ -56,8 +56,9 @@
               </div>
             </div>
             <ModalBtnBox
-              :invalid="invalid"
+              :invalid="isDisabled(invalid, reference.keyword?.length === 0)"
               :submitTxt="modalTitle"
+              @submit="$emit('submit')"
               @close="$emit('close')"
             />
           </ValidationObserver>
@@ -124,6 +125,11 @@ export default {
     },
     setDeleteExample(idx, targetIdx) {
       this.$emit('delete-example', this.currentPageIdx, targetIdx)
+    },
+    isDisabled(aFlag, bFlag) {
+      if (!aFlag && !bFlag) {
+        return false
+      } else return true
     },
   },
 }
