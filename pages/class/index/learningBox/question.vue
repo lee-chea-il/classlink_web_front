@@ -112,7 +112,11 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr
+                  v-for="(item, idx) in askingboxList"
+                  :key="idx"
+                  :class="item.type === 1 ? 'que_reply' : ''"
+                >
                   <td>
                     <div class="custom-control custom-checkbox form-inline">
                       <input
@@ -123,20 +127,25 @@
                       <label class="custom-control-label" for="chk01"></label>
                     </div>
                   </td>
-                  <td @click="onOpenQuestionViewModal">
+                  <td v-if="item.type === 0" @click="onOpenQuestionViewModal">
                     <div class="study_qustion">
-                      성격심리학 레슨1 관련 질문드립니다 성격심리학 레슨1 관련
-                      질문드립니다성격심리학 레슨1 관련 질문드립니다성격심리학
-                      레슨1 관련 질문드립니다
+                      {{ item.title }}
                     </div>
                   </td>
-                  <td>김지원</td>
-                  <td>2022.07.10</td>
-                  <td>성격심리학</td>
-                  <td>공개</td>
-                  <td>4</td>
+                  <td
+                    v-else
+                    class="study_qustion"
+                    @click="onOpenReplyViewModal"
+                  >
+                    <div class="study_qustion">└─ {{ item.title }}</div>
+                  </td>
+                  <td>{{ item.writer }}</td>
+                  <td>{{ item.write_date }}</td>
+                  <td>{{ item.lesson }}</td>
+                  <td>{{ item.public }}</td>
+                  <td>{{ item.view_count }}</td>
                 </tr>
-                <tr class="que_reply">
+                <!-- <tr class="que_reply">
                   <td>
                     <div class="custom-control custom-checkbox form-inline">
                       <input
@@ -155,32 +164,7 @@
                   <td>성격심리학</td>
                   <td>공개</td>
                   <td>4</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="custom-control custom-checkbox form-inline">
-                      <input
-                        id="chk01"
-                        type="checkbox"
-                        class="custom-control-input"
-                      />
-                      <label class="custom-control-label" for="chk01"></label>
-                    </div>
-                  </td>
-                  <td
-                    data-toggle="modal"
-                    data-target="#modalNoticeView"
-                    data-dismiss="modal"
-                    class="study_qustion"
-                  >
-                    성격심리학 레슨1 관련 질문드립니다
-                  </td>
-                  <td>김지원</td>
-                  <td>2022.07.10</td>
-                  <td>성격심리학</td>
-                  <td>공개</td>
-                  <td>4</td>
-                </tr>
+                </tr> -->
               </tbody>
             </table>
           </div>
@@ -251,6 +235,42 @@ export default {
       openReplyViewModal: {
         open: false,
       },
+
+      askingboxList: [
+        {
+          id: 0,
+          type: 0,
+          title: '성격심리학 레슨1 관련 질문드립니다.',
+          content: '이 부분 답이 왜 3번인지 모르겠습니다.',
+          writer: '김지원',
+          write_date: '2022.07.10',
+          lesson: '성격심리학',
+          public: 1,
+          view_count: 4,
+        },
+        {
+          id: 1,
+          type: 1,
+          title: '성격심리학 레슨1 관련 질문드립니다.',
+          content: '이 부분 답이 왜 3번인지 모르겠습니다.',
+          writer: '김지원',
+          write_date: '2022.07.10',
+          lesson: '성격심리학',
+          public: 1,
+          view_count: 4,
+        },
+        {
+          id: 2,
+          type: 0,
+          title: '성격심리학 레슨1 관련 질문드립니다.',
+          content: '이 부분 답이 왜 3번인지 모르겠습니다.',
+          writer: '김지원',
+          write_date: '2022.07.10',
+          lesson: '성격심리학',
+          public: 1,
+          view_count: 4,
+        },
+      ],
     }
   },
   methods: {

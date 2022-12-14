@@ -39,7 +39,7 @@
     <li class="nav-item">
       <NuxtLink
         class="nav-link"
-        to="/management/notice/individual"
+        to="/management/notice/individual/student"
         :class="{ active: $route.fullPath.includes('/individual') }"
       >
         개인

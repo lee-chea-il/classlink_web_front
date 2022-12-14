@@ -61,7 +61,11 @@
           </div>
           <!-- div class="modal-body" -->
           <div class="modal-footer">
-            <NuxtLink to="" class="btn btn_crud_point">수정</NuxtLink>
+            <NuxtLink
+              to="/class/learningBox/regist/question/reply"
+              class="btn btn_crud_point"
+              >수정</NuxtLink
+            >
             <button class="btn btn_crud_default" @click="$emit('close')">
               취소
             </button>

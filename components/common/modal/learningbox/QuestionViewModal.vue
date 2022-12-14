@@ -46,7 +46,9 @@
           </div>
           <!-- div class="modal-body" -->
           <div class="modal-footer">
-            <NuxtLink to="/class/learningBox/reply" class="btn btn_crud_point"
+            <NuxtLink
+              to="/class/learningBox/regist/question/reply"
+              class="btn btn_crud_point"
               >답변하기</NuxtLink
             >
             <button class="btn btn_crud_default" @click="$emit('close')">

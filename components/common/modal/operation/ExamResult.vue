@@ -57,15 +57,11 @@
                         <div class="num">{{ item.id + 1 }}.</div>
                         <div
                           class="grade"
-                          :class="
-                            item.dificultade === 2
-                              ? 'high'
-                              : item.dificultade === 1
-                              ? 'medium'
-                              : item.dificultade === 0
-                              ? 'low'
-                              : ''
-                          "
+                          :class="{
+                            high: item.dificultade === 2,
+                            medium: item.dificultade === 1,
+                            low: item.dificultade === 0,
+                          }"
                         >
                           {{
                             item.dificultade === 2
@@ -127,15 +123,11 @@
                         <div class="num">{{ item.id + 1 }}.</div>
                         <div
                           class="grade"
-                          :class="
-                            item.dificultade === 2
-                              ? 'high'
-                              : item.dificultade === 1
-                              ? 'medium'
-                              : item.dificultade === 0
-                              ? 'low'
-                              : ''
-                          "
+                          :class="{
+                            high: item.dificultade === 2,
+                            medium: item.dificultade === 1,
+                            low: item.dificultade === 0,
+                          }"
                         >
                           {{
                             item.dificultade === 2
@@ -212,36 +204,28 @@
                       </div>
                       <div class="questions">
                         <div class="exam_area" v-html="item.problem"></div>
-                        <div v-if="false" class="popquiz_text">
+                        <div
+                          v-if="!item.problem.includes('<img src=')"
+                          class="popquiz_text"
+                        >
                           <!-- 동그란 숫자 : ①②③④ -->
                           <ol>
                             <li
                               v-for="(items, id) in item.exampleList"
                               :key="id"
+                              class="d-flex justify-content-left ql-align-left answer"
                             >
-                              <!-- item.answer === id
-                                    ? 'blue'
-                                    : selectedExamInfo.examResult[
-                                        Math.ceil(
-                                          selectedExamInfo.examResult.length / 2
-                                        ) + idx
-                                      ].check !== id && id !== item.answer
-                                    ? ''
-                                    : 'red' -->
                               <span
-                                :class="
-                                  item.answer === id
-                                    ? 'blue'
-                                    : selectedExamInfo.examResult[
-                                        Math.ceil(
-                                          selectedExamInfo.examResult.length / 2
-                                        ) + idx
-                                      ].check !== id && id !== item.answer
-                                    ? ''
-                                    : 'red'
-                                "
+                                class="num"
+                                :class="item.answer === id ? 'blue' : ''"
+                                >{{ number[id] }}</span
+                              >
+                              <span
+                                class="margin"
+                                :class="item.answer === id ? 'blue' : ''"
                                 v-html="items.example"
-                              ></span>
+                              >
+                              </span>
                             </li>
                           </ol>
                         </div>
@@ -250,15 +234,9 @@
                             v-for="(items, id) in item.exampleList"
                             :key="id"
                             class="chioce"
-                            :class="$emit(
-                                'setting-answer',
-                                item.answer,
-                                id,
-                                idx
-                              ),
-                            "
+                            :class="item.answer === id ? 'blue' : ''"
                           >
-                            <div class="num">①</div>
+                            <div class="num">{{ number[id] }}</div>
                             <div class="img" v-html="items.example"></div>
                           </div>
                           <!-- <div class="chioce red">
@@ -332,25 +310,25 @@
                       </div>
                       <div class="questions">
                         <div class="exam_area" v-html="item.problem"></div>
-                        <div v-if="true" class="popquiz_text">
+                        <div
+                          v-if="!item.problem.includes('<img src=')"
+                          class="popquiz_text"
+                        >
                           <!-- 동그란 숫자 : ①②③④ -->
                           <ol>
                             <li
                               v-for="(items, id) in item.exampleList"
                               :key="id"
+                              class="d-flex justify-content-left ql-align-left answer"
                             >
                               <span
-                                :class="
-                                  item.answer === id
-                                    ? 'blue'
-                                    : selectedExamInfo.examResult[
-                                        Math.ceil(
-                                          selectedExamInfo.examResult.length / 2
-                                        ) + idx
-                                      ].check !== id && id !== item.answer
-                                    ? ''
-                                    : 'red'
-                                "
+                                class="num"
+                                :class="item.answer === id ? 'blue' : ''"
+                                >{{ number[id] }}</span
+                              >
+                              <span
+                                class="margin"
+                                :class="item.answer === id ? 'blue' : ''"
                                 v-html="items.example"
                               >
                               </span>
@@ -361,10 +339,11 @@
                           <div
                             v-for="(items, id) in item.exampleList"
                             :key="id"
-                            class="chioce blue"
+                            class="chioce"
+                            :class="item.answer === id ? 'blue' : ''"
                           >
-                            <div class="num">{{ id }}</div>
-                            <div class="img">답 1임</div>
+                            <div class="num">{{ number[id] }}</div>
+                            <div class="img" v-html="items.example"></div>
                           </div>
                           <!-- <div class="chioce red">
                             <div class="num">②</div>
@@ -578,8 +557,35 @@ export default {
       type: Number,
       default: null,
     },
+    number: {
+      type: Array,
+      default: () => [],
+    },
   },
 }
 </script>
 
-<style></style>
+<style scoped>
+.questions {
+  max-width: 260px;
+}
+.exam_area {
+  display: block !important;
+  text-align: left;
+  padding: 10px;
+  word-break: break-all;
+  /* max-width: 258px !important; */
+}
+.answer {
+  word-break: break-all;
+}
+.margin {
+  margin-left: 5px;
+}
+/* .img {
+  padding: 10px;
+} */
+/* .four_choice {
+  max-width: 258px;
+} */
+</style>
