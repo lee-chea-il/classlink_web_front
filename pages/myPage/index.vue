@@ -2,9 +2,15 @@
   <div class="page_mypage edu_head_bef row">
     <div class="title">내 정보</div>
     <!-- 왼쪽 영역 -->
-    <MyInfoLeft :myInfo="myInfo" @alarmBtn-click="changeAlarmState" />
+    <MyInfoLeft
+      :userInfo="userInfo"
+      :myInfo="myInfo"
+      @alarmBtn-click="changeAlarmState"
+    />
     <!-- 오른쪽 영역 -->
     <MyInfoRightEdu
+      :userInfo="userInfo"
+      :institutionInfo="institutionInfo"
       :myInfo="myInfo"
       :eduInfo="eduInfo"
       :franInfo="franInfo"
@@ -400,6 +406,7 @@
 </template>
 
 <script>
+import { apiMypage } from '~/services'
 import MyInfoLeft from '@/components/mypage/MyInfoLeft.vue'
 import MyInfoRightEdu from '@/components/mypage/MyInfoRightEdu.vue'
 import UpdateMyInfoModal from '@/components/common/modal/mypage/UpdateMyInfoModal.vue'
@@ -435,6 +442,33 @@ export default {
   layout: 'EducationLayout',
   data() {
     return {
+      userIdx: 0,
+      userInfo: {
+        alarm_yn: '',
+        mem_email: '',
+        mem_id: '',
+        mem_name: '',
+        mem_nickname: '',
+        mem_phone: '',
+        mem_status: '',
+        tch_grade: null,
+      },
+      institutionInfo: {
+        fra_code: '',
+        ins_address1: '',
+        ins_address2: '',
+        ins_code: '',
+        ins_name: '',
+        ins_phone: '',
+      },
+      initInstitutionInfo: {
+        fra_code: '',
+        ins_address1: '',
+        ins_address2: '',
+        ins_code: '',
+        ins_name: '',
+        ins_phone: '',
+      },
       modalDesc: {
         open: false,
         title: '',
@@ -492,9 +526,28 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$store.state.userInfo.userInfo)
+    this.userIdx = this.$store.state.common.user.mem_idx
+    this.getUserInfo()
   },
   methods: {
+    // api
+    // 메인 정보 불러오기
+    async getUserInfo() {
+      await apiMypage
+        .getUserInfo(this.userIdx)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          this.userInfo = data.myPageMainList
+          if (data.myPageMainInstitutionList !== null) {
+            this.institutionInfo = data.myPageMainInstitutionList
+          }
+          // console.log(this.userInfo)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
     // 모달 이벤트
     openModalDesc(tit, msg) {
       this.modalDesc = {
@@ -509,6 +562,9 @@ export default {
 
     // 로그아웃
     goLoginPage() {
+      this.$store.commit('common/initState')
+      this.$store.commit('userInfo/initState')
+      window.localStorage.clear()
       this.$router.push('/login')
     },
 
@@ -632,7 +688,6 @@ export default {
 
     addressSearched(data) {
       const selectAddress = data.userSelectedType
-      console.log(selectAddress)
       if (selectAddress === 'J') {
         this.eduInfo.address = data.jibunAddress
       } else if (selectAddress === 'R') {

@@ -158,15 +158,14 @@ export default {
       await apiLogin
         .postLogin(payload)
         .then(({ data: { data } }) => {
-          console.log(data)
           localStorage.setItem('token', data.refresh_token)
           // this.$store.commit('userInfo/setUser', this.userInfo)
           // this.$store.commit('userInfo/setUserLogin')
           this.goIdentitySelectPage()
           // console.log(this.$store.state.userInfo.userInfo)
         })
-        .catch((err) => {
-          console.log(err, '에러수정 전입니다.')
+        .catch(() => {
+          this.openModalDesc('로그인 실패', '일치하는 회원이 없습니다.')
         })
     },
     // 로그인

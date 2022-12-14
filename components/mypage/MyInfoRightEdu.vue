@@ -8,25 +8,25 @@
           <label for="" class="info_area_title col-form-label"
             >교육기관 이름</label
           >
-          <div class="col">{{ eduInfo.edu_title }}</div>
+          <div class="col">{{ institutionInfo.ins_name }}</div>
         </div>
         <div class="form-group row">
           <label for="" class="info_area_title col-form-label"
             >교육기관 연락처</label
           >
-          <div class="col">{{ eduInfo.tel }}</div>
+          <div class="col">{{ institutionInfo.ins_phone }}</div>
         </div>
         <div class="form-group row">
           <label for="" class="info_area_title col-form-label">{{
             myInfo.position === '선생님' ? '소속기관 코드' : '교육기관 코드'
           }}</label>
-          <div class="col">{{ eduInfo.code }}</div>
+          <div class="col">{{ institutionInfo.ins_code }}</div>
         </div>
         <div class="form-group row">
           <label for="" class="info_area_title col-form-label"
             >교육기관 주소</label
           >
-          <div class="col">{{ eduInfo.address }}</div>
+          <div class="col">{{ institutionInfo.ins_address1 }}</div>
         </div>
         <div
           class="form-group row"
@@ -127,14 +127,14 @@
           <div class="col">
             <button
               class="btn btn_activated"
-              :class="myInfo.alarm ? 'active' : ''"
+              :class="userInfo.alarm_yn === 'Y' ? 'active' : ''"
               @click="$emit('alarmBtn-click')"
             >
               ON
             </button>
             <button
               class="btn btn_activated"
-              :class="!myInfo.alarm ? 'active' : ''"
+              :class="userInfo.alarm_yn === 'N' ? 'active' : ''"
               @click="$emit('alarmBtn-click')"
             >
               OFF
@@ -153,6 +153,14 @@
 export default {
   name: 'MyInfoRightEdu',
   props: {
+    userInfo: {
+      type: Object,
+      default: () => {},
+    },
+    institutionInfo: {
+      type: Object,
+      default: () => {},
+    },
     myInfo: {
       type: Object,
       default: null,

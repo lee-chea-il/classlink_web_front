@@ -6,7 +6,7 @@
       </div>
       <div class="form_section">
         <ValidationObserver v-slot="{ invalid }">
-          <form @submit.prevent="handleSubmit">
+          <form @submit.prevent>
             <!-- [개발참조]:예외처리-오류의 예 -->
             <CustomInput
               id="mem_name"
@@ -69,7 +69,7 @@
               id="mem_phone"
               name="연락처"
               placeholder="연락처 입력"
-              rules="min:2|required"
+              rules="phone|required"
               type="text"
               :inputValue="userInfo.mem_phone"
               @change-input="onChangeInput"
@@ -111,7 +111,9 @@
             <button
               class="btn btn btn_crud_point"
               :class="{ disabled: invalid }"
+              :disabled="invalid"
               style="margin-top: 20px"
+              @click="handleSubmit"
             >
               가입하기
             </button>
@@ -280,37 +282,48 @@ export default {
 
     // 회원가입 api 연동
     async handleSubmit() {
-      if (this.isIdCheck && this.isEmailCheck) {
+      if (!this.isIdCheck) {
+        this.openModalDesc('회원가입', '아이디 중복확인을 해주세요.')
+      } else if (!this.isEmailCheck) {
+        this.openModalDesc('회원가입', '이메일 중복확인을 해주세요.')
+      } else {
         const payload = this.userInfo
+        console.log(payload)
         await apiLogin
           .postSignup(payload)
-          .then(() => {
+          .then(({ data: { data } }) => {
+            localStorage.setItem('token', data.refresh_token)
+            this.getUserInfo()
             this.openSuccessModalDesc('회원가입', '회원가입되었습니다.')
           })
           .catch(() => {
             return false
           })
-      } else if (!this.isIdCheck) {
-        this.openModalDesc('회원가입', '아이디 중복확인을 해주세요.')
-      } else {
-        this.openModalDesc('회원가입', '이메일 중복확인을 해주세요.')
       }
     },
-    // 로그인 후 교육기관 개설 페이지로 이동
-    async goMainPage() {
-      const payload = {
-        mem_id: this.userInfo.mem_id,
-        mem_pw: this.userInfo.mem_pwd,
-      }
+
+    // 회원가입 성공 시 정보 불러오기
+    async getUserInfo() {
       await apiLogin
-        .postLogin(payload)
+        .getUserInfo()
         .then(({ data: { data } }) => {
           console.log(data)
-          localStorage.setItem('token', data.refresh_token)
+          this.$store.commit('userInfo/setUserLogin')
+          this.$store.commit('common/setUser', data)
+          if (data.idt_name === null) {
+            this.userPermission = ['I', 'T']
+          } else {
+            const { idt_name } = data
+            this.userPermission = idt_name
+          }
         })
         .catch((err) => {
-          console.log(err, '에러수정 전입니다.')
+          console.log(err)
         })
+    },
+
+    // 로그인 후 교육기관 개설 페이지로 이동
+    goMainPage() {
       this.$router.push('/registerins')
     },
   },

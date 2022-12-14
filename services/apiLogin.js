@@ -35,7 +35,7 @@ async function getFindId(email) {
 
 // 비밀번호 찾기
 async function getFindPw(email, id) {
-  return await http.get(`/api/v1/account/find-id?email=${email}&id=${id}`)
+  return await http.get(`/api/v1/account/find-pw?email=${email}&id=${id}`)
 }
 
 // 비밀번호 변경

@@ -83,6 +83,14 @@ Object.keys(rules).forEach((rule) => {
     return true
   })
 
+  extend('phone', (value) => {
+    const pattern = /^([0-9-]){13}$/
+    if (!pattern.test(value)) {
+      return '연락처는 11자리 숫자로 입력하세요.'
+    }
+    return true
+  })
+
   // editor에 유효성 검사 추가
   extend('edit_required', {
     ...required,

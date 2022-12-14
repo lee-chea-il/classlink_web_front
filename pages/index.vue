@@ -366,7 +366,7 @@ export default {
   methods: {
     // 오늘의 강의 & 강의코스
     onClickLecture(idx) {
-      console.log(idx)
+      // console.log(idx)
       this.$router.push('/class/lecturecourse/lectureplan/')
     },
 

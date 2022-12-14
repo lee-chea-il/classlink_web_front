@@ -73,6 +73,7 @@ export default {
   mounted() {
     this.getUserInfo()
     this.authList[0].checked = true
+    console.log(this.$store.state)
   },
   methods: {
     async getUserInfo() {
@@ -81,7 +82,8 @@ export default {
         .then(({ data: { data } }) => {
           console.log(data)
           this.$store.commit('userInfo/setUserLogin')
-          this.$store.commit('userInfo/setUser', data)
+          this.$store.commit('common/setUser', data)
+
           if (data.idt_name === null) {
             this.userPermission = ['I', 'T']
           } else {

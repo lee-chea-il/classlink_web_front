@@ -21,7 +21,7 @@
       :class="{
         active: $route.fullPath !== '/',
       }"
-      >{{ $store.state.userInfo.userInfo.mem_name }} 선생님</nuxt-link
+      >{{ $store.state.common.user.mem_name }} 선생님</nuxt-link
     >
     <!-- [개발참조]신규알림표시 : class="newlabel" 추가 -->
     <button class="btn btn_alert icons_bell_off newlabel"></button>

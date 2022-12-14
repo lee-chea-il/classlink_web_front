@@ -1,12 +1,18 @@
 import http from './http'
 
-// 로그인
-async function postLogin(mem_id) {
-  return await http.post('/api/v1/account/mypage/main')
+// 유저 정보 불러오기
+async function getUserInfo(mem_idx) {
+  return await http.get(`/api/v1/account/mypage/main?mem_idx=${mem_idx}`)
 }
 
-const apiLogin = {
-  postLogin,
+// 교육기관 개설
+async function postOpenInstitution(payload) {
+  return await http.post('/api/v1/account/open-institution', payload)
 }
 
-export default apiLogin
+const apiMypage = {
+  getUserInfo,
+  postOpenInstitution,
+}
+
+export default apiMypage

@@ -26,7 +26,7 @@
         <div class="info_area02">
           <div class="form-group row">
             <label for="" class="info_area_title col-form-label">ID</label>
-            <div class="col">{{ myInfo.account }}</div>
+            <div class="col">{{ userInfo.mem_id }}</div>
           </div>
           <div class="form-group row">
             <label for="" class="info_area_title col-form-label"
@@ -44,11 +44,11 @@
           </div>
           <div class="form-group row">
             <label for="" class="info_area_title col-form-label">이름</label>
-            <div class="col">{{ myInfo.name }}</div>
+            <div class="col">{{ userInfo.mem_name }}</div>
           </div>
           <div class="form-group row">
             <label for="" class="info_area_title col-form-label">닉네임</label>
-            <div class="col">{{ myInfo.nickname }}</div>
+            <div class="col">{{ userInfo.mem_nickname }}</div>
           </div>
           <div class="form-group row">
             <label for="" class="info_area_title col-form-label"
@@ -62,18 +62,18 @@
           </div>
           <div class="form-group row">
             <label for="" class="info_area_title col-form-label">연락처</label>
-            <div class="col">{{ myInfo.phone }}</div>
+            <div class="col">{{ userInfo.mem_phone }}</div>
           </div>
           <div class="form-group row">
             <label for="" class="info_area_title col-form-label">이메일</label>
-            <div class="col">{{ myInfo.email }}</div>
+            <div class="col">{{ userInfo.mem_email }}</div>
           </div>
           <div class="form-group row">
             <label for="" class="info_area_title col-form-label">상태</label>
             <div class="col">
               <button
                 class="btn btn_activated"
-                :class="myInfo.state ? 'active' : ''"
+                :class="userInfo.mem_status === 'Y' ? 'active' : ''"
               >
                 {{ myInfo.state ? '활성화' : '비활성화' }}
               </button>
@@ -110,7 +110,13 @@
 <script>
 export default {
   name: 'MyInfoLeft',
-  props: { myInfo: { type: Object, default: null } },
+  props: {
+    myInfo: { type: Object, default: null },
+    userInfo: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
       sample_photo: require('@/assets/images/sample_profile_photo.jpg'),
