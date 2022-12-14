@@ -62,7 +62,7 @@ export default {
         nObj.isChecked=false
         if(nObj.isLink===undefined){
           nObj.isLink=false
-          nObj.linkIdx=-1
+          nObj.dbIdx=-1
           nObj.id="list_"+this.pid
         }
         console.log(`setDataList   ${nObj.id}`)
@@ -88,7 +88,7 @@ export default {
       for(let i=0;i<this.datas.children.length;i++){
         if(listIdx===this.datas.children[i].id){
           this.datas.children[i].isLink=true
-          this.datas.children[i].linkIdx=imgIdx
+          this.datas.children[i].dbIdx=imgIdx
           break
         }
       }
@@ -100,7 +100,7 @@ export default {
       for(let i=0;i<this.datas.children.length;i++){
         if(listIdx===this.datas.children[i].id){
           this.datas.children[i].isLink=false
-          this.datas.children[i].linkIdx=-1
+          this.datas.children[i].dbIdx=-1
           break
         }
       }
@@ -120,7 +120,7 @@ export default {
       if(this.datas.children){
         for(let i=0;i<this.datas.children.length;i++){
           this.datas.children[i].isLink=false
-          this.datas.children[i].linkIdx=-1
+          this.datas.children[i].dbIdx=-1
         }
       }
       this.$emit('update-link-cnt', 0)
@@ -129,7 +129,7 @@ export default {
       this.removeActive()
       if(this.datas.children){
         for(let i=0;i<this.datas.children.length;i++){
-          if(parseInt(this.datas.children[i].linkIdx)===parseInt(imgIdx)){
+          if(parseInt(this.datas.children[i].dbIdx)===parseInt(imgIdx)){
             $("#"+this.datas.children[i].id).addClass('curriculum_list_active')
             break
           }
@@ -140,7 +140,7 @@ export default {
       this.removeActive()
       $("#"+node.id).addClass('curriculum_list_active')
       if(node.isLink){
-        this.$emit("select-list-img",node.linkIdx)
+        this.$emit("select-list-img",node.dbIdx)
       }
     },
     removeActive() {

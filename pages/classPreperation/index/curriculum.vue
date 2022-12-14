@@ -46,6 +46,7 @@
         'listTitle':'레슨 자료',
         'listEmptyTxt':'현재 불러온 레슨이 없습니다.'
       }"
+      :dropMenuData="dropMenuData"
       :open="isShowOpenAddModal"
       @open-file-path="
         () => {

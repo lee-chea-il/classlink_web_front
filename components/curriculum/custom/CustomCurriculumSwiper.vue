@@ -80,7 +80,7 @@
             const len=this.dataList.length
             for (let i = 0; i < len; i++) {
               target=$("#imgIcon"+i).find("img")
-              console.log(this.dataList[i].linkListIdx)
+              console.log(this.dataList[i].dbIdx)
               if(this.dataList[i].linkListIdx===''){
                 target.attr({"src":this.setRequire(this.dataList[i].icon_dim_url)})
               }else{
