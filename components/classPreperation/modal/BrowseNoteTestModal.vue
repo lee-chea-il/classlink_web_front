@@ -27,6 +27,7 @@
 
             <div class="btnsec">
               <ReferenceBtn
+                v-if="isShowBtn(identity, selectData.type).change"
                 title="이동"
                 @click-event="$emit('open-save-path', 'isNoteTestBrowse')"
               />
@@ -38,8 +39,13 @@
                 title="다운로드"
                 @click-event="$emit('export-pdf', 'test')"
               />
-              <ReferenceBtn title="수정" @click-event="$emit('change')" />
               <ReferenceBtn
+                v-if="isShowBtn(identity, selectData.type).change"
+                title="수정"
+                @click-event="$emit('change')"
+              />
+              <ReferenceBtn
+                v-if="isShowBtn(identity, selectData.type).delete"
                 title="삭제"
                 @click-event="$emit('delete', 'isNoteTestBrowse')"
               />
@@ -68,6 +74,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    identity: {
+      type: String,
+      default: '',
+    },
     selectData: {
       type: Object,
       default: () => {},
@@ -86,6 +96,24 @@ export default {
     },
     setPreview(e, idx) {
       this.$emit('preview', e, idx)
+    },
+    isShowBtn(iden, type) {
+      const isT = iden === 'teacher'
+      if (
+        (isT && type === 'myData') ||
+        (!isT && (type === 'myData' || type === 'institution'))
+      )
+        return {
+          delete: true,
+          perse: true,
+          change: true,
+        }
+      else
+        return {
+          delete: false,
+          perse: true,
+          change: false,
+        }
     },
   },
 }

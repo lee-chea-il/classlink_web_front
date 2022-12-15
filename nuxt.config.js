@@ -76,7 +76,7 @@ export default {
       },
       { rel: 'shortcut icon', href: '/favicon.png' },
     ],
-    script: [],
+    // script: ['https://www.youtube.com/player_api'],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -114,7 +114,7 @@ export default {
     },
     { src: 'plugins/vue2-editor', ssr: false, defer: true },
     { src: '~/plugins/persistedState.client.js' },
-    // { src: '~/plugins/youtube.js' },
+    { src: '~/plugins/youtube.js' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

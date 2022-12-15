@@ -127,6 +127,7 @@
     <!-- 비디오 & 문서 & 유튜브 & url 보기 -->
     <BrowseReferenceModal
       :open="isReferenceBrowse"
+      :identity="identity"
       :selectData="referenceData"
       @close="onCloseReferenceBrowseModal"
       @reference-change="onOpenReferenceChangeModal"
@@ -138,6 +139,7 @@
     <!-- 퀴즈 보기 -->
     <BrowseQuizModal
       :open="isQuizBrowse"
+      :identity="identity"
       :selectData="referenceData"
       :currentPageIdx="currentPageIdx"
       @change-number="onClickPagination"
@@ -163,6 +165,7 @@
     <!-- 쪽지시험 보기 -->
     <BrowseNoteTestModal
       :open="isNoteTestBrowse"
+      :identity="identity"
       :selectData="referenceData"
       :currentPageIdx="currentPageIdx"
       @change-number="onClickPagination"
@@ -278,9 +281,9 @@ import SearchResultModal from '~/components/franchise/modal/SearchResultModal.vu
 import SelectReferenceModal from '~/components/franchise/modal/SelectReferenceModal.vue'
 import UploadYoutubeModal from '~/components/franchise/modal/UploadYoutubeModal.vue'
 import UploadVideoFileModal from '~/components/franchise/modal/UploadVideoFileModal.vue'
-import initialState from '~/data/franchise/reference/initialState'
+import initialState from '~/data/franchise/dataRoom/initialState'
 import { apiReference } from '~/services'
-import { urlRegex, youtubeRegex, setNewArray, jsonItem } from '~/utiles/common'
+import { urlRegex, setNewArray, jsonItem } from '~/utiles/common'
 export default {
   name: 'FranchiseReference',
   components: {
@@ -310,6 +313,9 @@ export default {
   },
   data() {
     return initialState()
+  },
+  mounted() {
+    this.identity = localStorage.getItem('identity')
   },
   methods: {
     // 등록 자료 초기화
@@ -853,7 +859,7 @@ export default {
             uploadType: 'youtube',
             fileVolume: 0,
             createAt: new Date(),
-            savePath: `https://www.youtube.com/embed/${youtubeUrl}`,
+            savePath: `//www.youtube.com/embed/${youtubeUrl}`,
           }
           $('#modalDataregi03').modal('hide')
           this.onOpenReferenceAddModal()
@@ -864,17 +870,15 @@ export default {
     // 유튜브 업로드
     onUploadYoutube() {
       const youtubeUrl = this.urlData.youtube.replace('https://youtu.be/', '')
-      if (youtubeRegex.test(this.urlData.youtube) === true) {
-        this.getYoutubeData(youtubeUrl)
-      } else {
-        this.openModalDesc('실패', '유튜브 형식의 URL을 입력해주세요')
-      }
+      this.getYoutubeData(youtubeUrl)
     },
 
     // URL 업로드
     onUploadUrl() {
       const url = this.urlData.page
-      if (urlRegex.test(this.urlData.page) === true) {
+      const isTest = urlRegex.test(this.urlData.page)
+      console.log(isTest)
+      if (isTest) {
         this.referenceData = {
           ...this.referenceData,
           name: url,

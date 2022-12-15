@@ -34,6 +34,7 @@
 
             <div class="btnsec">
               <ReferenceBtn
+                v-if="isShowBtn(identity, selectData.type).change"
                 title="이동"
                 @click-event="$emit('open-save-path', 'isQuizBrowse')"
               />
@@ -45,8 +46,13 @@
                 title="다운로드"
                 @click-event="$emit('export-pdf', 'quiz')"
               />
-              <ReferenceBtn title="수정" @click-event="$emit('change')" />
               <ReferenceBtn
+                v-if="isShowBtn(identity, selectData.type).change"
+                title="수정"
+                @click-event="$emit('change')"
+              />
+              <ReferenceBtn
+                v-if="isShowBtn(identity, selectData.type).delete"
                 title="삭제"
                 @click-event="$emit('delete', 'isQuizBrowse')"
               />
@@ -75,13 +81,17 @@ export default {
     ModalHeader,
     QuizLeftSection,
     QuizRightSection,
-    ReferenceBtn
-},
+    ReferenceBtn,
+  },
   props: {
     open: Boolean,
     selectData: {
       type: Object,
       default: () => {},
+    },
+    identity: {
+      type: String,
+      default: '',
     },
     currentPageIdx: {
       type: Number,
@@ -94,6 +104,24 @@ export default {
     },
     setPreview(e, idx) {
       this.$emit('preview', e, idx)
+    },
+    isShowBtn(iden, type) {
+      const isT = iden === 'teacher'
+      if (
+        (isT && type === 'myData') ||
+        (!isT && (type === 'myData' || type === 'institution'))
+      )
+        return {
+          delete: true,
+          perse: true,
+          change: true,
+        }
+      else
+        return {
+          delete: false,
+          perse: true,
+          change: false,
+        }
     },
   },
 }

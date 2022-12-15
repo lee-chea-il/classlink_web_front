@@ -138,6 +138,7 @@
     <!-- 비디오 & 문서 & 유튜브 & url 보기 -->
     <BrowseReferenceModal
       :open="isReferenceBrowse"
+      :identity="identity"
       :selectData="referenceData"
       :pageRoot="pageRoot"
       @close="onCloseReferenceBrowseModal"
@@ -150,6 +151,7 @@
     <!-- 퀴즈 보기 -->
     <BrowseQuizModal
       :open="isQuizBrowse"
+      :identity="identity"
       :selectData="referenceData"
       :currentPageIdx="currentPageIdx"
       @change-number="onClickPagination"
@@ -175,6 +177,7 @@
     <!-- 쪽지시험 보기 -->
     <BrowseNoteTestModal
       :open="isNoteTestBrowse"
+      :identity="identity"
       :selectData="referenceData"
       :currentPageIdx="currentPageIdx"
       @change-number="onClickPagination"
@@ -292,8 +295,8 @@ import SelectReferenceModal from '~/components/world/modal/SelectReferenceModal.
 import UploadYoutubeModal from '~/components/world/modal/UploadYoutubeModal.vue'
 import UploadVideoFileModal from '~/components/world/modal/UploadVideoFileModal.vue'
 
-import initialState from '~/data/world/worldReference/initialState'
-import { urlRegex, youtubeRegex, setNewArray, jsonItem } from '~/utiles/common'
+import initialState from '~/data/world/dataRoom/initialState'
+import { urlRegex, setNewArray, jsonItem } from '~/utiles/common'
 import { apiReference } from '~/services'
 
 export default {
@@ -306,7 +309,6 @@ export default {
     SavePathModal,
     TreeSection,
     CustomSnackbar,
-
     AddQuizModal,
     AddNoteTestModal,
     AddReferenceModal,
@@ -326,6 +328,9 @@ export default {
   },
   data() {
     return initialState()
+  },
+  mounted() {
+    this.identity = localStorage.getItem('identity')
   },
   methods: {
     // 등록 자료 초기화
@@ -899,36 +904,43 @@ export default {
     async getYoutubeData(youtubeUrl) {
       await apiReference
         .getYoutubeData(youtubeUrl)
-        .then(({ data: { items } }) => {
-          this.referenceData = {
-            ...this.referenceData,
-            name: items[0].snippet.title,
-            fileName: items[0].snippet.title,
-            fileDivision: '교육기관',
-            fileType: 'youtube',
-            uploadType: 'youtube',
-            fileVolume: 0,
-            createAt: new Date(),
-            savePath: `https://www.youtube.com/embed/${youtubeUrl}`,
+        .then(
+          ({
+            data: {
+              items: [item],
+            },
+          }) => {
+            this.referenceData = {
+              ...this.referenceData,
+              name: item.snippet.localized.title,
+              fileName: item.snippet.localized.title,
+              desc: item.snippet.localized.description,
+              fileDivision: '교육기관',
+              fileType: 'youtube',
+              uploadType: 'youtube',
+              fileVolume: 0,
+              createAt: new Date(),
+              savePath: `//www.youtube.com/embed/${youtubeUrl}`,
+            }
+            // 유튜브 재생시간 가져오기
+            const playTime = item.contentDetails.duration
+              .replace(/H|M/g, ':')
+              .replace(/PT|S/g, '')
+            this.youtubePlayTime = playTime
+
+            $('#modalDataregi03').modal('hide')
+            this.onOpenReferenceAddModal()
           }
-          $('#modalDataregi03').modal('hide')
-          this.onOpenReferenceAddModal()
-        })
-        .catch((err) => {
-          console.log(err)
+        )
+        .catch(() => {
           this.openModalDesc('실패', '유효하지 않은 주소입니다.')
         })
     },
 
     // 유튜브 업로드
     onUploadYoutube() {
-      this.setModalTitle('등록')
       const youtubeUrl = this.urlData.youtube.replace('https://youtu.be/', '')
-      if (youtubeRegex.test(this.urlData.youtube) === true) {
-        this.getYoutubeData(youtubeUrl)
-      } else {
-        this.openModalDesc('실패', '유튜브 형식의 URL을 입력해주세요')
-      }
+      this.getYoutubeData(youtubeUrl)
     },
 
     // URL 업로드

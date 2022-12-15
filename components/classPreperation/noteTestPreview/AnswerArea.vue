@@ -25,6 +25,7 @@
         "
       >
         <div
+          class="answer"
           :class="noteTest.answer === index + 1 ? 'aa_correct' : 'aa_wrong'"
           v-html="
             isImg(example.example) ? setImg(example.example) : example.example
@@ -79,5 +80,16 @@ export default {
 #modalPreviewQuiz .answer_area04 .aa_question,
 #modalPreviewTest .answer_area04 .aa_question {
   display: flex;
+}
+
+.answer::v-deep p {
+  height: 67px;
+  padding: 2px;
+  overflow: hidden;
+}
+
+.answer::v-deep p img {
+  object-fit: contain !important;
+  height: 90%;
 }
 </style>

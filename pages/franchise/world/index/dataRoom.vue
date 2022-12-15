@@ -138,6 +138,7 @@
     <!-- 비디오 & 문서 & 유튜브 & url 보기 -->
     <BrowseReferenceModal
       :open="isReferenceBrowse"
+      :identity="identity"
       :selectData="referenceData"
       :pageRoot="pageRoot"
       @close="onCloseReferenceBrowseModal"
@@ -150,6 +151,7 @@
     <!-- 퀴즈 보기 -->
     <BrowseQuizModal
       :open="isQuizBrowse"
+      :identity="identity"
       :selectData="referenceData"
       :currentPageIdx="currentPageIdx"
       @change-number="onClickPagination"
@@ -175,6 +177,7 @@
     <!-- 쪽지시험 보기 -->
     <BrowseNoteTestModal
       :open="isNoteTestBrowse"
+      :identity="identity"
       :selectData="referenceData"
       :currentPageIdx="currentPageIdx"
       @change-number="onClickPagination"
@@ -292,8 +295,8 @@ import SelectReferenceModal from '~/components/franchiseWorld/modal/SelectRefere
 import UploadYoutubeModal from '~/components/franchiseWorld/modal/UploadYoutubeModal.vue'
 import UploadVideoFileModal from '~/components/franchiseWorld/modal/UploadVideoFileModal.vue'
 
-import initialState from '~/data/franchise/world/reference/initialState'
-import { urlRegex, youtubeRegex, setNewArray, jsonItem } from '~/utiles/common'
+import initialState from '~/data/franchise/world/dataRoom/initialState'
+import { urlRegex, setNewArray, jsonItem } from '~/utiles/common'
 import { apiReference } from '~/services'
 export default {
   name: 'FranchiseWorldReference',
@@ -305,7 +308,6 @@ export default {
     SavePathModal,
     TreeSection,
     CustomSnackbar,
-
     AddQuizModal,
     AddNoteTestModal,
     AddReferenceModal,
@@ -325,6 +327,9 @@ export default {
   },
   data() {
     return initialState()
+  },
+  mounted() {
+    this.identity = localStorage.getItem('identity')
   },
   methods: {
     // 등록 자료 초기화
@@ -908,7 +913,7 @@ export default {
             uploadType: 'youtube',
             fileVolume: 0,
             createAt: new Date(),
-            savePath: `https://www.youtube.com/embed/${youtubeUrl}`,
+            savePath: `//www.youtube.com/embed/${youtubeUrl}`,
           }
           $('#modalDataregi03').modal('hide')
           this.onOpenReferenceAddModal()
@@ -921,20 +926,16 @@ export default {
 
     // 유튜브 업로드
     onUploadYoutube() {
-      this.setModalTitle('등록')
       const youtubeUrl = this.urlData.youtube.replace('https://youtu.be/', '')
-      if (youtubeRegex.test(this.urlData.youtube) === true) {
-        this.getYoutubeData(youtubeUrl)
-      } else {
-        this.openModalDesc('실패', '유튜브 형식의 URL을 입력해주세요')
-      }
+      this.getYoutubeData(youtubeUrl)
     },
 
     // URL 업로드
     onUploadUrl() {
-      this.setModalTitle('등록')
       const url = this.urlData.page
-      if (urlRegex.test(this.urlData.page) === true) {
+      const isTest = urlRegex.test(this.urlData.page)
+      console.log(isTest)
+      if (isTest) {
         this.referenceData = {
           ...this.referenceData,
           name: url,
