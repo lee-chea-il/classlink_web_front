@@ -35,8 +35,7 @@
             <div class="col">
               <button
                 class="btn btn_crud_default"
-                data-toggle="modal"
-                data-target="#modalPwchange"
+                @click="$emit('click-updatePw')"
               >
                 비밀번호 변경
               </button>

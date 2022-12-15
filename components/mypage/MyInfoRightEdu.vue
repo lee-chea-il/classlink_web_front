@@ -37,16 +37,16 @@
           >
           <div class="col">
             <button
+              v-if="!isInstitutionFlag"
               class="btn btn_crud_default"
-              data-toggle="modal"
-              data-target="#modalInstRegi"
+              @click="$emit('click-openIns')"
             >
               등록
             </button>
             <button
+              v-else
               class="btn btn_crud_default"
-              data-toggle="modal"
-              data-target="#modalInstinfo01"
+              @click="$emit('click-updateIns')"
             >
               수정
             </button>
@@ -172,6 +172,10 @@ export default {
     franInfo: {
       type: Object,
       default: () => {},
+    },
+    isInstitutionFlag: {
+      type: Boolean,
+      default: false,
     },
   },
 }

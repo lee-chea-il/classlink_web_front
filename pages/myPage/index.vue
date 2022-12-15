@@ -6,6 +6,7 @@
       :userInfo="userInfo"
       :myInfo="myInfo"
       @alarmBtn-click="changeAlarmState"
+      @click-updatePw="openUpdatePwModal"
     />
     <!-- 오른쪽 영역 -->
     <MyInfoRightEdu
@@ -14,7 +15,10 @@
       :myInfo="myInfo"
       :eduInfo="eduInfo"
       :franInfo="franInfo"
+      :isInstitutionFlag="isInstitutionFlag"
       @alarmBtn-click="changeAlarmState"
+      @click-openIns="openInstitutionModal"
+      @click-updateIns="openUpdateInstitutionModal"
     />
     <!-- /.오른쪽 영역 -->
     <!-- 하단 버튼 영역 -->
@@ -65,30 +69,38 @@
 
     <!-- 팝업 M2-비밀번호변경 -->
     <UpdatePasswordModal
+      :open="isUpdatePw"
       :myInfo="myInfo"
       :newPassword="newPassword"
       :pwTypeInfo="pwTypeInfo"
       :isError="isError"
-      @confirm-click="updatePassword"
+      @confirm-click="updatePw"
       @change-input="onChangeInput"
       @check-pw="onChangePasswordCheck"
       @change-type1="onChangeType1"
       @change-type2="onChangeType2"
       @change-type3="onChangeType3"
+      @close="onCloseUpdatePwModal"
     />
 
-    <!-- 팝업 M2- 내정보 수정 - 교육기관 정보 개설 -->
-    <RegistEduModal
-      :eduInfo="eduInfo"
+    <!-- 교육기관 정보 개설 -->
+    <OpenInstitutionModal
+      :open="isOpenInstitutionInfo"
+      :institutionInfo="newInstitutionInfo"
       @change-input="onChangeEduInfoInput"
       @click-address="openModalAddress"
+      @open-institution="OpenInstitution"
+      @close="onCloseInstitutionModal"
     />
 
-    <!-- 팝업 M2-교육기관정보수정1  -->
+    <!-- 교육기관 정보 수정1  -->
     <UpdateEduInfoModal
+      :open="isUpdateInstitution"
       :eduInfo="eduInfo"
+      :institutionInfo="newInstitutionInfo"
       @change-input="onChangeEduInfoInput"
       @click-address="openModalAddress"
+      @close="onCloseInstitution"
     />
 
     <!-- 팝업 M2-교육기관정보수정2 - 로고업로드1 -->
@@ -416,11 +428,12 @@ import UpdatePasswordModal from '@/components/common/modal/mypage/UpdatePassword
 import LogoutModal from '@/components/common/modal/mypage/LogoutModal.vue'
 import ChangeIdentityModal from '@/components/common/modal/mypage/ChangeIdentityModal.vue'
 import UpdateEduInfoModal from '@/components/common/modal/mypage/UpdateEduInfoModal.vue'
-import RegistEduModal from '@/components/common/modal/mypage/RegistEduModal.vue'
+import OpenInstitutionModal from '@/components/common/modal/mypage/OpenInstitutionModal.vue'
 import EduLogoImageModal from '@/components/common/modal/mypage/EduLogoImageModal.vue'
 import EduCWImageModal from '@/components/common/modal/mypage/EduCWImageModal.vue'
 import MapSearchModal from '@/components/common/modal/mypage/MapSearchModal.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
+import { deepCopy } from '~/utiles/common'
 export default {
   name: 'MyPage',
   components: {
@@ -433,7 +446,7 @@ export default {
     LogoutModal,
     ChangeIdentityModal,
     UpdateEduInfoModal,
-    RegistEduModal,
+    OpenInstitutionModal,
     EduLogoImageModal,
     EduCWImageModal,
     MapSearchModal,
@@ -468,7 +481,22 @@ export default {
         ins_code: '',
         ins_name: '',
         ins_phone: '',
+        ins_desc: '',
+        zone_code: '',
+        mem_idx: this.$store.state.common.user.mem_idx,
       },
+      newInstitutionInfo: {
+        fra_code: '',
+        ins_address1: '',
+        ins_address2: '',
+        ins_code: '',
+        ins_name: '',
+        ins_phone: '',
+        ins_desc: '',
+        zone_code: '',
+        mem_idx: this.$store.state.common.user.mem_idx,
+      },
+      isInstitutionFlag: false,
       modalDesc: {
         open: false,
         title: '',
@@ -510,8 +538,15 @@ export default {
         code: '12345',
         address: '주소',
       },
+      // 비밀번호 변경
+      isUpdatePw: false,
       newPassword: {
-        recentPassword: '1234',
+        recentPassword: '',
+        password: '',
+        passwordCheck: '',
+      },
+      initNewPassword: {
+        recentPassword: '',
         password: '',
         passwordCheck: '',
       },
@@ -523,6 +558,10 @@ export default {
       isError: false,
       nickNameCheck: false,
       uploadImageFile: '',
+      // 교육기관 개설
+      isOpenInstitutionInfo: false,
+      // 교육기관 정보 수정
+      isUpdateInstitution: false,
     }
   },
   mounted() {
@@ -530,15 +569,20 @@ export default {
     this.getUserInfo()
   },
   methods: {
+    // 깊은 복사
+    deepCopy(data) {
+      return JSON.parse(JSON.stringify(data))
+    },
+
     // api
     // 메인 정보 불러오기
     async getUserInfo() {
       await apiMypage
         .getUserInfo(this.userIdx)
         .then(({ data: { data } }) => {
-          console.log(data)
           this.userInfo = data.myPageMainList
           if (data.myPageMainInstitutionList !== null) {
+            this.isInstitutionFlag = true
             this.institutionInfo = data.myPageMainInstitutionList
           }
           // console.log(this.userInfo)
@@ -560,6 +604,28 @@ export default {
       this.modalDesc.open = false
     },
 
+    openUpdatePwModal() {
+      this.isUpdatePw = true
+    },
+    onCloseUpdatePwModal() {
+      this.newPassword = this.deepCopy(this.initNewPassword)
+      this.isUpdatePw = false
+    },
+    openInstitutionModal() {
+      this.isOpenInstitutionInfo = true
+    },
+    onCloseInstitutionModal() {
+      this.isOpenInstitutionInfo = false
+      this.newInstitutionInfo = this.deepCopy(this.initInstitutionInfo)
+    },
+    openUpdateInstitutionModal() {
+      Object.assign(this.newInstitutionInfo, deepCopy(this.institutionInfo))
+      this.isUpdateInstitution = true
+    },
+    onCloseInstitution() {
+      this.isUpdateInstitution = false
+    },
+
     // 로그아웃
     goLoginPage() {
       this.$store.commit('common/initState')
@@ -578,9 +644,11 @@ export default {
     },
 
     // 비밀번호 변경
+    // 정보 수정
     onChangeInput({ target: { value, id } }) {
       this.newPassword[id] = value
     },
+    // 비밀번호 확인
     onChangePasswordCheck({ target: { value } }) {
       this.newPassword.passwordCheck = value
       if (this.newPassword.passwordCheck === this.newPassword.password) {
@@ -589,6 +657,7 @@ export default {
         this.isError = true
       }
     },
+    // 비밀번호 타입 변경
     onChangeType1() {
       if (this.pwTypeInfo.isPwEyeOn1 === false) {
         this.pwTypeInfo.isPwEyeOn1 = true
@@ -610,10 +679,21 @@ export default {
         this.pwTypeInfo.isPwEyeOn3 = false
       }
     },
-    updatePassword() {
-      if (this.myInfo.password !== this.newPassword.recentPassword) {
-        this.openModalDesc('변경 실패', '현재 비밀번호가 일치하지 않습니다.')
+    // 비밀번호 변경 api
+    async updatePw() {
+      const payload = {
+        mem_pw: this.newPassword.recentPassword,
+        new_pw: this.newPassword.password,
       }
+      await apiMypage
+        .putUpdatePw(payload)
+        .then(() => {
+          this.openModalDesc('비밀번호 변경', '비밀번호가 변경되었습니다.')
+          this.onCloseUpdatePwModal()
+        })
+        .catch(() => {
+          this.openModalDesc('비밀번호 변경', '비밀번호를 다시 입력해주세요.')
+        })
     },
 
     // 이미지 업로드
@@ -650,7 +730,7 @@ export default {
       } else {
         this.nickNameCheck = false
       }
-      if (id === 'phone') {
+      if (id === 'mem_phone') {
         this.myInfo[id] = value
           .replace(/[^0-9]/g, '')
           .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
@@ -669,10 +749,36 @@ export default {
       }
     },
 
+    // 교육기관 정보
     // 교육기관 정보 수정
     onChangeEduInfoInput({ target: { value, id } }) {
-      this.eduInfo[id] = value
+      this.newInstitutionInfo[id] = value
+      if (id === 'ins_phone') {
+        this.newInstitutionInfo[id] = value
+          .replace(/[^0-9]/g, '')
+          .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
+          .replace(/(-{1,2})$/g, '')
+          .replace(/ /g, '')
+          .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
+      }
     },
+    // 교육기관 개설 api
+    async OpenInstitution() {
+      const payload = this.newInstitutionInfo
+      console.log(payload)
+      await apiMypage
+        .postOpenInstitution(payload)
+        .then(() => {
+          this.openModalDesc('교육기관 개설', '교육기관이 개설되었습니다.')
+          this.onCloseInstitutionModal()
+          this.getUserInfo()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 교육기관 정보 수정 api
+    
 
     // 주소 검색 api
     openModalAddress(e) {
@@ -681,17 +787,16 @@ export default {
       this.mapSearchModal.open = true
       this.mapSearchModal.target = dataset.target
     },
-
     onCloseModalAddress() {
       this.mapSearchModal.open = false
     },
-
     addressSearched(data) {
+      this.newInstitutionInfo.zone_code = data.zonecode
       const selectAddress = data.userSelectedType
       if (selectAddress === 'J') {
-        this.eduInfo.address = data.jibunAddress
+        this.newInstitutionInfo.ins_address1 = data.jibunAddress
       } else if (selectAddress === 'R') {
-        this.eduInfo.address = data.roadAddress
+        this.newInstitutionInfo.ins_address1 = data.roadAddress
       }
       this.mapSearchModal.open = false
     },

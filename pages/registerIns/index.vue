@@ -123,6 +123,7 @@ export default {
         ins_name: '',
         ins_phone: '',
         zone_code: '',
+        mem_idx: this.$store.state.common.user.mem_idx,
       },
       mapSearchModal: {
         open: false,
@@ -161,7 +162,6 @@ export default {
           .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
       }
     },
-
     // 주소 검색 api
     openModalAddress(e) {
       e.preventDefault()
