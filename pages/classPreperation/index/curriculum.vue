@@ -130,9 +130,9 @@ export default {
     return initialState()
   },
   mounted(){
-    setTimeout(() => {
+    /* setTimeout(() => {
       this.addCuriiculumData(this.testData)
-    },1000)
+    },1000) */
   },
   methods: {
     openCurriculumAdd() {
