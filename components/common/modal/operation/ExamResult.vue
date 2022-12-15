@@ -63,15 +63,7 @@
                             low: item.dificultade === 0,
                           }"
                         >
-                          {{
-                            item.dificultade === 2
-                              ? '상'
-                              : item.dificultade === 1
-                              ? '중'
-                              : item.dificultade === 0
-                              ? '하'
-                              : ''
-                          }}
+                          {{ setFilterDificultade(item.dificultade) }}
                         </div>
                       </div>
                       <div class="questions">
@@ -129,15 +121,7 @@
                             low: item.dificultade === 0,
                           }"
                         >
-                          {{
-                            item.dificultade === 2
-                              ? '상'
-                              : item.dificultade === 1
-                              ? '중'
-                              : item.dificultade === 0
-                              ? '하'
-                              : ''
-                          }}
+                          {{ setFilterDificultade(item.dificultade) }}
                         </div>
                       </div>
                       <div class="questions">
@@ -181,25 +165,13 @@
                         <div class="num">{{ item.id + 1 }}.</div>
                         <div
                           class="grade"
-                          :class="
-                            item.dificultade === 2
-                              ? 'high'
-                              : item.dificultade === 1
-                              ? 'medium'
-                              : item.dificultade === 0
-                              ? 'low'
-                              : ''
-                          "
+                          :class="{
+                            high: item.dificultade === 2,
+                            medium: item.dificultade === 1,
+                            low: item.dificultade === 0,
+                          }"
                         >
-                          {{
-                            item.dificultade === 2
-                              ? '상'
-                              : item.dificultade === 1
-                              ? '중'
-                              : item.dificultade === 0
-                              ? '하'
-                              : ''
-                          }}
+                          {{ setFilterDificultade(item.dificultade) }}
                         </div>
                       </div>
                       <div class="questions">
@@ -287,25 +259,14 @@
                         <div class="num">{{ item.id + 1 }}.</div>
                         <div
                           class="grade"
-                          :class="
-                            item.dificultade === 2
-                              ? 'high'
-                              : item.dificultade === 1
-                              ? 'medium'
-                              : item.dificultade === 0
-                              ? 'low'
-                              : ''
-                          "
+                          :class="{
+                            high: item.dificultade === 2,
+                            medium: item.dificultade === 1,
+                            low: item.dificultade === 0,
+                          }"
                         >
-                          {{
-                            item.dificultade === 2
-                              ? '상'
-                              : item.dificultade === 1
-                              ? '중'
-                              : item.dificultade === 0
-                              ? '하'
-                              : ''
-                          }}
+                          {{ setFilterDificultade(item.dificultade) }}
+                          <!-- {{ $emit('filter-dificultade', item.dificultade) }} -->
                         </div>
                       </div>
                       <div class="questions">
@@ -561,6 +522,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    setFilterDificultade: {
+      type: Function,
+      default: () => {},
+    },
   },
 }
 </script>
@@ -576,15 +541,27 @@ export default {
   word-break: break-all;
   /* max-width: 258px !important; */
 }
+.exam_area > ::v-deep p img {
+  max-width: 100%;
+}
 .answer {
   word-break: break-all;
 }
 .margin {
   margin-left: 5px;
 }
-/* .img {
+.img {
   padding: 10px;
-} */
+  max-width: 101px;
+}
+.img > ::v-deep p img {
+  max-width: 100%;
+}
+.ql-align-center {
+  display: flex;
+  align-items: center;
+}
+
 /* .four_choice {
   max-width: 258px;
 } */

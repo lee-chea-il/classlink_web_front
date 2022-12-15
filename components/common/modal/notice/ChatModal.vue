@@ -1,12 +1,15 @@
 <template>
   <Transition name="modal">
     <div
+      v-show="open"
       id="modalChat"
-      class="modal fade modal_chat"
+      class="modal modal_chat modal-mask"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
+      style="display: block"
     >
+      <div class="background_close" />
       <div class="modal-dialog modal-dialog-centered modal-sm s2">
         <div class="modal-content">
           <div class="modal-header">
@@ -16,6 +19,7 @@
               class="close"
               data-dismiss="modal"
               aria-label="Close"
+              @click="$emit('close')"
             >
               <i class="icons_close"></i>
             </button>
@@ -39,6 +43,12 @@
 <script>
 export default {
   name: 'ChatModal',
+  props: {
+    open: {
+      type: Boolean,
+      default: false,
+    },
+  },
 }
 </script>
 

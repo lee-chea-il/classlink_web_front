@@ -46,7 +46,9 @@
               <button class="btn btn_crud_point" @click="onOpenClassModify()">
                 반 만들기
               </button>
-              <button class="btn btn_crud_default">배정 X</button>
+              <button class="btn btn_crud_default" @click="onClickUnallocation">
+                배정 X
+              </button>
             </div>
           </div>
           <!-- /.컨트롤 버튼 영역 -->
@@ -809,6 +811,7 @@ export default {
       openClassMove: {
         open: false,
         data: null,
+        allocation: null,
       },
 
       openSnackbar: {
@@ -854,9 +857,10 @@ export default {
     },
 
     // 반 이동 모달 열기
-    onOpenClassMove(data) {
+    onOpenClassMove(data, allocation) {
       this.openClassMove.open = true
       this.openClassMove.data = data
+      this.openClassMove.allocation = allocation
     },
     onCloseClassMove() {
       this.openClassMove.open = false
@@ -902,6 +906,106 @@ export default {
       }
     },
 
+    // 배정 X 버튼 클릭
+    onClickUnallocation() {
+      const data = [
+        {
+          class: '배정 X',
+          personnel: 41,
+          teacher: '동홍길',
+          studentList: [
+            {
+              id: 1,
+              identity: ['학생', '학부모'],
+              status: true,
+              new: false,
+              grade: '중1',
+              grade_type: 0,
+              class: ['심화C반'],
+              name: '홍길동',
+              nickname: '유진쓰',
+              family: [
+                {
+                  id: 0,
+                  identity: '학생',
+                  status: '재원',
+                  grade: '중1',
+                  name: '홍길동',
+                  nickname: '길동쓰',
+                  family: '홍길순, 홍길삼, 홍길사, 홍길오, 홍길육',
+                  account: 'rlfehd1004',
+                  phone: '010-1234-1234',
+                  parent_phone: '010-1234-1111',
+                  gender: '남',
+                },
+              ],
+              account: 'rlfehd1004',
+              phone: '010-1234-1234',
+              parent_phone: '010-1234-1111',
+              gender: 0,
+              student_status: false,
+              school: '스노우',
+              attendance_num: '12345',
+              created_at: '2022.11.22',
+              lecture_date: '2022.11.30',
+              birthday: '2022.11.01',
+              email: 'test@naver.com',
+              profile_image: require('@/assets/images/mypage/profile1.png'),
+              lectureInfo: [
+                '영어리딩심화 | 심화 A반',
+                '영어리딩심화 | 심화 B반',
+                '영어리딩심화 | 심화 C반',
+              ],
+            },
+            {
+              id: 2,
+              identity: ['학생', '학부모'],
+              status: true,
+              new: false,
+              grade: '중1',
+              grade_type: 0,
+              class: ['심화C반'],
+              name: '홍길동',
+              nickname: '유진쓰',
+              family: [
+                {
+                  id: 0,
+                  identity: '학생',
+                  status: '재원',
+                  grade: '중1',
+                  name: '홍길동',
+                  nickname: '길동쓰',
+                  family: '홍길순, 홍길삼, 홍길사, 홍길오, 홍길육',
+                  account: 'rlfehd1004',
+                  phone: '010-1234-1234',
+                  parent_phone: '010-1234-1111',
+                  gender: '남',
+                },
+              ],
+              account: 'rlfehd1004',
+              phone: '010-1234-1234',
+              parent_phone: '010-1234-1111',
+              gender: 0,
+              student_status: false,
+              school: '스노우',
+              attendance_num: '12345',
+              created_at: '2022.11.22',
+              lecture_date: '2022.11.30',
+              birthday: '2022.11.01',
+              email: 'test@naver.com',
+              profile_image: require('@/assets/images/mypage/profile1.png'),
+              lectureInfo: [
+                '영어리딩심화 | 심화 A반',
+                '영어리딩심화 | 심화 B반',
+                '영어리딩심화 | 심화 C반',
+              ],
+            },
+          ],
+        },
+      ]
+      this.onOpenClassMove(data, 0)
+    },
+
     // 체크 박스 선택 후
     // 삭제버튼 클릭
     onClickClassDelete() {
@@ -927,7 +1031,7 @@ export default {
           data.push(this.classList[this.checkList[i]])
         }
         console.log(data)
-        this.onOpenClassMove(data)
+        this.onOpenClassMove(data, 1)
       }
     },
     // 복사 버튼

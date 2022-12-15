@@ -9,7 +9,7 @@
           <div class="search_section">
             <div class="left_area">
               <div class="dropdown form-inline">
-                <!-- <button
+                <button
                   class="btn dropdown-toggle"
                   type="button"
                   data-toggle="dropdown"
@@ -17,16 +17,10 @@
                   조회 높은 순
                 </button>
                 <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">조회 높은 순</a>
                   <a class="dropdown-item" href="#">최신순</a>
                   <a class="dropdown-item" href="#">이름순</a>
-                </div> -->
-                <select class="btn dropdown-toggle" @change="onSelectSort">
-                  <option class="dropdown-item" value="조회수 높은 순">
-                    조회수 높은 순
-                  </option>
-                  <option class="dropdown-item" value="최신순">최신순</option>
-                  <option class="dropdown-item" value="이름순">이름순</option>
-                </select>
+                </div>
               </div>
               <button class="btn btn_crud_danger" @click="onClickDelete">
                 삭제

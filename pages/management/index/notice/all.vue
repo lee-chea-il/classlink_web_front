@@ -9,13 +9,20 @@
           <div class="search_section">
             <div class="left_area">
               <div class="dropdown form-inline">
-                <select class="btn dropdown-toggle" @change="onSelectSort">
-                  <option class="dropdown-item" value="조회수 높은 순">
-                    조회수 높은 순
-                  </option>
-                  <option class="dropdown-item" value="최신순">최신순</option>
-                  <option class="dropdown-item" value="이름순">이름순</option>
-                </select>
+                <button
+                  class="btn dropdown-toggle"
+                  type="button"
+                  data-toggle="dropdown"
+                >
+                  {{ sortChange }}
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" @click="onSelectSort"
+                    >조회 높은 순</a
+                  >
+                  <a class="dropdown-item" @click="onSelectSort">최신순</a>
+                  <a class="dropdown-item" @click="onSelectSort">이름순</a>
+                </div>
               </div>
               <button class="btn btn_crud_danger" @click="onClickDelete">
                 삭제
@@ -300,6 +307,7 @@ export default {
   },
   data() {
     return {
+      sortChange: '조회 높은 순',
       pageNumberList: 3,
       currentPage: 1,
       notice: [
@@ -599,16 +607,19 @@ export default {
 
     // 정렬
     onSelectSort(e) {
-      if (e.target.value === '조회수 높은 순') {
+      if (e.target.innerText === '조회 높은 순') {
+        this.sortChange = '조회 높은 순'
         this.noticeList = this.noticeList.sort((a, b) => {
           return b.attributes.view_count - a.attributes.view_count
         })
-      } else if (e.target.value === '최신순') {
+      } else if (e.target.innerText === '최신순') {
+        this.sortChange = '최신순'
         this.noticeList = this.noticeList.sort(
           (a, b) =>
             new Date(b.attributes.createdAt) - new Date(a.attributes.createdAt)
         )
       } else {
+        this.sortChange = '이름순'
         this.noticeList = this.noticeList.sort((a, b) => {
           if (a.attributes.writer > b.attributes.writer) return 1
           if (a.attributes.writer < b.attributes.writer) return -1

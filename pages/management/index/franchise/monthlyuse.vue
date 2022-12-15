@@ -37,7 +37,10 @@
                 class="card"
                 @click="onClickMoveAcademyDetailList(item.id)"
               >
-                <div class="logo"></div>
+                <div
+                  class="logo"
+                  :style="`background-image: url(${image})`"
+                ></div>
                 <div class="academy">{{ item.name }}</div>
               </div>
             </div>
@@ -49,6 +52,7 @@
 </template>
 
 <script>
+import img from '@/assets/images/sample_franchise_logo01.png'
 export default {
   name: 'Monthlyuse',
   data() {
@@ -75,6 +79,8 @@ export default {
           affiliation: true,
         },
       ],
+
+      image: img,
     }
   },
   methods: {

@@ -45,7 +45,9 @@
               :class="{ standby: !item.affiliation }"
             >
               <div class="standby_txt">승인 대기 중</div>
-              <div class="logo"></div>
+              <div class="logo" :style="`background-image: url(${image})`">
+                <!-- <img src="@/assets/images/sample_franchise_logo01.png" alt="" /> -->
+              </div>
               <div class="academy">학원명학원명</div>
             </div>
             <!-- [개발참조] 승인대기중 의 예 class="card standby" -->
@@ -56,13 +58,15 @@
             </div> -->
             <!-- [개발참조] 프랜차이즈 가입 추가 class="card standby" -->
             <div class="card signup">
-              <div class="logo"></div>
+              <div
+                class="logo"
+                :style="`background-image: url(${thumbnail})`"
+              ></div>
               <div class="academy">
                 <button
                   type="button"
                   class="btn signup"
-                  data-toggle="modal"
-                  data-target="#modalFrcsignup"
+                  @click="onOpenFranchiseSignUpModal"
                 >
                   + 프랜차이즈 가입 추가
                 </button>
@@ -73,12 +77,17 @@
       </div>
     </div>
 
-    <FranchiseSignupModal />
+    <FranchiseSignupModal
+      :open="openFranchiseSignUpModal.open"
+      @close="onCloseFranchiseSignUpModal"
+    />
   </div>
 </template>
 
 <script>
 import FranchiseSignupModal from '@/components/common/modal/franchise/FranchiseSignUpModal.vue'
+import img from '@/assets/images/sample_franchise_logo01.png'
+import iconThumbnail from '@/assets/images/icons/icon_thumbnail_blue.svg'
 export default {
   name: 'List',
   components: {
@@ -98,7 +107,27 @@ export default {
           affiliation: false,
         },
       ],
+      mem_idx: this.$store.state.common.user.mem_idx,
+
+      openFranchiseSignUpModal: {
+        open: false,
+      },
+      // 프랜차이즈 가입추가 이미지
+      thumbnail: iconThumbnail,
+      // 학원 로고 이미지
+      image: img,
     }
+  },
+  created() {
+    console.log(this.mem_idx)
+  },
+  methods: {
+    onOpenFranchiseSignUpModal() {
+      this.openFranchiseSignUpModal.open = true
+    },
+    onCloseFranchiseSignUpModal() {
+      this.openFranchiseSignUpModal.open = false
+    },
   },
 }
 </script>
