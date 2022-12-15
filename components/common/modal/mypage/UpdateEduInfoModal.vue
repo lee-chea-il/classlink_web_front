@@ -1,7 +1,7 @@
 <template>
   <Transition name="modal">
     <div
-      v-show="open"
+      v-if="open"
       id="modalInstinfo01"
       class="modal modal_Instinfo01 modal-mask modal-index"
       tabindex="-1"

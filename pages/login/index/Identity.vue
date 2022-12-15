@@ -68,8 +68,10 @@ export default {
         },
       ],
       userPermission: [],
+      identityName: '',
     }
   },
+  computed: {},
   mounted() {
     this.getUserInfo()
     this.authList[0].checked = true
@@ -108,7 +110,39 @@ export default {
     moveToHome() {
       const pathItem = this.authList.filter((item) => item.checked)[0]
       this.$store.commit('userInfo/setUserIdentity', pathItem.account)
+      localStorage.setItem('identity', this.setIdentityName(pathItem.account))
       this.$router.push(pathItem.path)
+    },
+    setIdentityName(initial) {
+      let answer = ''
+      switch (initial) {
+        case 'S':
+          answer = 'student'
+          break
+        case 'T':
+          answer = 'teacher'
+          break
+        case 'P':
+          answer = 'parent'
+          break
+        case 'F':
+          answer = 'franchise'
+          break
+        case 'I':
+          answer = 'institution'
+          break
+        case 'G':
+          answer = 'guest'
+          break
+        case 'M':
+          answer = 'manager'
+          break
+        case 'A':
+          answer = 'admin'
+          break
+        default:
+      }
+      return answer
     },
   },
 }
