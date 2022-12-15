@@ -305,6 +305,7 @@ export default {
       linkDataCnt: 0,
       currentClassName: '교실선택',
       saveFileFullPath: '',
+      currentDropMenuData:{data:[]},
       curriculumData: {
         subTitle: '',
         desc: '',
@@ -340,15 +341,15 @@ export default {
     selectDropMenu(value) {
       for (let i = 0; i < this.dropMenuListData.length; i++) {
         if (value === this.dropMenuListData[i].name) {
-          this.curriculumData.cwInfo = this.dropMenuListData[i]
+          this.currentDropMenuData = this.dropMenuListData[i]
           break
         }
       }
       this.currentClassName = value
       this.$refs.listView.unLinkAllItem()
-      this.$refs.imgListView.setData(this.curriculumData.cwInfo.data)
+      this.$refs.imgListView.setData(this.currentDropMenuData.data)
       this.$refs.imgListViewSwiper.setData(
-        this.curriculumData.cwInfo.data.interactionObjects
+        this.currentDropMenuData.data.interactionObjects
       )
     },
     setData(curriculumData) {
@@ -358,10 +359,21 @@ export default {
         this.submitBtnName = '수정'
         this.$refs.listView.unLinkAllItem()
         this.curriculumData = curriculumData
-        this.currentClassName = this.curriculumData.cwInfo.name
-        this.$refs.imgListView.setData(this.curriculumData.cwInfo.data)
+        for (let i = 0; i < this.dropMenuListData.length; i++) {
+          if (this.curriculumData.cwInfo.codeNum === this.dropMenuListData[i].codeNum) {
+            this.currentDropMenuData = $.extend(true, {}, this.dropMenuListData[i])
+            break
+          }
+        }
+        this.currentClassName = this.currentDropMenuData.name
+        const linkData=this.curriculumData.cwInfo.data
+        for (let i=0;i<linkData.length;i++) {
+          this.currentDropMenuData.data.interactionObjects[parseInt(linkData[i].codeNum)-1].isLink=true
+          this.currentDropMenuData.data.interactionObjects[parseInt(linkData[i].codeNum)-1].dbIdx=linkData[i].dbIdx
+        }
+        this.$refs.imgListView.setData(this.currentDropMenuData.data)
         this.$refs.imgListViewSwiper.setData(
-          this.curriculumData.cwInfo.data.interactionObjects
+          this.currentDropMenuData.data.interactionObjects
         )
         this.saveFileFullPath =
           this.curriculumData.savePathInfo.path +
@@ -399,6 +411,7 @@ export default {
             pathTxt: '',
           },
         }
+        this.currentDropMenuData=null
         this.saveFileFullPath = ''
         this.currentClassName = '교실선택'
 
@@ -476,18 +489,14 @@ export default {
         isAllClear = false
         this.$emit('change-desc', 'CW 교실 정보가 없습니다.')
       }
-      isAllClear = true
+      /* isAllClear = true */
       if (isAllClear) {
         const newData = {}
         for (const item in this.curriculumData) {
           if (item === 'cwInfo') {
             newData[item] = {}
-            newData[item].codeNum = this.curriculumData[item].codeNum
-            newData[item].name = this.curriculumData[item].name
-            newData[item].data = {
-              backImg_url: this.curriculumData[item].data.backImg_url,
-              interactionObjects: this.$refs.imgListView.getData(),
-            }
+            newData[item].codeNum = this.currentDropMenuData.codeNum
+            newData[item].data = this.$refs.imgListView.getData()
           } else if (item === 'lessonInfo') {
             newData.lessonInfo = {}
             for (const item1 in this.curriculumData[item]) {
@@ -503,6 +512,7 @@ export default {
         newData.type = newData.lessonInfo.type
         newData.name = newData.savePathInfo.fileName + '.link'
         newData.active = true
+        console.log(newData)
         if(!this.isUpdate){
           this.$emit('add-curiiculum-data', newData)
         }else{

@@ -81,9 +81,27 @@ export default {
       const result = []
       const list = this.datas.children
       const len =list.length
-      for (let i = 0; i < len; i++) {
-        result.push($.extend(true, {}, list[i]))
+      const _convertTxt=(num) => {
+        let txt
+        if(num>99){
+          txt=String(num)
+        }else if(num>9){
+          txt='0'+num
+        }else{
+          txt='00'+num
+        }
+        return txt
       }
+      for (let i = 0; i < len; i++) {
+        /* result.push($.extend(true, {}, list[i])) */
+        if(list[i].isLink){
+          result.push({
+            'codeNum':_convertTxt(i+1),
+            'dbIdx':list[i].dbIdx
+          })
+        }
+      }
+      console.log(result)
       return result
     },
     setData(cwData) {
@@ -94,14 +112,11 @@ export default {
           const nObj = data[i]
           nObj.id='imgListView_'+this.pid
           nObj.pid=this.pid
-          if(nObj.isLink===undefined){
+          if(nObj.dbIdx===''){
             nObj.isLink=false
             nObj.dbIdx=''
-          }else if(nObj.isLink){
-            nObj.isLink=true
           }else{
-            nObj.isLink=false
-            nObj.dbIdx=''
+            nObj.isLink=true
           }
           nObj.height=0
           result[i]=nObj

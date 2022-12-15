@@ -81,7 +81,7 @@
             for (let i = 0; i < len; i++) {
               target=$("#imgIcon"+i).find("img")
               console.log(this.dataList[i].dbIdx)
-              if(this.dataList[i].linkListIdx===''){
+              if(this.dataList[i].dbIdx===''){
                 target.attr({"src":this.setRequire(this.dataList[i].icon_dim_url)})
               }else{
                 target.attr({"src":this.setRequire(this.dataList[i].icon_normal_url)})
@@ -90,12 +90,12 @@
           },500)
         }
       },
-      linkData(linkListIdx,imgIdx){
+      linkData(dbIdx,imgIdx){
         this.selectListImg(imgIdx)
         const len=this.dataList.length
         for (let i = 0; i < len; i++) {
           if(this.dataList[i].imgIdx===imgIdx){
-            this.dataList[i].linkListIdx=linkListIdx
+            this.dataList[i].dbIdx=dbIdx
             $("#imgIcon"+i).find("img").attr({"src":this.setRequire(this.dataList[i].icon_normal_url)})
             break
           }
@@ -105,7 +105,7 @@
         const len=this.dataList.length
         for (let i = 0; i < len; i++) {
           if(this.dataList[i].imgIdx===imgIdx){
-            this.dataList[i].linkListIdx=''
+            this.dataList[i].dbIdx=''
             const target=$("#imgIcon"+i).find("img")
             target.attr({"src":this.setRequire(this.dataList[i].icon_dim_url)})
             break
@@ -115,17 +115,17 @@
       unLinkEvent(e){
         const target=e.target.parentElement
         const imgIdx=Number(target.id.split('imgIcon')[1])
-        const tIdx=this.dataList[imgIdx].linkListIdx
+        const tIdx=this.dataList[imgIdx].dbIdx
         if(tIdx!==''){
           $(`#${target.id}`).find("img").attr({"src":this.setRequire(this.dataList[imgIdx].icon_dim_url)})
-          this.dataList[imgIdx].linkListIdx=''
+          this.dataList[imgIdx].dbIdx=''
           this.$emit('unLink-event',tIdx,imgIdx)
         }
       },
       unLinkAllItem(){
         const len=this.dataList.length
         for (let i = 0; i < len; i++) {
-          this.dataList[i].linkListIdx=''
+          this.dataList[i].dbIdx=''
           const target=$("#imgIcon"+i).find("img")
           target.attr({"src":this.setRequire(this.dataList[i].icon_dim_url)})
         }
