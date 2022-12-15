@@ -20,47 +20,47 @@
               <i class="icons_close"></i>
             </button>
           </div>
-          <div class="modal-body">
-            <div
-              class="thumbnail_area"
-              :style="{
-                'background-image': `url(${eduInfo.cw_image})`,
-              }"
-            >
-              <button
-                type="button"
-                class="btn icons_camera_gray"
-                data-toggle="modal"
-                data-target="#modalInstinfo04"
-                data-dismiss="modal"
-              ></button>
-              <i id="thumbnail"></i>
-              <div class="edit_result">
+          <ValidationObserver v-slot="{ invalid }">
+            <div class="modal-body">
+              <div
+                class="thumbnail_area"
+                :style="{
+                  'background-image': `url(${eduInfo.cw_image})`,
+                }"
+              >
                 <button
                   type="button"
-                  class="btn icons_camera"
+                  class="btn icons_camera_gray"
                   data-toggle="modal"
-                  data-target="#modalInstinfo02"
+                  data-target="#modalInstinfo04"
                   data-dismiss="modal"
                 ></button>
-                <div
-                  class="outer2"
-                  :style="{
-                    'background-image': `url(${eduInfo.logo_image})`,
-                  }"
-                >
-                  <i
-                    v-if="
-                      eduInfo.logo_image === null || eduInfo.logo_image === ''
-                    "
-                    class="icons_thumbnail"
-                  ></i>
+                <i id="thumbnail"></i>
+                <div class="edit_result">
+                  <button
+                    type="button"
+                    class="btn icons_camera"
+                    data-toggle="modal"
+                    data-target="#modalInstinfo02"
+                    data-dismiss="modal"
+                  ></button>
+                  <div
+                    class="outer2"
+                    :style="{
+                      'background-image': `url(${eduInfo.logo_image})`,
+                    }"
+                  >
+                    <i
+                      v-if="
+                        eduInfo.logo_image === null || eduInfo.logo_image === ''
+                      "
+                      class="icons_thumbnail"
+                    ></i>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="form_section">
-              <ValidationObserver>
+              <div class="form_section">
                 <form>
                   <CustomInput
                     id="ins_name"
@@ -117,15 +117,22 @@
                     @change-input="$emit('change-input', $event)"
                   />
                 </form>
-              </ValidationObserver>
+              </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn_crud_point">저장</button>
-            <button class="btn btn_crud_default" @click="$emit('close')">
-              취소
-            </button>
-          </div>
+            <div class="modal-footer">
+              <button
+                class="btn btn_crud_point"
+                :class="{ disabled: invalid }"
+                :disabled="invalid"
+                @click="$emit('click-update')"
+              >
+                저장
+              </button>
+              <button class="btn btn_crud_default" @click="$emit('close')">
+                취소
+              </button>
+            </div>
+          </ValidationObserver>
         </div>
       </div>
     </div>
@@ -135,7 +142,7 @@
 import { ValidationObserver } from 'vee-validate'
 import CustomInput from '@/components/common/custom/CustomInput.vue'
 export default {
-  name: 'UpdateEduInfoModal',
+  name: 'UpdateInstitutionModal',
   components: {
     CustomInput,
     ValidationObserver,
@@ -168,5 +175,8 @@ export default {
 }
 .form-group {
   padding: 0px !important;
+}
+.modal-index {
+  z-index: 999;
 }
 </style>

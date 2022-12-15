@@ -78,7 +78,7 @@
           </form>
         </ValidationObserver>
         <div class="question_txt">
-          <nuxt-link to="/">나중에 만들고 싶어요.</nuxt-link>
+          <a class="cursor" @click="goMainPage">나중에 만들고 싶어요.</a>
         </div>
       </div>
     </div>
@@ -94,7 +94,7 @@
       :title="successModalDesc.title"
       :desc="successModalDesc.desc"
       @close="onCloseSuccessModalDesc"
-      @confirm="goMainPage"
+      @confirm="goMainPageAfter"
     />
   </div>
 </template>
@@ -201,9 +201,18 @@ export default {
         })
     },
 
-    // 메인 페이지로 이동
+    // 개설 후 메인 페이지로 이동
+    goMainPageAfter() {
+      this.$router.push('/')
+      localStorage.setItem('identity', 'institution')
+      this.$store.commit('userInfo/setUserIdentity', 'I')
+    },
+
+    // 개설 전 메인 페이지로 이동
     goMainPage() {
       this.$router.push('/')
+      localStorage.setItem('identity', 'temporary institution')
+      this.$store.commit('userInfo/setUserIdentity', 'I')
     },
   },
 }
@@ -211,5 +220,8 @@ export default {
 <style scoped>
 .btn_mt {
   margin-top: 30px;
+}
+.cursor {
+  cursor: pointer;
 }
 </style>

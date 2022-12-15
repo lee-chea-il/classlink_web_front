@@ -30,11 +30,7 @@
       >
         로그아웃
       </button>
-      <button
-        class="btn btn_crud_default"
-        data-toggle="modal"
-        data-target="#modalMyinfo"
-      >
+      <button class="btn btn_crud_default" @click="openUpdateUserInfoModal">
         정보 수정
       </button>
     </div>
@@ -42,12 +38,18 @@
     <!-- //container -->
 
     <!-- 모달 팝업 ------------------------------------->
-    <!-- 팝업M1-내정보수정 -->
+    <!-- 내 정보 수정 -->
     <UpdateMyInfoModal
+      :open="isUserInfoFlag"
+      :userInfo="newUserInfo"
       :myInfo="myInfo"
       :nickNameCheck="nickNameCheck"
+      :isEmailCheck="isEmailCheck"
+      @check-email="getEmailCheck"
       @change-input="onChangeMyInfoInput"
       @change-check="onChangeCheckBox"
+      @click-update="updateUserInfo"
+      @close="onCloseUpdateUserInfoModal"
     />
 
     <!-- 팝업 M2- 내정보 수정 - 프로필 이미지 등록1 -->
@@ -94,13 +96,14 @@
     />
 
     <!-- 교육기관 정보 수정1  -->
-    <UpdateEduInfoModal
+    <UpdateInstitutionModal
       :open="isUpdateInstitution"
       :eduInfo="eduInfo"
       :institutionInfo="newInstitutionInfo"
       @change-input="onChangeEduInfoInput"
       @click-address="openModalAddress"
-      @close="onCloseInstitution"
+      @click-update="UpdateInstitution"
+      @close="onCloseUpdateInstitution"
     />
 
     <!-- 팝업 M2-교육기관정보수정2 - 로고업로드1 -->
@@ -427,7 +430,7 @@ import ProfileCWImageModal from '@/components/common/modal/mypage/ProfileCWImage
 import UpdatePasswordModal from '@/components/common/modal/mypage/UpdatePasswordModal.vue'
 import LogoutModal from '@/components/common/modal/mypage/LogoutModal.vue'
 import ChangeIdentityModal from '@/components/common/modal/mypage/ChangeIdentityModal.vue'
-import UpdateEduInfoModal from '@/components/common/modal/mypage/UpdateEduInfoModal.vue'
+import UpdateInstitutionModal from '@/components/common/modal/mypage/UpdateInstitutionModal.vue'
 import OpenInstitutionModal from '@/components/common/modal/mypage/OpenInstitutionModal.vue'
 import EduLogoImageModal from '@/components/common/modal/mypage/EduLogoImageModal.vue'
 import EduCWImageModal from '@/components/common/modal/mypage/EduCWImageModal.vue'
@@ -445,7 +448,7 @@ export default {
     UpdatePasswordModal,
     LogoutModal,
     ChangeIdentityModal,
-    UpdateEduInfoModal,
+    UpdateInstitutionModal,
     OpenInstitutionModal,
     EduLogoImageModal,
     EduCWImageModal,
@@ -466,6 +469,20 @@ export default {
         mem_status: '',
         tch_grade: null,
       },
+      newUserInfo: {
+        alarm_yn: '',
+        mem_email: '',
+        mem_id: '',
+        mem_name: '',
+        mem_nickname: '',
+        mem_phone: '',
+        mem_status: '',
+        tch_grade: null,
+      },
+      isUserInfoFlag: false,
+      isChangeUserInfo: false,
+      isEmailCheck: true,
+      // 교육기관
       institutionInfo: {
         fra_code: '',
         ins_address1: '',
@@ -495,8 +512,11 @@ export default {
         ins_desc: '',
         zone_code: '',
         mem_idx: this.$store.state.common.user.mem_idx,
+        ins_academy_img: '',
+        ins_logo_img: '',
       },
       isInstitutionFlag: false,
+      insZoneCode: '',
       modalDesc: {
         open: false,
         title: '',
@@ -574,13 +594,13 @@ export default {
       return JSON.parse(JSON.stringify(data))
     },
 
-    // api
-    // 메인 정보 불러오기
+    // 메인 정보 불러오기 api
     async getUserInfo() {
       await apiMypage
         .getUserInfo(this.userIdx)
         .then(({ data: { data } }) => {
           this.userInfo = data.myPageMainList
+          console.log(this.userInfo)
           if (data.myPageMainInstitutionList !== null) {
             this.isInstitutionFlag = true
             this.institutionInfo = data.myPageMainInstitutionList
@@ -592,7 +612,7 @@ export default {
         })
     },
 
-    // 모달 이벤트
+    // 설명 모달
     openModalDesc(tit, msg) {
       this.modalDesc = {
         open: true,
@@ -622,7 +642,7 @@ export default {
       Object.assign(this.newInstitutionInfo, deepCopy(this.institutionInfo))
       this.isUpdateInstitution = true
     },
-    onCloseInstitution() {
+    onCloseUpdateInstitution() {
       this.isUpdateInstitution = false
     },
 
@@ -720,33 +740,79 @@ export default {
     },
 
     // 내 정보 수정
+    // 내 정보 수정 모달
+    openUpdateUserInfoModal() {
+      Object.assign(this.newUserInfo, deepCopy(this.userInfo))
+      this.isUserInfoFlag = true
+    },
+    onCloseUpdateUserInfoModal() {
+      this.isUserInfoFlag = false
+    },
+    // 내 정보 수정
     onChangeMyInfoInput({ target: { value, id } }) {
-      this.myInfo[id] = value
+      this.newUserInfo[id] = value
       if (
-        this.myInfo.name !== '' &&
-        this.myInfo.nickname === this.myInfo.name
+        this.newUserInfo.mem_name !== '' &&
+        this.newUserInfo.mem_nickname === this.newUserInfo.mem_name
       ) {
         this.nickNameCheck = true
       } else {
         this.nickNameCheck = false
       }
       if (id === 'mem_phone') {
-        this.myInfo[id] = value
+        this.newUserInfo[id] = value
           .replace(/[^0-9]/g, '')
           .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
           .replace(/(-{1,2})$/g, '')
           .replace(/ /g, '')
           .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
       }
+      if (id === 'mem_email' || value === this.userInfo.mem_email) {
+        this.isEmailCheck = true
+      } else {
+        this.isEmailCheck = false
+      }
     },
+    // 닉네임 체크
     onClickNickNameCheck() {
-      this.myInfo.nickname = this.myInfo.name
+      this.newUserInfo.mem_nickname = this.newUserInfo.mem_name
     },
     onChangeCheckBox({ target: { checked } }) {
       this.nickNameCheck = checked
       if (checked) {
-        this.myInfo.nickname = this.myInfo.name
+        this.newUserInfo.mem_nickname = this.newUserInfo.mem_name
       }
+    },
+    // 내 정보 수정 api
+    async updateUserInfo() {
+      const payload = this.newUserInfo
+      await apiMypage
+        .putUpdateUserInfo(payload)
+        .then((res) => {
+          console.log(res)
+          this.openModalDesc('내 정보 수정', '내 정보가 수정되었습니다.')
+          this.onCloseUpdateUserInfoModal()
+          this.getUserInfo()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 이메일 중복 확인 api
+    async getEmailCheck() {
+      await apiMypage
+        .getEmailCheck(this.newUserInfo.mem_email)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          if (data) {
+            this.isEmailCheck = true
+          } else {
+            this.isEmailCheck = false
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
 
     // 교육기관 정보
@@ -778,7 +844,23 @@ export default {
         })
     },
     // 교육기관 정보 수정 api
-    
+    async UpdateInstitution() {
+      const payload = this.newInstitutionInfo
+      await apiMypage
+        .putUpdateInstitution(payload)
+        .then((res) => {
+          console.log(res)
+          this.openModalDesc(
+            '교육기관 정보 수정',
+            '교육기관 정보가 수정되었습니다.'
+          )
+          this.onCloseUpdateInstitution()
+          this.getUserInfo()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
 
     // 주소 검색 api
     openModalAddress(e) {

@@ -30,9 +30,10 @@
         <button
           v-if="isBtn"
           class="btn btn_crud_point auth_btn_width"
-          :class="classes['is-valid'] ? '' : 'disabled'"
+          :class="classes['is-valid'] || !isEmailCheck ? '' : 'disabled'"
+          @click="$emit('check-email', $event)"
         >
-          {{ auth ? '확인' : '인증번호 받기' }}
+          중복확인
         </button>
         <button
           v-if="isIdCheckBtn"
@@ -122,6 +123,10 @@ export default {
     },
     nickNameCheck: {
       default: false,
+      type: Boolean,
+    },
+    isEmailCheck: {
+      default: true,
       type: Boolean,
     },
   },

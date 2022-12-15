@@ -110,7 +110,20 @@ export default {
     moveToHome() {
       const pathItem = this.authList.filter((item) => item.checked)[0]
       this.$store.commit('userInfo/setUserIdentity', pathItem.account)
-      localStorage.setItem('identity', this.setIdentityName(pathItem.account))
+      console.log(this.$store.state.common.user.ins_code)
+      if (
+        pathItem.account === 'I' &&
+        this.$store.state.common.user.ins_code === null
+      ) {
+        localStorage.setItem('identity', 'temporary institution')
+      } else if (
+        pathItem.account === 'F' &&
+        this.$store.state.common.user.fra_code === null
+      ) {
+        localStorage.setItem('identity', 'temporary franchise')
+      } else {
+        localStorage.setItem('identity', this.setIdentityName(pathItem.account))
+      }
       this.$router.push(pathItem.path)
     },
     setIdentityName(initial) {

@@ -20,11 +20,24 @@ async function putUpdatePw(payload) {
   return await http.put('/api/v1/account/mypage/upd-pw', payload)
 }
 
+// 내 정보 수정
+// 내 정보 수정
+async function putUpdateUserInfo(payload) {
+  return await http.put('/api/v1/account/mypage/upd-my-info', payload)
+}
+
+// 이메일 중복체크
+async function getEmailCheck(email) {
+  return await http.get(`/api/v1/account/sign-up/email-check?email=${email}`)
+}
+
 const apiMypage = {
   getUserInfo,
   postOpenInstitution,
   putUpdatePw,
-  putUpdateInstitution
+  putUpdateInstitution,
+  getEmailCheck,
+  putUpdateUserInfo,
 }
 
 export default apiMypage

@@ -310,12 +310,6 @@ export default {
           console.log(data)
           this.$store.commit('userInfo/setUserLogin')
           this.$store.commit('common/setUser', data)
-          if (data.idt_name === null) {
-            this.userPermission = ['I', 'T']
-          } else {
-            const { idt_name } = data
-            this.userPermission = idt_name
-          }
         })
         .catch((err) => {
           console.log(err)

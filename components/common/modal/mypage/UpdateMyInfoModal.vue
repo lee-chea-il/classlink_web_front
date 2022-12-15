@@ -1,132 +1,137 @@
 <template>
-  <div
-    id="modalMyinfo"
-    class="modal fade modal_myinfo"
-    tabindex="-1"
-    aria-labelledby="modalMyinfo"
-    aria-hidden="true"
-  >
+  <Transition name="modal">
     <div
-      class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable"
+      v-if="open"
+      id="modalMyinfo"
+      class="modal modal_myinfo modal-mask modal-index"
+      tabindex="-1"
+      aria-labelledby="modalMyinfo"
+      aria-hidden="true"
+      style="display: block"
     >
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 id="modalMyinfo" class="modal-title">내 정보 수정</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <i class="icons_close"></i>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div
-            class="profile_images_area"
-            :style="{
-              'background-image': `url(${myInfo.profile_cw_image})`,
-            }"
-          >
-            <!-- <img :src="myInfo.profile_cw_image" class="profile_cw_img" /> -->
-            <button
-              type="button"
-              class="btn icons_camera_gray"
-              data-toggle="modal"
-              data-target="#modalMyinfo04"
-              data-dismiss="modal"
-            ></button>
-            <div
-              class="profile_photo"
-              :style="
-                myInfo.profile_image === '' || myInfo.profile_image === null
-                  ? {
-                      'background-image': `url(${sample_photo})`,
-                    }
-                  : {
-                      'background-image': `url(${myInfo.profile_image})`,
-                    }
-              "
-            >
-              <button
-                type="button"
-                class="btn icons_camera"
-                data-toggle="modal"
-                data-target="#modalMyinfo02"
-                data-dismiss="modal"
-              ></button>
-            </div>
+      <div class="background_close"></div>
+      <div
+        class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 id="modalMyinfo" class="modal-title">내 정보 수정</h5>
+            <button type="button" class="close" @click="$emit('close')">
+              <i class="icons_close"></i>
+            </button>
           </div>
-          <ValidationObserver>
-            <div class="divid_section">
-              <div class="info_area info_width">
-                <CustomMypageInput
-                  id="name"
-                  name="이름"
-                  placeholder="이름 입력"
-                  rules="min:2|required"
-                  type="text"
-                  :inputValue="myInfo.name"
-                  @change-input="$emit('change-input', $event)"
-                />
-
-                <CustomMypageInput
-                  id="nickname"
-                  name="닉네임"
-                  rules="min:2|required"
-                  placeholder="닉네임 입력"
-                  :isCheckBox="true"
-                  type="text"
-                  :inputValue="myInfo.nickname"
-                  :nickNameCheck="nickNameCheck"
-                  @change-input="$emit('change-input', $event)"
-                  @change-check="$emit('change-check', $event)"
-                />
-
-                <CustomMypageInput
-                  id="phone"
-                  name="연락처"
-                  placeholder="연락처 입력"
-                  rules="min:2|required"
-                  type="text"
-                  :inputValue="myInfo.phone"
-                  @change-input="$emit('change-input', $event)"
-                />
-
-                <CustomMypageInput
-                  id="email"
-                  name="이메일"
-                  rules="required|email"
-                  placeholder="이메일 입력"
-                  type="email"
-                  :inputValue="myInfo.email"
-                  :isBtn="true"
-                  @change-input="$emit('change-input', $event)"
-                />
-
-                <CustomMypageInput
-                  id="authNumber"
-                  name="인증번호"
-                  rules="required|numeric|digits:6"
-                  placeholder="인증번호 입력"
-                  type="authNumber"
-                  :inputValue="myInfo.authNumber"
-                  :isBtn="true"
-                  :auth="true"
-                  @change-input="$emit('change-input', $event)"
-                />
+          <ValidationObserver v-slot="{ invalid }">
+            <div class="modal-body">
+              <div
+                class="profile_images_area"
+                :style="{
+                  'background-image': `url(${myInfo.profile_cw_image})`,
+                }"
+              >
+                <!-- <img :src="myInfo.profile_cw_image" class="profile_cw_img" /> -->
+                <button
+                  type="button"
+                  class="btn icons_camera_gray"
+                  data-toggle="modal"
+                  data-target="#modalMyinfo04"
+                  data-dismiss="modal"
+                ></button>
+                <div
+                  class="profile_photo"
+                  :style="
+                    myInfo.profile_image === '' || myInfo.profile_image === null
+                      ? {
+                          'background-image': `url(${sample_photo})`,
+                        }
+                      : {
+                          'background-image': `url(${myInfo.profile_image})`,
+                        }
+                  "
+                >
+                  <button
+                    type="button"
+                    class="btn icons_camera"
+                    data-toggle="modal"
+                    data-target="#modalMyinfo02"
+                    data-dismiss="modal"
+                  ></button>
+                </div>
               </div>
+
+              <div class="divid_section">
+                <div class="info_area info_width">
+                  <CustomMypageInput
+                    id="mem_name"
+                    name="이름"
+                    placeholder="이름 입력"
+                    rules="min:2|required"
+                    type="text"
+                    :inputValue="userInfo.mem_name"
+                    @change-input="$emit('change-input', $event)"
+                  />
+                  <CustomMypageInput
+                    id="mem_nickname"
+                    name="닉네임"
+                    rules="min:2|required"
+                    placeholder="닉네임 입력"
+                    :isCheckBox="true"
+                    type="text"
+                    :inputValue="userInfo.mem_nickname"
+                    :nickNameCheck="nickNameCheck"
+                    @change-input="$emit('change-input', $event)"
+                    @change-check="$emit('change-check', $event)"
+                  />
+                  <CustomMypageInput
+                    id="mem_phone"
+                    name="연락처"
+                    placeholder="연락처 입력"
+                    rules="phone|required"
+                    type="text"
+                    :inputValue="userInfo.mem_phone"
+                    @change-input="$emit('change-input', $event)"
+                  />
+                  <CustomMypageInput
+                    id="mem_email"
+                    name="이메일"
+                    rules="required|email"
+                    placeholder="이메일 입력"
+                    type="email"
+                    :inputValue="userInfo.mem_email"
+                    :isBtn="true"
+                    :isEmailCheck="isEmailCheck"
+                    @change-input="$emit('change-input', $event)"
+                    @check-email="$emit('check-email')"
+                  />
+
+                  <!-- <CustomMypageInput
+                    id="authNumber"
+                    name="인증번호"
+                    rules="required|numeric|digits:6"
+                    placeholder="인증번호 입력"
+                    type="authNumber"
+                    :inputValue="myInfo.authNumber"
+                    :isBtn="true"
+                    :auth="true"
+                    @change-input="$emit('change-input', $event)"
+                  /> -->
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                class="btn btn_crud_point_center"
+                :class="{ disabled: invalid }"
+                :disabled="invalid"
+                @click="$emit('click-update')"
+              >
+                저장하기
+              </button>
             </div>
           </ValidationObserver>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn_crud_point_center" data-dismiss="modal">
-            저장하기
-          </button>
-        </div>
       </div>
     </div>
-  </div>
+  </Transition>
 </template>
 <script>
 import { ValidationObserver } from 'vee-validate'
@@ -138,6 +143,14 @@ export default {
     ValidationObserver,
   },
   props: {
+    open: {
+      type: Boolean,
+      default: false,
+    },
+    userInfo: {
+      type: Object,
+      default: null,
+    },
     myInfo: {
       type: Object,
       default: null,
@@ -145,6 +158,10 @@ export default {
     nickNameCheck: {
       type: Boolean,
       default: false,
+    },
+    isEmailCheck: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {
@@ -180,5 +197,8 @@ export default {
 .info_width {
   width: 73%;
   border: 0;
+}
+.modal-index {
+  z-index: 999;
 }
 </style>
