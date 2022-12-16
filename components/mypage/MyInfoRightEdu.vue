@@ -63,14 +63,14 @@
             <button
               class="btn btn_activated"
               :class="userInfo.alarm_yn === 'Y' ? 'active' : ''"
-              @click="$emit('alarmBtn-click')"
+              @click="$emit('click-alarm')"
             >
               ON
             </button>
             <button
               class="btn btn_activated"
               :class="userInfo.alarm_yn === 'N' ? 'active' : ''"
-              @click="$emit('alarmBtn-click')"
+              @click="$emit('click-alarm')"
             >
               OFF
             </button>
@@ -78,7 +78,13 @@
         </div>
       </div>
       <!--프랜차이즈 개설 전-->
-      <div v-if="$store.state.common.loginIdentity == 'I'" class="right_square">
+      <div
+        v-if="
+          $store.state.common.loginIdentity == 'I' &&
+          $store.state.common.user.fra_code === null
+        "
+        class="right_square"
+      >
         <div class="form-group row">
           <label for="" class="info_area_title col-form-label"
             >프랜차이즈</label
@@ -108,30 +114,36 @@
         </div>
       </div>
       <!--프랜차이즈 개설 후-->
-      <!-- <div class="right_square">
+      <div
+        v-if="
+          $store.state.common.loginIdentity == 'I' &&
+          $store.state.common.user.fra_code !== null
+        "
+        class="right_square fran_height"
+      >
         <div class="form-group row">
           <label for="" class="info_area_title col-form-label"
             >프랜차이즈 이름</label
           >
-          <div class="col">{{ franInfo.name }}</div>
+          <div class="col">{{ franchiseInfo.fra_name }}</div>
         </div>
         <div class="form-group row">
           <label for="" class="info_area_title col-form-label"
             >프랜차이즈 연락처</label
           >
-          <div class="col">{{ franInfo.tel }}</div>
+          <div class="col">{{ franchiseInfo.fra_phone }}</div>
         </div>
         <div class="form-group row">
           <label for="" class="info_area_title col-form-label"
             >프랜차이즈 코드</label
           >
-          <div class="col">{{ franInfo.code }}</div>
+          <div class="col">{{ franchiseInfo.fra_code }}</div>
         </div>
         <div class="form-group row">
           <label for="" class="info_area_title col-form-label"
             >프랜차이즈 주소</label
           >
-          <div class="col">{{ franInfo.address }}</div>
+          <div class="col">{{ franchiseInfo.fra_address }}</div>
         </div>
         <div class="form-group row">
           <label for="" class="info_area_title col-form-label"
@@ -147,25 +159,30 @@
             </button>
           </div>
         </div>
-      </div> -->
+      </div>
       <!--/.프랜차이즈 개설 후-->
-      <!--알림 팝업은 기관장 개설전, 선생님일 때는 hide-->
 
-      <div v-if="$store.state.common.loginIdentity == 'I'" class="right_down">
+      <div
+        v-if="
+          $store.state.common.loginIdentity == 'I' &&
+          $store.state.common.user.fra_code === null
+        "
+        class="right_down"
+      >
         <div class="form-group row">
           <label for="" class="info_area_title col-form-label">알림 팝업</label>
           <div class="col">
             <button
               class="btn btn_activated"
               :class="userInfo.alarm_yn === 'Y' ? 'active' : ''"
-              @click="$emit('alarmBtn-click')"
+              @click="$emit('click-alarm')"
             >
               ON
             </button>
             <button
               class="btn btn_activated"
               :class="userInfo.alarm_yn === 'N' ? 'active' : ''"
-              @click="$emit('alarmBtn-click')"
+              @click="$emit('click-alarm')"
             >
               OFF
             </button>
@@ -191,6 +208,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    franchiseInfo: {
+      type: Object,
+      default: () => {},
+    },
     myInfo: {
       type: Object,
       default: null,
@@ -207,11 +228,15 @@ export default {
       type: Boolean,
       default: false,
     },
+    
   },
 }
 </script>
 <style scoped>
 .info_area {
   min-height: 522.2px;
+}
+.fran_height {
+  height: 272px !important;
 }
 </style>

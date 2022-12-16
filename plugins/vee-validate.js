@@ -55,9 +55,9 @@ Object.keys(rules).forEach((rule) => {
   })
 
   extend('account', (value) => {
-    const pattern = /^[A-za-z0-9]{6,20}$/
+    const pattern = /^[a-z]+[a-z0-9]{6,16}$/
     if (!pattern.test(value)) {
-      return '6자이상,20자 이하로 만들어 주세요.'
+      return '6 ~ 15자 이하, 영문 대/소문자, 숫자를 조합해주세요.'
     }
     return true
   })

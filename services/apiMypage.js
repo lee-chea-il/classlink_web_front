@@ -35,6 +35,16 @@ async function postOpenFranchise(payload) {
   return await http.post('/api/v1/account/open-franchise', payload)
 }
 
+// 개설 후 state 업데이트 하기 위한 정보 불러오기
+async function getNewUserInfo() {
+  return await http.get('/api/v1/account/me')
+}
+
+// 알림 팝업
+async function putUpdateAlarm(payload) {
+  return await http.put('/api/v1/account/mypage/main', payload)
+}
+
 const apiMypage = {
   getUserInfo,
   postOpenInstitution,
@@ -42,7 +52,9 @@ const apiMypage = {
   putUpdateInstitution,
   getEmailCheck,
   putUpdateUserInfo,
-  postOpenFranchise
+  postOpenFranchise,
+  getNewUserInfo,
+  putUpdateAlarm,
 }
 
 export default apiMypage

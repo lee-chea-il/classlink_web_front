@@ -53,11 +53,13 @@
             <label for="" class="info_area_title col-form-label"
               >신분목록</label
             >
-            <div class="col">{{ myInfo.identity }}</div>
+            <div class="col">
+              <span>{{ identityNames }}</span>
+            </div>
           </div>
           <div class="form-group row">
             <label for="" class="info_area_title col-form-label">직위</label>
-            <div class="col">{{ myInfo.position }}</div>
+            <div class="col">{{ positionNames }}</div>
           </div>
           <div class="form-group row">
             <label for="" class="info_area_title col-form-label">연락처</label>
@@ -74,9 +76,36 @@
                 class="btn btn_activated"
                 :class="userInfo.mem_status === 'Y' ? 'active' : ''"
               >
-                {{ myInfo.state ? '활성화' : '비활성화' }}
+                {{ userInfo.mem_status === 'Y' ? '활성화' : '비활성화' }}
               </button>
               <!-- <button class="btn btn_activated">비활성화</button> -->
+            </div>
+          </div>
+          <div
+            v-if="
+              $store.state.common.user.fra_code !== null ||
+              $store.state.common.loginIdentity === 'T'
+            "
+            class="form-group row"
+          >
+            <label for="" class="info_area_title col-form-label"
+              >알림 팝업</label
+            >
+            <div class="col">
+              <button
+                class="btn btn_activated"
+                :class="userInfo.alarm_yn === 'Y' ? 'active' : ''"
+                @click="$emit('click-alarm')"
+              >
+                ON
+              </button>
+              <button
+                class="btn btn_activated"
+                :class="userInfo.alarm_yn === 'N' ? 'active' : ''"
+                @click="$emit('click-alarm')"
+              >
+                OFF
+              </button>
             </div>
           </div>
           <!--알림 팝업은 기관장 개설전, 선생님일 때는 hide-->
@@ -111,18 +140,27 @@ export default {
   name: 'MyInfoLeft',
   props: {
     myInfo: { type: Object, default: null },
+    user: {
+      type: Object,
+      default: () => {},
+    },
     userInfo: {
       type: Object,
       default: () => {},
+    },
+    identityNames: {
+      type: String,
+      default: '',
+    },
+    positionNames: {
+      type: String,
+      default: '',
     },
   },
   data() {
     return {
       sample_photo: require('@/assets/images/sample_profile_photo.jpg'),
     }
-  },
-  created() {
-    console.log(this.myInfo)
   },
   methods: {
     onClickAlarmBtn() {

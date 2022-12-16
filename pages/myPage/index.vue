@@ -5,21 +5,24 @@
     <MyInfoLeft
       :userInfo="userInfo"
       :myInfo="myInfo"
-      @alarmBtn-click="changeAlarmState"
+      :identityNames="setIdentity($store.state.common.user.idt_name)"
+      :positionNames="setPosition($store.state.common.user.idt_name)"
       @click-updatePw="openUpdatePwModal"
+      @click-alarm="updateAlarm"
     />
     <!-- 오른쪽 영역 -->
     <MyInfoRightEdu
       :userInfo="userInfo"
       :institutionInfo="institutionInfo"
+      :franchiseInfo="franchiseInfo"
       :myInfo="myInfo"
       :eduInfo="eduInfo"
       :franInfo="franInfo"
       :isInstitutionFlag="isInstitutionFlag"
-      @alarmBtn-click="changeAlarmState"
       @click-openIns="openInstitutionModal"
       @click-updateIns="openUpdateInstitutionModal"
       @click-openFran="openFranchiseModal"
+      @click-alarm="updateAlarm"
     />
     <!-- /.오른쪽 영역 -->
     <!-- 하단 버튼 영역 -->
@@ -221,6 +224,7 @@ export default {
       isUserInfoFlag: false,
       isChangeUserInfo: false,
       isEmailCheck: true,
+      isAlarm: false,
       // 교육기관
       institutionInfo: {
         fra_code: '',
@@ -325,23 +329,35 @@ export default {
       // 프랜차이즈 개설
       isOpenFranchise: false,
       franchiseInfo: {
+        fra_code: '',
         fra_address: '',
         fra_address2: '',
         fra_name: '',
         fra_phone: '',
         fra_zoncode: '',
+        fra_cw_img: '',
+        fra_desc: '',
+        fra_img: '',
+        mem_idx: this.$store.state.common.user.mem_idx,
       },
       initFranchiseInfo: {
+        fra_code: '',
         fra_address: '',
         fra_address2: '',
         fra_name: '',
         fra_phone: '',
         fra_zoncode: '',
+        fra_cw_img: '',
+        fra_desc: '',
+        fra_img: '',
+        mem_idx: this.$store.state.common.user.mem_idx,
       },
     }
   },
-  mounted() {
+  created() {
     this.userIdx = this.$store.state.common.user.mem_idx
+  },
+  mounted() {
     this.getUserInfo()
     if (this.newUserInfo.mem_name === this.newUserInfo.mem_nickname) {
       this.nickNameCheck = true
@@ -361,12 +377,13 @@ export default {
         .getUserInfo(this.userIdx)
         .then(({ data: { data } }) => {
           this.userInfo = data.myPageMainList
-          console.log(this.userInfo)
           if (data.myPageMainInstitutionList !== null) {
             this.isInstitutionFlag = true
             this.institutionInfo = data.myPageMainInstitutionList
           }
-          // console.log(this.userInfo)
+          if (data.myPageMainFranchiseVOList !== null) {
+            this.franchiseInfo = data.myPageMainFranchiseVOList
+          }
         })
         .catch((err) => {
           console.log(err)
@@ -395,18 +412,9 @@ export default {
 
     // 로그아웃
     goLoginPage() {
+      this.$router.push('/login')
       this.$store.commit('common/initState')
       window.localStorage.clear()
-      this.$router.push('/login')
-    },
-
-    // 알림 설정
-    changeAlarmState() {
-      if (this.myInfo.alarm) {
-        this.myInfo.alarm = false
-      } else {
-        this.myInfo.alarm = true
-      }
     },
 
     // 비밀번호 변경
@@ -561,6 +569,27 @@ export default {
         })
     },
 
+    // 알림 팝업 수정
+    async updateAlarm() {
+      if (this.userInfo.alarm_yn === 'Y') {
+        this.isAlarm = false
+      } else {
+        this.isAlarm = true
+      }
+      const payload = {
+        alarmOn: this.isAlarm,
+        mem_idx: this.userIdx,
+      }
+      await apiMypage
+        .putUpdateAlarm(payload)
+        .then(() => {
+          this.getUserInfo()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
     // 교육기관 정보
     openInstitutionModal() {
       this.isOpenInstitutionInfo = true
@@ -598,6 +627,7 @@ export default {
           this.openModalDesc('교육기관 개설', '교육기관이 개설되었습니다.')
           this.onCloseInstitutionModal()
           this.getUserInfo()
+          this.getNewUserInfo()
         })
         .catch((err) => {
           console.log(err)
@@ -652,6 +682,8 @@ export default {
           this.openModalDesc('프랜차이즈 개설', '프랜차이즈가 개설되었습니다.')
           this.onCloseFranchiseModal()
           this.getUserInfo()
+          this.getNewUserInfo()
+          this.user = this.$store.state.common.user
         })
         .catch((err) => {
           console.log(err)
@@ -659,7 +691,25 @@ export default {
     },
     // 신분 전환 버튼
     changeIdentity() {
+      this.$store.commit('common/setUserIdentity', 'F')
+      if (this.$store.state.common.user.fra_code === null) {
+        localStorage.setItem('identity', 'temporary franchise')
+      } else {
+        localStorage.setItem('identity', 'franchise')
+      }
       this.$router.push('/franchise')
+    },
+
+    // 교육기관/프랜차이즈 개설 후 state 업데이트
+    async getNewUserInfo() {
+      await apiMypage
+        .getNewUserInfo()
+        .then(({ data: { data } }) => {
+          this.$store.commit('common/setUser', data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
 
     // 주소 검색 api
@@ -692,6 +742,94 @@ export default {
       }
 
       this.mapSearchModal.open = false
+    },
+
+    // 신분 목록 변환
+    setIdentityName(initial) {
+      let answer = ''
+      switch (initial) {
+        case 'S':
+          answer = '학생'
+          break
+        case 'T':
+          answer = '선생님'
+          break
+        case 'P':
+          answer = '학부모'
+          break
+        case 'F':
+          answer = '프랜차이즈장'
+          break
+        case 'I':
+          answer = '교육기관장'
+          break
+        case 'G':
+          answer = '게스트'
+          break
+        case 'M':
+          answer = '학원관리자'
+          break
+        case 'A':
+          answer = '프랜차이즈관리자'
+          break
+        default:
+      }
+      return answer
+    },
+    setIdentity(array) {
+      if (array !== undefined) {
+        if (array !== null) {
+          const names = []
+          for (const x of array) {
+            names.push(this.setIdentityName(x))
+          }
+          return names.join(', ')
+        } else {
+          return ''
+        }
+      } else {
+        return ''
+      }
+    },
+    // 신분 목록 변환
+    setPositionName(initial) {
+      let answer = ''
+      switch (initial) {
+        case 'T':
+          answer = '선생님'
+          break
+        case 'F':
+          answer = '교육기관장'
+          break
+        case 'I':
+          answer = '교육기관장'
+          break
+        case 'M':
+          answer = '선생님'
+          break
+        case 'A':
+          answer = '선생님'
+          break
+        default:
+      }
+      return answer
+    },
+    setPosition(array) {
+      if (array !== undefined) {
+        if (array !== null) {
+          const names = []
+          let result = []
+          for (const x of array) {
+            names.push(this.setPositionName(x))
+          }
+          result = new Set(names)
+          return result.join(', ')
+        } else {
+          return ''
+        }
+      } else {
+        return ''
+      }
     },
   },
 }

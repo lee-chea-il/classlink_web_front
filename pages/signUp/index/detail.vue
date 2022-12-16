@@ -62,7 +62,7 @@
               type="password"
               :inputValue="userInfo.mem_pwd_check"
               :isError="isError"
-              @change-input="onChangePasswordCheck"
+              @change-input="onChangeInput"
             />
 
             <CustomInput
@@ -153,14 +153,6 @@ export default {
     ModalDesc,
     SuccessModalDesc,
   },
-  // setup(data) {
-  //   watchEffect(() => {
-  //     if (data.userInfo.nickName !== data.userInfo.name) {
-  //       console.log(false)
-  //       this.nickNameCheck = false
-  //     }
-  //   })
-  // },
   data() {
     return {
       userInfo: {
@@ -177,6 +169,7 @@ export default {
       nickNameCheck: false,
       isIdCheck: false,
       isEmailCheck: false,
+      isPwCheck: false,
       isSignUpSuccess: false,
       // 모달
       modalDesc: {
@@ -191,6 +184,15 @@ export default {
       },
     }
   },
+  // setup(data) {
+  //   watchEffect(() => {
+  //     if (data.userInfo.nickName !== data.userInfo.name) {
+  //       console.log(false)
+  //       this.nickNameCheck = false
+  //     }
+  //   })
+  // },
+  watch: {},
   methods: {
     // 모달 이벤트
     openModalDesc(tit, msg) {
@@ -231,6 +233,12 @@ export default {
           .replace(/(-{1,2})$/g, '')
           .replace(/ /g, '')
           .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
+      }
+      this.userInfo.mem_pwd_check = value
+      if (this.userInfo.mem_pwd_check === this.userInfo.mem_pwd) {
+        this.isError = false
+      } else {
+        this.isError = true
       }
     },
     // 비밀번호 체크

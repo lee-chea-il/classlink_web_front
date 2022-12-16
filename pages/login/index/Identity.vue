@@ -75,7 +75,6 @@ export default {
   mounted() {
     this.getUserInfo()
     this.authList[0].checked = true
-    console.log(this.$store.state)
   },
   methods: {
     async getUserInfo() {
