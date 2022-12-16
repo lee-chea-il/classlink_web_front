@@ -14,17 +14,16 @@
                   type="button"
                   data-toggle="dropdown"
                 >
-                  조회 높은 순
+                  {{ sortChange }}
                 </button>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">조회 높은 순</a>
-                  <a class="dropdown-item" href="#">최신순</a>
-                  <a class="dropdown-item" href="#">이름순</a>
+                  <a class="dropdown-item" @click="onSelectSort"
+                    >조회 높은 순</a
+                  >
+                  <a class="dropdown-item" @click="onSelectSort">최신순</a>
+                  <a class="dropdown-item" @click="onSelectSort">이름순</a>
                 </div>
               </div>
-              <button class="btn btn_crud_danger" @click="onClickDelete">
-                삭제
-              </button>
             </div>
             <div class="right_area">
               <div class="input-group input-search form-inline form-search">
@@ -81,7 +80,7 @@
               </tbody>
 
               <tbody v-for="(item, idx) in noticeList" v-else :key="idx">
-                <tr>
+                <tr class="cursor" @click="onClickShowContent(idx)">
                   <td>
                     <div class="custom-control custom-checkbox form-inline">
                       <input
@@ -89,7 +88,6 @@
                         v-model="item.attributes.check"
                         type="checkbox"
                         class="custom-control-input"
-                        @input="onClickCheckBox(item)"
                       />
                       <label
                         class="custom-control-label"
@@ -97,12 +95,12 @@
                       ></label>
                     </div>
                   </td>
-                  <td>{{ item.attributes.title }}</td>
+                  <td class="word">{{ item.attributes.title }}</td>
                   <td>
                     <span
                       class="state"
                       :class="{
-                        warning: item.attributes.state.substr(0, 2) === 'D-',
+                        warning: item.attributes.state.includes('D-'),
                       }"
                     >
                       {{ item.attributes.state }}
@@ -124,14 +122,13 @@
                     <button
                       id="btnExpand"
                       class="btn icons_arrow_dn btn_expand"
-                      :class="{ up: idx === open_detail }"
-                      @click="onClickShowContent(idx)"
+                      :class="{ up: open_detail.includes(idx) }"
                     ></button>
                   </td>
                 </tr>
                 <!-- 상세 tr [개발참조] 공지사항 상세 TR 펼치고 접기 -->
                 <tr
-                  v-show="idx === open_detail"
+                  v-show="open_detail.includes(idx)"
                   id="trExpand"
                   class="tr_expand"
                 >
@@ -163,24 +160,11 @@
                         </div>
                       </div>
                       <div class="btns_area">
-                        <a
-                          href="(완)공지사항-등록.html"
-                          class="btn btn_crud_default"
-                          >수정</a
-                        >
                         <button
                           class="btn btn_crud_default"
                           @click="onOpenNoticeDetailModal(item.attributes)"
                         >
                           상세
-                        </button>
-                        <button
-                          class="btn btn_crud_default"
-                          @click="
-                            onOpenNoticeConfirmCheckModal(item.attributes)
-                          "
-                        >
-                          컨펌체크
                         </button>
                       </div>
                     </div>
@@ -218,52 +202,22 @@
       </div>
     </div>
 
-    <ShowNoticeConfirmCheck
-      :show="openNoticeConfirmCheckModal.open"
-      :data="openNoticeConfirmCheckModal.data"
-      :openConfirmFilter="open_confirmFilter"
-      @onClickConfirm="onClickConfirm"
-      @filter-radio="onClickConfirmRadio"
-      @close="onCloseNoticeConfirmCheckModal"
-    />
     <ShowNoticeDetailModal
       :show="openNoticeDetailModal.open"
       :data="openNoticeDetailModal.data"
       @close="onCloseNoticeDetailModal"
     />
-
-    <ModalDesc
-      :open="modalDesc.open"
-      :title="modalDesc.title"
-      :desc="modalDesc.desc"
-      @close="onCloseModalDesc"
-    />
-    <DeleteModal
-      :open="deleteModalDesc.open"
-      :title="deleteModalDesc.title"
-      @close="onCloseDeleteModalDesc"
-    />
-
-    <CustomSnackbar :show="openSnackbar.open" :message="message" />
   </div>
 </template>
 
 <script>
 import CustomPageHeader from '~/components/notice/CustomPageHeader.vue'
 import ShowNoticeDetailModal from '~/components/common/modal/notice/ShowNoticeDetailModal.vue'
-import ShowNoticeConfirmCheck from '~/components/common/modal/notice/ShowNoticeConfirmCheck.vue'
-import ModalDesc from '@/components/common/modal/ModalDesc.vue'
-import DeleteModal from '@/components/lecturecourse/DeletePlanModal.vue'
-import CustomSnackbar from '@/components/common/CustomSnackbar.vue'
 export default {
   name: 'Classlink',
   components: {
     CustomPageHeader,
     ShowNoticeDetailModal,
-    ShowNoticeConfirmCheck,
-    ModalDesc,
-    DeleteModal,
-    CustomSnackbar,
   },
   data() {
     return {
@@ -464,34 +418,15 @@ export default {
       noticeList: [],
       selectNoticeList: [],
       allCheck: false,
-      open_detail: null,
+      open_detail: [],
       open_confirmFilter: 0,
 
-      openNoticeConfirmCheckModal: {
-        open: false,
-        data: {
-          confirmFilter: false,
-        },
-      },
+      sortChange: '조회 높은 순',
+
       openNoticeDetailModal: {
         open: false,
         data: {},
         sortation: '클래스링크',
-      },
-
-      openSnackbar: {
-        open: false,
-      },
-      message: '',
-
-      modalDesc: {
-        open: false,
-        title: '',
-        desc: '',
-      },
-      deleteModalDesc: {
-        open: false,
-        title: '',
       },
     }
   },
@@ -499,61 +434,6 @@ export default {
     this.noticeList = this.notice
   },
   methods: {
-    // 스낵바
-    onOpenSnackbar(text) {
-      this.openSnackbar.open = true
-      this.message = text
-    },
-    onCloseSnackbar() {
-      this.openSnackbar.open = false
-      this.message = ''
-    },
-    // 모달
-    openModalDesc(tit, msg) {
-      this.modalDesc = {
-        open: true,
-        title: tit,
-        desc: msg,
-      }
-    },
-    onCloseModalDesc() {
-      this.modalDesc.open = false
-    },
-    onClickDelete() {
-      console.log(this.selectNoticeList.length)
-      if (this.selectNoticeList.length === 0) {
-        this.onOpenSnackbar('공지사항을 선택해주세요.')
-        setTimeout(() => {
-          this.onCloseSnackbar()
-        }, 2000)
-      } else {
-        this.openDeleteModalDesc('공지사항')
-      }
-    },
-
-    openDeleteModalDesc(tit) {
-      this.deleteModalDesc = {
-        open: true,
-        title: tit,
-      }
-    },
-    onCloseDeleteModalDesc() {
-      this.deleteModalDesc.open = false
-    },
-
-    // 공지사항 컨펌체크 열기
-    onOpenNoticeConfirmCheckModal(data) {
-      this.openNoticeConfirmCheckModal.open = true
-      this.openNoticeConfirmCheckModal.data = data
-      console.log(this.openNoticeConfirmCheckModal.data)
-    },
-    // 공지사항 컨펌체크 닫기
-    onCloseNoticeConfirmCheckModal() {
-      this.openNoticeConfirmCheckModal.open = false
-      this.openNoticeConfirmCheckModal.data = {}
-      this.open_confirmFilter = 0
-    },
-
     // 공지사항 상세 열기
     onOpenNoticeDetailModal(data) {
       this.openNoticeDetailModal.open = true
@@ -566,19 +446,10 @@ export default {
 
     // 자세히보기 열기 닫기
     onClickShowContent(idx) {
-      if (idx === this.open_detail) {
-        this.open_detail = null
+      if (this.open_detail.includes(idx)) {
+        this.open_detail = this.open_detail.filter((item) => item !== idx)
       } else {
-        this.open_detail = idx
-      }
-    },
-
-    // 컨펌체크 필터 열기 닫기
-    onClickConfirm() {
-      if (this.open_confirmFilter === 0) {
-        this.open_confirmFilter = 1
-      } else {
-        this.open_confirmFilter = 0
+        this.open_detail.push(idx)
       }
     },
 
@@ -598,62 +469,28 @@ export default {
       }
       console.log(this.selectNoticeList)
     },
-    // 공지사항 삭제
-    onClickCheckBox(data) {
-      if (data.attributes.check) {
-        data.attributes.check = false
-        this.selectNoticeList = this.selectNoticeList.filter(
-          (item) => item !== data.id - 1
-        )
-        if (this.selectNoticeList.length !== 5) {
-          this.allCheck = false
-        }
-      } else {
-        data.attributes.check = true
-        this.selectNoticeList.push(data.id - 1)
-        if (this.selectNoticeList.length === 5) {
-          this.allCheck = true
-        }
-      }
-      console.log(this.selectNoticeList)
-      // if (this.noticeList[id - 1].attributes.check) {
-      //   this.noticeList[id - 1].attributes.check = false
-      //   this.selectNoticeList = this.selectNoticeList.filter((item) => item !== )
-      // } else {
-      //   this.noticeList[id - 1].attributes.check = true
-      //   this.selectNoticeList.push(id - 1)
-      // }
-    },
 
     // 정렬
     onSelectSort(e) {
-      if (e.target.value === '조회수 높은 순') {
+      if (e.target.innerText === '조회 높은 순') {
+        this.sortChange = e.target.innerText
         this.noticeList = this.noticeList.sort((a, b) => {
           return b.attributes.view_count - a.attributes.view_count
         })
-      } else if (e.target.value === '최신순') {
+      } else if (e.target.innerText === '최신순') {
+        this.sortChange = e.target.innerText
         this.noticeList = this.noticeList.sort(
           (a, b) =>
             new Date(b.attributes.createdAt) - new Date(a.attributes.createdAt)
         )
       } else {
+        this.sortChange = e.target.innerText
         this.noticeList = this.noticeList.sort((a, b) => {
           if (a.attributes.writer > b.attributes.writer) return 1
           if (a.attributes.writer < b.attributes.writer) return -1
           return 0
         })
       }
-    },
-
-    // 컨펌체크 필터 반, 학생 선택
-    onClickConfirmRadio({ target: { id } }, data) {
-      // console.log(id)
-      if (id === 'radio01') {
-        data.confirmSearchRadio = 0
-      } else if (id === 'radio02') {
-        data.confirmSearchRadio = 1
-      }
-      // console.log(this.noticeList)
     },
   },
 }
@@ -662,5 +499,14 @@ export default {
 <style scoped>
 .table tbody + tbody {
   border-top: 0;
+}
+.word {
+  max-width: 525px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.cursor {
+  cursor: pointer;
 }
 </style>

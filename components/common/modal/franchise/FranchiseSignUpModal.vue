@@ -22,13 +22,19 @@
             <div class="title">가맹코드를 입력하세요.</div>
             <div class="input-group input-search form-inline">
               <input
+                v-model="syncedCodeSearch"
                 type="text"
                 class="form-control"
                 placeholder="가맹코드 검색"
+                @keyup.enter="$emit('search')"
               />
               <div class="input-group-append">
                 <!-- <button class="btn icons_x_circle_off" type="button"></button> -->
-                <button class="btn icons_search_off" type="button"></button>
+                <button
+                  class="btn icons_search_off"
+                  type="button"
+                  @click="$emit('search')"
+                ></button>
               </div>
             </div>
             <div class="preview">
@@ -57,6 +63,20 @@ export default {
     open: {
       type: Boolean,
       default: false,
+    },
+    codeSearch: {
+      type: String,
+      default: '',
+    },
+  },
+  computed: {
+    syncedCodeSearch: {
+      get() {
+        return this.codeSearch
+      },
+      set(value) {
+        this.$emit('update:codeSearch', value)
+      },
     },
   },
 }

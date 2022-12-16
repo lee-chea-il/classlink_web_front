@@ -87,7 +87,7 @@
               </tbody>
 
               <tbody v-for="(item, idx) in noticeList" v-else :key="idx">
-                <tr>
+                <tr class="cursor" @click="onClickShowContent(idx)">
                   <td>
                     <div class="custom-control custom-checkbox form-inline">
                       <input
@@ -103,12 +103,12 @@
                       ></label>
                     </div>
                   </td>
-                  <td>{{ item.attributes.title }}</td>
+                  <td class="word">{{ item.attributes.title }}</td>
                   <td>
                     <span
                       class="state"
                       :class="{
-                        warning: item.attributes.state.substr(0, 2) === 'D-',
+                        warning: item.attributes.state.includes('D-'),
                       }"
                     >
                       {{ item.attributes.state }}
@@ -130,14 +130,13 @@
                     <button
                       id="btnExpand"
                       class="btn icons_arrow_dn btn_expand"
-                      :class="{ up: idx === open_detail }"
-                      @click="onClickShowContent(idx)"
+                      :class="{ up: open_detail.includes(idx) }"
                     ></button>
                   </td>
                 </tr>
                 <!-- 상세 tr [개발참조] 공지사항 상세 TR 펼치고 접기 -->
                 <tr
-                  v-show="idx === open_detail"
+                  v-show="open_detail.includes(idx)"
                   id="trExpand"
                   class="tr_expand"
                 >
@@ -469,7 +468,7 @@ export default {
       noticeList: [],
       selectNoticeList: [],
       allCheck: false,
-      open_detail: null,
+      open_detail: [],
       open_confirmFilter: 0,
 
       openNoticeConfirmCheckModal: {
@@ -572,10 +571,10 @@ export default {
 
     // 자세히보기 열기 닫기
     onClickShowContent(idx) {
-      if (idx === this.open_detail) {
-        this.open_detail = null
+      if (this.open_detail.includes(idx)) {
+        this.open_detail = this.open_detail.filter((item) => item !== idx)
       } else {
-        this.open_detail = idx
+        this.open_detail.push(idx)
       }
     },
 
@@ -668,5 +667,14 @@ export default {
 <style scoped>
 .table tbody + tbody {
   border-top: 0;
+}
+.word {
+  max-width: 525px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.cursor {
+  cursor: pointer;
 }
 </style>

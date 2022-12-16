@@ -114,7 +114,11 @@
                         </label>
                       </div>
                     </td>
-                    <td class="table001">영어리딩심화.pdf</td>
+                    <td class="table001">
+                      <label class="cursor" :for="`chk${idx}`"
+                        >영어리딩심화.pdf</label
+                      >
+                    </td>
                     <td></td>
                     <td>4MB</td>
                     <td>대용량첨부</td>
@@ -125,10 +129,17 @@
             </div>
           </div>
           <VueEditor
+            id="quiz_editor"
+            v-model="noticeList.content"
+            :editorToolbar="editorToolbar"
+            :editorOptions="editorOptions"
+            :useCustomImageHandler="true"
+          />
+          <!-- <VueEditor
             v-model="noticeList.content"
             :editorOptions="editorOptions"
             :editorToolbar="editorToolbar"
-          />
+          /> -->
           <div class="btn_area">
             <button class="btn btn_crud_point" @click="onClickNoticeRegist">
               등록
@@ -219,7 +230,6 @@ export default {
         },
       },
       editorToolbar: [
-        [{ header: [false, 1, 2, 3, 4, 5, 6] }],
         ['bold', 'italic', 'underline', 'strike'],
         [
           { align: '' },
@@ -227,10 +237,7 @@ export default {
           { align: 'right' },
           { align: 'justify' },
         ],
-        ['blockquote', 'code-block'],
         [{ list: 'ordered' }, { list: 'bullet' }],
-        [{ indent: '-1' }, { indent: '+1' }],
-        [{ color: [] }, { background: [] }],
         ['image'],
       ],
       range: {
@@ -434,9 +441,6 @@ export default {
 }
 .cursor {
   cursor: pointer;
-}
-.custom-control-label::after {
-  left: -1.65rem !important;
 }
 
 .box02 {

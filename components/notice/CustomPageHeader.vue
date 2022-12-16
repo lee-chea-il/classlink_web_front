@@ -45,6 +45,15 @@
         개인
       </NuxtLink>
     </li>
+    <li class="nav-item">
+      <NuxtLink
+        class="nav-link"
+        to="/management/notice/franchise"
+        :class="{ active: $route.fullPath.includes('/franchise') }"
+      >
+        프랜차이즈
+      </NuxtLink>
+    </li>
   </ul>
 </template>
 

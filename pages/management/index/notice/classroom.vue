@@ -80,7 +80,7 @@
                 </tr>
               </thead>
               <tbody v-for="(item, idx) in noticeList" :key="idx">
-                <tr>
+                <tr class="cursor" @click="onClickShowContent(idx)">
                   <td>
                     <div class="custom-control custom-checkbox form-inline">
                       <input
@@ -93,12 +93,12 @@
                       <label class="custom-control-label" :for="idx"></label>
                     </div>
                   </td>
-                  <td>{{ item.attributes.title }}</td>
+                  <td class="word">{{ item.attributes.title }}</td>
                   <td>
                     <span
                       class="state"
                       :class="{
-                        warning: item.attributes.state.substr(0, 2) === 'D-',
+                        warning: item.attributes.state.includes('D-'),
                       }"
                     >
                       {{ item.attributes.state }}
@@ -120,13 +120,17 @@
                     <button
                       id="btnExpand"
                       class="btn icons_arrow_dn btn_expand"
-                      :class="{ up: idx === open_detail }"
+                      :class="{ up: open_detail.includes(idx) }"
                       @click="onClickShowContent(idx)"
                     ></button>
                   </td>
                 </tr>
                 <!-- 상세 tr [개발참조] 공지사항 상세 TR 펼치고 접기 -->
-                <tr v-if="idx === open_detail" id="trExpand" class="tr_expand">
+                <tr
+                  v-if="open_detail.includes(idx)"
+                  id="trExpand"
+                  class="tr_expand"
+                >
                   <td></td>
                   <td class="td_expand" colspan="8">
                     <div class="file_info">
@@ -161,7 +165,11 @@
                         </div>
                       </div>
                       <div class="btns_area">
-                        <a class="btn btn_crud_default">수정</a>
+                        <NuxtLink
+                          class="btn btn_crud_default"
+                          :to="`/management/notice/modify/classroom/${item.id}`"
+                          >수정</NuxtLink
+                        >
                         <button
                           class="btn btn_crud_default"
                           @click="onOpenNoticeDetailModal(item.attributes)"
@@ -821,7 +829,7 @@ export default {
       searchText: '',
       searchKeyword: '',
       allCheck: false,
-      open_detail: null,
+      open_detail: [],
       open_confirmFilter: 0,
 
       openNoticeConfirmCheckModal: {
@@ -938,10 +946,10 @@ export default {
 
     // 자세히보기 열기 닫기
     onClickShowContent(idx) {
-      if (idx === this.open_detail) {
-        this.open_detail = null
+      if (this.open_detail.includes(idx)) {
+        this.open_detail = this.open_detail.filter((item) => item !== idx)
       } else {
-        this.open_detail = idx
+        this.open_detail.push(idx)
       }
     },
 
@@ -1079,5 +1087,14 @@ export default {
 }
 .CommentItem--reply {
   border-top: 0.4px solid #d1d3d4 !important;
+}
+.word {
+  max-width: 525px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.cursor {
+  cursor: pointer;
 }
 </style>

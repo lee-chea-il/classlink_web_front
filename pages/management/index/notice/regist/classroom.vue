@@ -129,90 +129,23 @@
 										</td>
 									</tr> -->
 
-                  <tr>
+                  <tr v-for="(item, idx) in 5" :key="idx">
                     <td>
                       <div class="custom-control custom-checkbox form-inline">
                         <input
-                          id="chk01"
+                          :id="`chk${idx}`"
                           type="checkbox"
                           class="custom-control-input"
                         />
-                        <label class="custom-control-label" for="chk01"></label>
+                        <label class="custom-control-label" :for="`chk${idx}`">
+                        </label>
                       </div>
                     </td>
-                    <td class="table001">영어리딩심화.pdf</td>
-                    <td></td>
-                    <td>4MB</td>
-                    <td>대용량첨부</td>
-                    <td>~22/08/01(30일간)</td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                      <div class="custom-control custom-checkbox form-inline">
-                        <input
-                          id="chk01"
-                          type="checkbox"
-                          class="custom-control-input"
-                        />
-                        <label class="custom-control-label" for="chk01"></label>
-                      </div>
+                    <td class="table001">
+                      <label class="cursor" :for="`chk${idx}`"
+                        >영어리딩심화.pdf</label
+                      >
                     </td>
-                    <td class="table001">영어리딩심화.pdf</td>
-                    <td></td>
-                    <td>4MB</td>
-                    <td>대용량첨부</td>
-                    <td>~22/08/01(30일간)</td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                      <div class="custom-control custom-checkbox form-inline">
-                        <input
-                          id="chk01"
-                          type="checkbox"
-                          class="custom-control-input"
-                        />
-                        <label class="custom-control-label" for="chk01"></label>
-                      </div>
-                    </td>
-                    <td class="table001">영어리딩심화.pdf</td>
-                    <td></td>
-                    <td>4MB</td>
-                    <td>대용량첨부</td>
-                    <td>~22/08/01(30일간)</td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                      <div class="custom-control custom-checkbox form-inline">
-                        <input
-                          id="chk01"
-                          type="checkbox"
-                          class="custom-control-input"
-                        />
-                        <label class="custom-control-label" for="chk01"></label>
-                      </div>
-                    </td>
-                    <td class="table001">영어리딩심화.pdf</td>
-                    <td></td>
-                    <td>4MB</td>
-                    <td>대용량첨부</td>
-                    <td>~22/08/01(30일간)</td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                      <div class="custom-control custom-checkbox form-inline">
-                        <input
-                          id="chk01"
-                          type="checkbox"
-                          class="custom-control-input"
-                        />
-                        <label class="custom-control-label" for="chk01"></label>
-                      </div>
-                    </td>
-                    <td class="table001">영어리딩심화.pdf</td>
                     <td></td>
                     <td>4MB</td>
                     <td>대용량첨부</td>
@@ -223,9 +156,11 @@
             </div>
           </div>
           <VueEditor
+            id="quiz_editor"
             v-model="noticeList.content"
-            :editorOptions="editorOptions"
             :editorToolbar="editorToolbar"
+            :editorOptions="editorOptions"
+            :useCustomImageHandler="true"
           />
           <div class="reply_onoff">
             <div class="custom-control custom-switch">
@@ -362,7 +297,6 @@ export default {
         },
       },
       editorToolbar: [
-        [{ header: [false, 1, 2, 3, 4, 5, 6] }],
         ['bold', 'italic', 'underline', 'strike'],
         [
           { align: '' },
@@ -370,10 +304,7 @@ export default {
           { align: 'right' },
           { align: 'justify' },
         ],
-        ['blockquote', 'code-block'],
         [{ list: 'ordered' }, { list: 'bullet' }],
-        [{ indent: '-1' }, { indent: '+1' }],
-        [{ color: [] }, { background: [] }],
         ['image'],
       ],
       range: {
@@ -621,7 +552,4 @@ export default {
 .cursor {
   cursor: pointer;
 }
-/* .custom-control-label::after {
-  left: -1.65rem !important;
-} */
 </style>

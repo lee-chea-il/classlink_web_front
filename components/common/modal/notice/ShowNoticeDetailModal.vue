@@ -25,11 +25,14 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="title_area row">
+            <div class="title_area row notice_detail">
               <span class="notice_day">{{ data.state }}</span>
               <span class="notice_title">{{ data.title }}</span>
-              <span class="notice_day02">{{ data.createdAt }}</span>
-              <span class="notice_writer">{{ data.writer }}</span>
+              <span class="notice_day02">
+                <span>{{ data.createdAt }}</span>
+                (최종수정일<span>2022-12-09</span>)
+              </span>
+              <span class="notice_writer">{{ data.writer }} 선생님</span>
             </div>
 
             <div class="file_info">

@@ -24,31 +24,47 @@
       <div class="tab-content depth03 ac_manage_frc">
         <div class="tab-pane active">
           <!-- [개발참조]가맹한 프랜차이즈 없을때 -->
-          <div v-if="academy.length === 0" class="page_nodata">
+          <div
+            v-if="
+              franchiseList.length === 0 && franchiseWaitingList.length === 0
+            "
+            class="page_nodata"
+          >
             <p>
               현재 가맹한 프랜차이즈가 없습니다.<br />
               가입을 요청해 보세요.
             </p>
             <button
               class="btn btn_regi_franchise"
-              data-toggle="modal"
-              data-target="#modalFrcsignup"
+              @click="onOpenFranchiseSignUpModal"
             >
               프랜차이즈 가입하기
             </button>
           </div>
           <div v-else class="cards_section">
-            <div
-              v-for="(item, idx) in academy"
-              :key="idx"
-              class="card"
-              :class="{ standby: !item.affiliation }"
-            >
-              <div class="standby_txt">승인 대기 중</div>
-              <div class="logo" :style="`background-image: url(${image})`">
+            <div v-for="(item, idx) in franchiseList" :key="idx" class="card">
+              <div
+                class="logo"
+                :style="`background-image: url(${item?.fram_img})`"
+              >
                 <!-- <img src="@/assets/images/sample_franchise_logo01.png" alt="" /> -->
               </div>
-              <div class="academy">학원명학원명</div>
+              <div class="academy">{{ item?.fra_name }}</div>
+            </div>
+
+            <div
+              v-for="(item, idx) in franchiseWaitingList"
+              :key="`o-${idx}`"
+              class="card standby"
+            >
+              <div class="standby_txt">승인 대기 중</div>
+              <div
+                class="logo"
+                :style="`background-image: url(${item?.fram_img})`"
+              >
+                <!-- <img src="@/assets/images/sample_franchise_logo01.png" alt="" /> -->
+              </div>
+              <div class="academy">{{ item?.fra_name }}</div>
             </div>
             <!-- [개발참조] 승인대기중 의 예 class="card standby" -->
             <!-- <div class="card standby">
@@ -79,6 +95,8 @@
 
     <FranchiseSignupModal
       :open="openFranchiseSignUpModal.open"
+      :codeSearch="codeSearch"
+      @search="postFranchiseSearchCode"
       @close="onCloseFranchiseSignUpModal"
     />
   </div>
@@ -86,8 +104,8 @@
 
 <script>
 import FranchiseSignupModal from '@/components/common/modal/franchise/FranchiseSignUpModal.vue'
-import img from '@/assets/images/sample_franchise_logo01.png'
 import iconThumbnail from '@/assets/images/icons/icon_thumbnail_blue.svg'
+import apiFranchise from '@/services/apiFranchise'
 export default {
   name: 'List',
   components: {
@@ -95,38 +113,54 @@ export default {
   },
   data() {
     return {
-      academy: [
-        {
-          id: 1,
-          name: '학원명',
-          affiliation: true,
-        },
-        {
-          id: 2,
-          name: '학원명',
-          affiliation: false,
-        },
-      ],
+      franchiseList: [],
+      franchiseWaitingList: [],
+
       mem_idx: this.$store.state.common.user.mem_idx,
+
+      codeSearch: '',
 
       openFranchiseSignUpModal: {
         open: false,
       },
       // 프랜차이즈 가입추가 이미지
       thumbnail: iconThumbnail,
-      // 학원 로고 이미지
-      image: img,
     }
   },
-  created() {
-    console.log(this.mem_idx)
+  mounted() {
+    this.getFranchiseList()
   },
   methods: {
+    // 프랜차이즈 리스트 api
+    async getFranchiseList() {
+      await apiFranchise
+        .getFranchiseList(this.mem_idx)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          this.franchiseList = data.franchiseList
+          this.franchiseWaitingList = data.franchiseWaitingList
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
     onOpenFranchiseSignUpModal() {
       this.openFranchiseSignUpModal.open = true
     },
     onCloseFranchiseSignUpModal() {
       this.openFranchiseSignUpModal.open = false
+    },
+
+    async postFranchiseSearchCode() {
+      await apiFranchise
+        .postFranchiseSearchCode(this.codeSearch)
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
   },
 }

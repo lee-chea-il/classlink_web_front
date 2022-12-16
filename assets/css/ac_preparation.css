@@ -5085,6 +5085,32 @@ ol {
 #modalLessonRegi .save_path {
   width: 72%;
 }
+#modalLessonRegi .icon_fran_my {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_fran_my.png);
+  margin-right: 6px;
+  margin-left: 17px;
+}
+#modalLessonRegi .icon_inst_my {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_inst_my.png);
+  margin-right: 6px;
+  margin-left: 17px;
+}
 
 /* -----------------------------    커리큘럼    ----------------------------- */
 /* 커리큘럼등록/수정 (팝업 L) */
@@ -5147,6 +5173,32 @@ ol {
   background-image: url(../images/icon_institute.png);
   margin-right: 10px;
   margin-left: 20px;
+}
+#modalCuriRegi .icon_fran_my {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_fran_my.png);
+  margin-right: 6px;
+  margin-left: 17px;
+}
+#modalCuriRegi .icon_inst_my {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_inst_my.png);
+  margin-right: 6px;
+  margin-left: 17px;
 }
 #modalCuriRegi .list_area li {
   display: flex;

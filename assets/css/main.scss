@@ -5,6 +5,53 @@
 /*--------   100. main.scss   -----------*/
 /*---------------------------------------*/
 
+#popupZone {
+
+	.w1280 {
+		background: #E7EDFF;
+		display: flex;
+		justify-content: center;
+		height: 118px;
+	}
+
+	.closeBox {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: -66px;
+	}
+
+	.banner_main {
+		display: inline-block;
+		width: 1280px;
+		height: 118px;
+		text-align: center;
+		vertical-align: middle;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: contain;
+		background-image: url(../images/banner_main.png);
+		overflow: hidden;
+		box-sizing: border-box;
+	}
+
+	.pop_close {
+		width: 7px;
+		height: 9px;
+		border: 0;
+		text-indent: -5000px;
+
+		display: inline-block;
+		text-align: center;
+		vertical-align: middle;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: contain;
+		background-image: url(../images/icons/icon_close.svg);
+		margin-left: 2px;
+	}
+}
+
 #main_content {
 
 	.header-movie video {
@@ -592,6 +639,8 @@
 		align-items: center;
 		color: #A7A9AC;
 		margin-right: 20px;
+		width: 10%;
+		margin-left: -11px;
 	}
 
 	.main_notice_tit02 {
@@ -948,7 +997,8 @@ footer {
 		align-items: center;
 	}
 
-	.footer_tit {
+	.footer_tit01,
+	.footer_tit02 {
 		font-weight: 700;
 		font-size: 16px;
 		line-height: 26px;
@@ -1010,11 +1060,21 @@ footer {
 			margin-bottom: 100px;
 		}
 
-		.footer_tit {
+		.footer_tit01,
+		.footer_tit02 {
 			font-weight: 700;
 			font-size: 13px;
 			line-height: 24px;
 			color: #FFFFFF;
+			margin-bottom: 10px;
+		}
+
+		.footer_tit01 {
+			margin-bottom: 0px;
+		}
+
+		.footer_tit02 {
+			margin-bottom: 21px;
 		}
 
 		.footer_cnt {
@@ -1695,8 +1755,8 @@ footer {
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
-			display: inline-block;
-			width: 620px;
+			width: 80%;
+			text-align: left;
 		}
 
 		.main_notice_tit03 {
@@ -1768,7 +1828,7 @@ footer {
 			}
 
 			.main_notice_tit02 {
-				max-width: 110px;
+				max-width: 200px;
 			}
 
 			.main_notice_tit {

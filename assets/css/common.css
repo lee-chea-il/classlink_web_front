@@ -12061,6 +12061,32 @@ a {
 #modalLessonRegi .save_path {
   width: 72%;
 }
+#modalLessonRegi .icon_fran_my {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_fran_my.png);
+  margin-right: 6px;
+  margin-left: 17px;
+}
+#modalLessonRegi .icon_inst_my {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_inst_my.png);
+  margin-right: 6px;
+  margin-left: 17px;
+}
 
 /* -----------------------------    커리큘럼    ----------------------------- */
 /* 커리큘럼등록/수정 (팝업 L) */
@@ -12123,6 +12149,32 @@ a {
   background-image: url(../images/icon_institute.png);
   margin-right: 10px;
   margin-left: 20px;
+}
+#modalCuriRegi .icon_fran_my {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_fran_my.png);
+  margin-right: 6px;
+  margin-left: 17px;
+}
+#modalCuriRegi .icon_inst_my {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_inst_my.png);
+  margin-right: 6px;
+  margin-left: 17px;
 }
 #modalCuriRegi .list_area li {
   display: flex;
@@ -18910,6 +18962,46 @@ a {
 /*---------------------------------------*/
 /*--------   100. main.scss   -----------*/
 /*---------------------------------------*/
+#popupZone .w1280 {
+  background: #E7EDFF;
+  display: flex;
+  justify-content: center;
+  height: 118px;
+}
+#popupZone .closeBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: -66px;
+}
+#popupZone .banner_main {
+  display: inline-block;
+  width: 1280px;
+  height: 118px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  /* background-image: url(../images/banner_main.png); */
+  overflow: hidden;
+  box-sizing: border-box;
+}
+#popupZone .pop_close {
+  width: 7px;
+  height: 9px;
+  border: 0;
+  text-indent: -5000px;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icons/icon_close.svg);
+  margin-left: 2px;
+}
+
 #main_content .header-movie video {
   position: absolute;
   top: 50%;
@@ -19423,6 +19515,8 @@ a {
   align-items: center;
   color: #A7A9AC;
   margin-right: 20px;
+  width: 10%;
+  margin-left: -11px;
 }
 #main_content .main_notice_tit02 {
   font-weight: 500;
@@ -19712,7 +19806,8 @@ footer .footer_bg {
   justify-content: center;
   align-items: center;
 }
-footer .footer_tit {
+footer .footer_tit01,
+footer .footer_tit02 {
   font-weight: 700;
   font-size: 16px;
   line-height: 26px;
@@ -19759,11 +19854,19 @@ footer .footer_right {
     width: 11%;
     margin-bottom: 100px;
   }
-  footer .footer_tit {
+  footer .footer_tit01,
+footer .footer_tit02 {
     font-weight: 700;
     font-size: 13px;
     line-height: 24px;
     color: #FFFFFF;
+    margin-bottom: 10px;
+  }
+  footer .footer_tit01 {
+    margin-bottom: 0px;
+  }
+  footer .footer_tit02 {
+    margin-bottom: 21px;
   }
   footer .footer_cnt {
     font-size: 13px;
@@ -20336,8 +20439,8 @@ footer .footer_right {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  display: inline-block;
-  width: 620px;
+  width: 80%;
+  text-align: left;
 }
 .web_only_main .main_notice .main_notice_tit03 {
   font-weight: 400;
@@ -20395,7 +20498,7 @@ footer .footer_right {
     width: 100%;
   }
   .web_only_main .main_notice .main_notice_tit02 {
-    max-width: 110px;
+    max-width: 200px;
   }
   .web_only_main .main_notice .main_notice_tit {
     width: 51px;
