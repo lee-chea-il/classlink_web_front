@@ -115,6 +115,7 @@ i.btn {
 	height: 39px;
 	padding: 10px;
 	margin-right: 5px;
+	width: 170px;
 }
 
 .nothing_txt {
@@ -1392,6 +1393,15 @@ $navtopHeight: 60px;
 	.search_area {
 		display: flex;
 		align-items: center;
+	}
+
+	.search_area .right_area {
+		width: 52%;
+		display: flex;
+
+		.input-search {
+			width: 180px;
+		}
 	}
 
 	.search_section {

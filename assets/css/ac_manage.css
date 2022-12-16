@@ -3372,6 +3372,12 @@ ol {
   width: 75%;
   margin-left: 115px;
 }
+.modal_ac_manage_tch .subject_modify {
+  width: 82px;
+  height: 27px;
+  padding: 0 0;
+  margin-left: -20px;
+}
 .modal_ac_manage_tch .btn_right {
   margin-left: auto;
 }
@@ -3746,4 +3752,123 @@ ol {
   justify-content: center;
 }
 
-/* jeh-2022.09.14 끝 *//*# sourceMappingURL=ac_manage.css.map */
+/* 선생님관리.html
+과목수정 - 팝업 M2 */
+/* jeh-2022.09.14 끝 */
+.modal_subject_modify .form-inline {
+  display: flex;
+  margin-bottom: 5px;
+}
+.modal_subject_modify .form_add {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.modal_subject_modify .subject_form {
+  width: 64%;
+  margin-left: 13px;
+}
+.modal_subject_modify .modal-body .more_mu {
+  width: 10px;
+  position: absolute;
+  right: 6%;
+  margin-top: -6px;
+}
+.modal_subject_modify .table_area {
+  position: relative;
+  height: auto;
+  overflow: hidden;
+  border: 0.4px solid rgba(167, 169, 172, 0.4);
+  border-radius: 5px;
+}
+.modal_subject_modify .table_area .table_thead {
+  padding-right: 10px;
+  background: #F9F9FB;
+}
+.modal_subject_modify .table_area .table_tbody {
+  position: relative;
+  width: 100%;
+  height: 105px;
+  overflow-y: auto;
+}
+.modal_subject_modify th {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 30px;
+  color: #A7A9AC;
+}
+.modal_subject_modify thead {
+  box-sizing: border-box;
+  background: #F9F9FB;
+}
+.modal_subject_modify tbody {
+  box-sizing: border-box;
+  position: relative;
+  border-radius: 5px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.modal_subject_modify tr {
+  border-bottom: 0.4px solid #E6E7E8;
+}
+.modal_subject_modify td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 400;
+  font-size: 14px;
+  color: #454545;
+  vertical-align: middle;
+  text-align: left;
+  padding: 10px 15px;
+}
+.modal_subject_modify td .date {
+  align-items: center;
+  line-height: 30px;
+  white-space: nowrap;
+  padding: 10px 105px;
+}
+.modal_subject_modify td .date .box01,
+.modal_subject_modify td .date .box02,
+.modal_subject_modify td .date i.icons_calendar_off {
+  float: left;
+}
+.modal_subject_modify .tb {
+  position: relative;
+  width: 100%;
+  padding: 15px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.modal_subject_modify .table_area .table_tbody {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  overflow-y: auto;
+}
+
+/* 출결관리-학생출결.html */
+/*  동명이인 검색 결과 - 팝업
+ [개발참조]: 동명이인이 있는 경우 출력되는 팝업창 */
+.modalNameSelect td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 400;
+  font-size: 14px;
+  color: #454545;
+  vertical-align: middle;
+  text-align: left;
+  padding: 10px 15px;
+  text-align: center;
+}
+.modalNameSelect tr:hover, .modalNameSelect tr:focus, .modalNameSelect tr:active {
+  background: #E7EDFF;
+  cursor: pointer;
+}
+.modalNameSelect .thName {
+  width: 84px;
+}
+.modalNameSelect .thID {
+  width: 253px;
+}/*# sourceMappingURL=ac_manage.css.map */

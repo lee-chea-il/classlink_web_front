@@ -4466,7 +4466,9 @@ ol {
 #modalDataRegiModi .fileChange,
 #modalDataRegiQuiz .fileChange,
 #modalDataRegiNote .fileChange {
-  margin: -25px 0px 0px 359px;
+  justify-content: flex-end;
+  margin-right: 0px;
+  margin-top: -20px;
 }
 #modalDataRegiModi .left_area,
 #modalDataRegiQuiz .left_area,
@@ -5231,6 +5233,50 @@ ol {
 #modalStoragepath.curisave .modal-body {
   padding-top: 20px;
   padding-bottom: 0;
+}
+#modalStoragepath.curisave .icon_institute {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_institute.png);
+}
+#modalStoragepath.curisave .icon_fran {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_fran.png);
+}
+#modalStoragepath.curisave .icon_open {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_open.png);
+}
+#modalStoragepath.curisave .icon_mydata {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_mydata.png);
 }
 
 /* -----------------------------    강좌    ----------------------------- */

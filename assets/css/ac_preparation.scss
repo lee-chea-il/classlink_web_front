@@ -2781,7 +2781,9 @@
 	}
 
 	.fileChange {
-		margin: -25px 0px 0px 359px;
+		justify-content: flex-end;
+		margin-right: 0px;
+		margin-top: -20px;
 	}
 
 	.left_area {
@@ -3707,6 +3709,55 @@
 		padding-top: 20px;
 		padding-bottom: 0;
 	}
+
+	.icon_institute {
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		text-align: center;
+		vertical-align: middle;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: contain;
+		background-image: url(../images/icon_institute.png);
+	}
+
+	.icon_fran {
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		text-align: center;
+		vertical-align: middle;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: contain;
+		background-image: url(../images/icon_fran.png);
+	}
+
+	.icon_open {
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		text-align: center;
+		vertical-align: middle;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: contain;
+		background-image: url(../images/icon_open.png);
+	}
+
+	.icon_mydata {
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		text-align: center;
+		vertical-align: middle;
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: contain;
+		background-image: url(../images/icon_mydata.png);
+	}
+
 }
 
 /* -----------------------------    강좌    ----------------------------- */

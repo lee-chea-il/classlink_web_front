@@ -1234,26 +1234,53 @@
 		font-size: 14px;
 	}
 
-	/* 결제관리 - 결제내역 */
-	.icons_printer {
-		display: inline-block;
-		width: 24px;
-		height: 22px;
-		text-align: center;
-		vertical-align: middle;
-		background-repeat: no-repeat;
-		background-position: center center;
-		background-size: contain;
-		background-image: url(../images/icons/icon_printer.svg);
+}
 
-		&:hover,
-		&:focus,
-		&:active {
-			background-image: url(../images/icons/icon_printer_on.svg);
-			cursor: pointer;
-		}
+/* 결제관리 - 결제내역 */
+/* 	관리 - 결제관리 - 결제내역 - 상세보기 팝업 M2 */
+#modalPayDetaiView {
+	.view_box {
+		width: 460px;
+		background: #F9F9FC;
+		border-radius: 5px;
+		text-align: left;
+		padding: 15px 25px;
+		margin: 0 auto;
+	}
+
+	.title {
+		font-weight: 500;
+		font-size: 14px;
+		line-height: 20px;
+		width: 23%;
+		margin-left: 10px;
+	}
+
+	.view_address {
+		display: inline-block;
+		max-width: 320px;
+		line-height: 26px;
+	}
+
+	.col {
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 20px;
+	}
+
+	.row {
+		padding: 10px 0px;
+	}
+
+	.line {
+		border: 1px solid #D1D3D4;
+		width: 104%;
+		margin-left: -6px;
+		margin-top: 10px;
+		margin-bottom: 10px;
 	}
 }
+
 
 /* 팝업 S2- 결제 관리 - 현재 요금제 취소 팝업 */
 #modalCancleSub {
@@ -1585,7 +1612,7 @@
 
 	.title_area {
 		text-align: left;
-		width: 109%;
+		width: 100%;
 		margin-bottom: 40px;
 		margin-top: -15px;
 
@@ -2602,7 +2629,7 @@
 		color: #D1D3D4;
 		word-break: break-all;
 		display: flex;
-		justify-content: end;
+		justify-content: flex-end;
 		align-items: center;
 	}
 
@@ -3340,7 +3367,7 @@
 		text-align: center;
 		color: #A7A9AC;
 		gap: 5px;
-		justify-content: end;
+		justify-content: flex-end;
 		margin-top: 10px;
 		margin-right: 10px;
 	}
@@ -3373,19 +3400,6 @@
 		justify-content: center;
 		margin: 248px auto;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 
@@ -3424,5 +3438,21 @@
 
 	.modal-content {
 		width: 80%;
+	}
+}
+
+/* 출결관리-학생출결.html
+출결-팝업 L [개발참조] 학생관리 출결팝업 동일 사용  */
+.modal_moreattendance {
+	.text_unselected_color {
+		background: #A7A9AC;
+	}
+
+	.inst label {
+		background: #D1DBFF;
+	}
+
+	.meta label {
+		background: #D1D3D4 !important;
 	}
 }

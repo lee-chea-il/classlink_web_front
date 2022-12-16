@@ -2054,6 +2054,7 @@ i.btn {
   height: 39px;
   padding: 10px;
   margin-right: 5px;
+  width: 170px;
 }
 
 .nothing_txt {
@@ -3223,6 +3224,13 @@ i.btn {
 .calendar_type01 .search_area {
   display: flex;
   align-items: center;
+}
+.calendar_type01 .search_area .right_area {
+  width: 52%;
+  display: flex;
+}
+.calendar_type01 .search_area .right_area .input-search {
+  width: 180px;
 }
 .calendar_type01 .search_section {
   margin-top: 20px;
