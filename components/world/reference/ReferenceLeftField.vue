@@ -29,7 +29,7 @@
       <div class="form-group row">
         <label for="" class="data_title">설명</label>
         <div class="col">
-          <CustomModalInput
+          <CustomTextarea
             id="desc"
             name="설명"
             placeholder="설명 입력"
@@ -103,6 +103,7 @@ import CustomKeywordBox from '../common/custom/CustomKeywordBox.vue'
 import CheckboxGroup from '../common/custom/CheckboxGroup.vue'
 import ThumbnailBox from '../common/ThumbnailBox.vue'
 import CustomModalInput from '@/components/common/custom/CustomModalInput.vue'
+import CustomTextarea from '~/components/common/custom/CustomTextarea.vue'
 export default {
   name: 'ReferenceLeftField',
   components: {
@@ -112,6 +113,7 @@ export default {
     CustomKeywordBox,
     CheckboxGroup,
     ThumbnailBox,
+    CustomTextarea,
   },
   props: {
     reference: {

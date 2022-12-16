@@ -37,7 +37,9 @@
 
                 <!-- 오른쪽 영역 -->
                 <ReferenceRightField
+                  :open="modalTitle === '수정'"
                   :reference="reference"
+                  :playTime="playTime"
                   @change-file="$emit('change-file', $event)"
                 />
               </div>
@@ -94,6 +96,7 @@ export default {
       default: '',
     },
     modalTitle: { type: String, default: '' },
+    playTime: { type: String, default: '' },
   },
   methods: {
     isDisabled(aFlag, bFlag) {

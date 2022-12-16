@@ -136,7 +136,7 @@
               등록
             </button>
             <NuxtLink
-              to="/management/notice/individual"
+              to="/management/notice/education"
               class="btn btn_crud_default"
               >취소</NuxtLink
             >
@@ -202,7 +202,7 @@ export default {
         time_range_end: '11:59',
         time_range_start_m: 0,
         time_range_end_m: 0,
-        after_deadline: false,
+        after_deadline: true,
         notice_alarm: false,
         targetSetting: ['홍길동', '김철수', '이유리'],
       },
@@ -244,7 +244,7 @@ export default {
         time_range_end: '11:59',
         time_range_start_m: 0,
         time_range_end_m: 0,
-        after_deadline: false,
+        after_deadline: true,
         notice_alarm: false,
       },
 

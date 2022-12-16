@@ -32,16 +32,7 @@
                 </div>
                 <div class="search_area">
                   <div class="dropdown form-inline mr-2">
-                    <select class="btn dropdown-toggle">
-                      <option value="전체" class="dropdown-item">전체</option>
-                      <option value="영어리딩심화" class="dropdown-item">
-                        영어리딩심화
-                      </option>
-                      <option value="영어리스닝심화" class="dropdown-item">
-                        영어리스닝심화
-                      </option>
-                    </select>
-                    <!-- <button
+                    <button
                       class="btn dropdown-toggle"
                       type="button"
                       data-toggle="dropdown"
@@ -52,7 +43,7 @@
                     <div class="dropdown-menu">
                       <a class="dropdown-item" href="#">영어리딩심화</a>
                       <a class="dropdown-item" href="#">영어리스닝심화</a>
-                    </div> -->
+                    </div>
                   </div>
                   <div class="calendar_date_bluebox">
                     {{ attendanceSearchDate.date_range_start }} -

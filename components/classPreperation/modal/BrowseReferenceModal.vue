@@ -13,7 +13,6 @@
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <ModalHeader title="자료 열람" @close="$emit('close')" />
-
           <div class="modal-body">
             <VideoView
               :open="selectData.uploadType === 'video'"
@@ -40,6 +39,7 @@
 
             <div class="btnsec">
               <ReferenceBtn
+                v-if="isShowBtn(identity, selectData.type).change"
                 title="이동"
                 @click-event="$emit('open-save-path', 'isReferenceBrowse')"
               />
@@ -58,10 +58,12 @@
                 >
               </button>
               <ReferenceBtn
+                v-if="isShowBtn(identity, selectData.type).change"
                 title="수정"
                 @click-event="$emit('reference-change')"
               />
               <ReferenceBtn
+                v-if="isShowBtn(identity, selectData.type).delete"
                 title="삭제"
                 @click-event="$emit('delete', 'isReferenceBrowse')"
               />
@@ -85,6 +87,7 @@ import UrlView from '../reference/ViewUrl.vue'
 import MusicView from '../reference/ViewMusic.vue'
 import FileInfoSection from '../reference/FileInfoSection.vue'
 import ReferenceBtn from '../common/ReferenceBtn.vue'
+
 export default {
   name: 'BrowseReferenceModal',
   components: {
@@ -102,6 +105,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    identity: {
+      type: String,
+      default: '',
+    },
     pageRoot: {
       type: String,
       default: '',
@@ -109,6 +116,26 @@ export default {
     selectData: {
       type: Object,
       default: () => {},
+    },
+  },
+  methods: {
+    isShowBtn(iden, type) {
+      const isT = iden === 'teacher'
+      if (
+        (isT && type === 'myData') ||
+        (!isT && (type === 'myData' || type === 'institution'))
+      )
+        return {
+          delete: true,
+          perse: true,
+          change: true,
+        }
+      else
+        return {
+          delete: false,
+          perse: true,
+          change: false,
+        }
     },
   },
 }

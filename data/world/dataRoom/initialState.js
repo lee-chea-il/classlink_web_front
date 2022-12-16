@@ -5,8 +5,10 @@ export default function initialState() {
     pushKeyword: '',
     identity: 'teacher',
     pageType: 'reference',
+    pageRoot: 'world',
     modalTitle: '등록',
     isCopyType: '',
+    youtubePlayTime: '',
     // Modal Flag
     isSelectType: false,
     isQuizPrint: false,
@@ -28,6 +30,10 @@ export default function initialState() {
     isQuizPreviewModal: { open: false, prevPage: '', select: false },
     isNoteTestPreviewModal: { open: false, prevPage: '', select: false },
     // Data
+    thumbnailItem: {
+      data: {},
+      image: '',
+    },
     initSearchData: { word: '', type: [], subject: [], category: [] },
     searchData: { word: '', type: [], subject: [], category: [] },
     initReferenceData: {
@@ -46,6 +52,7 @@ export default function initialState() {
       uploadType: '',
       fileVolume: '',
       createAt: '',
+      thumbnail: '',
       quizList: [
         {
           id: 0,
@@ -93,6 +100,7 @@ export default function initialState() {
       uploadType: '',
       fileVolume: '',
       createAt: '',
+      thumbnail: '',
       quizList: [
         {
           id: 0,
@@ -176,6 +184,7 @@ export default function initialState() {
       { id: 2, name: '문서' },
       { id: 3, name: '퀴즈' },
       { id: 4, name: '쪽지시험' },
+      { id: 5, name: '배경음' },
     ],
     receiveInstitutionData: [
       {
@@ -209,6 +218,7 @@ export default function initialState() {
                   },
                   {
                     id: 1,
+                    type: 'institution',
                     name: '수학 학습자료.pdf',
                     subject: '수학',
                     desc: '등록한 자료 2',
@@ -227,10 +237,10 @@ export default function initialState() {
                     createAt: '',
                     isLeaf: false,
                     dbIdx: 2,
-                    type: 'institution',
                   },
                   {
                     id: 2,
+                    type: 'institution',
                     name: '영어 단어 퀴즈.quiz',
                     subject: '영어',
                     desc: '등록한 자료 1',
@@ -306,16 +316,16 @@ export default function initialState() {
                     ],
                     isLeaf: false,
                     dbIdx: 3,
-                    type: 'institution',
                   },
                   {
                     id: 3,
+                    type: 'institution',
                     name: '사회 쪽지시험 영상.youtube',
                     subject: '사회',
                     desc: '등록한 자료 1',
                     keyword: ['국어', '수학'],
                     registrant: '등록인',
-                    savePath: 'https://www.youtube.com/embed/1CYbySbtyF0',
+                    savePath: '//www.youtube.com/embed/m264zfB87Tc',
                     saveFolder: '',
                     isOpenEducation: true,
                     isOpenReference: true,
@@ -327,10 +337,10 @@ export default function initialState() {
                     createAt: '',
                     isLeaf: false,
                     dbIdx: 4,
-                    type: 'institution',
                   },
                   {
                     id: 4,
+                    type: 'institution',
                     name: '과학 사이트 참고용.url',
                     subject: '과학',
                     desc: '등록한 자료 1',
@@ -348,10 +358,10 @@ export default function initialState() {
                     createAt: '',
                     isLeaf: false,
                     dbIdx: 5,
-                    type: 'institution',
                   },
                   {
                     id: 5,
+                    type: 'institution',
                     name: '수학 쪽지시험.test',
                     subject: '수학',
                     desc: '등록한 자료 1',
@@ -377,7 +387,7 @@ export default function initialState() {
                           {
                             id: '',
                             example:
-                              '<p><img src="data:image/png;base64,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"></p>',
+                              '<p><img src="http://112.171.101.31:45290/file/071d9a72-703a-4d87-9d36-ea95691354d7.jpg"></p>',
                           },
                           {
                             id: '',
@@ -395,8 +405,8 @@ export default function initialState() {
                               '<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAXCAMAAAFVDZ+0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAB1UExURQAAAP4AAP8AAP4AAP4AAP8AAP4AAP4AAP8AAP4AAP4AAP4AAP4AAP8AAP4AAP4AAP8AAP4AAP4AAP4AAP8AAP4AAP8AAP4AAP4AAP4AAP8AAP4AAP4AAP4AAP8AAP4AAP8AAP4AAP4AAP8AAP4AAP8AAP4AAPnU2EQAAAAndFJOUwBoCNccEIskGOcs7zQo96tAVMPLBNNg24d0FOPrl3ifgPtIPLf/vyFRMpMAAAAJcEhZcwAAFxEAABcRAcom8z8AAADHSURBVChTXZBXFoJAEARHFBOIOSEKhvb+R3RCi0h9sF29s8BbCbbQB+zxsGDZxJIvwDQW4BqVMY7tGC3iiI2sY5KHBQMGQ+sloyQ+dQnJXRSTG7Mi8mJyfDZ+s2XwbR3gxKQsf0cUe8GWWWZmSEJGLijCQoDcZE2JFzEqZ5Ero9HdAl42+2U33O8Ye6QVUKWUPyZ2nygm1A4r/4DyZNFy4IZyYEUa1k7D0qlZkpq1smHV8uZGcmTR4ej3WGbUP7JSZH6n9LgvPi1+Kz6lcBoiAAAAAElFTkSuQmCC"></p>',
                           },
                         ],
-                        dificultade: 1,
-                        limitTime: '23',
+                        dificultade: 2,
+                        limitTime: '2분',
                         answer: 2,
                         isCommentary: true,
                         commentary: '어렵주?',
@@ -417,7 +427,6 @@ export default function initialState() {
                     ],
                     isLeaf: false,
                     dbIdx: 6,
-                    type: 'institution',
                   },
                 ],
               },
@@ -431,6 +440,7 @@ export default function initialState() {
                 children: [
                   {
                     id: 4,
+                    type: 'institution',
                     name: '과학 사이트 참고용.url',
                     subject: '과학',
                     desc: '등록한 자료 1',
@@ -448,7 +458,6 @@ export default function initialState() {
                     createAt: '',
                     isLeaf: false,
                     dbIdx: 5,
-                    type: 'institution',
                   },
                   {
                     id: 5,
@@ -467,6 +476,7 @@ export default function initialState() {
                     uploadType: 'test',
                     fileVolume: '',
                     createAt: '',
+                    type: 'institution',
                     noteTestList: [
                       {
                         id: 0,
@@ -497,7 +507,6 @@ export default function initialState() {
                     ],
                     isLeaf: false,
                     dbIdx: 6,
-                    type: 'institution',
                   },
                 ],
               },
@@ -518,6 +527,7 @@ export default function initialState() {
                 children: [
                   {
                     id: 2,
+                    type: 'franchise',
                     name: '영어 단어 퀴즈.quiz',
                     subject: '영어',
                     desc: '등록한 자료 1',
@@ -592,16 +602,16 @@ export default function initialState() {
                     ],
                     isLeaf: false,
                     dbIdx: 3,
-                    type: 'institution',
                   },
                   {
                     id: 3,
+                    type: 'franchise',
                     name: '사회 쪽지시험 영상.youtube',
                     subject: '사회',
                     desc: '등록한 자료 1',
                     keyword: ['국어', '수학'],
                     registrant: '등록인',
-                    savePath: 'https://www.youtube.com/embed/1CYbySbtyF0',
+                    savePath: '//www.youtube.com/embed/m264zfB87Tc',
                     saveFolder: '',
                     isOpenEducation: true,
                     isOpenReference: true,
@@ -613,7 +623,6 @@ export default function initialState() {
                     createAt: '',
                     isLeaf: false,
                     dbIdx: 4,
-                    type: 'institution',
                   },
                 ],
               },
@@ -631,6 +640,7 @@ export default function initialState() {
             children: [
               {
                 id: 2,
+                type: 'myData',
                 name: '영어 단어 퀴즈.quiz',
                 subject: '영어',
                 desc: '등록한 자료 1',
@@ -705,16 +715,16 @@ export default function initialState() {
                 ],
                 isLeaf: false,
                 dbIdx: 3,
-                type: 'institution',
               },
               {
                 id: 3,
+                type: 'myData',
                 name: '사회 쪽지시험 영상.youtube',
                 subject: '사회',
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://www.youtube.com/embed/1CYbySbtyF0',
+                savePath: '//www.youtube.com/embed/m264zfB87Tc',
                 saveFolder: '',
                 isOpenEducation: true,
                 isOpenReference: true,
@@ -726,7 +736,6 @@ export default function initialState() {
                 createAt: '',
                 isLeaf: false,
                 dbIdx: 4,
-                type: 'institution',
               },
             ],
           },
@@ -742,6 +751,7 @@ export default function initialState() {
             children: [
               {
                 id: 2,
+                type: 'open',
                 name: '공개 퀴즈(1).quiz',
                 subject: '영어',
                 desc: '등록한 자료 1',
@@ -816,16 +826,16 @@ export default function initialState() {
                 ],
                 isLeaf: false,
                 dbIdx: 3,
-                type: 'institution',
               },
               {
                 id: 3,
+                type: 'open',
                 name: '공개 영상(2).youtube',
                 subject: '사회',
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://www.youtube.com/embed/1CYbySbtyF0',
+                savePath: '//www.youtube.com/embed/m264zfB87Tc',
                 saveFolder: '',
                 isOpenEducation: true,
                 isOpenReference: true,
@@ -837,7 +847,6 @@ export default function initialState() {
                 createAt: '',
                 isLeaf: false,
                 dbIdx: 4,
-                type: 'institution',
               },
             ],
           },
@@ -860,6 +869,7 @@ export default function initialState() {
         fileDivision: '교육기관',
         fileType: 'video/mp4',
         uploadType: 'video',
+        thumbnail: '',
         fileVolume: '',
         createAt: '',
         dbIdx: 1,
@@ -881,6 +891,7 @@ export default function initialState() {
         fileDivision: '교육기관',
         fileType: 'application/pdf',
         uploadType: 'pdf',
+        thumbnail: '',
         fileVolume: '',
         createAt: '',
         isLeaf: false,
@@ -902,6 +913,7 @@ export default function initialState() {
         fileDivision: '교육기관',
         fileType: 'quiz',
         uploadType: 'quiz',
+        thumbnail: '',
         fileVolume: '',
         createAt: '',
         quizList: [
@@ -972,7 +984,7 @@ export default function initialState() {
         desc: '등록한 자료 1',
         keyword: ['국어', '수학'],
         registrant: '등록인',
-        savePath: 'https://www.youtube.com/embed/1CYbySbtyF0',
+        savePath: '//www.youtube.com/embed/m264zfB87Tc',
         saveFolder: '',
         isOpenEducation: true,
         isOpenReference: true,
@@ -980,6 +992,7 @@ export default function initialState() {
         fileDivision: '교육기관',
         fileType: 'youtube',
         uploadType: 'youtube',
+        thumbnail: '',
         fileVolume: '',
         createAt: '',
         isLeaf: false,
@@ -1001,6 +1014,7 @@ export default function initialState() {
         fileDivision: '교육기관',
         fileType: 'test',
         uploadType: 'url',
+        thumbnail: '',
         fileVolume: '',
         createAt: '',
         isLeaf: false,

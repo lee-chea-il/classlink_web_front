@@ -6,9 +6,10 @@
         <div class="row">
           <ChangeFileTitle
             :show="
-              reference.uploadType === 'video' ||
-              reference.uploadType === 'music' ||
-              reference.uploadType === 'pdf'
+              open &&
+              (reference.uploadType === 'video' ||
+                reference.uploadType === 'music' ||
+                reference.uploadType === 'pdf')
             "
             :name="reference.uploadType"
             @change-file="$emit('change-file', $event)"
@@ -34,6 +35,8 @@
               class="embed"
               :src="reference.savePath"
               frameborder="0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
             />
           </div>
         </div>
@@ -55,7 +58,12 @@
           title="용량"
           :value="getByteSize(reference.fileVolume)"
         />
-        <ContentLabel title="등록자" value="홍길동" />
+        <ContentLabel
+          v-if="reference.uploadType === 'youtube'"
+          title="재생 시간"
+          :value="playTime"
+        />
+        <ContentLabel v-else title="등록자" value="홍길동" />
       </div>
     </div>
   </div>
@@ -67,11 +75,23 @@ import ChangeFileTitle from './ChangeFileTitle.vue'
 
 export default {
   name: 'ReferenceRightModal',
-  components: { ContentLabel, ChangeFileTitle },
+  components: {
+    ContentLabel,
+    ChangeFileTitle,
+    // Youtube
+  },
   props: {
     reference: {
       type: Object,
       default: () => {},
+    },
+    playTime: {
+      type: String,
+      default: '',
+    },
+    open: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
@@ -83,9 +103,6 @@ export default {
         return null
       }
     },
-    player() {
-      return this.$refs.youtube.player
-    },
   },
   methods: {
     getByteSize(size) {
@@ -95,9 +112,6 @@ export default {
         if (size < 1024) return size.toFixed(1) + byteUnits[i]
       }
     },
-    async playVideo() {
-      await this.player.playVideo()
-    },
   },
 }
 </script>
@@ -106,7 +120,8 @@ export default {
 .video,
 .canvas,
 .embed,
-.iframe {
+.iframe,
+#youtube {
   width: 100%;
   height: 100%;
 }

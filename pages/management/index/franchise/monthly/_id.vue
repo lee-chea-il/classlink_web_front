@@ -57,8 +57,6 @@
                   <td>
                     <i
                       class="btn icons_zoom_off"
-                      data-toggle="modal"
-                      data-target="#modalFrcdetail"
                       @click="onOpenFCDetailModal(item.student)"
                     ></i>
                   </td>
@@ -109,7 +107,10 @@
       </div>
     </div>
 
-    <FranchiseDetailModal :data="openFCDetailModal" />
+    <FranchiseDetailModal
+      :data="openFCDetailModal"
+      @close="onCloseFCDetailModal"
+    />
   </div>
 </template>
 
@@ -187,6 +188,7 @@ export default {
       ],
 
       openFCDetailModal: {
+        open: false,
         data: {},
       },
     }
@@ -197,7 +199,12 @@ export default {
     },
 
     onOpenFCDetailModal(data) {
+      this.openFCDetailModal.open = true
       this.openFCDetailModal.data = data
+    },
+    onCloseFCDetailModal() {
+      this.openFCDetailModal.open = false
+      this.openFCDetailModal.data = {}
     },
   },
 }

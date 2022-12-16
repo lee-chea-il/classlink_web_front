@@ -127,7 +127,10 @@
                       <label class="custom-control-label" for="chk01"></label>
                     </div>
                   </td>
-                  <td v-if="item.type === 0" @click="onOpenQuestionViewModal">
+                  <td
+                    v-if="item.type === 0"
+                    @click="onOpenQuestionViewModal(item)"
+                  >
                     <div class="study_qustion">
                       {{ item.title }}
                     </div>
@@ -135,7 +138,7 @@
                   <td
                     v-else
                     class="study_qustion"
-                    @click="onOpenReplyViewModal"
+                    @click="onOpenReplyViewModal(item)"
                   >
                     <div class="study_qustion">└─ {{ item.title }}</div>
                   </td>
@@ -203,10 +206,12 @@
 
     <QuestionViewModal
       :open="openQuestionViewModal.open"
+      :data="questionData"
       @close="onCloseQuestionViewModal"
     />
     <ReplyViewModal
       :open="openReplyViewModal.open"
+      :data="questionData"
       @close="onCloseReplyViewModal"
     />
   </div>
@@ -234,6 +239,18 @@ export default {
       },
       openReplyViewModal: {
         open: false,
+      },
+
+      questionData: {
+        id: 0,
+        type: 0,
+        title: '성격심리학 레슨1 관련 질문드립니다.',
+        content: '이 부분 답이 왜 3번인지 모르겠습니다.',
+        writer: '김지원',
+        write_date: '2022.07.10',
+        lesson: '성격심리학',
+        public: 1,
+        view_count: 4,
       },
 
       askingboxList: [
@@ -281,14 +298,16 @@ export default {
     onCloseQueFilterModal() {
       this.openQueFilterModal.open = false
     },
-    onOpenQuestionViewModal() {
+    onOpenQuestionViewModal(data) {
       this.openQuestionViewModal.open = true
+      this.questionData = data
     },
     onCloseQuestionViewModal() {
       this.openQuestionViewModal.open = false
     },
-    onOpenReplyViewModal() {
+    onOpenReplyViewModal(data) {
       this.openReplyViewModal.open = true
+      this.questionData = data
     },
     onCloseReplyViewModal() {
       this.openReplyViewModal.open = false

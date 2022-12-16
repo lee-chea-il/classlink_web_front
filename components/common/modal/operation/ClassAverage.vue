@@ -56,25 +56,13 @@
                         <div class="num">{{ item.id + 1 }}.</div>
                         <div
                           class="grade"
-                          :class="
-                            item.dificultade === 2
-                              ? 'high'
-                              : item.dificultade === 1
-                              ? 'medium'
-                              : item.dificultade === 0
-                              ? 'low'
-                              : ''
-                          "
+                          :class="{
+                            high: item.dificultade === 2,
+                            medium: item.dificultade === 1,
+                            low: item.dificultade === 0,
+                          }"
                         >
-                          {{
-                            item.dificultade === 2
-                              ? '상'
-                              : item.dificultade === 1
-                              ? '중'
-                              : item.dificultade === 0
-                              ? '하'
-                              : ''
-                          }}
+                          {{ setFilterDificultade(item.dificultade) }}
                         </div>
                       </div>
                       <div class="questions">
@@ -116,25 +104,13 @@
                         <div class="num">{{ item.id + 1 }}.</div>
                         <div
                           class="grade"
-                          :class="
-                            item.dificultade === 2
-                              ? 'high'
-                              : item.dificultade === 1
-                              ? 'medium'
-                              : item.dificultade === 0
-                              ? 'low'
-                              : ''
-                          "
+                          :class="{
+                            high: item.dificultade === 2,
+                            medium: item.dificultade === 1,
+                            low: item.dificultade === 0,
+                          }"
                         >
-                          {{
-                            item.dificultade === 2
-                              ? '상'
-                              : item.dificultade === 1
-                              ? '중'
-                              : item.dificultade === 0
-                              ? '하'
-                              : ''
-                          }}
+                          {{ setFilterDificultade(item.dificultade) }}
                         </div>
                       </div>
                       <div class="questions">
@@ -178,61 +154,65 @@
                         <div class="num">{{ item.id + 1 }}.</div>
                         <div
                           class="grade"
-                          :class="
-                            item.dificultade === 2
-                              ? 'high'
-                              : item.dificultade === 1
-                              ? 'medium'
-                              : item.dificultade === 0
-                              ? 'low'
-                              : ''
-                          "
+                          :class="{
+                            high: item.dificultade === 2,
+                            medium: item.dificultade === 1,
+                            low: item.dificultade === 0,
+                          }"
                         >
-                          {{
-                            item.dificultade === 2
-                              ? '상'
-                              : item.dificultade === 1
-                              ? '중'
-                              : item.dificultade === 0
-                              ? '하'
-                              : ''
-                          }}
+                          {{ setFilterDificultade(item.dificultade) }}
                         </div>
                       </div>
                       <div class="questions">
                         <div class="exam_area" v-html="item.problem"></div>
-                        <div class="popquiz_text">
+                        <div
+                          v-if="!item.problem.includes('<img src=')"
+                          class="popquiz_text"
+                        >
                           <!-- 동그란 숫자 : ①②③④ -->
                           <ol>
                             <li
                               v-for="(items, id) in item.exampleList"
                               :key="id"
+                              class="d-flex justify-content-left ql-align-left answer"
                             >
                               <span
+                                class="num"
+                                :class="item.answer === id ? 'blue' : ''"
+                                >{{ number[id] }}</span
+                              >
+                              <span
+                                class="margin"
                                 :class="item.answer === id ? 'blue' : ''"
                                 v-html="items.example"
-                              ></span>
+                              >
+                              </span>
                             </li>
                           </ol>
                         </div>
-                        <!-- <div v-else class="four_choice">
-                        <div class="chioce blue">
-                          <div class="num">①</div>
-                          <div class="img">이미지</div>
+                        <div v-else class="four_choice">
+                          <div
+                            v-for="(items, id) in item.exampleList"
+                            :key="id"
+                            class="chioce"
+                            :class="item.answer === id ? 'blue' : ''"
+                          >
+                            <div class="num">{{ number[id] }}</div>
+                            <div class="img" v-html="items.example"></div>
+                          </div>
+                          <!-- <div class="chioce red">
+                            <div class="num">②</div>
+                            <div class="img">이미지</div>
+                          </div>
+                          <div class="chioce">
+                            <div class="num">③</div>
+                            <div class="img">이미지</div>
+                          </div>
+                          <div class="chioce">
+                            <div class="num">④</div>
+                            <div class="img">이미지</div>
+                          </div> -->
                         </div>
-                        <div class="chioce red">
-                          <div class="num">②</div>
-                          <div class="img">이미지</div>
-                        </div>
-                        <div class="chioce">
-                          <div class="num">③</div>
-                          <div class="img">이미지</div>
-                        </div>
-                        <div class="chioce">
-                          <div class="num">④</div>
-                          <div class="img">이미지</div>
-                        </div>
-                      </div> -->
                       </div>
                       <button
                         v-if="openDetail !== item.id"
@@ -268,37 +248,35 @@
                         <div class="num">{{ item.id + 1 }}.</div>
                         <div
                           class="grade"
-                          :class="
-                            item.dificultade === 2
-                              ? 'high'
-                              : item.dificultade === 1
-                              ? 'medium'
-                              : item.dificultade === 0
-                              ? 'low'
-                              : ''
-                          "
+                          :class="{
+                            high: item.dificultade === 2,
+                            medium: item.dificultade === 1,
+                            low: item.dificultade === 0,
+                          }"
                         >
-                          {{
-                            item.dificultade === 2
-                              ? '상'
-                              : item.dificultade === 1
-                              ? '중'
-                              : item.dificultade === 0
-                              ? '하'
-                              : ''
-                          }}
+                          {{ setFilterDificultade(item.dificultade) }}
                         </div>
                       </div>
                       <div class="questions">
                         <div class="exam_area" v-html="item.problem"></div>
-                        <div class="popquiz_text">
+                        <div
+                          v-if="!item.problem.includes('<img src=')"
+                          class="popquiz_text"
+                        >
                           <!-- 동그란 숫자 : ①②③④ -->
                           <ol>
                             <li
                               v-for="(items, id) in item.exampleList"
                               :key="id"
+                              class="d-flex justify-content-left ql-align-left answer"
                             >
                               <span
+                                class="num"
+                                :class="item.answer === id ? 'blue' : ''"
+                                >{{ number[id] }}</span
+                              >
+                              <span
+                                class="margin"
                                 :class="item.answer === id ? 'blue' : ''"
                                 v-html="items.example"
                               >
@@ -306,24 +284,29 @@
                             </li>
                           </ol>
                         </div>
-                        <!-- <div v-else class="four_choice">
-                        <div class="chioce blue">
-                          <div class="num">①</div>
-                          <div class="img">이미지</div>
+                        <div v-else class="four_choice">
+                          <div
+                            v-for="(items, id) in item.exampleList"
+                            :key="id"
+                            class="chioce"
+                            :class="item.answer === id ? 'blue' : ''"
+                          >
+                            <div class="num">{{ number[id] }}</div>
+                            <div class="img" v-html="items.example"></div>
+                          </div>
+                          <!-- <div class="chioce red">
+                            <div class="num">②</div>
+                            <div class="img">이미지</div>
+                          </div>
+                          <div class="chioce">
+                            <div class="num">③</div>
+                            <div class="img">이미지</div>
+                          </div>
+                          <div class="chioce">
+                            <div class="num">④</div>
+                            <div class="img">이미지</div>
+                          </div> -->
                         </div>
-                        <div class="chioce red">
-                          <div class="num">②</div>
-                          <div class="img">이미지</div>
-                        </div>
-                        <div class="chioce">
-                          <div class="num">③</div>
-                          <div class="img">이미지</div>
-                        </div>
-                        <div class="chioce">
-                          <div class="num">④</div>
-                          <div class="img">이미지</div>
-                        </div>
-                      </div> -->
                       </div>
                       <button
                         v-if="openDetail !== item.id"
@@ -454,8 +437,51 @@ export default {
       type: Number,
       default: null,
     },
+    number: {
+      type: Array,
+      default: () => [],
+    },
+    setFilterDificultade: {
+      type: Function,
+      default: () => {},
+    },
   },
 }
 </script>
 
-<style></style>
+<style scoped>
+.questions {
+  max-width: 260px;
+}
+.exam_area {
+  display: block !important;
+  text-align: left;
+  padding: 10px;
+  word-break: break-all;
+  /* max-width: 258px !important; */
+}
+.exam_area > ::v-deep p img {
+  max-width: 100%;
+}
+.answer {
+  word-break: break-all;
+}
+.margin {
+  margin-left: 5px;
+}
+.img {
+  padding: 10px;
+  max-width: 101px;
+}
+.img > ::v-deep p img {
+  max-width: 100%;
+}
+.ql-align-center {
+  display: flex;
+  align-items: center;
+}
+
+/* .four_choice {
+  max-width: 258px;
+} */
+</style>

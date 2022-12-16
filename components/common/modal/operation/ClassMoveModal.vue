@@ -234,15 +234,15 @@
                       class="list_class_students"
                     >
                       <table class="tb">
-                        <!-- 	<colgroup>
-											<col width="50">
-											<col width="70">
-											<col width="100">
-											<col>
-										</colgroup> -->
                         <tbody>
                           <!-- 반 소속 학생리스트 -->
                           <div class="list_class_students">
+                            <colgroup>
+                              <col width="10%" />
+                              <col width="30%" />
+                              <col width="25%" />
+                              <col width="100%" />
+                            </colgroup>
                             <tr
                               v-for="(items, id) in item.studentList"
                               :key="id"

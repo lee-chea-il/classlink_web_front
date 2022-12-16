@@ -29,8 +29,7 @@
               <button class="btn btn_crud_default">내역 다운로드</button>
               <button
                 class="btn btn_crud_point"
-                data-toggle="modal"
-                data-target="#modalBatchAttendance"
+                @click="onOpenBatchAttendanceModal"
               >
                 일괄출결
               </button>
@@ -163,10 +162,10 @@
                 <div class="calendar">
                   <div class="info_area">
                     <div class="class_name">
-                      {{ selectedClass.class
-                      }}<span class="ss_txt"
-                        >{{ selectedClass.student.length }}명</span
-                      >
+                      {{ selectedClass.class }}
+                      <span class="ss_txt">
+                        {{ selectedClass.student.length }}명
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -253,8 +252,10 @@
     </div>
 
     <BatchAttendanceModal
+      :open="openBatchAttendanceModal.open"
       :selectedClass="selectedClass"
       :date="selectedDateTitle"
+      @close="onCloseBatchAttendanceModal"
     />
   </div>
 </template>
@@ -271,6 +272,10 @@ export default {
   },
   data() {
     return {
+      openBatchAttendanceModal: {
+        open: false,
+      },
+
       subList: [
         {
           class: '영어 심화 A반',
@@ -454,6 +459,13 @@ export default {
     // this.attributes[1].dates = studentArray
   },
   methods: {
+    onOpenBatchAttendanceModal() {
+      this.openBatchAttendanceModal.open = true
+    },
+    onCloseBatchAttendanceModal() {
+      this.openBatchAttendanceModal.open = false
+    },
+
     // 반 목록 열기
     onClickOpenSubList(idx) {
       if (idx !== this.open_subList) {

@@ -223,11 +223,11 @@
       :examQuestion="examQuestion"
       :openDetail="openDetail"
       :number="number"
+      :setFilterDificultade="setFilterDificultade"
       @open-detail="onClickOpenDetail"
       @close-detail="onClickCloseDetail"
       @close="onCloseExamResult"
       @setting-answer="onSettingClassAnswer"
-      @set-filter-dificultade="setFilterDificultade"
     />
     <!-- 반평균 모달 -->
     <ClassAverage
@@ -235,6 +235,8 @@
       :selectedExamInfo="selectedExamInfo"
       :examQuestion="examQuestion"
       :openDetail="openDetail"
+      :number="number"
+      :setFilterDificultade="setFilterDificultade"
       @open-detail="onClickOpenDetail"
       @close-detail="onClickCloseDetail"
       @close="onCloseClassAverage"
@@ -505,7 +507,7 @@ export default {
                 {
                   id: '',
                   example:
-                    '<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAXCAMAAAFVDZ+0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAB1UExURQAAAP4AAP8AAP4AAP4AAP8AAP4AAP4AAP8AAP4AAP4AAP4AAP4AAP8AAP4AAP4AAP8AAP4AAP4AAP4AAP8AAP4AAP8AAP4AAP4AAP4AAP8AAP4AAP4AAP4AAP8AAP4AAP8AAP4AAP4AAP8AAP4AAP8AAP4AAPnU2EQAAAAndFJOUwBoCNccEIskGOcs7zQo96tAVMPLBNNg24d0FOPrl3ifgPtIPLf/vyFRMpMAAAAJcEhZcwAAFxEAABcRAcom8z8AAADHSURBVChTXZBXFoJAEARHFBOIOSEKhvb+R3RCi0h9sF29s8BbCbbQB+zxsGDZxJIvwDQW4BqVMY7tGC3iiI2sY5KHBQMGQ+sloyQ+dQnJXRSTG7Mi8mJyfDZ+s2XwbR3gxKQsf0cUe8GWWWZmSEJGLijCQoDcZE2JFzEqZ5Ero9HdAl42+2U33O8Ye6QVUKWUPyZ2nygm1A4r/4DyZNFy4IZyYEUa1k7D0qlZkpq1smHV8uZGcmTR4ej3WGbUP7JSZH6n9LgvPi1+Kz6lcBoiAAAAAElFTkSuQmCC"></p>',
+                    '<p><img src="http://112.171.101.31:45290/file/071d9a72-703a-4d87-9d36-ea95691354d7.jpg"></p>',
                 },
               ],
               dificultade: 0,
@@ -531,7 +533,11 @@ export default {
               id: 2,
               problem: '<p>2번 문제</p>',
               exampleList: [
-                { id: '', example: '<p>답 5임</p>' },
+                {
+                  id: '',
+                  example:
+                    '<p>답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임</p>',
+                },
                 { id: '', example: '<p>답 6임</p>' },
                 { id: '', example: '<p>답 7임</p>' },
                 { id: '', example: '<p>답 8임</p>' },
@@ -579,7 +585,11 @@ export default {
               id: 0,
               problem: '<p>1번 문제</p>',
               exampleList: [
-                { id: '', example: '<p>답 1임</p>' },
+                {
+                  id: '',
+                  example:
+                    '<p>답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임답 1임</p>',
+                },
                 { id: '', example: '<p>답 2임</p>' },
                 { id: '', example: '<p>답 3임</p>' },
                 { id: '', example: '<p>답 4임</p>' },
@@ -1036,7 +1046,6 @@ export default {
           result = ''
           break
       }
-
       return result
     },
   },

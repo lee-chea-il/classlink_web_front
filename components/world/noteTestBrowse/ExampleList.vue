@@ -38,4 +38,9 @@ export default {
 .edit_area02 {
   padding: 20px !important;
 }
+
+.edit_area02::v-deep p img {
+  object-fit: contain;
+  max-width: 80%;
+}
 </style>

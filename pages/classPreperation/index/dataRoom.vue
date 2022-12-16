@@ -65,6 +65,7 @@
       :modalTitle="modalTitle"
       :reference="referenceData"
       :pushKeyword="pushKeyword"
+      :playTime="youtubePlayTime"
       @change-keyword="changePushKeyword"
       @change-input="onChangeUploadFile"
       @close="onCloseReferenceAddModal"
@@ -130,6 +131,7 @@
     <!-- 비디오 & 문서 & 유튜브 & url 보기 -->
     <BrowseReferenceModal
       :open="isReferenceBrowse"
+      :identity="identity"
       :selectData="referenceData"
       @close="onCloseReferenceBrowseModal"
       @reference-change="onOpenReferenceChangeModal"
@@ -141,6 +143,7 @@
     <!-- 퀴즈 보기 -->
     <BrowseQuizModal
       :open="isQuizBrowse"
+      :identity="identity"
       :selectData="referenceData"
       :currentPageIdx="currentPageIdx"
       @change-number="onClickPagination"
@@ -166,6 +169,7 @@
     <!-- 쪽지시험 보기 -->
     <BrowseNoteTestModal
       :open="isNoteTestBrowse"
+      :identity="identity"
       :selectData="referenceData"
       :currentPageIdx="currentPageIdx"
       @change-number="onClickPagination"
@@ -281,8 +285,8 @@ import SearchResultModal from '~/components/classPreperation/modal/SearchResultM
 import SelectReferenceModal from '~/components/classPreperation/modal/SelectReferenceModal.vue'
 import UploadYoutubeModal from '~/components/classPreperation/modal/UploadYoutubeModal.vue'
 import UploadVideoFileModal from '~/components/classPreperation/modal/UploadVideoFileModal.vue'
-import initialState from '~/data/classPreperation/reference/initialState'
-import { urlRegex, youtubeRegex, setNewArray, jsonItem } from '~/utiles/common'
+import initialState from '~/data/classPreperation/dataRoom/initialState'
+import { urlRegex, setNewArray, jsonItem } from '~/utiles/common'
 import { apiReference } from '~/services'
 export default {
   name: 'ReferenceRoom',
@@ -314,6 +318,9 @@ export default {
   data() {
     return initialState()
   },
+  mounted() {
+    this.identity = localStorage.getItem('identity')
+  },
   methods: {
     // 등록 자료 초기화
     initReference() {
@@ -321,6 +328,10 @@ export default {
       setTimeout(() => {
         this.currentPageIdx = 0
         this.referenceData = init
+        this.urlData = {
+          youtube: '',
+          page: '',
+        }
       }, 300)
     },
 
@@ -845,47 +856,51 @@ export default {
     async getYoutubeData(youtubeUrl) {
       await apiReference
         .getYoutubeData(youtubeUrl)
-        .then(({ data: { items } }) => {
-          this.referenceData = {
-            ...this.referenceData,
-            name: items[0].snippet.title,
-            fileName: items[0].snippet.title,
-            fileDivision: '교육기관',
-            fileType: 'youtube',
-            uploadType: 'youtube',
-            fileVolume: 0,
-            createAt: new Date(),
-            savePath: `https://www.youtube.com/embed/${youtubeUrl}`,
-          }
-          // 유튜브 재생시간 가져오기
-          console.log(
-            items[0].contentDetails.duration
+        .then(
+          ({
+            data: {
+              items: [item],
+            },
+          }) => {
+            this.referenceData = {
+              ...this.referenceData,
+              name: item.snippet.localized.title,
+              fileName: item.snippet.localized.title,
+              desc: item.snippet.localized.description,
+              fileDivision: '교육기관',
+              fileType: 'youtube',
+              uploadType: 'youtube',
+              fileVolume: 0,
+              createAt: new Date(),
+              savePath: `//www.youtube.com/embed/${youtubeUrl}`,
+            }
+            // 유튜브 재생시간 가져오기
+            const playTime = item.contentDetails.duration
               .replace(/H|M/g, ':')
               .replace(/PT|S/g, '')
-          )
-          // .replace(/H|M|S/g, ':')
-          this.youtubePlayTime = items[0].contentDetails.duration
+            this.youtubePlayTime = playTime
 
-          $('#modalDataregi03').modal('hide')
-          this.onOpenReferenceAddModal()
+            $('#modalDataregi03').modal('hide')
+            this.onOpenReferenceAddModal()
+          }
+        )
+        .catch(() => {
+          this.openModalDesc('실패', '유효하지 않은 주소입니다.')
         })
-        .catch(() => this.openModalDesc('실패', '유효하지 않은 주소입니다.'))
     },
 
     // 유튜브 업로드
     onUploadYoutube() {
       const youtubeUrl = this.urlData.youtube.replace('https://youtu.be/', '')
-      if (youtubeRegex.test(this.urlData.youtube) === true) {
-        this.getYoutubeData(youtubeUrl)
-      } else {
-        this.openModalDesc('실패', '유튜브 형식의 URL을 입력해주세요')
-      }
+      this.getYoutubeData(youtubeUrl)
     },
 
     // URL 업로드
     onUploadUrl() {
       const url = this.urlData.page
-      if (urlRegex.test(this.urlData.page) === true) {
+      const isTest = urlRegex.test(this.urlData.page)
+      console.log(isTest)
+      if (isTest) {
         this.referenceData = {
           ...this.referenceData,
           name: url,

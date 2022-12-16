@@ -26,7 +26,7 @@
           style="width: 90%; margin: auto"
           class="qa_cnts"
           :class="{ img_field: isImg }"
-          v-html="addClassImg(noteTest.problem)"
+          v-html="noteTest.problem"
         ></div>
       </div>
     </div>
@@ -59,12 +59,6 @@ export default {
       return this.noteTest.problem.includes('<img')
     },
   },
-  methods: {
-    addClassImg(item) {
-      const setP = item.replace(/<p/g, '<p class="set_note_p"')
-      return setP.replace(/<img/g, '<img class="fix_img"')
-    },
-  },
 }
 </script>
 
@@ -73,5 +67,15 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.qa_cnts::v-deep p {
+  padding: 12px;
+}
+
+.qa_cnts::v-deep p img {
+  width: 225px;
+  height: 135px;
+  margin-right: 15px;
 }
 </style>

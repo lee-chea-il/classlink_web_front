@@ -3,6 +3,7 @@
     <button
       class="btn btn_crud_point"
       :class="{ disabled: invalid }"
+      :disabled="invalid"
       @click="$emit('submit')"
     >
       {{ submitTxt }}

@@ -55,11 +55,7 @@
                   <div class="chat_list_link">
                     <div class="info_area">
                       <div class="thumbnail_wrap">
-                        <div
-                          data-toggle="modal"
-                          data-target="#modalChat"
-                          data-dismiss="modal"
-                        >
+                        <div @click="onOpenChatModal">
                           <i class="icons_user"></i>
                         </div>
                       </div>
@@ -76,16 +72,12 @@
                 </li>
 
                 <li class="">
-                  <a href="" class="chat_list_link">
+                  <a class="chat_list_link">
                     <div class="info_area">
-                      <div
-                        class="thumbnail_wrap"
-                        aria-hidden="true"
-                        data-toggle="modal"
-                        data-target="#modalChat"
-                        data-dismiss="modal"
-                      >
-                        <i class="icons_user"></i>
+                      <div class="thumbnail_wrap">
+                        <div @click="onOpenChatModal">
+                          <i class="icons_user"></i>
+                        </div>
                       </div>
                       <div class="text_wrap">
                         <div class="name_area">
@@ -97,10 +89,12 @@
                 </li>
 
                 <li class="">
-                  <a href="" class="chat_list_link">
+                  <a class="chat_list_link">
                     <div class="info_area">
                       <div class="thumbnail_wrap" aria-hidden="true">
-                        <i class="icons_user"></i>
+                        <div @click="onOpenChatModal">
+                          <i class="icons_user"></i>
+                        </div>
                       </div>
                       <div class="text_wrap">
                         <div class="name_area">
@@ -112,10 +106,12 @@
                 </li>
 
                 <li class="">
-                  <a href="" class="chat_list_link">
+                  <a class="chat_list_link">
                     <div class="info_area">
                       <div class="thumbnail_wrap" aria-hidden="true">
-                        <i class="icons_user"></i>
+                        <div @click="onOpenChatModal">
+                          <i class="icons_user"></i>
+                        </div>
                       </div>
                       <div class="text_wrap">
                         <div class="name_area">
@@ -127,10 +123,12 @@
                 </li>
 
                 <li class="">
-                  <a href="" class="chat_list_link">
+                  <a class="chat_list_link">
                     <div class="info_area">
                       <div class="thumbnail_wrap" aria-hidden="true">
-                        <i class="icons_user"></i>
+                        <div @click="onOpenChatModal">
+                          <i class="icons_user"></i>
+                        </div>
                       </div>
                       <div class="text_wrap">
                         <div class="name_area">
@@ -142,10 +140,12 @@
                 </li>
 
                 <li class="">
-                  <a href="" class="chat_list_link">
+                  <a class="chat_list_link">
                     <div class="info_area">
                       <div class="thumbnail_wrap" aria-hidden="true">
-                        <i class="icons_user"></i>
+                        <div @click="onOpenChatModal">
+                          <i class="icons_user"></i>
+                        </div>
                       </div>
                       <div class="text_wrap">
                         <div class="name_area">
@@ -157,10 +157,12 @@
                 </li>
 
                 <li class="">
-                  <a href="" class="chat_list_link">
+                  <a class="chat_list_link">
                     <div class="info_area">
                       <div class="thumbnail_wrap" aria-hidden="true">
-                        <i class="icons_user"></i>
+                        <div @click="onOpenChatModal">
+                          <i class="icons_user"></i>
+                        </div>
                       </div>
                       <div class="text_wrap">
                         <div class="name_area">
@@ -172,10 +174,12 @@
                 </li>
 
                 <li class="">
-                  <a href="" class="chat_list_link">
+                  <a class="chat_list_link">
                     <div class="info_area">
                       <div class="thumbnail_wrap" aria-hidden="true">
-                        <i class="icons_user"></i>
+                        <div @click="onOpenChatModal">
+                          <i class="icons_user"></i>
+                        </div>
                       </div>
                       <div class="text_wrap">
                         <div class="name_area">
@@ -266,22 +270,25 @@
                   </div>
                   <div class="chat_header_menu">
                     <div class="chat_menu_wrap">
-                      <i class="icons_mobilemu"></i>
-                      <div class="ly_setting_wrap">
+                      <i
+                        class="icons_mobilemu cursor"
+                        @click="onClickOpenSetting"
+                      ></i>
+                      <div v-if="openSetting" class="ly_setting_wrap">
                         <div class="title_section">
                           <h5 class="title_text">설정</h5>
-                          <div class="btn_setting_close">
+                          <div
+                            class="btn_setting_close"
+                            @click="onClickOpenSetting"
+                          >
                             <i class="icons_close"></i>
                           </div>
                         </div>
                         <ul class="lst_setting_menu">
                           <li>
                             <a
-                              href=""
                               class="btn_setting_item"
-                              data-toggle="modal"
-                              data-target="#modalChatDelete"
-                              data-dismiss="modal"
+                              @click="onOpenChatDeleteModal"
                             >
                               <div class="setting_item_wrap">
                                 <strong class="btn_text">채팅방 나가기</strong>
@@ -330,12 +337,7 @@
                   </li>
                   <li class="new_message_balloon_area _my">
                     <div class="message_balloon card_message rgt space">
-                      <div
-                        class="message_image"
-                        data-toggle="modal"
-                        data-target="#modalImg"
-                        data-dismiss="modal"
-                      >
+                      <div class="message_image" @click="onOpenImgModal">
                         <i class="icons_thumbnail"></i>
                       </div>
                       <div class="txt_confirm _status">
@@ -449,21 +451,31 @@
                         >
                           <i class="icons_thumbnail"></i>
                         </label>
-                        <form
+                        <input
+                          id="imageUploader"
+                          name="files[]"
+                          type="file"
+                          accept="image/*"
+                          multiple=""
+                          title="파일선택"
+                          style="display: none"
+                        />
+                        <!-- <form
                           id="imageUploader"
                           class="imageUploader"
                           method="post"
                           enctype="multipart/form-data"
                         >
                           <input
+                            id="imageUploader"
                             name="files[]"
                             type="file"
                             accept="image/*"
                             multiple=""
                             title="파일선택"
-                            style="visibility: hidden"
+                            style="display: none"
                           />
-                        </form>
+                        </form> -->
                         <div
                           class="btn_sticker_open"
                           type="button"
@@ -495,9 +507,12 @@
       </div>
     </div>
 
-    <ChatModal />
-    <ImgModal />
-    <ChatDeleteModal />
+    <ChatModal :open="openChatModal.open" @close="onCloseChatModal" />
+    <ImgModal :open="openImgModal.open" @close="onCloseImgModal" />
+    <ChatDeleteModal
+      :open="openChatDeleteModal.open"
+      @close="onCloseChatDeleteModal"
+    />
   </div>
 </template>
 
@@ -515,9 +530,57 @@ export default {
     ChatDeleteModal,
   },
   data() {
-    return {}
+    return {
+      openChatModal: {
+        open: false,
+      },
+      openImgModal: {
+        open: false,
+      },
+      openChatDeleteModal: {
+        open: false,
+      },
+
+      openSetting: false,
+    }
+  },
+  methods: {
+    // 모달
+    onOpenChatModal() {
+      this.openChatModal.open = true
+    },
+    onCloseChatModal() {
+      this.openChatModal.open = false
+    },
+
+    onOpenImgModal() {
+      this.openImgModal.open = true
+    },
+    onCloseImgModal() {
+      this.openImgModal.open = false
+    },
+
+    onOpenChatDeleteModal() {
+      this.openChatDeleteModal.open = true
+    },
+    onCloseChatDeleteModal() {
+      this.openChatDeleteModal.open = false
+    },
+
+    // 설정 열기/닫기
+    onClickOpenSetting() {
+      if (this.openSetting) {
+        this.openSetting = false
+      } else {
+        this.openSetting = true
+      }
+    },
   },
 }
 </script>
 
-<style></style>
+<style scoped>
+.cursor {
+  cursor: pointer;
+}
+</style>
