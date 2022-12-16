@@ -62,7 +62,7 @@ export default {
         nObj.isChecked=false
         if(nObj.isLink===undefined){
           nObj.isLink=false
-          nObj.dbIdx=-1
+          nObj.dbIdx=''
           nObj.id="list_"+this.pid
         }
         console.log(`setDataList   ${nObj.id}`)
@@ -100,7 +100,7 @@ export default {
       for(let i=0;i<this.datas.children.length;i++){
         if(listIdx===this.datas.children[i].id){
           this.datas.children[i].isLink=false
-          this.datas.children[i].dbIdx=-1
+          this.datas.children[i].dbIdx=''
           break
         }
       }
@@ -120,7 +120,7 @@ export default {
       if(this.datas.children){
         for(let i=0;i<this.datas.children.length;i++){
           this.datas.children[i].isLink=false
-          this.datas.children[i].dbIdx=-1
+          this.datas.children[i].dbIdx=''
         }
       }
       this.$emit('update-link-cnt', 0)

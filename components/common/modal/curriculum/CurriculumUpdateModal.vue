@@ -1,7 +1,5 @@
 <template>
   <Transition name="modal">
-    <!-- 모달 팝업 ------------------------------------->
-    <!-- 커리큘럼등록/수정 (팝업 L) -->
     <div
       v-show="open"
       id="modalCuriRegi"
@@ -15,7 +13,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 id="exampleModalLabel" class="modal-title">
-              {{ txtInfo.modatTitle }}
+              {{txtInfo.modatTitle}}
             </h5>
             <button
               type="button"
@@ -28,8 +26,6 @@
           </div>
           <div class="modal-body">
             <div class="modal_curiregi">
-              <!-- 모달 내용 구분 class-->
-              <!-- 2단 분류 컨텐츠 -->
               <div class="divide_section">
                 <!-- 왼쪽 영역 -->
                 <div class="divide_area left">
@@ -53,9 +49,41 @@
                       ></textarea>
                     </div>
                   </div>
-
-                  <div class="title">
-                    {{ txtInfo.ioTitle }}
+                  <ul
+                    v-show="!isCurriculum"
+                    id="myTab"
+                    class="nav nav-tabs"
+                    role="tablist"
+                  >
+                    <li class="nav-item" role="presentation">
+                      <button id="grade-tab" class="nav-link active" data-toggle="tab" data-target="#institute" type="button" role="tab" aria-controls="home" aria-selected="true">
+                        건물 내부
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button id="class-tab" class="nav-link" data-toggle="tab" data-target="#franchise" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                        건물 외부
+                      </button>
+                    </li>
+                  </ul>
+                    
+                  <div
+                    v-show="isCurriculum"
+                    class="title"
+                  >
+                    {{txtInfo.ioTitle}}
+                  </div>
+                  <div class="cw_box">
+                    <img id="cwBoxBackImg" />
+                    <CustomImgListView
+                      ref="imgListView"
+                      :expanded="false"
+                      :pidNum="0"
+                      @link-data="linkData"
+                      @unlink-data-to-img="unLinkDataToImg"
+                      @unlink-data-to-list="unLinkDataToList"
+                      @img-resize="imgResize"
+                    />
                     <div class="dropdown form-inline">
                       <button
                         class="btn dropdown-toggle"
@@ -79,18 +107,6 @@
                       </div>
                     </div>
                   </div>
-                  <div class="cw_box">
-                    <img id="cwBoxBackImg" />
-                    <CustomImgListView
-                      ref="imgListView"
-                      :expanded="false"
-                      :pidNum="0"
-                      @link-data="linkData"
-                      @unlink-data-to-img="unLinkDataToImg"
-                      @unlink-data-to-list="unLinkDataToList"
-                      @img-resize="imgResize"
-                    />
-                  </div>
                   <div class="item_list_wrap">
                     <div class="item_list">
                       <CustomCurriculumSwiper
@@ -105,7 +121,7 @@
                 <!-- /.왼쪽 영역 -->
                 <!-- 오른쪽 영역 -->
                 <div class="divide_area right">
-                  <div class="title">{{ txtInfo.rightTitle }}</div>
+                  <div class="title">{{txtInfo.rightTitle}}</div>
                   <div class="form-group">
                     <label for="">불러오기</label>
                     <div class="col">
@@ -149,15 +165,15 @@
                   </div>
                   <div class="form-group">
                     <label for="" style="place-self: flex-start"
-                      >{{ txtInfo.listTitle }}
-                    </label>
+                      >{{txtInfo.listTitle}}
+                      </label>
                     <div class="col">
                       <div class="list_box">
                         <div
                           v-if="curriculumData.lessonInfo.lesson.title === ''"
                           class="nothing_txt"
                         >
-                          {{ txtInfo.listEmptyTxt }}
+                        {{txtInfo.listEmptyTxt}}
                         </div>
                         <div v-else class="section">
                           <!-- 커리큘럼 등록 시 출력됨 -->
@@ -217,7 +233,7 @@
                     <span class="custom-control custom-checkbox form-inline">
                       <input
                         id="checkbox60"
-                        :checked="curriculumData.publicOpenYn"
+                        :checked="curriculumData.isOpenEducation"
                         type="checkbox"
                         class="custom-control-input"
                       />
@@ -289,12 +305,15 @@ export default {
     },
     txtInfo: {
       type: Object,
-      default: () => {},
+      default: ()=>{},
     },
-    dropMenuData: {
-      type: Array,
-      default: () => [],
+    dropMenuData:{
+      type:Array,
+      default:()=>[]
     },
+    isCurriculum:{
+      type:Boolean
+    }
   },
   data() {
     return {
@@ -305,7 +324,7 @@ export default {
       linkDataCnt: 0,
       currentClassName: '교실선택',
       saveFileFullPath: '',
-      currentDropMenuData: { data: [] },
+      currentDropMenuData:{data:[]},
       curriculumData: {
         subTitle: '',
         desc: '',
@@ -315,7 +334,7 @@ export default {
           fileName: '',
         },
         cwInfo: null,
-        publicOpenYn: true,
+        isOpenEducation: true,
         isContinuedRegist: true,
         lessonInfo: {
           lesson: {
@@ -360,27 +379,16 @@ export default {
         this.$refs.listView.unLinkAllItem()
         this.curriculumData = curriculumData
         for (let i = 0; i < this.dropMenuListData.length; i++) {
-          if (
-            this.curriculumData.cwInfo.codeNum ===
-            this.dropMenuListData[i].codeNum
-          ) {
-            this.currentDropMenuData = $.extend(
-              true,
-              {},
-              this.dropMenuListData[i]
-            )
+          if (this.curriculumData.cwInfo.codeNum === this.dropMenuListData[i].codeNum) {
+            this.currentDropMenuData = $.extend(true, {}, this.dropMenuListData[i])
             break
           }
         }
         this.currentClassName = this.currentDropMenuData.name
-        const linkData = this.curriculumData.cwInfo.data
-        for (let i = 0; i < linkData.length; i++) {
-          this.currentDropMenuData.data.interactionObjects[
-            parseInt(linkData[i].codeNum) - 1
-          ].isLink = true
-          this.currentDropMenuData.data.interactionObjects[
-            parseInt(linkData[i].codeNum) - 1
-          ].dbIdx = linkData[i].dbIdx
+        const linkData=this.curriculumData.cwInfo.data
+        for (let i=0;i<linkData.length;i++) {
+          this.currentDropMenuData.data.interactionObjects[parseInt(linkData[i].codeNum)-1].isLink=true
+          this.currentDropMenuData.data.interactionObjects[parseInt(linkData[i].codeNum)-1].dbIdx=linkData[i].dbIdx
         }
         this.$refs.imgListView.setData(this.currentDropMenuData.data)
         this.$refs.imgListViewSwiper.setData(
@@ -390,8 +398,7 @@ export default {
           this.curriculumData.savePathInfo.path +
           ' > ' +
           this.curriculumData.savePathInfo.fileName +
-          '.' +
-          this.txtInfo.fileSet
+          '.'+this.txtInfo.fileSet
         this.curriculumData.lessonInfo.pathTxt =
           this.curriculumData.lessonInfo.path +
           ' > ' +
@@ -410,7 +417,7 @@ export default {
             fileName: '',
           },
           cwInfo: null,
-          publicOpenYn: true,
+          isOpenEducation: true,
           isContinuedRegist: true,
           lessonInfo: {
             lesson: {
@@ -423,7 +430,7 @@ export default {
             pathTxt: '',
           },
         }
-        this.currentDropMenuData = null
+        this.currentDropMenuData=null
         this.saveFileFullPath = ''
         this.currentClassName = '교실선택'
 
@@ -459,8 +466,7 @@ export default {
         this.curriculumData.savePathInfo.path +
         ' > ' +
         this.curriculumData.savePathInfo.fileName +
-        '.' +
-        this.txtInfo.fileSet
+        '.'+this.txtInfo.fileSet
     },
     setFileInfo(lessonInfo) {
       this.unLinkAllItem()
@@ -526,14 +532,14 @@ export default {
         newData.name = newData.savePathInfo.fileName + '.link'
         newData.active = true
         console.log(newData)
-        if (!this.isUpdate) {
+        if(!this.isUpdate){
           this.$emit('add-curiiculum-data', newData)
-        } else {
+        }else{
           this.$emit('update-curiiculum-data', newData)
         }
         $('#modalCuriRegi').modal('hide')
       }
-    },
+    }
   },
 }
 </script>

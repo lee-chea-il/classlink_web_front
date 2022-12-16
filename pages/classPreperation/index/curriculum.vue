@@ -38,6 +38,7 @@
     </div>
     <CurriculumUpdateModal
       ref="curriculumUpdateModal"
+      :isCurriculum="true"
       :txtInfo="{
         'fileSet':'link',
         'modatTitle':'커리큘럼 등록 / 수정',
