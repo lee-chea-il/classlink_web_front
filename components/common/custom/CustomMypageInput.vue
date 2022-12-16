@@ -30,18 +30,18 @@
         <button
           v-if="isBtn"
           class="btn btn_crud_point auth_btn_width"
-          :class="classes['is-valid'] || !isEmailCheck ? '' : 'disabled'"
+          :class="classes['is-valid'] && !isEmailCheck ? '' : 'disabled'"
           @click="$emit('check-email', $event)"
         >
           중복확인
         </button>
-        <button
+        <!-- <button
           v-if="isIdCheckBtn"
           class="btn btn_crud_point"
           :class="classes['is-valid'] ? '' : 'disabled'"
         >
           중복체크
-        </button>
+        </button> -->
         <div
           v-if="isCheckBox"
           class="custom-control custom-checkbox"

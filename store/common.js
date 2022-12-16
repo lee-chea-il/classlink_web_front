@@ -2,6 +2,9 @@ import _ from 'lodash'
 
 const initState = {
   user: {},
+  isLogin: false,
+  loginIdentity: '',
+  userEmail: '',
   activeNavIdx: 0,
 }
 export const state = () => {
@@ -12,6 +15,23 @@ export const mutations = {
   setUser(state, user) {
     state.user = user
   },
+  // 로그인
+  setUserLogin(state) {
+    state.isLogin = true
+  },
+  // 로그인 신분 타입
+  setUserIdentity(state, type) {
+    state.loginIdentity = type
+  },
+  // 로그아웃
+  setUserLogout(state) {
+    state.isLogin = false
+  },
+  // 비밀번호 재설정
+  setUserEmail(state, email) {
+    state.userEmail = email
+  },
+
   setActiveNavIdx(state, payload) {
     state.activeNavIdx = payload
   },

@@ -20,10 +20,16 @@
           </button>
         </div>
         <div class="modal-body">
-          <span>ㅇㅇㅇ</span> 신분으로 전환 하시겠습니까?
+          <span>프랜차이즈장 신분으로 전환 하시겠습니까?</span>
         </div>
         <div class="modal-footer">
-          <button class="btn btn_crud_point" data-dismiss="modal">전환</button>
+          <button
+            class="btn btn_crud_point"
+            data-dismiss="modal"
+            @click="$emit('click-change')"
+          >
+            전환
+          </button>
           <button class="btn btn_crud_default" data-dismiss="modal">
             취소
           </button>

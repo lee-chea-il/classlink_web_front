@@ -159,8 +159,8 @@ export default {
         .postLogin(payload)
         .then(({ data: { data } }) => {
           localStorage.setItem('token', data.refresh_token)
-          // this.$store.commit('userInfo/setUser', this.userInfo)
-          // this.$store.commit('userInfo/setUserLogin')
+          // this.$store.commit('common/setUser', this.userInfo)
+          // this.$store.commit('common/setUserLogin')
           this.goIdentitySelectPage()
           // console.log(this.$store.state.userInfo.userInfo)
         })

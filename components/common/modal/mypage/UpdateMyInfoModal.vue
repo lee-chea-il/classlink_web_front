@@ -120,8 +120,8 @@
             <div class="modal-footer">
               <button
                 class="btn btn_crud_point_center"
-                :class="{ disabled: invalid }"
-                :disabled="invalid"
+                :class="{ disabled: invalid || !isEmailCheck }"
+                :disabled="invalid || !isEmailCheck"
                 @click="$emit('click-update')"
               >
                 저장하기

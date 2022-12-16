@@ -205,14 +205,14 @@ export default {
     goMainPageAfter() {
       this.$router.push('/')
       localStorage.setItem('identity', 'institution')
-      this.$store.commit('userInfo/setUserIdentity', 'I')
+      this.$store.commit('common/setUserIdentity', 'I')
     },
 
     // 개설 전 메인 페이지로 이동
     goMainPage() {
       this.$router.push('/')
       localStorage.setItem('identity', 'temporary institution')
-      this.$store.commit('userInfo/setUserIdentity', 'I')
+      this.$store.commit('common/setUserIdentity', 'I')
     },
   },
 }

@@ -13,7 +13,9 @@
       <label
         for="name"
         :style="
-          name === '인증번호' || name === '교육기관 상세 주소'
+          name === '인증번호' ||
+          name === '교육기관 상세 주소' ||
+          name === '프랜차이즈 상세 주소'
             ? {
                 display: 'none',
               }

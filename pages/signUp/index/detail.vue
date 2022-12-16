@@ -308,7 +308,7 @@ export default {
         .getUserInfo()
         .then(({ data: { data } }) => {
           console.log(data)
-          this.$store.commit('userInfo/setUserLogin')
+          this.$store.commit('common/setUserLogin')
           this.$store.commit('common/setUser', data)
         })
         .catch((err) => {

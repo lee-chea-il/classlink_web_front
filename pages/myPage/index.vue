@@ -19,6 +19,7 @@
       @alarmBtn-click="changeAlarmState"
       @click-openIns="openInstitutionModal"
       @click-updateIns="openUpdateInstitutionModal"
+      @click-openFran="openFranchiseModal"
     />
     <!-- /.오른쪽 영역 -->
     <!-- 하단 버튼 영역 -->
@@ -91,7 +92,7 @@
       :institutionInfo="newInstitutionInfo"
       @change-input="onChangeEduInfoInput"
       @click-address="openModalAddress"
-      @open-institution="OpenInstitution"
+      @open-institution="openInstitution"
       @close="onCloseInstitutionModal"
     />
 
@@ -102,8 +103,18 @@
       :institutionInfo="newInstitutionInfo"
       @change-input="onChangeEduInfoInput"
       @click-address="openModalAddress"
-      @click-update="UpdateInstitution"
+      @click-update="updateInstitution"
       @close="onCloseUpdateInstitution"
+    />
+
+    <!-- 프랜차이즈 개설 -->
+    <OpenFranchiseModal
+      :open="isOpenFranchise"
+      :franchiseInfo="franchiseInfo"
+      @change-input="onChangeFranchiseInput"
+      @click-address="openModalAddress"
+      @open-institution="openFranchise"
+      @close="onCloseFranchiseModal"
     />
 
     <!-- 팝업 M2-교육기관정보수정2 - 로고업로드1 -->
@@ -127,7 +138,7 @@
     <LogoutModal @logoutBtn-click="goLoginPage" />
 
     <!-- 팝업 S1-신분전환 -->
-    <ChangeIdentityModal />
+    <ChangeIdentityModal @click-change="changeIdentity" />
 
     <!-- 설명 모달 -->
     <ModalDesc
@@ -143,280 +154,6 @@
       @openMap="addressSearched"
       @close="onCloseModalAddress"
     />
-
-    <!-- 팝업 M2- 내정보 수정 - CW 이미지 등록2-->
-    <!-- <div
-      id="modalMyinfo05"
-      class="modal fade modal_myinfo05"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 id="exampleModalLabel" class="modal-title">CW 이미지 등록</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <i class="icons_close"></i>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="explainType01">
-              파일 업로드 후, 이미지를 자르고 '확인’을 클릭하세요. <br />
-              업로드 가능한 이미지 파일 형식 : <span>png, jpg, jpeg</span>
-              <br />
-              자르기 영역은 가로형으로 설정됩니다.
-            </div>
-            <div class="btn_section">
-              <button class="btn btn_crud_default btn_sec">이미지 교체</button>
-              <button class="btn btn_crud_default btn_sec" data-dismiss="modal">
-                자르기
-              </button>
-            </div>
-            <div class="thumbnail">
-              <div class="outer0">
-                <div class="sample_uplodeimg"></div>
-              </div>
-              <div class="outer1">
-                <div class="box_set">
-                  <button type="button" class="btn box1"></button>
-                  <button type="button" class="btn box2"></button>
-                  <button type="button" class="btn box3"></button>
-                  <button type="button" class="btn box4"></button>
-                  <button type="button" class="btn box5"></button>
-                </div>
-              </div>
-            </div>
-            <div class="edit_result">
-              <div class="edit_title">편집 결과보기</div>
-              <div class="outer2">
-                <i class="icons_thumbnail"></i>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn_crud_point">저장</button>
-            <button class="btn btn_crud_default" data-dismiss="modal">
-              취소
-            </button>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
-    <!-- 팝업 M2- 내정보 수정 - 프로필 이미지 등록2-->
-    <!-- <div
-      id="modalMyinfo03"
-      class="modal fade modal_myinfo03"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 id="exampleModalLabel" class="modal-title">
-              프로필 이미지 등록
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <i class="icons_close"></i>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="explainType01">
-              파일 업로드 후, 이미지를 자르고 '확인’을 클릭하세요. <br />
-              업로드 가능한 이미지 파일 형식 : <span>png, jpg, jpeg</span>
-              <br />
-              자르기 영역은 정방형으로 설정됩니다.
-            </div>
-            <div class="btn_section">
-              <button class="btn btn_crud_default btn_sec">이미지 교체</button>
-              <button class="btn btn_crud_default btn_sec" data-dismiss="modal">
-                자르기
-              </button>
-            </div>
-            <div class="thumbnail">
-              <div class="profile_photo">
-                <span
-                  style="
-                    background-image: url(../images/sample_profile_photo.jpg);
-                  "
-                ></span>
-              </div>
-              <div class="outer1">
-                <div class="box_set">
-                  <button type="button" class="btn box1"></button>
-                  <button type="button" class="btn box2"></button>
-                  <button type="button" class="btn box3"></button>
-                  <button type="button" class="btn box4"></button>
-                  <button type="button" class="btn box5"></button>
-                </div>
-              </div>
-            </div>
-            <div class="edit_result">
-              <div class="edit_title">편집 결과보기</div>
-              <div class="outer2">
-                <div class="profile_photo">
-                  <span
-                    style="
-                      background-image: url(../images/sample_profile_photo.jpg);
-                    "
-                  ></span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn_crud_point">저장</button>
-            <button class="btn btn_crud_default" data-dismiss="modal">
-              취소
-            </button>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
-    <!-- 팝업 M2-교육기관정보수정5 - 교육기관이미지등록2-->
-    <!-- <div
-      id="modalInstinfo05"
-      class="modal fade modal_Instinfo05"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 id="exampleModalLabel" class="modal-title">
-              교육기관 이미지 등록
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <i class="icons_close"></i>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="explainType01">
-              파일 업로드 후, 이미지를 자르고 '확인’을 클릭하세요. <br />
-              업로드 가능한 이미지 파일 형식 : <span>png, jpg, jpeg</span>
-              <br />
-              자르기 영역은 가로형으로 설정됩니다.
-            </div>
-            <div class="btn_section">
-              <button class="btn btn_crud_default btn_sec">이미지 교체</button>
-              <button class="btn btn_crud_default btn_sec" data-dismiss="modal">
-                자르기
-              </button>
-            </div>
-            <div class="thumbnail">
-              <div class="outer0">
-                <div class="sample_uplodeimg"></div>
-              </div>
-              <div class="outer1">
-                <div class="box_set">
-                  <button type="button" class="btn box1"></button>
-                  <button type="button" class="btn box2"></button>
-                  <button type="button" class="btn box3"></button>
-                  <button type="button" class="btn box4"></button>
-                  <button type="button" class="btn box5"></button>
-                </div>
-              </div>
-            </div>
-            <div class="edit_result">
-              <div class="edit_title">편집 결과보기</div>
-              <div class="outer2">
-                <i class="icons_thumbnail"></i>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn_crud_point">저장</button>
-            <button class="btn btn_crud_default" data-dismiss="modal">
-              취소
-            </button>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
-    <!-- 팝업 M2-교육기관정보수정3 - 로고업로드2-->
-    <!-- <div
-      id="modalInstinfo03"
-      class="modal fade modal_Instinfo03"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 id="exampleModalLabel" class="modal-title">
-              교육기관 로고 업로드
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <i class="icons_close"></i>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="explainType01">
-              파일 업로드 후, 이미지를 자르고 '확인’을 클릭하세요. <br />
-              업로드 가능한 이미지 파일 형식 : <span>png, jpg, jpeg</span>
-              <br />
-              자르기 영역은 정방형으로 설정됩니다.
-            </div>
-            <div class="btn_section">
-              <button class="btn btn_crud_default btn_sec">이미지 교체</button>
-              <button class="btn btn_crud_default btn_sec" data-dismiss="modal">
-                자르기
-              </button>
-            </div>
-            <div class="thumbnail">
-              <div class="sample_uplodeimg"></div>
-              <div class="outer1">
-                <div class="box_set">
-                  <button type="button" class="btn box1"></button>
-                  <button type="button" class="btn box2"></button>
-                  <button type="button" class="btn box3"></button>
-                  <button type="button" class="btn box4"></button>
-                  <button type="button" class="btn box5"></button>
-                </div>
-              </div>
-            </div>
-            <div class="edit_result">
-              <div class="edit_title">편집 결과보기</div>
-              <div class="outer2">
-                <i class="icons_thumbnail"></i>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn_crud_point">저장</button>
-            <button class="btn btn_crud_default" data-dismiss="modal">
-              취소
-            </button>
-          </div>
-        </div>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -432,6 +169,7 @@ import LogoutModal from '@/components/common/modal/mypage/LogoutModal.vue'
 import ChangeIdentityModal from '@/components/common/modal/mypage/ChangeIdentityModal.vue'
 import UpdateInstitutionModal from '@/components/common/modal/mypage/UpdateInstitutionModal.vue'
 import OpenInstitutionModal from '@/components/common/modal/mypage/OpenInstitutionModal.vue'
+import OpenFranchiseModal from '@/components/common/modal/mypage/OpenFranchiseModal.vue'
 import EduLogoImageModal from '@/components/common/modal/mypage/EduLogoImageModal.vue'
 import EduCWImageModal from '@/components/common/modal/mypage/EduCWImageModal.vue'
 import MapSearchModal from '@/components/common/modal/mypage/MapSearchModal.vue'
@@ -450,6 +188,7 @@ export default {
     ChangeIdentityModal,
     UpdateInstitutionModal,
     OpenInstitutionModal,
+    OpenFranchiseModal,
     EduLogoImageModal,
     EduCWImageModal,
     MapSearchModal,
@@ -517,6 +256,11 @@ export default {
       },
       isInstitutionFlag: false,
       insZoneCode: '',
+      // 교육기관 개설 모달
+      isOpenInstitutionInfo: false,
+      // 교육기관 정보 수정 모달
+      isUpdateInstitution: false,
+      //
       modalDesc: {
         open: false,
         title: '',
@@ -578,15 +322,32 @@ export default {
       isError: false,
       nickNameCheck: false,
       uploadImageFile: '',
-      // 교육기관 개설
-      isOpenInstitutionInfo: false,
-      // 교육기관 정보 수정
-      isUpdateInstitution: false,
+      // 프랜차이즈 개설
+      isOpenFranchise: false,
+      franchiseInfo: {
+        fra_address: '',
+        fra_address2: '',
+        fra_name: '',
+        fra_phone: '',
+        fra_zoncode: '',
+      },
+      initFranchiseInfo: {
+        fra_address: '',
+        fra_address2: '',
+        fra_name: '',
+        fra_phone: '',
+        fra_zoncode: '',
+      },
     }
   },
   mounted() {
     this.userIdx = this.$store.state.common.user.mem_idx
     this.getUserInfo()
+    if (this.newUserInfo.mem_name === this.newUserInfo.mem_nickname) {
+      this.nickNameCheck = true
+    } else {
+      this.nickNameCheck = false
+    }
   },
   methods: {
     // 깊은 복사
@@ -631,25 +392,10 @@ export default {
       this.newPassword = this.deepCopy(this.initNewPassword)
       this.isUpdatePw = false
     },
-    openInstitutionModal() {
-      this.isOpenInstitutionInfo = true
-    },
-    onCloseInstitutionModal() {
-      this.isOpenInstitutionInfo = false
-      this.newInstitutionInfo = this.deepCopy(this.initInstitutionInfo)
-    },
-    openUpdateInstitutionModal() {
-      Object.assign(this.newInstitutionInfo, deepCopy(this.institutionInfo))
-      this.isUpdateInstitution = true
-    },
-    onCloseUpdateInstitution() {
-      this.isUpdateInstitution = false
-    },
 
     // 로그아웃
     goLoginPage() {
       this.$store.commit('common/initState')
-      this.$store.commit('userInfo/initState')
       window.localStorage.clear()
       this.$router.push('/login')
     },
@@ -767,7 +513,7 @@ export default {
           .replace(/ /g, '')
           .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
       }
-      if (id === 'mem_email' || value === this.userInfo.mem_email) {
+      if (this.newUserInfo.mem_email === this.userInfo.mem_email) {
         this.isEmailCheck = true
       } else {
         this.isEmailCheck = false
@@ -816,6 +562,20 @@ export default {
     },
 
     // 교육기관 정보
+    openInstitutionModal() {
+      this.isOpenInstitutionInfo = true
+    },
+    onCloseInstitutionModal() {
+      this.isOpenInstitutionInfo = false
+      this.newInstitutionInfo = this.deepCopy(this.initInstitutionInfo)
+    },
+    openUpdateInstitutionModal() {
+      Object.assign(this.newInstitutionInfo, deepCopy(this.institutionInfo))
+      this.isUpdateInstitution = true
+    },
+    onCloseUpdateInstitution() {
+      this.isUpdateInstitution = false
+    },
     // 교육기관 정보 수정
     onChangeEduInfoInput({ target: { value, id } }) {
       this.newInstitutionInfo[id] = value
@@ -829,7 +589,7 @@ export default {
       }
     },
     // 교육기관 개설 api
-    async OpenInstitution() {
+    async openInstitution() {
       const payload = this.newInstitutionInfo
       console.log(payload)
       await apiMypage
@@ -844,7 +604,7 @@ export default {
         })
     },
     // 교육기관 정보 수정 api
-    async UpdateInstitution() {
+    async updateInstitution() {
       const payload = this.newInstitutionInfo
       await apiMypage
         .putUpdateInstitution(payload)
@@ -862,6 +622,46 @@ export default {
         })
     },
 
+    // 프랜차이즈
+    openFranchiseModal() {
+      this.isOpenFranchise = true
+    },
+    onCloseFranchiseModal() {
+      this.isOpenFranchise = false
+      this.franchiseInfo = this.deepCopy(this.initFranchiseInfo)
+    },
+    // 프랜차이즈 정보 수정
+    onChangeFranchiseInput({ target: { value, id } }) {
+      this.franchiseInfo[id] = value
+      if (id === 'fra_phone') {
+        this.franchiseInfo[id] = value
+          .replace(/[^0-9]/g, '')
+          .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
+          .replace(/(-{1,2})$/g, '')
+          .replace(/ /g, '')
+          .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
+      }
+    },
+    // 프랜차이즈 개설 api
+    async openFranchise() {
+      const payload = this.franchiseInfo
+      console.log(payload)
+      await apiMypage
+        .postOpenFranchise(payload)
+        .then(() => {
+          this.openModalDesc('프랜차이즈 개설', '프랜차이즈가 개설되었습니다.')
+          this.onCloseFranchiseModal()
+          this.getUserInfo()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 신분 전환 버튼
+    changeIdentity() {
+      this.$router.push('/franchise')
+    },
+
     // 주소 검색 api
     openModalAddress(e) {
       e.preventDefault()
@@ -873,13 +673,24 @@ export default {
       this.mapSearchModal.open = false
     },
     addressSearched(data) {
-      this.newInstitutionInfo.zone_code = data.zonecode
-      const selectAddress = data.userSelectedType
-      if (selectAddress === 'J') {
-        this.newInstitutionInfo.ins_address1 = data.jibunAddress
-      } else if (selectAddress === 'R') {
-        this.newInstitutionInfo.ins_address1 = data.roadAddress
+      if (this.isOpenInstitutionInfo) {
+        this.newInstitutionInfo.zone_code = data.zonecode
+        const selectAddress = data.userSelectedType
+        if (selectAddress === 'J') {
+          this.newInstitutionInfo.ins_address1 = data.jibunAddress
+        } else if (selectAddress === 'R') {
+          this.newInstitutionInfo.ins_address1 = data.roadAddress
+        }
+      } else {
+        this.franchiseInfo.fra_zoncode = data.zonecode
+        const selectAddress = data.userSelectedType
+        if (selectAddress === 'J') {
+          this.franchiseInfo.fra_address = data.jibunAddress
+        } else if (selectAddress === 'R') {
+          this.franchiseInfo.fra_address = data.roadAddress
+        }
       }
+
       this.mapSearchModal.open = false
     },
   },

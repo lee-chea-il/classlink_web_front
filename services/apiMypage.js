@@ -25,10 +25,14 @@ async function putUpdatePw(payload) {
 async function putUpdateUserInfo(payload) {
   return await http.put('/api/v1/account/mypage/upd-my-info', payload)
 }
-
 // 이메일 중복체크
 async function getEmailCheck(email) {
   return await http.get(`/api/v1/account/sign-up/email-check?email=${email}`)
+}
+
+// 프랜차이즈 개설
+async function postOpenFranchise(payload) {
+  return await http.post('/api/v1/account/open-franchise', payload)
 }
 
 const apiMypage = {
@@ -38,6 +42,7 @@ const apiMypage = {
   putUpdateInstitution,
   getEmailCheck,
   putUpdateUserInfo,
+  postOpenFranchise
 }
 
 export default apiMypage

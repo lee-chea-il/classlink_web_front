@@ -18,7 +18,9 @@
         </div>
         <div class="form-group row">
           <label for="" class="info_area_title col-form-label">{{
-            myInfo.position === '선생님' ? '소속기관 코드' : '교육기관 코드'
+            $store.state.common.loginIdentity === 'T'
+              ? '소속기관 코드'
+              : '교육기관 코드'
           }}</label>
           <div class="col">{{ institutionInfo.ins_code }}</div>
         </div>
@@ -30,7 +32,7 @@
         </div>
         <div
           class="form-group row"
-          :class="myInfo.position === '선생님' ? 'hide' : ''"
+          :class="$store.state.common.loginIdentity === 'T' ? 'hide' : ''"
         >
           <label for="" class="info_area_title col-form-label"
             >교육기관 정보</label
@@ -52,15 +54,42 @@
             </button>
           </div>
         </div>
+        <div
+          v-if="$store.state.common.loginIdentity == 'T'"
+          class="form-group row"
+        >
+          <label for="" class="info_area_title col-form-label">알림 팝업</label>
+          <div class="col">
+            <button
+              class="btn btn_activated"
+              :class="userInfo.alarm_yn === 'Y' ? 'active' : ''"
+              @click="$emit('alarmBtn-click')"
+            >
+              ON
+            </button>
+            <button
+              class="btn btn_activated"
+              :class="userInfo.alarm_yn === 'N' ? 'active' : ''"
+              @click="$emit('alarmBtn-click')"
+            >
+              OFF
+            </button>
+          </div>
+        </div>
       </div>
       <!--프랜차이즈 개설 전-->
-      <div class="right_square">
+      <div v-if="$store.state.common.loginIdentity == 'I'" class="right_square">
         <div class="form-group row">
           <label for="" class="info_area_title col-form-label"
             >프랜차이즈</label
           >
           <div class="col">
-            <button class="btn btn_crud_default_w">개설</button>
+            <button
+              class="btn btn_crud_default_w"
+              @click="$emit('click-openFran')"
+            >
+              개설
+            </button>
           </div>
         </div>
         <div class="form-group row">
@@ -121,7 +150,8 @@
       </div> -->
       <!--/.프랜차이즈 개설 후-->
       <!--알림 팝업은 기관장 개설전, 선생님일 때는 hide-->
-      <div class="right_down">
+
+      <div v-if="$store.state.common.loginIdentity == 'I'" class="right_down">
         <div class="form-group row">
           <label for="" class="info_area_title col-form-label">알림 팝업</label>
           <div class="col">

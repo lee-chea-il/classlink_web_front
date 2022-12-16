@@ -21,7 +21,8 @@
       :class="{
         active: $route.fullPath !== '/',
       }"
-      >{{ $store.state.common.user.mem_name }} 선생님</nuxt-link
+      >{{ $store.state.common.user.mem_name }}
+      {{ position == 'I' || 'F' ? '교육기관장' : '선생님' }}</nuxt-link
     >
     <!-- [개발참조]신규알림표시 : class="newlabel" 추가 -->
     <button class="btn btn_alert icons_bell_off newlabel"></button>
@@ -40,6 +41,11 @@ export default {
       type: String,
       default: '',
     },
+  },
+  data() {
+    return {
+      position: this.$store.state.common.loginIdentity,
+    }
   },
 }
 </script>

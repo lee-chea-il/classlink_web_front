@@ -83,7 +83,7 @@ export default {
         .getUserInfo()
         .then(({ data: { data } }) => {
           console.log(data)
-          this.$store.commit('userInfo/setUserLogin')
+          this.$store.commit('common/setUserLogin')
           this.$store.commit('common/setUser', data)
 
           if (data.idt_name === null) {
@@ -109,7 +109,7 @@ export default {
     },
     moveToHome() {
       const pathItem = this.authList.filter((item) => item.checked)[0]
-      this.$store.commit('userInfo/setUserIdentity', pathItem.account)
+      this.$store.commit('common/setUserIdentity', pathItem.account)
       console.log(this.$store.state.common.user.ins_code)
       if (
         pathItem.account === 'I' &&
