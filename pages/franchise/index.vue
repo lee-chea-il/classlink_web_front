@@ -40,7 +40,7 @@ export default {
         {
           id: 4,
           class: 'btn_favorite_class',
-          to: '/franchise/class/reference',
+          to: '/franchise/class/dataRoom',
         },
       ],
     }

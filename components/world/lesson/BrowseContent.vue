@@ -72,10 +72,8 @@ export default {
   },
   methods: {
     setOpen(item) {
-      const education = item.isOpenEducation ? '교육기관 ON' : '교육기관 OFF'
-      const reference = item.isOpenReference
-        ? '공개자료실 ON'
-        : '공개자료실 OFF'
+      const education = item.publicOpenYn ? '교육기관 ON' : '교육기관 OFF'
+      const reference = item.openYn ? '공개자료실 ON' : '공개자료실 OFF'
       return `${education} / ${reference}`
     },
   },

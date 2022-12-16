@@ -394,7 +394,7 @@ export default {
         fileDivision: '교육기관',
         fileType: 'quiz',
         uploadType: 'quiz',
-        fileVolume: '0',
+        fileSize: '0',
       }
       this.referenceData.createAt = new Date()
       document.getElementById('referenceSelectClose').click()
@@ -414,7 +414,7 @@ export default {
         fileDivision: '교육기관',
         fileType: 'test',
         uploadType: 'test',
-        fileVolume: '0',
+        fileSize: '0',
       }
       document.getElementById('referenceSelectClose').click()
       this.isNoteTestAddModal = true
@@ -458,7 +458,7 @@ export default {
     onOpenQuizChangeModal() {
       this.setModalTitle('수정')
       if (this.isQuizBrowse) {
-        this.onCloseQuizBrowseModal()
+        this.isQuizBrowse = false
       }
       this.isQuizAddModal = true
     },
@@ -467,7 +467,7 @@ export default {
     onOpenNoteTestChangeModal() {
       this.setModalTitle('수정')
       if (this.isNoteTestBrowse) {
-        this.onCloseNoteTestBrowseModal()
+        this.isNoteTestBrowse = false
       }
       this.isNoteTestAddModal = true
     },
@@ -741,8 +741,7 @@ export default {
         target: { id, value, type, checked, name, files },
       } = e
       const elem = this.referenceData
-      const isCheckbox =
-        name === 'isOpenReference' || name === 'isOpenEducation'
+      const isCheckbox = name === 'openYn' || name === 'publicOpenYn'
       if (type === 'checkbox') {
         if (checked) return (elem[id] = true)
         else return (elem[id] = false)
@@ -834,7 +833,7 @@ export default {
           fileDivision: '교육기관',
           fileType: files[0].type,
           uploadType: 'video',
-          fileVolume: files[0].size,
+          fileSize: files[0].size,
           createAt: files[0].lastModifiedDate,
           savePath: URL.createObjectURL(files[0]),
         }
@@ -860,7 +859,7 @@ export default {
           fileDivision: '교육기관',
           fileType: target.type,
           uploadType: 'pdf',
-          fileVolume: target.size,
+          fileSize: target.size,
           createAt: target.lastModifiedDate,
           savePath: item,
         }
@@ -889,7 +888,7 @@ export default {
           fileDivision: '교육기관',
           fileType: files[0].type,
           uploadType: 'music',
-          fileVolume: files[0].size,
+          fileSize: files[0].size,
           createAt: files[0].lastModifiedDate,
           savePath: URL.createObjectURL(files[0]),
         }
@@ -911,7 +910,7 @@ export default {
             fileDivision: '교육기관',
             fileType: 'youtube',
             uploadType: 'youtube',
-            fileVolume: 0,
+            fileSize: 0,
             createAt: new Date(),
             savePath: `//www.youtube.com/embed/${youtubeUrl}`,
           }
@@ -943,7 +942,7 @@ export default {
           fileDivision: '교육기관',
           fileType: 'url',
           uploadType: 'url',
-          fileVolume: 0,
+          fileSize: 0,
           createAt: new Date(),
           savePath: url,
         }
@@ -967,7 +966,7 @@ export default {
           fileDivision: '교육기관',
           fileType: files[0].type,
           uploadType: name,
-          fileVolume: files[0].size,
+          fileSize: files[0].size,
           createAt: files[0].lastModifiedDate,
           savePath: URL.createObjectURL(files[0]),
         }

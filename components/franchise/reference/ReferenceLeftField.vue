@@ -30,12 +30,12 @@
         <label for="" class="data_title">설명</label>
         <div class="col">
           <CustomTextarea
-            id="desc"
+            id="description"
             name="설명"
             placeholder="설명 입력"
             rules="min:2|required"
             type="text"
-            :inputValue="reference.desc"
+            :inputValue="reference.description"
             @change-input="$emit('change-input', $event)"
           />
         </div>
@@ -53,12 +53,12 @@
         <label for="" class="data_title">등록자</label>
         <div class="col">
           <CustomModalInput
-            id="registrant"
+            id="worker"
             name="등록자"
             placeholder="등록자 입력"
             rules="min:2|required"
             type="text"
-            :inputValue="reference.registrant"
+            :inputValue="reference.worker"
             @change-input="$emit('change-input', $event)"
           />
         </div>
@@ -80,10 +80,10 @@
       </div>
 
       <CheckboxGroup
-        :isOpenEducation="reference.isOpenEducation"
-        :isOpenReference="reference.isOpenReference"
+        :publicOpenYn="reference.publicOpenYn"
+        :openYn="reference.openYn"
         :pageRoot="pageRoot"
-        @change-input="$emit('isOpenEducation', $event)"
+        @change-input="$emit('publicOpenYn', $event)"
       />
       <br />
       <ThumbnailBox

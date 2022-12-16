@@ -114,9 +114,7 @@
                   <div class="row">
                     <label for="" class="title02 cont">공개 여부</label>
                     <div class="col cont">
-                      <span>{{
-                        noteDetail.isOpenEducation ? 'ON' : 'OFF'
-                      }}</span>
+                      <span>{{ noteDetail.publicOpenYn ? 'ON' : 'OFF' }}</span>
                     </div>
                   </div>
 
@@ -214,16 +212,16 @@ export default {
                       subject: '국어',
                       desc: '등록한 자료 1',
                       keyword: ['국어', '수학'],
-                      registrant: '등록인',
+                      worker: '등록인',
                       savePath:
                         'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
-                      isOpenEducation: true,
-                      isOpenReference: true,
+                      publicOpenYn: true,
+                      openYn: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'pdf',
                       uploadType: 'pdf',
-                      fileVolume: '',
+                      fileSize: '',
                       createAt: '',
                       dbIdx: 1,
                       type: 'institution',
@@ -234,16 +232,16 @@ export default {
                       subject: '국어',
                       desc: '등록한 자료 2',
                       keyword: ['국어', '수학'],
-                      registrant: '등록인',
+                      worker: '등록인',
                       savePath:
                         'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
-                      isOpenEducation: true,
-                      isOpenReference: true,
+                      publicOpenYn: true,
+                      openYn: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'pdf',
                       uploadType: 'pdf',
-                      fileVolume: '',
+                      fileSize: '',
                       createAt: '',
                       dbIdx: 2,
                       type: 'institution',
@@ -254,16 +252,16 @@ export default {
                       subject: '국어',
                       desc: '등록한 자료 3',
                       keyword: ['국어', '수학'],
-                      registrant: '등록인',
+                      worker: '등록인',
                       savePath:
                         'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
-                      isOpenEducation: true,
-                      isOpenReference: true,
+                      publicOpenYn: true,
+                      openYn: true,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'pdf',
                       uploadType: 'pdf',
-                      fileVolume: '',
+                      fileSize: '',
                       createAt: '',
                       dbIdx: 3,
                       type: 'institution',
@@ -274,16 +272,16 @@ export default {
                       subject: '국어',
                       desc: '등록한 자료 4',
                       keyword: ['국어', '수학'],
-                      registrant: '등록인',
+                      worker: '등록인',
                       savePath:
                         'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
-                      isOpenEducation: false,
-                      isOpenReference: false,
+                      publicOpenYn: false,
+                      openYn: false,
                       fileName: '',
                       fileDivision: '교육기관',
                       fileType: 'pdf',
                       uploadType: 'pdf',
-                      fileVolume: '',
+                      fileSize: '',
                       createAt: '',
                       dbIdx: 4,
                       type: 'institution',

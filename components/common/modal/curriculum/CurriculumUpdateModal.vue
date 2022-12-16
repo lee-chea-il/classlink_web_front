@@ -15,7 +15,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 id="exampleModalLabel" class="modal-title">
-              {{txtInfo.modatTitle}}
+              {{ txtInfo.modatTitle }}
             </h5>
             <button
               type="button"
@@ -55,7 +55,7 @@
                   </div>
 
                   <div class="title">
-                    {{txtInfo.ioTitle}}
+                    {{ txtInfo.ioTitle }}
                     <div class="dropdown form-inline">
                       <button
                         class="btn dropdown-toggle"
@@ -105,7 +105,7 @@
                 <!-- /.왼쪽 영역 -->
                 <!-- 오른쪽 영역 -->
                 <div class="divide_area right">
-                  <div class="title">{{txtInfo.rightTitle}}</div>
+                  <div class="title">{{ txtInfo.rightTitle }}</div>
                   <div class="form-group">
                     <label for="">불러오기</label>
                     <div class="col">
@@ -149,15 +149,15 @@
                   </div>
                   <div class="form-group">
                     <label for="" style="place-self: flex-start"
-                      >{{txtInfo.listTitle}}
-                      </label>
+                      >{{ txtInfo.listTitle }}
+                    </label>
                     <div class="col">
                       <div class="list_box">
                         <div
                           v-if="curriculumData.lessonInfo.lesson.title === ''"
                           class="nothing_txt"
                         >
-                        {{txtInfo.listEmptyTxt}}
+                          {{ txtInfo.listEmptyTxt }}
                         </div>
                         <div v-else class="section">
                           <!-- 커리큘럼 등록 시 출력됨 -->
@@ -217,7 +217,7 @@
                     <span class="custom-control custom-checkbox form-inline">
                       <input
                         id="checkbox60"
-                        :checked="curriculumData.isOpenEducation"
+                        :checked="curriculumData.publicOpenYn"
                         type="checkbox"
                         class="custom-control-input"
                       />
@@ -289,12 +289,12 @@ export default {
     },
     txtInfo: {
       type: Object,
-      default: ()=>{},
+      default: () => {},
     },
-    dropMenuData:{
-      type:Array,
-      default:()=>[]
-    }
+    dropMenuData: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
@@ -305,7 +305,7 @@ export default {
       linkDataCnt: 0,
       currentClassName: '교실선택',
       saveFileFullPath: '',
-      currentDropMenuData:{data:[]},
+      currentDropMenuData: { data: [] },
       curriculumData: {
         subTitle: '',
         desc: '',
@@ -315,7 +315,7 @@ export default {
           fileName: '',
         },
         cwInfo: null,
-        isOpenEducation: true,
+        publicOpenYn: true,
         isContinuedRegist: true,
         lessonInfo: {
           lesson: {
@@ -360,16 +360,27 @@ export default {
         this.$refs.listView.unLinkAllItem()
         this.curriculumData = curriculumData
         for (let i = 0; i < this.dropMenuListData.length; i++) {
-          if (this.curriculumData.cwInfo.codeNum === this.dropMenuListData[i].codeNum) {
-            this.currentDropMenuData = $.extend(true, {}, this.dropMenuListData[i])
+          if (
+            this.curriculumData.cwInfo.codeNum ===
+            this.dropMenuListData[i].codeNum
+          ) {
+            this.currentDropMenuData = $.extend(
+              true,
+              {},
+              this.dropMenuListData[i]
+            )
             break
           }
         }
         this.currentClassName = this.currentDropMenuData.name
-        const linkData=this.curriculumData.cwInfo.data
-        for (let i=0;i<linkData.length;i++) {
-          this.currentDropMenuData.data.interactionObjects[parseInt(linkData[i].codeNum)-1].isLink=true
-          this.currentDropMenuData.data.interactionObjects[parseInt(linkData[i].codeNum)-1].dbIdx=linkData[i].dbIdx
+        const linkData = this.curriculumData.cwInfo.data
+        for (let i = 0; i < linkData.length; i++) {
+          this.currentDropMenuData.data.interactionObjects[
+            parseInt(linkData[i].codeNum) - 1
+          ].isLink = true
+          this.currentDropMenuData.data.interactionObjects[
+            parseInt(linkData[i].codeNum) - 1
+          ].dbIdx = linkData[i].dbIdx
         }
         this.$refs.imgListView.setData(this.currentDropMenuData.data)
         this.$refs.imgListViewSwiper.setData(
@@ -379,7 +390,8 @@ export default {
           this.curriculumData.savePathInfo.path +
           ' > ' +
           this.curriculumData.savePathInfo.fileName +
-          '.'+this.txtInfo.fileSet
+          '.' +
+          this.txtInfo.fileSet
         this.curriculumData.lessonInfo.pathTxt =
           this.curriculumData.lessonInfo.path +
           ' > ' +
@@ -398,7 +410,7 @@ export default {
             fileName: '',
           },
           cwInfo: null,
-          isOpenEducation: true,
+          publicOpenYn: true,
           isContinuedRegist: true,
           lessonInfo: {
             lesson: {
@@ -411,7 +423,7 @@ export default {
             pathTxt: '',
           },
         }
-        this.currentDropMenuData=null
+        this.currentDropMenuData = null
         this.saveFileFullPath = ''
         this.currentClassName = '교실선택'
 
@@ -447,7 +459,8 @@ export default {
         this.curriculumData.savePathInfo.path +
         ' > ' +
         this.curriculumData.savePathInfo.fileName +
-        '.'+this.txtInfo.fileSet
+        '.' +
+        this.txtInfo.fileSet
     },
     setFileInfo(lessonInfo) {
       this.unLinkAllItem()
@@ -513,14 +526,14 @@ export default {
         newData.name = newData.savePathInfo.fileName + '.link'
         newData.active = true
         console.log(newData)
-        if(!this.isUpdate){
+        if (!this.isUpdate) {
           this.$emit('add-curiiculum-data', newData)
-        }else{
+        } else {
           this.$emit('update-curiiculum-data', newData)
         }
         $('#modalCuriRegi').modal('hide')
       }
-    }
+    },
   },
 }
 </script>

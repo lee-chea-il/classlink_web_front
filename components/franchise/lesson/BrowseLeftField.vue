@@ -17,7 +17,7 @@
       title="과목"
       :value="lessonItem?.subject"
     />
-    <CustomData title="등록자" :value="lessonItem?.registrant" />
+    <CustomData title="등록자" :value="lessonItem?.worker" />
     <CustomData title="등록일" :value="lessonItem?.createAt" />
     <CustomData title="저장 경로" :value="lessonItem?.savePath" />
 

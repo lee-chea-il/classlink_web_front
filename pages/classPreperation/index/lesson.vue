@@ -324,7 +324,7 @@ export default {
         desc: '',
         savePath: '',
         keyword: [],
-        isOpenEducation: true,
+        publicOpenYn: true,
         isContinuedRegist: true,
         createAt: '',
         referenceList: [],
@@ -719,7 +719,7 @@ export default {
           fileDivision: '교육기관',
           fileType: files[0].type,
           uploadType: name,
-          fileVolume: files[0].size,
+          fileSize: files[0].size,
           createAt: files[0].lastModifiedDate,
           savePath: URL.createObjectURL(files[0]),
         }

@@ -92,17 +92,17 @@
     <div class="check_sec">
       <span class="custom-control custom-checkbox form-inline">
         <input
-          :id="isChange ? 'isOpenEducationItem' : 'isOpenEducation'"
+          :id="isChange ? 'publicOpenYnItem' : 'publicOpenYn'"
           type="checkbox"
           class="custom-control-input"
-          name="isOpenEducation1"
-          :value="lessonData.isOpenEducation"
-          :checked="lessonData.isOpenEducation"
+          name="publicOpenYn1"
+          :value="lessonData.publicOpenYn"
+          :checked="lessonData.publicOpenYn"
           @input="$emit('change-lesson', $event)"
         />
         <label
           class="custom-control-label checkbox06"
-          :for="isChange ? 'isOpenEducationItem' : 'isOpenEducation'"
+          :for="isChange ? 'publicOpenYnItem' : 'publicOpenYn'"
           >교육기관에 해당 자료를 공개합니다.</label
         >
       </span>

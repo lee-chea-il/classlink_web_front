@@ -5,9 +5,9 @@
         :id="setTarget"
         type="checkbox"
         class="custom-control-input"
-        name="isOpenEducation"
-        :value="isOpenEducation"
-        :checked="isOpenEducation"
+        name="publicOpenYn"
+        :value="publicOpenYn"
+        :checked="publicOpenYn"
         @input="$emit('change-input', $event)"
       />
       <label class="custom-control-label checkbox06" :for="setTarget"
@@ -22,9 +22,9 @@
         :id="setTargetTwo"
         type="checkbox"
         class="custom-control-input"
-        name="isOpenReference"
-        :value="isOpenReference"
-        :checked="isOpenReference"
+        name="openYn"
+        :value="openYn"
+        :checked="openYn"
         @input="$emit('change-input', $event)"
       />
       <label class="custom-control-label checkbox07" :for="setTargetTwo"
@@ -38,11 +38,11 @@
 export default {
   name: 'CheckboxGroup',
   props: {
-    isOpenEducation: {
+    publicOpenYn: {
       type: Boolean,
       default: true,
     },
-    isOpenReference: {
+    openYn: {
       type: Boolean,
       default: true,
     },

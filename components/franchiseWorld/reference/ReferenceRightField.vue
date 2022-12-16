@@ -56,7 +56,7 @@
         <ContentLabel
           v-else
           title="용량"
-          :value="getByteSize(reference.fileVolume)"
+          :value="getByteSize(reference.fileSize)"
         />
         <ContentLabel
           v-if="reference.uploadType === 'youtube'"
