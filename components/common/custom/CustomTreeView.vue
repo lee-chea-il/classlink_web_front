@@ -141,6 +141,8 @@ export default {
                     newTreeNode[item] = data[item]
                   }
                 }
+                newTreeNode.isLeaf=true
+                newTreeNode.active=true
                 newTreeNode.id=pidNum
                 oldNode.children[i].addChildren(newTreeNode)
               } else {

@@ -127,7 +127,7 @@
                     <div class="col">
                       <div class="input_file">
                         <input
-                          v-model="curriculumData.lessonInfo.pathTxt"
+                          v-model="lessonFullPath"
                           type="text"
                           class="file_input_textbox"
                           readonly
@@ -148,19 +148,19 @@
                   <div class="form-group">
                     <label for="">제목</label>
                     <div class="col">
-                      {{ curriculumData.lessonInfo.lesson.title }}
+                      {{ currentLessonData.title }}
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="">설명</label>
                     <div class="col">
-                      {{ curriculumData.lessonInfo.lesson.desc }}
+                      {{ currentLessonData.desc }}
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="">교육 목표</label>
                     <div class="col">
-                      {{ curriculumData.lessonInfo.lesson.role }}
+                      {{ currentLessonData.role }}
                     </div>
                   </div>
                   <div class="form-group">
@@ -170,7 +170,7 @@
                     <div class="col">
                       <div class="list_box">
                         <div
-                          v-if="curriculumData.lessonInfo.lesson.title === ''"
+                          v-if="currentLessonData.title === ''"
                           class="nothing_txt"
                         >
                         {{txtInfo.listEmptyTxt}}
@@ -333,20 +333,18 @@ export default {
           path: '',
           fileName: '',
         },
-        cwInfo: null,
+        cwInfo: '',
         isOpenEducation: true,
         isContinuedRegist: true,
-        lessonInfo: {
-          lesson: {
-            title: '',
-            desc: '',
-            role: '',
-            referenceList: [],
-          },
-          path: '',
-          pathTxt: '',
-        },
+        linkData:[],
+        lessonId:null
       },
+      currentLessonData:{
+        desc:'',
+        title:'',
+        role:''
+      },
+      lessonFullPath:'',
     }
   },
   mounted() {
@@ -379,16 +377,16 @@ export default {
         this.$refs.listView.unLinkAllItem()
         this.curriculumData = curriculumData
         for (let i = 0; i < this.dropMenuListData.length; i++) {
-          if (this.curriculumData.cwInfo.codeNum === this.dropMenuListData[i].codeNum) {
+          if (this.curriculumData.cwId === this.dropMenuListData[i].codeNum) {
             this.currentDropMenuData = $.extend(true, {}, this.dropMenuListData[i])
             break
           }
         }
         this.currentClassName = this.currentDropMenuData.name
-        const linkData=this.curriculumData.cwInfo.data
+        const linkData=this.curriculumData.linkData
         for (let i=0;i<linkData.length;i++) {
           this.currentDropMenuData.data.interactionObjects[parseInt(linkData[i].codeNum)-1].isLink=true
-          this.currentDropMenuData.data.interactionObjects[parseInt(linkData[i].codeNum)-1].dbIdx=linkData[i].dbIdx
+          this.currentDropMenuData.data.interactionObjects[parseInt(linkData[i].codeNum)-1].referId=linkData[i].referId
         }
         this.$refs.imgListView.setData(this.currentDropMenuData.data)
         this.$refs.imgListViewSwiper.setData(
@@ -399,11 +397,24 @@ export default {
           ' > ' +
           this.curriculumData.savePathInfo.fileName +
           '.'+this.txtInfo.fileSet
-        this.curriculumData.lessonInfo.pathTxt =
-          this.curriculumData.lessonInfo.path +
-          ' > ' +
-          this.curriculumData.lessonInfo.lesson.name
-        this.$refs.listView.setDataList(this.curriculumData.lessonInfo.lesson)
+        this.currentLessonData=this.getLessonData(this.curriculumData.lessonId)
+        this.lessonFullPath=this.currentLessonData.savePath+' > '+this.currentLessonData.name
+        
+        const referList=this.currentLessonData.referenceList
+        for (let j=0;j<referList.length;j++) {
+          referList[j].isLink=false
+          referList[j].imgIdx=''
+        }
+        for (let i=0;i<linkData.length;i++) {
+          for (let j=0;j<referList.length;j++) {
+            if(linkData[i].referId===referList[j].id){
+              referList[j].isLink=true
+              referList[j].imgIdx=parseInt(linkData[i].codeNum)-1
+              break
+            }
+          }
+        }
+        this.$refs.listView.setDataList(this.currentLessonData)
         this.$refs.listView.checkLinkDataCnt()
       } else {
         this.isUpdate = false
@@ -416,23 +427,21 @@ export default {
             path: '',
             fileName: '',
           },
-          cwInfo: null,
+          cwId: '',
           isOpenEducation: true,
           isContinuedRegist: true,
-          lessonInfo: {
-            lesson: {
-              title: '',
-              desc: '',
-              role: '',
-              referenceList: [],
-            },
-            path: '',
-            pathTxt: '',
-          },
+          linkData:[],
+          lessonId:null
         }
         this.currentDropMenuData=null
-        this.saveFileFullPath = ''
+        this.saveFileFullPath=''
+        this.lessonFullPath=''
         this.currentClassName = '교실선택'
+        this.currentLessonData={
+          desc:'',
+          title:'',
+          role:''
+        }
 
         this.$refs.imgListView.setData([])
         this.$refs.imgListViewSwiper.setData([])
@@ -470,10 +479,10 @@ export default {
     },
     setFileInfo(lessonInfo) {
       this.unLinkAllItem()
-      this.curriculumData.lessonInfo = lessonInfo
-      this.curriculumData.lessonInfo.pathTxt =
-        lessonInfo.path + ' > ' + lessonInfo.lesson.name
-      this.$refs.listView.setDataList(this.curriculumData.lessonInfo.lesson)
+      this.curriculumData.lessonId=lessonInfo.lesson.dbId
+      this.currentLessonData=this.getLessonData(lessonInfo.lesson.dbId)
+      this.lessonFullPath=this.currentLessonData.savePath+' > '+this.currentLessonData.name
+      this.$refs.listView.setDataList(this.currentLessonData)
     },
     imgResize(perRatio) {
       this.$refs.imgListViewSwiper.imgResize(perRatio)
@@ -496,7 +505,7 @@ export default {
         isAllClear = false
         this.$emit('change-desc', '설명을 입력해 주세요.')
       }
-      if (isAllClear && this.curriculumData.lessonInfo.path === '') {
+      if (isAllClear && this.curriculumData.lessonId&&this.curriculumData.lessonId === '') {
         isAllClear = false
         this.$emit('change-desc', '불러온 레슨정보가 없습니다.')
       }
@@ -511,24 +520,16 @@ export default {
       /* isAllClear = true */
       if (isAllClear) {
         const newData = {}
-        for (const item in this.curriculumData) {
-          if (item === 'cwInfo') {
-            newData[item] = {}
-            newData[item].codeNum = this.currentDropMenuData.codeNum
-            newData[item].data = this.$refs.imgListView.getData()
-          } else if (item === 'lessonInfo') {
-            newData.lessonInfo = {}
-            for (const item1 in this.curriculumData[item]) {
-              newData.lessonInfo[item1] = this.curriculumData.lessonInfo[item1]
-            }
-            newData.lessonInfo.lesson.referenceList =
-              this.$refs.listView.getData()
-          } else {
-            newData[item] = this.curriculumData[item]
-          }
-        }
-        newData.isLeaf = true
-        newData.type = newData.lessonInfo.type
+        newData.subTitle=this.curriculumData.subTitle
+        newData.desc=this.curriculumData.desc
+        newData.isOpenEducation=this.curriculumData.isOpenEducation
+        newData.isContinuedRegist=this.curriculumData.isContinuedRegist
+        newData.cwId=this.currentDropMenuData.codeNum
+        newData.savePathInfo=this.curriculumData.savePathInfo
+        newData.linkData=this.$refs.imgListView.getData()
+        newData.lessonId=this.curriculumData.lessonId
+
+        newData.type = this.currentLessonData.type
         newData.name = newData.savePathInfo.fileName + '.link'
         newData.active = true
         console.log(newData)
@@ -539,6 +540,892 @@ export default {
         }
         $('#modalCuriRegi').modal('hide')
       }
+    },
+    getLessonData(idx){
+      const lessonDatas=[
+        {
+          name: '2-1반 수학 수업자료.lesson',
+          type: 'institution',
+          id: 1,
+          title: '2-1반 수업',
+          desc: '2-1반 전체 수업 내용',
+          role: '2-1반 학생들의 평균적인 이해를 도와줄 수 있다.',
+          keyword: ['국어', '수학', '영어', '사회'],
+          isOpen: true,
+          savePath: '마포 학원>국어>1단원',
+          createAt: '2022.05.03',
+          ragistrant: '홍길남',
+          subject: '수학',
+          referenceList: [
+            {
+              id: 0,
+              name: '국어학습자료 애니메이션.mp4',
+              subject: '국어',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'video/mp4',
+              uploadType: 'video',
+              fileVolume: '',
+              createAt: '',
+              type: 'institution',
+            },
+            {
+              id: 1,
+              name: '수학 학습자료.pdf',
+              subject: '수학',
+              desc: '등록한 자료 2',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath:
+                'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'application/pdf',
+              uploadType: 'pdf',
+              fileVolume: '',
+              createAt: '',
+              isLeaf: false,
+              type: 'franchise',
+              linkIdx: 1,
+              isLink: true,
+            },
+            {
+              id: 2,
+              name: '영어 단어 퀴즈.quiz',
+              subject: '영어',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'quiz',
+              uploadType: 'quiz',
+              fileVolume: '',
+              createAt: '',
+              quizList: [
+                {
+                  id: 0,
+                  problem: '<p>asdfaaaaasdf</p>',
+                  oxAnswer: 0,
+                  dificultade: 1,
+                  limitTime: '3분',
+                  quizType: 0,
+                  shortAnswer: '123',
+                  subjectiveAnswer: '123',
+                  shortWrongAnswer: '123',
+                },
+                {
+                  id: 2,
+                  problem: '<p>asdggggg</p>',
+                  dificultade: 0,
+                  limitTime: '5분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '234',
+                  subjectiveAnswer: '234',
+                  shortWrongAnswer: '234',
+                },
+                {
+                  id: 3,
+                  problem: '<p>234242242424</p>',
+                  dificultade: 0,
+                  limitTime: '2분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '345',
+                  subjectiveAnswer: '345',
+                  shortWrongAnswer: '345',
+                },
+                {
+                  id: 4,
+                  problem: '<p>555555555</p>',
+                  dificultade: 0,
+                  limitTime: '4분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '456',
+                  subjectiveAnswer: '456',
+                  shortWrongAnswer: '456',
+                },
+                {
+                  id: 5,
+                  problem: '<p>asx c</p>',
+                  dificultade: 0,
+                  limitTime: '5분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '567',
+                  subjectiveAnswer: '567',
+                  shortWrongAnswer: '567',
+                },
+              ],
+              isLeaf: false,
+              type: 'franchise',
+            },
+            {
+              id: 3,
+              name: '사회 쪽지시험 영상.youtube',
+              subject: '사회',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath: '//www.youtube.com/embed/m264zfB87Tc',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'youtube',
+              uploadType: 'youtube',
+              fileVolume: '',
+              createAt: '',
+              isLeaf: false,
+              type: 'institution',
+            },
+            {
+              id: 4,
+              name: '과학 사이트 참고용.url',
+              subject: '과학',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath: 'https://sciencelove.com/725',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'test',
+              uploadType: 'url',
+              fileVolume: '',
+              createAt: '',
+              isLeaf: false,
+              type: 'franchise',
+            },
+            {
+              id: 5,
+              name: '수학 쪽지시험.test',
+              subject: '수학',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath: 'https://sciencelove.com/725',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'test',
+              uploadType: 'test',
+              fileVolume: '',
+              createAt: '',
+              noteTestList: [
+                {
+                  id: 0,
+                  problem: '<p>1번 문제</p>',
+                  exampleList: [
+                    { id: '', example: '<p>답 1임</p>' },
+                    { id: '', example: '<p>답 2임</p>' },
+                    { id: '', example: '<p>답 3임</p>' },
+                    { id: '', example: '<p>답 4임</p>' },
+                  ],
+                  dificultade: 0,
+                  limitTime: '',
+                  answer: 1,
+                  isCommentary: true,
+                  commentary: '',
+                },
+                {
+                  id: 1,
+                  problem: '<p>2번 문제</p>',
+                  exampleList: [
+                    { id: '', example: '<p>답 5임</p>' },
+                    { id: '', example: '<p>답 6임</p>' },
+                    { id: '', example: '<p>답 7임</p>' },
+                    { id: '', example: '<p>답 8임</p>' },
+                  ],
+                  dificultade: 2,
+                  limitTime: '',
+                  answer: 2,
+                  isCommentary: true,
+                  commentary: '',
+                },
+              ],
+              isLeaf: false,
+              type: 'institution',
+            },
+          ],
+        },
+        {
+          name: '고등교육 영어자료.lesson',
+          type: 'institution',
+          dbId: 2,
+          title: '고등교육 영어자료',
+          desc: '고등교육 영어자료 수업 내용',
+          role: '고등교육 영어자료의 평균적인 이해를 도와줄 수 있다.',
+          keyword: ['국어', '수학', '영어', '사회'],
+          isOpen: true,
+          savePath: '수학>대단원>피타고라스',
+          createAt: '2022.05.03',
+          ragistrant: '홍길남',
+          subject: '수학',
+          referenceList: [
+            {
+              id: 0,
+              name: '미술학습자료 애니메이션.mp4',
+              subject: '국어',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath:
+                'https://media.w3.org/2010/05/sintel/trailer.mp4',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'video/mp4',
+              uploadType: 'video',
+              fileVolume: '',
+              createAt: '',
+              dbId: 1,
+              type: 'institution',
+            },
+            {
+              id: 2,
+              name: '영어 단어 퀴즈.quiz',
+              subject: '영어',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath:
+                'https://media.w3.org/2010/05/sintel/trailer.mp4',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'quiz',
+              uploadType: 'quiz',
+              fileVolume: '',
+              createAt: '',
+              quizList: [
+                {
+                  id: 0,
+                  problem: '<p>asdfaaaaasdf</p>',
+                  oxAnswer: 0,
+                  dificultade: 1,
+                  limitTime: '3분',
+                  quizType: 0,
+                  shortAnswer: '123',
+                  subjectiveAnswer: '123',
+                  shortWrongAnswer: '123',
+                },
+                {
+                  id: 2,
+                  problem: '<p>asdggggg</p>',
+                  dificultade: 0,
+                  limitTime: '5분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '234',
+                  subjectiveAnswer: '234',
+                  shortWrongAnswer: '234',
+                },
+                {
+                  id: 3,
+                  problem: '<p>234242242424</p>',
+                  dificultade: 0,
+                  limitTime: '2분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '345',
+                  subjectiveAnswer: '345',
+                  shortWrongAnswer: '345',
+                },
+                {
+                  id: 4,
+                  problem: '<p>555555555</p>',
+                  dificultade: 0,
+                  limitTime: '4분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '456',
+                  subjectiveAnswer: '456',
+                  shortWrongAnswer: '456',
+                },
+                {
+                  id: 5,
+                  problem: '<p>asx c</p>',
+                  dificultade: 0,
+                  limitTime: '5분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '567',
+                  subjectiveAnswer: '567',
+                  shortWrongAnswer: '567',
+                },
+              ],
+              isLeaf: false,
+              dbId: 3,
+              type: 'franchise',
+            },
+            {
+              id: 3,
+              name: '사회 쪽지시험 영상.youtube',
+              subject: '사회',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath: '//www.youtube.com/embed/m264zfB87Tc',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'youtube',
+              uploadType: 'youtube',
+              fileVolume: '',
+              createAt: '',
+              isLeaf: false,
+              dbId: 4,
+              type: 'institution',
+            },
+            {
+              id: 4,
+              name: '과학 사이트 참고용.url',
+              subject: '과학',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath: 'https://sciencelove.com/725',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'test',
+              uploadType: 'url',
+              fileVolume: '',
+              createAt: '',
+              isLeaf: false,
+              dbId: 5,
+              type: 'franchise',
+            },
+            {
+              id: 5,
+              name: '수학 쪽지시험.test',
+              subject: '수학',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath: 'https://sciencelove.com/725',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'test',
+              uploadType: 'test',
+              fileVolume: '',
+              createAt: '',
+              noteTestList: [
+                {
+                  id: 0,
+                  problem: '<p>1번 문제</p>',
+                  exampleList: [
+                    { id: '', example: '<p>답 1임</p>' },
+                    { id: '', example: '<p>답 2임</p>' },
+                    { id: '', example: '<p>답 3임</p>' },
+                    { id: '', example: '<p>답 4임</p>' },
+                  ],
+                  dificultade: 0,
+                  limitTime: '',
+                  answer: 1,
+                  isCommentary: true,
+                  commentary: '',
+                },
+                {
+                  id: 1,
+                  problem: '<p>2번 문제</p>',
+                  exampleList: [
+                    { id: '', example: '<p>답 5임</p>' },
+                    { id: '', example: '<p>답 6임</p>' },
+                    { id: '', example: '<p>답 7임</p>' },
+                    { id: '', example: '<p>답 8임</p>' },
+                  ],
+                  dificultade: 2,
+                  limitTime: '',
+                  answer: 2,
+                  isCommentary: true,
+                  commentary: '',
+                },
+              ],
+              isLeaf: false,
+              dbId: 6,
+              type: 'institution',
+            },
+          ],
+        },
+        {
+          name: '수학적 귀납법 설명자료.lesson',
+          type: 'institution',
+          dbId: 3,
+          title: '수학적 귀납법 설명자료',
+          desc: '수학적 귀납법 설명자료 수업 내용',
+          role: '수학적 귀납법 설명자료의 평균적인 이해를 도와줄 수 있다.',
+          keyword: ['국어', '수학', '영어', '사회'],
+          isOpen: true,
+          savePath: '수학>대단원>피타고라스',
+          createAt: '2022.05.03',
+          ragistrant: '홍길남',
+          subject: '수학',
+          referenceList: [
+            {
+              id: 0,
+              name: '국어학습자료 애니메이션.mp4',
+              subject: '국어',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath:
+                'https://media.w3.org/2010/05/sintel/trailer.mp4',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'video/mp4',
+              uploadType: 'video',
+              fileVolume: '',
+              createAt: '',
+              dbId: 1,
+              type: 'institution',
+            },
+            {
+              id: 1,
+              name: '수학 학습자료.pdf',
+              subject: '수학',
+              desc: '등록한 자료 2',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath:
+                'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'application/pdf',
+              uploadType: 'pdf',
+              fileVolume: '',
+              createAt: '',
+              isLeaf: false,
+              dbId: 2,
+              type: 'franchise',
+            },
+            {
+              id: 2,
+              name: '영어 단어 퀴즈.quiz',
+              subject: '영어',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath:
+                'https://media.w3.org/2010/05/sintel/trailer.mp4',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'quiz',
+              uploadType: 'quiz',
+              fileVolume: '',
+              createAt: '',
+              quizList: [
+                {
+                  id: 0,
+                  problem: '<p>asdfaaaaasdf</p>',
+                  oxAnswer: 0,
+                  dificultade: 1,
+                  limitTime: '3분',
+                  quizType: 0,
+                  shortAnswer: '123',
+                  subjectiveAnswer: '123',
+                  shortWrongAnswer: '123',
+                },
+                {
+                  id: 2,
+                  problem: '<p>asdggggg</p>',
+                  dificultade: 0,
+                  limitTime: '5분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '234',
+                  subjectiveAnswer: '234',
+                  shortWrongAnswer: '234',
+                },
+                {
+                  id: 3,
+                  problem: '<p>234242242424</p>',
+                  dificultade: 0,
+                  limitTime: '2분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '345',
+                  subjectiveAnswer: '345',
+                  shortWrongAnswer: '345',
+                },
+                {
+                  id: 4,
+                  problem: '<p>555555555</p>',
+                  dificultade: 0,
+                  limitTime: '4분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '456',
+                  subjectiveAnswer: '456',
+                  shortWrongAnswer: '456',
+                },
+                {
+                  id: 5,
+                  problem: '<p>asx c</p>',
+                  dificultade: 0,
+                  limitTime: '5분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '567',
+                  subjectiveAnswer: '567',
+                  shortWrongAnswer: '567',
+                },
+              ],
+              isLeaf: false,
+              dbId: 3,
+              type: 'franchise',
+            },
+            {
+              id: 3,
+              name: '사회 쪽지시험 영상.youtube',
+              subject: '사회',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath: '//www.youtube.com/embed/m264zfB87Tc',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'youtube',
+              uploadType: 'youtube',
+              fileVolume: '',
+              createAt: '',
+              isLeaf: false,
+              dbId: 4,
+              type: 'institution',
+            },
+            {
+              id: 4,
+              name: '과학 사이트 참고용.url',
+              subject: '과학',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath: 'https://sciencelove.com/725',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'test',
+              uploadType: 'url',
+              fileVolume: '',
+              createAt: '',
+              isLeaf: false,
+              dbId: 5,
+              type: 'franchise',
+            },
+            {
+              id: 5,
+              name: '수학 쪽지시험.test',
+              subject: '수학',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath: 'https://sciencelove.com/725',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'test',
+              uploadType: 'test',
+              fileVolume: '',
+              createAt: '',
+              noteTestList: [
+                {
+                  id: 0,
+                  problem: '<p>1번 문제</p>',
+                  exampleList: [
+                    { id: '', example: '<p>답 1임</p>' },
+                    { id: '', example: '<p>답 2임</p>' },
+                    { id: '', example: '<p>답 3임</p>' },
+                    { id: '', example: '<p>답 4임</p>' },
+                  ],
+                  dificultade: 0,
+                  limitTime: '',
+                  answer: 1,
+                  isCommentary: true,
+                  commentary: '',
+                },
+                {
+                  id: 1,
+                  problem: '<p>2번 문제</p>',
+                  exampleList: [
+                    { id: '', example: '<p>답 5임</p>' },
+                    { id: '', example: '<p>답 6임</p>' },
+                    { id: '', example: '<p>답 7임</p>' },
+                    { id: '', example: '<p>답 8임</p>' },
+                  ],
+                  dificultade: 2,
+                  limitTime: '',
+                  answer: 2,
+                  isCommentary: true,
+                  commentary: '',
+                },
+              ],
+              isLeaf: false,
+              dbId: 6,
+              type: 'institution',
+            },
+          ],
+        },
+        {
+          name: '6학년 영재반 수업자료.lesson',
+          type: 'institution',
+          dbId: 4,
+          title: '6학년 영재반 수업자료',
+          desc: '6학년 영재반 수업자료 수업 내용',
+          role: '6학년 영재반 수업자료의 평균적인 이해를 도와줄 수 있다.',
+          keyword: ['국어', '수학', '영어', '사회'],
+          isOpen: true,
+          savePath: '수학>대단원>피타고라스',
+          createAt: '2022.05.03',
+          ragistrant: '홍길남',
+          subject: '수학',
+          referenceList: [
+            {
+              id: 0,
+              name: '국어학습자료 애니메이션.mp4',
+              subject: '국어',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath:
+                'https://media.w3.org/2010/05/sintel/trailer.mp4',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'video/mp4',
+              uploadType: 'video',
+              fileVolume: '',
+              createAt: '',
+              dbId: 1,
+              type: 'institution',
+            },
+            {
+              id: 1,
+              name: '수학 학습자료.pdf',
+              subject: '수학',
+              desc: '등록한 자료 2',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath:
+                'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'application/pdf',
+              uploadType: 'pdf',
+              fileVolume: '',
+              createAt: '',
+              isLeaf: false,
+              dbId: 2,
+              type: 'franchise',
+            },
+            {
+              id: 2,
+              name: '영어 단어 퀴즈.quiz',
+              subject: '영어',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath:
+                'https://media.w3.org/2010/05/sintel/trailer.mp4',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'quiz',
+              uploadType: 'quiz',
+              fileVolume: '',
+              createAt: '',
+              quizList: [
+                {
+                  id: 0,
+                  problem: '<p>asdfaaaaasdf</p>',
+                  oxAnswer: 0,
+                  dificultade: 1,
+                  limitTime: '3분',
+                  quizType: 0,
+                  shortAnswer: '123',
+                  subjectiveAnswer: '123',
+                  shortWrongAnswer: '123',
+                },
+                {
+                  id: 2,
+                  problem: '<p>asdggggg</p>',
+                  dificultade: 0,
+                  limitTime: '5분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '234',
+                  subjectiveAnswer: '234',
+                  shortWrongAnswer: '234',
+                },
+                {
+                  id: 3,
+                  problem: '<p>234242242424</p>',
+                  dificultade: 0,
+                  limitTime: '2분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '345',
+                  subjectiveAnswer: '345',
+                  shortWrongAnswer: '345',
+                },
+                {
+                  id: 4,
+                  problem: '<p>555555555</p>',
+                  dificultade: 0,
+                  limitTime: '4분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '456',
+                  subjectiveAnswer: '456',
+                  shortWrongAnswer: '456',
+                },
+                {
+                  id: 5,
+                  problem: '<p>asx c</p>',
+                  dificultade: 0,
+                  limitTime: '5분',
+                  quizType: 0,
+                  oxAnswer: 0,
+                  shortAnswer: '567',
+                  subjectiveAnswer: '567',
+                  shortWrongAnswer: '567',
+                },
+              ],
+              isLeaf: false,
+              dbId: 3,
+              type: 'franchise',
+            },
+            {
+              id: 3,
+              name: '사회 쪽지시험 영상.youtube',
+              subject: '사회',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath: '//www.youtube.com/embed/m264zfB87Tc',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'youtube',
+              uploadType: 'youtube',
+              fileVolume: '',
+              createAt: '',
+              isLeaf: false,
+              dbId: 4,
+              type: 'institution',
+            },
+            {
+              id: 4,
+              name: '과학 사이트 참고용.url',
+              subject: '과학',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath: 'https://sciencelove.com/725',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'test',
+              uploadType: 'url',
+              fileVolume: '',
+              createAt: '',
+              isLeaf: false,
+              dbId: 5,
+              type: 'franchise',
+            },
+            {
+              id: 5,
+              name: '수학 쪽지시험.test',
+              subject: '수학',
+              desc: '등록한 자료 1',
+              keyword: ['국어', '수학'],
+              registrant: '등록인',
+              savePath: 'https://sciencelove.com/725',
+              isOpenEducation: true,
+              isOpenReference: true,
+              fileName: '',
+              fileDivision: '교육기관',
+              fileType: 'test',
+              uploadType: 'test',
+              fileVolume: '',
+              createAt: '',
+              noteTestList: [
+                {
+                  id: 0,
+                  problem: '<p>1번 문제</p>',
+                  exampleList: [
+                    { id: '', example: '<p>답 1임</p>' },
+                    { id: '', example: '<p>답 2임</p>' },
+                    { id: '', example: '<p>답 3임</p>' },
+                    { id: '', example: '<p>답 4임</p>' },
+                  ],
+                  dificultade: 0,
+                  limitTime: '',
+                  answer: 1,
+                  isCommentary: true,
+                  commentary: '',
+                },
+                {
+                  id: 1,
+                  problem: '<p>2번 문제</p>',
+                  exampleList: [
+                    { id: '', example: '<p>답 5임</p>' },
+                    { id: '', example: '<p>답 6임</p>' },
+                    { id: '', example: '<p>답 7임</p>' },
+                    { id: '', example: '<p>답 8임</p>' },
+                  ],
+                  dificultade: 2,
+                  limitTime: '',
+                  answer: 2,
+                  isCommentary: true,
+                  commentary: '',
+                },
+              ],
+              isLeaf: false,
+              dbId: 6,
+              type: 'institution',
+            },
+          ],
+        },
+      ]
+      return lessonDatas[idx]
     }
   },
 }

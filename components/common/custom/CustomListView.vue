@@ -5,6 +5,7 @@
     listType="listView"
     :is-drop="true"
     :is-show-option="false"
+    @drag-start="removeActive"
     @leaf-name-click="nodeNameClick"
     @click="removeActive"
   >
@@ -38,20 +39,16 @@ export default {
     }
   },
   methods: {
-    getData(){
+    /* getData(){
       const result = []
       const list = this.datas.children
       const len =list.length
       for (let i = 0; i < len; i++) {
-        /* const newObj = {}
-        for (const item in list[i]) {
-          newObj[item] = list[i][item]
-        } */
         const newObj = $.extend(true, {}, list[i])
         result.push(newObj)
       }
       return result
-    },
+    }, */
     setDataList(listData) {
       this.pid=this.pidNum
       this.receiveDataList=listData
@@ -62,9 +59,10 @@ export default {
         nObj.isChecked=false
         if(nObj.isLink===undefined){
           nObj.isLink=false
-          nObj.dbIdx=''
-          nObj.id="list_"+this.pid
+          nObj.imgIdx=''
         }
+        nObj.referId=nObj.id
+        nObj.id="list_"+this.pid
         console.log(`setDataList   ${nObj.id}`)
         nObj.addTreeNodeDisabled=true
         nObj.addLeafNodeDisabled=true
@@ -84,23 +82,24 @@ export default {
       this.datas = new Tree(false, dataMapping(this.receiveDataList.referenceList))
     },
     linkData(listIdx,imgIdx){
+      console.log('--------')
+      console.log(listIdx,imgIdx)
       this.removeActive()
       for(let i=0;i<this.datas.children.length;i++){
-        if(listIdx===this.datas.children[i].id){
+        if(listIdx===this.datas.children[i].referId){
           this.datas.children[i].isLink=true
-          this.datas.children[i].dbIdx=imgIdx
+          this.datas.children[i].imgIdx=imgIdx
           break
         }
       }
       this.checkLinkDataCnt()
     },
     unLinkData(listIdx){
-      console.log(`listIdx   ${listIdx}`)
       this.removeActive()
       for(let i=0;i<this.datas.children.length;i++){
-        if(listIdx===this.datas.children[i].id){
+        if(listIdx===this.datas.children[i].referId){
           this.datas.children[i].isLink=false
-          this.datas.children[i].dbIdx=''
+          this.datas.children[i].imgIdx=''
           break
         }
       }
@@ -120,7 +119,7 @@ export default {
       if(this.datas.children){
         for(let i=0;i<this.datas.children.length;i++){
           this.datas.children[i].isLink=false
-          this.datas.children[i].dbIdx=''
+          this.datas.children[i].imgIdx=''
         }
       }
       this.$emit('update-link-cnt', 0)
@@ -129,7 +128,7 @@ export default {
       this.removeActive()
       if(this.datas.children){
         for(let i=0;i<this.datas.children.length;i++){
-          if(parseInt(this.datas.children[i].dbIdx)===parseInt(imgIdx)){
+          if(parseInt(this.datas.children[i].imgIdx)===parseInt(imgIdx)){
             $("#"+this.datas.children[i].id).addClass('curriculum_list_active')
             break
           }
@@ -140,11 +139,12 @@ export default {
       this.removeActive()
       $("#"+node.id).addClass('curriculum_list_active')
       if(node.isLink){
-        this.$emit("select-list-img",node.dbIdx)
+        this.$emit("select-list-img",node.imgIdx)
       }
     },
     removeActive() {
       $(".vtl-leaf-node").removeClass('curriculum_list_active')
+      $(".vtl-node-main").removeClass('active')
     },
   },
 }

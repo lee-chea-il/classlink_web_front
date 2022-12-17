@@ -93,11 +93,10 @@ export default {
         return txt
       }
       for (let i = 0; i < len; i++) {
-        /* result.push($.extend(true, {}, list[i])) */
         if(list[i].isLink){
           result.push({
             'codeNum':_convertTxt(i+1),
-            'dbIdx':list[i].dbIdx
+            'referId':list[i].referId
           })
         }
       }
@@ -112,9 +111,9 @@ export default {
           const nObj = data[i]
           nObj.id='imgListView_'+this.pid
           nObj.pid=this.pid
-          if(nObj.dbIdx===''){
+          if(nObj.referId===undefined||nObj.referId===''){
             nObj.isLink=false
-            nObj.dbIdx=''
+            nObj.referId=''
           }else{
             nObj.isLink=true
           }
@@ -176,15 +175,15 @@ export default {
     dragImgDrop(node,dragTaget) {
       $('#'+node.id).find('img').css('opacity',1).attr("src",this.setRequire(node.nomal_url))
       if(node.isLink){
-        this.$emit('unlink-data-to-list', node.dbIdx)
+        this.$emit('unlink-data-to-list', node.referId)
       }
       if(dragTaget.model.isLink){
         this.$emit('unlink-data-to-img', dragTaget.model.linkIdx)
         this.unLinkData(dragTaget.model.linkIdx)
       }
       node.isLink=true
-      node.dbIdx=dragTaget.model.id
-      this.$emit('link-data', node.dbIdx, node.imgIdx)
+      node.referId=dragTaget.model.referId
+      this.$emit('link-data', node.referId, node.imgIdx)
     },
     dragImgClick(node) {
       console.log('dragImgClick', node.id)
@@ -198,7 +197,7 @@ export default {
       if(this.datas.children){
         for(let i=0;i<this.datas.children.length;i++){
           this.datas.children[i].isLink=false
-          this.datas.children[i].dbIdx=''
+          this.datas.children[i].referId=''
           $('#imgListView_'+i).find('img').css('opacity',0.3)
         }
       }
