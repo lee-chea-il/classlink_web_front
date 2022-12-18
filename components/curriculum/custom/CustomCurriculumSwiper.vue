@@ -43,6 +43,8 @@
     },
     data() {
       return {
+        ioHeight:0,
+        perRatio:1,
         dataList: [],
         swiperOption: {
           direction: 'horizontal',
@@ -72,6 +74,26 @@
       }
     },
     methods: {
+      setIOType(codeNum){
+        /* 건물 외관 */
+        if(codeNum==='WDWS001'||codeNum==='WDWS002'||codeNum==='WDWS003'){
+          this.ioHeight=104
+          /* this.swiperOption.slidesPerView=3
+          this.swiperOption.breakpoints={
+            578: {
+              slidesPerView: 3
+            },
+            992: {
+              slidesPerView: 3
+            },
+            1200: {
+              slidesPerView: 3
+            }
+          } */
+        }else{
+          this.ioHeight=52
+        }
+      },
       setData(data){
         this.dataList=data
         if(data.length>0){
@@ -87,6 +109,7 @@
                 target.attr({"src":this.setRequire(this.dataList[i].icon_normal_url)})
               }
             }
+            this.imgResize(this.perRatio)
           },500)
         }
       },
@@ -131,10 +154,11 @@
         }
       },
       imgResize(perRatio){
+        this.perRatio=perRatio
         const len=this.dataList.length
         for (let i = 0; i < len; i++) {
           const target=$("#imgIcon"+i)
-          const hei=(52*perRatio).toFixed(3)
+          const hei=(this.ioHeight*perRatio).toFixed(3)
           target.width(hei).height(hei)
         }
       },

@@ -71,7 +71,7 @@ export default {
         const cha=Math.abs(this.currentCBWwid-cbw)
         if(cbw>0&&cha>3){
           this.currentCBWwid=cbw
-          this.perRatio=(this.currentCBWwid/imgMaxWid).toFixed(3)
+          this.perRatio=this.currentCBWwid/imgMaxWid
           this.$emit('img-resize',this.perRatio)
           this.resizeIO()
         }
@@ -103,6 +103,14 @@ export default {
       console.log(result)
       return result
     },
+    setIOType(codeNum){
+        /* 건물 외관 */
+        if(codeNum==='WDWS001'||codeNum==='WDWS002'||codeNum==='WDWS003'){
+          $(".cw_box").css('overflow-y','hidden')
+        }else{
+          $(".cw_box").css('overflow-y','auto')
+        }
+      },
     setData(cwData) {
       const dataMapping = (data) => {
         const result = []

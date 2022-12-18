@@ -46,6 +46,7 @@
         'listTitle':'패키지 자료',
         'listEmptyTxt':'현재 불러온 패키지가 없습니다.'
       }"
+      :dropMenuData="dropMenuData"
       :open="isShowOpenAddModal"
       @open-file-path="
         () => {
