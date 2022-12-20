@@ -81,7 +81,6 @@ export default {
       await apiLogin
         .getUserInfo()
         .then(({ data: { data } }) => {
-          console.log(data)
           this.$store.commit('common/setUserLogin')
           this.$store.commit('common/setUser', data)
 
@@ -109,7 +108,6 @@ export default {
     moveToHome() {
       const pathItem = this.authList.filter((item) => item.checked)[0]
       this.$store.commit('common/setUserIdentity', pathItem.account)
-      console.log(this.$store.state.common.user.ins_code)
       if (
         pathItem.account === 'I' &&
         this.$store.state.common.user.ins_code === null
