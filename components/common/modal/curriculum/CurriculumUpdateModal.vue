@@ -663,8 +663,6 @@ export default {
                 createAt: '',
                 isLeaf: false,
                 type: 'franchise',
-                linkIdx: 1,
-                isLink: true,
               },
               {
                 id: 2,
@@ -868,7 +866,7 @@ export default {
                 type: 'institution',
               },
               {
-                id: 2,
+                id: 1,
                 name: '영어 단어 퀴즈.quiz',
                 subject: '영어',
                 desc: '등록한 자료 1',
@@ -946,7 +944,7 @@ export default {
                 type: 'franchise',
               },
               {
-                id: 3,
+                id: 2,
                 name: '사회 쪽지시험 영상.youtube',
                 subject: '사회',
                 desc: '등록한 자료 1',
@@ -966,7 +964,7 @@ export default {
                 type: 'institution',
               },
               {
-                id: 4,
+                id: 3,
                 name: '과학 사이트 참고용.url',
                 subject: '과학',
                 desc: '등록한 자료 1',
@@ -986,7 +984,7 @@ export default {
                 type: 'franchise',
               },
               {
-                id: 5,
+                id: 4,
                 name: '수학 쪽지시험.test',
                 subject: '수학',
                 desc: '등록한 자료 1',

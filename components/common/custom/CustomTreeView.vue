@@ -290,11 +290,15 @@ export default {
       _dell(this.datas)
     },
     updateFile(data){
+      console.log('---')
+      console.log(data)
+      console.log(this.updateNode)
       for (const item in data) {
         if(item!=='parent'&&item!=='children'){
           this.updateNode[item] = data[item]
         }
       }
+      console.log('11  ',this.updateNode)
     },
     moreMenu({ e }) {
       this.$emit('un-active')
