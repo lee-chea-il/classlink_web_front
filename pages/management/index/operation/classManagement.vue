@@ -15,7 +15,7 @@
 
       <div class="tab-content depth03 ac_manage_cls">
         <!-- [개발참조] 등록된 학생이 없는 경우 -->
-        <div v-if="classListB.length === 0" class="nothing_txt">
+        <div v-if="classList === null" class="nothing_txt">
           <div class="txt">
             등록된 반이 없습니다.<br />
             먼저 반을 등록해주세요.
@@ -198,7 +198,7 @@
                   <td>
                     <i
                       class="btn icons_zoom_off"
-                      @click="getClassDetail(item.csm_idx)"
+                      @click="getClassDetail(item.csm_idx, item.csm_name)"
                     ></i>
                   </td>
                   <td>
@@ -214,19 +214,20 @@
             <nav aria-label="Page navigation example">
               <ul class="pagination">
                 <li class="page-item">
-                  <a class="page-link">
+                  <a class="page-link cursor" @click="onClickPrevPage">
                     <span class="previous"></span>
                   </a>
                 </li>
                 <li v-for="(item, idx) in endPage" :key="idx" class="page-item">
                   <a
-                    class="page-link"
+                    class="page-link cursor"
                     :class="{ active: currentPage === item }"
+                    @click="onClickCurrentPage(item)"
                     >{{ item }}</a
                   >
                 </li>
                 <li class="page-item">
-                  <a class="page-link">
+                  <a class="page-link cursor" @click="onClickNextPage">
                     <span class="next"></span>
                   </a>
                 </li>
@@ -249,6 +250,9 @@
       :modalModifyClassDetail="modalModifyClassDetail"
       :modalModifySelectDetail="modalModifySelectDetail"
       :studentTab="studentTab"
+      :className.sync="className"
+      :classTeacherSearch.sync="classTeacherSearch"
+      :classStudentSearch.sync="classStudentSearch"
       @add-selected-teacher="onClickAddSelectedTeacher"
       @delete-selected-teacher="onClickDeleteSelectedTeacher"
       @add-selected-student-all="onClickAddSelectedStudentAll"
@@ -260,19 +264,34 @@
       @modify-class-detail="onClickModalModifyClassDetail"
       @modify-selected-detail="onClickModalModifySelectedDetail"
       @move-student-tab="onMoveStudentTab"
+      @search-teacher="getSearchTeacher"
+      @search-student="getSearchStudent"
     />
 
     <!-- [개발참조] : 반 상세 모달에서 뜨는 2번째 팝업(학생상세 및 더보기 메뉴의 모달 팝업)은 겹치는 팝업이므로 class="double" 추가 필요 -->
     <!-- 반 상세 팝업 (팝업 L) -->
     <ClassDetailModal
-      :open="openClassDetailModal.open"
+      :open="openClassDetailModal"
       :classInfo="classInfo"
       :studentInfo="studentInfo"
       :modalDetailMore="modalDetailMore"
       :studentInfoModalDesc="studentInfoModalDesc"
       :nickNameCheck="nickNameCheck"
       :familySearchText="familySearchText"
+      :detailSearch.sync="detailSearch"
+      :sortDetailChange="sortDetailChange"
+      :sortCheckStd="sortCheckStd"
+      :sortStatus="sortStatus"
+      :onFilterCheckStdSort="onFilterCheckStdSort"
+      :detailCurrentPage="detailCurrentPage"
+      :detailEndPage="detailEndPage"
+      :next="onClickDetailNextPage"
+      :prev="onClickDetailPrevPage"
+      @current="onClickDetailCurrentPage"
       @close-modal="onCloseClassDetailModal"
+      @change-filter="onChangeDetailSort"
+      @change-check="onChangeCheckStdSort"
+      @change-status="onChangeStatusSort"
       @open="onOpenStudentInfoModalDesc"
       @close="onCloseStudentInfoModalDesc"
       @change-input="onChangeUpdateInput"
@@ -293,6 +312,7 @@
       @change-familyInput="onChangeFamilySearchInput"
       @search-family="onClickSearchBtn"
       @open-detail="onClickOpenDetailMore"
+      @search="onSearchFilterDetail"
     />
 
     <!-- 반관리-반이동 - 팝업 L -->
@@ -333,7 +353,7 @@ import ClassDetailModal from '@/components/common/modal/operation/ClassDetailMod
 import ClassMoveModal from '@/components/common/modal/operation/ClassMoveModal.vue'
 import DeleteModal from '@/components/lecturecourse/DeletePlanModal.vue'
 import CustomSnackbar from '@/components/common/CustomSnackbar.vue'
-import apiClassManagement from '@/services/apiClassManagement'
+import { apiClassManagement } from '~/services'
 export default {
   name: 'ClassManagement',
   components: {
@@ -352,7 +372,7 @@ export default {
       nickNameCheck: false,
       familySearchText: '',
       // 반 리스트
-      classList: [],
+      classList: null,
       classInfo: [],
       studentInfo: {
         id: 0,
@@ -380,120 +400,8 @@ export default {
       },
       studentTab: 0,
 
-      teacherList: [
-        {
-          id: 1,
-          name: '홍길동',
-        },
-        {
-          id: 2,
-          name: '길동홍',
-        },
-        {
-          id: 3,
-          name: '동홍길',
-        },
-      ],
-      studentList: {
-        gradeList: [
-          {
-            grade: '초1',
-            student: [
-              {
-                id: 1,
-                name: '홍미미',
-                grade: '초1',
-                class: '영어 심화 A반',
-              },
-              {
-                id: 2,
-                name: '이미미',
-                grade: '초1',
-                class: '영어 심화 A반',
-              },
-              {
-                id: 3,
-                name: '삼삼삼',
-                grade: '초1',
-                class: '영어 심화 B반',
-              },
-            ],
-          },
-          {
-            grade: '초2',
-            student: [
-              {
-                id: 1,
-                name: '홍미미',
-                grade: '초2',
-                class: '영어 심화 B반',
-              },
-              {
-                id: 2,
-                name: '이미르',
-                grade: '초2',
-                class: '영어 심화 A반',
-              },
-              {
-                id: 3,
-                name: '삼삼삼',
-                grade: '초2',
-                class: '영어 심화 B반',
-              },
-            ],
-          },
-        ],
-        classList: [
-          {
-            id: 1,
-            className: '영어 심화 A반',
-            student: [
-              {
-                id: 1,
-                name: '구글',
-                grade: '초2',
-                class: '영어 심화 A반',
-              },
-              {
-                id: 2,
-                name: 'ㄴㅇㅁㄹ',
-                grade: '초3',
-                class: '영어 심화 A반',
-              },
-              {
-                id: 3,
-                name: '삼삼삼',
-                grade: '초2',
-                class: '영어 심화 A반',
-              },
-            ],
-          },
-          {
-            id: 2,
-            className: '영어 심화 B반',
-            student: [
-              {
-                id: 1,
-                name: '이길동',
-                grade: '초1',
-                class: '영어 심화 A반',
-              },
-              {
-                id: 2,
-                name: '김철수',
-                grade: '초2',
-                class: '영어 심화 A반',
-              },
-              {
-                id: 3,
-                name: '사사사',
-                grade: '초2',
-                class: '영어 심화 A반',
-              },
-            ],
-          },
-        ],
-      },
+      teacherList: [],
+      studentList: {},
       selectedTeacher: [],
       selectedStudentAll: [],
 
@@ -511,9 +419,13 @@ export default {
       // 정렬
       sortTeacherSelect: '선생님 전체',
       sortNumberSelect: '10개씩 보기',
+      sortDetailChange: '최신 등록순',
+      detailFilter: 1,
+      sortCheckStd: true,
+      sortStatus: true,
 
       // 상세 모달 더보기
-      modalDetailMore: 0,
+      modalDetailMore: null,
 
       // 반 만들기/수정 반 학셍 학년, 반 상세
       modalModifyDetail: null,
@@ -542,6 +454,7 @@ export default {
       },
       openClassDetailModal: {
         open: false,
+        class: '',
       },
 
       openSnackbar: {
@@ -557,28 +470,44 @@ export default {
       classListB: [],
 
       ins_code: this.$store.state.common.user.ins_code,
+      fra_code: this.$store.state.common.user.fra_code,
+
+      // 반 등록 반이름
+      className: '',
+      // 반 등록 반 선생님 검색
+      classTeacherSearch: '',
+      // 반 등록 반 학생 검색
+      classStudentSearch: '',
 
       // 검색 반 이름 선택
       cond: true,
-
+      // 상세
+      csmIdx: null,
       // 선생님 선택
       tchIdx: 0,
 
       // 검색
       searchText: '',
+      detailSearch: '',
 
       // 페이지네이션
-      // 총 반 수
-      totalCount: 1,
-      startPage: 1,
+      // 페이지 수
       endPage: 1,
+      detailEndPage: 1,
       // 현재 페이지
       currentPage: 1,
+      detailCurrentPage: 1,
       // 보여지는 개수
       showCount: 1,
     }
   },
   watch: {
+    selectedStudentAll: {
+      handler() {
+        console.log(this.selectedStudentAll)
+      },
+      immediate: false,
+    },
     showCount: {
       handler() {
         this.getClassList()
@@ -591,36 +520,67 @@ export default {
       },
       immediate: false,
     },
-    cond: {
+    // cond: {
+    //   handler() {
+    //     this.getClassList()
+    //   },
+    //   immediate: false,
+    // },
+    currentPage: {
       handler() {
         this.getClassList()
+      },
+      immediate: false,
+    },
+
+    detailFilter: {
+      handler() {
+        this.onSearchFilterDetail()
+      },
+      immediate: false,
+    },
+    sortStatus: {
+      handler() {
+        this.onSearchFilterDetail()
+      },
+      immediate: false,
+    },
+    detailCurrentPage: {
+      handler() {
+        this.onSearchFilterDetail()
+      },
+      immediate: false,
+    },
+    sortCheckStd: {
+      handler() {
+        this.onSearchFilterDetail()
       },
       immediate: false,
     },
   },
   mounted() {
     this.getClassList()
+    this.getSearchTeacher()
+    this.getSearchStudent()
   },
   methods: {
+    // 반 리스트 api
     async getClassList() {
       const payload = {
         cond: this.cond === true ? '' : `&cond=${this.cond}`,
-        currentPage: this.currentPage,
+        current_page: this.currentPage,
         search: this.searchText === '' ? '' : `&search=${this.searchText}`,
-        showCount: this.showCount === 1 ? '' : `&show_count=${this.showCount}`,
-        tchIdx: this.tchIdx === 0 ? '' : `&tch_idx=${this.tchIdx}`,
+        show_count: this.showCount === 1 ? '' : `&show_count=${this.showCount}`,
+        tch_idx: this.tchIdx === 0 ? '' : `&tch_idx=${this.tchIdx}`,
       }
 
       await apiClassManagement
         .getClassList(this.ins_code, payload)
         .then(({ data: { data } }) => {
           this.classList = data.banList
+          this.endPage = data.pageMaker.end_page
           // if (this.classListB === []) {
-          this.classListB = data.banList
-          this.teacherList = data.banList.filter(
-            (v, i) =>
-              this.classList.findIndex((x) => x.mem_name === v.mem_name) === i
-          )
+          // this.classListB = data.banList
           // }
         })
         .catch((err) => {
@@ -628,13 +588,34 @@ export default {
         })
     },
 
-    async getClassDetail(csm_idx) {
+    // 상세 api
+    async getClassDetail(csm_idx, classroom) {
+      this.onInitDetailFilterSearch()
+
+      this.csmIdx = csm_idx
+      const payload = {
+        csm_idx: this.csmIdx,
+        ins_code: this.ins_code,
+        search: this.detailSearch === '' ? '' : `&search=${this.detailSearch}`,
+        filter: this.detailFilter === 1 ? '' : `&filter=${this.detailFilter}`,
+        check_std:
+          this.sortCheckStd === true ? '' : `&check_std=${this.sortCheckStd}`,
+        status: this.sortStatus === true ? '' : `&status=${this.sortStatus}`,
+        current_page:
+          this.detailCurrentPage === 1
+            ? ''
+            : `&current_page=${this.detailCurrentPage}`,
+      }
+
       await apiClassManagement
-        .getClassDetail(csm_idx, this.ins_code)
+        .getClassDetail(payload)
         .then(({ data: { data } }) => {
           console.log(data)
-          this.modalDetailMore = 0
+          this.modalDetailMore = null
           this.classInfo = data.dtoList
+
+          this.detailEndPage = data.pageMaker.end_page
+          this.openClassDetailModal.class = classroom
           this.onOpenClassDetailModal()
         })
         .catch((err) => {
@@ -642,9 +623,151 @@ export default {
         })
     },
 
-    // 페이지네이션
+    // 상세모달 학생검색/필터
+    async onSearchFilterDetail() {
+      const payload = {
+        csm_idx: this.csmIdx,
+        ins_code: this.ins_code,
+        search: this.detailSearch === '' ? '' : `&search=${this.detailSearch}`,
+        filter: this.detailFilter === 1 ? '' : `&filter=${this.detailFilter}`,
+        check_std:
+          this.sortCheckStd === true ? '' : `&check_std=${this.sortCheckStd}`,
+        status: this.sortStatus === true ? '' : `&status=${this.sortStatus}`,
+        current_page:
+          this.detailCurrentPage === 1
+            ? ''
+            : `&current_page=${this.detailCurrentPage}`,
+      }
+
+      await apiClassManagement
+        .getClassDetail(payload)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          this.modalDetailMore = null
+          this.classInfo = data.dtoList
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 상세 필터/검색 값 초기화
+    onInitDetailFilterSearch() {
+      this.detailFilter = 1
+      this.detailSearch = ''
+      this.sortDetailChange = '최신 등록순'
+      this.sortCheckStd = true
+      this.sortStatus = true
+      this.detailCurrentPage = 1
+      this.openClassDetailModal.class = ''
+    },
+
+    // 반 등록
+    // 반 선생님 검색
+    async getSearchTeacher() {
+      const payload = {
+        ins_code: this.ins_code,
+        search:
+          this.classTeacherSearch === ''
+            ? ''
+            : `&search=${this.classTeacherSearch}`,
+      }
+
+      await apiClassManagement
+        .getSearchTeacher(payload)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          this.teacherList = data
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    async getSearchStudent() {
+      const payload = {
+        ins_code: this.ins_code,
+        search:
+          this.classStudentSearch === ''
+            ? ''
+            : `&search=${this.classStudentSearch}`,
+      }
+
+      await apiClassManagement
+        .getSearchStudent(payload)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          this.studentList = data
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    async postRegistClass() {
+      const payload = {
+        csm_name: this.className,
+        fra_code: this.fra_code,
+        ins_code: this.ins_code,
+        studentList: [
+          {
+            itm_idx: 0,
+            mem_idx: 0,
+            mem_name: '',
+            std_idx: 0,
+          },
+        ],
+        teacherList: [
+          {
+            mem_idx: 0,
+            mem_name: '',
+            tch_idx: 0,
+          },
+        ],
+      }
+
+      await apiClassManagement
+        .postRegistClass(payload)
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
+    // 리스트 페이지네이션
     onClickNextPage() {
-      this.currentPage = this.currentPage + 1
+      if (this.currentPage >= this.endPage) {
+        return false
+      } else {
+        this.currentPage = this.currentPage + 1
+      }
+    },
+    onClickPrevPage() {
+      if (this.currentPage <= 1) {
+        return false
+      } else {
+        this.currentPage = this.currentPage - 1
+      }
+    },
+    onClickCurrentPage(page) {
+      this.currentPage = page
+    },
+    // 상세 페이지네이션
+    onClickDetailNextPage() {
+      if (this.detailCurrentPage >= this.detailEndPage) {
+        return false
+      } else {
+        this.detailCurrentPage = this.detailCurrentPage + 1
+      }
+    },
+    onClickDetailPrevPage() {
+      if (this.detailCurrentPage <= 1) {
+        return false
+      } else {
+        this.detailCurrentPage = this.detailCurrentPage - 1
+      }
+    },
+    onClickDetailCurrentPage(page) {
+      this.detailCurrentPage = page
     },
 
     // 검색 라디오 버튼
@@ -700,16 +823,10 @@ export default {
       this.openClassMove.open = false
     },
 
-    onClickClassInfo(data, csm_idx) {
-      this.modalDetailMore = 0
-      this.classInfo = data
-      console.log(this.classInfo)
-      this.getClassDetail(csm_idx)
-      this.onOpenClassDetailModal()
-    },
     onClickOpenDetailMore(id) {
+      console.log(id)
       if (this.modalDetailMore === id) {
-        this.modalDetailMore = 0
+        this.modalDetailMore = null
       } else {
         this.modalDetailMore = id
       }
@@ -913,8 +1030,9 @@ export default {
     },
     // 반 학생 학년 추가/삭제 (학년 전체)
     onClickAddSelectedStudentAll(data) {
-      for (let i = 0; i < data.student.length; i++) {
-        this.onClickAddSelectedStudent(data.student[i])
+      console.log(data)
+      for (let i = 0; i < data.studentList.length; i++) {
+        this.onClickAddSelectedStudent(data.studentList[i], data.std_year)
       }
     },
     onClickDeleteSelectedStudentAll(data) {
@@ -923,24 +1041,23 @@ export default {
       )
     },
     // 반 학생 반 학년 추가/삭제 (개인)
-    onClickAddSelectedStudent(data) {
+    onClickAddSelectedStudent(data, stdYear) {
       if (
-        this.selectedStudentAll.find((e) => e.grade === data.grade) ===
-        undefined
+        this.selectedStudentAll.find((e) => e.grade === stdYear) === undefined
       ) {
         const student = {
-          grade: data.grade,
+          grade: stdYear,
           student: [data],
         }
         this.selectedStudentAll.push(student)
       } else {
         const students = this.selectedStudentAll.find(
-          (e) => e.grade === data.grade
+          (e) => e.grade === stdYear
         )
 
         if (
           !this.selectedStudentAll
-            .find((e) => e.grade === data.grade)
+            .find((e) => e.grade === stdYear)
             .student.includes(data)
         ) {
           students.student.push(data)
@@ -1010,7 +1127,37 @@ export default {
       } else {
         this.showCount = 3
       }
-      // this.getClassList()
+    },
+    onChangeDetailSort(num) {
+      this.detailFilter = num
+      if (num === 1) {
+        this.sortDetailChange = '최신 등록순'
+      } else if (num === 2) {
+        this.sortDetailChange = '이름 오름차순'
+      } else if (num === 3) {
+        this.sortDetailChange = '이름 내림차순'
+      } else if (num === 4) {
+        this.sortDetailChange = '학년 오름차순'
+      } else {
+        this.sortDetailChange = '학년 내림차순'
+      }
+    },
+    onChangeCheckStdSort(std) {
+      this.sortCheckStd = std
+    },
+    onFilterCheckStdSort() {
+      let result = ''
+      if (this.sortCheckStd === true) {
+        result = '학생'
+      } else if (this.sortCheckStd === false) {
+        result = '학부모'
+      } else if (this.sortCheckStd === null) {
+        result = '학부모&학생'
+      }
+      return result
+    },
+    onChangeStatusSort(active) {
+      this.sortStatus = active
     },
 
     // 반 이동 모달

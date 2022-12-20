@@ -106,7 +106,7 @@
 <script>
 import FranchiseSignupModal from '@/components/common/modal/franchise/FranchiseSignUpModal.vue'
 import iconThumbnail from '@/assets/images/icons/icon_thumbnail_blue.svg'
-import apiFranchise from '@/services/apiFranchise'
+import { apiFranchise } from '~/services'
 export default {
   name: 'List',
   components: {

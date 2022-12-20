@@ -21,13 +21,14 @@
     gap: 10px;
     background: rgba(255, 255, 255, 0.5);
     border-radius: 20px;
+    margin-top: 5px;
   }
 
   .course_info {
     font-weight: 400;
     font-size: 12px;
     line-height: 17px;
-    margin: 20px 0;
+    margin: 5px 0;
   }
 
   .cards_section .course_bgcolor01 {
@@ -47,9 +48,11 @@
 
   .cards_section .card {
     width: 220px;
-    height: 180px;
+    height: 230px;
     margin: 22px 14px;
-
+    justify-content: center;
+    overflow-y: auto;
+    // padding-top: 60px;
   }
 
   .course_bgcolor02 {
@@ -193,11 +196,12 @@
     }
 
     .notice_title {
-      width: 58%;
+      width: 48%;
+      text-align: left;
     }
 
     .notice_day02 {
-      width: 16%;
+      width: 26%;
     }
 
     .notice_writer {
@@ -384,11 +388,23 @@
   }
 
   .notice_title {
-    width: 58%;
+    width: 49%;
+  }
+
+  .submit_work {
+    .notice_title {
+      width: 48%;
+      text-align: left;
+    }
+
+    .notice_day02 {
+      width: 27%;
+    }
+
   }
 
   .notice_day02 {
-    width: 16%;
+    width: 26%;
   }
 
   .notice_writer {

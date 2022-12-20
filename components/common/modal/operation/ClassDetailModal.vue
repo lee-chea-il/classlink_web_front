@@ -1,7 +1,7 @@
 <template>
   <Transition name="modal">
     <div
-      v-show="open"
+      v-show="open.open"
       id="modalClassDetail"
       class="modal modal_ac_manage_cls modal-mask"
       tabindex="-1"
@@ -14,7 +14,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 id="exampleModalLabel" class="modal-title">
-              {{ classInfo?.class }}
+              {{ open.class }}
             </h5>
             <button type="button" class="close" @click="$emit('close-modal')">
               <i class="icons_close"></i>
@@ -33,14 +33,34 @@
                       data-toggle="dropdown"
                       aria-expanded="false"
                     >
-                      최신 등록순
+                      {{ sortDetailChange }}
                     </button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item">최신 등록순</a>
-                      <a class="dropdown-item">이름 오름차순</a>
-                      <a class="dropdown-item">이름 내림차순</a>
-                      <a class="dropdown-item">학년 오름차순</a>
-                      <a class="dropdown-item">학년 내림차순</a>
+                      <a
+                        class="dropdown-item cursor"
+                        @click="$emit('change-filter', 1)"
+                        >최신 등록순</a
+                      >
+                      <a
+                        class="dropdown-item cursor"
+                        @click="$emit('change-filter', 2)"
+                        >이름 오름차순</a
+                      >
+                      <a
+                        class="dropdown-item cursor"
+                        @click="$emit('change-filter', 3)"
+                        >이름 내림차순</a
+                      >
+                      <a
+                        class="dropdown-item cursor"
+                        @click="$emit('change-filter', 4)"
+                        >학년 오름차순</a
+                      >
+                      <a
+                        class="dropdown-item cursor"
+                        @click="$emit('change-filter', 5)"
+                        >학년 내림차순</a
+                      >
                     </div>
                   </div>
                   <div class="dropdown form-inline">
@@ -50,12 +70,24 @@
                       data-toggle="dropdown"
                       aria-expanded="false"
                     >
-                      학생
+                      {{ onFilterCheckStdSort() }}
                     </button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item">학생</a>
-                      <a class="dropdown-item">학부모</a>
-                      <a class="dropdown-item">학부모&학생</a>
+                      <a
+                        class="dropdown-item cursor"
+                        @click="$emit('change-check', true)"
+                        >학생</a
+                      >
+                      <a
+                        class="dropdown-item cursor"
+                        @click="$emit('change-check', false)"
+                        >학부모</a
+                      >
+                      <a
+                        class="dropdown-item cursor"
+                        @click="$emit('change-check', null)"
+                        >학부모&학생</a
+                      >
                     </div>
                   </div>
                   <div class="dropdown form-inline">
@@ -65,10 +97,15 @@
                       data-toggle="dropdown"
                       aria-expanded="false"
                     >
-                      활성화
+                      {{ sortStatus ? '활성화' : '비활성화' }}
                     </button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item">비활성화</a>
+                      <a
+                        class="dropdown-item cursor"
+                        @click="$emit('change-status', !sortStatus)"
+                      >
+                        {{ sortStatus ? '비활성화' : '활성화' }}
+                      </a>
                     </div>
                   </div>
                   <div class="dropdown form-inline">
@@ -81,7 +118,7 @@
                       재원
                     </button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item">퇴원</a>
+                      <a class="dropdown-item cursor">퇴원</a>
                     </div>
                   </div>
                   <div class="info_txt">{{ classInfo.length }}명</div>
@@ -89,14 +126,17 @@
                 <div class="right_area">
                   <div class="input-group input-search form-inline">
                     <input
+                      v-model="syncedStudentSearch"
                       type="text"
                       class="form-control"
                       placeholder="학생 이름 검색"
+                      @keyup.enter="$emit('search')"
                     />
                     <div class="input-group-append">
                       <button
                         class="btn icons_search_off"
                         type="button"
+                        @click="$emit('search')"
                       ></button>
                     </div>
                   </div>
@@ -135,12 +175,9 @@
                       <td>
                         <i
                           class="btn icons_mu_off more_mu"
-                          @click="$emit('open-detail', item.id)"
+                          @click="$emit('open-detail', idx)"
                         >
-                          <div
-                            v-if="modalDetailMore === item.id"
-                            class="more_list"
-                          >
+                          <div v-if="modalDetailMore === idx" class="more_list">
                             <ul>
                               <li
                                 data-toggle="modal"
@@ -180,21 +217,24 @@
                 <nav aria-label="Page navigation example">
                   <ul class="pagination">
                     <li class="page-item">
-                      <a class="page-link" href="#">
+                      <a class="page-link cursor" @click="prev">
                         <span class="previous"></span>
                       </a>
                     </li>
-                    <li class="page-item">
-                      <a class="page-link active" href="#">1</a>
+                    <li
+                      v-for="(item, idx) in detailEndPage"
+                      :key="idx"
+                      class="page-item"
+                    >
+                      <a
+                        class="page-link cursor"
+                        :class="{ active: detailCurrentPage === item }"
+                        @click="$emit('current', item)"
+                        >{{ item }}</a
+                      >
                     </li>
                     <li class="page-item">
-                      <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">
+                      <a class="page-link cursor" @click="next">
                         <span class="next"></span>
                       </a>
                     </li>
@@ -246,8 +286,8 @@ export default {
   },
   props: {
     open: {
-      type: Boolean,
-      default: false,
+      type: Object,
+      default: () => {},
     },
     classInfo: {
       type: Array,
@@ -273,8 +313,58 @@ export default {
       type: String,
       default: '',
     },
+    detailSearch: {
+      type: String,
+      default: '',
+    },
+    sortDetailChange: {
+      type: String,
+      default: '',
+    },
+    sortCheckStd: {
+      type: Boolean,
+      default: true,
+    },
+    sortStatus: {
+      type: Boolean,
+      default: true,
+    },
+    onFilterCheckStdSort: {
+      type: Function,
+      default: () => {},
+    },
+    detailCurrentPage: {
+      type: Number,
+      default: 1,
+    },
+    detailEndPage: {
+      type: Number,
+      default: 1,
+    },
+    next: {
+      type: Function,
+      default: () => {},
+    },
+    prev: {
+      type: Function,
+      default: () => {},
+    },
+  },
+  computed: {
+    syncedStudentSearch: {
+      get() {
+        return this.detailSearch
+      },
+      set(value) {
+        this.$emit('update:detailSearch', value)
+      },
+    },
   },
 }
 </script>
 
-<style></style>
+<style scoped>
+.cursor {
+  cursor: pointer;
+}
+</style>

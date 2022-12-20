@@ -27,10 +27,10 @@
                 <label for="input00">반 이름</label>
                 <input
                   id="input00"
+                  v-model="syncClassName"
                   type="text"
                   class="form-control form-inline"
                   placeholder="반 이름을 입력해 주세요."
-                  value="심화 A반"
                 />
               </div>
             </div>
@@ -43,9 +43,11 @@
                   <div class="list_section">
                     <div class="input-group input-search">
                       <input
+                        v-model="syncClassTeacherSearch"
                         type="text"
                         placeholder="선생님 이름"
                         class="form-control"
+                        @keyup.enter="$emit('search-teacher')"
                       />
                       <div class="input-group-append">
                         <button
@@ -55,6 +57,7 @@
                         <button
                           class="btn icons_search_off"
                           type="button"
+                          @click="$emit('search-teacher')"
                         ></button>
                       </div>
                     </div>
@@ -69,7 +72,7 @@
                       <!-- /.등록된 데이터 없는 경우 -->
                       <ul v-else>
                         <li v-for="(item, idx) in teacherList" :key="idx">
-                          <span class="text">{{ item.name }} 선생님</span>
+                          <span class="text">{{ item.mem_name }} 선생님</span>
                           <i
                             class="icons_plus_circle_off"
                             @click="$emit('add-selected-teacher', item)"
@@ -97,7 +100,7 @@
                       <!-- /.등록된 데이터 없는 경우 -->
                       <ul v-else>
                         <li v-for="(item, idx) in selectedTeacher" :key="idx">
-                          <span class="text">{{ item.name }} 선생님</span>
+                          <span class="text">{{ item.mem_name }} 선생님</span>
                           <i
                             class="icons_minus_circle_off"
                             @click="$emit('delete-selected-teacher', item)"
@@ -124,9 +127,11 @@
                   <div class="list_section selected">
                     <div class="input-group input-search">
                       <input
+                        v-model="syncClassStudentSearch"
                         type="text"
                         placeholder="학생 이름"
                         class="form-control"
+                        @keyup.enter="$emit('search-student')"
                       />
                       <div class="input-group-append">
                         <button
@@ -136,6 +141,7 @@
                         <button
                           class="btn icons_search_off"
                           type="button"
+                          @click="$emit('search-student')"
                         ></button>
                       </div>
                     </div>
@@ -145,13 +151,10 @@
                         <li class="nav-item" role="presentation">
                           <button
                             id="grade-tab"
-                            class="nav-link active"
-                            data-toggle="tab"
-                            data-target="#grade"
+                            class="nav-link"
+                            :class="{ active: studentTab === 0 }"
                             type="button"
                             role="tab"
-                            aria-controls="home"
-                            aria-selected="true"
                             @click="$emit('move-student-tab', 0)"
                           >
                             학년
@@ -161,12 +164,9 @@
                           <button
                             id="class-tab"
                             class="nav-link"
-                            data-toggle="tab"
-                            data-target="#class"
+                            :class="{ active: studentTab === 1 }"
                             type="button"
                             role="tab"
-                            aria-controls="profile"
-                            aria-selected="false"
                             @click="$emit('move-student-tab', 1)"
                           >
                             반
@@ -178,8 +178,8 @@
                         <div
                           v-if="
                             studentTab === 0
-                              ? studentList.gradeList.length === 0
-                              : studentList.classList.length === 0
+                              ? studentList.banList.length === 0
+                              : studentList.gradeList.length === 0
                           "
                           class="nothing_txt"
                         >
@@ -193,7 +193,7 @@
                         <div
                           v-else-if="studentTab === 0"
                           id="grade"
-                          class="tab-pane fade show active"
+                          class="tab-pane active"
                           role="tabpanel"
                           aria-labelledby="grade-tab"
                         >
@@ -214,9 +214,9 @@
                                   @click="$emit('modify-detail', idx)"
                                 ></i>
                                 <span class="text">
-                                  {{ item.grade }}
+                                  {{ item.std_year }}
                                   <span class="ss_txt">
-                                    {{ item.student.length }}명
+                                    {{ item.std_num }}명
                                   </span>
                                 </span>
                                 <i
@@ -234,14 +234,20 @@
                               >
                                 <ul>
                                   <li
-                                    v-for="(items, id) in item.student"
+                                    v-for="(items, id) in item.studentList"
                                     :key="id"
                                   >
-                                    <span class="text">{{ items.name }}</span>
+                                    <span class="text">{{
+                                      items.mem_name
+                                    }}</span>
                                     <i
                                       class="icons_plus_circle_off"
                                       @click="
-                                        $emit('add-selected-student', items)
+                                        $emit(
+                                          'add-selected-student',
+                                          items,
+                                          item.std_year
+                                        )
                                       "
                                     ></i>
                                   </li>
@@ -256,13 +262,12 @@
                         <div
                           v-else
                           id="class"
-                          class="tab-pane fade"
                           role="tabpanel"
                           aria-labelledby="class-tab"
                         >
                           <ul>
                             <li
-                              v-for="(item, idx) in studentList.classList"
+                              v-for="(item, idx) in studentList.banList"
                               :key="idx"
                             >
                               <div class="list">
@@ -277,11 +282,11 @@
                                   @click="$emit('modify-class-detail', idx)"
                                 ></i>
                                 <span class="text"
-                                  >{{ item.className
-                                  }}<span class="ss_txt"
-                                    >{{ item.student.length }}명</span
-                                  ></span
-                                >
+                                  >{{ item.csm_name
+                                  }}<span class="ss_txt">
+                                    {{ item.studentList.length }}명
+                                  </span>
+                                </span>
                                 <i
                                   class="icons_plus_circle_off"
                                   @click="
@@ -297,14 +302,20 @@
                               >
                                 <ul>
                                   <li
-                                    v-for="(items, id) in item.student"
+                                    v-for="(items, id) in item.studentList"
                                     :key="id"
                                   >
-                                    <span class="text">{{ items.name }}</span>
+                                    <span class="text">{{
+                                      items.mem_name
+                                    }}</span>
                                     <i
                                       class="icons_plus_circle_off"
                                       @click="
-                                        $emit('add-selected-student', items)
+                                        $emit(
+                                          'add-selected-student',
+                                          items,
+                                          item.std_year
+                                        )
                                       "
                                     ></i>
                                   </li>
@@ -373,7 +384,7 @@
                           >
                             <ul>
                               <li v-for="(items, id) in item.student" :key="id">
-                                <span class="text">{{ items.name }}</span>
+                                <span class="text">{{ items.mem_name }}</span>
                                 <i
                                   class="icons_minus_circle_off"
                                   @click="
@@ -448,6 +459,44 @@ export default {
     studentTab: {
       type: Number,
       default: 0,
+    },
+    className: {
+      type: String,
+      default: '',
+    },
+    classTeacherSearch: {
+      type: String,
+      default: '',
+    },
+    classStudentSearch: {
+      type: String,
+      default: '',
+    },
+  },
+  computed: {
+    syncClassName: {
+      get() {
+        return this.className
+      },
+      set(value) {
+        this.$emit('update:className', value)
+      },
+    },
+    syncClassTeacherSearch: {
+      get() {
+        return this.classTeacherSearch
+      },
+      set(value) {
+        this.$emit('update:classTeacherSearch', value)
+      },
+    },
+    syncClassStudentSearch: {
+      get() {
+        return this.classStudentSearch
+      },
+      set(value) {
+        this.$emit('update:classStudentSearch', value)
+      },
     },
   },
 }

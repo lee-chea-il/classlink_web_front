@@ -1954,12 +1954,13 @@ ol {
   gap: 10px;
   background: rgba(255, 255, 255, 0.5);
   border-radius: 20px;
+  margin-top: 5px;
 }
 .ac_manage_course .course_info {
   font-weight: 400;
   font-size: 12px;
   line-height: 17px;
-  margin: 20px 0;
+  margin: 5px 0;
 }
 .ac_manage_course .cards_section .course_bgcolor01 {
   background: #D1DBFF;
@@ -1976,8 +1977,10 @@ ol {
 }
 .ac_manage_course .cards_section .card {
   width: 220px;
-  height: 180px;
+  height: 230px;
   margin: 22px 14px;
+  justify-content: center;
+  overflow-y: auto;
 }
 .ac_manage_course .course_bgcolor02 {
   background: #E7EDFF;
@@ -2087,10 +2090,11 @@ ol {
   width: 9%;
 }
 #modalTaskDetail .title_area .notice_title {
-  width: 58%;
+  width: 48%;
+  text-align: left;
 }
 #modalTaskDetail .title_area .notice_day02 {
-  width: 16%;
+  width: 26%;
 }
 #modalTaskDetail .title_area .notice_writer {
   width: 16%;
@@ -2244,10 +2248,17 @@ ol {
   width: 9%;
 }
 #modalTaskView .notice_title {
-  width: 58%;
+  width: 49%;
+}
+#modalTaskView .submit_work .notice_title {
+  width: 48%;
+  text-align: left;
+}
+#modalTaskView .submit_work .notice_day02 {
+  width: 27%;
 }
 #modalTaskView .notice_day02 {
-  width: 16%;
+  width: 26%;
 }
 #modalTaskView .notice_writer {
   width: 16%;
