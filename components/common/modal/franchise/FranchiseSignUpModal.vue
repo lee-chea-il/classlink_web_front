@@ -24,6 +24,7 @@
               <input
                 v-model="syncedCodeSearch"
                 type="text"
+                maxlength="13"
                 class="form-control"
                 placeholder="가맹코드 검색"
                 @keyup.enter="$emit('search')"
@@ -37,16 +38,22 @@
                 ></button>
               </div>
             </div>
-            <div class="preview">
-              <i class="icons_thumbnail"></i>
+            <div v-if="searchFranchise !== null" class="preview">
+              <i
+                class="icons_thumbnail"
+                :style="`background-image: url(${searchFranchise?.fra_img})`"
+              ></i>
             </div>
-            <div>
+            <div v-if="searchFranchise !== null">
               찾으시는 프랜차이즈가 맞다면 <br />
               가입을 요청해주세요.
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn_crud_point" data-dismiss="modal">
+            <button
+              class="btn btn_crud_point"
+              :disabled="searchFranchise === null"
+            >
               가입요청
             </button>
           </div>
@@ -68,11 +75,20 @@ export default {
       type: String,
       default: '',
     },
+    searchFranchise: {
+      type: Object,
+      default: () => {},
+    },
   },
   computed: {
     syncedCodeSearch: {
       get() {
         return this.codeSearch
+          .replace(/[^0-9]/g, '')
+          .replace(/^(\d{0,2})(\d{0,5})(\d{0,4})$/g, '$1-$2-$3')
+          .replace(/(-{1,2})$/g, '')
+          .replace(/ /g, '')
+          .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
       },
       set(value) {
         this.$emit('update:codeSearch', value)

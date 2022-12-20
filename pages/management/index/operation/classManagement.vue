@@ -15,7 +15,7 @@
 
       <div class="tab-content depth03 ac_manage_cls">
         <!-- [개발참조] 등록된 학생이 없는 경우 -->
-        <div v-if="classList.length === 0" class="nothing_txt">
+        <div v-if="classListB.length === 0" class="nothing_txt">
           <div class="txt">
             등록된 반이 없습니다.<br />
             먼저 반을 등록해주세요.
@@ -65,16 +65,17 @@
                   {{ sortTeacherSelect }}
                 </button>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" @click="onChangeTeacherSort"
-                    >선생님 전체</a
-                  >
+                  <a class="dropdown-item cursor" @click="onChangeTeacherSort">
+                    선생님 전체
+                  </a>
                   <a
-                    v-for="(item, idx) in classList"
+                    v-for="(item, idx) in teacherList"
                     :key="idx"
-                    class="dropdown-item"
-                    @click="onChangeTeacherSort"
-                    >{{ item.teacher }} 선생님</a
+                    class="dropdown-item cursor"
+                    @click="onChangeTeacherSort($event, item.tch_idx)"
                   >
+                    {{ item.mem_name }} 선생님
+                  </a>
                 </div>
               </div>
               <div class="dropdown form-inline">
@@ -87,13 +88,13 @@
                   {{ sortNumberSelect }}
                 </button>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" @click="onChangeNumberSort"
+                  <a class="dropdown-item cursor" @click="onChangeNumberSort"
                     >10개씩 보기</a
                   >
-                  <a class="dropdown-item" @click="onChangeNumberSort"
+                  <a class="dropdown-item cursor" @click="onChangeNumberSort"
                     >100개씩 보기</a
                   >
-                  <a class="dropdown-item" @click="onChangeNumberSort"
+                  <a class="dropdown-item cursor" @click="onChangeNumberSort"
                     >200개씩 보기</a
                   >
                 </div>
@@ -107,6 +108,7 @@
                   name="radio00"
                   class="custom-control-input"
                   checked
+                  @input="searchRadio(true)"
                 />
                 <label class="custom-control-label" for="radio01">반</label>
               </div>
@@ -116,16 +118,20 @@
                   type="radio"
                   name="radio00"
                   class="custom-control-input"
+                  @input="searchRadio(false)"
                 />
                 <label class="custom-control-label" for="radio02">이름</label>
+                <!-- <label class="custom-control-label" for="radio02">학생</label> -->
               </div>
               <div class="input-group input-search form-inline">
                 <input
+                  v-model="searchText"
                   type="text"
                   placeholder="반 이름 검색"
                   class="form-control"
+                  @keyup.enter="getClassList"
                 />
-                <div class="input-group-append">
+                <div class="input-group-append" @click="getClassList">
                   <button class="btn icons_search_off" type="button"></button>
                 </div>
               </div>
@@ -180,9 +186,9 @@
                       <label class="custom-control-label" :for="idx"></label>
                     </div>
                   </td>
-                  <td>{{ item.class }}</td>
-                  <td>{{ item.studentList.length }}</td>
-                  <td>{{ item.teacher }} 선생님</td>
+                  <td>{{ item.csm_name }}</td>
+                  <td>{{ item.std_num }}</td>
+                  <td>{{ item.mem_name }} 선생님</td>
                   <td>
                     <i
                       class="btn icons_pencil_off"
@@ -192,9 +198,7 @@
                   <td>
                     <i
                       class="btn icons_zoom_off"
-                      data-toggle="modal"
-                      data-target="#modalClassDetail"
-                      @click="onClickClassInfo(item)"
+                      @click="getClassDetail(item.csm_idx)"
                     ></i>
                   </td>
                   <td>
@@ -210,17 +214,19 @@
             <nav aria-label="Page navigation example">
               <ul class="pagination">
                 <li class="page-item">
-                  <a class="page-link" href="#">
+                  <a class="page-link">
                     <span class="previous"></span>
                   </a>
                 </li>
-                <li class="page-item">
-                  <a class="page-link active" href="#">1</a>
+                <li v-for="(item, idx) in endPage" :key="idx" class="page-item">
+                  <a
+                    class="page-link"
+                    :class="{ active: currentPage === item }"
+                    >{{ item }}</a
+                  >
                 </li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
                 <li class="page-item">
-                  <a class="page-link" href="#">
+                  <a class="page-link">
                     <span class="next"></span>
                   </a>
                 </li>
@@ -259,12 +265,14 @@
     <!-- [개발참조] : 반 상세 모달에서 뜨는 2번째 팝업(학생상세 및 더보기 메뉴의 모달 팝업)은 겹치는 팝업이므로 class="double" 추가 필요 -->
     <!-- 반 상세 팝업 (팝업 L) -->
     <ClassDetailModal
+      :open="openClassDetailModal.open"
       :classInfo="classInfo"
       :studentInfo="studentInfo"
       :modalDetailMore="modalDetailMore"
       :studentInfoModalDesc="studentInfoModalDesc"
       :nickNameCheck="nickNameCheck"
       :familySearchText="familySearchText"
+      @close-modal="onCloseClassDetailModal"
       @open="onOpenStudentInfoModalDesc"
       @close="onCloseStudentInfoModalDesc"
       @change-input="onChangeUpdateInput"
@@ -325,6 +333,7 @@ import ClassDetailModal from '@/components/common/modal/operation/ClassDetailMod
 import ClassMoveModal from '@/components/common/modal/operation/ClassMoveModal.vue'
 import DeleteModal from '@/components/lecturecourse/DeletePlanModal.vue'
 import CustomSnackbar from '@/components/common/CustomSnackbar.vue'
+import apiClassManagement from '@/services/apiClassManagement'
 export default {
   name: 'ClassManagement',
   components: {
@@ -343,290 +352,8 @@ export default {
       nickNameCheck: false,
       familySearchText: '',
       // 반 리스트
-      classList: [
-        {
-          class: '심화A반',
-          personnel: 24,
-          teacher: '홍길동',
-          studentList: [
-            {
-              id: 1,
-              identity: ['학생', '학부모'],
-              status: true,
-              new: false,
-              grade: '중1',
-              grade_type: 0,
-              class: ['심화A반'],
-              name: '홍길동',
-              nickname: 'cocotee',
-              family: [
-                {
-                  id: 0,
-                  identity: '학생',
-                  status: '재원',
-                  grade: '중1',
-                  name: '홍길동',
-                  nickname: '길동쓰',
-                  family: '홍길순, 홍길삼, 홍길사, 홍길오, 홍길육',
-                  account: 'rlfehd1004',
-                  phone: '010-1234-1234',
-                  parent_phone: '010-1234-1111',
-                  gender: '남',
-                },
-              ],
-              account: 'rlfehd1004',
-              phone: '010-1234-1234',
-              parent_phone: '010-1234-1111',
-              gender: 0,
-              student_status: false,
-              school: '스노우',
-              attendance_num: '12345',
-              created_at: '2022.11.22',
-              lecture_date: '2022.11.30',
-              birthday: '2022.11.01',
-              email: 'test@naver.com',
-              profile_image: require('@/assets/images/mypage/profile1.png'),
-              lectureInfo: [
-                '영어리딩심화 | 심화 A반',
-                '영어리딩심화 | 심화 B반',
-                '영어리딩심화 | 심화 C반',
-              ],
-            },
-            {
-              id: 2,
-              identity: ['학생', '학부모'],
-              status: true,
-              new: false,
-              grade: '중1',
-              grade_type: 0,
-              class: ['심화A반'],
-              name: '이성국',
-              nickname: 'cocotee',
-              family: [
-                {
-                  id: 0,
-                  identity: '학생',
-                  status: '재원',
-                  grade: '중1',
-                  name: '홍길동',
-                  nickname: '길동쓰',
-                  family: '홍길순, 홍길삼, 홍길사, 홍길오, 홍길육',
-                  account: 'rlfehd1004',
-                  phone: '010-1234-1234',
-                  parent_phone: '010-1234-1111',
-                  gender: '남',
-                },
-              ],
-              account: 'rlfehd1004',
-              phone: '010-1234-1234',
-              parent_phone: '010-1234-1111',
-              gender: 0,
-              student_status: false,
-              school: '스노우',
-              attendance_num: '12345',
-              created_at: '2022.11.22',
-              lecture_date: '2022.11.30',
-              birthday: '2022.11.01',
-              email: 'test@naver.com',
-              profile_image: require('@/assets/images/mypage/profile1.png'),
-              lectureInfo: [
-                '영어리딩심화 | 심화 A반',
-                '영어리딩심화 | 심화 B반',
-                '영어리딩심화 | 심화 C반',
-              ],
-            },
-          ],
-        },
-        {
-          class: '심화B반',
-          personnel: 15,
-          teacher: '길동홍',
-          studentList: [
-            {
-              id: 1,
-              identity: ['학생', '학부모'],
-              status: true,
-              new: false,
-              grade: '중1',
-              grade_type: 0,
-              class: ['심화B반'],
-              name: '이성국',
-              nickname: 'cocotee',
-              family: [
-                {
-                  id: 0,
-                  identity: '학생',
-                  status: '재원',
-                  grade: '중1',
-                  name: '홍길동',
-                  nickname: '길동쓰',
-                  family: '홍길순, 홍길삼, 홍길사, 홍길오, 홍길육',
-                  account: 'rlfehd1004',
-                  phone: '010-1234-1234',
-                  parent_phone: '010-1234-1111',
-                  gender: '남',
-                },
-              ],
-              account: 'rlfehd1004',
-              phone: '010-1234-1234',
-              parent_phone: '010-1234-1111',
-              gender: 0,
-              student_status: false,
-              school: '디지텍',
-              attendance_num: '12345',
-              created_at: '2022.11.22',
-              lecture_date: '2022.11.30',
-              birthday: '2022.11.01',
-              email: 'test@naver.com',
-              profile_image: require('@/assets/images/mypage/profile1.png'),
-              lectureInfo: [
-                '영어리딩심화 | 심화 A반',
-                '영어리딩심화 | 심화 B반',
-                '영어리딩심화 | 심화 C반',
-              ],
-            },
-            {
-              id: 2,
-              identity: ['학생', '학부모'],
-              status: true,
-              new: false,
-              grade: '중1',
-              grade_type: 0,
-              class: ['심화B반'],
-              name: '홍길동',
-              nickname: '유진쓰',
-              family: [
-                {
-                  id: 0,
-                  identity: '학생',
-                  status: '재원',
-                  grade: '중1',
-                  name: '홍길동',
-                  nickname: '길동쓰',
-                  family: '홍길순, 홍길삼, 홍길사, 홍길오, 홍길육',
-                  account: 'rlfehd1004',
-                  phone: '010-1234-1234',
-                  parent_phone: '010-1234-1111',
-                  gender: '남',
-                },
-              ],
-              account: 'rlfehd1004',
-              phone: '010-1234-1234',
-              parent_phone: '010-1234-1111',
-              gender: 0,
-              student_status: false,
-              school: '스노우',
-              attendance_num: '12345',
-              created_at: '2022.11.22',
-              lecture_date: '2022.11.30',
-              birthday: '2022.11.01',
-              email: 'test@naver.com',
-              profile_image: require('@/assets/images/mypage/profile1.png'),
-              lectureInfo: [
-                '영어리딩심화 | 심화 A반',
-                '영어리딩심화 | 심화 B반',
-                '영어리딩심화 | 심화 C반',
-              ],
-            },
-          ],
-        },
-        {
-          class: '심화C반',
-          personnel: 41,
-          teacher: '동홍길',
-          studentList: [
-            {
-              id: 1,
-              identity: ['학생', '학부모'],
-              status: true,
-              new: false,
-              grade: '중1',
-              grade_type: 0,
-              class: ['심화C반'],
-              name: '홍길동',
-              nickname: '유진쓰',
-              family: [
-                {
-                  id: 0,
-                  identity: '학생',
-                  status: '재원',
-                  grade: '중1',
-                  name: '홍길동',
-                  nickname: '길동쓰',
-                  family: '홍길순, 홍길삼, 홍길사, 홍길오, 홍길육',
-                  account: 'rlfehd1004',
-                  phone: '010-1234-1234',
-                  parent_phone: '010-1234-1111',
-                  gender: '남',
-                },
-              ],
-              account: 'rlfehd1004',
-              phone: '010-1234-1234',
-              parent_phone: '010-1234-1111',
-              gender: 0,
-              student_status: false,
-              school: '스노우',
-              attendance_num: '12345',
-              created_at: '2022.11.22',
-              lecture_date: '2022.11.30',
-              birthday: '2022.11.01',
-              email: 'test@naver.com',
-              profile_image: require('@/assets/images/mypage/profile1.png'),
-              lectureInfo: [
-                '영어리딩심화 | 심화 A반',
-                '영어리딩심화 | 심화 B반',
-                '영어리딩심화 | 심화 C반',
-              ],
-            },
-            {
-              id: 2,
-              identity: ['학생', '학부모'],
-              status: true,
-              new: false,
-              grade: '중1',
-              grade_type: 0,
-              class: ['심화C반'],
-              name: '홍길동',
-              nickname: '유진쓰',
-              family: [
-                {
-                  id: 0,
-                  identity: '학생',
-                  status: '재원',
-                  grade: '중1',
-                  name: '홍길동',
-                  nickname: '길동쓰',
-                  family: '홍길순, 홍길삼, 홍길사, 홍길오, 홍길육',
-                  account: 'rlfehd1004',
-                  phone: '010-1234-1234',
-                  parent_phone: '010-1234-1111',
-                  gender: '남',
-                },
-              ],
-              account: 'rlfehd1004',
-              phone: '010-1234-1234',
-              parent_phone: '010-1234-1111',
-              gender: 0,
-              student_status: false,
-              school: '스노우',
-              attendance_num: '12345',
-              created_at: '2022.11.22',
-              lecture_date: '2022.11.30',
-              birthday: '2022.11.01',
-              email: 'test@naver.com',
-              profile_image: require('@/assets/images/mypage/profile1.png'),
-              lectureInfo: [
-                '영어리딩심화 | 심화 A반',
-                '영어리딩심화 | 심화 B반',
-                '영어리딩심화 | 심화 C반',
-              ],
-            },
-          ],
-        },
-      ],
-      classInfo: {
-        studentList: [],
-      },
+      classList: [],
+      classInfo: [],
       studentInfo: {
         id: 0,
         identity: [],
@@ -813,6 +540,9 @@ export default {
         data: null,
         allocation: null,
       },
+      openClassDetailModal: {
+        open: false,
+      },
 
       openSnackbar: {
         open: false,
@@ -823,9 +553,113 @@ export default {
         open: false,
         title: '',
       },
+
+      classListB: [],
+
+      ins_code: this.$store.state.common.user.ins_code,
+
+      // 검색 반 이름 선택
+      cond: true,
+
+      // 선생님 선택
+      tchIdx: 0,
+
+      // 검색
+      searchText: '',
+
+      // 페이지네이션
+      // 총 반 수
+      totalCount: 1,
+      startPage: 1,
+      endPage: 1,
+      // 현재 페이지
+      currentPage: 1,
+      // 보여지는 개수
+      showCount: 1,
     }
   },
+  watch: {
+    showCount: {
+      handler() {
+        this.getClassList()
+      },
+      immediate: false,
+    },
+    tchIdx: {
+      handler() {
+        this.getClassList()
+      },
+      immediate: false,
+    },
+    cond: {
+      handler() {
+        this.getClassList()
+      },
+      immediate: false,
+    },
+  },
+  mounted() {
+    this.getClassList()
+  },
   methods: {
+    async getClassList() {
+      const payload = {
+        cond: this.cond === true ? '' : `&cond=${this.cond}`,
+        currentPage: this.currentPage,
+        search: this.searchText === '' ? '' : `&search=${this.searchText}`,
+        showCount: this.showCount === 1 ? '' : `&show_count=${this.showCount}`,
+        tchIdx: this.tchIdx === 0 ? '' : `&tch_idx=${this.tchIdx}`,
+      }
+
+      await apiClassManagement
+        .getClassList(this.ins_code, payload)
+        .then(({ data: { data } }) => {
+          this.classList = data.banList
+          // if (this.classListB === []) {
+          this.classListB = data.banList
+          this.teacherList = data.banList.filter(
+            (v, i) =>
+              this.classList.findIndex((x) => x.mem_name === v.mem_name) === i
+          )
+          // }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
+    async getClassDetail(csm_idx) {
+      await apiClassManagement
+        .getClassDetail(csm_idx, this.ins_code)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          this.modalDetailMore = 0
+          this.classInfo = data.dtoList
+          this.onOpenClassDetailModal()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
+    // 페이지네이션
+    onClickNextPage() {
+      this.currentPage = this.currentPage + 1
+    },
+
+    // 검색 라디오 버튼
+    searchRadio(radio) {
+      this.searchText = ''
+      this.cond = radio
+    },
+
+    onOpenClassDetailModal() {
+      this.openClassDetailModal.open = true
+    },
+    onCloseClassDetailModal() {
+      this.openClassDetailModal.open = false
+    },
+
     // 스낵바
     onOpenSnackbar(text) {
       this.openSnackbar.open = true
@@ -866,10 +700,12 @@ export default {
       this.openClassMove.open = false
     },
 
-    onClickClassInfo(data) {
+    onClickClassInfo(data, csm_idx) {
       this.modalDetailMore = 0
       this.classInfo = data
       console.log(this.classInfo)
+      this.getClassDetail(csm_idx)
+      this.onOpenClassDetailModal()
     },
     onClickOpenDetailMore(id) {
       if (this.modalDetailMore === id) {
@@ -1157,11 +993,24 @@ export default {
     },
 
     // 정렬
-    onChangeTeacherSort(e) {
+    onChangeTeacherSort(e, teacher) {
       this.sortTeacherSelect = e.target.innerText
+      if (teacher !== undefined) {
+        this.tchIdx = teacher
+      } else {
+        this.tchIdx = 0
+      }
     },
     onChangeNumberSort(e) {
       this.sortNumberSelect = e.target.innerText
+      if (e.target.innerText === '10개씩 보기') {
+        this.showCount = 1
+      } else if (e.target.innerText === '100개씩 보기') {
+        this.showCount = 2
+      } else {
+        this.showCount = 3
+      }
+      // this.getClassList()
     },
 
     // 반 이동 모달
@@ -1411,4 +1260,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.cursor {
+  cursor: pointer;
+}
+</style>
