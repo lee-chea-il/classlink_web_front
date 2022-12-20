@@ -9,27 +9,34 @@
       aria-hidden="true"
       style="display: block"
     >
-      <div class="background_close" @click="$emit('close')"></div>
+      <div class="background_close"></div>
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-          <ModalHeader title="강의계획서 열람" @click="$emit('close')" />
-
+          <ModalHeader title="강의계획서 열람" @close="$emit('close')" />
           <div class="modal-body">
             <div class="title_area row">
               <span class="notice_tit">제목</span>
-              <span class="notice_title">{{ lecturePlan.title }}</span>
-              <span class="notice_day02">{{ lecturePlan.created_at }}</span>
-              <span class="notice_writer">{{ lecturePlan.writer }}</span>
+              <span class="notice_title">{{ syllabus.lep_title }}</span>
+              <span class="notice_day02">{{
+                dateFormat(syllabus.lep_registration_date)
+              }}</span>
+              <span class="notice_writer">{{ syllabus.mem_name }}</span>
             </div>
 
             <div class="file_info">
               <span class="file_icon"></span>
               일반 첨부파일 1개(10KB)
               <span class="save">모두 저장</span>
-              <div class="file_name">성격심리학 강의계획서.hwp</div>
+              <div
+                v-for="(item, idx) in syllabus.fileList"
+                :key="idx"
+                class="file_name"
+              >
+                {{ item.lpa_file }}
+              </div>
             </div>
             <VueEditor
-              :value="lecturePlan.contents"
+              :value="syllabus.lep_content"
               :editorOptions="editorOptions"
               disabled
             />
@@ -41,7 +48,7 @@
             <button class="btn btn_crud_point" @click="$emit('update')">
               수정
             </button>
-            <button class="btn btn_crud_default" data-dismiss="modal">
+            <button class="btn btn_crud_default" @click="$emit('close')">
               취소
             </button>
           </div>
@@ -59,6 +66,10 @@ export default {
     open: {
       type: Boolean,
       default: false,
+    },
+    syllabus: {
+      type: Object,
+      default: () => {},
     },
   },
   data() {
@@ -82,7 +93,13 @@ export default {
       },
     }
   },
-  created() {},
+  methods: {
+    dateFormat(date) {
+      if (date) {
+        return date.substr(0, 10)
+      }
+    },
+  },
 }
 </script>
 <style scoped></style>

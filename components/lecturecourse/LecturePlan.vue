@@ -41,12 +41,20 @@
       <!-- /.검색 영역 -->
       <!-- 테이블 영역 -->
       <!-- [개발참조] 데이터 없을 경우  -->
-      <div v-if="lecturePlanList.length === 0" class="page_nodata">
+      <div v-if="syllabusList === null" class="page_nodata">
         등록된 강의계획서가 없습니다.
       </div>
 
       <div v-else class="table_section">
         <table class="table">
+          <colgroup>
+            <col width="5%" />
+            <col width="45%" />
+            <col width="10%" />
+            <col width="" />
+            <col width="10%" />
+            <col width="" />
+          </colgroup>
           <thead>
             <tr>
               <th>
@@ -70,28 +78,36 @@
             </tr>
           </thead>
           <tbody v-if="searchFlag === 0">
-            <tr v-for="(item, idx) in lecturePlanList" :key="idx">
+            <tr
+              v-for="(item, idx) in syllabusList"
+              :key="idx"
+              class="cursor"
+              @click="$emit('click-plan', item.csm_idx, item.lep_idx)"
+            >
               <td>
                 <div class="custom-control custom-checkbox form-inline">
                   <input
-                    :id="item.id"
+                    :id="item.lep_idx"
                     name="chk"
                     type="checkbox"
                     class="custom-control-input"
                     @input="$emit('select-plan', $event)"
                   />
-                  <label class="custom-control-label" :for="item.id"></label>
+                  <label
+                    class="custom-control-label"
+                    :for="item.lep_idx"
+                  ></label>
                 </div>
               </td>
               <td>
                 <div class="classplan_tit" @click="$emit('open-detail')">
-                  {{ item.title }}
+                  {{ item.lep_title }}
                 </div>
               </td>
-              <td>{{ item.writer }}</td>
-              <td>{{ item.created_at }}</td>
+              <td>{{ item.mem_name }}</td>
+              <td>{{ item.lep_registration_date }}</td>
               <td>{{ item.open ? '공개' : '비공개' }}</td>
-              <td>{{ item.views }}/{{ lectureCourse.students }}</td>
+              <td>{{ item.lep_view_cnt }}/{{ lectureStudentCount }}</td>
               <td></td>
             </tr>
           </tbody>
@@ -164,6 +180,10 @@
 export default {
   name: 'LecturePlan',
   props: {
+    syllabusList: {
+      type: Array,
+      default: () => [],
+    },
     lecturePlanList: {
       type: Array,
       default: () => [],
@@ -184,6 +204,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    lectureStudentCount: {
+      type: Number,
+      default: 0,
+    },
   },
   methods: {
     onClickCheckBox({ target: { id } }) {
@@ -192,4 +216,8 @@ export default {
   },
 }
 </script>
-<style scoped></style>
+<style scoped>
+.cursor {
+  cursor: pointer;
+}
+</style>

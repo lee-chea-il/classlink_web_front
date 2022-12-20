@@ -126,6 +126,13 @@ Object.keys(rules).forEach((rule) => {
     ...required,
     message: '{_field_}을 입력해주세요.',
   })
+
+  // 글 등록 유효성 검사
+  extend('contents_required', {
+    ...required,
+    message: '내용을 입력해주세요.',
+  })
+
 })
 
 // config setting

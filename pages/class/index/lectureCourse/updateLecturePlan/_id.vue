@@ -328,7 +328,7 @@ export default {
         },
       },
       editorToolbar: [
-        [{ header: [false, 1, 2, 3, 4, 5, 6] }],
+        // [{ header: [false, 1, 2, 3, 4, 5, 6] }],
         ['bold', 'italic', 'underline', 'strike'],
         [
           { align: '' },
@@ -336,10 +336,10 @@ export default {
           { align: 'right' },
           { align: 'justify' },
         ],
-        ['blockquote', 'code-block'],
+        // ['blockquote', 'code-block'],
         [{ list: 'ordered' }, { list: 'bullet' }],
-        [{ indent: '-1' }, { indent: '+1' }],
-        [{ color: [] }, { background: [] }],
+        // [{ indent: '-1' }, { indent: '+1' }],
+        // [{ color: [] }, { background: [] }],
         ['image'],
       ],
       // calendar

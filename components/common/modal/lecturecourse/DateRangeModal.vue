@@ -31,20 +31,20 @@
                 data-toggle="dropdown"
                 aria-expanded="false"
               >
-                {{ rangeInfo.time_range_start_m === 0 ? '오전' : '오후' }}
+                {{ isStartTime ? '오전' : '오후' }}
               </button>
               <span class="dropdown-menu">
                 <a class="dropdown-item cursor" @click="$emit('start-time')">{{
-                  rangeInfo.time_range_start_m === 0 ? '오후' : '오전'
+                  isStartTime ? '오후' : '오전'
                 }}</a>
               </span>
             </span>
             <input
-              id="time_range_start"
+              id="lep_time_stime"
               type="text"
               placeholder="09:00"
               maxlength="5"
-              :value="rangeInfo.time_range_start"
+              :value="rangeInfo.lep_time_stime"
               class="form-control form-inline form-time"
               @input="$emit('change-input', $event)"
             />
@@ -56,20 +56,20 @@
                 data-toggle="dropdown"
                 aria-expanded="false"
               >
-                {{ rangeInfo.time_range_end_m === 0 ? '오전' : '오후' }}
+                {{ isEndTime ? '오전' : '오후' }}
               </button>
               <div class="dropdown-menu">
                 <a class="dropdown-item cursor" @click="$emit('end-time')">{{
-                  rangeInfo.time_range_end_m === 0 ? '오후' : '오전'
+                  isEndTime ? '오후' : '오전'
                 }}</a>
               </div>
             </div>
             <input
-              id="time_range_end"
+              id="lep_time_etime"
               type="text"
               placeholder="11:59"
               max-length="5"
-              :value="rangeInfo.time_range_end"
+              :value="rangeInfo.lep_time_etime"
               class="form-control form-inline form-time"
               @input="$emit('change-input', $event)"
             />
@@ -114,6 +114,10 @@ export default {
     DatePicker,
   },
   props: {
+    syllabus: {
+      type: Object,
+      default: () => {},
+    },
     rangeInfo: {
       type: Object,
       default: () => {},
@@ -121,6 +125,14 @@ export default {
     range: {
       type: Object,
       default: () => {},
+    },
+    isStartTime: {
+      type: Boolean,
+      default: true,
+    },
+    isEndTime: {
+      type: Boolean,
+      default: true,
     },
   },
 }

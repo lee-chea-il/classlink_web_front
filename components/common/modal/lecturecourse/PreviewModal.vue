@@ -20,12 +20,14 @@
               <i class="icons_close"></i>
             </button>
           </div>
-          <div v-if="lecturePlan !== undefined" class="modal-body" div>
+          <div v-if="syllabus !== undefined" class="modal-body" div>
             <div class="title_area row">
               <span class="notice_tit">제목</span>
-              <span class="notice_title">{{ lecturePlan.title }}</span>
-              <span class="notice_day02">{{ lecturePlan.created_at }}</span>
-              <span class="notice_writer">{{ lecturePlan.writer }}</span>
+              <span class="notice_title">{{ syllabus.lep_title }}</span>
+              <span class="notice_day02">{{ today }}</span>
+              <span class="notice_writer">{{
+                $store.state.common.user.mem_name
+              }}</span>
             </div>
 
             <div class="file_info">
@@ -35,7 +37,7 @@
               <div class="file_name">성격심리학 강의계획서.hwp</div>
             </div>
             <VueEditor
-              :value="lecturePlan.contents"
+              :value="syllabus.lep_content"
               :editorOptions="editorOptions"
               disabled
             />
@@ -85,6 +87,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    syllabus: {
+      type: Object,
+      default: () => {},
+    },
   },
   data() {
     return {
@@ -97,10 +103,16 @@ export default {
           imageEdit: false,
         },
       },
+      today: new Date(),
     }
   },
   created() {
     console.log(this.lecturePlan, this.homeWork)
+    const year = this.today.getFullYear()
+    const month = ('0' + (this.today.getMonth() + 1)).slice(-2)
+    const day = ('0' + this.today.getDate()).slice(-2)
+    const dateString = year + '-' + month + '-' + day
+    this.today = dateString
   },
 }
 </script>

@@ -4,7 +4,7 @@
       <div class="tab-content depth03 ac_manage_frc ac_manage_course">
         <div class="tab-pane active">
           <!-- [개발참조]수강하는 강의코스가 없을때  -->
-          <div v-if="lectureCourseList.length === 0" class="page_nodata">
+          <div v-if="lectureCourseList === null" class="page_nodata">
             <p>수강하는 강의 코스가 없습니다.</p>
             <button
               class="btn btn_regi_franchise"
@@ -62,17 +62,18 @@
                   v-for="(item, idx) in lectureCourseList"
                   :key="idx"
                   :class="item.state ? 'cursor' : 'stanby_lecture'"
-                  @click="onClickLecture(item.id)"
+                  @click="onClickLecture(item.lec_idx)"
                 >
                   <div
                     class="card"
                     :class="!item.state ? 'standby' : bgColorList[idx]"
                   >
-                    <div class="course_tit">{{ item.subject }}</div>
-                    <div class="course_time">{{ item.time }}</div>
+                    <div class="course_tit">{{ item.lec_title }}</div>
+                    <div class="course_time">
+                      {{ item.lec_time_stime }} ~ {{ item.lec_time_etime }}
+                    </div>
                     <div class="course_info">
-                      {{ item.lessonTitle }} | {{ item.lessonClass }} |
-                      {{ item.teacher }}
+                      {{ item.csm_name }} | {{ item.mem_name }} 선생님
                     </div>
                   </div>
                 </a>
@@ -112,155 +113,160 @@
   </div>
 </template>
 <script>
+import { apiLectureCourse } from '~/services'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 export default {
   name: 'LectureCourse',
   components: { ModalDesc },
   data() {
     return {
+      // 유저 정보
+      insCode: '',
+      userIdx: 0,
       // 강의코스
-      lectureCourseList: [
-        {
-          id: 0,
-          academy: '일산어학원',
-          time: '월수금 09:00 ~ 12:00',
-          subject: '영어심화리딩',
-          lessonTitle: '영어',
-          lessonClass: '심화 A반',
-          teacher: '홍길동 선생님',
-          state: true,
-        },
-        {
-          id: 1,
-          academy: '김포어학원',
-          time: '월수금 09:00 ~ 12:00',
-          subject: '수학심화리딩',
-          lessonTitle: '수학',
-          lessonClass: '심화 B반',
-          teacher: '임꺽정 선생님',
-          state: true,
-        },
-        {
-          id: 2,
-          academy: '광주어학원',
-          time: '월수금 09:00 ~ 12:00',
-          subject: '과학심화리딩',
-          lessonTitle: '과학',
-          lessonClass: '심화 C반',
-          teacher: '임창정 선생님',
-          state: true,
-        },
-        {
-          id: 3,
-          academy: '한남어학원',
-          time: '월수금 09:00 ~ 12:00',
-          subject: '체육심화리딩',
-          lessonTitle: '체육',
-          lessonClass: '심화 D반',
-          teacher: '전현무 선생님',
-          state: true,
-        },
-        {
-          id: 4,
-          academy: '마포어학원',
-          time: '월수금 09:00 ~ 12:00',
-          subject: '음악심화리딩',
-          lessonTitle: '음악',
-          lessonClass: '심화 E반',
-          teacher: '김종국 선생님',
-          state: true,
-        },
-        {
-          id: 5,
-          academy: '홍대어학원',
-          time: '월수금 09:00 ~ 12:00',
-          subject: '사회심화리딩',
-          lessonTitle: '사회',
-          lessonClass: '심화 F반',
-          teacher: '유재석 선생님',
-          state: true,
-        },
-        {
-          id: 6,
-          academy: '잠실어학원',
-          time: '월수금 09:00 ~ 12:00',
-          subject: '국어심화리딩',
-          lessonTitle: '국어',
-          lessonClass: '심화 G반',
-          teacher: '사투리 선생님',
-          state: true,
-        },
-        {
-          id: 7,
-          academy: '일산어학원',
-          time: '월수금 09:00 ~ 12:00',
-          subject: '영어심화리딩',
-          lessonTitle: '영어',
-          lessonClass: '심화 A반',
-          teacher: '홍길동 선생님',
-          state: true,
-        },
-        {
-          id: 8,
-          academy: '김포어학원',
-          time: '월수금 09:00 ~ 12:00',
-          subject: '수학심화리딩',
-          lessonTitle: '수학',
-          lessonClass: '심화 B반',
-          teacher: '임꺽정 선생님',
-          state: true,
-        },
-        {
-          id: 9,
-          academy: '광주어학원',
-          time: '월수금 09:00 ~ 12:00',
-          subject: '과학심화리딩',
-          lessonTitle: '과학',
-          lessonClass: '심화 C반',
-          teacher: '임창정 선생님',
-          state: true,
-        },
-        {
-          id: 10,
-          academy: '한남어학원',
-          time: '월수금 09:00 ~ 12:00',
-          subject: '체육심화리딩',
-          lessonTitle: '체육',
-          lessonClass: '심화 D반',
-          teacher: '전현무 선생님',
-          state: false,
-        },
-        {
-          id: 11,
-          academy: '마포어학원',
-          time: '월수금 09:00 ~ 12:00',
-          subject: '음악심화리딩',
-          lessonTitle: '음악',
-          lessonClass: '심화 E반',
-          teacher: '김종국 선생님',
-          state: false,
-        },
-        {
-          id: 12,
-          academy: '홍대어학원',
-          time: '월수금 09:00 ~ 12:00',
-          subject: '사회심화리딩',
-          lessonTitle: '사회',
-          lessonClass: '심화 F반',
-          teacher: '유재석 선생님',
-          state: false,
-        },
-        {
-          id: 13,
-          academy: '잠실어학원',
-          time: '월수금 09:00 ~ 12:00',
-          subject: '국어심화리딩',
-          lessonTitle: '국어',
-          lessonClass: '심화 G반',
-          teacher: '사투리 선생님',
-          state: false,
-        },
-      ],
+      // lectureCourseList: [
+      //   {
+      //     id: 0,
+      //     academy: '일산어학원',
+      //     time: '월수금 09:00 ~ 12:00',
+      //     subject: '영어심화리딩',
+      //     lessonTitle: '영어',
+      //     lessonClass: '심화 A반',
+      //     teacher: '홍길동 선생님',
+      //     state: true,
+      //   },
+      //   {
+      //     id: 1,
+      //     academy: '김포어학원',
+      //     time: '월수금 09:00 ~ 12:00',
+      //     subject: '수학심화리딩',
+      //     lessonTitle: '수학',
+      //     lessonClass: '심화 B반',
+      //     teacher: '임꺽정 선생님',
+      //     state: true,
+      //   },
+      //   {
+      //     id: 2,
+      //     academy: '광주어학원',
+      //     time: '월수금 09:00 ~ 12:00',
+      //     subject: '과학심화리딩',
+      //     lessonTitle: '과학',
+      //     lessonClass: '심화 C반',
+      //     teacher: '임창정 선생님',
+      //     state: true,
+      //   },
+      //   {
+      //     id: 3,
+      //     academy: '한남어학원',
+      //     time: '월수금 09:00 ~ 12:00',
+      //     subject: '체육심화리딩',
+      //     lessonTitle: '체육',
+      //     lessonClass: '심화 D반',
+      //     teacher: '전현무 선생님',
+      //     state: true,
+      //   },
+      //   {
+      //     id: 4,
+      //     academy: '마포어학원',
+      //     time: '월수금 09:00 ~ 12:00',
+      //     subject: '음악심화리딩',
+      //     lessonTitle: '음악',
+      //     lessonClass: '심화 E반',
+      //     teacher: '김종국 선생님',
+      //     state: true,
+      //   },
+      //   {
+      //     id: 5,
+      //     academy: '홍대어학원',
+      //     time: '월수금 09:00 ~ 12:00',
+      //     subject: '사회심화리딩',
+      //     lessonTitle: '사회',
+      //     lessonClass: '심화 F반',
+      //     teacher: '유재석 선생님',
+      //     state: true,
+      //   },
+      //   {
+      //     id: 6,
+      //     academy: '잠실어학원',
+      //     time: '월수금 09:00 ~ 12:00',
+      //     subject: '국어심화리딩',
+      //     lessonTitle: '국어',
+      //     lessonClass: '심화 G반',
+      //     teacher: '사투리 선생님',
+      //     state: true,
+      //   },
+      //   {
+      //     id: 7,
+      //     academy: '일산어학원',
+      //     time: '월수금 09:00 ~ 12:00',
+      //     subject: '영어심화리딩',
+      //     lessonTitle: '영어',
+      //     lessonClass: '심화 A반',
+      //     teacher: '홍길동 선생님',
+      //     state: true,
+      //   },
+      //   {
+      //     id: 8,
+      //     academy: '김포어학원',
+      //     time: '월수금 09:00 ~ 12:00',
+      //     subject: '수학심화리딩',
+      //     lessonTitle: '수학',
+      //     lessonClass: '심화 B반',
+      //     teacher: '임꺽정 선생님',
+      //     state: true,
+      //   },
+      //   {
+      //     id: 9,
+      //     academy: '광주어학원',
+      //     time: '월수금 09:00 ~ 12:00',
+      //     subject: '과학심화리딩',
+      //     lessonTitle: '과학',
+      //     lessonClass: '심화 C반',
+      //     teacher: '임창정 선생님',
+      //     state: true,
+      //   },
+      //   {
+      //     id: 10,
+      //     academy: '한남어학원',
+      //     time: '월수금 09:00 ~ 12:00',
+      //     subject: '체육심화리딩',
+      //     lessonTitle: '체육',
+      //     lessonClass: '심화 D반',
+      //     teacher: '전현무 선생님',
+      //     state: false,
+      //   },
+      //   {
+      //     id: 11,
+      //     academy: '마포어학원',
+      //     time: '월수금 09:00 ~ 12:00',
+      //     subject: '음악심화리딩',
+      //     lessonTitle: '음악',
+      //     lessonClass: '심화 E반',
+      //     teacher: '김종국 선생님',
+      //     state: false,
+      //   },
+      //   {
+      //     id: 12,
+      //     academy: '홍대어학원',
+      //     time: '월수금 09:00 ~ 12:00',
+      //     subject: '사회심화리딩',
+      //     lessonTitle: '사회',
+      //     lessonClass: '심화 F반',
+      //     teacher: '유재석 선생님',
+      //     state: false,
+      //   },
+      //   {
+      //     id: 13,
+      //     academy: '잠실어학원',
+      //     time: '월수금 09:00 ~ 12:00',
+      //     subject: '국어심화리딩',
+      //     lessonTitle: '국어',
+      //     lessonClass: '심화 G반',
+      //     teacher: '사투리 선생님',
+      //     state: false,
+      //   },
+      // ],
+      lectureCourseList: [],
       bgColors: ['course_bgcolor01', 'course_bgcolor02', 'course_bgcolor03'],
       bgColorList: [],
       selectLectureList: [],
@@ -287,7 +293,26 @@ export default {
     }
     this.bgColorList = array
   },
+  mounted() {
+    this.insCode = this.$store.state.common.user.ins_code
+    this.userIdx = this.$store.state.common.user.mem_idx
+    this.getLectureCourseList()
+  },
   methods: {
+    // 강의 코스 목록 불러오기 api
+    async getLectureCourseList() {
+      await apiLectureCourse
+        .getLectureCourse(this.insCode, this.userIdx)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          this.lectureCourseList = data.enddto
+          console.log(this.lectureCourseList)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
     selectTrueCourse() {
       this.selectFlag = 1
       const array = []

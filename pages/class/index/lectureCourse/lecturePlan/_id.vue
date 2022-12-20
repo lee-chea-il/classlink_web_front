@@ -14,11 +14,15 @@
         </li>
       </ul>
       <LecturePlan
+        :syllabusList="syllabusList"
         :lectureCourse="lectureCourse"
-        :lecturePlanList="lecturePlanList"
         :searchFlag="searchFlag"
         :searchList="searchList"
         :allCheckBoxFlag="allCheckBoxFlag"
+        :lectureStudentCount="lectureStudentCount"
+        :currentPage="currentPage"
+        :onClickPagination="onClickPagination"
+        @click-plan="onClickSyllabus"
         @change-input="onChangeInput"
         @search-plan="searchLecturePlan"
         @select-plan="onClickCheckBox"
@@ -44,12 +48,14 @@
     <!-- 강의계획서 상세 모달 -->
     <LecturePlanDetailModal
       :open="LecturePlanDetailModalDesc.open"
+      :syllabus="syllabus"
       @update="onClickUpdatePlanBtn"
       @close="onCloseLecturePlanDetailModal"
     />
   </div>
 </template>
 <script>
+import { apiLectureCourse } from '~/services'
 import DeletePlanModal from '@/components/lecturecourse/DeletePlanModal.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 import LecturePlan from '@/components/lecturecourse/LecturePlan.vue'
@@ -64,8 +70,18 @@ export default {
   },
   data() {
     return {
+      // 유저 정보
+      userIdx: this.$store.state.common.user.mem_idx,
+      lectureIdx: this.$route.params.id,
       searchFlag: 0,
       allCheckBoxFlag: false,
+      // 강의 계획서 목록
+      syllabusList: [],
+      lectureStudentCount: 0,
+      // 페이지네이션
+      currentPage: 1,
+      // 강의 계획서 상세
+      syllabus: {},
       // modal
       LecturePlanDetailModalDesc: {
         open: false,
@@ -111,129 +127,56 @@ export default {
         views: 3,
         contents: '성격심리학 레슨1 강의계획서입니다. 수업에 참고해 주세요',
       },
-      lecturePlanList: [
-        {
-          id: 0,
-          course_id: 0,
-          title: '성격심리학 레슨1 강의계획서0',
-          writer: '홍길동 선생님',
-          created_at: '2022.07.10',
-          open: false,
-          views: 3,
-          contents: '성격심리학 레슨1 강의계획서입니다. 수업에 참고해 주세요',
-        },
-        {
-          id: 1,
-          course_id: 0,
-          title: '성격심리학 레슨1 강의계획서1',
-          writer: '김지원 선생님',
-          created_at: '2022.07.10',
-          open: true,
-          views: 4,
-          contents: '성격심리학 레슨1 강의계획서입니다. 수업에 참고해 주세요',
-        },
-        {
-          id: 2,
-          course_id: 0,
-          title: '성격심리학 레슨1 강의계획서2',
-          writer: '임꺽정 선생님',
-          created_at: '2022.07.10',
-          open: false,
-          views: 0,
-          contents: '성격심리학 레슨1 강의계획서입니다. 수업에 참고해 주세요',
-        },
-        {
-          id: 3,
-          course_id: 0,
-          title: '성격심리학 레슨1 강의계획서3',
-          writer: '임꺽정 선생님',
-          created_at: '2022.07.10',
-          open: true,
-          views: 2,
-          contents: '성격심리학 레슨1 강의계획서입니다. 수업에 참고해 주세요',
-        },
-        {
-          id: 4,
-          course_id: 0,
-          title: '성격심리학 레슨1 강의계획서4',
-          writer: '임창정 선생님',
-          created_at: '2022.07.10',
-          open: true,
-          views: 7,
-          contents: '성격심리학 레슨1 강의계획서입니다. 수업에 참고 필수',
-        },
-        {
-          id: 5,
-          course_id: 0,
-          title: '성격심리학 레슨1 강의계획서',
-          writer: '임창정 선생님',
-          created_at: '2022.07.10',
-          open: false,
-          views: 7,
-          contents: '성격심리학 레슨1 강의계획서입니다 수업에 참고 필수',
-        },
-        {
-          id: 6,
-          course_id: 0,
-          title: '성격심리학 레슨1 강의계획서',
-          writer: '임창정 선생님',
-          created_at: '2022.07.10',
-          open: false,
-          views: 8,
-          contents: '성격심리학 레슨1 강의계획서입니다.  수업에 참고 필수',
-        },
-        {
-          id: 7,
-          course_id: 0,
-          title: '성격심리학 레슨1 강의계획서',
-          writer: '임창정 선생님',
-          created_at: '2022.07.10',
-          open: true,
-          views: 0,
-          contents: '성격심리학 레슨1 강의계획서입니다.  수업에 참고 필수',
-        },
-        {
-          id: 8,
-          course_id: 0,
-          title: '성격심리학 레슨1 강의계획서',
-          writer: '임창정 선생님',
-          created_at: '2022.07.10',
-          open: true,
-          views: 0,
-          contents: '성격심리학 레슨1 강의계획서입니다.  수업에 참고 필수',
-        },
-        {
-          id: 9,
-          course_id: 0,
-          title: '성격심리학 레슨1 강의계획서',
-          writer: '김지원 선생님',
-          created_at: '2022.07.10',
-          open: true,
-          views: 0,
-          contents: '성격심리학 레슨1 강의계획서입니다.  수업에 참고 필수',
-        },
-      ],
     }
   },
   created() {},
+  mounted() {
+    this.getSyllabusList()
+  },
   methods: {
+    // 강의 계획서 목록 api
+    async getSyllabusList() {
+      await apiLectureCourse
+        .getSyllabusList(this.userIdx, this.lectureIdx, 1, 10, this.searchText)
+        .then((res) => {
+          console.log(res)
+          this.syllabusList = res.data.data.syllabusList
+          this.lectureStudentCount = res.data.data.lep_stu_cnt
+          console.log(this.syllabusList)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
+    // 강의 계획서 상세
+    async onClickSyllabus(csmIdx, lepIdx) {
+      await apiLectureCourse
+        .getSyllabus(csmIdx, this.lectureIdx, lepIdx, this.userIdx)
+        .then(({ data: { data } }) => {
+          this.syllabus = data
+          this.openLecturePlanDetailModal()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
     // click tab-menu
     onClickHomeWorkBox() {
-      this.$router.push(
-        `/class/lecturecourse/homeworkbox/${this.$route.params.id}`
-      )
+      this.$router.push(`/class/lecturecourse/homeworkbox/${this.lectureIdx}`)
     },
     onClickNoteBox() {
-      this.$router.push(`/class/lecturecourse/notebox/${this.$route.params.id}`)
+      this.$router.push(`/class/lecturecourse/notebox/${this.lectureIdx}`)
     },
     onClickRegisterLecturePlan() {
       this.$router.push(
-        `/class/lecturecourse/registerlectureplan/${this.$route.params.id}`
+        `/class/lecturecourse/registerlectureplan/${this.lectureIdx}`
       )
     },
     onClickUpdateLecturePlan() {
       this.$router.push(
-        `/class/lecturecourse/updatelectureplan/${this.$route.params.id}`
+        `/class/lecturecourse/updatelectureplan/${this.lectureIdx}`
       )
     },
     // modal event
@@ -274,28 +217,34 @@ export default {
 
     //  강의계획서 검색
     searchLecturePlan() {
-      if (this.searchText.length < 2) {
+      if (this.searchText.length === 1) {
         this.openModalDesc(
           '강의계획서 검색',
           '검색어는 2글자 이상 입력해주세요.'
         )
         return false
       }
+      this.getSyllabusList()
+    },
 
-      const result = this.lecturePlanList.filter((elem) => {
-        return (
-          elem.title.includes(this.searchText) ||
-          elem.writer.includes(this.searchText) ||
-          elem.contents.includes(this.searchText)
-        )
-      })
-      if (result.length === 0) {
-        this.openModalDesc('강의계획서 검색', '일치하는 강의계획서가 없습니다.')
-        return false
-      } else {
-        this.searchFlag = 1
-        this.searchList = result
-        console.log(this.searchList)
+    // [pagination] 숫자로 페이징
+    onClickPagination(number) {
+      this.currentPage = number
+    },
+
+    // [pagination] 방향으로 페이징
+    paginationDirection(direction) {
+      const current = this.currentPage
+      const max = this.currentNumberList(this.pagiNumberList)
+      const isPlus = max.length === 10
+      if (direction === 'plus') {
+        if (isPlus) {
+          this.currentPageNumber += 1
+          this.currentPage = this.currentNumberList(this.pagiNumberList)[0]
+        }
+      } else if (current > 1) {
+        this.currentPageNumber -= 1
+        this.currentPage = this.currentNumberList(this.pagiNumberList)[0]
       }
     },
 
