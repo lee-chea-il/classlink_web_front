@@ -282,7 +282,7 @@ import SelectReferenceModal from '~/components/franchise/modal/SelectReferenceMo
 import UploadYoutubeModal from '~/components/franchise/modal/UploadYoutubeModal.vue'
 import UploadVideoFileModal from '~/components/franchise/modal/UploadVideoFileModal.vue'
 import initialState from '~/data/franchise/dataRoom/initialState'
-import { apiReference } from '~/services'
+import { apiData } from '~/services'
 import { urlRegex, setNewArray, jsonItem } from '~/utiles/common'
 export default {
   name: 'FranchiseReference',
@@ -846,7 +846,7 @@ export default {
 
     // 유튜브 API 호출
     async getYoutubeData(youtubeUrl) {
-      await apiReference
+      await apiData
         .getYoutubeData(youtubeUrl)
         .then(({ data: { items } }) => {
           this.referenceData = {

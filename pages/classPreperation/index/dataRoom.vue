@@ -287,7 +287,7 @@ import UploadYoutubeModal from '~/components/classPreperation/modal/UploadYoutub
 import UploadVideoFileModal from '~/components/classPreperation/modal/UploadVideoFileModal.vue'
 import initialState from '~/data/classPreperation/dataRoom/initialState'
 import { urlRegex, setNewArray, jsonItem } from '~/utiles/common'
-import { apiReference } from '~/services'
+import { apiData } from '~/services'
 export default {
   name: 'ReferenceRoom',
   components: {
@@ -320,8 +320,21 @@ export default {
   },
   mounted() {
     this.identity = localStorage.getItem('identity')
+    // this.getServerUrl()
   },
   methods: {
+    // api 통신
+    // async getServerUrl() {
+    //   return await apiData
+    //     .getServerUrl()
+    //     .then((res) => {
+    //       console.log(res)
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     })
+    // },
+
     // 등록 자료 초기화
     initReference() {
       const init = jsonItem(this.initReferenceData)
@@ -853,7 +866,7 @@ export default {
 
     // 유튜브 API 호출
     async getYoutubeData(youtubeUrl) {
-      await apiReference
+      await apiData
         .getYoutubeData(youtubeUrl)
         .then(
           ({

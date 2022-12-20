@@ -297,7 +297,7 @@ import UploadVideoFileModal from '~/components/world/modal/UploadVideoFileModal.
 
 import initialState from '~/data/world/dataRoom/initialState'
 import { urlRegex, setNewArray, jsonItem } from '~/utiles/common'
-import { apiReference } from '~/services'
+import { apiData } from '~/services'
 
 export default {
   name: 'ReferenceRoom',
@@ -901,7 +901,7 @@ export default {
 
     // 유튜브 API 호출
     async getYoutubeData(youtubeUrl) {
-      await apiReference
+      await apiData
         .getYoutubeData(youtubeUrl)
         .then(
           ({

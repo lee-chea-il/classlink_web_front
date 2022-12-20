@@ -297,7 +297,7 @@ import UploadVideoFileModal from '~/components/franchiseWorld/modal/UploadVideoF
 
 import initialState from '~/data/franchise/world/dataRoom/initialState'
 import { urlRegex, setNewArray, jsonItem } from '~/utiles/common'
-import { apiReference } from '~/services'
+import { apiData } from '~/services'
 export default {
   name: 'FranchiseWorldReference',
   components: {
@@ -900,7 +900,7 @@ export default {
 
     // 유튜브 API 호출
     async getYoutubeData(youtubeUrl) {
-      await apiReference
+      await apiData
         .getYoutubeData(youtubeUrl)
         .then(({ data: { items } }) => {
           this.referenceData = {
