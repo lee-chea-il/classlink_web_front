@@ -95,8 +95,9 @@
 
     <FranchiseSignupModal
       :open="openFranchiseSignUpModal.open"
-      :codeSearch="codeSearch"
-      @search="postFranchiseSearchCode"
+      :codeSearch.sync="codeSearch"
+      :searchFranchise="searchFranchise"
+      @search="getFranchiseSearchCode"
       @close="onCloseFranchiseSignUpModal"
     />
   </div>
@@ -116,6 +117,8 @@ export default {
       franchiseList: [],
       franchiseWaitingList: [],
 
+      searchFranchise: null,
+
       mem_idx: this.$store.state.common.user.mem_idx,
 
       codeSearch: '',
@@ -127,6 +130,20 @@ export default {
       thumbnail: iconThumbnail,
     }
   },
+  // watch: {
+  // franchiseList: {
+  //   handler() {
+  //     this.getFranchiseList()
+  //   },
+  //   immediate: true,
+  // },
+  // franchiseWaitingList: {
+  //   handler() {
+  //     this.getFranchiseList()
+  //   },
+  //   immediate: true,
+  // },
+  // },
   mounted() {
     this.getFranchiseList()
   },
@@ -152,11 +169,12 @@ export default {
       this.openFranchiseSignUpModal.open = false
     },
 
-    async postFranchiseSearchCode() {
+    async getFranchiseSearchCode() {
       await apiFranchise
-        .postFranchiseSearchCode(this.codeSearch)
-        .then((res) => {
-          console.log(res)
+        .getFranchiseSearchCode(this.codeSearch)
+        .then(({ data }) => {
+          console.log(data)
+          this.searchFranchise = data.data
         })
         .catch((err) => {
           console.log(err)
