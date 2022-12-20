@@ -54,7 +54,7 @@
             </td>
             <td>
               <div class="path">
-                {{ reference.savePath }}
+                {{ reference.savepath }}
               </div>
             </td>
             <td>

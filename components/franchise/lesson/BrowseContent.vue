@@ -5,19 +5,19 @@
       <div class="title col-12">자료 열람</div>
       <div class="thumbnail_view col-12">
         <video
-          v-if="reference.uploadType === 'video'"
+          v-if="reference.category === '01'"
           class="video"
-          :src="reference.savePath"
+          :src="reference.savepath"
           autoplay
           muted
           controls
         ></video>
         <iframe
-          v-else-if="reference.uploadType === 'url'"
+          v-else-if="reference.category === '06'"
           class="iframe"
-          :src="reference.savePath"
+          :src="reference.savepath"
         ></iframe>
-        <embed v-else class="embed" :src="reference.savePath" />
+        <embed v-else class="embed" :src="reference.savepath" />
       </div>
     </div>
 
@@ -36,15 +36,21 @@
     </div>
     <div class="div_line01"></div>
     <div class="div_cont02">
-      <BrowseLabel title="자료 구분" :value="reference.fileDivision" />
+      <BrowseLabel
+        title="자료 구분"
+        :value="setDivision(reference.dataroomType)"
+      />
       <BrowseLabel
         v-if="pageRoot !== 'world'"
         title="과목"
         :value="reference.subject"
       />
       <BrowseLabel title="공개 여부" :value="setOpen(reference)" />
-      <BrowseLabel title="콘텐츠 유형" :value="reference.fileType" />
-      <BrowseLabel title="경로" :value="reference.savePath" />
+      <BrowseLabel
+        title="콘텐츠 유형"
+        :value="setContentType(reference.category)"
+      />
+      <BrowseLabel title="경로" :value="reference.savepath" />
     </div>
   </div>
   <!-- /. 동영상,문서 컨텐츠 -->
@@ -75,6 +81,23 @@ export default {
       const education = item.publicOpenYn ? '교육기관 ON' : '교육기관 OFF'
       const reference = item.openYn ? '공개자료실 ON' : '공개자료실 OFF'
       return `${education} / ${reference}`
+    },
+    setContentType(type) {
+      if (type === '01') return '동영상(MP4)'
+      else if (type === '02') return '문서(PDF)'
+      else if (type === '03') return '퀴즈'
+      else if (type === '04') return '쪽지시험'
+      else if (type === '05') return 'YOUTUBE'
+      else if (type === '06') return 'URL'
+      else if (type === '07') return '음악(MP4)'
+      else return null
+    },
+    setDivision(id) {
+      if (id === 'ID') return '교육기관'
+      else if (id === 'FD') return '프랜차이즈'
+      else if (id === 'PD') return '공개 자료실'
+      else if (id === 'MD') return '내 자료실'
+      else return null
     },
   },
 }

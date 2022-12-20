@@ -21,7 +21,7 @@
         <!-- 2단 분류 컨텐츠 -->
         <TreeSection
           ref="mainEducation"
-          :pageType="pageType"
+          pageType="reference"
           :identity="identity"
           :institutionData="receiveInstitutionData"
           :franchiseData="receiveFranchiseData"
@@ -31,13 +31,17 @@
           @copyDataCallBack="copyDataCallBack"
           @download-data="downloadSelectData"
           @update-data="updateSelectData"
+          @get-savepath="getSavePath"
         />
         <!-- /.2단 분류 컨텐츠 -->
       </div>
     </div>
 
+    <!-- 일반용 -->
+    <!-- 일반용 -->
     <!-- 등록 파일 선택 -->
     <SelectReferenceModal
+      :selectDataType="selectDataType"
       @add-quiz="onOpenQuizAddModal"
       @add-test="onOpenNoteTestAddModal"
       @set-type="setUploadType"
@@ -45,18 +49,9 @@
 
     <!-- 비디오 & 파일 업로드 선택 -->
     <UploadVideoFileModal
-      :uploadType="uploadType"
+      :selectDataType="selectDataType"
       @upload-video="onUploadVideo"
       @upload-pdf="onUploadPdf"
-    />
-
-    <!-- 유튜브 & url 업로드 선택 -->
-    <UploadYoutubeModal
-      :urlData="urlData"
-      :uploadType="uploadType"
-      @change-url="onChangeUrl"
-      @upload-youtube="onUploadYoutube"
-      @upload-page="onUploadUrl"
     />
 
     <!-- 파일 등록 (동영상,문서,유튜브,url) -->
@@ -138,6 +133,17 @@
       @view-url="onOpenShareViewModal"
       @delete="openSelectModal"
       @open-save-path="onOpenSavePathModal"
+    />
+    <!-- 일반용 -->
+    <!-- 일반용 -->
+
+    <!-- 유튜브 & url 업로드 선택 -->
+    <UploadYoutubeModal
+      :urlData="urlData"
+      :selectDataType="selectDataType"
+      @change-url="onChangeUrl"
+      @upload-youtube="onUploadYoutube"
+      @upload-page="onUploadUrl"
     />
 
     <!-- 퀴즈 보기 -->
@@ -262,6 +268,7 @@
 <script>
 import html2pdf from 'html2pdf.js'
 import $ from 'jquery'
+import file_size_url from 'file_size_url'
 import MainBtnBox from '~/components/common/MainBtnBox.vue'
 import PageHeader from '~/components/common/PageHeader.vue'
 import ModalDesc from '~/components/common/modal/ModalDesc.vue'
@@ -285,9 +292,9 @@ import SearchResultModal from '~/components/classPreperation/modal/SearchResultM
 import SelectReferenceModal from '~/components/classPreperation/modal/SelectReferenceModal.vue'
 import UploadYoutubeModal from '~/components/classPreperation/modal/UploadYoutubeModal.vue'
 import UploadVideoFileModal from '~/components/classPreperation/modal/UploadVideoFileModal.vue'
-import initialState from '~/data/classPreperation/dataRoom/initialState'
+import initialState from '~/data/common/dataRoom/initialState'
 import { urlRegex, setNewArray, jsonItem } from '~/utiles/common'
-import { apiData } from '~/services'
+import { api, apiData } from '~/services'
 export default {
   name: 'ReferenceRoom',
   components: {
@@ -321,8 +328,24 @@ export default {
   mounted() {
     this.identity = localStorage.getItem('identity')
     // this.getServerUrl()
+    this.userInfo = this.$store.state.common.user
   },
   methods: {
+    // 일반용
+    // 일반용
+    // 등록 자료 내용 변경
+    onChangeUploadFile({ target: { id, value, type, checked, name } }) {
+      const elem = this.referenceData
+      const isCheckbox = name === 'openYn' || name === 'publicOpenYn'
+      if (type === 'checkbox') {
+        if (checked) return (elem[id] = true)
+        else return (elem[id] = false)
+      } else if (isCheckbox) return (elem[name] = value)
+      else return (elem[id] = value)
+    },
+    // 일반용
+    // 일반용
+
     // api 통신
     // async getServerUrl() {
     //   return await apiData
@@ -398,9 +421,9 @@ export default {
       this.setModalTitle('등록')
       this.referenceData = {
         ...this.referenceData,
-        fileDivision: '교육기관',
-        fileType: 'quiz',
-        uploadType: 'quiz',
+        dataroomType: 'ID',
+        worker: this.userInfo.mem_name,
+        category: '03',
         fileSize: '0',
       }
       this.referenceData.createAt = new Date()
@@ -418,9 +441,9 @@ export default {
       this.setModalTitle('등록')
       this.referenceData = {
         ...this.referenceData,
-        fileDivision: '교육기관',
-        fileType: 'test',
-        uploadType: 'test',
+        dataroomType: 'ID',
+        worker: this.userInfo.mem_name,
+        category: '04',
         fileSize: '0',
       }
       document.getElementById('referenceSelectClose').click()
@@ -645,7 +668,7 @@ export default {
 
     // 등록 유형 설정하기
     setUploadType(type) {
-      this.uploadType = type
+      this.selectDataType = type
     },
 
     // 필터링 리턴값 변경 이벤트
@@ -706,7 +729,7 @@ export default {
       const filterDivision = () => {
         if (filter.type?.length)
           return filterSubject().filter((item) =>
-            filter.type.includes(item.fileDivision)
+            filter.type.includes(item.dataroomType)
           )
         else return filterSubject()
       }
@@ -714,7 +737,7 @@ export default {
       const filterCategory = () => {
         if (filter.category?.length)
           return filterDivision().filter((item) =>
-            filter.category.includes(this.setType(item.uploadType))
+            filter.category.includes(this.setType(item.category))
           )
         else return filterDivision()
       }
@@ -740,17 +763,6 @@ export default {
     onClickViewDetail(data) {
       this.onClickView(data)
       this.isSearchListModal = false
-    },
-
-    // 등록 자료 내용 변경
-    onChangeUploadFile({ target: { id, value, type, checked, name } }) {
-      const elem = this.referenceData
-      const isCheckbox = name === 'openYn' || name === 'publicOpenYn'
-      if (type === 'checkbox') {
-        if (checked) return (elem[id] = true)
-        else return (elem[id] = false)
-      } else if (isCheckbox) return (elem[name] = value)
-      else return (elem[id] = value)
     },
 
     // 유튜브, 링크 변경
@@ -812,25 +824,88 @@ export default {
       return (this.referenceData.saveFolder = path)
     },
 
+    // 트리 저장경로 설정
+    getSavePath(path) {
+      this.referenceData.saveFolder = path
+    },
+
+    async getFileSize(url) {
+      if (url) {
+        await file_size_url(url)
+          .then((res) => {
+            this.referenceData.fileSize = res
+          })
+          .catch((error) => console.log(error))
+      }
+    },
+
+    // 파일서버 업로드
+    postFile(file) {
+      const formData = new FormData()
+      formData.append('file', file)
+      api
+        .postFile(formData)
+        .then(({ data: { data } }) => {
+          this.referenceData.savepath = `http://112.171.101.31:45290/file/${data}`
+          $('#modalDataregi02').modal('hide')
+          this.getFileSize(`http://112.171.101.31:45290/file/${data}`)
+          this.onOpenReferenceAddModal()
+        })
+        .catch((err) => {
+          console.log(err)
+          return false
+        })
+    },
+
+    // 파일 업로드
+    postDataroomFile() {
+      const payload = {
+        category: this.referenceData.category,
+        dataroom_type: this.referenceData.dataroomType,
+        description: this.referenceData.description,
+        display_no: '',
+        file: this.referenceData.savepath,
+        filename: this.referenceData.fileName,
+        fra_code: '',
+        ins_code: '',
+        keyword: this.referenceData.keyword.join(', '),
+        open_yn: this.referenceData.openYn,
+        parent_tree_idx: 0,
+        public_open_yn: this.referenceData.publicOpenYn,
+        savepath: this.referenceData.savepath,
+        subject: Number(this.referenceData.subject),
+        title: this.referenceData.name,
+        worker: this.userInfo.mem_idx,
+        writer: '',
+      }
+      console.log(payload)
+      apiData
+        .postDataroomFile(payload)
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
     // 비디오 업로드
     onUploadVideo(e) {
       const {
         target: { files },
       } = e
       if (files[0].type === 'video/mp4') {
+        this.postFile(files[0])
         this.referenceData = {
           ...this.referenceData,
           name: files[0].name,
           fileName: files[0].name,
-          fileDivision: '교육기관',
-          fileType: files[0].type,
-          uploadType: 'video',
+          dataroomType: 'ID',
+          worker: this.userInfo.mem_name,
+          category: '01',
           fileSize: files[0].size,
           createAt: files[0].lastModifiedDate,
-          savePath: URL.createObjectURL(files[0]),
         }
-        $('#modalDataregi02').modal('hide')
-        this.onOpenReferenceAddModal()
       } else {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
       }
@@ -844,20 +919,17 @@ export default {
       } = e
       const target = files[0]
       if (target.type === 'application/pdf') {
-        const item = URL.createObjectURL(target)
+        this.postFile(files[0])
         this.referenceData = {
           ...this.referenceData,
           name: target.name,
           fileName: target.name,
-          fileDivision: '교육기관',
-          fileType: target.type,
-          uploadType: 'pdf',
+          dataroomType: 'ID',
+          worker: this.userInfo.mem_name,
+          category: '02',
           fileSize: target.size,
           createAt: target.lastModifiedDate,
-          savePath: item,
         }
-        $('#modalDataregi02').modal('hide')
-        this.onOpenReferenceAddModal()
       } else {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
       }
@@ -879,12 +951,12 @@ export default {
               title: item.snippet.localized.title,
               fileName: item.snippet.localized.title,
               description: item.snippet.localized.description,
-              fileDivision: '교육기관',
-              fileType: 'youtube',
-              uploadType: 'youtube',
+              dataroomType: 'ID',
+              worker: this.userInfo.mem_name,
+              category: '05',
               fileSize: 0,
               createAt: new Date(),
-              savePath: `//www.youtube.com/embed/${youtubeUrl}`,
+              savepath: `//www.youtube.com/embed/${youtubeUrl}`,
             }
             // 유튜브 재생시간 가져오기
             const playTime = item.contentDetails.duration
@@ -917,12 +989,12 @@ export default {
           ...this.referenceData,
           title: url,
           fileName: url,
-          fileDivision: '교육기관',
-          fileType: 'url',
-          uploadType: 'url',
+          dataroomType: 'ID',
+          worker: this.userInfo.mem_name,
+          category: '06',
           fileSize: 0,
           createAt: new Date(),
-          savePath: url,
+          savepath: url,
         }
         $('#modalDataregi03').modal('hide')
         this.onOpenReferenceAddModal()
@@ -941,12 +1013,11 @@ export default {
           ...this.referenceData,
           name: files[0].name,
           fileName: files[0].name,
-          fileDivision: '교육기관',
-          fileType: files[0].type,
-          uploadType: name,
+          dataroomType: 'ID',
+          category: name,
           fileSize: files[0].size,
           createAt: files[0].lastModifiedDate,
-          savePath: URL.createObjectURL(files[0]),
+          savepath: URL.createObjectURL(files[0]),
         }
       }
     },
@@ -1083,26 +1154,27 @@ export default {
     // 자료 클릭 이벤트
     onClickSelectData(data) {
       this.referenceData = jsonItem(data)
-      if (data.uploadType === 'quiz') return this.onOpenQuizBrowseModal()
-      else if (data.uploadType === 'test')
-        return this.onOpenNoteTestBrowseModal()
+      if (data.category === '03') return this.onOpenQuizBrowseModal()
+      else if (data.category === '04') return this.onOpenNoteTestBrowseModal()
       else return this.onOpenReferenceBrowseModal()
     },
 
     // 자료 조회
     onClickView(params) {
       this.referenceData = jsonItem(params)
-      const type = params.uploadType
-      if (type === 'quiz') return this.onOpenQuizBrowseModal()
-      else if (type === 'test') return this.onOpenNoteTestBrowseModal()
+      const type = params.category
+      if (type === '03') return this.onOpenQuizBrowseModal()
+      else if (type === '04') return this.onOpenNoteTestBrowseModal()
       else return this.onOpenReferenceBrowseModal()
     },
 
     // 자료 등록 Submit
     onSubmitAddData() {
       // api연동후 api요청 함수 넣을예정
-      this.onCloseReferenceAddModal()
-      this.openModalDesc('등록 성공', '자료를 등록했습니다.(임시기능)')
+      this.postDataroomFile()
+      console.log(this.referenceData)
+      // this.onCloseReferenceAddModal()
+      // this.openModalDesc('등록 성공', '자료를 등록했습니다.(임시기능)')
     },
 
     // 퀴즈 등록 Submit
@@ -1204,19 +1276,20 @@ export default {
     downloadSelectData(data) {
       const newItem = jsonItem(data)
       this.referenceData = newItem
-      const type = newItem.uploadType
-      if (type === 'quiz') return false
-      else if (type === 'test') return false
-      return this.createAtag(newItem.savePath)
+      const type = data.category
+      if (type === '03') return false
+      else if (type === '04') return false
+      return this.createAtag(newItem.savepath)
     },
 
     // tree menu change button
     updateSelectData(data) {
       this.setModalTitle('수정')
       this.referenceData = jsonItem(data)
-      const type = data.uploadType
-      if (type === 'quiz') return this.onOpenQuizChangeModal()
-      else if (type === 'test') return this.onOpenNoteTestChangeModal()
+      const type = data.category
+      this.getFileSize(data.savepath)
+      if (type === '03') return this.onOpenQuizChangeModal()
+      else if (type === '04') return this.onOpenNoteTestChangeModal()
       else return this.onOpenReferenceChangeModal()
     },
   },

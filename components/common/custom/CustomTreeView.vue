@@ -62,7 +62,7 @@ export default {
     return {
       datas: new Tree(false, []),
       pid: this.pidNum,
-      updateNode: null
+      updateNode: null,
     }
   },
   mounted() {
@@ -124,12 +124,12 @@ export default {
       if (!this.data.children) this.data.children = []
       this.data.addChildren(node)
     },
-    addData(data){
-      const sp=data.savePathInfo.path.split(' > ')
-      let depth=0
-      const pidNum=this.pid
+    addData(data) {
+      const sp = data.savepathInfo.path.split(' > ')
+      let depth = 0
+      const pidNum = this.pid
       this.pid++
-      function _checkNode(oldNode){
+      function _checkNode(oldNode) {
         if (oldNode.children && oldNode.children.length > 0) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
             if (oldNode.children[i].name === sp[depth]) {
@@ -137,13 +137,13 @@ export default {
               if (sp.length === depth) {
                 const newTreeNode = new TreeNode(data)
                 for (const item in data) {
-                  if(item!=='parent'&&item!=='children'){
+                  if (item !== 'parent' && item !== 'children') {
                     newTreeNode[item] = data[item]
                   }
                 }
-                newTreeNode.isLeaf=true
-                newTreeNode.active=true
-                newTreeNode.id=pidNum
+                newTreeNode.isLeaf = true
+                newTreeNode.active = true
+                newTreeNode.id = pidNum
                 oldNode.children[i].addChildren(newTreeNode)
               } else {
                 _checkNode(oldNode.children[i])
@@ -289,16 +289,16 @@ export default {
       }
       _dell(this.datas)
     },
-    updateFile(data){
+    updateFile(data) {
       console.log('---')
       console.log(data)
       console.log(this.updateNode)
       for (const item in data) {
-        if(item!=='parent'&&item!=='children'){
+        if (item !== 'parent' && item !== 'children') {
           this.updateNode[item] = data[item]
         }
       }
-      console.log('11  ',this.updateNode)
+      console.log('11  ', this.updateNode)
     },
     moreMenu({ e }) {
       this.$emit('un-active')
@@ -323,12 +323,12 @@ export default {
       console.log(`down ${node}`)
     },
     moreMenuUpdate(node) {
-      this.updateNode=node
+      this.updateNode = node
       const nodeToData = {}
       for (const item in node) {
         nodeToData[item] = node[item]
       }
-      this.$emit('update-data',nodeToData)
+      this.$emit('update-data', nodeToData)
     },
     moreMenuView(node) {
       console.log(`view ${node}`)
@@ -339,7 +339,7 @@ export default {
     moreMenuCopy(node) {
       console.log(`copy ${node}`)
     },
-    updateFileDel(){
+    updateFileDel() {
       console.log(this.updateNode)
       this.updateNode.remove()
     },

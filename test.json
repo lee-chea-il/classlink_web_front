@@ -1,0 +1,19 @@
+{
+  "category": "string",
+  "dataroom_type": "string",
+  "description": "string",
+  "display_no": "string",
+  "file": "string",
+  "filename": "string",
+  "fra_code": "string",
+  "ins_code": "string",
+  "keyword": ["string"],
+  "open_yn": "string",
+  "parent_treeinfo_idx": 0,
+  "public_open_yn": "string",
+  "savepath": "string",
+  "subject": 0,
+  "title": "string",
+  "worker_idx": 0,
+  "writer": "string"
+}

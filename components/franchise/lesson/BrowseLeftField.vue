@@ -19,7 +19,7 @@
     />
     <CustomData title="등록자" :value="lessonItem?.worker" />
     <CustomData title="등록일" :value="lessonItem?.createAt" />
-    <CustomData title="저장 경로" :value="lessonItem?.savePath" />
+    <CustomData title="저장 경로" :value="lessonItem?.savepath" />
 
     <span class="custom-control custom-checkbox form-inline div_cont">
       <input

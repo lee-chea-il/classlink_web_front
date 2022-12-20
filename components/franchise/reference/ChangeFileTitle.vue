@@ -7,7 +7,7 @@
     <input
       ref="changeFile"
       :name="name"
-      :accept="name === 'video' ? 'video/mp4' : 'application/pdf'"
+      :accept="name === '01' ? 'video/mp4' : 'application/pdf'"
       type="file"
       style="display: none"
       @input="$emit('change-file', $event)"

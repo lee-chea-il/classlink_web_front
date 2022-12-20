@@ -15,27 +15,21 @@
           <ModalHeader title="자료 열람" @close="$emit('close')" />
           <div class="modal-body">
             <VideoView
-              :open="selectData.uploadType === 'video'"
+              :open="selectData.category === '01'"
               :data="selectData"
             />
             <MusicView
-              :open="selectData.uploadType === 'music'"
+              :open="selectData.category === '07'"
               :data="selectData"
             />
 
-            <PdfView
-              :open="selectData.uploadType === 'pdf'"
-              :data="selectData"
-            />
+            <PdfView :open="selectData.category === '02'" :data="selectData" />
             <YoutubeView
-              :open="selectData.uploadType === 'youtube'"
+              :open="selectData.category === '05'"
               :data="selectData"
             />
 
-            <UrlView
-              :open="selectData.uploadType === 'url'"
-              :data="selectData"
-            />
+            <UrlView :open="selectData.category === '06'" :data="selectData" />
 
             <div class="btnsec">
               <ReferenceBtn
@@ -46,12 +40,12 @@
               <ReferenceBtn
                 title="공유"
                 @click-event="
-                  $emit('view-url', 'isReferenceBrowse', selectData.savePath)
+                  $emit('view-url', 'isReferenceBrowse', selectData.savepath)
                 "
               />
               <button class="btn btn_crud_default">
                 <a
-                  :href="selectData.savePath"
+                  :href="selectData.savepath"
                   download="abc.mp4"
                   target="_blank"
                   >다운로드</a

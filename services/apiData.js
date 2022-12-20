@@ -13,11 +13,16 @@ const getServerUrl = async () => {
   return await http.get('/api/v1/management/dataroom/server')
 }
 
-// const postVideo
+// 동영상, PDF, 유튜브, URL 업로드
+const postDataroomFile = async (data) => {
+  return await http.post('/api/v1/management/dataroom/file', data)
+}
 
 const apiData = {
   getYoutubeData,
   getServerUrl,
+
+  postDataroomFile,
 }
 
 export default apiData

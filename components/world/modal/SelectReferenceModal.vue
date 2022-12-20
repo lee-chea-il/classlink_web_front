@@ -26,7 +26,7 @@
                 target="#modalDataregi02"
                 desc="mp4, mp3, avi, mov, flv 등의
                 동영상 파일을 업로드할 수 있습니다."
-                @click-item="$emit('set-type', 'video')"
+                @click-item="$emit('set-type', '01')"
               />
               <SelectItem
                 title="문서"
@@ -35,7 +35,7 @@
                 target="#modalDataregi02"
                 desc="pdf, ppt, doc, xls, hwp, txt 등의
                 문서 파일을 업로드할 수 있습니다."
-                @click-item="$emit('set-type', 'pdf')"
+                @click-item="$emit('set-type', '02')"
               />
 
               <SelectItem
@@ -64,7 +64,7 @@
                 target="#modalDataregi03"
                 desc="유튜브 동영상 URL을 등록할 수 있습니다.
                 영상의 제목과 설명을 자동으로 가져옵니다."
-                @click-item="$emit('set-type', 'youtube')"
+                @click-item="$emit('set-type', '05')"
               />
               <SelectItem
                 title="URL"
@@ -73,7 +73,7 @@
                 target="#modalDataregi03"
                 desc="OX 퀴즈, 단답형 퀴즈,
                 주관식 단답형 퀴즈를 만들 수 있습니다."
-                @click-item="$emit('set-type', 'url')"
+                @click-item="$emit('set-type', '06')"
               />
             </div>
             <SelectItem
@@ -84,7 +84,7 @@
               target="#modalDataregi02"
               desc="mp3, wav, aac, flac, dsd 등의
               음원 파일을 업로드할 수 있습니다."
-              @click-item="$emit('set-type', 'music')"
+              @click-item="$emit('set-type', '07')"
             />
           </div>
         </div>

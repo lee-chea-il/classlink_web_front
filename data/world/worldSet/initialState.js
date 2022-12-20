@@ -3,7 +3,7 @@ export default function initialState() {
     identity: 'teacher',
     copyCheckData: [],
     updateType: '',
-    dropMenuData:[
+    dropMenuData: [
       [
         {
           codeNum: 'WDWS004',
@@ -16,13 +16,13 @@ export default function initialState() {
                 over_url: 'cw/type4/object/over/245.png',
                 icon_normal_url: 'cw/type4/icon/245.png',
                 icon_dim_url: 'cw/type4/icon/dim/245_dim.png',
-                codeNum:'001',
+                codeNum: '001',
                 dbId: '',
                 lessonData: {},
                 imgIdx: 0,
                 left: 38,
                 top: 182,
-              }
+              },
             ],
           },
         },
@@ -37,7 +37,7 @@ export default function initialState() {
                 over_url: 'cw/type5/object/over/248.png',
                 icon_normal_url: 'cw/type5/icon/248.png',
                 icon_dim_url: 'cw/type5/icon/dim/248_dim.png',
-                codeNum:'001',
+                codeNum: '001',
                 dbId: '',
                 lessonData: {},
                 imgIdx: 0,
@@ -58,7 +58,7 @@ export default function initialState() {
                 over_url: 'cw/type6/object/over/242.png',
                 icon_normal_url: 'cw/type6/icon/242.png',
                 icon_dim_url: 'cw/type6/icon/dim/242_dim.png',
-                codeNum:'001',
+                codeNum: '001',
                 dbId: '',
                 lessonData: {},
                 imgIdx: 0,
@@ -68,7 +68,8 @@ export default function initialState() {
             ],
           },
         },
-      ],[
+      ],
+      [
         {
           codeNum: 'WDWS001',
           name: '본관',
@@ -80,7 +81,7 @@ export default function initialState() {
                 over_url: 'cw/type4/object/over/245.png',
                 icon_normal_url: 'cw/type4/icon/245.png',
                 icon_dim_url: 'cw/type4/icon/dim/245_dim.png',
-                codeNum:'001',
+                codeNum: '001',
                 dbId: '',
                 lessonData: {},
                 imgIdx: 0,
@@ -92,12 +93,12 @@ export default function initialState() {
                 over_url: 'cw/type4/object/over/245.png',
                 icon_normal_url: 'cw/type4/icon/245.png',
                 icon_dim_url: 'cw/type4/icon/dim/245_dim.png',
-                codeNum:'002',
+                codeNum: '002',
                 dbId: '',
                 imgIdx: 1,
                 left: 184,
                 top: 186,
-              }
+              },
             ],
           },
         },
@@ -112,7 +113,7 @@ export default function initialState() {
                 over_url: 'cw/type5/object/over/248.png',
                 icon_normal_url: 'cw/type5/icon/248.png',
                 icon_dim_url: 'cw/type5/icon/dim/248_dim.png',
-                codeNum:'001',
+                codeNum: '001',
                 dbId: '',
                 lessonData: {},
                 imgIdx: 0,
@@ -124,12 +125,12 @@ export default function initialState() {
                 over_url: 'cw/type5/object/over/248.png',
                 icon_normal_url: 'cw/type5/icon/248.png',
                 icon_dim_url: 'cw/type5/icon/dim/248_dim.png',
-                codeNum:'002',
+                codeNum: '002',
                 dbId: '',
                 imgIdx: 1,
                 left: 275,
                 top: 262,
-              }
+              },
             ],
           },
         },
@@ -144,7 +145,7 @@ export default function initialState() {
                 over_url: 'cw/type6/object/over/242.png',
                 icon_normal_url: 'cw/type6/icon/242.png',
                 icon_dim_url: 'cw/type6/icon/dim/242_dim.png',
-                codeNum:'001',
+                codeNum: '001',
                 dbId: '',
                 lessonData: {},
                 imgIdx: 0,
@@ -156,21 +157,21 @@ export default function initialState() {
                 over_url: 'cw/type6/object/over/242.png',
                 icon_normal_url: 'cw/type6/icon/242.png',
                 icon_dim_url: 'cw/type6/icon/dim/242_dim.png',
-                codeNum:'002',
+                codeNum: '002',
                 dbId: '',
                 imgIdx: 1,
                 left: 298,
                 top: 190,
-              }
+              },
             ],
           },
-        }
-      ]
+        },
+      ],
     ],
     testData: {
       subTitle: 'sub1',
       desc: 'desc1',
-      savePathInfo: {
+      savepathInfo: {
         path: '마포 학원 > 국어 > 1단원',
         type: 'institution',
         fileName: 'test',
@@ -183,9 +184,9 @@ export default function initialState() {
       ],
       isOpenEducation: true,
       isContinuedRegist: true,
-      lessonId:0,
+      lessonId: 0,
       type: 'institution',
-      name: 'test.set'
+      name: 'test.set',
     },
     receiveInstitutionData: [
       {
@@ -200,20 +201,18 @@ export default function initialState() {
                   {
                     subTitle: 'sub1',
                     desc: 'desc1',
-                    savePathInfo: {
+                    savepathInfo: {
                       path: '마포 학원 > 국어 > 1단원',
                       type: 'institution',
                       fileName: '수학1',
                     },
                     cwId: 'WDWS001',
-                    linkData: [
-                      { codeNum: '001', referId: 1 }
-                    ],
+                    linkData: [{ codeNum: '001', referId: 1 }],
                     isOpenEducation: true,
                     isContinuedRegist: true,
-                    lessonId:0,
+                    lessonId: 0,
                     type: 'institution',
-                    name: '수학1.set'
+                    name: '수학1.set',
                   },
                 ],
               },
@@ -235,20 +234,18 @@ export default function initialState() {
                   {
                     subTitle: 'sub1',
                     desc: 'desc1',
-                    savePathInfo: {
+                    savepathInfo: {
                       path: '서울 학원 > 국어 > 1단원',
                       type: 'institution',
                       fileName: '과학1',
                     },
                     cwId: 'WDWS002',
-                    linkData: [
-                      { codeNum: '001', referId: 1 }
-                    ],
+                    linkData: [{ codeNum: '001', referId: 1 }],
                     isOpenEducation: true,
                     isContinuedRegist: true,
-                    lessonId:0,
+                    lessonId: 0,
                     type: 'franchise',
-                    name: '과학1.set'
+                    name: '과학1.set',
                   },
                 ],
               },
@@ -265,23 +262,21 @@ export default function initialState() {
             name: '1단원',
             children: [
               {
-                    subTitle: 'sub1',
-                    desc: 'desc1',
-                    savePathInfo: {
-                      path: '마포 학원 > 국어 > 1단원',
-                      type: 'institution',
-                      fileName: '미생1',
-                    },
-                    cwId: 'WDWS003',
-                    linkData: [
-                      { codeNum: '001', referId: 1 }
-                    ],
-                    isOpenEducation: true,
-                    isContinuedRegist: true,
-                    lessonId:0,
-                    type: 'institution',
-                    name: '미생1.set'
-                  },
+                subTitle: 'sub1',
+                desc: 'desc1',
+                savepathInfo: {
+                  path: '마포 학원 > 국어 > 1단원',
+                  type: 'institution',
+                  fileName: '미생1',
+                },
+                cwId: 'WDWS003',
+                linkData: [{ codeNum: '001', referId: 1 }],
+                isOpenEducation: true,
+                isContinuedRegist: true,
+                lessonId: 0,
+                type: 'institution',
+                name: '미생1.set',
+              },
             ],
           },
         ],
@@ -322,7 +317,7 @@ export default function initialState() {
                     name: '6학년 영재반 수업자료.pack',
                     type: 'institution',
                     dbId: 3,
-                  }
+                  },
                 ],
               },
             ],
@@ -359,7 +354,7 @@ export default function initialState() {
                     name: '6학년 영재반 수업자료.pack',
                     type: 'franchise',
                     dbId: 3,
-                  }
+                  },
                 ],
               },
             ],
@@ -393,7 +388,7 @@ export default function initialState() {
                 name: '6학년 영재반 수업자료.pack',
                 type: 'franchise',
                 dbId: 3,
-              }
+              },
             ],
           },
           {
@@ -418,7 +413,7 @@ export default function initialState() {
                 name: '6학년 영재반 수업자료.lesson',
                 type: 'franchise',
                 dbId: 3,
-              }
+              },
             ],
           },
         ],

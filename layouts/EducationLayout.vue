@@ -132,14 +132,14 @@ export default {
         desc: '등록한 자료 1',
         keyword: ['국어', '수학'],
         worker: '등록인',
-        savePath:
+        savepath:
           'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
         publicOpenYn: true,
         openYn: true,
         fileName: '',
-        fileDivision: '교육기관',
-        fileType: 'pdf',
-        uploadType: 'pdf',
+        dataroomType: '교육기관',
+
+        category: '02',
         fileSize: '',
         createAt: '',
         dbIdx: 1,

@@ -32,13 +32,16 @@
 
       <CustomData
         title="자료 구분"
-        :value="reference.fileDivision"
+        :value="setDivision(reference.dataroomType)"
         :first="true"
       />
-      <CustomData title="콘텐츠 유형" :value="reference.fileType" />
+      <CustomData
+        title="콘텐츠 유형"
+        :value="setContentType(reference.category)"
+      />
       <CustomData v-if="pageRoot !== 'world'" title="과목" value="수학" />
       <CustomData title="공개 여부" value="ON" />
-      <CustomData title="경로" :value="reference.savePath" />
+      <CustomData title="경로" :value="reference.savepath" />
     </div>
   </div>
 </template>
@@ -72,6 +75,23 @@ export default {
   methods: {
     paginationEmit(item, idx) {
       this.$emit('pagination', item, idx)
+    },
+    setContentType(type) {
+      if (type === '01') return '동영상(MP4)'
+      else if (type === '02') return '문서(PDF)'
+      else if (type === '03') return '퀴즈'
+      else if (type === '04') return '쪽지시험'
+      else if (type === '05') return 'YOUTUBE'
+      else if (type === '06') return 'URL'
+      else if (type === '07') return '음악(MP4)'
+      else return null
+    },
+    setDivision(id) {
+      if (id === 'ID') return '교육기관'
+      else if (id === 'FD') return '프랜차이즈'
+      else if (id === 'PD') return '공개 자료실'
+      else if (id === 'MD') return '내 자료실'
+      else return null
     },
   },
 }

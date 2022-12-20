@@ -7,33 +7,32 @@
           <ChangeFileTitle
             :show="
               open &&
-              (reference.uploadType === 'video' ||
-                reference.uploadType === 'music' ||
-                reference.uploadType === 'pdf')
+              (reference.category === '01' ||
+                reference.category === '07' ||
+                reference.category === '02')
             "
-            :name="reference.uploadType"
+            :name="reference.category"
             @change-file="$emit('change-file', $event)"
           />
           <div class="thumbnail_view">
             <video
               v-show="
-                reference.uploadType === 'video' ||
-                reference.uploadType === 'music'
+                reference.category === '01' || reference.category === '07'
               "
               id="video"
               class="video"
-              :src="reference.savePath"
+              :src="reference.savepath"
               controls
             />
             <iframe
               v-show="
-                reference.uploadType === 'pdf' ||
-                reference.uploadType === 'youtube' ||
-                reference.uploadType === 'url'
+                reference.category === '02' ||
+                reference.category === '05' ||
+                reference.category === '06'
               "
               id="movie_player"
               class="embed"
-              :src="reference.savePath"
+              :src="reference.savepath"
               frameborder="0"
               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
@@ -41,25 +40,26 @@
           </div>
         </div>
         <div style="padding-top: 30px"></div>
-        <ContentLabel title="자료 구분" :value="reference.fileDivision" />
-        <ContentLabel title="유형" :value="reference.fileType" />
+        <ContentLabel
+          title="자료 구분"
+          :value="setDivision(reference.dataroomType)"
+        />
+        <ContentLabel
+          title="유형"
+          :value="setContentType(reference.category)"
+        />
         <ContentLabel title="등록 일시" :value="getDate" />
 
         <ContentLabel
-          v-if="
-            reference.uploadType === 'youtube' || reference.uploadType === 'url'
-          "
+          v-if="reference.category === '05' || reference.category === '06'"
           title="주소"
-          :value="reference.savePath"
+          :value="reference.savepath"
         />
 
+        <ContentLabel v-else title="용량" :value="reference.fileSize" />
+        <!-- getByteSize(reference.fileSize) -->
         <ContentLabel
-          v-else
-          title="용량"
-          :value="getByteSize(reference.fileSize)"
-        />
-        <ContentLabel
-          v-if="reference.uploadType === 'youtube'"
+          v-if="reference.category === '05'"
           title="재생 시간"
           :value="playTime"
         />
@@ -105,12 +105,29 @@ export default {
     },
   },
   methods: {
-    getByteSize(size) {
-      const byteUnits = ['KB', 'MB', 'GB', 'TB']
-      for (let i = 0; i < byteUnits.length; i++) {
-        size = Math.floor(size / 1024)
-        if (size < 1024) return size.toFixed(1) + byteUnits[i]
-      }
+    // getByteSize(size) {
+    //   const byteUnits = ['KB', 'MB', 'GB', 'TB']
+    //   for (let i = 0; i < byteUnits.length; i++) {
+    //     size = Math.floor(size / 1024)
+    //     if (size < 1024) return size.toFixed(1) + byteUnits[i]
+    //   }
+    // },
+    setContentType(type) {
+      if (type === '01') return '동영상(MP4)'
+      else if (type === '02') return '문서(PDF)'
+      else if (type === '03') return '퀴즈'
+      else if (type === '04') return '쪽지시험'
+      else if (type === '05') return 'YOUTUBE'
+      else if (type === '06') return 'URL'
+      else if (type === '07') return '음악(MP4)'
+      else return null
+    },
+    setDivision(id) {
+      if (id === 'ID') return '교육기관'
+      else if (id === 'FD') return '프랜차이즈'
+      else if (id === 'PD') return '공개 자료실'
+      else if (id === 'MD') return '내 자료실'
+      else return null
     },
   },
 }

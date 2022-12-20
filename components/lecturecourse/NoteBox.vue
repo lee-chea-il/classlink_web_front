@@ -67,13 +67,13 @@
 
               <div class="thumbnail_view">
                 <NoteView
-                  :open="noteDetail.uploadType === 'pdf'"
+                  :open="noteDetail.category === '02'"
                   :data="noteDetail"
                 />
                 <!-- <button class="btn icons_fullscreen"></button> -->
                 <a
                   class="btn icons_fullscreen"
-                  :href="noteDetail.savePath"
+                  :href="noteDetail.savepath"
                   target="_blank"
                 ></a>
               </div>
@@ -113,7 +113,7 @@
               <div class="row">
                 <label for="" class="title02 cont">경로</label>
                 <div class="col cont">
-                  <span>{{ noteDetail.savePath }}</span>
+                  <span>{{ noteDetail.savepath }}</span>
                 </div>
               </div>
             </div>
@@ -156,13 +156,13 @@ export default {
                       desc: '등록한 자료 1',
                       keyword: ['국어', '수학'],
                       worker: '등록인',
-                      savePath:
+                      savepath:
                         'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
                       publicOpenYn: true,
                       openYn: true,
                       fileName: '',
                       fileDivision: '교육기관',
-                      fileType: 'pdf',
+
                       uploadType: 'pdf',
                       fileSize: '',
                       createAt: '',
@@ -176,13 +176,13 @@ export default {
                       desc: '등록한 자료 2',
                       keyword: ['국어', '수학'],
                       worker: '등록인',
-                      savePath:
+                      savepath:
                         'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
                       publicOpenYn: true,
                       openYn: true,
                       fileName: '',
                       fileDivision: '교육기관',
-                      fileType: 'pdf',
+
                       uploadType: 'pdf',
                       fileSize: '',
                       createAt: '',
@@ -196,13 +196,13 @@ export default {
                       desc: '등록한 자료 3',
                       keyword: ['국어', '수학'],
                       worker: '등록인',
-                      savePath:
+                      savepath:
                         'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
                       publicOpenYn: true,
                       openYn: true,
                       fileName: '',
                       fileDivision: '교육기관',
-                      fileType: 'pdf',
+
                       uploadType: 'pdf',
                       fileSize: '',
                       createAt: '',
@@ -216,13 +216,13 @@ export default {
                       desc: '등록한 자료 4',
                       keyword: ['국어', '수학'],
                       worker: '등록인',
-                      savePath:
+                      savepath:
                         'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
                       publicOpenYn: false,
                       openYn: false,
                       fileName: '',
                       fileDivision: '교육기관',
-                      fileType: 'pdf',
+
                       uploadType: 'pdf',
                       fileSize: '',
                       createAt: '',

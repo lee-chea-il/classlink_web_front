@@ -2,7 +2,7 @@
   <div class="divide_area right">
     <!-- [개발참조] 퀴즈 컨텐츠 -->
     <BrowseQuiz
-      :show="referenceItem.uploadType === 'quiz'"
+      :show="referenceItem.category === '03'"
       :reference="referenceItem"
       :currentIdx="currentIdx"
       :pageRoot="pageRoot"
@@ -13,7 +13,7 @@
 
     <!-- [개발참조] 쪽지시험 컨텐츠 -->
     <BrowseNoteTest
-      :show="referenceItem.uploadType === 'test'"
+      :show="referenceItem.category === '04'"
       :reference="referenceItem"
       :currentIdx="currentIdx"
       :pageRoot="pageRoot"
@@ -25,7 +25,7 @@
     <!-- [개발참조] 동영상,문서 컨텐츠 -->
     <BrowseContent
       :pageRoot="pageRoot"
-      :show="isContent(referenceItem.uploadType)"
+      :show="isContent(referenceItem.category)"
       :reference="referenceItem"
     />
     <!-- /. 동영상,문서 컨텐츠 -->

@@ -16,6 +16,7 @@
         @download-data="$emit('download-data', $event)"
         @update-data="$emit('update-data', $event)"
         @un-active="unActive"
+        @get-savepath="$emit('get-savepath', $event)"
       />
       <!-- /.탭 컨텐츠 -->
     </div>
@@ -34,6 +35,7 @@
         @download-data="$emit('download-data', $event)"
         @update-data="$emit('update-data', $event)"
         @un-active="unActive"
+        @get-savepath="$emit('get-savepath', $event)"
       />
       <!-- /.탭 컨텐츠 -->
     </div>
@@ -79,6 +81,15 @@ export default {
       type: Array,
       default: () => [],
     },
+  },
+  data() {
+    return {
+      folderInfo: {
+        path: '',
+        type: '',
+        fileName: '',
+      },
+    }
   },
   methods: {
     unActive() {

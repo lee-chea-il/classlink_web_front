@@ -4,15 +4,21 @@
     <CustomTitle title="설명" :value="fileInfo.description" />
     <div class="line"></div>
 
-    <CustomSubTitle title="자료 구분" :value="fileInfo.fileDivision" />
+    <CustomSubTitle
+      title="자료 구분"
+      :value="setDivision(fileInfo.dataroomType)"
+    />
     <CustomSubTitle
       v-show="pageRoot !== 'world'"
       title="과목"
       :value="fileInfo.subject"
     />
-    <CustomSubTitle title="콘텐츠 유형" :value="fileInfo.fileType" />
+    <CustomSubTitle
+      title="콘텐츠 유형"
+      :value="setContentType(fileInfo.category)"
+    />
     <CustomSubTitle title="공개 여부" :value="setOpen(fileInfo)" />
-    <CustomSubTitle title="경로" :value="fileInfo.savePath" />
+    <CustomSubTitle title="경로" :value="fileInfo.savepath" />
   </div>
 </template>
 
@@ -38,6 +44,23 @@ export default {
       const education = item.publicOpenYn ? '교육기관 ON' : '교육기관 OFF'
       const reference = item.openYn ? '공개자료실 ON' : '공개자료실 OFF'
       return `${education} / ${reference}`
+    },
+    setContentType(type) {
+      if (type === '01') return '동영상(MP4)'
+      else if (type === '02') return '문서(PDF)'
+      else if (type === '03') return '퀴즈'
+      else if (type === '04') return '쪽지시험'
+      else if (type === '05') return 'YOUTUBE'
+      else if (type === '06') return 'URL'
+      else if (type === '07') return '음악(MP4)'
+      else return null
+    },
+    setDivision(id) {
+      if (id === 'ID') return '교육기관'
+      else if (id === 'FD') return '프랜차이즈'
+      else if (id === 'PD') return '공개 자료실'
+      else if (id === 'MD') return '내 자료실'
+      else return null
     },
   },
 }

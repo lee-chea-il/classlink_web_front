@@ -13,7 +13,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 id="exampleModalLabel" class="modal-title">
-              {{txtInfo.modatTitle}}
+              {{ txtInfo.modatTitle }}
             </h5>
             <button
               type="button"
@@ -86,12 +86,9 @@
                       </button>
                     </li>
                   </ul>
-                    
-                  <div
-                    v-show="isCurriculum"
-                    class="title"
-                  >
-                    {{txtInfo.ioTitle}}
+
+                  <div v-show="isCurriculum" class="title">
+                    {{ txtInfo.ioTitle }}
                   </div>
                   <div class="cw_box">
                     <img id="cwBoxBackImg" />
@@ -141,7 +138,7 @@
                 <!-- /.왼쪽 영역 -->
                 <!-- 오른쪽 영역 -->
                 <div class="divide_area right">
-                  <div class="title">{{txtInfo.rightTitle}}</div>
+                  <div class="title">{{ txtInfo.rightTitle }}</div>
                   <div class="form-group">
                     <label for="">불러오기</label>
                     <div class="col">
@@ -185,15 +182,15 @@
                   </div>
                   <div class="form-group">
                     <label for="" style="place-self: flex-start"
-                      >{{txtInfo.listTitle}}
-                      </label>
+                      >{{ txtInfo.listTitle }}
+                    </label>
                     <div class="col">
                       <div class="list_box">
                         <div
                           v-if="currentLessonData.title === ''"
                           class="nothing_txt"
                         >
-                        {{txtInfo.listEmptyTxt}}
+                          {{ txtInfo.listEmptyTxt }}
                         </div>
                         <div v-else class="section">
                           <!-- 커리큘럼 등록 시 출력됨 -->
@@ -325,31 +322,31 @@ export default {
     },
     txtInfo: {
       type: Object,
-      default: ()=>{},
+      default: () => {},
     },
-    dropMenuData:{
-      type:Array,
-      default:()=>[]
+    dropMenuData: {
+      type: Array,
+      default: () => [],
     },
-    isCurriculum:{
-      type:Boolean
-    }
+    isCurriculum: {
+      type: Boolean,
+    },
   },
   data() {
     return {
       isUpdate: false,
-      tabIdx:0,
+      tabIdx: 0,
       submitBtnName: '등록',
       dropMenuList: [],
       dropMenuListData: [],
       linkDataCnt: 0,
       currentClassName: '교실선택',
       saveFileFullPath: '',
-      currentDropMenuData:{data:[]},
+      currentDropMenuData: { data: [] },
       curriculumData: {
         subTitle: '',
         desc: '',
-        savePathInfo: {
+        savepathInfo: {
           type: '',
           path: '',
           fileName: '',
@@ -357,47 +354,47 @@ export default {
         cwInfo: '',
         isOpenEducation: true,
         isContinuedRegist: true,
-        linkData:[],
-        lessonId:null
+        linkData: [],
+        lessonId: null,
       },
-      currentLessonData:{
-        desc:'',
-        title:'',
-        role:''
+      currentLessonData: {
+        desc: '',
+        title: '',
+        role: '',
       },
-      lessonFullPath:'',
+      lessonFullPath: '',
     }
   },
   mounted() {
     this.dropMenuListData = this.dropMenuData
     this.dropMenuList = []
-    if(this.isCurriculum){
+    if (this.isCurriculum) {
       for (let i = 0; i < this.dropMenuListData.length; i++) {
         this.dropMenuList.push(this.dropMenuListData[i].name)
       }
-    }else{
+    } else {
       this.changeTab(0)
     }
   },
   methods: {
-    changeTab(tabIdx){
-      this.dropMenuList=[]
-      this.tabIdx=tabIdx
-      const list=this.dropMenuListData[tabIdx]
+    changeTab(tabIdx) {
+      this.dropMenuList = []
+      this.tabIdx = tabIdx
+      const list = this.dropMenuListData[tabIdx]
       for (let i = 0; i < list.length; i++) {
         this.dropMenuList.push(list[i].name)
       }
     },
     selectDropMenu(value) {
-      if(this.isCurriculum){
+      if (this.isCurriculum) {
         for (let i = 0; i < this.dropMenuListData.length; i++) {
           if (value === this.dropMenuListData[i].name) {
             this.currentDropMenuData = this.dropMenuListData[i]
             break
           }
         }
-      }else{
-        const list=this.dropMenuListData[this.tabIdx]
+      } else {
+        const list = this.dropMenuListData[this.tabIdx]
         for (let i = 0; i < list.length; i++) {
           if (value === list[i].name) {
             this.currentDropMenuData = list[i]
@@ -416,39 +413,53 @@ export default {
     },
     setData(curriculumData) {
       $('#modalCuriRegi .modal-body').scrollTop(0)
-      this.tabIdx=0
+      this.tabIdx = 0
       if (curriculumData) {
         this.isUpdate = true
         this.submitBtnName = '수정'
         this.$refs.listView.unLinkAllItem()
         this.curriculumData = curriculumData
 
-        if(this.isCurriculum){
+        if (this.isCurriculum) {
           for (let i = 0; i < this.dropMenuListData.length; i++) {
             if (this.curriculumData.cwId === this.dropMenuListData[i].codeNum) {
-              this.currentDropMenuData = $.extend(true, {}, this.dropMenuListData[i])
+              this.currentDropMenuData = $.extend(
+                true,
+                {},
+                this.dropMenuListData[i]
+              )
               break
             }
           }
-        }else{
-          let isComp=false
+        } else {
+          let isComp = false
           for (let i = 0; i < this.dropMenuListData.length; i++) {
             for (let j = 0; j < this.dropMenuListData[i].length; j++) {
-              if (this.curriculumData.cwId === this.dropMenuListData[i][j].codeNum) {
-                this.currentDropMenuData = $.extend(true, {}, this.dropMenuListData[i][j])
-                isComp=true
+              if (
+                this.curriculumData.cwId === this.dropMenuListData[i][j].codeNum
+              ) {
+                this.currentDropMenuData = $.extend(
+                  true,
+                  {},
+                  this.dropMenuListData[i][j]
+                )
+                isComp = true
                 break
               }
             }
-            if(isComp)break
+            if (isComp) break
           }
         }
 
         this.currentClassName = this.currentDropMenuData.name
-        const linkData=this.curriculumData.linkData
-        for (let i=0;i<linkData.length;i++) {
-          this.currentDropMenuData.data.interactionObjects[parseInt(linkData[i].codeNum)-1].isLink=true
-          this.currentDropMenuData.data.interactionObjects[parseInt(linkData[i].codeNum)-1].referId=linkData[i].referId
+        const linkData = this.curriculumData.linkData
+        for (let i = 0; i < linkData.length; i++) {
+          this.currentDropMenuData.data.interactionObjects[
+            parseInt(linkData[i].codeNum) - 1
+          ].isLink = true
+          this.currentDropMenuData.data.interactionObjects[
+            parseInt(linkData[i].codeNum) - 1
+          ].referId = linkData[i].referId
         }
         this.$refs.imgListViewSwiper.setIOType(this.currentDropMenuData.codeNum)
         this.$refs.imgListView.setData(this.currentDropMenuData.data)
@@ -456,23 +467,27 @@ export default {
           this.currentDropMenuData.data.interactionObjects
         )
         this.saveFileFullPath =
-          this.curriculumData.savePathInfo.path +
+          this.curriculumData.savepathInfo.path +
           ' > ' +
-          this.curriculumData.savePathInfo.fileName +
-          '.'+this.txtInfo.fileSet
-        this.currentLessonData=this.getLessonData(this.curriculumData.lessonId)
-        this.lessonFullPath=this.currentLessonData.savePath+' > '+this.currentLessonData.name
-        
-        const referList=this.currentLessonData.referenceList
-        for (let j=0;j<referList.length;j++) {
-          referList[j].isLink=false
-          referList[j].imgIdx=''
+          this.curriculumData.savepathInfo.fileName +
+          '.' +
+          this.txtInfo.fileSet
+        this.currentLessonData = this.getLessonData(
+          this.curriculumData.lessonId
+        )
+        this.lessonFullPath =
+          this.currentLessonData.savepath + ' > ' + this.currentLessonData.name
+
+        const referList = this.currentLessonData.referenceList
+        for (let j = 0; j < referList.length; j++) {
+          referList[j].isLink = false
+          referList[j].imgIdx = ''
         }
-        for (let i=0;i<linkData.length;i++) {
-          for (let j=0;j<referList.length;j++) {
-            if(linkData[i].referId===referList[j].id){
-              referList[j].isLink=true
-              referList[j].imgIdx=parseInt(linkData[i].codeNum)-1
+        for (let i = 0; i < linkData.length; i++) {
+          for (let j = 0; j < referList.length; j++) {
+            if (linkData[i].referId === referList[j].id) {
+              referList[j].isLink = true
+              referList[j].imgIdx = parseInt(linkData[i].codeNum) - 1
               break
             }
           }
@@ -485,7 +500,7 @@ export default {
         this.curriculumData = {
           subTitle: '',
           desc: '',
-          savePathInfo: {
+          savepathInfo: {
             type: '',
             path: '',
             fileName: '',
@@ -493,17 +508,17 @@ export default {
           cwId: '',
           isOpenEducation: true,
           isContinuedRegist: true,
-          linkData:[],
-          lessonId:null
+          linkData: [],
+          lessonId: null,
         }
-        this.currentDropMenuData=null
-        this.saveFileFullPath=''
-        this.lessonFullPath=''
+        this.currentDropMenuData = null
+        this.saveFileFullPath = ''
+        this.lessonFullPath = ''
         this.currentClassName = '교실선택'
-        this.currentLessonData={
-          desc:'',
-          title:'',
-          role:''
+        this.currentLessonData = {
+          desc: '',
+          title: '',
+          role: '',
         }
         this.$refs.imgListViewSwiper.setIOType('')
         this.$refs.imgListView.setData([])
@@ -533,18 +548,20 @@ export default {
       this.$refs.imgListViewSwiper.unLinkAllItem()
     },
     setSavePath(pathInfo) {
-      this.curriculumData.savePathInfo = pathInfo
+      this.curriculumData.savepathInfo = pathInfo
       this.saveFileFullPath =
-        this.curriculumData.savePathInfo.path +
+        this.curriculumData.savepathInfo.path +
         ' > ' +
-        this.curriculumData.savePathInfo.fileName +
-        '.'+this.txtInfo.fileSet
+        this.curriculumData.savepathInfo.fileName +
+        '.' +
+        this.txtInfo.fileSet
     },
     setFileInfo(lessonInfo) {
       this.unLinkAllItem()
-      this.curriculumData.lessonId=lessonInfo.lesson.dbId
-      this.currentLessonData=this.getLessonData(lessonInfo.lesson.dbId)
-      this.lessonFullPath=this.currentLessonData.savePath+' > '+this.currentLessonData.name
+      this.curriculumData.lessonId = lessonInfo.lesson.dbId
+      this.currentLessonData = this.getLessonData(lessonInfo.lesson.dbId)
+      this.lessonFullPath =
+        this.currentLessonData.savepath + ' > ' + this.currentLessonData.name
       this.$refs.listView.setDataList(this.currentLessonData)
     },
     imgResize(perRatio) {
@@ -568,11 +585,15 @@ export default {
         isAllClear = false
         this.$emit('change-desc', '설명을 입력해 주세요.')
       }
-      if (isAllClear && this.curriculumData.lessonId&&this.curriculumData.lessonId === '') {
+      if (
+        isAllClear &&
+        this.curriculumData.lessonId &&
+        this.curriculumData.lessonId === ''
+      ) {
         isAllClear = false
         this.$emit('change-desc', '불러온 레슨정보가 없습니다.')
       }
-      if (isAllClear && this.curriculumData.savePathInfo.path === '') {
+      if (isAllClear && this.curriculumData.savepathInfo.path === '') {
         isAllClear = false
         this.$emit('change-desc', '저장할 경로를 선택해주세요.')
       }
@@ -583,35 +604,35 @@ export default {
       /* isAllClear = true */
       if (isAllClear) {
         const newData = {}
-        newData.subTitle=this.curriculumData.subTitle
-        newData.desc=this.curriculumData.desc
-        newData.isOpenEducation=this.curriculumData.isOpenEducation
-        newData.isContinuedRegist=this.curriculumData.isContinuedRegist
-        newData.cwId=this.currentDropMenuData.codeNum
-        newData.savePathInfo=this.curriculumData.savePathInfo
-        newData.linkData=this.$refs.imgListView.getData()
-        newData.lessonId=this.curriculumData.lessonId
+        newData.subTitle = this.curriculumData.subTitle
+        newData.desc = this.curriculumData.desc
+        newData.isOpenEducation = this.curriculumData.isOpenEducation
+        newData.isContinuedRegist = this.curriculumData.isContinuedRegist
+        newData.cwId = this.currentDropMenuData.codeNum
+        newData.savepathInfo = this.curriculumData.savepathInfo
+        newData.linkData = this.$refs.imgListView.getData()
+        newData.lessonId = this.curriculumData.lessonId
 
         newData.type = this.currentLessonData.type
-        if(this.isCurriculum){
-          newData.name = newData.savePathInfo.fileName + '.link'
-        }else{
-          newData.name = newData.savePathInfo.fileName + '.set'
+        if (this.isCurriculum) {
+          newData.name = newData.savepathInfo.fileName + '.link'
+        } else {
+          newData.name = newData.savepathInfo.fileName + '.set'
         }
-        
+
         newData.active = true
         console.log(newData)
-        if(!this.isUpdate){
+        if (!this.isUpdate) {
           this.$emit('add-curiiculum-data', newData)
-        }else{
+        } else {
           this.$emit('update-curiiculum-data', newData)
         }
         $('#modalCuriRegi').modal('hide')
       }
     },
-    getLessonData(idx){
-      if(this.isCurriculum){
-        const lessonDatas=[
+    getLessonData(idx) {
+      if (this.isCurriculum) {
+        const lessonDatas = [
           {
             name: '2-1반 수학 수업자료.lesson',
             type: 'institution',
@@ -621,7 +642,7 @@ export default {
             role: '2-1반 학생들의 평균적인 이해를 도와줄 수 있다.',
             keyword: ['국어', '수학', '영어', '사회'],
             isOpen: true,
-            savePath: '마포 학원>국어>1단원',
+            savepath: '마포 학원>국어>1단원',
             createAt: '2022.05.03',
             ragistrant: '홍길남',
             subject: '수학',
@@ -633,12 +654,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                savepath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'video/mp4',
+
                 uploadType: 'video',
                 fileVolume: '',
                 createAt: '',
@@ -651,13 +672,13 @@ export default {
                 desc: '등록한 자료 2',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath:
+                savepath:
                   'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'application/pdf',
+
                 uploadType: 'pdf',
                 fileVolume: '',
                 createAt: '',
@@ -671,12 +692,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                savepath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'quiz',
+
                 uploadType: 'quiz',
                 fileVolume: '',
                 createAt: '',
@@ -747,12 +768,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: '//www.youtube.com/embed/m264zfB87Tc',
+                savepath: '//www.youtube.com/embed/m264zfB87Tc',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'youtube',
+
                 uploadType: 'youtube',
                 fileVolume: '',
                 createAt: '',
@@ -766,12 +787,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://sciencelove.com/725',
+                savepath: 'https://sciencelove.com/725',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'test',
+
                 uploadType: 'url',
                 fileVolume: '',
                 createAt: '',
@@ -785,12 +806,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://sciencelove.com/725',
+                savepath: 'https://sciencelove.com/725',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'test',
+
                 uploadType: 'test',
                 fileVolume: '',
                 createAt: '',
@@ -840,7 +861,7 @@ export default {
             role: '고등교육 영어자료의 평균적인 이해를 도와줄 수 있다.',
             keyword: ['국어', '수학', '영어', '사회'],
             isOpen: true,
-            savePath: '수학>대단원>피타고라스',
+            savepath: '수학>대단원>피타고라스',
             createAt: '2022.05.03',
             ragistrant: '홍길남',
             subject: '수학',
@@ -852,13 +873,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath:
-                  'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                savepath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'video/mp4',
+
                 uploadType: 'video',
                 fileVolume: '',
                 createAt: '',
@@ -872,13 +892,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath:
-                  'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                savepath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'quiz',
+
                 uploadType: 'quiz',
                 fileVolume: '',
                 createAt: '',
@@ -950,12 +969,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: '//www.youtube.com/embed/m264zfB87Tc',
+                savepath: '//www.youtube.com/embed/m264zfB87Tc',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'youtube',
+
                 uploadType: 'youtube',
                 fileVolume: '',
                 createAt: '',
@@ -970,12 +989,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://sciencelove.com/725',
+                savepath: 'https://sciencelove.com/725',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'test',
+
                 uploadType: 'url',
                 fileVolume: '',
                 createAt: '',
@@ -990,12 +1009,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://sciencelove.com/725',
+                savepath: 'https://sciencelove.com/725',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'test',
+
                 uploadType: 'test',
                 fileVolume: '',
                 createAt: '',
@@ -1046,7 +1065,7 @@ export default {
             role: '수학적 귀납법 설명자료의 평균적인 이해를 도와줄 수 있다.',
             keyword: ['국어', '수학', '영어', '사회'],
             isOpen: true,
-            savePath: '수학>대단원>피타고라스',
+            savepath: '수학>대단원>피타고라스',
             createAt: '2022.05.03',
             ragistrant: '홍길남',
             subject: '수학',
@@ -1058,13 +1077,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath:
-                  'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                savepath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'video/mp4',
+
                 uploadType: 'video',
                 fileVolume: '',
                 createAt: '',
@@ -1078,13 +1096,13 @@ export default {
                 desc: '등록한 자료 2',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath:
+                savepath:
                   'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'application/pdf',
+
                 uploadType: 'pdf',
                 fileVolume: '',
                 createAt: '',
@@ -1099,13 +1117,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath:
-                  'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                savepath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'quiz',
+
                 uploadType: 'quiz',
                 fileVolume: '',
                 createAt: '',
@@ -1177,12 +1194,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: '//www.youtube.com/embed/m264zfB87Tc',
+                savepath: '//www.youtube.com/embed/m264zfB87Tc',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'youtube',
+
                 uploadType: 'youtube',
                 fileVolume: '',
                 createAt: '',
@@ -1197,12 +1214,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://sciencelove.com/725',
+                savepath: 'https://sciencelove.com/725',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'test',
+
                 uploadType: 'url',
                 fileVolume: '',
                 createAt: '',
@@ -1217,12 +1234,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://sciencelove.com/725',
+                savepath: 'https://sciencelove.com/725',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'test',
+
                 uploadType: 'test',
                 fileVolume: '',
                 createAt: '',
@@ -1273,7 +1290,7 @@ export default {
             role: '6학년 영재반 수업자료의 평균적인 이해를 도와줄 수 있다.',
             keyword: ['국어', '수학', '영어', '사회'],
             isOpen: true,
-            savePath: '수학>대단원>피타고라스',
+            savepath: '수학>대단원>피타고라스',
             createAt: '2022.05.03',
             ragistrant: '홍길남',
             subject: '수학',
@@ -1285,13 +1302,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath:
-                  'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                savepath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'video/mp4',
+
                 uploadType: 'video',
                 fileVolume: '',
                 createAt: '',
@@ -1305,13 +1321,13 @@ export default {
                 desc: '등록한 자료 2',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath:
+                savepath:
                   'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'application/pdf',
+
                 uploadType: 'pdf',
                 fileVolume: '',
                 createAt: '',
@@ -1326,13 +1342,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath:
-                  'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                savepath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'quiz',
+
                 uploadType: 'quiz',
                 fileVolume: '',
                 createAt: '',
@@ -1404,12 +1419,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: '//www.youtube.com/embed/m264zfB87Tc',
+                savepath: '//www.youtube.com/embed/m264zfB87Tc',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'youtube',
+
                 uploadType: 'youtube',
                 fileVolume: '',
                 createAt: '',
@@ -1424,12 +1439,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://sciencelove.com/725',
+                savepath: 'https://sciencelove.com/725',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'test',
+
                 uploadType: 'url',
                 fileVolume: '',
                 createAt: '',
@@ -1444,12 +1459,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://sciencelove.com/725',
+                savepath: 'https://sciencelove.com/725',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'test',
+
                 uploadType: 'test',
                 fileVolume: '',
                 createAt: '',
@@ -1493,8 +1508,8 @@ export default {
           },
         ]
         return lessonDatas[idx]
-      }else{
-        const packDatas=[
+      } else {
+        const packDatas = [
           {
             name: '2-1반 수학 수업자료.pack',
             type: 'institution',
@@ -1504,7 +1519,7 @@ export default {
             role: '2-1반 학생들의 평균적인 이해를 도와줄 수 있다.',
             keyword: ['국어', '수학', '영어', '사회'],
             isOpen: true,
-            savePath: '마포 학원>국어>1단원',
+            savepath: '마포 학원>국어>1단원',
             createAt: '2022.05.03',
             ragistrant: '홍길남',
             subject: '수학',
@@ -1516,12 +1531,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                savepath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'video/mp4',
+
                 uploadType: 'video',
                 fileVolume: '',
                 createAt: '',
@@ -1534,13 +1549,13 @@ export default {
                 desc: '등록한 자료 2',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath:
+                savepath:
                   'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'application/pdf',
+
                 uploadType: 'pdf',
                 fileVolume: '',
                 createAt: '',
@@ -1556,12 +1571,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                savepath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'quiz',
+
                 uploadType: 'quiz',
                 fileVolume: '',
                 createAt: '',
@@ -1632,12 +1647,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: '//www.youtube.com/embed/m264zfB87Tc',
+                savepath: '//www.youtube.com/embed/m264zfB87Tc',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'youtube',
+
                 uploadType: 'youtube',
                 fileVolume: '',
                 createAt: '',
@@ -1651,12 +1666,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://sciencelove.com/725',
+                savepath: 'https://sciencelove.com/725',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'test',
+
                 uploadType: 'url',
                 fileVolume: '',
                 createAt: '',
@@ -1670,12 +1685,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://sciencelove.com/725',
+                savepath: 'https://sciencelove.com/725',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'test',
+
                 uploadType: 'test',
                 fileVolume: '',
                 createAt: '',
@@ -1725,7 +1740,7 @@ export default {
             role: '고등교육 영어자료의 평균적인 이해를 도와줄 수 있다.',
             keyword: ['국어', '수학', '영어', '사회'],
             isOpen: true,
-            savePath: '수학>대단원>피타고라스',
+            savepath: '수학>대단원>피타고라스',
             createAt: '2022.05.03',
             ragistrant: '홍길남',
             subject: '수학',
@@ -1737,13 +1752,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath:
-                  'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                savepath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'video/mp4',
+
                 uploadType: 'video',
                 fileVolume: '',
                 createAt: '',
@@ -1757,13 +1771,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath:
-                  'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                savepath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'quiz',
+
                 uploadType: 'quiz',
                 fileVolume: '',
                 createAt: '',
@@ -1835,12 +1848,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: '//www.youtube.com/embed/m264zfB87Tc',
+                savepath: '//www.youtube.com/embed/m264zfB87Tc',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'youtube',
+
                 uploadType: 'youtube',
                 fileVolume: '',
                 createAt: '',
@@ -1855,12 +1868,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://sciencelove.com/725',
+                savepath: 'https://sciencelove.com/725',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'test',
+
                 uploadType: 'url',
                 fileVolume: '',
                 createAt: '',
@@ -1875,12 +1888,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://sciencelove.com/725',
+                savepath: 'https://sciencelove.com/725',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'test',
+
                 uploadType: 'test',
                 fileVolume: '',
                 createAt: '',
@@ -1931,7 +1944,7 @@ export default {
             role: '수학적 귀납법 설명자료의 평균적인 이해를 도와줄 수 있다.',
             keyword: ['국어', '수학', '영어', '사회'],
             isOpen: true,
-            savePath: '수학>대단원>피타고라스',
+            savepath: '수학>대단원>피타고라스',
             createAt: '2022.05.03',
             ragistrant: '홍길남',
             subject: '수학',
@@ -1943,13 +1956,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath:
-                  'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                savepath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'video/mp4',
+
                 uploadType: 'video',
                 fileVolume: '',
                 createAt: '',
@@ -1963,13 +1975,13 @@ export default {
                 desc: '등록한 자료 2',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath:
+                savepath:
                   'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'application/pdf',
+
                 uploadType: 'pdf',
                 fileVolume: '',
                 createAt: '',
@@ -1984,13 +1996,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath:
-                  'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                savepath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'quiz',
+
                 uploadType: 'quiz',
                 fileVolume: '',
                 createAt: '',
@@ -2062,12 +2073,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: '//www.youtube.com/embed/m264zfB87Tc',
+                savepath: '//www.youtube.com/embed/m264zfB87Tc',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'youtube',
+
                 uploadType: 'youtube',
                 fileVolume: '',
                 createAt: '',
@@ -2082,12 +2093,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://sciencelove.com/725',
+                savepath: 'https://sciencelove.com/725',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'test',
+
                 uploadType: 'url',
                 fileVolume: '',
                 createAt: '',
@@ -2102,12 +2113,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://sciencelove.com/725',
+                savepath: 'https://sciencelove.com/725',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'test',
+
                 uploadType: 'test',
                 fileVolume: '',
                 createAt: '',
@@ -2158,7 +2169,7 @@ export default {
             role: '6학년 영재반 수업자료의 평균적인 이해를 도와줄 수 있다.',
             keyword: ['국어', '수학', '영어', '사회'],
             isOpen: true,
-            savePath: '수학>대단원>피타고라스',
+            savepath: '수학>대단원>피타고라스',
             createAt: '2022.05.03',
             ragistrant: '홍길남',
             subject: '수학',
@@ -2170,13 +2181,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath:
-                  'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                savepath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'video/mp4',
+
                 uploadType: 'video',
                 fileVolume: '',
                 createAt: '',
@@ -2190,13 +2200,13 @@ export default {
                 desc: '등록한 자료 2',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath:
+                savepath:
                   'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'application/pdf',
+
                 uploadType: 'pdf',
                 fileVolume: '',
                 createAt: '',
@@ -2211,13 +2221,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath:
-                  'https://media.w3.org/2010/05/sintel/trailer.mp4',
+                savepath: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'quiz',
+
                 uploadType: 'quiz',
                 fileVolume: '',
                 createAt: '',
@@ -2289,12 +2298,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: '//www.youtube.com/embed/m264zfB87Tc',
+                savepath: '//www.youtube.com/embed/m264zfB87Tc',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'youtube',
+
                 uploadType: 'youtube',
                 fileVolume: '',
                 createAt: '',
@@ -2309,12 +2318,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://sciencelove.com/725',
+                savepath: 'https://sciencelove.com/725',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'test',
+
                 uploadType: 'url',
                 fileVolume: '',
                 createAt: '',
@@ -2329,12 +2338,12 @@ export default {
                 desc: '등록한 자료 1',
                 keyword: ['국어', '수학'],
                 registrant: '등록인',
-                savePath: 'https://sciencelove.com/725',
+                savepath: 'https://sciencelove.com/725',
                 isOpenEducation: true,
                 isOpenReference: true,
                 fileName: '',
                 fileDivision: '교육기관',
-                fileType: 'test',
+
                 uploadType: 'test',
                 fileVolume: '',
                 createAt: '',
@@ -2379,7 +2388,7 @@ export default {
         ]
         return packDatas[idx]
       }
-    }
+    },
   },
 }
 </script>

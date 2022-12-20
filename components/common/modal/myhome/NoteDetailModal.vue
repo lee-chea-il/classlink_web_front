@@ -15,10 +15,7 @@
           <ModalHeader title="노트 열람" @close="$emit('close')" />
 
           <div class="modal-body modal-height">
-            <PdfView
-              :open="selectData.uploadType === 'pdf'"
-              :data="selectData"
-            />
+            <PdfView :open="selectData.category === '02'" :data="selectData" />
             <!-- <div class="btnsec">
               <ReferenceBtn
                 title="이동"
@@ -30,13 +27,13 @@
                   $emit(
                     'view-url',
                     'isReferenceBrowse',
-                    selectData.savePath
+                    selectData.savepath
                   )
                 "
               />
               <button class="btn btn_crud_default">
                 <a
-                  :href="selectData.savePath"
+                  :href="selectData.savepath"
                   download="abc.mp4"
                   target="_blank"
                   >다운로드</a
@@ -75,7 +72,7 @@
               </div>
               <div class="cont02">
                 <div class="title">경로</div>
-                <span class="title07-1">{{ selectData.savePath }}</span>
+                <span class="title07-1">{{ selectData.savepath }}</span>
               </div>
             </div>
           </div>

@@ -15,7 +15,7 @@
             <!-- 모달 내용 구분 class-->
             <!-- 동영상의 경우 -->
             <SelectItemButton
-              v-show="uploadType === 'video'"
+              v-show="selectDataType === '01'"
               id="video_target"
               title="동영상 업로드"
               desc="mp4 파일 형식"
@@ -26,7 +26,7 @@
             <!-- /.동영상의 경우 -->
             <!-- 문서의 경우 -->
             <SelectItemButton
-              v-show="uploadType === 'pdf'"
+              v-show="selectDataType === '02'"
               id="pdf_target"
               title="문서 및 파일 업로드"
               desc="pdf, ppt, doc, xls, hwp,txt등
@@ -40,7 +40,7 @@
 
             <!-- 배경음의 경우 -->
             <SelectItemButton
-              v-show="uploadType === 'music'"
+              v-show="selectDataType === '07'"
               id="music_target"
               title="음원 파일 업로드"
               desc="mp3, wav, aac, flac, dsd 등"
@@ -66,7 +66,7 @@ export default {
   name: 'VideoFileUploadModal',
   components: { ModalHeader, SelectItemButton },
   props: {
-    uploadType: {
+    selectDataType: {
       type: String,
       default: '',
     },

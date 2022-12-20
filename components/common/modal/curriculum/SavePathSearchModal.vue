@@ -117,13 +117,13 @@
             </div>
             <div class="file_name">
               <div class="form-group">
-                <label for="inputSavePath" class="tit savePathLabel"
+                <label for="inputSavePath" class="tit savepathLabel"
                   >파일명</label
                 >
                 <input
                   id="inputSavePath"
                   type="text"
-                  class="form-control form-inline savePathInput"
+                  class="form-control form-inline savepathInput"
                   placeholder="저장할 파일명을 입력해 주세요"
                   value=""
                 />
@@ -219,13 +219,13 @@ export default {
 .background {
   background: #eee;
 }
-.savePathLabel {
+.savepathLabel {
   text-align: left;
   padding: 10px 0;
   font-size: 14px;
   color: #a7a9ac;
 }
-.savePathInput {
+.savepathInput {
   margin: 0 0 0 30px;
   width: 83%;
 }
@@ -265,9 +265,9 @@ export default {
   background-image: url(~assets/images/icon_mydata.png);
 }
 #modalStoragepath .vtl-node-main.active {
-  background-color: #E7EDFF !important;
+  background-color: #e7edff !important;
 }
 #modalStoragepath .vtl-node-main:hover {
-  background-color: #E7EDFF;
+  background-color: #e7edff;
 }
 </style>

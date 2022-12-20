@@ -1,6 +1,6 @@
 <template>
   <div class="table_area">
-    <div class="table_thead">
+    <div class="table_tbody">
       <table class="tb">
         <thead>
           <tr>
@@ -17,8 +17,6 @@
             </th>
             <th class="th01">파일이름</th>
             <th class="th02">경로</th>
-            <th></th>
-            <th></th>
             <th class="th03">과목</th>
             <th class="th04">키워드</th>
             <th class="th05">보기</th>
@@ -26,10 +24,6 @@
             <th></th>
           </tr>
         </thead>
-      </table>
-    </div>
-    <div class="table_tbody">
-      <table class="tb">
         <tbody>
           <!-- class="bg" -->
           <tr
@@ -60,7 +54,7 @@
             </td>
             <td>
               <div class="path">
-                {{ reference.savePath }}
+                {{ reference.savepath }}
               </div>
             </td>
             <td>

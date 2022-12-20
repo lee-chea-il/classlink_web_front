@@ -86,6 +86,7 @@
         @change-input="$emit('publicOpenYn', $event)"
       />
       <br />
+
       <ThumbnailBox
         v-if="pageRoot === 'world'"
         :imgValue="reference.thumbnail"

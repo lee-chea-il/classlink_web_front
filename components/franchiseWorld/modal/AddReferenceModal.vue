@@ -22,7 +22,7 @@
               <div class="modal_dataregi row">
                 <!-- 모달 내용 구분 class-->
                 <!-- 왼쪽 영역 -->
-                <ReferenceAddLeftField
+                <ReferenceLeftField
                   :reference="reference"
                   :pushKeyword="pushKeyword"
                   :pageRoot="pageRoot"
@@ -62,12 +62,12 @@
 import { ValidationObserver } from 'vee-validate'
 import ModalHeader from '../../common/ModalHeader.vue'
 import ModalBtnBox from '../../common/ModalBtnBox.vue'
-import ReferenceAddLeftField from '../reference/ReferenceLeftField.vue'
+import ReferenceLeftField from '../reference/ReferenceLeftField.vue'
 import ReferenceRightField from '../reference/ReferenceRightField.vue'
 export default {
   name: 'ReferenceAddModal',
   components: {
-    ReferenceAddLeftField,
+    ReferenceLeftField,
     ValidationObserver,
     ReferenceRightField,
     ModalHeader,
@@ -79,7 +79,7 @@ export default {
       type: String,
       default: '',
     },
-    uploadType: {
+    category: {
       type: String,
       default: '',
     },

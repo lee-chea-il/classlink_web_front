@@ -117,13 +117,13 @@
             </div>
             <div class="file_name">
               <div class="form-group">
-                <label for="inputOpenPath" class="tit savePathLabel"
+                <label for="inputOpenPath" class="tit savepathLabel"
                   >파일명</label
                 >
                 <input
                   id="inputOpenPath"
                   type="text"
-                  class="form-control form-inline savePathInput"
+                  class="form-control form-inline savepathInput"
                   placeholder="파일을 선택해 주세요"
                   :value="openFileInfo.lesson.name"
                 />
@@ -195,25 +195,25 @@ export default {
     }
   },
   methods: {
-    fileClickInsti(pathInfo,fileInfo) {
+    fileClickInsti(pathInfo, fileInfo) {
       this.openFileInfo.path = pathInfo
-      this.openFileInfo.lesson=fileInfo
+      this.openFileInfo.lesson = fileInfo
       this.openFileInfo.type = 'institution'
     },
-    fileClickFran(pathInfo,fileInfo) {
+    fileClickFran(pathInfo, fileInfo) {
       this.openFileInfo.path = pathInfo
-      this.openFileInfo.lesson=fileInfo
+      this.openFileInfo.lesson = fileInfo
       this.openFileInfo.type = 'franchise'
     },
-    fileClickMyData(pathInfo,fileInfo) {
+    fileClickMyData(pathInfo, fileInfo) {
       this.openFileInfo.path = pathInfo
-      this.openFileInfo.lesson=fileInfo
+      this.openFileInfo.lesson = fileInfo
       this.openFileInfo.type = 'curriculum'
     },
     saveOpenFileInfo() {
       this.openFileInfo.fileName = $('#inputOpenPath').val()
       const newObj = {}
-      for(const item in this.openFileInfo){
+      for (const item in this.openFileInfo) {
         newObj[item] = this.openFileInfo[item]
       }
       this.$emit('open-file-info', newObj)
@@ -226,13 +226,13 @@ export default {
 .background {
   background: #eee;
 }
-.savePathLabel {
+.savepathLabel {
   text-align: left;
   padding: 10px 0;
   font-size: 14px;
   color: #a7a9ac;
 }
-.savePathInput {
+.savepathInput {
   margin: 0 0 0 30px;
   width: 83%;
 }
@@ -272,9 +272,9 @@ export default {
   background-image: url(~assets/images/icon_mydata.png);
 }
 #modalStoragepath .vtl-node-main.active {
-  background-color: #E7EDFF !important;
+  background-color: #e7edff !important;
 }
 #modalStoragepath .vtl-node-main:hover {
-  background-color: #E7EDFF;
+  background-color: #e7edff;
 }
 </style>

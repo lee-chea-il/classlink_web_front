@@ -26,7 +26,7 @@
           <div class="modal_dataregi">
             <!-- 유튜브일 경우 -->
             <InputBox
-              v-show="uploadType === 'youtube'"
+              v-show="selectDataType === '05'"
               name="youtube"
               :value="urlData.youtube"
               title="유튜브 동영상 주소(URL)를 입력해 주세요"
@@ -37,7 +37,7 @@
             />
             <!-- URL의 경우 -->
             <InputBox
-              v-show="uploadType === 'url'"
+              v-show="selectDataType === '06'"
               name="page"
               :value="urlData.page"
               title="URL을 입력해 주세요"
@@ -67,7 +67,7 @@ export default {
       type: Object,
       default: () => {},
     },
-    uploadType: {
+    category: {
       type: String,
       default: '',
     },

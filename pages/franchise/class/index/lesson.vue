@@ -252,7 +252,7 @@ import TreeSection from '~/components/world/common/TreeSection.vue'
 import PreviewQuizModal from '~/components/world/modal/PreviewQuizModal.vue'
 import PreviewNoteTestModal from '~/components/world/modal/PreviewNoteTestModal.vue'
 
-import initialState from '~/data/franchise/lesson/initialState'
+import initialState from '~/data/common/lesson/initialState'
 import { setNewArray, jsonItem } from '~/utiles/common'
 
 export default {
@@ -321,7 +321,7 @@ export default {
         name: '',
         role: '',
         desc: '',
-        savePath: '',
+        savepath: '',
         keyword: [],
         publicOpenYn: true,
         isContinuedRegist: true,
@@ -487,7 +487,7 @@ export default {
     // [레슨] 저장경로 수정
     setSaveFilePath(path) {
       const createElem = this.lessonData
-      return (createElem.savePath = path)
+      return (createElem.savepath = path)
     },
 
     // [레슨] 페이지키워드 내용 변경
@@ -512,8 +512,8 @@ export default {
         this[prev].open = false
       }
       this.setReference(item)
-      if (item.uploadType === 'quiz') return this.openBrowseQuiz(prev)
-      else if (item.uploadType === 'test') return this.openBrowseNoteTest(prev)
+      if (item.category === '03') return this.openBrowseQuiz(prev)
+      else if (item.category === '04') return this.openBrowseNoteTest(prev)
       else return this.openReferenceBrowse(prev)
     },
 
@@ -715,12 +715,12 @@ export default {
           ...this.selectReferenceItem,
           name: files[0].name,
           fileName: files[0].name,
-          fileDivision: '교육기관',
-          fileType: files[0].type,
+          dataroomType: 'ID',
+
           uploadType: name,
           fileSize: files[0].size,
           createAt: files[0].lastModifiedDate,
-          savePath: URL.createObjectURL(files[0]),
+          savepath: URL.createObjectURL(files[0]),
         }
       }
     },

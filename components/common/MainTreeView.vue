@@ -304,6 +304,7 @@ export default {
         e.target.classList.add('icons_mu_on')
         e.target.querySelector('.more_list').style.display = 'block'
       }
+      console.log(e)
     },
 
     moreMenuClose() {
@@ -326,15 +327,32 @@ export default {
     },
 
     moreMenuUpdate(node) {
-      // console.log(`update ${node}`)
       this.$emit('update-data', node)
+      let path = node.name
+      const getParentName = (item) => {
+        if (item.name !== 'root') {
+          path = item.name + ' > ' + path
+          getParentName(item.parent)
+        }
+      }
+      getParentName(node.parent)
       this.moreMenuClose()
+      this.$emit('get-savepath', path)
     },
 
     moreMenuView(node) {
       console.log(`view ${node}`)
       this.$emit('open-data', node)
+      let path = node.name
+      const getParentName = (item) => {
+        if (item.name !== 'root') {
+          path = item.name + ' > ' + path
+          getParentName(item.parent)
+        }
+      }
+      getParentName(node.parent)
       this.moreMenuClose()
+      this.$emit('get-savepath', path)
     },
 
     moreMenuDell(node) {
@@ -354,7 +372,7 @@ export default {
           }
         }
         if (oldNode.isLeaf && oldNode.isChecked) {
-          checkList.push(oldNode.savePath)
+          checkList.push(oldNode.savepath)
         }
       }
       _checkData(this.datas)

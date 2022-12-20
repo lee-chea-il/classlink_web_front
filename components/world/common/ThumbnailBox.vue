@@ -18,7 +18,7 @@
             name="thumbnail"
             accept="image/*"
             style="display: none"
-            @change="$emit('change-input', $event)"
+            @input="$emit('change-input', $event)"
           />
           <button
             class="btn btn_crud_default"
@@ -30,6 +30,7 @@
         </div>
       </div>
     </div>
+
     <!-- [개발참조] 썸네일 등록했을때 출력됨 -->
     <div v-show="imgValue" class="place_box">
       <button
