@@ -148,8 +148,8 @@ export default function initialState() {
                 dbId: '',
                 lessonData: {},
                 imgIdx: 0,
-                left: 265,
-                top: 2,
+                left: 28,
+                top: 190,
               },
               {
                 nomal_url: 'cw/type6/object/242.png',
@@ -159,8 +159,8 @@ export default function initialState() {
                 codeNum:'002',
                 dbId: '',
                 imgIdx: 1,
-                left: 12,
-                top: 51,
+                left: 298,
+                top: 190,
               }
             ],
           },
