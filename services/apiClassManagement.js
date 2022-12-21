@@ -29,6 +29,11 @@ async function postRegistClass(payload) {
   return await http.post(`/api/v1/management/operation/class`, payload)
 }
 
+// 반관리 반 삭제
+async function deleteClassList(payload) {
+  return await http.delete(`/api/v1/management/operation/class`, payload)
+}
+
 // 반관리 복사
 async function postClassCopy(payload) {
   return await http.post(
@@ -43,6 +48,7 @@ const apiClassManagement = {
   getSearchTeacher,
   getSearchStudent,
   postRegistClass,
+  deleteClassList,
   postClassCopy,
 }
 

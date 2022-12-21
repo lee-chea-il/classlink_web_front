@@ -180,8 +180,8 @@
                         :id="idx"
                         type="checkbox"
                         class="custom-control-input"
-                        :checked="checkList.includes(idx)"
-                        @input="onClickCheckBox(idx)"
+                        :checked="checkList.includes(item.csm_idx)"
+                        @input="onClickCheckBox(item.csm_idx)"
                       />
                       <label class="custom-control-label" :for="idx"></label>
                     </div>
@@ -246,6 +246,7 @@
       :studentList="studentList"
       :selectedTeacher="selectedTeacher"
       :selectedStudentAll="selectedStudentAll"
+      :selectedStudentList="selectedStudentList"
       :modalModifyDetail="modalModifyDetail"
       :modalModifyClassDetail="modalModifyClassDetail"
       :modalModifySelectDetail="modalModifySelectDetail"
@@ -259,13 +260,17 @@
       @delete-selected-student-all="onClickDeleteSelectedStudentAll"
       @add-selected-student="onClickAddSelectedStudent"
       @delete-selected-student="onClickDeleteSelectedStudent"
+      @add-banlist="onClickAddSelectedBanListAll"
       @close="onCloseClassModify"
       @modify-detail="onClickModalModifyDetail"
       @modify-class-detail="onClickModalModifyClassDetail"
       @modify-selected-detail="onClickModalModifySelectedDetail"
       @move-student-tab="onMoveStudentTab"
       @search-teacher="getSearchTeacher"
+      @init-teacher="setInitSearchTeacher"
       @search-student="getSearchStudent"
+      @init-student="setInitSearchStudent"
+      @upload="postRegistClass"
     />
 
     <!-- [개발참조] : 반 상세 모달에서 뜨는 2번째 팝업(학생상세 및 더보기 메뉴의 모달 팝업)은 겹치는 팝업이므로 class="double" 추가 필요 -->
@@ -336,9 +341,16 @@
       @move-to-class-right="onClickMoveToClassRight"
     />
 
+    <ModalDesc
+      :open="modalDesc.open"
+      :title="modalDesc.title"
+      :desc="modalDesc.desc"
+      @close="onCloseModalDesc"
+    />
     <DeleteModal
       :open="deleteModalDesc.open"
       :title="deleteModalDesc.title"
+      @delete="deleteClassList"
       @close="onCloseDeleteModalDesc"
     />
 
@@ -351,6 +363,7 @@ import NavBox from '@/components/operation/NavBox.vue'
 import ClassModifyModal from '@/components/common/modal/operation/ClassModifyModal.vue'
 import ClassDetailModal from '@/components/common/modal/operation/ClassDetailModal.vue'
 import ClassMoveModal from '@/components/common/modal/operation/ClassMoveModal.vue'
+import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 import DeleteModal from '@/components/lecturecourse/DeletePlanModal.vue'
 import CustomSnackbar from '@/components/common/CustomSnackbar.vue'
 import { apiClassManagement } from '~/services'
@@ -361,6 +374,7 @@ export default {
     ClassModifyModal,
     ClassDetailModal,
     ClassMoveModal,
+    ModalDesc,
     DeleteModal,
     CustomSnackbar,
   },
@@ -404,6 +418,7 @@ export default {
       studentList: {},
       selectedTeacher: [],
       selectedStudentAll: [],
+      selectedStudentList: [],
 
       // 왼쪽
       // 반 이동 이동시킬 학생 선택
@@ -421,7 +436,7 @@ export default {
       sortNumberSelect: '10개씩 보기',
       sortDetailChange: '최신 등록순',
       detailFilter: 1,
-      sortCheckStd: true,
+      sortCheckStd: null,
       sortStatus: true,
 
       // 상세 모달 더보기
@@ -462,6 +477,11 @@ export default {
       },
       message: '',
 
+      modalDesc: {
+        open: false,
+        title: '',
+        desc: '',
+      },
       deleteModalDesc: {
         open: false,
         title: '',
@@ -502,15 +522,10 @@ export default {
     }
   },
   watch: {
-    selectedStudentAll: {
-      handler() {
-        console.log(this.selectedStudentAll)
-      },
-      immediate: false,
-    },
     showCount: {
       handler() {
         this.getClassList()
+        this.currentPage = 1
       },
       immediate: false,
     },
@@ -599,7 +614,7 @@ export default {
         search: this.detailSearch === '' ? '' : `&search=${this.detailSearch}`,
         filter: this.detailFilter === 1 ? '' : `&filter=${this.detailFilter}`,
         check_std:
-          this.sortCheckStd === true ? '' : `&check_std=${this.sortCheckStd}`,
+          this.sortCheckStd === null ? '' : `&check_std=${this.sortCheckStd}`,
         status: this.sortStatus === true ? '' : `&status=${this.sortStatus}`,
         current_page:
           this.detailCurrentPage === 1
@@ -623,7 +638,7 @@ export default {
         })
     },
 
-    // 상세모달 학생검색/필터
+    // 상세모달 학생검색/필터 api
     async onSearchFilterDetail() {
       const payload = {
         csm_idx: this.csmIdx,
@@ -631,7 +646,7 @@ export default {
         search: this.detailSearch === '' ? '' : `&search=${this.detailSearch}`,
         filter: this.detailFilter === 1 ? '' : `&filter=${this.detailFilter}`,
         check_std:
-          this.sortCheckStd === true ? '' : `&check_std=${this.sortCheckStd}`,
+          this.sortCheckStd === null ? '' : `&check_std=${this.sortCheckStd}`,
         status: this.sortStatus === true ? '' : `&status=${this.sortStatus}`,
         current_page:
           this.detailCurrentPage === 1
@@ -662,7 +677,7 @@ export default {
     },
 
     // 반 등록
-    // 반 선생님 검색
+    // 반 선생님 검색 api
     async getSearchTeacher() {
       const payload = {
         ins_code: this.ins_code,
@@ -682,6 +697,10 @@ export default {
           console.log(err)
         })
     },
+    setInitSearchTeacher() {
+      this.classTeacherSearch = ''
+    },
+    // 반 학생 검색 api
     async getSearchStudent() {
       const payload = {
         ins_code: this.ins_code,
@@ -701,32 +720,77 @@ export default {
           console.log(err)
         })
     },
+    setInitSearchStudent() {
+      this.classStudentSearch = ''
+    },
+    // 반 등록/수정 하기 api
     async postRegistClass() {
       const payload = {
         csm_name: this.className,
         fra_code: this.fra_code,
         ins_code: this.ins_code,
-        studentList: [
-          {
-            itm_idx: 0,
-            mem_idx: 0,
-            mem_name: '',
-            std_idx: 0,
-          },
-        ],
-        teacherList: [
-          {
-            mem_idx: 0,
-            mem_name: '',
-            tch_idx: 0,
-          },
-        ],
+        studentList: this.selectedStudentList,
+        teacherList: this.selectedTeacher,
+      }
+
+      if (
+        payload.csm_name !== '' &&
+        payload.studentList.length !== 0 &&
+        payload.teacherList.length !== 0
+      ) {
+        await apiClassManagement
+          .postRegistClass(payload)
+          .then((res) => {
+            console.log(res)
+            this.onCloseClassModify()
+            this.getClassList()
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      } else {
+        this.openModalDesc('반 등록 실패', '등록할 반을 작성하고 클릭해주세요.')
+      }
+    },
+
+    // 반 삭제 api
+    async deleteClassList() {
+      const payload = {
+        data: {
+          class_list: this.checkList,
+          ins_code: this.ins_code,
+        },
       }
 
       await apiClassManagement
-        .postRegistClass(payload)
+        .deleteClassList(payload)
+        .then(() => {
+          this.onCloseDeleteModalDesc()
+          this.getClassList()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
+    async postClassCopy() {
+      const payload = {
+        copyBanList: [
+          {
+            copy_csm_idx: 0,
+            csm_name: 'string',
+          },
+        ],
+        fra_code: this.fra_code,
+        ins_code: this.ins_code,
+        now_mem_idx: 0,
+      }
+
+      await apiClassManagement
+        .postClassCopy(payload)
         .then((res) => {
           console.log(res)
+          this.getClassList()
         })
         .catch((err) => {
           console.log(err)
@@ -792,6 +856,17 @@ export default {
       this.openSnackbar.open = false
       this.message = ''
     },
+    // 모달
+    openModalDesc(tit, msg) {
+      this.modalDesc = {
+        open: true,
+        title: tit,
+        desc: msg,
+      }
+    },
+    onCloseModalDesc() {
+      this.modalDesc.open = false
+    },
     // 삭제모달
     openDeleteModalDesc(tit) {
       this.deleteModalDesc = {
@@ -840,7 +915,7 @@ export default {
       } else {
         this.checkList.splice(0, this.classList.length)
         for (let i = 0; i < this.classList.length; i++) {
-          this.checkList.push(i)
+          this.checkList.push(this.classList[i].csm_idx)
         }
         this.allCheck = true
       }
@@ -995,24 +1070,7 @@ export default {
           this.onCloseSnackbar()
         }, 2000)
       } else {
-        const data = []
-        for (let i = 0; i < this.checkList.length; i++) {
-          data.push(
-            JSON.parse(JSON.stringify(this.classList[this.checkList[i]]))
-          )
-        }
-        console.log(data)
-        for (let i = 0; i < data.length; i++) {
-          data[i].class =
-            data[i].class +
-            `(${
-              this.classList.filter((item) => item.class === data[i].class)
-                .length
-            })`
-        }
-        for (let i = 0; i < data.length; i++) {
-          this.classList.push(data[i])
-        }
+        this.postClassCopy()
       }
     },
 
@@ -1036,12 +1094,24 @@ export default {
       }
     },
     onClickDeleteSelectedStudentAll(data) {
-      this.selectedStudentAll = this.selectedStudentAll.filter(
-        (item) => item !== data
-      )
+      for (let i = 0; i <= data.student.length; i++) {
+        console.log(`student[${i}]`, data.student[0])
+        this.onClickDeleteSelectedStudent(data.student[0], data.grade)
+      }
+    },
+    onClickAddSelectedBanListAll(data) {
+      console.log(data)
+      for (let i = 0; i < data.studentList.length; i++) {
+        this.onClickAddSelectedStudent(
+          data.studentList[i],
+          data.studentList[i].std_year
+        )
+      }
     },
     // 반 학생 반 학년 추가/삭제 (개인)
     onClickAddSelectedStudent(data, stdYear) {
+      // console.log('data,stdYear', data, stdYear)
+
       if (
         this.selectedStudentAll.find((e) => e.grade === stdYear) === undefined
       ) {
@@ -1050,26 +1120,31 @@ export default {
           student: [data],
         }
         this.selectedStudentAll.push(student)
+        this.selectedStudentList.push(data)
       } else {
         const students = this.selectedStudentAll.find(
           (e) => e.grade === stdYear
         )
 
         if (
-          !this.selectedStudentAll
-            .find((e) => e.grade === stdYear)
-            .student.includes(data)
+          students.student?.filter((item) => item?.mem_idx === data?.mem_idx)[0]
+            ?.mem_idx !== data.mem_idx
         ) {
           students.student.push(data)
+          this.selectedStudentList.push(data)
         }
       }
     },
-    onClickDeleteSelectedStudent(data) {
+    onClickDeleteSelectedStudent(data, stdYear) {
       for (let i = 0; i < this.selectedStudentAll.length; i++) {
-        if (this.selectedStudentAll[i].grade === data.grade) {
+        if (this.selectedStudentAll[i].grade === stdYear) {
           this.selectedStudentAll[i].student = this.selectedStudentAll[
             i
-          ].student.filter((item) => item !== data)
+          ].student.filter((item) => item.mem_idx !== data.mem_idx)
+
+          this.selectedStudentList = this.selectedStudentList.filter(
+            (item) => item.mem_idx !== data.mem_idx
+          )
 
           if (this.selectedStudentAll[i].student.length === 0) {
             this.selectedStudentAll = this.selectedStudentAll.filter(

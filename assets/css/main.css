@@ -1953,6 +1953,9 @@ ol {
   align-items: center;
   margin-bottom: -66px;
 }
+#popupZone .today_check {
+  font-size: 14px;
+}
 #popupZone .banner_main {
   display: inline-block;
   width: 1280px;
