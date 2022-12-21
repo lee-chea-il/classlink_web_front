@@ -13,7 +13,7 @@
     <div class="question_area04-1">
       <div class="limit_time">
         <span class="limit_time_font"
-          >제한시간 : <span>{{ noteTest.limitTime }}</span>
+          >제한시간 : <span>{{ noteTest.limit_time }}</span>
           <span>초</span></span
         >
         <span class="icon_timer"></span>
@@ -26,7 +26,7 @@
           style="width: 90%; margin: auto"
           class="qa_cnts"
           :class="{ img_field: isImg }"
-          v-html="noteTest.problem"
+          v-html="noteTest.question"
         ></div>
       </div>
     </div>
@@ -56,7 +56,7 @@ export default {
   },
   computed: {
     isImg() {
-      return this.noteTest.problem.includes('<img')
+      return this.noteTest.question.includes('<img')
     },
   },
 }

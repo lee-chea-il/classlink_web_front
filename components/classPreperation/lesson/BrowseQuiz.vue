@@ -5,7 +5,7 @@
         <div v-if="idx === currentIdx" class="row">
           <div class="title">자료 열람</div>
           <div class="thumbnail_view02">
-            <div v-html="quiz.problem"></div>
+            <div v-html="quiz.question"></div>
             <button class="btn icons_fullscreen"></button>
             <!-- {{ quiz }} -->
           </div>
@@ -32,7 +32,7 @@
 
       <CustomData
         title="자료 구분"
-        :value="setDivision(reference.dataroomType)"
+        :value="setDivision(reference.dataroom_type)"
         :first="true"
       />
       <CustomData

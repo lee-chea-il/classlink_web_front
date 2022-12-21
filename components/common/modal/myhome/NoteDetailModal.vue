@@ -63,7 +63,7 @@
               <div class="cont02">
                 <div class="title">공개 여부</div>
                 <span class="title05-1">{{
-                  selectData.publicOpenYn ? 'ON' : 'OFF'
+                  selectData.public_open_yn ? 'ON' : 'OFF'
                 }}</span>
               </div>
               <div class="cont02">

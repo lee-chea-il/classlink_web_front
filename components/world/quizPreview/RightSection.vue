@@ -16,7 +16,7 @@ problem
         <div v-if="idx === currentIdx" class="question_area04-1">
           <div class="limit_time">
             <span class="limit_time_font"
-              >제한시간 : <span>{{ quiz.limitTime }}</span>
+              >제한시간 : <span>{{ quiz.limit_time }}</span>
               <span>초</span></span
             >
             <span class="icon_timer"></span>
@@ -40,7 +40,7 @@ problem
 
         <div v-if="idx === currentIdx">
           <!-- ox 유형일때 -->
-          <div v-if="quiz.quizType === 0" class="answer_area row">
+          <div v-if="quiz.type === 0" class="answer_area row">
             <div v-if="quiz.oxAnswer === 0">
               <div class="icon_o_correct"></div>
               &emsp;&emsp;&emsp;&emsp;
@@ -53,7 +53,7 @@ problem
           </div>
 
           <!-- 주관식 단답형일때 -->
-          <div v-if="quiz.quizType === 1" class="answer_area03 row">
+          <div v-if="quiz.type === 1" class="answer_area03 row">
             <div class="aa_question row">
               <div class="aa_number_select">
                 <div class="aa_num_font01">정답</div>
@@ -67,7 +67,7 @@ problem
           </div>
 
           <!-- 단답형일때 -->
-          <div v-if="quiz.quizType === 2" class="answer_area02 row">
+          <div v-if="quiz.type === 2" class="answer_area02 row">
             <div class="aa_question row">
               <!-- [개발참조]문제 선택 시 출력  -->
               <div class="aa_number_select">

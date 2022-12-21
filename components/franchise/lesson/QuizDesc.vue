@@ -6,7 +6,7 @@
           <CustomTitle title="유형" :value="setType(quiz)" />
           <CustomTitle title="정답" :value="setAnswer(quiz)" />
           <CustomTitle title="난이도" :value="setDificultade(quiz)" />
-          <CustomTitle title="제한시간" :value="quiz.limitTime" />
+          <CustomTitle title="제한시간" :value="quiz.limit_time" />
         </div>
       </div>
     </div>
@@ -35,9 +35,9 @@ export default {
   },
   methods: {
     setType(item) {
-      if (item.quizType === 0) {
+      if (item.type === 0) {
         return 'OX 퀴즈'
-      } else if (item.quizType === 1) {
+      } else if (item.type === 1) {
         return '주관식 단답형'
       } else {
         return '단답형'
@@ -47,11 +47,7 @@ export default {
       return item.oxAnswer === 0 ? 'O' : 'X'
     },
     setDificultade(item) {
-      return item.dificultade === 1
-        ? '상'
-        : item.dificultade === 2
-        ? '중'
-        : '하'
+      return item.level === 1 ? '상' : item.level === 2 ? '중' : '하'
     },
   },
 }

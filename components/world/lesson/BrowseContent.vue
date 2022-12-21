@@ -38,7 +38,7 @@
     <div class="div_cont02">
       <BrowseLabel
         title="자료 구분"
-        :value="setDivision(reference.dataroomType)"
+        :value="setDivision(reference.dataroom_type)"
       />
       <BrowseLabel
         v-if="pageRoot !== 'world'"
@@ -78,8 +78,8 @@ export default {
   },
   methods: {
     setOpen(item) {
-      const education = item.publicOpenYn ? '교육기관 ON' : '교육기관 OFF'
-      const reference = item.openYn ? '공개자료실 ON' : '공개자료실 OFF'
+      const education = item.public_open_yn ? '교육기관 ON' : '교육기관 OFF'
+      const reference = item.open_yn ? '공개자료실 ON' : '공개자료실 OFF'
       return `${education} / ${reference}`
     },
     setContentType(type) {

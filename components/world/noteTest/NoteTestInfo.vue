@@ -49,21 +49,21 @@
                 <button
                   class="btn btn_activated"
                   disabled
-                  :class="{ active: item.dificultade === 0 }"
+                  :class="{ active: item.level === 0 }"
                 >
                   상
                 </button>
                 <button
                   class="btn btn_activated"
                   disabled
-                  :class="{ active: item.dificultade === 1 }"
+                  :class="{ active: item.level === 1 }"
                 >
                   중
                 </button>
                 <button
                   class="btn btn_activated"
                   disabled
-                  :class="{ active: item.dificultade === 2 }"
+                  :class="{ active: item.level === 2 }"
                 >
                   하
                 </button>
@@ -77,7 +77,7 @@
                   placeholder="문제당 제한시간(초)"
                   class="form-control"
                   disabled
-                  :value="item.limitTime"
+                  :value="item.limit_time"
                 />
               </div>
             </div>

@@ -114,7 +114,9 @@
                   <div class="row">
                     <label for="" class="title02 cont">공개 여부</label>
                     <div class="col cont">
-                      <span>{{ noteDetail.publicOpenYn ? 'ON' : 'OFF' }}</span>
+                      <span>{{
+                        noteDetail.public_open_yn ? 'ON' : 'OFF'
+                      }}</span>
                     </div>
                   </div>
 
@@ -215,10 +217,10 @@ export default {
                       worker: '등록인',
                       savepath:
                         'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
-                      publicOpenYn: true,
-                      openYn: true,
-                      fileName: '',
-                      dataroomType: '교육기관',
+                      public_open_yn: true,
+                      open_yn: true,
+                      filename: '',
+                      dataroom_type: '교육기관',
 
                       uploadType: 'pdf',
                       fileSize: '',
@@ -235,10 +237,10 @@ export default {
                       worker: '등록인',
                       savepath:
                         'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
-                      publicOpenYn: true,
-                      openYn: true,
-                      fileName: '',
-                      dataroomType: '교육기관',
+                      public_open_yn: true,
+                      open_yn: true,
+                      filename: '',
+                      dataroom_type: '교육기관',
 
                       uploadType: 'pdf',
                       fileSize: '',
@@ -255,10 +257,10 @@ export default {
                       worker: '등록인',
                       savepath:
                         'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
-                      publicOpenYn: true,
-                      openYn: true,
-                      fileName: '',
-                      dataroomType: '교육기관',
+                      public_open_yn: true,
+                      open_yn: true,
+                      filename: '',
+                      dataroom_type: '교육기관',
 
                       uploadType: 'pdf',
                       fileSize: '',
@@ -275,10 +277,10 @@ export default {
                       worker: '등록인',
                       savepath:
                         'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
-                      publicOpenYn: false,
-                      openYn: false,
-                      fileName: '',
-                      dataroomType: '교육기관',
+                      public_open_yn: false,
+                      open_yn: false,
+                      filename: '',
+                      dataroom_type: '교육기관',
 
                       uploadType: 'pdf',
                       fileSize: '',

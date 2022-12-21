@@ -47,7 +47,7 @@
                   @preview="setPreview"
                   @pagination="setPagination"
                   @select-answer="setAnswer"
-                  @change-dificultade="setDificultade"
+                  @change-level="setDificultade"
                   @change-item="setItem"
                   @add-example="$emit('add-example', $event)"
                   @delete-example="setDeleteExample"
@@ -118,7 +118,7 @@ export default {
       this.$emit('select-answer', e, idx)
     },
     setDificultade(e, idx) {
-      this.$emit('change-dificultade', e, idx)
+      this.$emit('change-level', e, idx)
     },
     setItem(e, idx) {
       this.$emit('change-item', e, idx)

@@ -13,7 +13,7 @@
     <div class="question_area04-1">
       <div class="limit_time">
         <span class="limit_time_font"
-          >제한시간 : <span>{{ noteTest.limitTime }}</span>
+          >제한시간 : <span>{{ noteTest.limit_time }}</span>
           <span>초</span></span
         >
         <span class="icon_timer"></span>

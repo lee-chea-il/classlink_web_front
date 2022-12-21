@@ -1791,7 +1791,7 @@ export default function initialState() {
       savepathInfo: {
         path: '마포 학원 > 국어 > 1단원',
         type: 'institution',
-        fileName: 'test',
+        filename: 'test',
       },
       cwId: 'WDCS001',
       linkData: [
@@ -1821,7 +1821,7 @@ export default function initialState() {
                     savepathInfo: {
                       path: '마포 학원 > 국어 > 1단원',
                       type: 'institution',
-                      fileName: '수학1',
+                      filename: '수학1',
                     },
                     cwId: 'WDCS001',
                     linkData: [
@@ -1858,7 +1858,7 @@ export default function initialState() {
                     savepathInfo: {
                       path: '서울 학원 > 국어 > 1단원',
                       type: 'institution',
-                      fileName: '과학1',
+                      filename: '과학1',
                     },
                     cwId: 'WDCS001',
                     linkData: [
@@ -1892,7 +1892,7 @@ export default function initialState() {
                 savepathInfo: {
                   path: '마포 학원 > 국어 > 1단원',
                   type: 'institution',
-                  fileName: '미생1',
+                  filename: '미생1',
                 },
                 cwId: 'WDCS002',
                 linkData: [

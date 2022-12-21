@@ -8,10 +8,10 @@
               <input
                 id="isOx"
                 type="radio"
-                :name="isCreate ? 'quizType' : 'quizType1'"
+                :name="isCreate ? 'type' : 'type1'"
                 :value="0"
                 class="custom-control-input"
-                :checked="item.quizType === 0"
+                :checked="item.type === 0"
                 @click="$emit('select-type', $event, idx, 0)"
               />
               <label class="custom-control-label" for="isOx">OX 유형</label>
@@ -20,7 +20,7 @@
           <div class="cnt">
             <button
               class="btn btn_activated"
-              :disabled="item.quizType !== 0"
+              :disabled="item.type !== 0"
               :class="{ active: item.oxAnswer === 0 }"
               @click="$emit('select-ox', idx, 0)"
             >
@@ -28,7 +28,7 @@
             </button>
             <button
               class="btn btn_activated"
-              :disabled="item.quizType !== 0"
+              :disabled="item.type !== 0"
               :class="{ active: item.oxAnswer === 1 }"
               @click="$emit('select-ox', idx, 1)"
             >
@@ -41,22 +41,22 @@
           <div class="cnt">
             <button
               class="btn btn_activated"
-              :class="{ active: item.dificultade === 0 }"
-              @click="$emit('select-dificultade', idx, 0)"
+              :class="{ active: item.level === 0 }"
+              @click="$emit('select-level', idx, 0)"
             >
               상
             </button>
             <button
               class="btn btn_activated"
-              :class="{ active: item.dificultade === 1 }"
-              @click="$emit('select-dificultade', idx, 1)"
+              :class="{ active: item.level === 1 }"
+              @click="$emit('select-level', idx, 1)"
             >
               중
             </button>
             <button
               class="btn btn_activated"
-              :class="{ active: item.dificultade === 2 }"
-              @click="$emit('select-dificultade', idx, 2)"
+              :class="{ active: item.level === 2 }"
+              @click="$emit('select-level', idx, 2)"
             >
               하
             </button>
@@ -68,10 +68,10 @@
               <input
                 id="isShortAnswer"
                 type="radio"
-                :name="isCreate ? 'quizType' : 'quizType1'"
+                :name="isCreate ? 'type' : 'type1'"
                 :value="1"
                 class="custom-control-input"
-                :checked="item.quizType === 1"
+                :checked="item.type === 1"
                 @click="$emit('select-type', $event, idx, 1)"
               />
               <label class="custom-control-label" for="isShortAnswer"
@@ -85,7 +85,7 @@
             nameProp="정답"
             :idx="idx"
             :value="item.subjectiveAnswer"
-            :disabled="item.quizType !== 1"
+            :disabled="item.type !== 1"
             placeholder="정답 입력"
             @change-item="setChangeInput"
           />
@@ -94,10 +94,10 @@
           <div class="tit">문제당 제한시간</div>
           <QuizInput
             rules="required_quiz"
-            idProp="limitTime"
+            idProp="limit_time"
             nameProp="제한시간"
             :idx="idx"
-            :value="item.limitTime"
+            :value="item.limit_time"
             placeholder="제한시간(초)"
             @change-item="setChangeInput"
           />
@@ -109,10 +109,10 @@
                 <input
                   id="isSubjective"
                   type="radio"
-                  :name="isCreate ? 'quizType' : 'quizType1'"
+                  :name="isCreate ? 'type' : 'type1'"
                   :value="2"
                   class="custom-control-input"
-                  :checked="item.quizType === 2"
+                  :checked="item.type === 2"
                   @click="$emit('select-type', $event, idx, 2)"
                 />
                 <label class="custom-control-label" for="isSubjective"
@@ -130,7 +130,7 @@
               :idx="idx"
               :value="item.shortAnswer"
               placeholder="정답 입력"
-              :disabled="item.quizType !== 2"
+              :disabled="item.type !== 2"
               @change-item="setChangeInput"
             />
           </div>
@@ -143,7 +143,7 @@
               :idx="idx"
               :value="item.shortWrongAnswer"
               placeholder="오답 입력"
-              :disabled="item.quizType !== 2"
+              :disabled="item.type !== 2"
               @change-item="setChangeInput"
             />
           </div>

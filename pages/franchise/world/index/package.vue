@@ -170,7 +170,7 @@
       @pagination="setPagination"
       @plus-item="onPlusQuizList"
       @preview="onOpenQuizPreviewModal"
-      @select-dificultade="onSelectDificultade"
+      @select-level="onSelectDificultade"
       @select-type="onClickQuizType"
       @select-ox="onSelectOx"
       @set-keyword="setReferenceKeyword"
@@ -187,7 +187,7 @@
       @change-item="onChangeTest"
       @change-input="onChangeUploadFile"
       @change-number="onClickPagination"
-      @change-dificultade="onSelectDificultadeTest"
+      @change-level="onSelectDificultadeTest"
       @delete-item="onDeleteNoteTest"
       @pagination="onClickQuizPagination"
       @select-answer="onSelectAnswer"
@@ -325,7 +325,7 @@ export default {
         desc: '',
         savepath: '',
         keyword: [],
-        publicOpenYn: true,
+        public_open_yn: true,
         isContinuedRegist: true,
         createAt: '',
         referenceList: [],
@@ -716,8 +716,8 @@ export default {
         this.selectReferenceItem = {
           ...this.selectReferenceItem,
           name: files[0].name,
-          fileName: files[0].name,
-          dataroomType: 'ID',
+          filename: files[0].name,
+          dataroom_type: 'ID',
 
           uploadType: name,
           fileSize: files[0].size,
@@ -803,7 +803,7 @@ export default {
         target.oxAnswer = 0
         target.subjectiveAnswer = ''
       }
-      return (target.quizType = Number(value))
+      return (target.type = Number(value))
     },
 
     // [자료실] ox클릭 이벤트
@@ -813,12 +813,12 @@ export default {
 
     // [자료실] 난이도 설정
     onSelectDificultade(idx, num) {
-      this.selectReferenceItem.quizList[idx].dificultade = num
+      this.selectReferenceItem.quizList[idx].level = num
     },
 
     // [자료실] 난이도 설정 쪽지 시험
     onSelectDificultadeTest(idx, num) {
-      this.selectReferenceItem.noteTestList[idx].dificultade = num
+      this.selectReferenceItem.noteTestList[idx].level = num
     },
 
     // [자료실] 쪽지시험 내용 수정

@@ -31,6 +31,7 @@ module.exports = {
     'no-useless-escape': 0,
     'vue/no-v-html': 0,
     'operator-linebreak': 0,
+    'vue/prop-name-casing': 0,
     'vue/order-in-components': [
       'error',
       {

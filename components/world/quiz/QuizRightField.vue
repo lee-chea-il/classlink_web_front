@@ -31,7 +31,7 @@
         @change-item="onChangeItem"
         @select-type="setSelectType"
         @select-ox="setSelectOx"
-        @select-dificultade="setSelectDificultade"
+        @select-level="setSelectDificultade"
       />
     </div>
   </div>
@@ -81,7 +81,7 @@ export default {
       this.$emit('select-ox', idx, num)
     },
     setSelectDificultade(idx, num) {
-      this.$emit('select-dificultade', idx, num)
+      this.$emit('select-level', idx, num)
     },
   },
 }

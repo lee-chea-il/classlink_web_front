@@ -8,19 +8,9 @@
           <div class="ar_num_font01">{{ idx + 1 }}</div>
         </div>
         <!-- [개발참조]정답일때 출력 : class="ar_num_correct" -->
-        <div v-if="item.quizType === 0" class="ar_result_select">
+        <div class="ar_result_select">
           <div class="ar_correct">
-            {{ item.oxAnswer === 0 ? 'O' : 'X' }}
-          </div>
-        </div>
-        <div v-else-if="item.quizType === 1" class="ar_result_select">
-          <div class="ar_correct">
-            {{ item.subjectiveAnswer }}
-          </div>
-        </div>
-        <div v-else class="ar_result_select">
-          <div class="ar_correct">
-            {{ item.shortAnswer }}
+            {{ item.correct }}
           </div>
         </div>
       </div>

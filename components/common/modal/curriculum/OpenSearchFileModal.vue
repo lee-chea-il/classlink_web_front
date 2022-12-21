@@ -211,7 +211,7 @@ export default {
       this.openFileInfo.type = 'curriculum'
     },
     saveOpenFileInfo() {
-      this.openFileInfo.fileName = $('#inputOpenPath').val()
+      this.openFileInfo.filename = $('#inputOpenPath').val()
       const newObj = {}
       for (const item in this.openFileInfo) {
         newObj[item] = this.openFileInfo[item]

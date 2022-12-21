@@ -45,6 +45,7 @@
 #modalPreviewQuiz .answer_result,
 #modalPreviewTest .answer_result {
   min-height: 512px;
+  max-height: 574px;
   height: 100%;
 }
 

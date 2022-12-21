@@ -32,7 +32,7 @@
 
       <CustomData
         title="자료 구분"
-        :value="setDivision(reference.dataroomType)"
+        :value="setDivision(reference.dataroom_type)"
         :first="true"
       />
       <CustomData

@@ -134,10 +134,10 @@ export default {
         worker: '등록인',
         savepath:
           'https://studyinthestates.dhs.gov/sites/default/files/Form%20I-20%20SAMPLE.pdf',
-        publicOpenYn: true,
-        openYn: true,
-        fileName: '',
-        dataroomType: '교육기관',
+        public_open_yn: true,
+        open_yn: true,
+        filename: '',
+        dataroom_type: '교육기관',
 
         category: '02',
         fileSize: '',

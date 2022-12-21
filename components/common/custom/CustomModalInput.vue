@@ -12,6 +12,7 @@
         :placeholder="placeholder"
         class="form-control"
         :data-target="target"
+        :readOnly="readonly"
         :class="
           (isError ? 'is-invalid' : classes,
           isBtn || isIdCheckBtn ? 'form-inline' : '')
@@ -78,6 +79,10 @@ export default {
       default: false,
       type: Boolean,
     },
+    readonly: {
+      type: Boolean,
+      default: false,
+    },
   },
 }
 </script>
@@ -85,5 +90,9 @@ export default {
 <style scoped>
 button {
   white-space: nowrap;
+}
+.form-control:disabled,
+.form-control[readonly] {
+  background: white !important;
 }
 </style>

@@ -123,7 +123,7 @@ export default {
       folderInfo: {
         path: '',
         type: '',
-        fileName: '',
+        filename: '',
       },
     }
   },
@@ -141,7 +141,7 @@ export default {
       this.folderInfo.type = 'curriculum'
     },
     saveFilePath() {
-      this.folderInfo.fileName = $('#inputSavePath').val()
+      this.folderInfo.filename = $('#inputSavePath').val()
       this.$emit('save-file-path', this.folderInfo.path)
       this.$emit('close')
     },

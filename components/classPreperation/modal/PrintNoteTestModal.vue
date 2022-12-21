@@ -15,21 +15,21 @@ o
         <div class="question_area04-1">
           <div class="limit_time">
             <span class="limit_time_font"
-              >제한시간 : <span>{{ item.limitTime }}</span>
+              >제한시간 : <span>{{ item.limit_time }}</span>
               <span>초</span></span
             >
             <span class="icon_timer"></span>
           </div>
           <div class="qusetion_area04-2">
             <div class="qa_num"><div class="qa_num_font">1</div></div>
-            <div class="qa_cnts" v-html="item.problem"></div>
+            <div class="qa_cnts" v-html="item.question"></div>
           </div>
         </div>
 
         <!-- 쪽지시험 - 미리보기 - 답변 이미지없는 경우 -->
         <div class="answer_area04">
           <div
-            v-for="(children, index) in noteTestList[idx].exampleList"
+            v-for="(children, index) in noteTestList[idx].ask_view"
             :key="index"
             class="aa_question row"
           >

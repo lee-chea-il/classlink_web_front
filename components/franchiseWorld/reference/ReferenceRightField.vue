@@ -40,7 +40,10 @@
           </div>
         </div>
         <div style="padding-top: 30px"></div>
-        <ContentLabel title="자료 구분" :value="setDivision(reference.dataroomType)" />
+        <ContentLabel
+          title="자료 구분"
+          :value="setDivision(reference.dataroom_type)"
+        />
         <ContentLabel
           title="유형"
           :value="setContentType(reference.category)"

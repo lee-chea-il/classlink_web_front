@@ -29,22 +29,22 @@
             <div class="cnt">
               <button
                 class="btn btn_activated"
-                :class="{ active: item.dificultade === 0 }"
-                @click="$emit('change-dificultade', idx, 0)"
+                :class="{ active: item.level === 0 }"
+                @click="$emit('change-level', idx, 0)"
               >
                 상
               </button>
               <button
                 class="btn btn_activated"
-                :class="{ active: item.dificultade === 1 }"
-                @click="$emit('change-dificultade', idx, 1)"
+                :class="{ active: item.level === 1 }"
+                @click="$emit('change-level', idx, 1)"
               >
                 중
               </button>
               <button
                 class="btn btn_activated"
-                :class="{ active: item.dificultade === 2 }"
-                @click="$emit('change-dificultade', idx, 2)"
+                :class="{ active: item.level === 2 }"
+                @click="$emit('change-level', idx, 2)"
               >
                 하
               </button>
@@ -54,10 +54,10 @@
             <div class="tit time">문제당 제한시간</div>
             <NoteTestInput
               rules="required_quiz"
-              idProp="limitTime"
+              idProp="limit_time"
               nameProp="제한시간"
               :idx="idx"
-              :value="item.limitTime"
+              :value="item.limit_time"
               placeholder="제한시간(분)"
               @change-item="setChangeInput"
             />

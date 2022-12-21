@@ -80,10 +80,10 @@
       </div>
 
       <CheckboxGroup
-        :publicOpenYn="reference.publicOpenYn"
-        :openYn="reference.openYn"
+        :public_open_yn="reference.public_open_yn"
+        :open_yn="reference.open_yn"
         :pageRoot="pageRoot"
-        @change-input="$emit('publicOpenYn', $event)"
+        @change-input="$emit('public_open_yn', $event)"
       />
       <br />
 

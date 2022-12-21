@@ -31,7 +31,7 @@
         @change-item="onChangeItem"
         @select-type="setSelectType"
         @select-ox="setSelectOx"
-        @select-dificultade="setSelectDificultade"
+        @select-level="setSelectDificultade"
       />
     </div>
   </div>
@@ -54,14 +54,8 @@ export default {
     PreviewField,
   },
   props: {
-    quizList: {
-      type: Array,
-      default: () => [],
-    },
-    currentPageIdx: {
-      type: Number,
-      default: 0,
-    },
+    quizList: { type: Array, default: () => [] },
+    currentPageIdx: { type: Number, default: 0 },
     isCreate: { type: Boolean, default: false },
   },
   methods: {
@@ -81,7 +75,7 @@ export default {
       this.$emit('select-ox', idx, num)
     },
     setSelectDificultade(idx, num) {
-      this.$emit('select-dificultade', idx, num)
+      this.$emit('select-level', idx, num)
     },
   },
 }

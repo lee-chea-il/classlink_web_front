@@ -8,7 +8,7 @@
         <VueEditor
           v-if="currentIdx === idx"
           id="quiz_editor"
-          v-model="item.problem"
+          v-model="item.question"
           :editorToolbar="editorToolbar"
           :editorOptions="editorOptions"
           :useCustomImageHandler="true"

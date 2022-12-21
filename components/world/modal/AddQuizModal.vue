@@ -27,6 +27,7 @@
                   :pushKeyword="pushKeyword"
                   :pageRoot="pageRoot"
                   target="quiz"
+                  :uploadInfo="uploadInfo"
                   @change-input="$emit('change-input', $event)"
                   @set-keyword="$emit('set-keyword', $event)"
                   @change-keyword="$emit('change-keyword', $event)"
@@ -41,11 +42,12 @@
                   :isCreate="true"
                   :quizList="reference.quizList"
                   :currentPageIdx="currentPageIdx"
+                  :uploadInfo="uploadInfo"
                   @change-item="onChangeItem"
                   @pagination="setPagination"
                   @select-type="setSelectType"
                   @select-ox="setSelectOx"
-                  @select-dificultade="setSelectDificultade"
+                  @select-level="setSelectDificultade"
                   @preview="setPreview"
                   @change-number="$emit('change-number', $event)"
                   @plus-item="$emit('plus-item', $event)"
@@ -85,26 +87,12 @@ export default {
   },
   props: {
     open: Boolean,
-    modalTitle: {
-      type: String,
-      default: Boolean,
-    },
-    pageRoot: {
-      type: String,
-      default: '',
-    },
-    currentPageIdx: {
-      type: Number,
-      default: 0,
-    },
-    reference: {
-      type: Object,
-      default: () => {},
-    },
-    pushKeyword: {
-      type: String,
-      default: '',
-    },
+    modalTitle: { type: String, default: Boolean },
+    pageRoot: { type: String, default: '' },
+    currentPageIdx: { type: Number, default: 0 },
+    reference: { type: Object, default: () => {} },
+    pushKeyword: { type: String, default: '' },
+    uploadInfo: { type: Object, default: () => {} },
   },
   methods: {
     onChangeItem(e, idx) {
@@ -120,7 +108,7 @@ export default {
       this.$emit('select-ox', idx, num)
     },
     setSelectDificultade(idx, num) {
-      this.$emit('select-dificultade', idx, num)
+      this.$emit('select-level', idx, num)
     },
     setPreview(prev, isFirst) {
       this.$emit('preview', 'add', isFirst)

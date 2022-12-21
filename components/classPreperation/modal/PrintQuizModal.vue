@@ -15,7 +15,7 @@
         <div class="question_area04-1">
           <div class="limit_time">
             <span class="limit_time_font"
-              >제한시간 : <span>{{ item.limitTime }}</span>
+              >제한시간 : <span>{{ item.limit_time }}</span>
               <span>초</span></span
             >
             <span class="icon_timer"></span>
@@ -24,12 +24,12 @@
             <div class="qa_num">
               <div class="qa_num_font">{{ idx + 1 }}</div>
             </div>
-            <div class="qa_cnts" v-html="item.problem"></div>
+            <div class="qa_cnts" v-html="item.question"></div>
           </div>
         </div>
 
         <!-- 쪽지시험 - 미리보기 - 답변 이미지없는 경우 -->
-        <div v-show="item.quizType === 0" class="answer_area row">
+        <div v-show="item.type === 0" class="answer_area row">
           <div v-show="item.oxAnswer === 1" class="icon_o"></div>
           <div v-show="item.oxAnswer === 0" class="icon_o_correct"></div>
           <!-- [개발참조] 정답일때 출력되는 아이콘 -->
@@ -37,7 +37,7 @@
           <div v-show="item.oxAnswer === 1" class="icon_xx_correct"></div>
         </div>
 
-        <div v-show="item.quizType === 1" class="answer_area03 row">
+        <div v-show="item.type === 1" class="answer_area03 row">
           <div class="aa_question row">
             <div class="aa_number_select">
               <div class="aa_num_font01">정답입력</div>
@@ -48,7 +48,7 @@
           </div>
         </div>
 
-        <div v-show="item.quizType === 2" class="answer_area02 row">
+        <div v-show="item.type === 2" class="answer_area02 row">
           <div class="aa_question row">
             <!-- [개발참조]문제 선택 시 출력  -->
             <div class="aa_number_select">

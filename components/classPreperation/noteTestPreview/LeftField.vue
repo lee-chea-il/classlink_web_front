@@ -8,7 +8,7 @@
         </div>
 
         <div class="ar_result_select">
-          <div class="ar_correct">{{ test.answer }}</div>
+          <div class="ar_correct">1</div>
         </div>
       </div>
     </div>

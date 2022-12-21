@@ -59,8 +59,9 @@
               <ReferenceBtn
                 v-if="isShowBtn(identity, selectData.type).delete"
                 title="삭제"
-                @click-event="$emit('delete', 'isReferenceBrowse')"
+                @click-event="$emit('delete', selectData)"
               />
+              <!-- @click-event="$emit('delete', 'isReferenceBrowse')" -->
             </div>
 
             <!-- [개발참조] 하단 info_section 부분은 열람 팝업 공통 -->

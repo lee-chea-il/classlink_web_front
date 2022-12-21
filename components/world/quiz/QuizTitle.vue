@@ -7,7 +7,7 @@
           type="radio"
           name="radA01"
           class="custom-control-input"
-          :checked="quiz.quizType === 1"
+          :checked="quiz.type === 1"
           disabled
         />
         <label class="custom-control-label" for="rad02">주관식 단답형</label>

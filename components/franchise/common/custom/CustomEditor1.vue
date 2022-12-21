@@ -4,7 +4,7 @@
     <client-only v-for="(item, idx) in itemList" :key="idx">
       <VueEditor
         v-if="currentIdx === idx"
-        v-model="item.problem"
+        v-model="item.question"
         :name="name"
         :editorToolbar="editorToolbar"
         :editorOptions="editorOptions"

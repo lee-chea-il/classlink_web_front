@@ -15,7 +15,7 @@
             <!-- /.문제의 보기  -->
             <!-- [개발참조] 보기 4까지 생성되었을 때는 추가 버튼 보이지 않음 -->
             <div
-              v-if="noteTestList[currentIdx].exampleList?.length < 4"
+              v-if="noteTestList[currentIdx].ask_view?.length < 4"
               class="example"
             >
               <button
@@ -29,22 +29,22 @@
             <div class="cnt">
               <button
                 class="btn btn_activated"
-                :class="{ active: item.dificultade === 0 }"
-                @click="$emit('change-dificultade', idx, 0)"
+                :class="{ active: item.level === '상' }"
+                @click="$emit('change-level', idx, '상')"
               >
                 상
               </button>
               <button
                 class="btn btn_activated"
-                :class="{ active: item.dificultade === 1 }"
-                @click="$emit('change-dificultade', idx, 1)"
+                :class="{ active: item.level === '중' }"
+                @click="$emit('change-level', idx, '중')"
               >
                 중
               </button>
               <button
                 class="btn btn_activated"
-                :class="{ active: item.dificultade === 2 }"
-                @click="$emit('change-dificultade', idx, 2)"
+                :class="{ active: item.level === '하' }"
+                @click="$emit('change-level', idx, '하')"
               >
                 하
               </button>
@@ -54,10 +54,10 @@
             <div class="tit time">문제당 제한시간</div>
             <NoteTestInput
               rules="required_quiz"
-              idProp="limitTime"
+              idProp="limit_time"
               nameProp="제한시간"
               :idx="idx"
-              :value="item.limitTime"
+              :value="item.limit_time"
               placeholder="제한시간(분)"
               @change-item="setChangeInput"
             />

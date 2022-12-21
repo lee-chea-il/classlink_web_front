@@ -87,7 +87,7 @@
       @select-type="onClickQuizType"
       @change-input="onChangeUploadFile"
       @select-ox="onSelectOx"
-      @select-dificultade="onSelectDificultade"
+      @select-level="onSelectDificultade"
       @close="onCloseQuizAddModal"
       @preview="onOpenQuizPreviewModal"
       @change-keyword="changePushKeyword"
@@ -106,7 +106,7 @@
       :pushKeyword="pushKeyword"
       @change-number="onClickPagination"
       @change-input="onChangeUploadFile"
-      @change-dificultade="onSelectDificultadeTest"
+      @change-level="onSelectDificultadeTest"
       @change-item="onChangeTest"
       @close="onCloseNoteTestAddModal"
       @delete-item="onDeleteNoteTest"
@@ -337,7 +337,7 @@ export default {
     // 등록 자료 내용 변경
     onChangeUploadFile({ target: { id, value, type, checked, name } }) {
       const elem = this.referenceData
-      const isCheckbox = name === 'openYn' || name === 'publicOpenYn'
+      const isCheckbox = name === 'open_yn' || name === 'public_open_yn'
       if (type === 'checkbox') {
         if (checked) return (elem[id] = true)
         else return (elem[id] = false)
@@ -422,7 +422,7 @@ export default {
       this.setModalTitle('등록')
       this.referenceData = {
         ...this.referenceData,
-        dataroomType: 'ID',
+        dataroom_type: 'ID',
         worker: this.userInfo.mem_name,
         category: '03',
         fileSize: '0',
@@ -442,7 +442,7 @@ export default {
       this.setModalTitle('등록')
       this.referenceData = {
         ...this.referenceData,
-        dataroomType: 'ID',
+        dataroom_type: 'ID',
         worker: this.userInfo.mem_name,
         category: '04',
         fileSize: '0',
@@ -730,7 +730,7 @@ export default {
       const filterDivision = () => {
         if (filter.type?.length)
           return filterSubject().filter((item) =>
-            filter.type.includes(item.dataroomType)
+            filter.type.includes(item.dataroom_type)
           )
         else return filterSubject()
       }
@@ -774,7 +774,7 @@ export default {
     // 퀴즈 변경 핸들러
     onChangeQuiz({ target: { value, id } }, idx) {
       const numberOnly = value.replace(/[^0-9.]/g, '').replace(/ /g, '')
-      if (id === 'limitTime') {
+      if (id === 'limit_time') {
         return (this.referenceData.quizList[idx][id] = numberOnly)
       } else {
         return (this.referenceData.quizList[idx][id] = value)
@@ -793,7 +793,7 @@ export default {
           }
           testElem[name] = false
         }
-      } else if (id === 'limitTime') return (testElem[id] = numberOnly)
+      } else if (id === 'limit_time') return (testElem[id] = numberOnly)
       else {
         testElem[id] = value
       }
@@ -862,17 +862,17 @@ export default {
     postDataroomFile() {
       const payload = {
         category: this.referenceData.category,
-        dataroom_type: this.referenceData.dataroomType,
+        dataroom_type: this.referenceData.dataroom_type,
         description: this.referenceData.description,
         display_no: '',
         file: this.referenceData.savepath,
-        filename: this.referenceData.fileName,
+        filename: this.referenceData.filename,
         fra_code: '',
         ins_code: '',
         keyword: this.referenceData.keyword.join(', '),
-        open_yn: this.referenceData.openYn,
+        open_yn: this.referenceData.open_yn,
         parent_tree_idx: 0,
-        public_open_yn: this.referenceData.publicOpenYn,
+        public_open_yn: this.referenceData.public_open_yn,
         savepath: this.referenceData.savepath,
         subject: Number(this.referenceData.subject),
         title: this.referenceData.name,
@@ -900,8 +900,8 @@ export default {
         this.referenceData = {
           ...this.referenceData,
           name: files[0].name,
-          fileName: files[0].name,
-          dataroomType: 'ID',
+          filename: files[0].name,
+          dataroom_type: 'ID',
           worker: this.userInfo.mem_name,
           category: '01',
           fileSize: files[0].size,
@@ -924,8 +924,8 @@ export default {
         this.referenceData = {
           ...this.referenceData,
           name: target.name,
-          fileName: target.name,
-          dataroomType: 'ID',
+          filename: target.name,
+          dataroom_type: 'ID',
           worker: this.userInfo.mem_name,
           category: '02',
           fileSize: target.size,
@@ -950,9 +950,9 @@ export default {
             this.referenceData = {
               ...this.referenceData,
               title: item.snippet.localized.title,
-              fileName: item.snippet.localized.title,
+              filename: item.snippet.localized.title,
               description: item.snippet.localized.description,
-              dataroomType: 'ID',
+              dataroom_type: 'ID',
               worker: this.userInfo.mem_name,
               category: '05',
               fileSize: 0,
@@ -989,8 +989,8 @@ export default {
         this.referenceData = {
           ...this.referenceData,
           title: url,
-          fileName: url,
-          dataroomType: 'ID',
+          filename: url,
+          dataroom_type: 'ID',
           worker: this.userInfo.mem_name,
           category: '06',
           fileSize: 0,
@@ -1013,8 +1013,8 @@ export default {
         this.referenceData = {
           ...this.referenceData,
           name: files[0].name,
-          fileName: files[0].name,
-          dataroomType: 'ID',
+          filename: files[0].name,
+          dataroom_type: 'ID',
           category: name,
           fileSize: files[0].size,
           createAt: files[0].lastModifiedDate,
@@ -1092,7 +1092,7 @@ export default {
         target.oxAnswer = 0
         target.subjectiveAnswer = ''
       }
-      return (target.quizType = Number(value))
+      return (target.type = Number(value))
     },
 
     // ox클릭 이벤트
@@ -1102,12 +1102,12 @@ export default {
 
     // 난이도 설정
     onSelectDificultade(idx, num) {
-      this.referenceData.quizList[idx].dificultade = num
+      this.referenceData.quizList[idx].level = num
     },
 
     // 난이도 설정 쪽지 시험
     onSelectDificultadeTest(idx, num) {
-      this.referenceData.noteTestList[idx].dificultade = num
+      this.referenceData.noteTestList[idx].level = num
     },
 
     // 쪽지 시험

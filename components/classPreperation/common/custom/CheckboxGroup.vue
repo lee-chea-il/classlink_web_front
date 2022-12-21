@@ -5,9 +5,9 @@
         :id="setTarget"
         type="checkbox"
         class="custom-control-input"
-        name="publicOpenYn"
-        :value="publicOpenYn"
-        :checked="publicOpenYn"
+        name="public_open_yn"
+        :value="public_open_yn"
+        :checked="public_open_yn"
         @input="$emit('change-input', $event)"
       />
       <label class="custom-control-label checkbox06" :for="setTarget"
@@ -22,9 +22,9 @@
         :id="setTargetTwo"
         type="checkbox"
         class="custom-control-input"
-        name="openYn"
-        :value="openYn"
-        :checked="openYn"
+        name="open_yn"
+        :value="open_yn"
+        :checked="open_yn"
         @input="$emit('change-input', $event)"
       />
       <label class="custom-control-label checkbox07" :for="setTargetTwo"
@@ -38,11 +38,11 @@
 export default {
   name: 'CheckboxGroup',
   props: {
-    publicOpenYn: {
+    public_open_yn: {
       type: Boolean,
       default: true,
     },
-    openYn: {
+    open_yn: {
       type: Boolean,
       default: true,
     },

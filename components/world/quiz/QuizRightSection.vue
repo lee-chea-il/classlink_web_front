@@ -11,7 +11,7 @@
                   type="radio"
                   name="radA01"
                   class="custom-control-input"
-                  :checked="item.quizType === 0"
+                  :checked="item.type === 0"
                   disabled
                 />
                 <label class="custom-control-label" for="rad01">OX 유형</label>

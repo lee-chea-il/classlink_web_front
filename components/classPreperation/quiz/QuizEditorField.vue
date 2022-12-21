@@ -4,7 +4,7 @@
       <div v-if="idx === currentIdx" ref="quizSection" class="write_area">
         <div class="edit_area edit_area_padding_12">
           <button class="btn icons_fullscreen" @click="getFullscreen"></button>
-          <div v-html="item.problem"></div>
+          <div v-html="item.question"></div>
         </div>
       </div>
     </div>

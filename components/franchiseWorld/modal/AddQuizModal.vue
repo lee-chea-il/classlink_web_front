@@ -45,7 +45,7 @@
                   @pagination="setPagination"
                   @select-type="setSelectType"
                   @select-ox="setSelectOx"
-                  @select-dificultade="setSelectDificultade"
+                  @select-level="setSelectDificultade"
                   @preview="setPreview"
                   @change-number="$emit('change-number', $event)"
                   @plus-item="$emit('plus-item', $event)"
@@ -120,7 +120,7 @@ export default {
       this.$emit('select-ox', idx, num)
     },
     setSelectDificultade(idx, num) {
-      this.$emit('select-dificultade', idx, num)
+      this.$emit('select-level', idx, num)
     },
     setPreview(prev, isFirst) {
       this.$emit('preview', 'add', isFirst)

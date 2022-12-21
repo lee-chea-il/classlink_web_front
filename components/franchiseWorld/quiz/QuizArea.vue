@@ -6,7 +6,7 @@
         type="radio"
         name="radA01"
         class="custom-control-input"
-        :checked="quiz.quizType === 2"
+        :checked="quiz.type === 2"
         disabled
       />
       <label class="custom-control-label" for="rad03">단답형</label>

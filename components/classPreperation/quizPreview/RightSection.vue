@@ -1,4 +1,3 @@
-problem
 <template>
   <div class="right_area">
     <div class="question_area">
@@ -16,7 +15,7 @@ problem
         <div v-if="idx === currentIdx" class="question_area04-1">
           <div class="limit_time">
             <span class="limit_time_font"
-              >제한시간 : <span>{{ quiz.limitTime }}</span>
+              >제한시간 : <span>{{ quiz.limit_time }}</span>
               <span>초</span></span
             >
             <span class="icon_timer"></span>
@@ -31,8 +30,8 @@ problem
               <div
                 style="width: 90%; margin: auto"
                 class="qa_cnts"
-                :class="{ img_field: isImg(quiz.problem) }"
-                v-html="addClassImg(quiz.problem)"
+                :class="{ img_field: isImg(quiz.question) }"
+                v-html="addClassImg(quiz.question)"
               ></div>
             </div>
           </div>
@@ -40,34 +39,34 @@ problem
 
         <div v-if="idx === currentIdx">
           <!-- ox 유형일때 -->
-          <div v-if="quiz.quizType === 0" class="answer_area row">
-            <div v-if="quiz.oxAnswer === 0">
+          <div v-if="quiz.type === 'OX'" class="answer_area row">
+            <div v-if="quiz.correct === 'O'">
               <div class="icon_o_correct"></div>
               &emsp;&emsp;&emsp;&emsp;
               <div class="icon_xx"></div>
             </div>
-            <div v-if="quiz.oxAnswer === 1">
+            <div v-if="quiz.correct === 'X'">
               <div class="icon_o"></div>
               <div class="icon_xx_correct"></div>
             </div>
           </div>
 
           <!-- 주관식 단답형일때 -->
-          <div v-if="quiz.quizType === 1" class="answer_area03 row">
+          <div v-if="quiz.type === 'SA'" class="answer_area03 row">
             <div class="aa_question row">
               <div class="aa_number_select">
                 <div class="aa_num_font01">정답</div>
               </div>
               <div class="aa_result_select">
                 <div class="aa_correct">
-                  {{ quiz.subjectiveAnswer }}
+                  {{ quiz.correct }}
                 </div>
               </div>
             </div>
           </div>
 
           <!-- 단답형일때 -->
-          <div v-if="quiz.quizType === 2" class="answer_area02 row">
+          <div v-if="quiz.type === 'EQ'" class="answer_area02 row">
             <div class="aa_question row">
               <!-- [개발참조]문제 선택 시 출력  -->
               <div class="aa_number_select">
@@ -75,16 +74,16 @@ problem
               </div>
               <!-- [개발참조]정답일때 출력 : class="aa_num_correct"  -->
               <div class="aa_result_select">
-                <div class="aa_correct">{{ quiz.shortAnswer }}</div>
+                <div class="aa_correct">{{ quiz.correct }}</div>
               </div>
             </div>
             <div class="aa_question row">
               <div class="aa_number">
-                <div class="aa_num_font01">2</div>
+                <div class="aa_num_font01">오답</div>
               </div>
               <div class="aa_result">
                 <div class="aa_wrong">
-                  {{ quiz.shortWrongAnswer }}
+                  {{ quiz.wrong_correct }}
                 </div>
               </div>
             </div>
