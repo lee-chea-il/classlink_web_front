@@ -53,6 +53,7 @@
                         <button
                           class="btn icons_x_circle_off"
                           type="button"
+                          @click="$emit('init-teacher')"
                         ></button>
                         <button
                           class="btn icons_search_off"
@@ -137,6 +138,7 @@
                         <button
                           class="btn icons_x_circle_off"
                           type="button"
+                          @click="$emit('init-student')"
                         ></button>
                         <button
                           class="btn icons_search_off"
@@ -289,9 +291,7 @@
                                 </span>
                                 <i
                                   class="icons_plus_circle_off"
-                                  @click="
-                                    $emit('add-selected-student-all', item)
-                                  "
+                                  @click="$emit('add-banlist', item)"
                                 ></i>
                               </div>
                               <!-- 반에 해당하는 학생 리스트 -->
@@ -314,7 +314,7 @@
                                         $emit(
                                           'add-selected-student',
                                           items,
-                                          item.std_year
+                                          items.std_year
                                         )
                                       "
                                     ></i>
@@ -332,7 +332,7 @@
                   </div>
                   <div class="list_section selected">
                     <div class="sum_info">
-                      선택된 학생 <span>{{ selectedStudentAll.length }}</span
+                      선택된 학생 <span>{{ selectedStudentList.length }}</span
                       >명
                     </div>
                     <div class="list_area">
@@ -388,7 +388,11 @@
                                 <i
                                   class="icons_minus_circle_off"
                                   @click="
-                                    $emit('delete-selected-student', items)
+                                    $emit(
+                                      'delete-selected-student',
+                                      items,
+                                      item.grade
+                                    )
                                   "
                                 ></i>
                               </li>
@@ -406,7 +410,7 @@
           </div>
           <div class="modal-footer">
             <!-- [개발참조] 등록, 수정 버튼 상황에 따라 -->
-            <button class="btn btn_crud_point">
+            <button class="btn btn_crud_point" @click="$emit('upload')">
               {{ show.data === null ? '확인' : '저장하기' }}
             </button>
             <button class="btn btn_crud_default" @click="$emit('close')">
@@ -441,6 +445,10 @@ export default {
       default: () => [],
     },
     selectedStudentAll: {
+      type: Array,
+      default: () => [],
+    },
+    selectedStudentList: {
       type: Array,
       default: () => [],
     },

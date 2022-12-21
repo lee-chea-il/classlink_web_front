@@ -164,8 +164,16 @@
                       <td>{{ item.std_year }}</td>
                       <td>{{ item.mem_name }}</td>
                       <td>{{ item.mem_id }}</td>
-                      <td>{{ item.mem_phone }}</td>
-                      <td>{{ item.std_parent_phone }}</td>
+                      <td>
+                        {{ item.mem_phone === null ? '-' : item.mem_phone }}
+                      </td>
+                      <td>
+                        {{
+                          item.std_parent_phone === null
+                            ? '-'
+                            : item.std_parent_phone
+                        }}
+                      </td>
                       <td>
                         <i
                           class="btn icons_zoom_off"
