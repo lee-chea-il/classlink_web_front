@@ -37,6 +37,7 @@
                     <span class="title">제목</span>
                     <input
                       id="lep_title"
+                      name="제목"
                       type="text"
                       placeholder="제목을 입력해주세요."
                       class="form-control form-inline"
@@ -47,9 +48,12 @@
                     <span class="content"
                       >작성자는 자동으로 기록에 남습니다.</span
                     >
-                  </div>
-                  <div v-if="errors[0] !== ''" class="invalid_text">
-                    {{ errors[0] }}
+                    <div
+                      v-if="errors[0] !== ''"
+                      class="invalid_text text_position_title"
+                    >
+                      {{ errors[0] }}
+                    </div>
                   </div>
                 </ValidationProvider>
                 <div class="file_area">
@@ -238,7 +242,7 @@
                 :editorOptions="editorOptions"
                 :editorToolbar="editorToolbar"
               />
-              <div v-if="errors[0] !== ''" class="invalid_text">
+              <div v-if="errors[0] !== ''" class="invalid_text text_position">
                 {{ errors[0] }}
               </div>
             </ValidationProvider>
@@ -587,5 +591,12 @@ export default {
 }
 .box_padding {
   padding: 3px 50px 10px 50px !important;
+}
+.text_position {
+  margin-top: 0px;
+}
+.text_position_title {
+  margin-top: 0px;
+  padding-left: 95px;
 }
 </style>

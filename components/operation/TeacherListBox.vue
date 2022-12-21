@@ -3,11 +3,11 @@
     <!-- 컨트롤 버튼 영역 -->
     <div class="search_section">
       <div class="left_area">
-        <button class="btn btn_crud_default" @click="$emit('delete')">
+        <button class="btn btn_crud_danger" @click="$emit('delete')">
           삭제
         </button>
         <div class="info_box">
-          활성화 {{ statusTrue }}명 비활성화 {{ statusFalse }}명
+          활성화 {{ stateTrue }}명 비활성화 {{ stateFalse }}명
         </div>
       </div>
       <div class="right_area">
@@ -27,12 +27,24 @@
             data-toggle="dropdown"
             aria-expanded="false"
           >
-            최신 등록순
+            {{
+              sortFlag === 1
+                ? '최신 등록순'
+                : sortFlag === 2
+                ? '이름 오름차순'
+                : '이름 내림차순'
+            }}
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">최신 등록순</a>
-            <a class="dropdown-item" href="#">이름 오름차순</a>
-            <a class="dropdown-item" href="#">이름 내림차순</a>
+            <a class="dropdown-item" @click="$emit('click-sort', 1)"
+              >최신 등록순</a
+            >
+            <a class="dropdown-item" @click="$emit('click-sort', 2)"
+              >이름 오름차순</a
+            >
+            <a class="dropdown-item" @click="$emit('click-sort', 3)"
+              >이름 내림차순</a
+            >
           </div>
         </div>
         <div class="dropdown form-inline">
@@ -42,14 +54,14 @@
             data-toggle="dropdown"
             aria-expanded="false"
           >
-            {{ statusFlag === 0 ? '활성화' : '비활성화' }}
+            {{ stateFlag ? '활성화' : '비활성화' }}
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#" @click="$emit('click-status')">{{
-              statusFlag === 0 ? '비활성화' : '활성화'
+            <a class="dropdown-item" href="#" @click="$emit('click-state')">{{
+              stateFlag ? '비활성화' : '활성화'
             }}</a>
-            <a class="dropdown-item" href="#">활성화</a>
-            <a class="dropdown-item" href="#">비활성화</a>
+            <!-- <a class="dropdown-item" href="#">활성화</a>
+            <a class="dropdown-item" href="#">비활성화</a> -->
           </div>
         </div>
       </div>
@@ -114,15 +126,18 @@
               </div>
             </td>
             <td>
-              <span>{{ item.name }}</span> 선생님
+              <span>{{ item.mem_name }}</span> 선생님
             </td>
-            <td>{{ item.nickname }}</td>
-            <td>{{ item.account }}</td>
-            <td>{{ item.subject }}</td>
-            <td>{{ item.group }}</td>
-            <td>{{ item.phone }}</td>
+            <td>{{ item.mem_nickname }}</td>
+            <td>{{ item.mem_id }}</td>
+            <td>{{ setArray(item.subjects) }}</td>
+            <td>{{ setArray(item.teach_target) }}</td>
+            <td>{{ item.mem_phone }}</td>
             <td>
-              <i class="btn icons_zoom_off" @click="$emit('click-detail')"></i>
+              <i
+                class="btn icons_zoom_off"
+                @click="$emit('click-detail', item.mem_idx)"
+              ></i>
             </td>
           </tr>
         </tbody>
@@ -158,11 +173,11 @@
 export default {
   name: 'TeacherListBox',
   props: {
-    statusTrue: {
+    stateTrue: {
       type: Number,
       default: 0,
     },
-    statusFalse: {
+    stateFalse: {
       type: Number,
       default: 0,
     },
@@ -174,9 +189,27 @@ export default {
       type: Boolean,
       default: false,
     },
-    statusFlag: {
+    stateFlag: {
+      type: Boolean,
+      default: true,
+    },
+    sortFlag: {
       type: Number,
-      default: 0,
+      default: 1,
+    },
+  },
+  methods: {
+    // 배열 join
+    setArray(array) {
+      if (array.length !== 0) {
+        const names = []
+        for (const x of array) {
+          names.push(this.setIdentityName(x))
+        }
+        return names.join(', ')
+      } else {
+        return '-'
+      }
     },
   },
 }

@@ -15,14 +15,16 @@
       />
       <div class="tab-content depth03 ac_manage_tch">
         <TeacherListBox
-          :teacherList="searchList"
-          :statusFlag="statusFlag"
-          :statusTrue="statusTrue"
-          :statusFalse="statusFalse"
+          :teacherList="teacherList"
+          :stateFlag="stateFlag"
+          :sortFlag="sortFlag"
+          :stateTrue="stateTrue"
+          :stateFalse="stateFalse"
           :allCheckBoxFlag="allCheckBoxFlag"
-          @click-status="onClickStatusFilter"
+          @click-state="onClickState"
+          @click-sort="onClickSort"
           @delete="deleteTeacher"
-          @click-detail="openTeacherInfoModalDesc"
+          @click-detail="getTeacherInfo"
           @click-register="openRegisterTeacherModalDesc"
           @select-teacher="onClickCheckBox"
           @checked-all="selectAll"
@@ -44,9 +46,10 @@
       @click-cwimg="openUploadNewTeacherCWImgModalDesc"
       @change-input="onChangeUpdateInput"
       @click-birthday="openDatePickerModalDesc"
-      @click-gender="onClickGenderBtn"
       @select-position="selectPosition"
       @click-save="onClickSaveBtn"
+      @check-target="onChangeTargetCheck"
+      @check-role="onChangeRoleCheck"
     />
     <!-- 선생님 등록 - 프로필 이미지 등록1 -->
     <UploadTeacherImg
@@ -76,14 +79,21 @@
       :open="teacherInfoModalDesc.open"
       :teacherInfo="teacherInfo"
       :nickNameCheck="nickNameCheck"
+      :targetCheckList="targetCheckList"
+      :roleCheckList="roleCheckList"
       @close="onCloseTeacherInfoModalDesc"
       @click-profile="openUploadTeacherImgModalDesc"
       @click-cwimg="openUploadTeacherCWImgModalDesc"
       @change-input="onChangeUpdateInput"
       @click-birthday="openDatePickerModalDesc"
-      @click-gender="onClickGenderBtn"
       @select-position="selectPosition"
       @click-save="onClickSaveBtn"
+      @check-target="onChangeTargetCheck"
+      @check-role="onChangeRoleCheck"
+      @click-m="onClickGenderMen"
+      @click-w="onClickGenderWomen"
+      @click-y="onClickStatusTrue"
+      @click-n="onClickStatusFalse"
     />
 
     <!-- 생일 날짜 선택 모달 -->
@@ -143,152 +153,11 @@
       :title="deleteModalDesc.title"
       @close="onCloseDeleteModalDesc"
     />
-
-    <!-- 팝업 M2- 내정보 수정 - 프로필 이미지 등록2-->
-    <!-- <div
-      id="modalMyinfo03"
-      class="modal fade modal_myinfo03"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 id="exampleModalLabel" class="modal-title">
-              프로필 이미지 등록
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <i class="icons_close"></i>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="explainType01">
-              파일 업로드 후, 이미지를 자르고 '확인’을 클릭하세요. <br />
-              업로드 가능한 이미지 파일 형식 : <span>png, jpg, jpeg</span>
-              <br />
-              자르기 영역은 정방형으로 설정됩니다.
-            </div>
-            <div class="btn_section">
-              <button class="btn btn_crud_default btn_sec">이미지 교체</button>
-              <button class="btn btn_crud_default btn_sec" data-dismiss="modal">
-                자르기
-              </button>
-            </div>
-            <div class="thumbnail">
-              <div class="profile_photo">
-                <span
-                  style="
-                    background-image: url(../images/sample_profile_photo.jpg);
-                  "
-                ></span>
-              </div>
-              <div class="outer1">
-                <div class="box_set">
-                  <button type="button" class="btn box1"></button>
-                  <button type="button" class="btn box2"></button>
-                  <button type="button" class="btn box3"></button>
-                  <button type="button" class="btn box4"></button>
-                  <button type="button" class="btn box5"></button>
-                </div>
-              </div>
-            </div>
-            <div class="edit_result">
-              <div class="edit_title">편집 결과보기</div>
-              <div class="outer2">
-                <div class="profile_photo">
-                  <span
-                    style="
-                      background-image: url(../images/sample_profile_photo.jpg);
-                    "
-                  ></span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn_crud_point">저장</button>
-            <button class="btn btn_crud_default" data-dismiss="modal">
-              취소
-            </button>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
-    <!-- 팝업 M2- 내정보 수정 - CW 이미지 등록2-->
-    <!-- <div
-      id="modalMyinfo05"
-      class="modal fade modal_myinfo05"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 id="exampleModalLabel" class="modal-title">CW 이미지 등록</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <i class="icons_close"></i>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="explainType01">
-              파일 업로드 후, 이미지를 자르고 '확인’을 클릭하세요. <br />
-              업로드 가능한 이미지 파일 형식 : <span>png, jpg, jpeg</span>
-              <br />
-              자르기 영역은 가로형으로 설정됩니다.
-            </div>
-            <div class="btn_section">
-              <button class="btn btn_crud_default btn_sec">이미지 교체</button>
-              <button class="btn btn_crud_default btn_sec" data-dismiss="modal">
-                자르기
-              </button>
-            </div>
-            <div class="thumbnail">
-              <div class="outer0">
-                <div class="sample_uplodeimg"></div>
-              </div>
-              <div class="outer1">
-                <div class="box_set">
-                  <button type="button" class="btn box1"></button>
-                  <button type="button" class="btn box2"></button>
-                  <button type="button" class="btn box3"></button>
-                  <button type="button" class="btn box4"></button>
-                  <button type="button" class="btn box5"></button>
-                </div>
-              </div>
-            </div>
-            <div class="edit_result">
-              <div class="edit_title">편집 결과보기</div>
-              <div class="outer2">
-                <i class="icons_thumbnail"></i>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn_crud_point">저장</button>
-            <button class="btn btn_crud_default" data-dismiss="modal">
-              취소
-            </button>
-          </div>
-        </div>
-      </div>
-    </div> -->
   </div>
   <!-- //container -->
 </template>
 <script>
+import { apiOperation } from '~/services'
 import NavBox from '@/components/operation/NavBox.vue'
 import TeacherListBox from '@/components/operation/TeacherListBox.vue'
 // import RegisterTeacherModal from '@/components/common/modal/operation/RegisterTeacherModal.vue'
@@ -317,6 +186,7 @@ export default {
   },
   data() {
     return {
+      institutionIdx: this.$store.state.common.user.ins_code,
       newTeacherInfo: {
         id: 0,
         name: '',
@@ -335,96 +205,54 @@ export default {
         profile_image: '',
         profile_cw_image: '',
       },
-      teacherInfo: {
-        id: 0,
-        name: '김지원',
-        nickname: '지원쓰',
-        account: 'wldnjs93',
-        subject: '수학',
-        group: '초등, 중등',
-        phone: '010-1234-1234',
-        status: true,
-        gender: 0,
-        educationCode: 123456,
-        email: 'wldnjs@naver.com',
-        birthday: '2022-11-15',
-        identity: '',
-        position: '교육기관장',
-        profile_image: require('@/assets/images/mypage/profile1.png'),
-        profile_cw_image: require('@/assets/images/mypage/cwprofile1.png'),
+
+      // teacherInfo: {
+      //   id: 0,
+      //   name: '김지원',
+      //   nickname: '지원쓰',
+      //   account: 'wldnjs93',
+      //   subject: '수학',
+      //   group: '초등, 중등',
+      //   phone: '010-1234-1234',
+      //   status: true,
+      //   gender: 0,
+      //   educationCode: 123456,
+      //   email: 'wldnjs@naver.com',
+      //   birthday: '2022-11-15',
+      //   identity: '',
+      //   position: '교육기관장',
+      //   profile_image: require('@/assets/images/mypage/profile1.png'),
+      //   profile_cw_image: require('@/assets/images/mypage/cwprofile1.png'),
+      // },
+      teacherList: [],
+      initTeacherInfo: {
+        ins_code: '',
+        mem_birthday: null,
+        mem_email: '',
+        mem_id: '',
+        mem_idx: 33,
+        mem_name: '',
+        mem_nickname: '',
+        mem_phone: '',
+        mem_sex: null,
+        tch_grade: 'T',
+        tch_idx: 0,
+        tch_use_yn: 'Y',
       },
-      teacherList: [
-        {
-          id: 0,
-          name: '김지원',
-          nickname: '지원쓰',
-          account: 'wldnjs93',
-          subject: '수학',
-          group: '초등, 중등',
-          phone: '010-1234-1234',
-          status: true,
-        },
-        {
-          id: 1,
-          name: '홍길동',
-          nickname: '길동쓰',
-          account: 'wldnjs93',
-          subject: '수학',
-          group: '초등, 중등',
-          phone: '010-1234-1234',
-          status: true,
-        },
-        {
-          id: 2,
-          name: '김유진',
-          nickname: '유진쓰',
-          account: 'wldnjs93',
-          subject: '수학',
-          group: '초등, 중등',
-          phone: '010-1234-1234',
-          status: true,
-        },
-        {
-          id: 3,
-          name: '김단우',
-          nickname: '단우쓰',
-          account: 'wldnjs93',
-          subject: '수학',
-          group: '초등, 중등',
-          phone: '010-1234-1234',
-          status: true,
-        },
-        {
-          id: 4,
-          name: '전현무',
-          nickname: '털쓰',
-          account: 'wldnjs93',
-          subject: '수학',
-          group: '초등, 중등',
-          phone: '010-1234-1234',
-          status: true,
-        },
-        {
-          id: 5,
-          name: '이은애',
-          nickname: '은애쓰',
-          account: 'wldnjs93',
-          subject: '수학',
-          group: '초등, 중등',
-          phone: '010-1234-1234',
-          status: false,
-        },
-        {
-          id: 6,
-          name: '이성국',
-          nickname: '성국쓰',
-          account: 'wldnjs93',
-          subject: '수학',
-          group: '초등, 중등',
-          phone: '010-1234-1234',
-          status: false,
-        },
-      ],
+      teacherInfo: {
+        ins_code: '',
+        mem_birthday: null,
+        mem_email: '',
+        mem_id: '',
+        mem_idx: 33,
+        mem_name: '',
+        mem_nickname: '',
+        mem_phone: '',
+        mem_sex: null,
+        tch_grade: 'T',
+        tch_idx: 0,
+        tch_use_yn: 'Y',
+      },
       // modal
       teacherInfoModalDesc: {
         open: false,
@@ -463,14 +291,16 @@ export default {
       },
       // 목록
       searchFlag: 0,
-      statusFlag: 0,
-      sortFlag: 0,
-      statusTrue: 0,
-      statusFalse: 0,
+      stateFlag: true,
+      sortFlag: 1,
+      currentPage: 1,
+      stateTrue: 0,
+      stateFalse: 0,
       searchText: '',
-      searchList: [],
 
       // 선생님 상세/수정
+      targetCheckList: [],
+      roleCheckList: [],
       newNickNameCheck: false,
       nickNameCheck: false,
       birthday: '',
@@ -479,6 +309,14 @@ export default {
       deleteIdxList: [],
       allCheckBoxFlag: false,
     }
+  },
+  watch: {
+    stateFlag() {
+      this.getLectureCourseList()
+    },
+    sortFlag() {
+      this.getLectureCourseList()
+    },
   },
   created() {
     const trueArray = this.teacherList.filter((elem) => {
@@ -491,8 +329,113 @@ export default {
     this.statusFalse = falseArray.length
     this.searchList = trueArray
   },
+  mounted() {
+    this.getLectureCourseList()
+  },
   methods: {
+    // 선생님 목록 불러오기 api
+    async getLectureCourseList() {
+      const payload = {
+        current_page: this.currentPage,
+        ins_code: this.institutionIdx,
+        latest: this.sortFlag,
+        per_page_num: 10,
+        search: this.searchText,
+        status: this.stateFlag,
+      }
+      await apiOperation
+        .getTeacherList(payload)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          if (data === null) {
+            this.teacherList = []
+          } else {
+            this.stateTrue = data.activate_count
+            this.stateFalse = data.deactivate_count
+            this.teacherList = data.dto
+          }
+          console.log(this.teacherList)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
+    // 목록
+    // 정렬 필터링
+    onClickSort(number) {
+      this.sortFlag = number
+    },
+    // 상태 필터링
+    onClickState() {
+      if (!this.stateFlag) {
+        this.stateFlag = true
+      } else {
+        this.stateFlag = false
+      }
+    },
+    // 선생님 검색
+    onChangeInput({ target: { value } }) {
+      this.searchText = value
+    },
+    searchTeacher() {
+      this.getLectureCourseList()
+    },
+
+    // 선생님 상세 정보 불러오기 api
+    async getTeacherInfo(mem_idx) {
+      await apiOperation
+        .getTeacherInfo(mem_idx)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          this.teacherInfo = data.vo
+          this.roleCheckList = data.auth_list
+          this.targetCheckList = data.target_list
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      this.openTeacherInfoModalDesc()
+    },
+    // 성별 수정
+    onClickGenderMen() {
+      this.teacherInfo.mem_sex = 'M'
+    },
+    onClickGenderWomen() {
+      this.teacherInfo.mem_sex = 'W'
+    },
+    // 상태 변경
+    onClickStatusTrue() {
+      this.teacherInfo.tch_use_yn = 'Y'
+    },
+    onClickStatusFalse() {
+      this.teacherInfo.tch_use_yn = 'N'
+    },
+    // 가르치는 대상 수정
+    onChangeTargetCheck({ target: { id, checked } }) {
+      if (checked) {
+        this.targetCheckList.push(id)
+      } else {
+        const index = this.targetCheckList.indexOf(id)
+        this.targetCheckList.splice(index, 1)
+      }
+    },
+    // 권한 수정
+    onChangeRoleCheck({ target: { id, name, checked } }) {
+      if (checked) {
+        this.roleCheckList.push({ rac_idx: Number(name), rin_idx: Number(id) })
+      } else {
+        const index = this.roleCheckList.indexOf({
+          rac_idx: Number(name),
+          rin_idx: Number(id),
+        })
+        this.roleCheckList.splice(index, 1)
+      }
+      console.log(this.roleCheckList)
+    },
+
     // modal event
+
     openModalDesc(tit, msg) {
       this.modalDesc = {
         open: true,
@@ -569,7 +512,6 @@ export default {
     // 선생님 삭제
     onClickCheckBox({ target: { id, checked } }) {
       if (checked) {
-        console.log(id)
         this.deleteIdxList.push(id)
       } else {
         this.allCheckBoxFlag = false
@@ -688,34 +630,7 @@ export default {
       }
       this.datePickerModalDesc.open = false
     },
-    // 성별 수정
-    onClickGenderBtn() {
-      if (this.registerTeacherModal.open) {
-        if (this.newTeacherInfo.gender === 0) {
-          this.newTeacherInfo.gender = 1
-        } else {
-          this.newTeacherInfo.gender = 0
-        }
-      } else if (this.teacherInfo.gender === 0) {
-        this.teacherInfo.gender = 1
-      } else {
-        this.teacherInfo.gender = 0
-      }
-    },
-    // 상태 변경
-    onClickStatusBtn() {
-      if (this.registerTeacherModal.open) {
-        if (this.newTeacherInfo.status) {
-          this.newTeacherInfo.status = false
-        } else {
-          this.newTeacherInfo.status = true
-        }
-      } else if (this.teacherInfo.status) {
-        this.teacherInfo.status = false
-      } else {
-        this.teacherInfo.status = true
-      }
-    },
+
     // 직위 변경
     selectPosition() {
       if (this.registerTeacherModal.open) {
@@ -746,55 +661,6 @@ export default {
           '선생님 정보 수정',
           '선생님 상세 정보가 수정되었습니다.'
         )
-      }
-    },
-
-    // 필터링
-    onClickStatusFilter() {
-      if (this.statusFlag === 0) {
-        this.statusFlag = 1
-        const result = this.teacherList.filter((elem) => {
-          return !elem.status
-        })
-        this.searchList = result
-      } else {
-        this.statusFlag = 0
-        const result = this.teacherList.filter((elem) => {
-          return elem.status
-        })
-        this.searchList = result
-      }
-    },
-    onChangeInput({ target: { value } }) {
-      this.searchText = value
-      console.log(value)
-    },
-    searchTeacher() {
-      if (this.searchText.length < 2) {
-        this.openModalDesc('선생님 검색', '검색어는 2글자 이상 입력해주세요.')
-        return false
-      }
-
-      if (this.statusFlag === 0) {
-        const result = this.teacherList.filter((elem) => {
-          return elem.name.includes(this.searchText) && elem.status
-        })
-        if (result.length === 0) {
-          this.openModalDesc('선생님 검색', '일치하는 선생님이 없습니다.')
-          return false
-        } else {
-          this.searchList = result
-        }
-      } else {
-        const result = this.teacherList.filter((elem) => {
-          return elem.name.includes(this.searchText) && !elem.status
-        })
-        if (result.length === 0) {
-          this.openModalDesc('선생님 검색', '일치하는 선생님이 없습니다.')
-          return false
-        } else {
-          this.searchList = result
-        }
       }
     },
   },

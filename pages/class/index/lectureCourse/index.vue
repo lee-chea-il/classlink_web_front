@@ -42,7 +42,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  placeholder="과목/커리큘럼/선생님 검색"
+                  placeholder="반/강의이름/선생님 검색"
                   @input="onChangeInput"
                   @keyup.enter="searchCourse"
                 />
@@ -61,13 +61,19 @@
                 <a
                   v-for="(item, idx) in lectureCourseList"
                   :key="idx"
-                  :class="item.state ? 'cursor' : 'stanby_lecture'"
-                  @click="onClickLecture(item.lec_idx)"
+                  class="cursor"
+                  @click="
+                    onClickLecture(
+                      item.lec_idx,
+                      item.csm_idx,
+                      item.csm_name,
+                      item.lec_title,
+                      item.mem_name
+                    )
+                  "
                 >
-                  <div
-                    class="card"
-                    :class="!item.state ? 'standby' : bgColorList[idx]"
-                  >
+                  <div class="card cursor" :class="bgColorList[idx]">
+                    <!-- !item.state ? 'standby' :  -->
                     <div class="course_tit">{{ item.lec_title }}</div>
                     <div class="course_time">
                       {{ item.lec_time_stime }} ~ {{ item.lec_time_etime }}
@@ -292,6 +298,7 @@ export default {
       }
     }
     this.bgColorList = array
+    console.log(this.bgColorList)
   },
   mounted() {
     this.insCode = this.$store.state.common.user.ins_code
@@ -304,9 +311,21 @@ export default {
       await apiLectureCourse
         .getLectureCourse(this.insCode, this.userIdx)
         .then(({ data: { data } }) => {
-          console.log(data)
-          this.lectureCourseList = data.enddto
+          this.lectureCourseList = data.courseList
           console.log(this.lectureCourseList)
+          // 카드 색상 리스트
+          const array = []
+          for (let i = 0; i <= this.lectureCourseList.length; i++) {
+            const num = parseInt(i / 4)
+            if (array.length === this.lectureCourseList.length) {
+              break
+            } else if (num === this.bgColors.length) {
+              i = -1
+            } else {
+              array.push(this.bgColors[num])
+            }
+          }
+          this.bgColorList = array
         })
         .catch((err) => {
           console.log(err)
@@ -365,9 +384,11 @@ export default {
     },
 
     // router event
-    onClickLecture(id) {
+    onClickLecture(id, csm_idx, csm_name, lec_title, mem_name) {
       console.log(id)
-      this.$router.push(`lecturecourse/lectureplan/${id}`)
+      this.$router.push(
+        `lecturecourse/lectureplan/${id}?classidx=${csm_idx}&class=${csm_name}&title=${lec_title}&teacher=${mem_name}`
+      )
     },
 
     // 모달 이벤트

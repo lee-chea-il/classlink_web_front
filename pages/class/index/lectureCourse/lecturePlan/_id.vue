@@ -73,6 +73,10 @@ export default {
       // 유저 정보
       userIdx: this.$store.state.common.user.mem_idx,
       lectureIdx: this.$route.params.id,
+      classIdx: this.$route.query.classidx,
+      className: this.$route.query.class,
+      lectureTitle: this.$route.query.title,
+      teacherName: this.$route.query.teacher,
       searchFlag: 0,
       allCheckBoxFlag: false,
       // 강의 계획서 목록
@@ -129,7 +133,6 @@ export default {
       },
     }
   },
-  created() {},
   mounted() {
     this.getSyllabusList()
   },
@@ -137,12 +140,18 @@ export default {
     // 강의 계획서 목록 api
     async getSyllabusList() {
       await apiLectureCourse
-        .getSyllabusList(this.userIdx, this.lectureIdx, 1, 10, this.searchText)
+        .getSyllabusList(
+          this.userIdx,
+          this.lectureIdx,
+          this.classIdx,
+          1,
+          10,
+          this.searchText
+        )
         .then((res) => {
           console.log(res)
           this.syllabusList = res.data.data.syllabusList
           this.lectureStudentCount = res.data.data.lep_stu_cnt
-          console.log(this.syllabusList)
         })
         .catch((err) => {
           console.log(err)
@@ -164,19 +173,23 @@ export default {
 
     // click tab-menu
     onClickHomeWorkBox() {
-      this.$router.push(`/class/lecturecourse/homeworkbox/${this.lectureIdx}`)
+      this.$router.push(
+        `/class/lecturecourse/homeworkbox/${this.lectureIdx}?classidx=${this.classIdx}class=${this.className}&title=${this.lectureTitle}&teacher=${this.teacherName}`
+      )
     },
     onClickNoteBox() {
-      this.$router.push(`/class/lecturecourse/notebox/${this.lectureIdx}`)
+      this.$router.push(
+        `/class/lecturecourse/notebox/${this.lectureIdx}?classidx=${this.classIdx}class=${this.className}&title=${this.lectureTitle}&teacher=${this.teacherName}`
+      )
     },
     onClickRegisterLecturePlan() {
       this.$router.push(
-        `/class/lecturecourse/registerlectureplan/${this.lectureIdx}`
+        `/class/lecturecourse/registerlectureplan/${this.lectureIdx}?classidx=${this.classIdx}class=${this.className}&title=${this.lectureTitle}&teacher=${this.teacherName}`
       )
     },
     onClickUpdateLecturePlan() {
       this.$router.push(
-        `/class/lecturecourse/updatelectureplan/${this.lectureIdx}`
+        `/class/lecturecourse/updatelectureplan/${this.lectureIdx}?classidx=${this.classIdx}class=${this.className}&title=${this.lectureTitle}&teacher=${this.teacherName}`
       )
     },
     // modal event

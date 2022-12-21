@@ -70,12 +70,12 @@
                     <label for="" class="title00 col-form-label">이름</label>
                     <div class="col">
                       <CustomOperationInput
-                        id="name"
+                        id="mem_name"
                         name="이름"
                         placeholder="이름입력"
                         rules="min:2|required"
                         type="text"
-                        :inputValue="teacherInfo.name"
+                        :inputValue="teacherInfo.mem_name"
                         @change-input="$emit('change-input', $event)"
                       />
                     </div>
@@ -84,13 +84,13 @@
                     <label for="" class="title00 col-form-label">닉네임</label>
                     <div class="col">
                       <CustomOperationInput
-                        id="nickname"
+                        id="mem_nickname"
                         name="닉네임"
                         placeholder="닉네임입력"
                         rules="min:2|required"
                         type="text"
                         :nickNameCheck="nickNameCheck"
-                        :inputValue="teacherInfo.nickname"
+                        :inputValue="teacherInfo.mem_nickname"
                         :isCheckBox="true"
                         @change-input="$emit('change-input', $event)"
                       />
@@ -131,7 +131,7 @@
                       <div class="exp_text mt">*초기 비밀번호:123456</div>
                     </div>
                     <div v-else class="col">
-                      <span>{{ teacherInfo.account }}</span>
+                      <span>{{ teacherInfo.mem_id }}</span>
                       <div class="exp_text">*초기 비밀번호:123456</div>
                     </div>
                   </div>
@@ -140,15 +140,15 @@
                     <div class="col">
                       <button
                         class="btn btn_activated"
-                        :class="teacherInfo.gender === 0 ? 'active' : false"
-                        @click="$emit('click-gender')"
+                        :class="teacherInfo.mem_sex === 'M' ? 'active' : false"
+                        @click="$emit('click-m')"
                       >
                         남
                       </button>
                       <button
                         class="btn btn_activated"
-                        :class="teacherInfo.gender === 1 ? 'active' : false"
-                        @click="$emit('click-gender')"
+                        :class="teacherInfo.mem_sex === 'W' ? 'active' : false"
+                        @click="$emit('click-w')"
                       >
                         여
                       </button>
@@ -164,13 +164,19 @@
                         data-toggle="modal"
                         data-target="#modalTcNum"
                         data-dismiss="modal"
-                        :class="teacherInfo.status ? 'active' : false"
+                        :class="
+                          teacherInfo.tch_use_yn === 'Y' ? 'active' : false
+                        "
+                        @click="$emit('click-y')"
                       >
                         활성화
                       </button>
                       <button
                         class="btn btn_activated"
-                        :class="!teacherInfo.status ? 'active' : false"
+                        :class="
+                          !teacherInfo.tch_use_yn === 'N' ? 'active' : false
+                        "
+                        @click="$emit('click-n')"
                       >
                         비활성화
                       </button>
@@ -180,12 +186,12 @@
                     <label for="" class="title00 col-form-label">연락처</label>
                     <div class="col">
                       <CustomOperationInput
-                        id="phone"
+                        id="mem_phone"
                         name="연락처"
                         placeholder="연락처입력"
-                        rules="required"
+                        rules="phone|required"
                         type="text"
-                        :inputValue="teacherInfo.phone"
+                        :inputValue="teacherInfo.mem_phone"
                         @change-input="$emit('change-input', $event)"
                       />
                     </div>
@@ -195,19 +201,21 @@
                       >기관코드</label
                     >
                     <div class="col">
-                      <span class="readonly_txt">0000000</span>
+                      <span class="readonly_txt">{{
+                        teacherInfo.ins_code
+                      }}</span>
                     </div>
                   </div>
                   <div class="form-group row">
                     <label for="" class="title00 col-form-label">이메일</label>
                     <div class="col">
                       <CustomOperationInput
-                        id="email"
+                        id="mem_email"
                         name="이메일"
                         placeholder="이메일입력"
                         rules="required|email"
                         type="email"
-                        :inputValue="teacherInfo.email"
+                        :inputValue="teacherInfo.mem_email"
                         @change-input="$emit('change-input', $event)"
                       />
                     </div>
@@ -218,12 +226,12 @@
                     >
                     <div class="col">
                       <CustomOperationInput
-                        id="birthday"
+                        id="mem_birthday"
                         name="생년월일"
                         placeholder="2022-11-18"
                         rules="required"
                         type="text"
-                        :inputValue="teacherInfo.birthday"
+                        :inputValue="teacherInfo.mem_birthday"
                         :isBirthdayBtn="true"
                         @change-input="$emit('change-input', $event)"
                         @click-birthday="onClickBirthdayBtn"
@@ -286,14 +294,13 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box01chk01"
+                                id="01"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="targetCheckList.includes('01')"
+                                @input="$emit('check-target', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box01chk01"
+                              <label class="custom-control-label" for="01"
                                 >초등</label
                               >
                             </div>
@@ -303,14 +310,13 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box01chk02"
+                                id="02"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="targetCheckList.includes('02')"
+                                @input="$emit('check-target', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box01chk02"
+                              <label class="custom-control-label" for="02"
                                 >중등</label
                               >
                             </div>
@@ -320,14 +326,13 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box01chk03"
+                                id="03"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="targetCheckList.includes('03')"
+                                @input="$emit('check-target', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box01chk03"
+                              <label class="custom-control-label" for="03"
                                 >고등</label
                               >
                             </div>
@@ -337,14 +342,15 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box01chk04"
+                                id="04"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="targetCheckList.includes('04')"
+                                @input="$emit('check-target', $event)"
                               />
                               <label
                                 class="custom-control-label update_box01chk04"
-                                for="update_box01chk04"
+                                for="04"
                                 >대학생</label
                               >
                             </div>
@@ -356,14 +362,13 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box01chk05"
+                                id="05"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="targetCheckList.includes('05')"
+                                @input="$emit('check-target', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box01chk05"
+                              <label class="custom-control-label" for="05"
                                 >성인</label
                               >
                             </div>
@@ -541,14 +546,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk01"
+                                id="1"
+                                name="1"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(1)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk01"
+                              <label class="custom-control-label" for="1"
                                 >전체</label
                               >
                             </div>
@@ -558,14 +563,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk02"
+                                id="2"
+                                name="1"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(2)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk02"
+                              <label class="custom-control-label" for="2"
                                 >반</label
                               >
                             </div>
@@ -575,14 +580,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk03"
+                                id="3"
+                                name="1"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(3)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk03"
+                              <label class="custom-control-label" for="3"
                                 >개별공지</label
                               >
                             </div>
@@ -598,14 +603,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk04"
+                                id="4"
+                                name="2"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(4)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk04"
+                              <label class="custom-control-label" for="4"
                                 >자료실</label
                               >
                             </div>
@@ -615,14 +620,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk05"
+                                id="5"
+                                name="2"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(5)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk05"
+                              <label class="custom-control-label" for="5"
                                 >레슨</label
                               >
                             </div>
@@ -632,14 +637,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk06"
+                                id="6"
+                                name="2"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(6)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk06"
+                              <label class="custom-control-label" for="6"
                                 >커리큘럼</label
                               >
                             </div>
@@ -655,14 +660,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk07"
+                                id="7"
+                                name="3"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(7)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk07"
+                              <label class="custom-control-label" for="7"
                                 >강좌 개설</label
                               >
                             </div>
@@ -672,14 +677,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk08"
+                                id="8"
+                                name="3"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(8)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk08"
+                              <label class="custom-control-label" for="8"
                                 >시간표 수정</label
                               >
                             </div>
@@ -694,14 +699,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk09"
+                                id="9"
+                                name="4"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(9)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk09"
+                              <label class="custom-control-label" for="9"
                                 >결제관리</label
                               >
                             </div>
@@ -711,14 +716,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk10"
+                                id="10"
+                                name="4"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(10)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk10"
+                              <label class="custom-control-label" for="10"
                                 >프랜차이즈 가입관리</label
                               >
                             </div>
@@ -733,14 +738,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk11"
+                                id="11"
+                                name="5"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(11)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk11"
+                              <label class="custom-control-label" for="11"
                                 >선생님관리</label
                               >
                             </div>
@@ -750,14 +755,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk12"
+                                id="12"
+                                name="5"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(12)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk12"
+                              <label class="custom-control-label" for="12"
                                 >학생관리</label
                               >
                             </div>
@@ -767,14 +772,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk13"
+                                id="13"
+                                name="5"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(13)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk13"
+                              <label class="custom-control-label" for="13"
                                 >반관리</label
                               >
                             </div>
@@ -787,14 +792,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk14"
+                                id="14"
+                                name="5"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(14)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk14"
+                              <label class="custom-control-label" for="14"
                                 >시험관리</label
                               >
                             </div>
@@ -809,14 +814,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk15"
+                                id="15"
+                                name="6"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(15)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk15"
+                              <label class="custom-control-label" for="15"
                                 >자료실</label
                               >
                             </div>
@@ -826,14 +831,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk16"
+                                id="16"
+                                name="6"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(16)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk16"
+                              <label class="custom-control-label" for="16"
                                 >패키지</label
                               >
                             </div>
@@ -843,14 +848,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk17"
+                                id="17"
+                                name="6"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(17)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk17"
+                              <label class="custom-control-label" for="17"
                                 >건물SET</label
                               >
                             </div>
@@ -863,14 +868,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk18"
+                                id="18"
+                                name="6"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(18)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk18"
+                              <label class="custom-control-label" for="18"
                                 >빌딩</label
                               >
                             </div>
@@ -885,14 +890,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk19"
+                                id="19"
+                                name="7"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(19)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk19"
+                              <label class="custom-control-label" for="19"
                                 >수업</label
                               >
                             </div>
@@ -902,14 +907,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk20"
+                                id="20"
+                                name="7"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(20)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk20"
+                              <label class="custom-control-label" for="20"
                                 >관리</label
                               >
                             </div>
@@ -919,14 +924,14 @@
                               class="custom-control custom-checkbox custom-sm inline_block"
                             >
                               <input
-                                id="update_box03chk21"
+                                id="21"
+                                name="7"
                                 type="checkbox"
                                 class="custom-control-input"
-                                checked
+                                :checked="roleCheckList.includes(21)"
+                                @input="$emit('check-role', $event)"
                               />
-                              <label
-                                class="custom-control-label"
-                                for="update_box03chk21"
+                              <label class="custom-control-label" for="21"
                                 >건물</label
                               >
                             </div>
@@ -988,6 +993,18 @@ export default {
     register: {
       type: Boolean,
       default: false,
+    },
+    targetList: {
+      type: Array,
+      default: () => [],
+    },
+    targetCheckList: {
+      type: Array,
+      default: () => [],
+    },
+    roleCheckList: {
+      type: Array,
+      default: () => [],
     },
   },
   data() {

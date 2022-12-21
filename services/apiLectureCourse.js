@@ -12,12 +12,13 @@ async function getLectureCourse(ins_code, mem_idx) {
 async function getSyllabusList(
   mem_idx,
   lec_idx,
+  csm_idx,
   current_page,
   per_page_num,
   keyword
 ) {
   return await http.get(
-    `/api/v1/menuclass/lecture-course/syllabus/syllabus-list?current_page=${current_page}&keyword=${keyword}&lec_idx=${lec_idx}&mem_idx=${mem_idx}&per_page_num=${per_page_num}`
+    `/api/v1/menuclass/lecture-course/syllabus/syllabus-list?csm_idx=${csm_idx}&current_page=${current_page}&keyword=${keyword}&lec_idx=${lec_idx}&mem_idx=${mem_idx}&per_page_num=${per_page_num}`
   )
 }
 

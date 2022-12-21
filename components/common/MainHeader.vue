@@ -97,7 +97,7 @@ export default {
           isShow: '/class',
           children: [
             {
-              name: '강의 코스',
+              name: '코스',
               to: '/class/lecturecourse',
               active: '/class/lecturecourse',
             },

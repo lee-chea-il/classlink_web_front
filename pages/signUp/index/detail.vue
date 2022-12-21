@@ -184,15 +184,7 @@ export default {
       },
     }
   },
-  // setup(data) {
-  //   watchEffect(() => {
-  //     if (data.userInfo.nickName !== data.userInfo.name) {
-  //       console.log(false)
-  //       this.nickNameCheck = false
-  //     }
-  //   })
-  // },
-  watch: {},
+  
   methods: {
     // 모달 이벤트
     openModalDesc(tit, msg) {
@@ -226,6 +218,11 @@ export default {
       } else {
         this.nickNameCheck = false
       }
+      if (id === 'mem_id') {
+        this.userInfo[id] = value
+          .replace(/ /g, '')
+          .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
+      }
       if (id === 'mem_phone') {
         this.userInfo[id] = value
           .replace(/[^0-9]/g, '')
@@ -234,7 +231,6 @@ export default {
           .replace(/ /g, '')
           .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
       }
-      this.userInfo.mem_pwd_check = value
       if (this.userInfo.mem_pwd_check === this.userInfo.mem_pwd) {
         this.isError = false
       } else {
@@ -242,14 +238,14 @@ export default {
       }
     },
     // 비밀번호 체크
-    onChangePasswordCheck({ target: { value } }) {
-      this.userInfo.mem_pwd_check = value
-      if (this.userInfo.mem_pwd_check === this.userInfo.mem_pwd) {
-        this.isError = false
-      } else {
-        this.isError = true
-      }
-    },
+    // onChangePasswordCheck({ target: { value } }) {
+    //   this.userInfo.mem_pwd_check = value
+    //   if (this.userInfo.mem_pwd_check === this.userInfo.mem_pwd) {
+    //     this.isError = false
+    //   } else {
+    //     this.isError = true
+    //   }
+    // },
     // 닉네임 이름과 동일
     onChangeCheckBox({ target: { checked } }) {
       this.nickNameCheck = checked
