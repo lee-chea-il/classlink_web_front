@@ -130,8 +130,8 @@
             </td>
             <td>{{ item.mem_nickname }}</td>
             <td>{{ item.mem_id }}</td>
-            <td>{{ setArray(item.subjects) }}</td>
-            <td>{{ setArray(item.teach_target) }}</td>
+            <td>{{ '' }}</td>
+            <td>{{ '' }}</td>
             <td>{{ item.mem_phone }}</td>
             <td>
               <i

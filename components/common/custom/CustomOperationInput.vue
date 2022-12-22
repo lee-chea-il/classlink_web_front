@@ -10,19 +10,26 @@
         class="form-control"
         :class="
           (isError ? 'is-invalid' : classes,
-          isIdCheckBtn
-            ? 'form-inline'
+          isIdCheckBtn || isEmailCheckBtn
+            ? 'form-inline id_form'
             : isBirthdayBtn
             ? 'form_calendar datePicker'
             : '')
         "
-        :maxlength="id === 'phone' ? '13' : ''"
+        :maxlength="id === 'mem_phone' ? '13' : ''"
         autocomplete="off"
         @input="$emit('change-input', $event)"
       />
       <button
         v-if="isIdCheckBtn"
-        class="btn btn_crud_default"
+        class="btn btn_crud_default btn_margin"
+        :class="isStudentInput ? 'btn-custom2' : 'btn-custom'"
+      >
+        중복체크
+      </button>
+      <button
+        v-if="isEmailCheckBtn"
+        class="btn btn_crud_default btn_margin"
         :class="isStudentInput ? 'btn-custom2' : 'btn-custom'"
       >
         중복체크
@@ -122,6 +129,10 @@ export default {
       default: false,
       type: Boolean,
     },
+    isEmailCheckBtn: {
+      default: false,
+      type: Boolean,
+    },
   },
 }
 </script>
@@ -143,16 +154,16 @@ button {
   line-height: 14px !important;
 }
 .text-mt {
-  margin-top: -1px;
+  margin-top: -7px;
 }
 .text-set {
   height: 20px;
   margin-top: -32px !important;
 }
-.text-idcheck {
+/* .text-idcheck {
   margin-top: -22px !important;
   line-height: 12px;
-}
+} */
 .idcheck-msg {
   margin-top: -7px !important;
   line-height: 12px;
@@ -163,5 +174,13 @@ button {
   margin-top: 12px;
   white-space: normal;
   line-height: 14px !important;
+}
+.id_form {
+  width: 66% !important;
+  margin-left: 0px !important;
+}
+.btn_margin {
+  margin-top: 0px !important;
+  font-size: 12px !important;
 }
 </style>

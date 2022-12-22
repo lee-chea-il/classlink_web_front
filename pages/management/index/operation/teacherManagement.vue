@@ -39,7 +39,7 @@
       title="선생님 등록"
       :open="registerTeacherModal.open"
       :register="registerTeacherModal.open"
-      :teacherInfo="newTeacherInfo"
+      :teacherInfo="teacherInfo"
       :nickNameCheck="newNickNameCheck"
       @close="onCloseRegisterTeacherModalDesc"
       @click-profile="openUploadNewTeacherImgModalDesc"
@@ -50,6 +50,10 @@
       @click-save="onClickSaveBtn"
       @check-target="onChangeTargetCheck"
       @check-role="onChangeRoleCheck"
+      @click-m="onClickGenderMen"
+      @click-w="onClickGenderWomen"
+      @click-y="onClickStatusTrue"
+      @click-n="onClickStatusFalse"
     />
     <!-- 선생님 등록 - 프로필 이미지 등록1 -->
     <UploadTeacherImg
@@ -94,6 +98,7 @@
       @click-w="onClickGenderWomen"
       @click-y="onClickStatusTrue"
       @click-n="onClickStatusFalse"
+      @init-password="initPassword"
     />
 
     <!-- 생일 날짜 선택 모달 -->
@@ -160,7 +165,6 @@
 import { apiOperation } from '~/services'
 import NavBox from '@/components/operation/NavBox.vue'
 import TeacherListBox from '@/components/operation/TeacherListBox.vue'
-// import RegisterTeacherModal from '@/components/common/modal/operation/RegisterTeacherModal.vue'
 import ResetPasswordModal from '@/components/common/modal/operation/ResetPasswordModal.vue'
 import TeacherCountAlertModal from '@/components/common/modal/operation/TeacherCountAlertModal.vue'
 import TeacherInfoModal from '@/components/common/modal/operation/TeacherInfoModal.vue'
@@ -174,7 +178,6 @@ export default {
   components: {
     NavBox,
     TeacherListBox,
-    // RegisterTeacherModal,
     ResetPasswordModal,
     TeacherCountAlertModal,
     UploadTeacherImg,
@@ -205,7 +208,6 @@ export default {
         profile_image: '',
         profile_cw_image: '',
       },
-
       // teacherInfo: {
       //   id: 0,
       //   name: '김지원',
@@ -226,7 +228,7 @@ export default {
       // },
       teacherList: [],
       initTeacherInfo: {
-        ins_code: '',
+        ins_code: this.$store.state.common.user.ins_code,
         mem_birthday: null,
         mem_email: '',
         mem_id: '',
@@ -236,11 +238,16 @@ export default {
         mem_phone: '',
         mem_sex: null,
         tch_grade: 'T',
-        tch_idx: 0,
         tch_use_yn: 'Y',
+        auth_check: false,
+        auth_list: [],
+        subject_check: true,
+        subject_list: [],
+        target_check: false,
+        target_list: [],
       },
       teacherInfo: {
-        ins_code: '',
+        ins_code: this.$store.state.common.user.ins_code,
         mem_birthday: null,
         mem_email: '',
         mem_id: '',
@@ -250,9 +257,37 @@ export default {
         mem_phone: '',
         mem_sex: null,
         tch_grade: 'T',
-        tch_idx: 0,
         tch_use_yn: 'Y',
+        auth_check: false,
+        auth_list: [],
+        subject_check: true,
+        subject_list: [],
+        target_check: false,
+        target_list: [],
       },
+      allAuthList: [
+        { rac_idx: 1, rin_idx: 1 },
+        { rac_idx: 1, rin_idx: 2 },
+        { rac_idx: 1, rin_idx: 3 },
+        { rac_idx: 2, rin_idx: 4 },
+        { rac_idx: 2, rin_idx: 5 },
+        { rac_idx: 2, rin_idx: 6 },
+        { rac_idx: 3, rin_idx: 7 },
+        { rac_idx: 3, rin_idx: 8 },
+        { rac_idx: 4, rin_idx: 9 },
+        { rac_idx: 4, rin_idx: 10 },
+        { rac_idx: 5, rin_idx: 11 },
+        { rac_idx: 5, rin_idx: 12 },
+        { rac_idx: 5, rin_idx: 13 },
+        { rac_idx: 5, rin_idx: 14 },
+        { rac_idx: 6, rin_idx: 15 },
+        { rac_idx: 6, rin_idx: 16 },
+        { rac_idx: 6, rin_idx: 17 },
+        { rac_idx: 6, rin_idx: 18 },
+        { rac_idx: 7, rin_idx: 19 },
+        { rac_idx: 7, rin_idx: 20 },
+        { rac_idx: 7, rin_idx: 21 },
+      ],
       // modal
       teacherInfoModalDesc: {
         open: false,
@@ -312,10 +347,10 @@ export default {
   },
   watch: {
     stateFlag() {
-      this.getLectureCourseList()
+      this.getTeacherList()
     },
     sortFlag() {
-      this.getLectureCourseList()
+      this.getTeacherList()
     },
   },
   created() {
@@ -330,11 +365,11 @@ export default {
     this.searchList = trueArray
   },
   mounted() {
-    this.getLectureCourseList()
+    this.getTeacherList()
   },
   methods: {
     // 선생님 목록 불러오기 api
-    async getLectureCourseList() {
+    async getTeacherList() {
       const payload = {
         current_page: this.currentPage,
         ins_code: this.institutionIdx,
@@ -379,7 +414,7 @@ export default {
       this.searchText = value
     },
     searchTeacher() {
-      this.getLectureCourseList()
+      this.getTeacherList()
     },
 
     // 선생님 상세 정보 불러오기 api
@@ -388,14 +423,68 @@ export default {
         .getTeacherInfo(mem_idx)
         .then(({ data: { data } }) => {
           console.log(data)
-          this.teacherInfo = data.vo
-          this.roleCheckList = data.auth_list
-          this.targetCheckList = data.target_list
+          Object.assign(this.teacherInfo, data.vo)
+          this.teacherInfo.auth_list = data.auth_list
+          this.teacherInfo.target_list = data.target_list
         })
         .catch((err) => {
           console.log(err)
         })
       this.openTeacherInfoModalDesc()
+    },
+
+    // 선생님 등록 api
+    async registerTeacher() {
+      const payload = this.teacherInfo
+      console.log(payload)
+      await apiOperation
+        .registerTeacher(payload)
+        .then(() => {
+          this.onCloseRegisterTeacherModalDesc()
+          this.getTeacherList()
+          this.teacherInfo = this.deepCopy(this.initTeacherInfo)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
+    // 선생님 정보 수정 api
+    async updateTeacherInfo() {
+      const payload = this.teacherInfo
+      await apiOperation
+        .updateTeacherInfo(payload)
+        .then((res) => {
+          this.onCloseTeacherInfoModalDesc()
+          this.getTeacherList()
+          this.teacherInfo = this.deepCopy(this.initTeacherInfo)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 선생님 정보 수정
+    onChangeUpdateInput({ target: { value, id, checked } }) {
+      console.log(checked)
+      this.teacherInfo[id] = value
+      if (checked) {
+        console.log(checked)
+        this.teacherInfo.mem_nickname = this.teacherInfo.mem_name
+        this.nickNameCheck = true
+      }
+      if (this.teacherInfo.mem_nickname !== this.teacherInfo.mem_name) {
+        this.nickNameCheck = false
+      } else {
+        this.nickNameCheck = true
+      }
+      if (id === 'mem_phone') {
+        this.teacherInfo[id] = value
+          .replace(/[^0-9]/g, '')
+          .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
+          .replace(/(-{1,2})$/g, '')
+          .replace(/ /g, '')
+          .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
+      }
     },
     // 성별 수정
     onClickGenderMen() {
@@ -410,32 +499,58 @@ export default {
     },
     onClickStatusFalse() {
       this.teacherInfo.tch_use_yn = 'N'
+      console.log(this.teacherInfo.tch_use_yn)
     },
     // 가르치는 대상 수정
     onChangeTargetCheck({ target: { id, checked } }) {
       if (checked) {
-        this.targetCheckList.push(id)
+        this.teacherInfo.target_list.push(id)
       } else {
-        const index = this.targetCheckList.indexOf(id)
-        this.targetCheckList.splice(index, 1)
+        const index = this.teacherInfo.target_list.indexOf(id)
+        this.teacherInfo.target_list.splice(index, 1)
       }
     },
     // 권한 수정
     onChangeRoleCheck({ target: { id, name, checked } }) {
+      const role = { rac_idx: Number(name), rin_idx: Number(id) }
       if (checked) {
-        this.roleCheckList.push({ rac_idx: Number(name), rin_idx: Number(id) })
+        this.teacherInfo.auth_list.push(role)
       } else {
-        const index = this.roleCheckList.indexOf({
-          rac_idx: Number(name),
-          rin_idx: Number(id),
-        })
-        this.roleCheckList.splice(index, 1)
+        const index = this.teacherInfo.auth_list
+          .map((x) => x.rin_idx)
+          .indexOf(role.rin_idx)
+        this.teacherInfo.auth_list.splice(index, 1)
       }
-      console.log(this.roleCheckList)
+    },
+    // 직위 수정
+    selectPosition() {
+      if (this.teacherInfo.tch_grade === 'M') {
+        this.teacherInfo.tch_grade = 'T'
+        this.teacherInfo.auth_check = false
+        this.teacherInfo.auth_list = []
+      } else {
+        this.teacherInfo.tch_grade = 'M'
+        this.teacherInfo.auth_check = true
+        this.teacherInfo.auth_list = this.deepCopy(this.allAuthList)
+      }
+    },
+    // 이메일 중복체크
+
+    // 비밀번호 초기화
+    async initPassword() {
+      // const data = { data: this.teacherInfo.mem_id }
+      await apiOperation
+        .registerTeacher('master04')
+        .then((res) => {
+          console.log(res)
+          this.openModalDesc('', '비밀번호가 초기화되었습니다.')
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
 
     // modal event
-
     openModalDesc(tit, msg) {
       this.modalDesc = {
         open: true,
@@ -550,51 +665,6 @@ export default {
       }
     },
 
-    // 선생님 상세보기
-    // 정보 수정
-    onChangeUpdateInput({ target: { value, id, checked } }) {
-      console.log(checked)
-      if (this.registerTeacherModal.open) {
-        this.newTeacherInfo[id] = value
-        if (checked) {
-          this.newTeacherInfo.nickname = this.newTeacherInfo.name
-          this.newNickNameCheck = true
-        }
-        if (this.newTeacherInfo.nickname !== this.newTeacherInfo.name) {
-          this.newNickNameCheck = false
-        } else {
-          this.newNickNameCheck = true
-        }
-        if (id === 'phone') {
-          this.newTeacherInfo[id] = value
-            .replace(/[^0-9]/g, '')
-            .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
-            .replace(/(-{1,2})$/g, '')
-            .replace(/ /g, '')
-            .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
-        }
-      } else {
-        this.teacherInfo[id] = value
-        if (checked) {
-          console.log(checked)
-          this.teacherInfo.nickname = this.teacherInfo.name
-          this.nickNameCheck = true
-        }
-        if (this.teacherInfo.nickname !== this.teacherInfo.name) {
-          this.nickNameCheck = false
-        } else {
-          this.nickNameCheck = true
-        }
-        if (id === 'phone') {
-          this.teacherInfo[id] = value
-            .replace(/[^0-9]/g, '')
-            .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
-            .replace(/(-{1,2})$/g, '')
-            .replace(/ /g, '')
-            .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
-        }
-      }
-    },
     // 이미지 업로드
     onClickInputButton() {
       const inputBtn = document.getElementById('upload-input')
@@ -623,28 +693,10 @@ export default {
       this.birthday = e.id
     },
     onClickBirthdayConfirm() {
-      if (this.registerTeacherModal.open) {
-        this.newTeacherInfo.birthday = this.birthday
-      } else {
-        this.teacherInfo.birthday = this.birthday
-      }
+      this.teacherInfo.mem_birthday = this.birthday
       this.datePickerModalDesc.open = false
     },
 
-    // 직위 변경
-    selectPosition() {
-      if (this.registerTeacherModal.open) {
-        if (this.newTeacherInfo.position === '교육기관장') {
-          this.newTeacherInfo.position = '선생님'
-        } else {
-          this.newTeacherInfo.position = '교육기관장'
-        }
-      } else if (this.teacherInfo.position === '교육기관장') {
-        this.teacherInfo.position = '선생님'
-      } else {
-        this.teacherInfo.position = '교육기관장'
-      }
-    },
     // 비밀번호 초기화
     onClickResetBtn() {
       this.openModalDesc('비밀번호 초기화', '비밀번호가 초기화되었습니다.')
@@ -652,16 +704,22 @@ export default {
     // 수정된 정보 저장하기
     onClickSaveBtn() {
       if (this.registerTeacherModal.open) {
+        this.registerTeacher()
         this.openRegisterConfirmModalDesc(
           '선생님 등록',
           '선생님이 등록되었습니다.'
         )
       } else {
+        this.updateTeacherInfo()
         this.openModalDesc(
           '선생님 정보 수정',
           '선생님 상세 정보가 수정되었습니다.'
         )
       }
+    },
+    // 깊은 복사
+    deepCopy(data) {
+      return JSON.parse(JSON.stringify(data))
     },
   },
 }
