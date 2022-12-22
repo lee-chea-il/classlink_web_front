@@ -41,6 +41,9 @@
       :register="registerTeacherModal.open"
       :teacherInfo="teacherInfo"
       :nickNameCheck="newNickNameCheck"
+      :isEmailCheck="isEmailCheck"
+      :isIdCheck="isIdCheck"
+      :newSubjectList="newSubjectList"
       @close="onCloseRegisterTeacherModalDesc"
       @click-profile="openUploadNewTeacherImgModalDesc"
       @click-cwimg="openUploadNewTeacherCWImgModalDesc"
@@ -54,7 +57,38 @@
       @click-w="onClickGenderWomen"
       @click-y="onClickStatusTrue"
       @click-n="onClickStatusFalse"
+      @check-email="getEmailCheck"
+      @check-id="getIdCheck"
+      @edit-subjects="openEditSubjectsModal"
     />
+    <!-- 선생님 상세 -->
+    <TeacherInfoModal
+      title="선생님 상세정보"
+      :open="teacherInfoModalDesc.open"
+      :teacherInfo="teacherInfo"
+      :nickNameCheck="nickNameCheck"
+      :isEmailCheck="isEmailCheck"
+      :isIdCheck="isIdCheck"
+      :targetCheckList="targetCheckList"
+      :roleCheckList="roleCheckList"
+      @close="onCloseTeacherInfoModalDesc"
+      @click-profile="openUploadTeacherImgModalDesc"
+      @click-cwimg="openUploadTeacherCWImgModalDesc"
+      @change-input="onChangeUpdateInput"
+      @click-birthday="openDatePickerModalDesc"
+      @select-position="selectPosition"
+      @click-save="onClickSaveBtn"
+      @check-target="onChangeTargetCheck"
+      @check-role="onChangeRoleCheck"
+      @click-m="onClickGenderMen"
+      @click-w="onClickGenderWomen"
+      @click-y="onClickStatusTrue"
+      @click-n="onClickStatusFalse"
+      @init-password="initPassword"
+      @check-email="getEmailCheck"
+      @edit-subjects="openEditSubjectsModal"
+    />
+
     <!-- 선생님 등록 - 프로필 이미지 등록1 -->
     <UploadTeacherImg
       :open="uploadNewTeacherImgModalDesc.open"
@@ -75,30 +109,6 @@
       @select-file="onFileSelected"
       @click-upload="onClickInputButton"
       @close="onCloseUploadNewTeacherCWImgModalDesc"
-    />
-
-    <!-- 선생님 상세 -->
-    <TeacherInfoModal
-      title="선생님 상세정보"
-      :open="teacherInfoModalDesc.open"
-      :teacherInfo="teacherInfo"
-      :nickNameCheck="nickNameCheck"
-      :targetCheckList="targetCheckList"
-      :roleCheckList="roleCheckList"
-      @close="onCloseTeacherInfoModalDesc"
-      @click-profile="openUploadTeacherImgModalDesc"
-      @click-cwimg="openUploadTeacherCWImgModalDesc"
-      @change-input="onChangeUpdateInput"
-      @click-birthday="openDatePickerModalDesc"
-      @select-position="selectPosition"
-      @click-save="onClickSaveBtn"
-      @check-target="onChangeTargetCheck"
-      @check-role="onChangeRoleCheck"
-      @click-m="onClickGenderMen"
-      @click-w="onClickGenderWomen"
-      @click-y="onClickStatusTrue"
-      @click-n="onClickStatusFalse"
-      @init-password="initPassword"
     />
 
     <!-- 생일 날짜 선택 모달 -->
@@ -158,6 +168,25 @@
       :title="deleteModalDesc.title"
       @close="onCloseDeleteModalDesc"
     />
+
+    <!-- 과목 수정 -->
+    <EditSubjectsModal
+      :open="editSubjectsModal.open"
+      :newSubjectList="newSubjectList"
+      :isAddSubject="isAddSubject"
+      :newSubjectTitle="newSubjectTitle"
+      :isUpdateSubject="isUpdateSubject"
+      :isMoreBtn="isMoreBtn"
+      :newSubject="newSubject"
+      @add-subject="addSubject"
+      @change-input="onChangeSubjectInput"
+      @click-add="onClickAddSubject"
+      @close-add="onCloseAddSubject"
+      @click-more="onClickSubjectMore"
+      @update-title="updateSubjectTitle"
+      @delete-subject="deleteSubject"
+      @close="onCloseEditSubjectsModal"
+    />
   </div>
   <!-- //container -->
 </template>
@@ -169,6 +198,7 @@ import ResetPasswordModal from '@/components/common/modal/operation/ResetPasswor
 import TeacherCountAlertModal from '@/components/common/modal/operation/TeacherCountAlertModal.vue'
 import TeacherInfoModal from '@/components/common/modal/operation/TeacherInfoModal.vue'
 import UploadTeacherImg from '@/components/common/modal/operation/UploadTeacherImg.vue'
+import EditSubjectsModal from '@/components/common/modal/operation/EditSubjectsModal.vue'
 import DatePickerModal from '@/components/common/modal/operation/DatePickerModal.vue'
 import UploadTeacherCWImg from '@/components/common/modal/operation/UploadTeacherCWImg.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
@@ -186,6 +216,7 @@ export default {
     DeleteModal,
     ModalDesc,
     DatePickerModal,
+    EditSubjectsModal,
   },
   data() {
     return {
@@ -238,7 +269,7 @@ export default {
         mem_phone: '',
         mem_sex: null,
         tch_grade: 'T',
-        tch_use_yn: 'Y',
+        tch_use_yn: true,
         auth_check: false,
         auth_list: [],
         subject_check: true,
@@ -257,7 +288,7 @@ export default {
         mem_phone: '',
         mem_sex: null,
         tch_grade: 'T',
-        tch_use_yn: 'Y',
+        tch_use_yn: true,
         auth_check: false,
         auth_list: [],
         subject_check: true,
@@ -324,6 +355,9 @@ export default {
       uploadNewTeacherCWImgModalDesc: {
         open: false,
       },
+      editSubjectsModal: {
+        open: false,
+      },
       // 목록
       searchFlag: 0,
       stateFlag: true,
@@ -332,7 +366,6 @@ export default {
       stateTrue: 0,
       stateFalse: 0,
       searchText: '',
-
       // 선생님 상세/수정
       targetCheckList: [],
       roleCheckList: [],
@@ -340,6 +373,21 @@ export default {
       nickNameCheck: false,
       birthday: '',
       uploadImageFile: '',
+      isEmailCheck: false,
+      isIdCheck: false,
+      prevEmail: '',
+      prevId: '',
+      newSubjectList: [
+        { is_idx: 6, is_title: '화학' },
+        { is_idx: 7, is_title: '윤리' },
+        { is_idx: 8, is_title: '음악' },
+        { is_idx: 9, is_title: '미술' },
+      ],
+      isAddSubject: false,
+      newSubjectTitle: '',
+      newSubject: '',
+      isUpdateSubject: false,
+      isMoreBtn: false,
       // 선생님 삭제
       deleteIdxList: [],
       allCheckBoxFlag: false,
@@ -426,6 +474,8 @@ export default {
           Object.assign(this.teacherInfo, data.vo)
           this.teacherInfo.auth_list = data.auth_list
           this.teacherInfo.target_list = data.target_list
+          this.prevId = data.vo.mem_id
+          this.prevEmail = data.vo.mem_email
         })
         .catch((err) => {
           console.log(err)
@@ -442,7 +492,6 @@ export default {
         .then(() => {
           this.onCloseRegisterTeacherModalDesc()
           this.getTeacherList()
-          this.teacherInfo = this.deepCopy(this.initTeacherInfo)
         })
         .catch((err) => {
           console.log(err)
@@ -454,10 +503,9 @@ export default {
       const payload = this.teacherInfo
       await apiOperation
         .updateTeacherInfo(payload)
-        .then((res) => {
+        .then(() => {
           this.onCloseTeacherInfoModalDesc()
           this.getTeacherList()
-          this.teacherInfo = this.deepCopy(this.initTeacherInfo)
         })
         .catch((err) => {
           console.log(err)
@@ -485,6 +533,17 @@ export default {
           .replace(/ /g, '')
           .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
       }
+
+      if (id === 'mem_id') {
+        this.isIdCheck = false
+      }
+      if (id === 'mem_email') {
+        if (this.teacherInfo.mem_email === this.prevEmail) {
+          this.isEmailCheck = true
+        } else {
+          this.isEmailCheck = false
+        }
+      }
     },
     // 성별 수정
     onClickGenderMen() {
@@ -495,10 +554,10 @@ export default {
     },
     // 상태 변경
     onClickStatusTrue() {
-      this.teacherInfo.tch_use_yn = 'Y'
+      this.teacherInfo.tch_use_yn = true
     },
     onClickStatusFalse() {
-      this.teacherInfo.tch_use_yn = 'N'
+      this.teacherInfo.tch_use_yn = false
       console.log(this.teacherInfo.tch_use_yn)
     },
     // 가르치는 대상 수정
@@ -534,13 +593,46 @@ export default {
         this.teacherInfo.auth_list = this.deepCopy(this.allAuthList)
       }
     },
-    // 이메일 중복체크
 
+    // 아이디 중복체크
+    async getIdCheck() {
+      await apiOperation
+        .getIdCheck(this.teacherInfo.mem_id)
+        .then(({ data: { data } }) => {
+          if (data) {
+            this.isIdCheck = true
+            this.openModalDesc('아이디 중복확인', '사용 가능한 아이디입니다.')
+          } else {
+            this.isIdCheck = false
+            this.openModalDesc('아이디 중복확인', '중복된 아이디입니다.')
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 이메일 중복체크
+    async getEmailCheck() {
+      await apiOperation
+        .getEmailCheck(this.teacherInfo.mem_email)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          if (data) {
+            this.isEmailCheck = true
+            this.openModalDesc('이메일 중복확인', '사용 가능한 이메일입니다.')
+          } else {
+            this.isEmailCheck = false
+            this.openModalDesc('이메일 중복확인', '중복된 이메일입니다.')
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
     // 비밀번호 초기화
     async initPassword() {
-      // const data = { data: this.teacherInfo.mem_id }
       await apiOperation
-        .registerTeacher('master04')
+        .initPassword(this.teacherInfo.mem_id)
         .then((res) => {
           console.log(res)
           this.openModalDesc('', '비밀번호가 초기화되었습니다.')
@@ -548,6 +640,22 @@ export default {
         .catch((err) => {
           console.log(err)
         })
+    },
+    // 수정된 정보 저장하기
+    onClickSaveBtn() {
+      if (this.registerTeacherModal.open) {
+        this.registerTeacher()
+        this.openRegisterConfirmModalDesc(
+          '선생님 등록',
+          '선생님이 등록되었습니다.'
+        )
+      } else {
+        this.updateTeacherInfo()
+        this.openModalDesc(
+          '선생님 정보 수정',
+          '선생님 상세 정보가 수정되었습니다.'
+        )
+      }
     },
 
     // modal event
@@ -593,12 +701,24 @@ export default {
     },
     onCloseRegisterTeacherModalDesc() {
       this.registerTeacherModal.open = false
+      setTimeout(() => {
+        this.teacherInfo = this.deepCopy(this.initTeacherInfo)
+        this.isIdCheck = false
+        this.isEmailCheck = false
+      }, 500)
     },
     openTeacherInfoModalDesc() {
       this.teacherInfoModalDesc.open = true
+      this.isIdCheck = true
+      this.isEmailCheck = true
     },
     onCloseTeacherInfoModalDesc() {
       this.teacherInfoModalDesc.open = false
+      setTimeout(() => {
+        this.teacherInfo = this.deepCopy(this.initTeacherInfo)
+        this.isIdCheck = false
+        this.isEmailCheck = false
+      }, 500)
     },
     openUploadTeacherImgModalDesc() {
       this.uploadTeacherImgModalDesc.open = true
@@ -624,44 +744,68 @@ export default {
     onCloseUploadNewTeacherCWImgModalDesc() {
       this.uploadNewTeacherCWImgModalDesc.open = false
     },
+    openEditSubjectsModal() {
+      this.editSubjectsModal.open = true
+    },
+    onCloseEditSubjectsModal() {
+      this.editSubjectsModal.open = false
+    },
     // 선생님 삭제
+    setIdxNumber(string) {
+      return Number(string.substr(4))
+    },
     onClickCheckBox({ target: { id, checked } }) {
       if (checked) {
-        this.deleteIdxList.push(id)
+        const teacher = { mem_idx: this.setIdxNumber(id) }
+        this.deleteIdxList.push(teacher)
       } else {
         this.allCheckBoxFlag = false
-        for (let i = 0; i < this.deleteIdxList.length; i++) {
-          if (this.deleteIdxList[i] === id) {
-            this.deleteIdxList.splice(i, 1)
-          }
-        }
+        const index = this.deleteIdxList
+          .map((x) => x.mem_idx)
+          .indexOf(this.setIdxNumber(id))
+        this.deleteIdxList.splice(index, 1)
       }
     },
     selectAll({ target: { checked } }) {
       const checkboxes = document.getElementsByName('chk')
       if (checked) {
+        this.deleteIdxList = []
         this.allCheckBoxFlag = true
         for (let i = 0; i < checkboxes.length; i++) {
           checkboxes[i].checked = true
-          this.deleteIdxList.push(checkboxes[i].id)
+          const teacher = { mem_idx: this.setIdxNumber(checkboxes[i].id) }
+          this.deleteIdxList.push(teacher)
+          console.log(this.deleteIdxList)
         }
-        console.log(this.deleteIdxList)
       } else {
         this.allCheckBoxFlag = false
         for (let i = 0; i < checkboxes.length; i++) {
           checkboxes[i].checked = false
           this.deleteIdxList.pop()
         }
-        console.log(this.deleteIdxList)
       }
     },
-    deleteTeacher() {
+    async deleteTeacher() {
       if (this.deleteIdxList.length === 0) {
         this.openModalDesc('선생님 삭제', '삭제할 선생님을 선택해주세요.')
         return false
       } else {
-        console.log(this.deleteIdxList)
-        this.openDeleteModalDesc('선생님')
+        const payload = {
+          data: {
+            ins_code: this.institutionIdx,
+            mem_idx_list: this.deleteIdxList,
+          },
+        }
+        console.log(payload)
+        await apiOperation
+          .deleteTeacher(payload)
+          .then((res) => {
+            console.log(res)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+        // this.openDeleteModalDesc('선생님')
       }
     },
 
@@ -696,27 +840,56 @@ export default {
       this.teacherInfo.mem_birthday = this.birthday
       this.datePickerModalDesc.open = false
     },
-
     // 비밀번호 초기화
     onClickResetBtn() {
       this.openModalDesc('비밀번호 초기화', '비밀번호가 초기화되었습니다.')
     },
-    // 수정된 정보 저장하기
-    onClickSaveBtn() {
-      if (this.registerTeacherModal.open) {
-        this.registerTeacher()
-        this.openRegisterConfirmModalDesc(
-          '선생님 등록',
-          '선생님이 등록되었습니다.'
-        )
-      } else {
-        this.updateTeacherInfo()
-        this.openModalDesc(
-          '선생님 정보 수정',
-          '선생님 상세 정보가 수정되었습니다.'
-        )
-      }
+
+    // 과목 수정 과목 추가
+    onClickAddSubject() {
+      this.newSubjectTitle = ''
+      this.isAddSubject = true
+      this.isUpdateSubject = false
     },
+    // 과목 추가하기
+    addSubject() {
+      this.isAddSubject = false
+      this.newSubjectTitle = ''
+    },
+    // 과목 추가 닫기
+    onCloseAddSubject() {
+      this.isAddSubject = false
+      this.isUpdateSubject = false
+    },
+    // 과목 input
+    onChangeSubjectInput({ target: { value } }) {
+      this.newSubjectTitle = value
+    },
+    // 과목 더보기 버튼
+    onClickSubjectMore(is_title) {
+      if (this.isMoreBtn && this.newSubject === is_title) {
+        this.isMoreBtn = false
+        console.log(this.isMoreBtn)
+        return false
+      }
+      this.isMoreBtn = true
+      this.newSubject = is_title
+      console.log(this.isMoreBtn, this.newSubject)
+    },
+    // 과목 삭제
+    deleteSubject() {
+      this.isMoreBtn = false
+      console.log('삭제', this.isMoreBtn)
+    },
+    // 과목 수정
+    updateSubjectTitle(title) {
+      this.isAddSubject = false
+      this.isMoreBtn = false
+      this.isUpdateSubject = true
+      this.newSubjectTitle = title
+      console.log('수정', title, this.isUpdateSubject, this.newSubjectTitle)
+    },
+
     // 깊은 복사
     deepCopy(data) {
       return JSON.parse(JSON.stringify(data))

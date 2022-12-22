@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ValidationProvider v-slot="{ errors, classes }" :rules="rules">
+    <ValidationProvider v-slot="{ errors, classes, invalid }" :rules="rules">
       <input
         :id="id"
         :name="name"
@@ -24,6 +24,8 @@
         v-if="isIdCheckBtn"
         class="btn btn_crud_default btn_margin"
         :class="isStudentInput ? 'btn-custom2' : 'btn-custom'"
+        :disabled="invalid || isIdCheck"
+        @click="$emit('check-id')"
       >
         중복체크
       </button>
@@ -31,7 +33,10 @@
         v-if="isEmailCheckBtn"
         class="btn btn_crud_default btn_margin"
         :class="isStudentInput ? 'btn-custom2' : 'btn-custom'"
+        :disabled="invalid || isEmailCheck"
+        @click="$emit('check-email')"
       >
+        <!-- :class="isStudentInput ? 'btn-custom2' : 'btn-custom'" -->
         중복체크
       </button>
       <button
@@ -130,6 +135,14 @@ export default {
       type: Boolean,
     },
     isEmailCheckBtn: {
+      default: false,
+      type: Boolean,
+    },
+    isEmailCheck: {
+      default: false,
+      type: Boolean,
+    },
+    isIdCheck: {
       default: false,
       type: Boolean,
     },

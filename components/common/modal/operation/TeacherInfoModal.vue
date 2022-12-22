@@ -128,8 +128,10 @@
                           rules="account|required"
                           type="text"
                           :isIdCheckBtn="true"
+                          :isIdCheck="isIdCheck"
                           :inputValue="teacherInfo.mem_id"
                           @change-input="$emit('change-input', $event)"
+                          @check-id="$emit('check-id')"
                         />
                         <div class="exp_text mt">*초기 비밀번호:123456</div>
                       </div>
@@ -171,18 +173,14 @@
                           data-toggle="modal"
                           data-target="#modalTcNum"
                           data-dismiss="modal"
-                          :class="
-                            teacherInfo.tch_use_yn === 'Y' ? 'active' : false
-                          "
+                          :class="teacherInfo.tch_use_yn ? 'active' : false"
                           @click="$emit('click-y')"
                         >
                           활성화
                         </button>
                         <button
                           class="btn btn_activated"
-                          :class="
-                            teacherInfo.tch_use_yn === 'N' ? 'active' : false
-                          "
+                          :class="!teacherInfo.tch_use_yn ? 'active' : false"
                           @click="$emit('click-n')"
                         >
                           비활성화
@@ -227,8 +225,10 @@
                           rules="required|email"
                           type="email"
                           :isEmailCheckBtn="true"
+                          :isEmailCheck="isEmailCheck"
                           :inputValue="teacherInfo.mem_email"
                           @change-input="$emit('change-input', $event)"
+                          @check-email="$emit('check-email')"
                         />
                       </div>
                     </div>
@@ -447,7 +447,8 @@
                                 class="custom-control custom-checkbox custom-sm inline_block"
                               >
                                 <input
-                                  id="update_box02chk02"
+                                  id="subject_1"
+                                  name="국어"
                                   type="checkbox"
                                   class="custom-control-input"
                                   checked
@@ -464,7 +465,8 @@
                                 class="custom-control custom-checkbox custom-sm inline_block"
                               >
                                 <input
-                                  id="update_box02chk03"
+                                  id="subject_2"
+                                  name="수학"
                                   type="checkbox"
                                   class="custom-control-input"
                                   checked
@@ -481,7 +483,8 @@
                                 class="custom-control custom-checkbox custom-sm inline_block"
                               >
                                 <input
-                                  id="update_box02chk04"
+                                  id="subject_3"
+                                  name="영어"
                                   type="checkbox"
                                   class="custom-control-input"
                                   checked
@@ -500,7 +503,8 @@
                                 class="custom-control custom-checkbox custom-sm inline_block"
                               >
                                 <input
-                                  id="update_box02chk05"
+                                  id="subject_4"
+                                  name="과학"
                                   type="checkbox"
                                   class="custom-control-input"
                                   checked
@@ -508,7 +512,7 @@
                                 <label
                                   class="custom-control-label"
                                   for="update_box02chk05"
-                                  >음악</label
+                                  >과학</label
                                 >
                               </div>
                             </div>
@@ -517,7 +521,8 @@
                                 class="custom-control custom-checkbox custom-sm inline_block"
                               >
                                 <input
-                                  id="update_box02chk06"
+                                  id="subject_5"
+                                  name="기타"
                                   type="checkbox"
                                   class="custom-control-input"
                                   checked
@@ -529,28 +534,39 @@
                                 >
                               </div>
                             </div>
-                            <div class="title02">
+                            <div
+                              v-for="(item, idx) in newSubjectList"
+                              :key="idx"
+                              class="title02"
+                            >
                               <div
                                 class="custom-control custom-checkbox custom-sm inline_block"
                               >
                                 <input
-                                  id="update_box02chk07"
+                                  :id="`subject_${item.is_idx}`"
+                                  :name="item.is_title"
                                   type="checkbox"
                                   class="custom-control-input"
                                   checked
                                 />
                                 <label
                                   class="custom-control-label"
-                                  for="update_box02chk07"
-                                  >직접입력</label
+                                  for="update_box02chk06"
+                                  >{{ item.is_title }}</label
                                 >
-                                <div class="form-group">
-                                  <input
-                                    type="text"
-                                    placeholder="과목 입력"
-                                    class="form-control form-inline xs-input"
-                                  />
-                                </div>
+                              </div>
+                            </div>
+
+                            <div class="title02">
+                              <div
+                                class="custom-control custom-checkbox custom-sm inline_block"
+                              >
+                                <button
+                                  class="btn btn_crud_default subject_modify"
+                                  @click="$emit('edit-subjects')"
+                                >
+                                  과목 수정
+                                </button>
                               </div>
                             </div>
                           </div>
@@ -1088,7 +1104,7 @@
               <div class="btn_right">
                 <button
                   class="btn btn_crud_point"
-                  :disabled="invalid"
+                  :disabled="invalid || !isIdCheck || !isEmailCheck"
                   @click="$emit('click-save')"
                 >
                   {{ register ? '등록하기' : '저장하기' }}
@@ -1127,6 +1143,18 @@ export default {
     register: {
       type: Boolean,
       default: false,
+    },
+    isEmailCheck: {
+      type: Boolean,
+      default: false,
+    },
+    isIdCheck: {
+      type: Boolean,
+      default: false,
+    },
+    newSubjectList: {
+      type: Array,
+      default: () => [],
     },
   },
   data() {

@@ -116,13 +116,16 @@
             <td>
               <div class="custom-control custom-checkbox form-inline">
                 <input
-                  :id="idx"
+                  :id="`tch_${item.mem_idx}`"
                   name="chk"
                   type="checkbox"
                   class="custom-control-input"
                   @input="$emit('select-teacher', $event)"
                 />
-                <label class="custom-control-label" :for="idx"></label>
+                <label
+                  class="custom-control-label"
+                  :for="`tch_${item.mem_idx}`"
+                ></label>
               </div>
             </td>
             <td>
@@ -130,8 +133,8 @@
             </td>
             <td>{{ item.mem_nickname }}</td>
             <td>{{ item.mem_id }}</td>
-            <td>{{ '' }}</td>
-            <td>{{ '' }}</td>
+            <td>{{ setSubjectArray(item.subjects) }}</td>
+            <td>{{ setTargetArray(item.teach_target) }}</td>
             <td>{{ item.mem_phone }}</td>
             <td>
               <i
@@ -200,13 +203,54 @@ export default {
   },
   methods: {
     // 배열 join
-    setArray(array) {
-      if (array.length !== 0) {
-        const names = []
-        for (const x of array) {
-          names.push(this.setIdentityName(x))
+    setSubjectArray(array) {
+      if (array !== null) {
+        if (array.length !== 0) {
+          const names = []
+          for (const x of array) {
+            names.push(x.is_title)
+          }
+          return names.join(', ')
+        } else {
+          return '-'
         }
-        return names.join(', ')
+      } else {
+        return '-'
+      }
+    },
+    setTargetName(initial) {
+      let answer = ''
+      switch (initial) {
+        case '01':
+          answer = '초등'
+          break
+        case '02':
+          answer = '중등'
+          break
+        case '03':
+          answer = '고등'
+          break
+        case '04':
+          answer = '대학생'
+          break
+        case '05':
+          answer = '성인'
+          break
+        default:
+      }
+      return answer
+    },
+    setTargetArray(array) {
+      if (array !== null) {
+        if (array.length !== 0) {
+          const names = []
+          for (const x of array) {
+            names.push(this.setTargetName(x.ttm_target))
+          }
+          return names.join(', ')
+        } else {
+          return '-'
+        }
       } else {
         return '-'
       }

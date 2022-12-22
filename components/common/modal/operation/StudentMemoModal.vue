@@ -139,7 +139,6 @@
                                 ? 'show-more'
                                 : ''
                             "
-                            style="display: none"
                           >
                             <ul>
                               <li @click="$emit('click-update')">수정</li>

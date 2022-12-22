@@ -32,10 +32,15 @@ async function registerTeacher(payload) {
 }
 
 // 선생님 삭제
+async function deleteTeacher(payload) {
+  return await http.delete('/api/v1/management/operation/teacher', payload)
+}
 
 // 비밀번호 초기화
 async function initPassword(mem_id) {
-  return await http.put(`/api/v1/management/operation/init-password`, mem_id)
+  return await http.put(
+    `/api/v1/management/operation/init-password?mem_id=${mem_id}`
+  )
 }
 
 const apiOperation = {
@@ -46,6 +51,7 @@ const apiOperation = {
   registerTeacher,
   updateTeacherInfo,
   initPassword,
+  deleteTeacher,
 }
 
 export default apiOperation
