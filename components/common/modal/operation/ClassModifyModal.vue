@@ -179,9 +179,8 @@
                         <!-- [개발참조] 등록된 데이터 없는 경우 -->
                         <div
                           v-if="
-                            studentTab === 0
-                              ? studentList.banList.length === 0
-                              : studentList.gradeList.length === 0
+                            studentList.gradeList.length === 0 &&
+                            studentList.banList.length === 0
                           "
                           class="nothing_txt"
                         >
@@ -410,8 +409,19 @@
           </div>
           <div class="modal-footer">
             <!-- [개발참조] 등록, 수정 버튼 상황에 따라 -->
-            <button class="btn btn_crud_point" @click="$emit('upload')">
-              {{ show.data === null ? '확인' : '저장하기' }}
+            <button
+              v-if="show.data === null"
+              class="btn btn_crud_point"
+              @click="$emit('upload')"
+            >
+              확인
+            </button>
+            <button
+              v-else
+              class="btn btn_crud_point"
+              @click="$emit('save', show.data.csm_idx)"
+            >
+              저장하기
             </button>
             <button class="btn btn_crud_default" @click="$emit('close')">
               취소

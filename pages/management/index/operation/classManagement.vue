@@ -15,19 +15,20 @@
 
       <div class="tab-content depth03 ac_manage_cls">
         <!-- [개발참조] 등록된 학생이 없는 경우 -->
-        <div v-if="classList === null" class="nothing_txt">
+        <div v-if="classList.length === 0" class="nothing_txt">
           <div class="txt">
             등록된 반이 없습니다.<br />
             먼저 반을 등록해주세요.
           </div>
           <div class="btn_area">
-            <button class="btn btn_crud_point" @click="onOpenClassModify()">
+            <button class="btn btn_crud_point" @click="onOpenClassRegist()">
               반 만들기
             </button>
           </div>
         </div>
+        <!-- /.등록된 학생이 없는 경우 -->
+
         <div v-else class="tab-pane active">
-          <!-- /.등록된 학생이 없는 경우 -->
           <!-- 컨트롤 버튼 영역 -->
           <div class="search_section">
             <div class="left_area">
@@ -43,7 +44,7 @@
               <!-- [개발참조]toasts 메세지 '반을 선택해주세요.'' : 아무런 반을 체크하지 않고 복사를 누르면 -->
             </div>
             <div class="right_area">
-              <button class="btn btn_crud_point" @click="onOpenClassModify()">
+              <button class="btn btn_crud_point" @click="onOpenClassRegist()">
                 반 만들기
               </button>
               <button class="btn btn_crud_default" @click="onClickUnallocation">
@@ -271,6 +272,7 @@
       @search-student="getSearchStudent"
       @init-student="setInitSearchStudent"
       @upload="postRegistClass"
+      @save="putUpdClass"
     />
 
     <!-- [개발참조] : 반 상세 모달에서 뜨는 2번째 팝업(학생상세 및 더보기 메뉴의 모달 팝업)은 겹치는 팝업이므로 class="double" 추가 필요 -->
@@ -386,7 +388,7 @@ export default {
       nickNameCheck: false,
       familySearchText: '',
       // 반 리스트
-      classList: null,
+      classList: [],
       classInfo: [],
       studentInfo: {
         id: 0,
@@ -522,6 +524,12 @@ export default {
     }
   },
   watch: {
+    checkList: {
+      handler() {
+        console.log('checkList', this.checkList)
+      },
+      immediate: false,
+    },
     showCount: {
       handler() {
         this.getClassList()
@@ -535,12 +543,6 @@ export default {
       },
       immediate: false,
     },
-    // cond: {
-    //   handler() {
-    //     this.getClassList()
-    //   },
-    //   immediate: false,
-    // },
     currentPage: {
       handler() {
         this.getClassList()
@@ -594,9 +596,6 @@ export default {
         .then(({ data: { data } }) => {
           this.classList = data.banList
           this.endPage = data.pageMaker.end_page
-          // if (this.classListB === []) {
-          // this.classListB = data.banList
-          // }
         })
         .catch((err) => {
           console.log(err)
@@ -715,6 +714,7 @@ export default {
         .then(({ data: { data } }) => {
           console.log(data)
           this.studentList = data
+          console.log(this.studentList)
         })
         .catch((err) => {
           console.log(err)
@@ -723,15 +723,28 @@ export default {
     setInitSearchStudent() {
       this.classStudentSearch = ''
     },
-    // 반 등록/수정 하기 api
+    // 반 등록하기 api
     async postRegistClass() {
+      const selStudentList = []
+
+      for (let i = 0; i < this.selectedStudentList.length; i++) {
+        const student = {
+          itm_idx: this.selectedStudentList[i].itm_idx,
+          mem_idx: this.selectedStudentList[i].mem_idx,
+          mem_name: this.selectedStudentList[i].mem_name,
+          std_idx: this.selectedStudentList[i].std_idx,
+        }
+        selStudentList.push(student)
+      }
+
       const payload = {
         csm_name: this.className,
         fra_code: this.fra_code,
         ins_code: this.ins_code,
-        studentList: this.selectedStudentList,
+        studentList: selStudentList,
         teacherList: this.selectedTeacher,
       }
+      console.log(payload, selStudentList)
 
       if (
         payload.csm_name !== '' &&
@@ -752,6 +765,49 @@ export default {
         this.openModalDesc('반 등록 실패', '등록할 반을 작성하고 클릭해주세요.')
       }
     },
+    // 반 수정하기 api
+    async putUpdClass(csmIdx) {
+      const selStudentList = []
+
+      for (let i = 0; i < this.selectedStudentList.length; i++) {
+        const student = {
+          itm_idx: this.selectedStudentList[i].itm_idx,
+          mem_idx: this.selectedStudentList[i].mem_idx,
+          mem_name: this.selectedStudentList[i].mem_name,
+          std_idx: this.selectedStudentList[i].std_idx,
+        }
+        selStudentList.push(student)
+      }
+
+      const payload = {
+        choice_GradeList: [
+          {
+            std_num: 0,
+            studentList: selStudentList,
+          },
+        ],
+        fra_code: this.fra_code,
+        ins_code: this.ins_code,
+        teacherList: this.selectedTeacher,
+      }
+      console.log(payload)
+
+      if (
+        payload.choice_GradeList[0].studentList.length !== 0 &&
+        payload.teacherList.length !== 0
+      ) {
+        await apiClassManagement
+          .putUpdClass(csmIdx, payload)
+          .then((res) => {
+            console.log(res)
+            this.onCloseClassModify()
+            this.getClassList()
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      }
+    },
 
     // 반 삭제 api
     async deleteClassList() {
@@ -761,10 +817,13 @@ export default {
           ins_code: this.ins_code,
         },
       }
+      console.log('checkList', this.checkList)
+      console.log(payload)
 
       await apiClassManagement
         .deleteClassList(payload)
         .then(() => {
+          this.checkList = []
           this.onCloseDeleteModalDesc()
           this.getClassList()
         })
@@ -773,24 +832,68 @@ export default {
         })
     },
 
+    // 반 복사 api
     async postClassCopy() {
+      const postList = []
+      console.log(
+        'filter',
+        this.classList.filter((item) =>
+          item.csm_name.includes(
+            this.classList.find((e) => e.csm_idx === this.checkList[0]).csm_name
+          )
+        )
+      )
+
+      for (let i = 0; i < this.checkList.length; i++) {
+        const copyList = {
+          copy_csm_idx: this.checkList[i],
+          csm_name:
+            this.classList.find((e) => e.csm_idx === this.checkList[i])
+              .csm_name +
+            `(${
+              this.classList.filter((item) =>
+                item.csm_name.includes(
+                  this.classList.find((e) => e.csm_idx === this.checkList[i])
+                    .csm_name
+                )
+              ).length
+            })`,
+        }
+        postList.push(copyList)
+      }
+      console.log(postList)
+
       const payload = {
-        copyBanList: [
-          {
-            copy_csm_idx: 0,
-            csm_name: 'string',
-          },
-        ],
+        copyBanList: postList,
         fra_code: this.fra_code,
         ins_code: this.ins_code,
-        now_mem_idx: 0,
+        now_mem_idx: this.$store.state.common.user.mem_idx,
       }
 
       await apiClassManagement
         .postClassCopy(payload)
         .then((res) => {
           console.log(res)
+          this.checkList = []
           this.getClassList()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
+    // 반 이동 학생 이름 검색
+    async getMoveClass() {
+      const payload = {
+        ins_code: this.ins_code,
+        name_orderby: true,
+        search: '',
+      }
+
+      await apiClassManagement
+        .getMoveClass(payload)
+        .then((res) => {
+          console.log(res)
         })
         .catch((err) => {
           console.log(err)
@@ -879,13 +982,40 @@ export default {
     },
 
     // 반 만들기/수정 모달 열기
-    onOpenClassModify(data) {
+    onOpenClassRegist() {
       this.openClassModify.open = true
-      this.openClassModify.data = data === undefined ? null : data
+      this.openClassModify.data = null
+    },
+    async onOpenClassModify(item) {
+      await apiClassManagement
+        .getUpdClassList(item.csm_idx, this.ins_code)
+        .then(({ data: { data } }) => {
+          console.log('res', data, item)
+          for (let i = 0; i < data.student_list.length; i++) {
+            this.onClickAddSelectedStudent(
+              data.student_list[i],
+              data.student_list[i].std_year
+            )
+          }
+
+          this.selectedTeacher = data.teacher_list
+          this.selectedStudentList = data.student_list
+          this.className = item.csm_name
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      console.log(item)
+      this.openClassModify.open = true
+      this.openClassModify.data = item
     },
     onCloseClassModify() {
       this.openClassModify.open = false
       this.openClassModify.data = null
+      this.className = ''
+      this.selectedTeacher = []
+      this.selectedStudentAll = []
+      this.selectedStudentList = []
     },
 
     // 반 이동 모달 열기
@@ -1056,9 +1186,13 @@ export default {
       } else {
         const data = []
         for (let i = 0; i < this.checkList.length; i++) {
-          data.push(this.classList[this.checkList[i]])
+          data.push(this.classList.find((e) => e.csm_idx === this.checkList[i]))
         }
-        console.log(data)
+        console.log(
+          'data',
+          this.classList.find((e) => e.csm_idx === this.checkList[0])
+        )
+        console.log('data', data)
         this.onOpenClassMove(data, 1)
       }
     },

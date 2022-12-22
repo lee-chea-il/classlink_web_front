@@ -1941,6 +1941,9 @@ ol {
 /*---------------------------------------*/
 /*--------   100. main.scss   -----------*/
 /*---------------------------------------*/
+#popupZone {
+  height: 119px;
+}
 #popupZone .w1280 {
   background: #E7EDFF;
   display: flex;
@@ -1982,6 +1985,13 @@ ol {
   background-size: contain;
   background-image: url(../images/icons/icon_close.svg);
   margin-left: 2px;
+}
+#popupZone.off {
+  height: 0;
+  transition: all 0.5s;
+}
+#popupZone.off .w1280 {
+  display: none;
 }
 
 #main_content .header-movie video {
@@ -2894,15 +2904,25 @@ footer .footer_tit02 {
   }
 }
 .web_only_main .nav_web {
-  position: fixed;
+  position: absolute;
   z-index: 1000;
   width: 100%;
+}
+.web_only_main .nav_web.floatMu {
+  position: fixed !important;
+  top: 0;
+  box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.15);
 }
 .web_only_main .nav_top_wrap {
   background: #fff;
 }
 .web_only_main .nav_sub {
   background: #fff;
+  transition: all 0.2s;
+}
+.web_only_main .nav_sub.smallH {
+  height: auto;
+  padding: 6px 0 5px;
 }
 .web_only_main .btn_freestart {
   display: flex;

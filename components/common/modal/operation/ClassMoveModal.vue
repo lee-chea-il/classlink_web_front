@@ -81,7 +81,7 @@
                               ></label>
                             </div>
                           </th>
-                          <th>{{ item.class }}</th>
+                          <th>{{ item?.csm_name }}</th>
                         </tr>
                       </thead>
                     </table>

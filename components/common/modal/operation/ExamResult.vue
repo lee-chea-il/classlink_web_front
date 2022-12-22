@@ -67,7 +67,7 @@
                         </div>
                       </div>
                       <div class="questions">
-                        <div class="exam_area" v-html="item.problem"></div>
+                        <div class="exam_area" v-html="item.question"></div>
                         <div class="d-flex justify-content-between">
                           <div class="example_area left blue">O</div>
                           <div class="example_area right red">X</div>
@@ -125,7 +125,7 @@
                         </div>
                       </div>
                       <div class="questions">
-                        <div class="exam_area" v-html="item.problem"></div>
+                        <div class="exam_area" v-html="item.question"></div>
                         <div class="example_area left blue">O</div>
                         <div class="example_area right red">X</div>
                       </div>
@@ -175,9 +175,9 @@
                         </div>
                       </div>
                       <div class="questions">
-                        <div class="exam_area" v-html="item.problem"></div>
+                        <div class="exam_area" v-html="item.question"></div>
                         <div
-                          v-if="!item.problem.includes('<img src=')"
+                          v-if="!item.question.includes('<img src=')"
                           class="popquiz_text"
                         >
                           <!-- 동그란 숫자 : ①②③④ -->
@@ -270,9 +270,9 @@
                         </div>
                       </div>
                       <div class="questions">
-                        <div class="exam_area" v-html="item.problem"></div>
+                        <div class="exam_area" v-html="item.question"></div>
                         <div
-                          v-if="!item.problem.includes('<img src=')"
+                          v-if="!item.question.includes('<img src=')"
                           class="popquiz_text"
                         >
                           <!-- 동그란 숫자 : ①②③④ -->
@@ -430,7 +430,7 @@
                             <td class="td02">
                               {{
                                 item.check ===
-                                examQuestion.quizList[idx].oxAnswer
+                                examQuestion?.questionList[idx].oxAnswer
                                   ? 'O'
                                   : 'X'
                               }}

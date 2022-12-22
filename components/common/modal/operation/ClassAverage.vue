@@ -164,9 +164,9 @@
                         </div>
                       </div>
                       <div class="questions">
-                        <div class="exam_area" v-html="item.problem"></div>
+                        <div class="exam_area" v-html="item.question"></div>
                         <div
-                          v-if="!item.problem.includes('<img src=')"
+                          v-if="!item.question.includes('<img src=')"
                           class="popquiz_text"
                         >
                           <!-- 동그란 숫자 : ①②③④ -->
@@ -258,9 +258,9 @@
                         </div>
                       </div>
                       <div class="questions">
-                        <div class="exam_area" v-html="item.problem"></div>
+                        <div class="exam_area" v-html="item.question"></div>
                         <div
-                          v-if="!item.problem.includes('<img src=')"
+                          v-if="!item.question.includes('<img src=')"
                           class="popquiz_text"
                         >
                           <!-- 동그란 숫자 : ①②③④ -->
