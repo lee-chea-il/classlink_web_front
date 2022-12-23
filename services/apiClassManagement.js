@@ -57,7 +57,7 @@ async function postClassCopy(payload) {
   )
 }
 
-// 학생이름 검색
+// 반관리 반이동 학생이름 검색
 async function getMoveClass(payload) {
   return await http.get(
     `/api/v1/management/operation/class/move-class?ins_code=${payload.ins_code}${payload.name_orderby}${payload.search}`
@@ -68,6 +68,12 @@ async function putMoveClass(payload) {
   return await http.put(
     `/api/v1/management/operation/class/move-class`,
     payload
+  )
+}
+// 반관리 배정X 학생 검색
+async function getNoAssignStudent(payload) {
+  return await http.get(
+    `/api/v1/management/operation/class/no-assign-student?ins_code=${payload.ins_code}${payload.search}${payload.sort_check}`
   )
 }
 
@@ -83,6 +89,7 @@ const apiClassManagement = {
   postClassCopy,
   putMoveClass,
   getMoveClass,
+  getNoAssignStudent,
 }
 
 export default apiClassManagement

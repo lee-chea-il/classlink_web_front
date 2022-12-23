@@ -325,7 +325,8 @@
     <!-- 반관리-반이동 - 팝업 L -->
     <ClassMoveModal
       :show="openClassMove"
-      :classList="classList"
+      :classList="modalMoveRightList"
+      :selectClass="modalMoveLeftList"
       :checkList="checkList"
       :moveDetail="modalMoveDetail"
       :copy="modalMoveCopy"
@@ -333,14 +334,23 @@
       :moveClassCheckbox="selectedMoveToClassCheckbox"
       :rightCheckbox="selectedMoveModalRightCheckbox"
       :moveClassCheckboxRight="selectedMoveToClassCheckboxRight"
+      :leftSearch.sync="modalMoveLeftSearch"
+      :leftSort="modalMoveLeftSort"
+      :rightSearch.sync="modalMoveRightSearch"
+      :rightSort="modalMoveRightSort"
+      :noAssignStudent="noAssignStudent"
       @close="onCloseClassMove"
       @open-detail="onClickOpenDetail"
-      @move-student="onClickMoveStudent"
+      @move-student="putMoveClass"
       @copy-check="onClickCopyCheck"
       @student-list-check="onClickMoveModalLeftCheckbox"
       @move-to-class="onClickMoveToClass"
       @student-list-check-right="onClickMoveModalRightCheckbox"
       @move-to-class-right="onClickMoveToClassRight"
+      @search-left="getMoveClassLeft"
+      @sort-left="onClickModalMoveLeftSort"
+      @search-right="getMoveClassRight"
+      @sort-right="onClickModalMoveRightSort"
     />
 
     <ModalDesc
@@ -426,12 +436,12 @@ export default {
       // 반 이동 이동시킬 학생 선택
       selectedMoveModalLeftCheckbox: [],
       // 반 이동 이동할 반 선택
-      selectedMoveToClassCheckbox: null,
+      selectedMoveToClassCheckbox: [],
       // 오른쪽
       // 반 이동 이동시킬 학생 선택
       selectedMoveModalRightCheckbox: [],
       // 반 이동 이동할 반 선택
-      selectedMoveToClassCheckboxRight: null,
+      selectedMoveToClassCheckboxRight: [],
 
       // 정렬
       sortTeacherSelect: '선생님 전체',
@@ -455,6 +465,17 @@ export default {
       // 반 이동 복사 여부
       modalMoveCopy: false,
 
+      // 반 이동 왼족 리스트
+      modalMoveLeftList: [],
+      modalMoveLeftSearch: '',
+      modalMoveLeftSort: true,
+      // 반 이동 오른쪽 리스트
+      modalMoveRightList: [],
+      modalMoveRightSearch: '',
+      modalMoveRightSort: true,
+      // 배정X 학생 리스트
+      noAssignStudent: {},
+
       // 체크박스
       allCheck: false,
       checkList: [],
@@ -466,7 +487,6 @@ export default {
       },
       openClassMove: {
         open: false,
-        data: null,
         allocation: null,
       },
       openClassDetailModal: {
@@ -571,6 +591,19 @@ export default {
     sortCheckStd: {
       handler() {
         this.onSearchFilterDetail()
+      },
+      immediate: false,
+    },
+
+    modalMoveLeftSort: {
+      handler() {
+        this.getMoveClassLeft()
+      },
+      immediate: false,
+    },
+    modalMoveRightSort: {
+      handler() {
+        this.getMoveClassRight()
       },
       immediate: false,
     },
@@ -882,24 +915,6 @@ export default {
         })
     },
 
-    // 반 이동 학생 이름 검색
-    async getMoveClass() {
-      const payload = {
-        ins_code: this.ins_code,
-        name_orderby: true,
-        search: '',
-      }
-
-      await apiClassManagement
-        .getMoveClass(payload)
-        .then((res) => {
-          console.log(res)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
-
     // 리스트 페이지네이션
     onClickNextPage() {
       if (this.currentPage >= this.endPage) {
@@ -1019,13 +1034,21 @@ export default {
     },
 
     // 반 이동 모달 열기
-    onOpenClassMove(data, allocation) {
+    onOpenClassMove(allocation) {
       this.openClassMove.open = true
-      this.openClassMove.data = data
       this.openClassMove.allocation = allocation
     },
     onCloseClassMove() {
       this.openClassMove.open = false
+      this.modalMoveLeftList = []
+      this.modalMoveRightList = []
+      this.modalMoveLeftSearch = ''
+      this.modalMoveLeftSort = true
+      this.modalMoveRightSearch = ''
+      this.modalMoveRightSort = true
+      this.selectedMoveModalLeftCheckbox = []
+      this.selectedMoveModalRightCheckbox = []
+      this.modalMoveCopy = false
     },
 
     onClickOpenDetailMore(id) {
@@ -1065,103 +1088,34 @@ export default {
     },
 
     // 배정 X 버튼 클릭
-    onClickUnallocation() {
-      const data = [
-        {
-          class: '배정 X',
-          personnel: 41,
-          teacher: '동홍길',
-          studentList: [
-            {
-              id: 1,
-              identity: ['학생', '학부모'],
-              status: true,
-              new: false,
-              grade: '중1',
-              grade_type: 0,
-              class: ['심화C반'],
-              name: '홍길동',
-              nickname: '유진쓰',
-              family: [
-                {
-                  id: 0,
-                  identity: '학생',
-                  status: '재원',
-                  grade: '중1',
-                  name: '홍길동',
-                  nickname: '길동쓰',
-                  family: '홍길순, 홍길삼, 홍길사, 홍길오, 홍길육',
-                  account: 'rlfehd1004',
-                  phone: '010-1234-1234',
-                  parent_phone: '010-1234-1111',
-                  gender: '남',
-                },
-              ],
-              account: 'rlfehd1004',
-              phone: '010-1234-1234',
-              parent_phone: '010-1234-1111',
-              gender: 0,
-              student_status: false,
-              school: '스노우',
-              attendance_num: '12345',
-              created_at: '2022.11.22',
-              lecture_date: '2022.11.30',
-              birthday: '2022.11.01',
-              email: 'test@naver.com',
-              profile_image: require('@/assets/images/mypage/profile1.png'),
-              lectureInfo: [
-                '영어리딩심화 | 심화 A반',
-                '영어리딩심화 | 심화 B반',
-                '영어리딩심화 | 심화 C반',
-              ],
-            },
-            {
-              id: 2,
-              identity: ['학생', '학부모'],
-              status: true,
-              new: false,
-              grade: '중1',
-              grade_type: 0,
-              class: ['심화C반'],
-              name: '홍길동',
-              nickname: '유진쓰',
-              family: [
-                {
-                  id: 0,
-                  identity: '학생',
-                  status: '재원',
-                  grade: '중1',
-                  name: '홍길동',
-                  nickname: '길동쓰',
-                  family: '홍길순, 홍길삼, 홍길사, 홍길오, 홍길육',
-                  account: 'rlfehd1004',
-                  phone: '010-1234-1234',
-                  parent_phone: '010-1234-1111',
-                  gender: '남',
-                },
-              ],
-              account: 'rlfehd1004',
-              phone: '010-1234-1234',
-              parent_phone: '010-1234-1111',
-              gender: 0,
-              student_status: false,
-              school: '스노우',
-              attendance_num: '12345',
-              created_at: '2022.11.22',
-              lecture_date: '2022.11.30',
-              birthday: '2022.11.01',
-              email: 'test@naver.com',
-              profile_image: require('@/assets/images/mypage/profile1.png'),
-              lectureInfo: [
-                '영어리딩심화 | 심화 A반',
-                '영어리딩심화 | 심화 B반',
-                '영어리딩심화 | 심화 C반',
-              ],
-            },
-          ],
-        },
-      ]
-      this.onOpenClassMove(data, 0)
+    async onClickUnallocation() {
+      const payload = {
+        ins_code: this.ins_code,
+        name_orderby: ``,
+        search: ``,
+        sort_check: '',
+      }
+
+      await apiClassManagement
+        .getNoAssignStudent(payload)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          this.noAssignStudent = data
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      await apiClassManagement
+        .getMoveClass(payload)
+        .then(({ data: { data } }) => {
+          this.modalMoveRightList = data
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      this.onOpenClassMove(0)
     },
 
     // 체크 박스 선택 후
@@ -1177,23 +1131,35 @@ export default {
       }
     },
     // 이동 버튼 클릭
-    onClickClassMove() {
+    async onClickClassMove() {
       if (this.checkList.length === 0) {
         this.onOpenSnackbar('반을 선택해주세요.')
         setTimeout(() => {
           this.onCloseSnackbar()
         }, 2000)
       } else {
-        const data = []
-        for (let i = 0; i < this.checkList.length; i++) {
-          data.push(this.classList.find((e) => e.csm_idx === this.checkList[i]))
+        const payload = {
+          ins_code: this.ins_code,
+          name_orderby: ``,
+          search: ``,
         }
-        console.log(
-          'data',
-          this.classList.find((e) => e.csm_idx === this.checkList[0])
-        )
-        console.log('data', data)
-        this.onOpenClassMove(data, 1)
+        const item = []
+
+        await apiClassManagement
+          .getMoveClass(payload)
+          .then(({ data: { data } }) => {
+            for (let i = 0; i < this.checkList.length; i++) {
+              item.push(data.find((e) => e.csm_idx === this.checkList[i]))
+            }
+
+            this.modalMoveLeftList = item
+            this.modalMoveRightList = data
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+
+        this.onOpenClassMove(1)
       }
     },
     // 복사 버튼
@@ -1378,99 +1344,135 @@ export default {
         this.modalMoveDetail = idx
       }
     },
-    // 반 이동 기능
-    onClickMoveStudent(data, direction) {
-      if (direction) {
-        if (this.selectedMoveToClassCheckbox !== null) {
-          if (this.modalMoveCopy) {
-            for (let i = 0; i < data.length; i++) {
-              const dataList = JSON.parse(JSON.stringify(data))
-              dataList[i].new = true
-              dataList[i].class.push(
-                this.classList[this.selectedMoveToClassCheckbox].class
-              )
-              this.classList[this.selectedMoveToClassCheckbox].studentList.push(
-                dataList[i]
-              )
-            }
-            this.selectedMoveToClassCheckbox = null
-            this.selectedMoveModalLeftCheckbox = []
-          } else {
-            for (let i = 0; i < data.length; i++) {
-              const dataList = JSON.parse(JSON.stringify(data))
-              console.log(dataList)
-              dataList[i].new = true
-              dataList[i].class = [
-                this.classList[this.selectedMoveToClassCheckbox].class,
-              ]
-              this.classList[this.selectedMoveToClassCheckbox].studentList.push(
-                dataList[i]
-              )
-              this.classList.find((e) =>
-                data[i].class.includes(e.class)
-              ).studentList = this.classList
-                .find((e) => data[i].class.includes(e.class))
-                .studentList.filter((item) => item.name !== data[i].name)
 
-              // console.log(
-              //   this.classList.find((e) => data[i].class.includes(e.class))
-              // )
-            }
+    // 반 이동 학생 이름 검색 왼쪽
+    async getMoveClassLeft() {
+      const payload = {
+        ins_code: this.ins_code,
+        name_orderby: this.modalMoveLeftSort
+          ? ''
+          : `&name_orderby=${this.modalMoveLeftSort}`,
+        search:
+          this.modalMoveLeftSearch === ''
+            ? ``
+            : `&search=${this.modalMoveLeftSearch}`,
+      }
+      const item = []
 
-            this.selectedMoveToClassCheckbox = null
-            this.selectedMoveModalLeftCheckbox = []
+      await apiClassManagement
+        .getMoveClass(payload)
+        .then(({ data: { data } }) => {
+          for (let i = 0; i < this.checkList.length; i++) {
+            item.push(data.find((e) => e.csm_idx === this.checkList[i]))
           }
-        } else {
-          this.onOpenSnackbar('이동할 반을 선택해주세요.')
-          setTimeout(() => {
-            this.onCloseSnackbar()
-          }, 2000)
+
+          this.modalMoveLeftList = item
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    onClickModalMoveLeftSort(sort) {
+      this.modalMoveLeftSort = sort
+    },
+    // 반 이동 학생 이름 검색 오른쪽
+    async getMoveClassRight() {
+      const payload = {
+        ins_code: this.ins_code,
+        name_orderby: this.modalMoveRightSort
+          ? ''
+          : `&name_orderby=${this.modalMoveRightSort}`,
+        search:
+          this.modalMoveRightSearch === ''
+            ? ``
+            : `&search=${this.modalMoveRightSearch}`,
+      }
+
+      await apiClassManagement
+        .getMoveClass(payload)
+        .then(({ data: { data } }) => {
+          this.modalMoveRightList = data
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    onClickModalMoveRightSort(sort) {
+      this.modalMoveRightSort = sort
+    },
+    // 반 이동 기능
+    // 반 이동 api
+    async putMoveClass(type) {
+      const studentList = []
+      const banList = []
+      if (type) {
+        for (let i = 0; i < this.selectedMoveModalLeftCheckbox.length; i++) {
+          const student = {
+            csm_idx: this.selectedMoveModalLeftCheckbox[i]?.csm_idx,
+            itm_idx: this.selectedMoveModalLeftCheckbox[i]?.itm_idx,
+            mem_idx: this.selectedMoveModalLeftCheckbox[i]?.mem_idx,
+            std_idx: this.selectedMoveModalLeftCheckbox[i]?.std_idx,
+          }
+          studentList.push(student)
+        }
+        for (let i = 0; i < this.selectedMoveToClassCheckbox.length; i++) {
+          const ban = {
+            csm_idx: this.selectedMoveToClassCheckbox[i].csm_idx,
+            csm_name: this.selectedMoveToClassCheckbox[i].csm_name,
+          }
+          banList.push(ban)
         }
       } else {
-        const dataList = JSON.parse(JSON.stringify(data))
-        if (this.selectedMoveToClassCheckboxRight !== null) {
-          // console.log(dataList)
-          if (this.modalMoveCopy) {
-            for (let i = 0; i < data.length; i++) {
-              // dataList = JSON.parse(JSON.stringify(data))
-              dataList[i].new = true
-              dataList[i].class.push(
-                this.classList[this.selectedMoveToClassCheckboxRight].class
-              )
-              this.classList[
-                this.selectedMoveToClassCheckboxRight
-              ].studentList.push(dataList[i])
-            }
-            this.selectedMoveToClassCheckbox = null
-            this.selectedMoveModalLeftCheckbox = []
-          } else {
-            for (let i = 0; i < data.length; i++) {
-              // dataList = JSON.parse(JSON.stringify(data))
-              dataList[i].new = true
-              dataList[i].class.push(
-                this.classList[this.selectedMoveToClassCheckboxRight].class
-              )
-              this.classList[
-                this.selectedMoveToClassCheckboxRight
-              ].studentList.push(dataList[i])
-
-              this.classList.find((e) =>
-                data[i].class.includes(e.class)
-              ).studentList = this.classList
-                .find((e) => data[i].class.includes(e.class))
-                .studentList.filter((item) => item.name !== data[i].name)
-            }
-            this.selectedMoveToClassCheckbox = null
-            this.selectedMoveModalLeftCheckbox = []
+        for (let i = 0; i < this.selectedMoveModalRightCheckbox.length; i++) {
+          const student = {
+            csm_idx: this.selectedMoveModalRightCheckbox[i]?.csm_idx,
+            itm_idx: this.selectedMoveModalRightCheckbox[i]?.itm_idx,
+            mem_idx: this.selectedMoveModalRightCheckbox[i]?.mem_idx,
+            std_idx: this.selectedMoveModalRightCheckbox[i]?.std_idx,
           }
-        } else {
-          this.onOpenSnackbar('이동할 반을 선택해주세요.')
-          setTimeout(() => {
-            this.onCloseSnackbar()
-          }, 2000)
+          studentList.push(student)
+        }
+        for (let i = 0; i < this.selectedMoveToClassCheckboxRight.length; i++) {
+          const ban = {
+            csm_idx: this.selectedMoveToClassCheckboxRight[i].csm_idx,
+            csm_name: this.selectedMoveToClassCheckboxRight[i].csm_name,
+          }
+          banList.push(ban)
+        }
+      }
+      console.log(studentList, banList)
+
+      const payload = {
+        ban_list: banList,
+        copy_check: this.modalMoveCopy,
+        fra_code: this.fra_code,
+        ins_code: this.ins_code,
+        student_list: studentList,
+      }
+      console.log(payload)
+
+      if (payload.ban_list.length !== 0 && payload.student_list.length !== 0) {
+        if (
+          // 이동하려는 반이 같은 반이 아닌지 체크
+          studentList.filter((x1) =>
+            banList.some((x2) => x1.csm_idx === x2.csm_idx)
+          ).length === 0
+        ) {
+          await apiClassManagement
+            .putMoveClass(payload)
+            .then(({ data: { data } }) => {
+              console.log(data)
+              this.getMoveClassLeft()
+              this.getMoveClassRight()
+              this.getClassList()
+            })
+            .catch((err) => {
+              console.log(err)
+            })
         }
       }
     },
+
     // 반 이동 시 복사 체크박스
     onClickCopyCheck() {
       if (this.modalMoveCopy) {
@@ -1480,40 +1482,77 @@ export default {
       }
     },
     // 학생 체크박스
-    onClickMoveModalLeftCheckbox(items) {
-      if (this.selectedMoveModalLeftCheckbox.includes(items)) {
+    onClickMoveModalLeftCheckbox(items, csmIdx) {
+      if (
+        this.selectedMoveModalLeftCheckbox.find(
+          (e) => e.mem_idx === items.mem_idx
+        )?.mem_idx === items.mem_idx
+      ) {
         this.selectedMoveModalLeftCheckbox =
-          this.selectedMoveModalLeftCheckbox.filter((item) => item !== items)
+          this.selectedMoveModalLeftCheckbox.filter(
+            (item) => item.mem_idx === items.mem_idx
+          )
       } else {
-        this.selectedMoveModalLeftCheckbox.push(items)
+        const payload = {
+          ...items,
+          csm_idx: csmIdx,
+        }
+        // console.log('items', items, payload)
+        this.selectedMoveModalLeftCheckbox.push(payload)
       }
-      console.log(this.selectedMoveModalLeftCheckbox)
+      console.log('asfsfsf', this.selectedMoveModalLeftCheckbox)
     },
     // 이동할 반 선택 (오른쪽으로)
-    onClickMoveToClass(idx) {
-      if (this.selectedMoveToClassCheckbox === idx) {
-        this.selectedMoveToClassCheckbox = null
+    onClickMoveToClass(item) {
+      if (
+        this.selectedMoveToClassCheckbox.find((e) => e.csm_idx === item.csm_idx)
+          ?.csm_idx === item.csm_idx
+      ) {
+        this.selectedMoveToClassCheckbox =
+          this.selectedMoveToClassCheckbox.filter(
+            (idx) => idx.csm_idx !== item.csm_idx
+          )
       } else {
-        this.selectedMoveToClassCheckbox = idx
+        this.selectedMoveToClassCheckbox.push(item)
       }
+      console.log('classCheckbox', this.selectedMoveToClassCheckbox)
     },
     // 학생 체크박스
-    onClickMoveModalRightCheckbox(items) {
-      if (this.selectedMoveModalRightCheckbox.includes(items)) {
+    onClickMoveModalRightCheckbox(items, csmIdx) {
+      if (
+        this.selectedMoveModalRightCheckbox.find(
+          (e) => e.mem_idx === items.mem_idx
+        )?.mem_idx === items.mem_idx
+      ) {
         this.selectedMoveModalRightCheckbox =
-          this.selectedMoveModalRightCheckbox.filter((item) => item !== items)
+          this.selectedMoveModalRightCheckbox.filter(
+            (item) => item.mem_idx === items.mem_idx
+          )
       } else {
-        this.selectedMoveModalRightCheckbox.push(items)
+        const payload = {
+          ...items,
+          csm_idx: csmIdx,
+        }
+
+        this.selectedMoveModalRightCheckbox.push(payload)
       }
       console.log(this.selectedMoveModalRightCheckbox)
     },
     // 이동할 반 선택 (오른쪽으로)
-    onClickMoveToClassRight(idx) {
-      if (this.selectedMoveToClassCheckboxRight === idx) {
-        this.selectedMoveToClassCheckboxRight = null
+    onClickMoveToClassRight(item) {
+      if (
+        this.selectedMoveToClassCheckboxRight.find(
+          (e) => e.csm_idx === item.csm_idx
+        )?.csm_idx === item.csm_idx
+      ) {
+        this.selectedMoveToClassCheckboxRight =
+          this.selectedMoveToClassCheckboxRight.filter(
+            (idx) => idx.csm_idx !== item.csm_idx
+          )
       } else {
-        this.selectedMoveToClassCheckboxRight = idx
+        this.selectedMoveToClassCheckboxRight.push(item)
       }
+      console.log('classCheckbox', this.selectedMoveToClassCheckboxRight)
     },
 
     // 학생 개별 등록/학생 상세 정보 모달
