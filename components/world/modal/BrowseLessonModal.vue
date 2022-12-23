@@ -22,6 +22,7 @@
                 <BrowseLeftField
                   :pageRoot="pageRoot"
                   :lessonItem="lessonItem"
+                  :uploadInfo="uploadInfo"
                   @select-reference="$emit('select-reference', $event)"
                 />
                 <!-- /.왼쪽 영역 -->
@@ -68,26 +69,12 @@ export default {
     ModalBtnBox,
   },
   props: {
-    open: {
-      type: Boolean,
-      default: false,
-    },
-    currentIdx: {
-      type: Number,
-      default: 0,
-    },
-    selectReference: {
-      type: Object,
-      default: () => {},
-    },
-    lessonItem: {
-      type: [Array, Object],
-      default: () => [],
-    },
-    pageRoot: {
-      type: String,
-      default: '',
-    },
+    open: { type: Boolean, default: false },
+    currentIdx: { type: Number, default: 0 },
+    selectReference: { type: Object, default: () => {} },
+    lessonItem: { type: [Array, Object], default: () => [] },
+    pageRoot: { type: String, default: '' },
+    uploadInfo: { type: Object, default: () => {} },
   },
   methods: {
     paginationEmit(item, idx) {

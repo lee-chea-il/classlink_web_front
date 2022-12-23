@@ -12,8 +12,19 @@
     </div>
 
     <div class="div_line01"></div>
-    <CustomTitle title="파일 이름" :value="reference.name" />
-    <CustomTitle title="설명" :value="reference.desc" />
+    <div class="row name" style="margin-top: 10px">
+      <label for="" class="col-3 col-lg-3 col-sm-2">파일 이름</label>
+      <div class="col">
+        <span>{{ reference.name }}</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <label for="" class="col-3 col-lg-3 col-sm-2">설명</label>
+      <div class="col">
+        <span>{{ reference.description }}</span>
+      </div>
+    </div>
   </div>
 </template>
 

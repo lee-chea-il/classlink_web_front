@@ -271,12 +271,12 @@ export default {
       const hasOffClass = e.target.classList.contains('icons_mu_off')
       const iLists = document.querySelectorAll('.more_mu ')
       let i = 0
-      for (i = 0; i < iLists.length; i++) {
+      for (i = 0; i < iLists?.length; i++) {
         iLists[i].classList.remove('icons_mu_on')
         iLists[i].classList.add('icons_mu_off')
       }
       const moreLists = document.querySelectorAll('.more_list')
-      for (i = 0; i < moreLists.length; i++) {
+      for (i = 0; i < moreLists?.length; i++) {
         moreLists[i].style.display = 'none'
       }
       if (hasOffClass) {

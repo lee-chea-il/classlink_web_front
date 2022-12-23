@@ -58,7 +58,7 @@
             rules="min:2|required"
             type="text"
             :readonly="true"
-            :inputValue="uploadInfo?.registrant"
+            :inputValue="reference.registrant_name"
             @change-input="$emit('change-input', $event)"
           />
         </div>

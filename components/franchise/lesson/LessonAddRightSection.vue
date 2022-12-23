@@ -18,12 +18,12 @@
       <label for="">설명</label>
       <div class="col">
         <CustomModalInput
-          id="desc"
+          id="description"
           name="설명"
           placeholder="설명을 입력해 주세요"
           rules="min:2|required"
           type="text"
-          :inputValue="lessonData.desc"
+          :inputValue="lessonData.description"
           @change-input="$emit('change-lesson', $event)"
         />
       </div>
@@ -33,12 +33,12 @@
       <label for="">교육 목표</label>
       <div class="col">
         <CustomModalInput
-          id="role"
+          id="educationgoal"
           name="교육 목표"
           placeholder="교육 목표를 입력해 주세요"
           rules="min:2|required"
           type="text"
-          :inputValue="lessonData.role"
+          :inputValue="lessonData.educationgoal"
           @change-input="$emit('change-lesson', $event)"
         />
       </div>
@@ -75,8 +75,7 @@
         placeholder="저장할 폴더를 선택해 주세요"
         rules="min:2|required"
         type="text"
-        :inputValue="lessonData.save_path"
-        @change-input="$emit('change-lesson', $event)"
+        :inputValue="uploadInfo.savePathLesson"
         @open-save-path="$emit('open-save-path')"
       />
     </div>
@@ -92,17 +91,15 @@
     <div class="check_sec">
       <span class="custom-control custom-checkbox form-inline">
         <input
-          :id="isChange ? 'public_open_ynItem' : 'public_open_yn'"
+          id="open_yn"
           type="checkbox"
           class="custom-control-input"
           name="public_open_yn1"
-          :value="lessonData.public_open_yn"
-          :checked="lessonData.public_open_yn"
+          :value="lessonData.open_yn"
+          :checked="lessonData.open_yn"
           @input="$emit('change-lesson', $event)"
         />
-        <label
-          class="custom-control-label checkbox06"
-          :for="isChange ? 'public_open_ynItem' : 'public_open_yn'"
+        <label class="custom-control-label checkbox06" for="open_yn"
           >교육기관에 해당 자료를 공개합니다.</label
         >
       </span>
@@ -148,6 +145,7 @@ export default {
     lessonData: { type: Object, default: () => {} },
     referenceList: { type: Array, default: () => [] },
     treeReference: { type: Array, default: () => [] },
+    uploadInfo: { type: Object, default: () => {} },
   },
 }
 </script>

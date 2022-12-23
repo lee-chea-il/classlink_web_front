@@ -40,7 +40,6 @@
     <!-- 일반용 -->
     <!-- 등록 파일 선택 -->
     <SelectReferenceModal
-      :selectDataType="selectDataType"
       @add-quiz="onOpenQuizAddModal"
       @add-test="onOpenNoteTestAddModal"
       @set-type="setUploadType"
@@ -346,15 +345,16 @@ export default {
       ...this.referenceData,
       fra_code: this.$store.state.common.user.fra_code,
       ins_code: this.$store.state.common.user.ins_code,
-      worker: this.userInfo.mem_idx,
+      registrant: this.userInfo.mem_idx,
+      registrant_name: this.userInfo.mem_name,
     }
     this.initReferenceData = {
       ...this.initReferenceData,
       fra_code: this.$store.state.common.user.fra_code,
       ins_code: this.$store.state.common.user.ins_code,
-      worker: this.userInfo.mem_idx,
+      registrant: this.userInfo.mem_idx,
+      registrant_name: this.userInfo.mem_name,
     }
-    this.uploadInfo.registrant = this.$store.state.common.user.mem_name
   },
   methods: {
     // 일반용
@@ -408,7 +408,7 @@ export default {
     // 동영상, PDF, YOUTUBE, URL 업로드
     postDataroomFile() {
       const { note_exam, quiz, thumbnail, ...rest } = this.referenceData
-      console.log(note_exam, quiz, thumbnail)
+      // console.log(note_exam, quiz, thumbnail)
       const payload = {
         ...rest,
         keyword: rest.keyword.join(','),
