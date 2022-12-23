@@ -304,7 +304,6 @@ export default {
         e.target.classList.add('icons_mu_on')
         e.target.querySelector('.more_list').style.display = 'block'
       }
-      console.log(e)
     },
 
     moreMenuClose() {
@@ -372,7 +371,7 @@ export default {
           }
         }
         if (oldNode.isLeaf && oldNode.isChecked) {
-          checkList.push(oldNode.savepath)
+          checkList.push(oldNode.save_path)
         }
       }
       _checkData(this.datas)

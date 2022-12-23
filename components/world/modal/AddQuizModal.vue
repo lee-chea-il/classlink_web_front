@@ -40,7 +40,7 @@
                 <!-- 오른쪽 영역 -->
                 <QuizRightField
                   :isCreate="true"
-                  :quizList="reference.quizList"
+                  :quizList="reference.quiz"
                   :currentPageIdx="currentPageIdx"
                   :uploadInfo="uploadInfo"
                   @change-item="onChangeItem"
@@ -59,7 +59,7 @@
             <ModalBtnBox
               :invalid="isDisabled(invalid, reference.keyword?.length === 0)"
               :submitTxt="modalTitle"
-              @submit="$emit('submit')"
+              @submit="setSubmit(modalTitle)"
               @close="$emit('close')"
             />
           </ValidationObserver>
@@ -117,6 +117,11 @@ export default {
       if (!aFlag && !bFlag) {
         return false
       } else return true
+    },
+    setSubmit(type) {
+      if (type === '수정') {
+        return this.$emit('change-submit', this.reference)
+      } else return this.$emit('submit')
     },
   },
 }

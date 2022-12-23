@@ -4,7 +4,7 @@
     <div class="bar">
       <span class="pdf_title">{{ data.name }}</span>
     </div>
-    <iframe class="iframe" :src="data.savepath" />
+    <iframe class="iframe" :src="data.save_path" />
   </div>
 </template>
 

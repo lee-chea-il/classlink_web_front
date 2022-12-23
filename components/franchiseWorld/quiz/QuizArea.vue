@@ -12,14 +12,26 @@
       <label class="custom-control-label" for="rad03">단답형</label>
     </div>
     <CustomBrowseInput
+      v-if="quiz.type === 'EQ'"
       title="정답"
       placeholder="정답 입력"
-      :value="quiz.shortAnswer"
+      :value="quiz.correct"
     />
     <CustomBrowseInput
+      v-if="quiz.type === 'EQ'"
       title="오답"
       placeholder="오답입력"
-      :value="quiz.shortWrongAnswer"
+      :value="quiz.wrong_correct"
+    />
+    <CustomBrowseInput
+      v-if="quiz.type !== 'EQ'"
+      title="정답"
+      placeholder="정답 입력"
+    />
+    <CustomBrowseInput
+      v-if="quiz.type !== 'EQ'"
+      title="오답"
+      placeholder="오답입력"
     />
   </div>
 </template>

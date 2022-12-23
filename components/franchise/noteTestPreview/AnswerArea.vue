@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="isImg(exampleList[0].example) ? 'answer_area05' : 'answer_area04'"
+    :class="isImg(exampleList[0].question) ? 'answer_area05' : 'answer_area04'"
   >
     <!-- isImg(example.example) ? 'answer_area05' -->
     <div
@@ -28,7 +28,9 @@
           class="answer"
           :class="noteTest.answer === index + 1 ? 'aa_correct' : 'aa_wrong'"
           v-html="
-            isImg(example.example) ? setImg(example.example) : example.example
+            isImg(example.question)
+              ? setImg(example.question)
+              : example.question
           "
         ></div>
       </div>

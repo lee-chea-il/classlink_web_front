@@ -17,12 +17,12 @@ export default {
       default: '',
     },
     className: {
-      type: Number,
-      default: 0,
+      type: String,
+      default: '',
     },
     idx: {
-      type: Number,
-      default: 0,
+      type: String,
+      default: '',
     },
   },
 }

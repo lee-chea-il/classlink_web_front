@@ -3,9 +3,9 @@
     <div class="mult">
       <div class="tit stit">난이도</div>
       <div class="cnt">
-        <QuizCustomCheckbox title="상" :className="quiz.level" :idx="0" />
-        <QuizCustomCheckbox title="중" :className="quiz.level" :idx="1" />
-        <QuizCustomCheckbox title="하" :className="quiz.level" :idx="2" />
+        <QuizCustomCheckbox title="상" :className="quiz.level" idx="상" />
+        <QuizCustomCheckbox title="중" :className="quiz.level" idx="중" />
+        <QuizCustomCheckbox title="하" :className="quiz.level" idx="하" />
       </div>
     </div>
     <CustomBrowseInput

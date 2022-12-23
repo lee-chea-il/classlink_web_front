@@ -24,7 +24,7 @@
 
       <CustomData
         title="자료 구분"
-        :value="setDivision(reference.dataroom_type)"
+        :value="setDivision(reference.datatable_type)"
         :first="true"
       />
       <CustomData
@@ -33,7 +33,7 @@
       />
       <CustomData v-if="pageRoot !== 'world'" title="과목" value="수학" />
       <CustomData title="공개 여부" value="ON" />
-      <CustomData title="경로" :value="reference.savepath" />
+      <CustomData title="경로" :value="reference.save_path" />
     </div>
   </div>
   <!-- /. 쪽지시험 컨텐츠 -->

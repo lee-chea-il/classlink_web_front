@@ -10,7 +10,6 @@
     />
 
     <LessonKeywordField :keyword="lessonItem?.keyword" />
-
     <CustomData title="구분" :value="lessonItem?.type" :first="true" />
     <CustomData
       v-if="pageRoot !== 'world'"
@@ -19,7 +18,7 @@
     />
     <CustomData title="등록자" :value="lessonItem?.worker" />
     <CustomData title="등록일" :value="lessonItem?.createAt" />
-    <CustomData title="저장 경로" :value="lessonItem?.savepath" />
+    <CustomData title="저장 경로" :value="uploadInfo?.savePathLesson" />
 
     <span class="custom-control custom-checkbox form-inline div_cont">
       <input
@@ -53,14 +52,9 @@ export default {
     CustomData,
   },
   props: {
-    lessonItem: {
-      type: Object,
-      default: () => {},
-    },
-    pageRoot: {
-      type: String,
-      default: '',
-    },
+    lessonItem: { type: Object, default: () => {} },
+    pageRoot: { type: String, default: '' },
+    uploadInfo: { type: Object, default: () => {} },
   },
 }
 </script>

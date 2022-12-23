@@ -54,14 +54,8 @@ export default {
     PreviewField,
   },
   props: {
-    quizList: {
-      type: Array,
-      default: () => [],
-    },
-    currentPageIdx: {
-      type: Number,
-      default: 0,
-    },
+    quizList: { type: Array, default: () => [] },
+    currentPageIdx: { type: Number, default: 0 },
     isCreate: { type: Boolean, default: false },
   },
   methods: {

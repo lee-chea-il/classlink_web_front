@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div v-for="(item, idx) in itemList.exampleList" :key="idx" class="example">
+    <div v-for="(item, idx) in itemList.ask_view" :key="idx" class="example">
       <div class="tit">
         <div class="custom-control custom-radio custom-control-inline">
           <input
             :id="!changePage ? `item${idx}` : `target${idx}`"
             type="radio"
             :name="isCreate ? 'answer' : 'answerChange'"
-            :checked="itemList.answer === idx + 1"
+            :checked="itemList.question === idx + 1"
             class="custom-control-input"
             @click="$emit('select-answer', idx)"
           />
@@ -16,7 +16,7 @@
             :for="!changePage ? `item${idx}` : `target${idx}`"
           >
             보기{{ idx + 1 }} <br /><span
-              v-if="itemList.answer === idx + 1"
+              v-if="itemList.question === idx + 1"
               class="exp_smtxt"
               >(정답)</span
             >

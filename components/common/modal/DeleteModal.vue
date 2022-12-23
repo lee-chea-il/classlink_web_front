@@ -26,7 +26,7 @@
             >
               취소
             </button>
-            <button class="btn btn_crud_danger" @click="$emit('submit')">
+            <button class="btn btn_crud_danger" @click="onSubmit(target)">
               삭제
             </button>
           </div>
@@ -43,9 +43,17 @@ export default {
   name: 'DeleteModal',
   components: { ModalHeader },
   props: {
-    open: {
-      type: Boolean,
-      default: false,
+    open: { type: Boolean, default: false },
+    target: { type: String, default: '' },
+    data: { type: Object, default: () => {} },
+  },
+  methods: {
+    onSubmit(url) {
+      if (url === 'isReferenceBrowse')
+        return this.$emit('delete-file', this.data)
+      else if (url === 'isQuizBrowse')
+        return this.$emit('delete-quiz', this.data)
+      else return this.$emit('delete-test', this.data)
     },
   },
 }

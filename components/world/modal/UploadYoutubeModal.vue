@@ -67,7 +67,7 @@ export default {
       type: Object,
       default: () => {},
     },
-    category: {
+    selectDataType: {
       type: String,
       default: '',
     },

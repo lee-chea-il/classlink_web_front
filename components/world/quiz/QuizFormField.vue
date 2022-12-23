@@ -9,31 +9,35 @@
                 id="isOx"
                 type="radio"
                 :name="isCreate ? 'type' : 'type1'"
-                :value="0"
+                value="OX"
                 class="custom-control-input"
-                :checked="item.type === 0"
-                @click="$emit('select-type', $event, idx, 0)"
+                :checked="item.type === 'OX'"
+                @click="$emit('select-type', $event, idx, 'OX')"
               />
               <label class="custom-control-label" for="isOx">OX 유형</label>
             </div>
           </div>
-          <div class="cnt">
+          <div v-if="item.type === 'OX'" class="cnt">
             <button
               class="btn btn_activated"
-              :disabled="item.type !== 0"
-              :class="{ active: item.oxAnswer === 0 }"
-              @click="$emit('select-ox', idx, 0)"
+              :disabled="item.type !== 'OX'"
+              :class="{ active: item.oxAnswer === 'O' }"
+              @click="$emit('select-ox', idx, 'O')"
             >
               O
             </button>
             <button
               class="btn btn_activated"
-              :disabled="item.type !== 0"
-              :class="{ active: item.oxAnswer === 1 }"
-              @click="$emit('select-ox', idx, 1)"
+              :disabled="item.type !== 'OX'"
+              :class="{ active: item.oxAnswer === 'X' }"
+              @click="$emit('select-ox', idx, 'X')"
             >
               X
             </button>
+          </div>
+          <div v-else class="cnt">
+            <button class="btn btn_activated" disabled>O</button>
+            <button class="btn btn_activated" disabled>X</button>
           </div>
         </div>
         <div class="quiz_area">
@@ -41,22 +45,22 @@
           <div class="cnt">
             <button
               class="btn btn_activated"
-              :class="{ active: item.level === 0 }"
-              @click="$emit('select-level', idx, 0)"
+              :class="{ active: item.level === '상' }"
+              @click="$emit('select-level', idx, '상')"
             >
               상
             </button>
             <button
               class="btn btn_activated"
-              :class="{ active: item.level === 1 }"
-              @click="$emit('select-level', idx, 1)"
+              :class="{ active: item.level === '중' }"
+              @click="$emit('select-level', idx, '중')"
             >
               중
             </button>
             <button
               class="btn btn_activated"
-              :class="{ active: item.level === 2 }"
-              @click="$emit('select-level', idx, 2)"
+              :class="{ active: item.level === '하' }"
+              @click="$emit('select-level', idx, '하')"
             >
               하
             </button>
@@ -69,10 +73,10 @@
                 id="isShortAnswer"
                 type="radio"
                 :name="isCreate ? 'type' : 'type1'"
-                :value="1"
+                value="SA"
                 class="custom-control-input"
-                :checked="item.type === 1"
-                @click="$emit('select-type', $event, idx, 1)"
+                :checked="item.type === 'SA'"
+                @click="$emit('select-type', $event, idx, 'SA')"
               />
               <label class="custom-control-label" for="isShortAnswer"
                 >주관식 단답형</label
@@ -80,15 +84,24 @@
             </div>
           </div>
           <QuizInput
+            v-if="item.type === 'SA'"
             rules="required_quiz"
-            idProp="subjectiveAnswer"
+            idProp="correct"
             nameProp="정답"
             :idx="idx"
-            :value="item.subjectiveAnswer"
-            :disabled="item.type !== 1"
+            :value="item.correct"
+            :disabled="item.type !== 'SA'"
             placeholder="정답 입력"
             @change-item="setChangeInput"
           />
+          <div v-else class="cnt">
+            <input
+              type="text"
+              placeholder="정답 입력"
+              class="form-control form-inline"
+              disabled
+            />
+          </div>
         </div>
         <div class="quiz_area">
           <div class="tit">문제당 제한시간</div>
@@ -110,10 +123,10 @@
                   id="isSubjective"
                   type="radio"
                   :name="isCreate ? 'type' : 'type1'"
-                  :value="2"
+                  value="EQ"
                   class="custom-control-input"
-                  :checked="item.type === 2"
-                  @click="$emit('select-type', $event, idx, 2)"
+                  :checked="item.type === 'EQ'"
+                  @click="$emit('select-type', $event, idx, 'EQ')"
                 />
                 <label class="custom-control-label" for="isSubjective"
                   >단답형</label
@@ -121,31 +134,55 @@
               </div>
             </div>
           </div>
-          <div class="mult">
+          <div v-if="item.type === 'EQ'" class="mult">
             <div class="tit stit">정답</div>
             <QuizInput
               rules="required_quiz"
-              idProp="shortAnswer"
+              idProp="correct"
               nameProp="정답"
               :idx="idx"
-              :value="item.shortAnswer"
+              :value="item.correct"
               placeholder="정답 입력"
-              :disabled="item.type !== 2"
+              :disabled="item.type !== 'EQ'"
               @change-item="setChangeInput"
             />
           </div>
-          <div class="mult">
+          <div v-if="item.type === 'EQ'" class="mult">
             <div class="tit stit">오답</div>
             <QuizInput
               rules="required_quiz"
-              idProp="shortWrongAnswer"
+              idProp="wrong_correct"
               nameProp="오답"
               :idx="idx"
-              :value="item.shortWrongAnswer"
+              :value="item.wrong_correct"
               placeholder="오답 입력"
-              :disabled="item.type !== 2"
+              :disabled="item.type !== 'EQ'"
               @change-item="setChangeInput"
             />
+          </div>
+          <div v-else>
+            <div class="mult">
+              <div class="tit stit">정답</div>
+              <div class="cnt">
+                <input
+                  type="text"
+                  placeholder="정답 입력"
+                  class="form-control form-inline"
+                  disabled
+                />
+              </div>
+            </div>
+            <div class="mult">
+              <div class="tit stit">오답</div>
+              <div class="cnt">
+                <input
+                  type="text"
+                  placeholder="오답 입력"
+                  class="form-control form-inline"
+                  disabled
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

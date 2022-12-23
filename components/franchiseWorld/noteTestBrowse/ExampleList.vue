@@ -7,7 +7,7 @@
         :ref="`example_${idx}`"
         class="edit_area02"
       >
-        <div v-html="item.example" />
+        <div v-html="item.question" />
         <button
           class="btn icons_fullscreen"
           @click="getFullscreen(idx)"

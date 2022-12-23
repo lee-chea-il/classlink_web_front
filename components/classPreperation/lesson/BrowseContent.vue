@@ -7,7 +7,7 @@
         <video
           v-if="reference.category === '01'"
           class="video"
-          :src="reference.savepath"
+          :src="reference.save_path"
           autoplay
           muted
           controls
@@ -15,9 +15,9 @@
         <iframe
           v-else-if="reference.category === '06'"
           class="iframe"
-          :src="reference.savepath"
+          :src="reference.save_path"
         ></iframe>
-        <embed v-else class="embed" :src="reference.savepath" />
+        <embed v-else class="embed" :src="reference.save_path" />
       </div>
     </div>
 
@@ -31,14 +31,14 @@
     <div class="row">
       <label for="" class="col-3 col-lg-3 col-sm-2">설명</label>
       <div class="col">
-        <span>{{ reference.desc }}</span>
+        <span>{{ reference.description }}</span>
       </div>
     </div>
     <div class="div_line01"></div>
     <div class="div_cont02">
       <BrowseLabel
         title="자료 구분"
-        :value="setDivision(reference.dataroom_type)"
+        :value="setDivision(reference.datatable_type)"
       />
       <BrowseLabel
         v-if="pageRoot !== 'world'"
@@ -50,7 +50,7 @@
         title="콘텐츠 유형"
         :value="setContentType(reference.category)"
       />
-      <BrowseLabel title="경로" :value="reference.savepath" />
+      <BrowseLabel title="경로" :value="reference.save_path" />
     </div>
   </div>
   <!-- /. 동영상,문서 컨텐츠 -->

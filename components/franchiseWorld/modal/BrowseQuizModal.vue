@@ -18,14 +18,14 @@
             <!-- 자료 열람 -->
             <div class="reading_section modal_dataquiz">
               <QuizLeftSection
-                :quizList="selectData.quizList"
+                :quizList="selectData.quiz"
                 :currentIdx="currentPageIdx"
                 @pagination="setPagination"
                 @change-number="$emit('change-number', $event)"
               />
 
               <QuizRightSection
-                :quizList="selectData.quizList"
+                :quizList="selectData.quiz"
                 :currentIdx="currentPageIdx"
                 @preview="setPreview"
               />

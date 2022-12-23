@@ -2,6 +2,7 @@
   <Transition name="modal">
     <div
       v-show="open"
+      id="modalPreviewTest"
       class="modal double modal-mask"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"

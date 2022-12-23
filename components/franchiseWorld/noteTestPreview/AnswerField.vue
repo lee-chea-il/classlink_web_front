@@ -26,7 +26,7 @@
           style="width: 90%; margin: auto"
           class="qa_cnts"
           :class="{ img_field: isImg }"
-          v-html="noteTest.problem"
+          v-html="noteTest.question"
         ></div>
       </div>
     </div>
@@ -56,7 +56,7 @@ export default {
   },
   computed: {
     isImg() {
-      return this.noteTest.problem.includes('<img')
+      return this.noteTest.question.includes('<img')
     },
   },
 }

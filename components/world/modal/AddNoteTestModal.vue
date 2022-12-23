@@ -27,6 +27,7 @@
                   :pushKeyword="pushKeyword"
                   target="noteTest"
                   :pageRoot="pageRoot"
+                  :uploadInfo="uploadInfo"
                   @change-input="$emit('change-input', $event)"
                   @set-keyword="$emit('set-keyword', $event)"
                   @change-keyword="$emit('change-keyword', $event)"
@@ -39,8 +40,9 @@
                 <!-- 오른쪽 영역 -->
                 <NoteTestRightField
                   :isCreate="true"
-                  :noteTestList="reference.noteTestList"
+                  :noteTestList="reference.note_exam"
                   :currentIdx="currentPageIdx"
+                  :uploadInfo="uploadInfo"
                   @change-number="$emit('change-number', $event)"
                   @plus-item="$emit('plus-item', $event)"
                   @delete-item="$emit('delete-item', $event)"
@@ -58,7 +60,7 @@
             <ModalBtnBox
               :invalid="isDisabled(invalid, reference.keyword?.length === 0)"
               :submitTxt="modalTitle"
-              @submit="$emit('submit')"
+              @submit="setSubmit(modalTitle)"
               @close="$emit('close')"
             />
           </ValidationObserver>
@@ -86,26 +88,12 @@ export default {
   },
   props: {
     open: Boolean,
-    modalTitle: {
-      type: String,
-      default: '',
-    },
-    pageRoot: {
-      type: String,
-      default: '',
-    },
-    reference: {
-      type: Object,
-      default: () => {},
-    },
-    currentPageIdx: {
-      type: Number,
-      default: () => 0,
-    },
-    pushKeyword: {
-      type: String,
-      default: '',
-    },
+    modalTitle: { type: String, default: '' },
+    pageRoot: { type: String, default: '' },
+    reference: { type: Object, default: () => {} },
+    currentPageIdx: { type: Number, default: () => 0 },
+    pushKeyword: { type: String, default: '' },
+    uploadInfo: { type: Object, default: () => {} },
   },
   methods: {
     setPreview(e, idx) {
@@ -130,6 +118,11 @@ export default {
       if (!aFlag && !bFlag) {
         return false
       } else return true
+    },
+    setSubmit(type) {
+      if (type === '수정') {
+        return this.$emit('change-submit', this.reference)
+      } else return this.$emit('submit')
     },
   },
 }

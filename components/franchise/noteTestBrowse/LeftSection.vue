@@ -7,7 +7,7 @@
       @change-number="setChangeNumber"
     />
 
-    <ExampleList :answerList="noteTestList[currentIdx]?.exampleList" />
+    <ExampleList :answerList="noteTestList[currentIdx]?.ask_view" />
   </div>
 </template>
 

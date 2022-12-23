@@ -27,6 +27,7 @@
                   :pushKeyword="pushKeyword"
                   :pageRoot="pageRoot"
                   target="quiz"
+                  :uploadInfo="uploadInfo"
                   @change-input="$emit('change-input', $event)"
                   @set-keyword="$emit('set-keyword', $event)"
                   @change-keyword="$emit('change-keyword', $event)"
@@ -39,8 +40,9 @@
                 <!-- 오른쪽 영역 -->
                 <QuizRightField
                   :isCreate="true"
-                  :quizList="reference.quizList"
+                  :quizList="reference.quiz"
                   :currentPageIdx="currentPageIdx"
+                  :uploadInfo="uploadInfo"
                   @change-item="onChangeItem"
                   @pagination="setPagination"
                   @select-type="setSelectType"
@@ -57,7 +59,7 @@
             <ModalBtnBox
               :invalid="isDisabled(invalid, reference.keyword?.length === 0)"
               :submitTxt="modalTitle"
-              @submit="$emit('submit')"
+              @submit="setSubmit(modalTitle)"
               @close="$emit('close')"
             />
           </ValidationObserver>
@@ -85,26 +87,12 @@ export default {
   },
   props: {
     open: Boolean,
-    modalTitle: {
-      type: String,
-      default: Boolean,
-    },
-    pageRoot: {
-      type: String,
-      default: '',
-    },
-    currentPageIdx: {
-      type: Number,
-      default: 0,
-    },
-    reference: {
-      type: Object,
-      default: () => {},
-    },
-    pushKeyword: {
-      type: String,
-      default: '',
-    },
+    modalTitle: { type: String, default: Boolean },
+    pageRoot: { type: String, default: '' },
+    currentPageIdx: { type: Number, default: 0 },
+    reference: { type: Object, default: () => {} },
+    pushKeyword: { type: String, default: '' },
+    uploadInfo: { type: Object, default: () => {} },
   },
   methods: {
     onChangeItem(e, idx) {
@@ -129,6 +117,11 @@ export default {
       if (!aFlag && !bFlag) {
         return false
       } else return true
+    },
+    setSubmit(type) {
+      if (type === '수정') {
+        return this.$emit('change-submit', this.reference)
+      } else return this.$emit('submit')
     },
   },
 }

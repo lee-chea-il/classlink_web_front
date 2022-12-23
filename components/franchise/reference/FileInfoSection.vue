@@ -6,7 +6,7 @@
 
     <CustomSubTitle
       title="자료 구분"
-      :value="setDivision(fileInfo.dataroom_type)"
+      :value="setDivision(fileInfo.datatable_type)"
     />
     <CustomSubTitle
       v-show="pageRoot !== 'world'"
@@ -18,7 +18,7 @@
       :value="setContentType(fileInfo.category)"
     />
     <CustomSubTitle title="공개 여부" :value="setOpen(fileInfo)" />
-    <CustomSubTitle title="경로" :value="fileInfo.savepath" />
+    <CustomSubTitle title="경로" :value="fileInfo.save_path" />
   </div>
 </template>
 

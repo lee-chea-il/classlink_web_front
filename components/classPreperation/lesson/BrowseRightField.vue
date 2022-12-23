@@ -62,7 +62,7 @@ export default {
       this.$emit('pagination', item, idx)
     },
     isContent(item) {
-      if (item === 'quiz' || item === 'test') return false
+      if (item === '03' || item === '04') return false
       else return true
     },
   },

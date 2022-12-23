@@ -1,7 +1,7 @@
 <template>
   <div class="cont">
     <span class="title">{{ title }}</span>
-    <span>{{ value }}</span>
+    <span class="white_txt">{{ value }}</span>
   </div>
 </template>
 
@@ -36,5 +36,20 @@ export default {
   font-size: 14px !important;
   margin: 5px 0 !important;
   color: #454545 !important;
+}
+
+#modalLessonView .cont {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.white_txt {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

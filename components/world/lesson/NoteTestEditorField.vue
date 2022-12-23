@@ -4,13 +4,13 @@
       <div v-if="idx === currentIdx" class="row">
         <div class="left_area left col-lg-8">
           <div class="thumbnail_view01 col-12">
-            <div v-html="test.problem"></div>
+            <div v-html="test.question"></div>
             <button class="btn icons_fullscreen"></button>
           </div>
         </div>
         <div class="right_area01 right col-lg-4">
           <div
-            v-for="(item, index) in test.exampleList"
+            v-for="(item, index) in test.ask_view"
             :key="index"
             class="thumbnail_view02 col-12"
           >

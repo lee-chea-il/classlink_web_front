@@ -27,13 +27,13 @@
                   $emit(
                     'view-url',
                     'isReferenceBrowse',
-                    selectData.savepath
+                    selectData.save_path
                   )
                 "
               />
               <button class="btn btn_crud_default">
                 <a
-                  :href="selectData.savepath"
+                  :href="selectData.save_path"
                   download="abc.mp4"
                   target="_blank"
                   >다운로드</a

@@ -48,7 +48,6 @@
         @set-keyword="$emit('set-keyword', $event)"
         @delete-keyword="$emit('delete-keyword', $event)"
       />
-
       <div class="form-group row">
         <label for="" class="data_title">등록자</label>
         <div class="col">
@@ -58,7 +57,8 @@
             placeholder="등록자 입력"
             rules="min:2|required"
             type="text"
-            :inputValue="reference.worker"
+            :readonly="true"
+            :inputValue="uploadInfo?.registrant"
             @change-input="$emit('change-input', $event)"
           />
         </div>
@@ -72,9 +72,8 @@
           placeholder="저장할 폴더를 선택해 주세요"
           rules="min:2|required"
           type="text"
-          :inputValue="reference.saveFolder"
+          :inputValue="uploadInfo?.saveFolderPath"
           :target="target"
-          @change-input="$emit('change-input', $event)"
           @open-save-path="$emit('open-save-path', $event)"
         />
       </div>
@@ -88,7 +87,7 @@
       <br />
 
       <ThumbnailBox
-        v-show="pageRoot === 'world'"
+        v-if="pageRoot === 'world'"
         :imgValue="reference.thumbnail"
         @change-input="$emit('change-input', $event)"
         @delete-thumbnail="$emit('delete-thumbnail')"
@@ -117,22 +116,11 @@ export default {
     CustomTextarea,
   },
   props: {
-    reference: {
-      type: Object,
-      default: () => {},
-    },
-    pushKeyword: {
-      type: String,
-      default: '',
-    },
-    target: {
-      type: String,
-      default: '',
-    },
-    pageRoot: {
-      type: String,
-      default: '',
-    },
+    reference: { type: Object, default: () => {} },
+    pushKeyword: { type: String, default: '' },
+    target: { type: String, default: '' },
+    pageRoot: { type: String, default: '' },
+    uploadInfo: { type: Object, default: () => {} },
   },
 }
 </script>

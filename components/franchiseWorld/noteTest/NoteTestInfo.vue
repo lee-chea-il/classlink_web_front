@@ -1,7 +1,7 @@
 <template>
   <div class="reading_section modal_dataquiz note_divide">
     <LeftSection
-      :noteTestList="selectData.noteTestList"
+      :noteTestList="selectData.note_exam"
       :currentIdx="currentIdx"
       @change-number="setChangeNumber"
       @pagination="setPagination"
@@ -9,7 +9,7 @@
     />
 
     <div class="right_section">
-      <div v-for="(item, idx) in selectData.noteTestList" :key="idx">
+      <div v-for="(item, idx) in selectData.note_exam" :key="idx">
         <div v-if="idx === currentIdx" class="info_area">
           <div class="row">
             <div class="col-12">
@@ -49,21 +49,21 @@
                 <button
                   class="btn btn_activated"
                   disabled
-                  :class="{ active: item.level === 0 }"
+                  :class="{ active: item.level === '상' }"
                 >
                   상
                 </button>
                 <button
                   class="btn btn_activated"
                   disabled
-                  :class="{ active: item.level === 1 }"
+                  :class="{ active: item.level === '중' }"
                 >
                   중
                 </button>
                 <button
                   class="btn btn_activated"
                   disabled
-                  :class="{ active: item.level === 2 }"
+                  :class="{ active: item.level === '하' }"
                 >
                   하
                 </button>

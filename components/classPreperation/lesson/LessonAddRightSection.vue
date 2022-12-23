@@ -70,13 +70,12 @@
     <div class="form-group">
       <label for="">저장 경로</label>
       <CustomBtnInput
-        id="savepath"
+        id="save_path"
         name="저장경로"
         placeholder="저장할 폴더를 선택해 주세요"
         rules="min:2|required"
         type="text"
-        :inputValue="lessonData.savepath"
-        @change-input="$emit('change-lesson', $event)"
+        :inputValue="uploadInfo.savePathLesson"
         @open-save-path="$emit('open-save-path')"
       />
     </div>
@@ -148,6 +147,7 @@ export default {
     lessonData: { type: Object, default: () => {} },
     referenceList: { type: Array, default: () => [] },
     treeReference: { type: Array, default: () => [] },
+    uploadInfo: { type: Object, default: () => {} },
   },
 }
 </script>

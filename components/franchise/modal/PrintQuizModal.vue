@@ -24,7 +24,7 @@
             <div class="qa_num">
               <div class="qa_num_font">{{ idx + 1 }}</div>
             </div>
-            <div class="qa_cnts" v-html="item.problem"></div>
+            <div class="qa_cnts" v-html="item.question"></div>
           </div>
         </div>
 

@@ -12,7 +12,7 @@
         <!-- /. 쪽지시험 -문제 -->
 
         <!-- 쪽지시험 정답 -->
-        <AnswerArea :exampleList="test.exampleList" :noteTest="test" />
+        <AnswerArea :exampleList="test.ask_view" :noteTest="test" />
         <!-- /. 쪽지시험 정답 -->
 
         <!-- 쪽지시험 페이징 -->

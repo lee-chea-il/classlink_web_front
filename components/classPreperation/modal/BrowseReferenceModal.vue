@@ -40,12 +40,12 @@
               <ReferenceBtn
                 title="공유"
                 @click-event="
-                  $emit('view-url', 'isReferenceBrowse', selectData.savepath)
+                  $emit('view-url', 'isReferenceBrowse', selectData.save_path)
                 "
               />
               <button class="btn btn_crud_default">
                 <a
-                  :href="selectData.savepath"
+                  :href="selectData.save_path"
                   download="abc.mp4"
                   target="_blank"
                   >다운로드</a
@@ -59,9 +59,9 @@
               <ReferenceBtn
                 v-if="isShowBtn(identity, selectData.type).delete"
                 title="삭제"
-                @click-event="$emit('delete', selectData)"
+                @click-event="$emit('delete', 'isReferenceBrowse')"
               />
-              <!-- @click-event="$emit('delete', 'isReferenceBrowse')" -->
+              <!-- @click-event="$emit('delete', selectData)" -->
             </div>
 
             <!-- [개발참조] 하단 info_section 부분은 열람 팝업 공통 -->
@@ -115,22 +115,27 @@ export default {
   },
   methods: {
     isShowBtn(iden, type) {
-      const isT = iden === 'teacher'
-      if (
-        (isT && type === 'myData') ||
-        (!isT && (type === 'myData' || type === 'institution'))
-      )
-        return {
-          delete: true,
-          perse: true,
-          change: true,
-        }
-      else
-        return {
-          delete: false,
-          perse: true,
-          change: false,
-        }
+      return {
+        delete: true,
+        perse: true,
+        change: true,
+      }
+      // const isT = iden === 'teacher'
+      // if (
+      //   (isT && type === 'myData') ||
+      //   (!isT && (type === 'myData' || type === 'institution'))
+      // )
+      //   return {
+      //     delete: true,
+      //     perse: true,
+      //     change: true,
+      //   }
+      // else
+      //   return {
+      //     delete: false,
+      //     perse: true,
+      //     change: false,
+      //   }
     },
   },
 }

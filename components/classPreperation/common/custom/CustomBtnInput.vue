@@ -94,12 +94,6 @@ export default {
         return 'isQuizAddModal'
       } else if (this.target === 'noteTest') {
         return 'isNoteTestAddModal'
-      } else if (this.target === 'quizChange') {
-        return 'isQuizChange'
-      } else if (this.target === 'noteTestChange') {
-        return 'isNoteTestChange'
-      } else if (this.target === 'referenceChange') {
-        return 'isReferenceChange'
       } else {
         return 'isReferenceAddModal'
       }

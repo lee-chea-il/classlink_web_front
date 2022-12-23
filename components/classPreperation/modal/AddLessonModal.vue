@@ -106,6 +106,7 @@
                           :dragDisabled="true"
                           @moreShowClick="moreShowClick"
                           @copyDataCallBack="$emit('call-back')"
+                          @get-savepath="$emit('get-savepath', $event)"
                         />
                       </div>
                       <!-- /.탭 내용01 -->
@@ -228,6 +229,7 @@
                     :referenceList="receiveMyData"
                     :treeReference="referenceList"
                     :pushKeyword="pushKeyword"
+                    :uploadInfo="uploadInfo"
                     @change-lesson="$emit('change-lesson', $event)"
                     @add-reference="$emit('add-reference', $event)"
                     @remove-reference="$emit('remove-reference', $event)"
@@ -289,13 +291,32 @@ export default {
     pushKeyword: { type: String, default: '' },
     receiveMyData: { type: Array, default: () => {} },
     receiveLessonList: { type: Array, default: () => {} },
+    uploadInfo: { type: Object, default: () => {} },
   },
   methods: {
     moreShowClick(data) {
+      let path = data.name
+      const getParentName = (item) => {
+        if (item.name !== 'root') {
+          path = item.name + ' > ' + path
+          getParentName(item.parent)
+        }
+      }
+      getParentName(data.parent)
       this.$emit('open-data', data, 'isAddLesson')
+      this.$emit('get-lesson-savepath', path)
     },
     moreShowClickReference(data) {
+      let path = data.name
+      const getParentName = (item) => {
+        if (item.name !== 'root') {
+          path = item.name + ' > ' + path
+          getParentName(item.parent)
+        }
+      }
+      getParentName(data.parent)
       this.$emit('open-reference', data, 'isAddLesson')
+      this.$emit('get-savepath', path)
     },
     unActive() {
       this.$refs.myLesson.unActiveAll()

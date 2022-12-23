@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(test, idx) in reference.noteTestList" :key="idx">
+    <div v-for="(test, idx) in reference.note_exam" :key="idx">
       <div v-if="idx === currentIdx" class="row">
         <div class="left_area left col-lg-8">
           <div class="thumbnail_view01 col-12">
@@ -14,7 +14,7 @@
             :key="index"
             class="thumbnail_view02 col-12"
           >
-            <div class="view_field" v-html="item.example"></div>
+            <div class="view_field" v-html="item.question"></div>
             <button class="btn icons_fullscreen"></button>
           </div>
         </div>

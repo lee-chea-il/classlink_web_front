@@ -3,7 +3,7 @@
     <div class="bar">
       <span class="pdf_title">{{ data.name }}</span>
     </div>
-    <video class="video" :src="data.savepath" controls />
+    <video class="video" :src="data.save_path" controls />
   </div>
 </template>
 

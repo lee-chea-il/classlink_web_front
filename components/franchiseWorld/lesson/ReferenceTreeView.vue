@@ -329,7 +329,7 @@ export default {
           }
         }
         if (oldNode.isLeaf && oldNode.isChecked) {
-          checkList.push(oldNode.savepath)
+          checkList.push(oldNode.save_path)
         }
       }
       _checkData(this.datas)

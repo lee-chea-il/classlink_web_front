@@ -1,7 +1,7 @@
 <template>
   <div v-if="show" class="quiz">
     <div class="thumb_box">
-      <div v-for="(quiz, idx) in reference.quizList" :key="idx">
+      <div v-for="(quiz, idx) in reference.quiz" :key="idx">
         <div v-if="idx === currentIdx" class="row">
           <div class="title">자료 열람</div>
           <div class="thumbnail_view02">
@@ -14,7 +14,7 @@
 
       <div class="page_thumb row">
         <PaginationField
-          :length="reference.quizList?.length"
+          :length="reference.quiz?.length"
           :currentIdx="currentIdx"
           @pagination="paginationEmit"
         />
@@ -32,7 +32,7 @@
 
       <CustomData
         title="자료 구분"
-        :value="setDivision(reference.dataroom_type)"
+        :value="setDivision(reference.datatable_type)"
         :first="true"
       />
       <CustomData
@@ -40,8 +40,8 @@
         :value="setContentType(reference.category)"
       />
       <CustomData v-if="pageRoot !== 'world'" title="과목" value="수학" />
-      <CustomData title="공개 여부" value="ON" />
-      <CustomData title="경로" :value="reference.savepath" />
+      <CustomData title="공개 여부" value="`ON${reference.}`" />
+      <CustomData title="경로" :value="reference.save_path" />
     </div>
   </div>
 </template>

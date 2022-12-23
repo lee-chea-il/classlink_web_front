@@ -21,7 +21,7 @@
               "
               id="video"
               class="video"
-              :src="reference.savepath"
+              :src="reference.save_path"
               controls
             />
             <iframe
@@ -32,7 +32,7 @@
               "
               id="movie_player"
               class="embed"
-              :src="reference.savepath"
+              :src="reference.save_path"
               frameborder="0"
               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
@@ -42,29 +42,26 @@
         <div style="padding-top: 30px"></div>
         <ContentLabel
           title="자료 구분"
-          :value="setDivision(reference.dataroom_type)"
+          :value="setDivision(reference.datatable_type)"
         />
         <ContentLabel
           title="유형"
           :value="setContentType(reference.category)"
         />
-        <ContentLabel title="등록 일시" :value="getDate" />
+        <!-- <ContentLabel title="등록 일시" :value="getDate" /> -->
 
         <ContentLabel
           v-if="reference.category === '05' || reference.category === '06'"
           title="주소"
-          :value="reference.savepath"
+          :value="reference.save_path"
         />
 
-        <ContentLabel
-          v-else
-          title="용량"
-          :value="getByteSize(reference.fileSize)"
-        />
+        <ContentLabel v-else title="용량" :value="uploadInfo.fileSize" />
+        <!-- getByteSize(reference.fileSize) -->
         <ContentLabel
           v-if="reference.category === '05'"
           title="재생 시간"
-          :value="playTime"
+          :value="setPlayTime(uploadInfo.youtubePlayTime)"
         />
         <ContentLabel v-else title="등록자" value="홍길동" />
       </div>
@@ -81,21 +78,11 @@ export default {
   components: {
     ContentLabel,
     ChangeFileTitle,
-    // Youtube
   },
   props: {
-    reference: {
-      type: Object,
-      default: () => {},
-    },
-    playTime: {
-      type: String,
-      default: '',
-    },
-    open: {
-      type: Boolean,
-      default: false,
-    },
+    reference: { type: Object, default: () => {} },
+    open: { type: Boolean, default: false },
+    uploadInfo: { type: Object, default: () => {} },
   },
   computed: {
     getDate() {
@@ -108,13 +95,6 @@ export default {
     },
   },
   methods: {
-    getByteSize(size) {
-      const byteUnits = ['KB', 'MB', 'GB', 'TB']
-      for (let i = 0; i < byteUnits.length; i++) {
-        size = Math.floor(size / 1024)
-        if (size < 1024) return size.toFixed(1) + byteUnits[i]
-      }
-    },
     setContentType(type) {
       if (type === '01') return '동영상(MP4)'
       else if (type === '02') return '문서(PDF)'
@@ -131,6 +111,9 @@ export default {
       else if (id === 'PD') return '공개 자료실'
       else if (id === 'MD') return '내 자료실'
       else return null
+    },
+    setPlayTime(time) {
+      return time.replace(/H|M/g, ':').replace(/PT|S/g, '')
     },
   },
 }

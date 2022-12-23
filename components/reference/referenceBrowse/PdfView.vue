@@ -6,7 +6,7 @@
       <span class="list"></span>
       <span class="full"></span>
     </div>
-    <embed class="embed" :src="data.savepath" type="application/pdf" />
+    <embed class="embed" :src="data.save_path" type="application/pdf" />
   </div>
 </template>
 

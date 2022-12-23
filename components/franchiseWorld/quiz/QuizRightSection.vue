@@ -11,19 +11,15 @@
                   type="radio"
                   name="radA01"
                   class="custom-control-input"
-                  :checked="item.type === 0"
+                  :checked="item.type === 'OX'"
                   disabled
                 />
                 <label class="custom-control-label" for="rad01">OX 유형</label>
               </div>
             </div>
-            <QuizCustomCheckbox title="O" :className="item.oxAnswer" :idx="0" />
+            <QuizCustomCheckbox title="O" :className="item.correct" idx="O" />
             <div class="cnt">
-              <QuizCustomCheckbox
-                title="X"
-                :className="item.oxAnswer"
-                :idx="1"
-              />
+              <QuizCustomCheckbox title="X" :className="item.correct" idx="X" />
             </div>
           </div>
 

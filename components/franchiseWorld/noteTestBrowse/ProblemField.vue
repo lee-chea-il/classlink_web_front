@@ -12,7 +12,7 @@
       </button>
     </div>
     <div v-for="(item, idx) in noteTestList" :key="idx">
-      <div v-if="idx === currentIdx" ref="problemNoteTest" class="write_area">
+      <div v-if="idx === currentIdx" ref="questionNoteTest" class="write_area">
         <div class="edit_area edit_area_padding_12">
           <div v-html="item.question"></div>
           <button class="btn icons_fullscreen" @click="getFullscreen"></button>
@@ -49,7 +49,7 @@ export default {
       this.$emit('pagination', e, idx)
     },
     getFullscreen() {
-      this.$refs.problemNoteTest[0].requestFullscreen()
+      this.$refs.questionNoteTest[0].requestFullscreen()
     },
   },
 }

@@ -21,7 +21,7 @@
               "
               id="video"
               class="video"
-              :src="reference.savepath"
+              :src="reference.save_path"
               controls
             />
             <iframe
@@ -32,7 +32,7 @@
               "
               id="movie_player"
               class="embed"
-              :src="reference.savepath"
+              :src="reference.save_path"
               frameborder="0"
               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
@@ -42,7 +42,7 @@
         <div style="padding-top: 30px"></div>
         <ContentLabel
           title="자료 구분"
-          :value="setDivision(reference.dataroom_type)"
+          :value="setDivision(reference.datatable_type)"
         />
         <ContentLabel
           title="유형"
@@ -53,7 +53,7 @@
         <ContentLabel
           v-if="reference.category === '05' || reference.category === '06'"
           title="주소"
-          :value="reference.savepath"
+          :value="reference.save_path"
         />
 
         <ContentLabel v-else title="용량" :value="uploadInfo.fileSize" />

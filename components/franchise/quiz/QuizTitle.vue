@@ -7,7 +7,7 @@
           type="radio"
           name="radA01"
           class="custom-control-input"
-          :checked="quiz.type === 1"
+          :checked="quiz.type === 'SA'"
           disabled
         />
         <label class="custom-control-label" for="rad02">주관식 단답형</label>
@@ -15,10 +15,18 @@
     </div>
     <div class="cnt">
       <input
+        v-if="quiz.type === 'SA'"
         type="text"
         placeholder="정답 입력"
         class="form-control form-inline"
-        :value="quiz.subjectiveAnswer"
+        :value="quiz.correct"
+        readOnly
+      />
+      <input
+        v-else
+        type="text"
+        placeholder="정답 입력"
+        class="form-control form-inline"
         readOnly
       />
     </div>
