@@ -60,7 +60,7 @@
                         ></i>
                       </td>
                     </tr>
-                    <tr v-for="(item, idx) in newSubjectList" :key="idx">
+                    <tr v-for="(item, idx) in subjectList.slice(5)" :key="idx">
                       <td
                         v-if="isUpdateSubject && newSubject === item.is_title"
                         class="form_add td04 row"
@@ -111,7 +111,9 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn_crud_point">확인</button>
+            <button class="btn btn_crud_point" @click="$emit('close')">
+              확인
+            </button>
             <button class="btn btn_crud_default" @click="$emit('close')">
               취소
             </button>
@@ -129,7 +131,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    newSubjectList: {
+    subjectList: {
       type: Array,
       default: () => [],
     },

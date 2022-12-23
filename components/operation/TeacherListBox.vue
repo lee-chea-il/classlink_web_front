@@ -96,7 +96,7 @@
                   id="chkAll"
                   type="checkbox"
                   class="custom-control-input"
-                  :checked="allCheckBoxFlag"
+                  :checked="deleteIdxList.length === 10"
                   @input="$emit('checked-all', $event)"
                 />
                 <label class="custom-control-label" for="chkAll"></label>
@@ -120,6 +120,9 @@
                   name="chk"
                   type="checkbox"
                   class="custom-control-input"
+                  :checked="
+                    deleteIdxList.map((x) => x.mem_idx).includes(item.mem_idx)
+                  "
                   @input="$emit('select-teacher', $event)"
                 />
                 <label
@@ -133,7 +136,7 @@
             </td>
             <td>{{ item.mem_nickname }}</td>
             <td>{{ item.mem_id }}</td>
-            <td>{{ setSubjectArray(item.subjects) }}</td>
+            <td>{{ setSubjectArray(item.subject_list) }}</td>
             <td>{{ setTargetArray(item.teach_target) }}</td>
             <td>{{ item.mem_phone }}</td>
             <td>
@@ -199,6 +202,10 @@ export default {
     sortFlag: {
       type: Number,
       default: 1,
+    },
+    deleteIdxList: {
+      type: Array,
+      default: () => [],
     },
   },
   methods: {

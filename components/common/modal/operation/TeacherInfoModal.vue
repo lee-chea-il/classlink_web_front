@@ -313,7 +313,9 @@
                                   type="checkbox"
                                   class="custom-control-input"
                                   :checked="
-                                    teacherInfo.target_list.includes('01')
+                                    teacherInfo.target_list
+                                      .map((x) => x.ttm_target)
+                                      .includes('01')
                                   "
                                   @input="$emit('check-target', $event)"
                                 />
@@ -331,7 +333,9 @@
                                   type="checkbox"
                                   class="custom-control-input"
                                   :checked="
-                                    teacherInfo.target_list.includes('02')
+                                    teacherInfo.target_list
+                                      .map((x) => x.ttm_target)
+                                      .includes('02')
                                   "
                                   @input="$emit('check-target', $event)"
                                 />
@@ -349,7 +353,9 @@
                                   type="checkbox"
                                   class="custom-control-input"
                                   :checked="
-                                    teacherInfo.target_list.includes('03')
+                                    teacherInfo.target_list
+                                      .map((x) => x.ttm_target)
+                                      .includes('03')
                                   "
                                   @input="$emit('check-target', $event)"
                                 />
@@ -367,7 +373,9 @@
                                   type="checkbox"
                                   class="custom-control-input"
                                   :checked="
-                                    teacherInfo.target_list.includes('04')
+                                    teacherInfo.target_list
+                                      .map((x) => x.ttm_target)
+                                      .includes('04')
                                   "
                                   @input="$emit('check-target', $event)"
                                 />
@@ -389,7 +397,9 @@
                                   type="checkbox"
                                   class="custom-control-input"
                                   :checked="
-                                    teacherInfo.target_list.includes('05')
+                                    teacherInfo.target_list
+                                      .map((x) => x.ttm_target)
+                                      .includes('05')
                                   "
                                   @input="$emit('check-target', $event)"
                                 />
@@ -425,117 +435,8 @@
                       <div class="col">
                         <div class="box_area">
                           <div class="row">
-                            <div class="title02">
-                              <div
-                                class="custom-control custom-checkbox custom-sm inline_block"
-                              >
-                                <input
-                                  id="update_box02chk01"
-                                  type="checkbox"
-                                  class="custom-control-input"
-                                  checked
-                                />
-                                <label
-                                  class="custom-control-label"
-                                  for="update_box02chk01"
-                                  >전체</label
-                                >
-                              </div>
-                            </div>
-                            <div class="title02">
-                              <div
-                                class="custom-control custom-checkbox custom-sm inline_block"
-                              >
-                                <input
-                                  id="subject_1"
-                                  name="국어"
-                                  type="checkbox"
-                                  class="custom-control-input"
-                                  checked
-                                />
-                                <label
-                                  class="custom-control-label"
-                                  for="update_box02chk02"
-                                  >국어</label
-                                >
-                              </div>
-                            </div>
-                            <div class="title02">
-                              <div
-                                class="custom-control custom-checkbox custom-sm inline_block"
-                              >
-                                <input
-                                  id="subject_2"
-                                  name="수학"
-                                  type="checkbox"
-                                  class="custom-control-input"
-                                  checked
-                                />
-                                <label
-                                  class="custom-control-label"
-                                  for="update_box02chk03"
-                                  >수학</label
-                                >
-                              </div>
-                            </div>
-                            <div class="title02">
-                              <div
-                                class="custom-control custom-checkbox custom-sm inline_block"
-                              >
-                                <input
-                                  id="subject_3"
-                                  name="영어"
-                                  type="checkbox"
-                                  class="custom-control-input"
-                                  checked
-                                />
-                                <label
-                                  class="custom-control-label"
-                                  for="update_box02chk04"
-                                  >영어</label
-                                >
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="title02">
-                              <div
-                                class="custom-control custom-checkbox custom-sm inline_block"
-                              >
-                                <input
-                                  id="subject_4"
-                                  name="과학"
-                                  type="checkbox"
-                                  class="custom-control-input"
-                                  checked
-                                />
-                                <label
-                                  class="custom-control-label"
-                                  for="update_box02chk05"
-                                  >과학</label
-                                >
-                              </div>
-                            </div>
-                            <div class="title02">
-                              <div
-                                class="custom-control custom-checkbox custom-sm inline_block"
-                              >
-                                <input
-                                  id="subject_5"
-                                  name="기타"
-                                  type="checkbox"
-                                  class="custom-control-input"
-                                  checked
-                                />
-                                <label
-                                  class="custom-control-label"
-                                  for="update_box02chk06"
-                                  >기타</label
-                                >
-                              </div>
-                            </div>
                             <div
-                              v-for="(item, idx) in newSubjectList"
+                              v-for="(item, idx) in subjectList"
                               :key="idx"
                               class="title02"
                             >
@@ -543,20 +444,18 @@
                                 class="custom-control custom-checkbox custom-sm inline_block"
                               >
                                 <input
-                                  :id="`subject_${item.is_idx}`"
-                                  :name="item.is_title"
+                                  :id="`sub_${item.is_idx}`"
                                   type="checkbox"
                                   class="custom-control-input"
                                   checked
                                 />
                                 <label
                                   class="custom-control-label"
-                                  for="update_box02chk06"
+                                  :for="`sub_${item.is_idx}`"
                                   >{{ item.is_title }}</label
                                 >
                               </div>
                             </div>
-
                             <div class="title02">
                               <div
                                 class="custom-control custom-checkbox custom-sm inline_block"
@@ -596,7 +495,6 @@
                                       .map((x) => x.rin_idx)
                                       .includes(1)
                                   "
-                                  :disabled="teacherInfo.tch_grade === 'T'"
                                   @input="$emit('check-role', $event)"
                                 />
                                 <label class="custom-control-label" for="1"
@@ -618,7 +516,6 @@
                                       .map((x) => x.rin_idx)
                                       .includes(2)
                                   "
-                                  :disabled="teacherInfo.tch_grade === 'T'"
                                   @input="$emit('check-role', $event)"
                                 />
                                 <label class="custom-control-label" for="2"
@@ -640,7 +537,6 @@
                                       .map((x) => x.rin_idx)
                                       .includes(3)
                                   "
-                                  :disabled="teacherInfo.tch_grade === 'T'"
                                   @input="$emit('check-role', $event)"
                                 />
                                 <label class="custom-control-label" for="3"
@@ -668,7 +564,6 @@
                                       .map((x) => x.rin_idx)
                                       .includes(4)
                                   "
-                                  :disabled="teacherInfo.tch_grade === 'T'"
                                   @input="$emit('check-role', $event)"
                                 />
                                 <label class="custom-control-label" for="4"
@@ -690,7 +585,6 @@
                                       .map((x) => x.rin_idx)
                                       .includes(5)
                                   "
-                                  :disabled="teacherInfo.tch_grade === 'T'"
                                   @input="$emit('check-role', $event)"
                                 />
                                 <label class="custom-control-label" for="5"
@@ -712,7 +606,6 @@
                                       .map((x) => x.rin_idx)
                                       .includes(6)
                                   "
-                                  :disabled="teacherInfo.tch_grade === 'T'"
                                   @input="$emit('check-role', $event)"
                                 />
                                 <label class="custom-control-label" for="6"
@@ -762,7 +655,6 @@
                                       .map((x) => x.rin_idx)
                                       .includes(8)
                                   "
-                                  :disabled="teacherInfo.tch_grade === 'T'"
                                   @input="$emit('check-role', $event)"
                                 />
                                 <label class="custom-control-label" for="8"
@@ -860,7 +752,6 @@
                                       .map((x) => x.rin_idx)
                                       .includes(12)
                                   "
-                                  :disabled="teacherInfo.tch_grade === 'T'"
                                   @input="$emit('check-role', $event)"
                                 />
                                 <label class="custom-control-label" for="12"
@@ -882,7 +773,6 @@
                                       .map((x) => x.rin_idx)
                                       .includes(13)
                                   "
-                                  :disabled="teacherInfo.tch_grade === 'T'"
                                   @input="$emit('check-role', $event)"
                                 />
                                 <label class="custom-control-label" for="13"
@@ -907,7 +797,6 @@
                                       .map((x) => x.rin_idx)
                                       .includes(14)
                                   "
-                                  :disabled="teacherInfo.tch_grade === 'T'"
                                   @input="$emit('check-role', $event)"
                                 />
                                 <label class="custom-control-label" for="14"
@@ -1153,6 +1042,10 @@ export default {
       default: false,
     },
     newSubjectList: {
+      type: Array,
+      default: () => [],
+    },
+    subjectList: {
       type: Array,
       default: () => [],
     },
