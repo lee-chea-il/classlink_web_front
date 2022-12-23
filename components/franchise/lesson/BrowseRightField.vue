@@ -1,47 +1,73 @@
 <template>
   <div class="divide_area right">
     <!-- [개발참조] 퀴즈 컨텐츠 -->
-    <BrowseQuiz
-      :show="referenceItem.category === '03'"
-      :reference="referenceItem"
-      :currentIdx="currentIdx"
-      :pageRoot="pageRoot"
-      @pagination="paginationEmit"
-      @quiz-preview="$emit('quiz-preview', $event)"
-    />
-    <!-- /. 퀴즈 컨텐츠 -->
+    <div
+      class="thumb_box"
+      :class="{
+        quiz: referenceItem.category === '03',
+        notetest: referenceItem.category === '04',
+      }"
+    >
+      <div class="title col-12">자료 열람</div>
 
-    <!-- [개발참조] 쪽지시험 컨텐츠 -->
-    <BrowseNoteTest
-      :show="referenceItem.category === '04'"
-      :reference="referenceItem"
-      :currentIdx="currentIdx"
-      :pageRoot="pageRoot"
-      @pagination="paginationEmit"
-      @test-preview="$emit('test-preview', $event)"
-    />
-    <!-- /. 쪽지시험 컨텐츠 -->
+      <!-- 동영상 -->
+      <BrowseContent
+        :show="isContent(referenceItem.category)"
+        :reference="referenceItem"
+      />
 
-    <!-- [개발참조] 동영상,문서 컨텐츠 -->
-    <BrowseContent
-      :pageRoot="pageRoot"
-      :show="isContent(referenceItem.category)"
-      :reference="referenceItem"
-    />
-    <!-- /. 동영상,문서 컨텐츠 -->
+      <!-- 퀴즈 -->
+      <BrowseQuiz
+        v-show="referenceItem.category === '03'"
+        :reference="referenceItem"
+        :currentIdx="currentIdx"
+      />
+
+      <!-- 쪽지시험 -->
+      <NoteTestEditorField
+        v-show="referenceItem.category === '04'"
+        :reference="referenceItem"
+        :currentIdx="currentIdx"
+      />
+
+      <!-- 페이지전환 및 미리보기 버튼 -->
+      <PaginationPrevBox
+        v-show="isQuiz(referenceItem) || referenceItem.category === '04'"
+        :length="
+          isQuiz(referenceItem)
+            ? referenceItem.quiz?.length
+            : referenceItem.note_exam?.length
+        "
+        :currentIdx="currentIdx"
+        @pagination="paginationEmit"
+        @test-preview="
+          isQuiz(referenceItem)
+            ? $emit('quiz-preview', $event)
+            : $emit('test-preview', $event)
+        "
+      />
+
+      <!-- 공통 데이터 -->
+      <LessonDataInfo :reference="referenceItem" :pageRoot="pageRoot" />
+    </div>
   </div>
 </template>
 
 <script>
 import BrowseContent from './BrowseContent.vue'
-import BrowseNoteTest from './BrowseNoteTest.vue'
+// import BrowseNoteTest from './BrowseNoteTest.vue'
 import BrowseQuiz from './BrowseQuiz.vue'
+import LessonDataInfo from './LessonDataInfo.vue'
+import NoteTestEditorField from './NoteTestEditorField.vue'
+import PaginationPrevBox from './PaginationPrevBox.vue'
 export default {
   name: 'LessonBrowseRightField',
   components: {
     BrowseQuiz,
-    BrowseNoteTest,
     BrowseContent,
+    LessonDataInfo,
+    NoteTestEditorField,
+    PaginationPrevBox,
   },
   props: {
     referenceItem: {
@@ -62,9 +88,14 @@ export default {
       this.$emit('pagination', item, idx)
     },
     isContent(item) {
-      if (item === 'quiz' || item === 'test') return false
+      if (item === '03' || item === '04') return false
       else return true
+    },
+    isQuiz(item) {
+      return item.category === '03'
     },
   },
 }
 </script>
+
+<style scoped></style>

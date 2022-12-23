@@ -641,6 +641,7 @@ export default {
       const weekList = this.weekIdx
       const target = this.lectureInfo.scheduleWeekList
       target[weekList[idx]] = [...target[weekList[idx]], schedule]
+      console.log(target)
     },
 
     // 동일한 시간 체크

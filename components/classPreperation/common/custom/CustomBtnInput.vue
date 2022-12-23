@@ -17,7 +17,8 @@
             isBtn || isIdCheckBtn ? 'form-inline' : '')
           "
           autocomplete="off"
-          disabled
+          readonly
+          @click="$emit('open-save-path', setTarget)"
           @input="$emit('change-input', $event)"
         />
         <button
@@ -39,64 +40,25 @@
 import { ValidationProvider } from 'vee-validate'
 export default {
   name: 'CustomBtnInput',
-  components: {
-    ValidationProvider,
-  },
+  components: { ValidationProvider },
   props: {
-    inputValue: {
-      default: '',
-      type: String,
-    },
-    id: {
-      default: '',
-      type: String,
-    },
-    name: {
-      default: '',
-      type: String,
-    },
-    placeholder: {
-      default: '',
-      type: String,
-    },
-    rules: {
-      default: '',
-      type: String,
-    },
-    type: {
-      default: '',
-      type: String,
-    },
-    isError: {
-      default: false,
-      type: Boolean,
-    },
-    isBtn: {
-      default: false,
-      type: Boolean,
-    },
-    auth: {
-      default: false,
-      type: Boolean,
-    },
-    isIdCheckBtn: {
-      default: false,
-      type: Boolean,
-    },
-    target: {
-      type: String,
-      default: '',
-    },
+    id: { default: '', type: String },
+    name: { default: '', type: String },
+    type: { default: '', type: String },
+    auth: { default: false, type: Boolean },
+    rules: { default: '', type: String },
+    isBtn: { default: false, type: Boolean },
+    isError: { default: false, type: Boolean },
+    target: { type: String, default: '' },
+    inputValue: { default: '', type: String },
+    placeholder: { default: '', type: String },
+    isIdCheckBtn: { default: false, type: Boolean },
   },
   computed: {
     setTarget() {
-      if (this.target === 'quiz') {
-        return 'isQuizAddModal'
-      } else if (this.target === 'noteTest') {
-        return 'isNoteTestAddModal'
-      } else {
-        return 'isReferenceAddModal'
-      }
+      if (this.target === 'quiz') return 'isQuizAddModal'
+      else if (this.target === 'noteTest') return 'isNoteTestAddModal'
+      else return 'isReferenceAddModal'
     },
   },
 }
@@ -104,6 +66,12 @@ export default {
 
 <style scoped>
 input:disabled {
+  background: white;
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+  cursor: pointer;
   background: white;
 }
 </style>

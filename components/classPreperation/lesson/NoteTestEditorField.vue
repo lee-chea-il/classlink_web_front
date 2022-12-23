@@ -49,6 +49,10 @@ export default {
   overflow: scroll;
 }
 
+#modalLessonView .notetest .thumbnail_view01 {
+  height: 245px;
+}
+
 #modalLessonView .notetest .left_area {
   margin: 0;
 }

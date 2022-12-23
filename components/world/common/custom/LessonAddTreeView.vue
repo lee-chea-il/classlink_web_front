@@ -131,7 +131,7 @@ export default {
         this.pid++
         this.setEmptyAreaHeight()
       }
-      this.$emit('add-reference', this.datas)
+      this.$emit('add-reference', node)
     },
     setEmptyAreaHeight() {
       let nHei = 250

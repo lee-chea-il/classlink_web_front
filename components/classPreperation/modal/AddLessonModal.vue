@@ -248,7 +248,7 @@
             <ModalBtnBox
               :invalid="isDisabled(invalid, lessonData.keyword.length === 0)"
               :submitTxt="modalTitle"
-              @submit="$emit('submit')"
+              @submit="onSubmit(modalTitle)"
               @close="$emit('close')"
             />
           </div>
@@ -326,6 +326,10 @@ export default {
     isDisabled(aFlag, bFlag) {
       if (!aFlag && !bFlag) return false
       else return true
+    },
+    onSubmit(type) {
+      if (type === '등록') return this.$emit('submit')
+      else return this.$emit('change-submit')
     },
   },
 }

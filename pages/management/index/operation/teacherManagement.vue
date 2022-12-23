@@ -21,9 +21,10 @@
           :stateTrue="stateTrue"
           :stateFalse="stateFalse"
           :allCheckBoxFlag="allCheckBoxFlag"
+          :deleteIdxList="deleteIdxList"
           @click-state="onClickState"
           @click-sort="onClickSort"
-          @delete="deleteTeacher"
+          @delete="onClickDeleteTeacher"
           @click-detail="getTeacherInfo"
           @click-register="openRegisterTeacherModalDesc"
           @select-teacher="onClickCheckBox"
@@ -43,7 +44,7 @@
       :nickNameCheck="newNickNameCheck"
       :isEmailCheck="isEmailCheck"
       :isIdCheck="isIdCheck"
-      :newSubjectList="newSubjectList"
+      :subjectList="subjectList"
       @close="onCloseRegisterTeacherModalDesc"
       @click-profile="openUploadNewTeacherImgModalDesc"
       @click-cwimg="openUploadNewTeacherCWImgModalDesc"
@@ -167,12 +168,13 @@
       :open="deleteModalDesc.open"
       :title="deleteModalDesc.title"
       @close="onCloseDeleteModalDesc"
+      @delete="deleteTeacher"
     />
 
     <!-- 과목 수정 -->
     <EditSubjectsModal
       :open="editSubjectsModal.open"
-      :newSubjectList="newSubjectList"
+      :subjectList="subjectList"
       :isAddSubject="isAddSubject"
       :newSubjectTitle="newSubjectTitle"
       :isUpdateSubject="isUpdateSubject"
@@ -267,15 +269,27 @@ export default {
         mem_name: '',
         mem_nickname: '',
         mem_phone: '',
-        mem_sex: null,
+        mem_sex: 'M',
         tch_grade: 'T',
-        tch_use_yn: true,
-        auth_check: false,
-        auth_list: [],
+        tch_use_yn: 'Y',
+        auth_check: true,
+        auth_list: [
+          { rca_idx: 1, rin_idx: 1 },
+          { rca_idx: 1, rin_idx: 2 },
+          { rca_idx: 1, rin_idx: 3 },
+          { rca_idx: 2, rin_idx: 4 },
+          { rca_idx: 2, rin_idx: 5 },
+          { rca_idx: 2, rin_idx: 6 },
+          { rca_idx: 3, rin_idx: 8 },
+          { rca_idx: 5, rin_idx: 12 },
+          { rca_idx: 5, rin_idx: 13 },
+          { rca_idx: 5, rin_idx: 14 },
+        ],
         subject_check: true,
-        subject_list: [],
-        target_check: false,
+        subject_list: [{ is_idx: 1, is_title: '국어' }],
+        target_check: true,
         target_list: [],
+        img_filepath: '',
       },
       teacherInfo: {
         ins_code: this.$store.state.common.user.ins_code,
@@ -286,38 +300,50 @@ export default {
         mem_name: '',
         mem_nickname: '',
         mem_phone: '',
-        mem_sex: null,
+        mem_sex: 'M',
         tch_grade: 'T',
-        tch_use_yn: true,
-        auth_check: false,
-        auth_list: [],
+        tch_use_yn: 'Y',
+        auth_check: true,
+        auth_list: [
+          { rca_idx: 1, rin_idx: 1 },
+          { rca_idx: 1, rin_idx: 2 },
+          { rca_idx: 1, rin_idx: 3 },
+          { rca_idx: 2, rin_idx: 4 },
+          { rca_idx: 2, rin_idx: 5 },
+          { rca_idx: 2, rin_idx: 6 },
+          { rca_idx: 3, rin_idx: 8 },
+          { rca_idx: 5, rin_idx: 12 },
+          { rca_idx: 5, rin_idx: 13 },
+          { rca_idx: 5, rin_idx: 14 },
+        ],
         subject_check: true,
-        subject_list: [],
-        target_check: false,
+        subject_list: [{ is_idx: 1, is_title: '국어' }],
+        target_check: true,
         target_list: [],
+        img_filepath: '',
       },
       allAuthList: [
-        { rac_idx: 1, rin_idx: 1 },
-        { rac_idx: 1, rin_idx: 2 },
-        { rac_idx: 1, rin_idx: 3 },
-        { rac_idx: 2, rin_idx: 4 },
-        { rac_idx: 2, rin_idx: 5 },
-        { rac_idx: 2, rin_idx: 6 },
-        { rac_idx: 3, rin_idx: 7 },
-        { rac_idx: 3, rin_idx: 8 },
-        { rac_idx: 4, rin_idx: 9 },
-        { rac_idx: 4, rin_idx: 10 },
-        { rac_idx: 5, rin_idx: 11 },
-        { rac_idx: 5, rin_idx: 12 },
-        { rac_idx: 5, rin_idx: 13 },
-        { rac_idx: 5, rin_idx: 14 },
-        { rac_idx: 6, rin_idx: 15 },
-        { rac_idx: 6, rin_idx: 16 },
-        { rac_idx: 6, rin_idx: 17 },
-        { rac_idx: 6, rin_idx: 18 },
-        { rac_idx: 7, rin_idx: 19 },
-        { rac_idx: 7, rin_idx: 20 },
-        { rac_idx: 7, rin_idx: 21 },
+        { rca_idx: 1, rin_idx: 1 },
+        { rca_idx: 1, rin_idx: 2 },
+        { rca_idx: 1, rin_idx: 3 },
+        { rca_idx: 2, rin_idx: 4 },
+        { rca_idx: 2, rin_idx: 5 },
+        { rca_idx: 2, rin_idx: 6 },
+        { rca_idx: 3, rin_idx: 7 },
+        { rca_idx: 3, rin_idx: 8 },
+        { rca_idx: 4, rin_idx: 9 },
+        { rca_idx: 4, rin_idx: 10 },
+        { rca_idx: 5, rin_idx: 11 },
+        { rca_idx: 5, rin_idx: 12 },
+        { rca_idx: 5, rin_idx: 13 },
+        { rca_idx: 5, rin_idx: 14 },
+        { rca_idx: 6, rin_idx: 15 },
+        { rca_idx: 6, rin_idx: 16 },
+        { rca_idx: 6, rin_idx: 17 },
+        { rca_idx: 6, rin_idx: 18 },
+        { rca_idx: 7, rin_idx: 19 },
+        { rca_idx: 7, rin_idx: 20 },
+        { rca_idx: 7, rin_idx: 21 },
       ],
       // modal
       teacherInfoModalDesc: {
@@ -377,12 +403,14 @@ export default {
       isIdCheck: false,
       prevEmail: '',
       prevId: '',
-      newSubjectList: [
-        { is_idx: 6, is_title: '화학' },
-        { is_idx: 7, is_title: '윤리' },
-        { is_idx: 8, is_title: '음악' },
-        { is_idx: 9, is_title: '미술' },
+      subjectList: [
+        { is_idx: 1, is_title: '국어' },
+        { is_idx: 2, is_title: '영어' },
+        { is_idx: 3, is_title: '수학' },
+        { is_idx: 4, is_title: '과학' },
+        { is_idx: 5, is_title: '기타' },
       ],
+      subjectCheckList: [],
       isAddSubject: false,
       newSubjectTitle: '',
       newSubject: '',
@@ -414,6 +442,7 @@ export default {
   },
   mounted() {
     this.getTeacherList()
+    this.getSubjectList()
   },
   methods: {
     // 선생님 목록 불러오기 api
@@ -474,8 +503,10 @@ export default {
           Object.assign(this.teacherInfo, data.vo)
           this.teacherInfo.auth_list = data.auth_list
           this.teacherInfo.target_list = data.target_list
+          this.teacherInfo.subject_list = data.subject_list
           this.prevId = data.vo.mem_id
           this.prevEmail = data.vo.mem_email
+          console.log(this.teacherInfo)
         })
         .catch((err) => {
           console.log(err)
@@ -486,7 +517,6 @@ export default {
     // 선생님 등록 api
     async registerTeacher() {
       const payload = this.teacherInfo
-      console.log(payload)
       await apiOperation
         .registerTeacher(payload)
         .then(() => {
@@ -501,6 +531,7 @@ export default {
     // 선생님 정보 수정 api
     async updateTeacherInfo() {
       const payload = this.teacherInfo
+      console.log(this.teacherInfo)
       await apiOperation
         .updateTeacherInfo(payload)
         .then(() => {
@@ -563,15 +594,23 @@ export default {
     // 가르치는 대상 수정
     onChangeTargetCheck({ target: { id, checked } }) {
       if (checked) {
-        this.teacherInfo.target_list.push(id)
+        this.teacherInfo.target_list.push({ ttm_target: id })
+        console.log(this.teacherInfo.target_list)
       } else {
-        const index = this.teacherInfo.target_list.indexOf(id)
+        const index = this.teacherInfo.target_list
+          .map((x) => x.ttm_target)
+          .indexOf(id)
         this.teacherInfo.target_list.splice(index, 1)
+      }
+      if (this.teacherInfo.target_list.length === 0) {
+        this.teacherInfo.target_check = false
+      } else {
+        this.teacherInfo.target_check = true
       }
     },
     // 권한 수정
     onChangeRoleCheck({ target: { id, name, checked } }) {
-      const role = { rac_idx: Number(name), rin_idx: Number(id) }
+      const role = { rca_idx: Number(name), rin_idx: Number(id) }
       if (checked) {
         this.teacherInfo.auth_list.push(role)
       } else {
@@ -580,6 +619,12 @@ export default {
           .indexOf(role.rin_idx)
         this.teacherInfo.auth_list.splice(index, 1)
       }
+      if (this.teacherInfo.auth_list.length === 0) {
+        this.teacherInfo.auth_check = false
+      } else {
+        this.teacherInfo.auth_check = true
+      }
+      console.log(this.teacherInfo.auth_list)
     },
     // 직위 수정
     selectPosition() {
@@ -785,28 +830,34 @@ export default {
         }
       }
     },
-    async deleteTeacher() {
+    onClickDeleteTeacher() {
       if (this.deleteIdxList.length === 0) {
         this.openModalDesc('선생님 삭제', '삭제할 선생님을 선택해주세요.')
         return false
       } else {
-        const payload = {
-          data: {
-            ins_code: this.institutionIdx,
-            mem_idx_list: this.deleteIdxList,
-          },
-        }
-        console.log(payload)
-        await apiOperation
-          .deleteTeacher(payload)
-          .then((res) => {
-            console.log(res)
-          })
-          .catch((err) => {
-            console.log(err)
-          })
-        // this.openDeleteModalDesc('선생님')
+        this.openDeleteModalDesc('선생님')
       }
+    },
+    // 선생님 삭제 api
+    async deleteTeacher() {
+      const payload = {
+        data: {
+          ins_code: this.institutionIdx,
+          mem_idx_list: this.deleteIdxList,
+        },
+      }
+      console.log(payload)
+      await apiOperation
+        .deleteTeacher(payload)
+        .then(() => {
+          this.getTeacherList()
+          this.onCloseDeleteModalDesc()
+          this.deleteIdxList = []
+          this.openModalDesc('선생님 삭제', '삭제되었습니다.')
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
 
     // 이미지 업로드
@@ -845,16 +896,43 @@ export default {
       this.openModalDesc('비밀번호 초기화', '비밀번호가 초기화되었습니다.')
     },
 
-    // 과목 수정 과목 추가
+    // 과목 수정
+    // 과목 목록 불러오기 api
+    async getSubjectList() {
+      console.log(this.institutionIdx)
+      await apiOperation
+        .getSubjectList(this.institutionIdx)
+        .then(({ data: { data } }) => {
+          this.subjectList = data
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
+    // 과목 추가
     onClickAddSubject() {
       this.newSubjectTitle = ''
       this.isAddSubject = true
       this.isUpdateSubject = false
     },
-    // 과목 추가하기
-    addSubject() {
-      this.isAddSubject = false
-      this.newSubjectTitle = ''
+    // 과목 추가 api
+    async addSubject() {
+      const payload = {
+        ins_code: this.institutionIdx,
+        is_title: this.newSubjectTitle,
+      }
+      console.log(this.institutionIdx)
+      await apiOperation
+        .addSubject(payload)
+        .then(({ data: { data } }) => {
+          this.subjectList = data
+          this.isAddSubject = false
+          this.newSubjectTitle = ''
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
     // 과목 추가 닫기
     onCloseAddSubject() {
@@ -877,17 +955,49 @@ export default {
       console.log(this.isMoreBtn, this.newSubject)
     },
     // 과목 삭제
-    deleteSubject() {
+    async deleteSubject() {
+      const subject = this.subjectList.filter((x) => {
+        return x.is_title === this.newSubject
+      })
+      const payload = {
+        ins_code: this.institutionIdx,
+        is_idx: subject[0].is_idx,
+        is_title: subject[0].is_title,
+      }
+      await apiOperation
+        .deleteSubject(payload)
+        .then(({ data: { data } }) => {
+          this.subjectList = data
+        })
+        .catch((err) => {
+          console.log(err)
+        })
       this.isMoreBtn = false
-      console.log('삭제', this.isMoreBtn)
     },
     // 과목 수정
-    updateSubjectTitle(title) {
+    async updateSubjectTitle(title) {
       this.isAddSubject = false
       this.isMoreBtn = false
       this.isUpdateSubject = true
       this.newSubjectTitle = title
-      console.log('수정', title, this.isUpdateSubject, this.newSubjectTitle)
+      const subject = this.subjectList.filter((x) => {
+        return x.is_title === this.newSubject
+      })
+      const payload = {
+        ins_code: this.institutionIdx,
+        is_idx: subject[0].is_idx,
+        is_title: this.newSubjectTitle,
+      }
+      await apiOperation
+        .updateSubject(payload)
+        .then(({ data: { data } }) => {
+          this.subjectList = data
+          this.isAddSubject = false
+          this.newSubjectTitle = ''
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
 
     // 깊은 복사

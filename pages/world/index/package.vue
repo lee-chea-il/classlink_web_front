@@ -62,6 +62,7 @@
       @get-savepath="getDataSavePath"
       @get-lesson-savepath="getLessonSavePath"
       @submit="onSubmitAddLesson"
+      @change-submit="updateLessonData"
     />
 
     <!-- 레슨 열람 -->
@@ -109,7 +110,6 @@
       @delete="openSelectModal"
       @open-save-path="onOpenSavePathModal"
     />
-
     <!-- 자료실 퀴즈 열람 -->
     <BrowseQuizModal
       :open="isQuizBrowse.open"
@@ -145,7 +145,7 @@
     <!-- 자료 수정 -->
     <ChangeReferenceModal
       modalTitle="수정"
-      :open="isReferenceChange.open"
+      :open="isReferenceAddModal.open"
       :reference="selectReferenceItem"
       :pushKeyword="pushKeyword"
       :uploadInfo="uploadInfo"
@@ -162,7 +162,7 @@
     <!-- 퀴즈 수정 -->
     <ChangeQuizModal
       modalTitle="수정"
-      :open="isQuizChange.open"
+      :open="isQuizAddModal.open"
       :reference="selectReferenceItem"
       :currentPageIdx="currentIdx"
       :pushKeyword="pushKeyword"
@@ -188,7 +188,7 @@
     <!-- 쪽지시험 수정 -->
     <ChangeNoteTestModal
       modalTitle="수정"
-      :open="isNoteTestChange.open"
+      :open="isNoteTestAddModal.open"
       :reference="selectReferenceItem"
       :currentPageIdx="currentIdx"
       :pushKeyword="pushKeyword"
@@ -254,6 +254,7 @@
 
 <script>
 import html2pdf from 'html2pdf.js'
+import _ from 'lodash'
 import PageHeader from '~/components/common/PageHeader.vue'
 import MainBtnBox from '~/components/common/MainBtnBox.vue'
 import DeleteModal from '~/components/common/modal/DeleteModal.vue'
@@ -274,7 +275,7 @@ import PreviewNoteTestModal from '~/components/world/modal/PreviewNoteTestModal.
 import initialState from '~/data/common/lesson/initialState'
 import { setNewArray, jsonItem } from '~/utiles/common'
 import ModalDesc from '~/components/common/modal/ModalDesc.vue'
-import { api, apiData } from '~/services'
+import { api, apiData, apiLesson } from '~/services'
 
 export default {
   name: 'PackagePage',
@@ -312,6 +313,77 @@ export default {
     async getServerUrl() {
       return await apiData
         .getServerUrl()
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
+    // 선택한 레슨 가져오기
+    getLessonData({ id, datatable_type }) {
+      const payload = { id, datatable_type }
+      apiLesson
+        .getLesson(payload)
+        .then(({ data: { data } }) => {
+          this.lessonViewData = { ...data, keyword: data.keyword.split(',') }
+          // console.log(data.datarooms)
+          const newDatarooms = data.datarooms.map((item) =>
+            Object.assign({
+              ...item,
+              name: item.title,
+            })
+          )
+          this.lessonViewData.referenceList = newDatarooms
+          this.selectReferenceItem = data.datarooms[0]
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
+    // 레슨 등록
+    postLessonData() {
+      const { keyword, ...rest } = this.lessonData
+      const payload = {
+        ...rest,
+        keyword: keyword.join(','),
+      }
+      apiLesson
+        .postLesson(payload)
+        .then(() => {
+          this.isAddLesson = false
+          this.openModalDesc('등록 성공', '레슨을 등록했습니다.')
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
+    // 레슨 수정
+    updateLessonData() {
+      const { keyword, ...rest } = this.lessonData
+      const payload = {
+        ...rest,
+        name: '나는 만재 지니어스',
+        keyword: keyword.join(','),
+      }
+      apiLesson
+        .updateLesson(rest.lesson_idx, payload)
+        .then(() => {
+          this.isAddLesson = false
+          this.openModalDesc('수정 성공', '레슨을 수정했습니다.')
+        })
+        .catch((res) => {
+          console.log(res)
+        })
+    },
+
+    // 레슨 삭제
+    deleteLesson(id) {
+      apiLesson
+        .deleteLesson(id)
         .then((res) => {
           console.log(res)
         })
@@ -392,7 +464,8 @@ export default {
 
     // 자료 유형별 핸들러
     selectDataroomType(type, data) {
-      const payload = { id: data.id, type: data.datatable_type }
+      console.log(data)
+      const payload = { id: data.dataroom_idx, type: data.datatable_type }
       if (type === '03') return this.getDataroomQuiz(payload)
       else if (type === '04') return this.getDataroomNoteExam(payload)
       else return this.getDataroomFile(payload)
@@ -560,14 +633,14 @@ export default {
     openLessonAdd() {
       this.lessonData = {
         name: '',
-        role: '',
-        desc: '',
+        educationgoal: '',
+        description: '',
         save_path: '',
         keyword: [],
         public_open_yn: true,
         isContinuedRegist: true,
         createAt: '',
-        referenceList: [],
+        datarooms: [],
       }
       this.setModalTitle('등록')
       this.treeReferenceList = []
@@ -586,7 +659,7 @@ export default {
       this.setModalTitle('수정')
       const newItem = jsonItem(data)
       this.lessonData = newItem
-      this.treeReferenceList = newItem.referenceList
+      this.treeReferenceList = newItem.datarooms
       this.isAddLesson.open = true
     },
 
@@ -595,10 +668,10 @@ export default {
     },
 
     // [레슨] 열람 데이터 초기 설정
-    setViewLesson(item) {
-      this.setViewLessonFirstReference(jsonItem(item))
-      return (this.lessonViewData = jsonItem(item))
-    },
+    // setViewLesson(item) {
+    //   this.setViewLessonFirstReference(jsonItem(item))
+    //   return (this.lessonViewData = jsonItem(item))
+    // },
 
     setViewLessonFirstReference(item) {
       const result = item.referenceList
@@ -606,9 +679,10 @@ export default {
       else return (this.selectReferenceItem = {})
     },
 
-    // 트리에서 레슨 열때
+    // 트리에서 레슨 열기
     openFirstLessonBrowseModal(item) {
-      this.setViewLesson(item)
+      this.getLessonData(item)
+      // this.setViewLesson(item)
       this.isLessonBrowse.open = true
     },
 
@@ -622,7 +696,6 @@ export default {
         this.closeLessonChangeModal()
       }
 
-      this.setViewLesson(item)
       return (this.isLessonBrowse = {
         open: true,
         prevPage: prev,
@@ -697,17 +770,18 @@ export default {
       }
     },
 
-    // [레슨] 레슨 열람 자료 보기 페이지
-    setSelectReference(reference) {
-      this.selectReferenceItem = reference
+    // [레슨] 레슨 열람 자료실 자료 보기
+    setSelectReference: _.debounce(function (reference) {
+      this.selectDataroomType(reference.category, reference)
       this.currentIdx = 0
-    },
+    }, 600),
 
     // [레슨] 레슨에 자료 추가
-    addReferenceOfLesson({ children }) {
-      const list = jsonItem(children)
-      const filterItem = list.filter((item) => item.dbIdx !== -1)
-      return (this.treeReferenceList = filterItem)
+    addReferenceOfLesson(item) {
+      const list = jsonItem(item)
+      const newList = [...this.treeReferenceList, list]
+      const newSet = Array.from(new Set(newList))
+      return (this.treeReferenceList = newSet)
     },
 
     // [레슨] 레슨 지우기 수정 필요
@@ -742,21 +816,21 @@ export default {
     // [레슨] 레슨 추가 Submit (임시)
     onSubmitAddLesson() {
       // 레슨 추가시 tree자료로 바꾸기 임시
-      return (this.lessonData.referenceList = this.treeReferenceList)
+      this.lessonData.datarooms = this.treeReferenceList
+      this.postLessonData(this.lessonData.datarooms)
     },
 
     // [자료실] 자료 클릭시 해당자료 열기
-    openReference(item, prev) {
+    openReference: _.debounce(function (item, prev) {
       const { category } = item
       if (this[prev]) {
         this[prev].open = false
       }
-      this.setReference(item)
       this.selectDataroomType(category, item)
       if (category === '03') return this.openBrowseQuiz(prev)
       else if (category === '04') return this.openBrowseNoteTest(prev)
       else return this.openReferenceBrowse(prev)
-    },
+    }, 500),
 
     // [자료실] 동영상,pdf,youtube,url 모달
     openReferenceBrowse(prev) {

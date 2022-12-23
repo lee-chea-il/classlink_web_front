@@ -223,7 +223,6 @@
       :target="isSelectModal.prevPage"
       :data="referenceData"
       @close="onCloseSelectModal"
-      @submit="isSelectModal.func"
       @delete-file="deleteDataroomFile"
       @delete-quiz="deleteDataroomQuiz"
       @delete-test="deleteDataroomNoteExam"
@@ -355,15 +354,16 @@ export default {
       ...this.referenceData,
       fra_code: this.$store.state.common.user.fra_code,
       ins_code: this.$store.state.common.user.ins_code,
-      worker: this.userInfo.mem_idx,
+      registrant: this.userInfo.mem_idx,
+      registrant_name: this.userInfo.mem_name,
     }
     this.initReferenceData = {
       ...this.initReferenceData,
       fra_code: this.$store.state.common.user.fra_code,
       ins_code: this.$store.state.common.user.ins_code,
-      worker: this.userInfo.mem_idx,
+      registrant: this.userInfo.mem_idx,
+      registrant_name: this.userInfo.mem_name,
     }
-    this.uploadInfo.registrant = this.$store.state.common.user.mem_name
   },
   methods: {
     // 월드용
@@ -419,6 +419,19 @@ export default {
     // 월드용
     // 월드용
 
+    // api 통신
+    // 업로드 주소 가져오기
+    async getServerUrl() {
+      return await apiData
+        .getServerUrl()
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
     // 파일서버 업로드
     postFile(file) {
       const formData = new FormData()
@@ -441,8 +454,8 @@ export default {
     // 파일 업로드
     // 동영상, PDF, YOUTUBE, URL 업로드
     postDataroomFile() {
-      const { note_exam, quiz, ...rest } = this.referenceData
-      console.log(note_exam, quiz)
+      const { note_exam, quiz, thumbnail, ...rest } = this.referenceData
+      // console.log(note_exam, quiz, thumbnail)
       const payload = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -460,8 +473,8 @@ export default {
 
     // 퀴즈 업로드
     postDataroomQuiz() {
-      const { note_exam, ...rest } = this.referenceData
-      console.log(note_exam)
+      const { note_exam, thumbnail, ...rest } = this.referenceData
+      console.log(note_exam, thumbnail)
       const payload = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -479,8 +492,8 @@ export default {
 
     // 쪽지시험 업로드
     postDataroomNoteExam() {
-      const { quiz, ...rest } = this.referenceData
-      console.log(quiz)
+      const { quiz, thumbnail, ...rest } = this.referenceData
+      console.log(quiz, thumbnail)
       const payload = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -561,8 +574,8 @@ export default {
     updateDataroomFile({ category, datatable_type }) {
       const payload = { id: category, datatable_type }
 
-      const { note_exam, quiz, ...rest } = this.referenceData
-      console.log(note_exam, quiz)
+      const { note_exam, quiz, thumbnail, ...rest } = this.referenceData
+      console.log(note_exam, quiz, thumbnail)
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -581,8 +594,8 @@ export default {
     // 퀴즈 수정
     updateDataroomQuiz({ category, datatable_type }) {
       const payload = { id: category, datatable_type }
-      const { note_exam, ...rest } = this.referenceData
-      console.log(note_exam)
+      const { note_exam, thumbnail, ...rest } = this.referenceData
+      console.log(note_exam, thumbnail)
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -601,8 +614,8 @@ export default {
     // 쪽지 시험 수정
     updateDataroomNoteExam({ category, datatable_type }) {
       const payload = { id: category, datatable_type }
-      const { note_exam, ...rest } = this.referenceData
-      console.log(note_exam)
+      const { note_exam, thumbnail, ...rest } = this.referenceData
+      console.log(note_exam, thumbnail)
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -672,6 +685,7 @@ export default {
           youtube: '',
           page: '',
         }
+        this.uploadInfo.saveFolderPath = ''
       }, 300)
     },
 
