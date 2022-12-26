@@ -189,15 +189,41 @@
   }
 
   .notice_title {
-    width: 50%;
+    width: 42%;
   }
 
   .notice_day02 {
-    width: 16%;
+    width: 9%;
   }
 
   .notice_writer {
     width: 16%;
+  }
+
+  .lecture_plan {
+    .notice_day02 {
+      width: 31%;
+    }
+  }
+
+  .notice_detail {
+    .notice_title {
+      width: 47%;
+    }
+
+    .notice_day02 {
+      width: 26%;
+    }
+  }
+
+  .notice_stu {
+    .notice_title {
+      width: 39%;
+    }
+
+    .notice_day02 {
+      width: 26%;
+    }
   }
 }
 
@@ -213,15 +239,21 @@
   }
 
   .notice_title {
-    width: 32%;
+    width: 28%;
   }
 
   .notice_day02 {
-    width: 16%;
+    width: 10%;
+  }
+
+  .reply_view {
+    .notice_day02 {
+      width: 25%;
+    }
   }
 
   .notice_writer {
-    width: 16%;
+    width: 10%;
   }
 
   .keyword01 {

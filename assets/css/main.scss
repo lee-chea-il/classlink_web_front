@@ -7,6 +7,7 @@
 
 #popupZone {
 	height: 119px;
+
 	.w1280 {
 		background: #E7EDFF;
 		display: flex;
@@ -58,9 +59,10 @@
 	&.off {
 		height: 0;
 		transition: all .5s;
+
 		.w1280 {
 			display: none;
-		}	
+		}
 	}
 }
 
@@ -1148,6 +1150,7 @@ footer {
 	.nav_sub {
 		background: #fff;
 		transition: all .2s;
+
 		&.smallH {
 			height: auto;
 			padding: 6px 0 5px;
@@ -1769,17 +1772,39 @@ footer {
 			color: #A7A9AC;
 			width: 10%;
 			padding-left: 30px;
+
+			@media (max-width: 575.98px) {
+				width: 51px;
+				padding-left: 10px;
+			}
 		}
 
 		.main_notice_tit02 {
 			font-weight: 700;
 			font-size: 16px;
-			line-height: 55px;
+			text-align: left;
+			display: inline-block;
+			width: 75%;
+			line-height: 26px;
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
-			width: 80%;
-			text-align: left;
+
+			@media (max-width: 1220px) {
+				width: 60%;
+			}
+
+			@media (max-width: 1199.98px) {
+				width: 38%;
+			}
+
+			@media (max-width: 767.98px) {
+				width: 30%;
+			}
+
+			@media (max-width: 575.98px) {
+				width: 10%;
+			}
 		}
 
 		.main_notice_tit03 {
@@ -1791,14 +1816,11 @@ footer {
 		}
 
 		.main_notice02 {
-			width: 100%;
 			height: 85px;
-			border: 0.4px solid #A7A9AC;
 			line-height: 55px;
-		}
-
-		.main_notice02 {
-			border: 0.4px solid #A7A9AC;
+			display: flex;
+			align-items: center;
+			width: 78%;
 			border-radius: 5px;
 		}
 
@@ -1814,11 +1836,29 @@ footer {
 			margin-top: 20px;
 			box-shadow: 0 0 0 1px #D1D3D4;
 			border-radius: 5px;
+			display: flex;
 		}
 
 		.tr_expand {
-			border: 0.4px solid rgb(167, 169, 172);
-			border-radius: 5px;
+			border-top: 0.4px solid rgb(167, 169, 172);
+			display: flex;
+			width: 79.5%;
+
+			@media (max-width: 1272px) {
+				width: 68%;
+			}
+
+			@media (max-width: 1199.98px) {
+				width: 57%;
+			}
+
+			@media (max-width: 767.98px) {
+				width: 40%;
+			}
+
+			@media (max-width: 575.98px) {
+				width: 21%;
+			}
 		}
 
 		.table td,
@@ -1848,15 +1888,6 @@ footer {
 		@media (max-width: 575.98px) {
 			.input-search {
 				width: 100%;
-			}
-
-			.main_notice_tit02 {
-				max-width: 200px;
-			}
-
-			.main_notice_tit {
-				width: 51px;
-				padding-left: 10px;
 			}
 		}
 	}

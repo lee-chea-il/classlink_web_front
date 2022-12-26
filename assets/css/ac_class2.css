@@ -1690,6 +1690,7 @@ ol {
   box-shadow: none;
   border-radius: 5px;
   border-color: rgba(167, 169, 172, 0.4);
+  background: #fff;
 }
 .dropdown .dropdown-toggle::after {
   border: none;
@@ -2085,13 +2086,28 @@ ol {
   width: 8%;
 }
 #modalNoticeView .notice_title {
-  width: 50%;
+  width: 42%;
 }
 #modalNoticeView .notice_day02 {
-  width: 16%;
+  width: 9%;
 }
 #modalNoticeView .notice_writer {
   width: 16%;
+}
+#modalNoticeView .lecture_plan .notice_day02 {
+  width: 31%;
+}
+#modalNoticeView .notice_detail .notice_title {
+  width: 47%;
+}
+#modalNoticeView .notice_detail .notice_day02 {
+  width: 26%;
+}
+#modalNoticeView .notice_stu .notice_title {
+  width: 39%;
+}
+#modalNoticeView .notice_stu .notice_day02 {
+  width: 26%;
 }
 
 /* 수업 - 학습함 - 질문함 - 답변열람 (팝업 L) */
@@ -2103,13 +2119,16 @@ ol {
   width: 8%;
 }
 #modalReplyView .notice_title {
-  width: 32%;
+  width: 28%;
 }
 #modalReplyView .notice_day02 {
-  width: 16%;
+  width: 10%;
+}
+#modalReplyView .reply_view .notice_day02 {
+  width: 25%;
 }
 #modalReplyView .notice_writer {
-  width: 16%;
+  width: 10%;
 }
 #modalReplyView .keyword01 {
   margin-left: 10px;

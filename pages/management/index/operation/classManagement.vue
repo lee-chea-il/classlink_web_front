@@ -174,7 +174,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(item, idx) in classList" :key="idx">
+                <tr
+                  v-for="(item, idx) in classList"
+                  :key="idx"
+                  @drop="onDrop($event, item.csm_display_no)"
+                  @dragover.prevent
+                  @dragenter.prevent
+                >
                   <td>
                     <div class="custom-control custom-checkbox form-inline">
                       <input
@@ -187,7 +193,7 @@
                       <label class="custom-control-label" :for="idx"></label>
                     </div>
                   </td>
-                  <td>{{ item.csm_name }}</td>
+                  <td class="classroom">{{ item.csm_name }}</td>
                   <td>{{ item.std_num }}</td>
                   <td>{{ item.mem_name }} 선생님</td>
                   <td>
@@ -203,7 +209,11 @@
                     ></i>
                   </td>
                   <td>
-                    <i class="btn icons_move_off"></i>
+                    <i
+                      class="btn icons_move_off"
+                      draggable
+                      @dragstart="startDrag($event, item, item.csm_display_no)"
+                    ></i>
                   </td>
                 </tr>
               </tbody>
@@ -339,18 +349,26 @@
       :rightSearch.sync="modalMoveRightSearch"
       :rightSort="modalMoveRightSort"
       :noAssignStudent="noAssignStudent"
+      :unallocationSearch.sync="modalUnallocationSearch"
+      :unallocationSort="modalUnallocationSort"
+      :unallocationCheckbox="selectedUnallocationCheckbox"
       @close="onCloseClassMove"
       @open-detail="onClickOpenDetail"
       @move-student="putMoveClass"
+      @move-unallocation-student="onUnallocationPutMoveClass"
+      @move-unallocation="putMoveReverseClass"
       @copy-check="onClickCopyCheck"
       @student-list-check="onClickMoveModalLeftCheckbox"
-      @move-to-class="onClickMoveToClass"
+      @move-class="onClickMoveToClass"
       @student-list-check-right="onClickMoveModalRightCheckbox"
-      @move-to-class-right="onClickMoveToClassRight"
+      @move-class-right="onClickMoveToClassRight"
       @search-left="getMoveClassLeft"
       @sort-left="onClickModalMoveLeftSort"
       @search-right="getMoveClassRight"
       @sort-right="onClickModalMoveRightSort"
+      @search-unallocation="onSearchUnallocation"
+      @sort-unallocation="onClickModalUnallocationSort"
+      @unallocation-check="onClickUnallocationCheckbox"
     />
 
     <ModalDesc
@@ -442,6 +460,8 @@ export default {
       selectedMoveModalRightCheckbox: [],
       // 반 이동 이동할 반 선택
       selectedMoveToClassCheckboxRight: [],
+      // 배정X 학생 선택
+      selectedUnallocationCheckbox: [],
 
       // 정렬
       sortTeacherSelect: '선생님 전체',
@@ -475,6 +495,8 @@ export default {
       modalMoveRightSort: true,
       // 배정X 학생 리스트
       noAssignStudent: {},
+      modalUnallocationSearch: '',
+      modalUnallocationSort: false,
 
       // 체크박스
       allCheck: false,
@@ -607,6 +629,13 @@ export default {
       },
       immediate: false,
     },
+
+    modalUnallocationSort: {
+      handler() {
+        this.onSearchUnallocation()
+      },
+      immediate: false,
+    },
   },
   mounted() {
     this.getClassList()
@@ -614,6 +643,20 @@ export default {
     this.getSearchStudent()
   },
   methods: {
+    // 드래그 앤 드롭 기능
+    startDrag(evt, item) {
+      evt.dataTransfer.dropEffect = 'move'
+      evt.dataTransfer.effectAllowed = 'move'
+      evt.dataTransfer.setData('itemID', item.csm_display_no)
+    },
+    onDrop(evt, list) {
+      const itemID = Number(evt.dataTransfer.getData('itemID'))
+      const item = this.classList.find((item) => item.csm_display_no === itemID)
+      // item.list = list
+      console.log(itemID, item.csm_idx, list)
+      this.getChangeOrder(itemID, item.csm_idx, list)
+    },
+
     // 반 리스트 api
     async getClassList() {
       const payload = {
@@ -633,6 +676,32 @@ export default {
         .catch((err) => {
           console.log(err)
         })
+    },
+
+    // 반 목록 이동
+    async getChangeOrder(display, idx, update) {
+      const payload = {
+        csm_display_no: display,
+        csm_idx: idx,
+        update_order_no: update,
+      }
+      console.log(payload.update_order_no)
+      if (
+        this.cond === true &&
+        this.searchText === '' &&
+        this.showCount === 1 &&
+        this.tchIdx === 0
+      ) {
+        await apiClassManagement
+          .getChangeOrder(payload)
+          .then(({ data: { data } }) => {
+            console.log(data)
+            this.getClassList()
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      }
     },
 
     // 상세 api
@@ -788,6 +857,7 @@ export default {
           .postRegistClass(payload)
           .then((res) => {
             console.log(res)
+            this.openModalDesc('등록 성공', '반 등록을 성공했습니다.')
             this.onCloseClassModify()
             this.getClassList()
           })
@@ -795,7 +865,7 @@ export default {
             console.log(err)
           })
       } else {
-        this.openModalDesc('반 등록 실패', '등록할 반을 작성하고 클릭해주세요.')
+        this.openModalDesc('등록 실패', '반을 작성해주세요.')
       }
     },
     // 반 수정하기 api
@@ -833,6 +903,7 @@ export default {
           .putUpdClass(csmIdx, payload)
           .then((res) => {
             console.log(res)
+            this.openModalDesc('수정 성공', '반 수정을 성공했습니다.')
             this.onCloseClassModify()
             this.getClassList()
           })
@@ -908,6 +979,7 @@ export default {
         .then((res) => {
           console.log(res)
           this.checkList = []
+          this.allCheck = false
           this.getClassList()
         })
         .catch((err) => {
@@ -1087,7 +1159,7 @@ export default {
       }
     },
 
-    // 배정 X 버튼 클릭
+    // 배정X 버튼 클릭
     async onClickUnallocation() {
       const payload = {
         ins_code: this.ins_code,
@@ -1116,6 +1188,136 @@ export default {
         })
 
       this.onOpenClassMove(0)
+    },
+    // 배정X 학생 검색
+    async onSearchUnallocation() {
+      const payload = {
+        ins_code: this.ins_code,
+        search:
+          this.modalUnallocationSearch === ''
+            ? ''
+            : `&search=${this.modalUnallocationSearch}`,
+        sort_check: !this.modalUnallocationSort
+          ? ''
+          : `&sort_check=${this.modalUnallocationSort}`,
+      }
+
+      await apiClassManagement
+        .getNoAssignStudent(payload)
+        .then(({ data: { data } }) => {
+          this.noAssignStudent = data
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 배정X 학생 정렬
+    onClickModalUnallocationSort(sort) {
+      this.modalUnallocationSort = sort
+    },
+    // 배정X로 이동
+    async putMoveReverseClass() {
+      const studentList = []
+
+      for (let i = 0; i < this.selectedMoveModalRightCheckbox.length; i++) {
+        const student = {
+          csm_idx: this.selectedMoveModalRightCheckbox[i].csm_idx,
+          fra_code: this.fra_code,
+          ins_code: this.ins_code,
+          itm_idx: this.selectedMoveModalRightCheckbox[i].itm_idx,
+          mem_idx: this.selectedMoveModalRightCheckbox[i].mem_idx,
+          std_idx: this.selectedMoveModalRightCheckbox[i].std_idx,
+        }
+        studentList.push(student)
+      }
+
+      const payload = {
+        moveBanDataList: studentList,
+      }
+
+      console.log('sadfasdfag', payload, this.selectedMoveModalRightCheckbox)
+
+      if (payload.moveBanDataList.length !== 0) {
+        await apiClassManagement
+          .putMoveReverseClass(payload)
+          .then(({ data: { data } }) => {
+            console.log(data)
+            this.openModalDesc('이동 성공', '반 이동을 성공했습니다.')
+            this.selectedMoveModalRightCheckbox = []
+            this.onSearchUnallocation()
+            this.getMoveClassRight()
+            this.getClassList()
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      } else {
+        this.openModalDesc('이동 실패', '이동할 학생을 선택해주세요.')
+      }
+    },
+    // 배정X 체크박스
+    onClickUnallocationCheckbox(items) {
+      if (
+        this.selectedUnallocationCheckbox.find(
+          (e) => e.mem_idx === items.mem_idx
+        )?.mem_idx === items.mem_idx
+      ) {
+        this.selectedUnallocationCheckbox =
+          this.selectedUnallocationCheckbox.filter(
+            (item) => item.mem_idx === items.mem_idx
+          )
+      } else {
+        const payload = {
+          ...items,
+        }
+        // console.log('items', items, payload)
+        this.selectedUnallocationCheckbox.push(payload)
+      }
+      console.log('asfsfsf', this.selectedUnallocationCheckbox)
+    },
+    // 배정X에서 반으로 이동
+    async onUnallocationPutMoveClass() {
+      const banList = []
+      const studentList = []
+      for (let i = 0; i < this.selectedMoveToClassCheckbox.length; i++) {
+        const ban = {
+          csm_idx: this.selectedMoveToClassCheckbox[i].csm_idx,
+          csm_name: this.selectedMoveToClassCheckbox[i].csm_name,
+        }
+        banList.push(ban)
+      }
+      for (let i = 0; i < this.selectedUnallocationCheckbox.length; i++) {
+        const student = {
+          itm_idx: this.selectedUnallocationCheckbox[i].itm_idx,
+          mem_idx: this.selectedUnallocationCheckbox[i].mem_idx,
+          std_idx: this.selectedUnallocationCheckbox[i].std_idx,
+        }
+        studentList.push(student)
+      }
+
+      const payload = {
+        ban_list: banList,
+        copy_check: false,
+        fra_code: this.fra_code,
+        ins_code: this.ins_code,
+        student_list: studentList,
+      }
+      if (payload.ban_list.length !== 0 && payload.student_list.length !== 0) {
+        await apiClassManagement
+          .putMoveClass(payload)
+          .then(({ data: { data } }) => {
+            console.log(data)
+            this.openModalDesc('이동 성공', '반 이동을 성공했습니다.')
+            this.onSearchUnallocation()
+            this.getMoveClassRight()
+            this.getClassList()
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      } else {
+        this.openModalDesc('이동 실패', '반 이동을 실패했습니다.')
+      }
     },
 
     // 체크 박스 선택 후
@@ -1449,9 +1651,19 @@ export default {
         ins_code: this.ins_code,
         student_list: studentList,
       }
-      console.log(payload)
+      console.log(this.selectedMoveToClassCheckboxRight)
 
-      if (payload.ban_list.length !== 0 && payload.student_list.length !== 0) {
+      console.log(
+        studentList.filter((x1) =>
+          banList.some((x2) => x1.mem_idx === x2.mem_idx)
+        )
+      )
+
+      if (
+        payload.ban_list.length !== 0 &&
+        payload.student_list.length !== 0 &&
+        payload === null // api 실행 막기
+      ) {
         if (
           // 이동하려는 반이 같은 반이 아닌지 체크
           studentList.filter((x1) =>
@@ -1462,6 +1674,7 @@ export default {
             .putMoveClass(payload)
             .then(({ data: { data } }) => {
               console.log(data)
+              this.openModalDesc('이동 성공', '반 이동을 성공했습니다.')
               this.getMoveClassLeft()
               this.getMoveClassRight()
               this.getClassList()
@@ -1469,7 +1682,11 @@ export default {
             .catch((err) => {
               console.log(err)
             })
+        } else {
+          this.openModalDesc('이동 실패', '반 이동을 실패했습니다.')
         }
+      } else {
+        this.openModalDesc('이동 실패', '이동할 학생과 반을 선택해주세요.')
       }
     },
 
@@ -1483,6 +1700,12 @@ export default {
     },
     // 학생 체크박스
     onClickMoveModalLeftCheckbox(items, csmIdx) {
+      console.log(
+        items.mem_idx,
+        this.selectedMoveModalLeftCheckbox.find(
+          (e) => e.mem_idx === items.mem_idx
+        )?.mem_idx
+      )
       if (
         this.selectedMoveModalLeftCheckbox.find(
           (e) => e.mem_idx === items.mem_idx
@@ -1492,6 +1715,7 @@ export default {
           this.selectedMoveModalLeftCheckbox.filter(
             (item) => item.mem_idx === items.mem_idx
           )
+        console.log('delete')
       } else {
         const payload = {
           ...items,
@@ -1658,5 +1882,11 @@ export default {
 <style scoped>
 .cursor {
   cursor: pointer;
+}
+.classroom {
+  max-width: 105px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

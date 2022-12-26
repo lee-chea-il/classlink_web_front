@@ -3002,6 +3002,29 @@
 		padding: 0 15px;
 	}
 
+	.nodata_lesson {
+		justify-content: center;
+		text-align: center;
+		align-items: center;
+		margin: 220px 0 auto;
+		position: relative;
+
+		.icons_zoom_off {
+			display: inline-block;
+			width: 18px;
+			height: 18px;
+			text-align: center;
+			vertical-align: middle;
+			background-repeat: no-repeat;
+			background-position: center center;
+			background-size: contain;
+			background-image: url(../images/icons/icon_zoom_off.svg);
+			position: absolute;
+			top: 28px;
+			left: 290px;
+		}
+	}
+
 	.row {
 		padding: 2px 0px;
 	}
@@ -3571,7 +3594,7 @@
 	}
 
 	.custom-control-label {
-		margin-top: 7px;
+		// margin-top: 7px;
 		width: 115%;
 		justify-content: left;
 		padding: 0 0 0 15px;
@@ -3658,6 +3681,7 @@
 		display: flex;
 		justify-content: center;
 		line-height: 40px;
+		align-items: center;
 	}
 
 	.custom-checkbox .custom-control-label::before {

@@ -24,7 +24,49 @@
             <div class="cnts_section">
               <!-- 이름 검색 - 왼쪽 -->
               <div class="search_std">
-                <div class="search_name">
+                <div v-if="show.allocation === 0" class="search_name">
+                  <div class="dropdown form-inline">
+                    <button
+                      class="btn dropdown-toggle"
+                      type="button"
+                      data-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      {{
+                        !unallocationSort ? '이름 내림차순' : '이름 오름차순'
+                      }}
+                    </button>
+                    <div class="dropdown-menu">
+                      <a
+                        class="dropdown-item"
+                        @click="$emit('sort-unallocation', false)"
+                        >이름 내림차순</a
+                      >
+                      <a
+                        class="dropdown-item"
+                        @click="$emit('sort-unallocation', true)"
+                        >이름 오름차순</a
+                      >
+                    </div>
+                  </div>
+                  <div class="input-group input-search form-inline">
+                    <input
+                      v-model="syncUnallocationSearch"
+                      type="text"
+                      placeholder="학생 이름 검색"
+                      class="form-control"
+                      @keyup.enter="$emit('search-unallocation')"
+                    />
+                    <div class="input-group-append">
+                      <button
+                        class="btn icons_search_off"
+                        type="button"
+                        @click="$emit('search-unallocation')"
+                      ></button>
+                    </div>
+                  </div>
+                </div>
+                <div v-else class="search_name">
                   <div class="dropdown form-inline">
                     <button
                       class="btn dropdown-toggle"
@@ -116,6 +158,8 @@
                                   :id="`move1${idx}`"
                                   type="checkbox"
                                   class="custom-control-input"
+                                  :checked="unallocationCheckbox.includes(item)"
+                                  @input="$emit('unallocation-check', item)"
                                 />
                                 <!-- :checked="leftCheckbox.includes(items)"
                                   @input="
@@ -131,7 +175,9 @@
                                 ></label>
                               </div>
                             </td>
-                            <td class="td02">{{ item.std_year }}</td>
+                            <td class="td02">
+                              {{ item.std_year === null ? '-' : item.std_year }}
+                            </td>
                             <td class="td03">{{ item.mem_name }}</td>
                             <td class="td04">{{ item.mem_phone }}</td>
                           </tr>
@@ -163,7 +209,7 @@
                                   type="checkbox"
                                   class="custom-control-input"
                                   :checked="moveClassCheckboxRight === idx"
-                                  @input="$emit('move-to-class-right', item)"
+                                  @input="$emit('move-class-right', item)"
                                 />
                                 <label
                                   class="custom-control-label"
@@ -240,10 +286,22 @@
                 </div>
                 <!-- [개발참조]toasts 메세지 '이동할 반을 선택해주세요.'' : 아무런 반을 체크하지 않고 누르면 -->
                 <button
+                  v-if="show.allocation === 0"
+                  class="btn btn_arrow_square2_r"
+                  @click="$emit('move-unallocation-student')"
+                ></button>
+                <button
+                  v-else
                   class="btn btn_arrow_square2_r"
                   @click="$emit('move-student', true)"
                 ></button>
                 <button
+                  v-if="show.allocation === 0"
+                  class="btn btn_arrow_square2_l"
+                  @click="$emit('move-unallocation')"
+                ></button>
+                <button
+                  v-else
                   class="btn btn_arrow_square2_l"
                   @click="$emit('move-student', false)"
                 ></button>
@@ -316,7 +374,7 @@
                                 type="checkbox"
                                 class="custom-control-input"
                                 :checked="moveClassCheckbox === idx"
-                                @input="$emit('move-to-class', item)"
+                                @input="$emit('move-class', item)"
                               />
                               <label
                                 class="custom-control-label"
@@ -324,7 +382,9 @@
                               ></label>
                             </div>
                           </th>
-                          <th colspan="2">{{ item.csm_name }}</th>
+                          <th class="classroom" colspan="2">
+                            {{ item.csm_name }}
+                          </th>
                           <th>
                             <button
                               id="showStudents01"
@@ -332,7 +392,7 @@
                               :class="{ active: idx === moveDetail }"
                               @click="$emit('open-detail', idx)"
                             >
-                              펴기
+                              {{ idx === moveDetail ? '접기' : '펴기' }}
                             </button>
                           </th>
                         </tr>
@@ -348,12 +408,12 @@
                         <tbody>
                           <!-- 반 소속 학생리스트 -->
                           <div class="list_class_students">
-                            <colgroup>
+                            <!-- <colgroup>
                               <col width="10%" />
                               <col width="30%" />
                               <col width="25%" />
                               <col width="100%" />
-                            </colgroup>
+                            </colgroup> -->
                             <tr
                               v-for="(items, id) in item?.studentList"
                               :key="id"
@@ -382,7 +442,7 @@
                                 </div>
                               </td>
                               <td class="text-right">
-                                <i v-if="items.new" class="icons_new"></i>
+                                <i v-if="false" class="icons_new"></i>
                                 {{ items.std_year }}
                               </td>
                               <td>{{ items.mem_name }}</td>
@@ -476,6 +536,18 @@ export default {
       type: Object,
       default: () => {},
     },
+    unallocationSearch: {
+      type: String,
+      default: '',
+    },
+    unallocationSort: {
+      type: Boolean,
+      default: false,
+    },
+    unallocationCheckbox: {
+      type: Array,
+      default: () => [],
+    },
   },
   computed: {
     syncLeftSearch: {
@@ -494,6 +566,14 @@ export default {
         this.$emit('update:rightSearch', value)
       },
     },
+    syncUnallocationSearch: {
+      get() {
+        return this.unallocationSearch
+      },
+      set(value) {
+        this.$emit('update:unallocationSearch', value)
+      },
+    },
   },
 }
 </script>
@@ -505,5 +585,12 @@ export default {
 }
 .modal_ac_manage_cls .search_std .table_area .table_tbody {
   height: 100%;
+}
+
+.classroom {
+  max-width: 52px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

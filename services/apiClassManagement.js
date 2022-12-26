@@ -70,10 +70,24 @@ async function putMoveClass(payload) {
     payload
   )
 }
+// 반관리 반 역이동(배정X로 이동)
+async function putMoveReverseClass(payload) {
+  return await http.put(
+    `/api/v1/management/operation/class/move-reverse-class`,
+    payload
+  )
+}
 // 반관리 배정X 학생 검색
 async function getNoAssignStudent(payload) {
   return await http.get(
     `/api/v1/management/operation/class/no-assign-student?ins_code=${payload.ins_code}${payload.search}${payload.sort_check}`
+  )
+}
+
+// 반관리 목록 이동
+async function getChangeOrder(payload) {
+  return await http.get(
+    `/api/v1/management/operation/class/change-order?csm_display_no=${payload.csm_display_no}&csm_idx=${payload.csm_idx}&update_order_no=${payload.update_order_no}`
   )
 }
 
@@ -87,9 +101,11 @@ const apiClassManagement = {
   putUpdClass,
   deleteClassList,
   postClassCopy,
-  putMoveClass,
   getMoveClass,
+  putMoveClass,
+  putMoveReverseClass,
   getNoAssignStudent,
+  getChangeOrder,
 }
 
 export default apiClassManagement

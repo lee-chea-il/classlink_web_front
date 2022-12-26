@@ -1690,6 +1690,7 @@ ol {
   box-shadow: none;
   border-radius: 5px;
   border-color: rgba(167, 169, 172, 0.4);
+  background: #fff;
 }
 .dropdown .dropdown-toggle::after {
   border: none;
@@ -4699,6 +4700,27 @@ ol {
   border-radius: 5px;
   padding: 0 15px;
 }
+#modalLessonView .nodata_lesson {
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  margin: 220px 0 auto;
+  position: relative;
+}
+#modalLessonView .nodata_lesson .icons_zoom_off {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icons/icon_zoom_off.svg);
+  position: absolute;
+  top: 28px;
+  left: 290px;
+}
 #modalLessonView .row {
   padding: 2px 0px;
 }
@@ -5133,7 +5155,6 @@ ol {
   margin-left: -23px;
 }
 #modalCuriRegi .custom-control-label {
-  margin-top: 7px;
   width: 115%;
   justify-content: left;
   padding: 0 0 0 15px;
@@ -5211,6 +5232,7 @@ ol {
   display: flex;
   justify-content: center;
   line-height: 40px;
+  align-items: center;
 }
 #modalCuriRegi .custom-checkbox .custom-control-label::before {
   border-radius: 0.25rem;

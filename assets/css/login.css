@@ -1689,6 +1689,7 @@ ol {
   box-shadow: none;
   border-radius: 5px;
   border-color: rgba(167, 169, 172, 0.4);
+  background: #fff;
 }
 .dropdown .dropdown-toggle::after {
   border: none;

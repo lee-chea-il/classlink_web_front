@@ -1690,6 +1690,7 @@ ol {
   box-shadow: none;
   border-radius: 5px;
   border-color: rgba(167, 169, 172, 0.4);
+  background: #fff;
 }
 .dropdown .dropdown-toggle::after {
   border: none;
@@ -1943,6 +1944,9 @@ ol {
 /*---------------------------------------*/
 /* 학원관리-2.수업-(1)강의코스:강의계획서,과제함,노트함 */
 /* 수업-강의코스.html */
+.ac_manage_course .course_more {
+  padding-top: 120px !important;
+}
 .ac_manage_course .course_tit {
   font-style: normal;
   font-weight: 700;
@@ -1960,7 +1964,7 @@ ol {
   font-weight: 400;
   font-size: 12px;
   line-height: 17px;
-  margin: 5px 0;
+  margin-top: 5px;
 }
 .ac_manage_course .cards_section .course_bgcolor01 {
   background: #D1DBFF;
@@ -1977,10 +1981,13 @@ ol {
 }
 .ac_manage_course .cards_section .card {
   width: 220px;
-  height: 230px;
+  height: 190px;
   margin: 22px 14px;
   justify-content: center;
   overflow-y: auto;
+}
+.ac_manage_course .cards_section .card.standby::before {
+  height: 188px;
 }
 .ac_manage_course .course_bgcolor02 {
   background: #E7EDFF;
@@ -1998,6 +2005,21 @@ ol {
 .ac_manage_course .course_line .input-search {
   width: 20%;
   margin-left: auto;
+}
+.ac_manage_course .standby_font {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 23px;
+  margin-left: 15px;
+  margin-top: 20px;
+}
+.ac_manage_course .standby_set02 {
+  display: flex;
+}
+.ac_manage_course .cards_section02 {
+  display: flex;
+  overflow-x: scroll;
+  width: 100%;
 }
 
 /* 수업-강의코스-강의계획서.html */
