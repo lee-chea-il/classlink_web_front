@@ -106,22 +106,28 @@ export default {
       this.$emit('preview', e, idx)
     },
     isShowBtn(iden, type) {
-      const isT = iden === 'teacher'
-      if (
-        (isT && type === 'myData') ||
-        (!isT && (type === 'myData' || type === 'institution'))
-      )
-        return {
-          delete: true,
-          perse: true,
-          change: true,
-        }
-      else
-        return {
-          delete: false,
-          perse: true,
-          change: false,
-        }
+      // const isT = iden === 'teacher'
+      // if (
+      //   (isT && type === 'myData') ||
+      //   (!isT && (type === 'myData' || type === 'institution'))
+      // )
+      //   return {
+      //     delete: true,
+      //     perse: true,
+      //     change: true,
+      //   }
+      // else
+      //   return {
+      //     delete: false,
+      //     perse: true,
+      //     change: false,
+      //   }
+
+      return {
+        delete: true,
+        perse: true,
+        change: true,
+      }
     },
   },
 }

@@ -25,9 +25,10 @@
             <!-- 오른쪽 SECTION -->
             <RightSection
               ref="rightSection"
-              :dataList="myCurriculumList"
+              :curriculumList="newCurriculumList"
               @remove-active="removeActiveStyle"
             />
+            <!-- :curriculumList="myCurriculumList" -->
             <!-- 오른쪽 SECTION -->
           </div>
         </div>
@@ -74,9 +75,15 @@ export default {
       default: () => [],
     },
   },
+  data() {
+    return {
+      newCurriculumList: [],
+    }
+  },
   methods: {
     plusEventClick(copyData) {
       isAddActiveStype = true
+      console.log(copyData)
       this.$refs.rightSection.$refs.myCurriculum.pasteData(copyData)
       this.$emit('add-curriculum', copyData)
     },
@@ -86,6 +93,9 @@ export default {
         this.$refs.leftSection.$refs.curriculum.resetActiveStyle()
         this.$refs.rightSection.$refs.myCurriculum.resetActiveStyle()
       }
+    },
+    setData(curriculumData) {
+      this.$refs.rightSection.$refs.myCurriculum.setDataList(curriculumData)
     },
   },
 }

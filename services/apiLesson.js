@@ -2,12 +2,12 @@ import http from './http'
 
 const getLesson = async (pl) => {
   return await http.get(
-    `/api/v1/prepare-class/lesson/${pl.id}?datatable_type=${pl.datatable_type}`
+    `/api/v1/prepare-class/lesson/?lesson_idx=${pl.lesson_idx}&datatable_type=${pl.datatable_type}`
   )
 }
 
-const updateLesson = async (idx, data) => {
-  return await http.put(`/api/v1/prepare-class/lesson/${idx}`, data)
+const updateLesson = async (data) => {
+  return await http.put(`/api/v1/prepare-class/lesson`, data)
 }
 
 const postLesson = async (data) => {

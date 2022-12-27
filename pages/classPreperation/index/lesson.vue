@@ -2,7 +2,9 @@
   <div>
     <PageHeader title="레슨" />
 
-    <div class="tab-content depth03 ac_manage_dtr">
+    <LoadingBox v-if="isLoading" />
+
+    <div v-else class="tab-content depth03 ac_manage_dtr">
       <div class="tab-pane active">
         <!-- 컨트롤 버튼 영역 -->
         <MainBtnBox
@@ -219,7 +221,13 @@
     />
 
     <!-- 자료실 삭제 모달 -->
-    <DeleteModal :open="isSelectModal.open" @close="onCloseSelectModal" />
+    <DeleteModal
+      :open="isSelectModal.open"
+      :target="isSelectModal.prevPage"
+      :data="selectReferenceItem"
+      @close="onCloseSelectModal"
+      @submit="deleteData"
+    />
 
     <!-- 레슨 저장경로 모달 -->
     <SavePathModal
@@ -275,6 +283,7 @@ import initialState from '~/data/common/lesson/initialState'
 import { setNewArray, jsonItem } from '~/utiles/common'
 import { api, apiData, apiLesson } from '~/services'
 import ModalDesc from '~/components/common/modal/ModalDesc.vue'
+import LoadingBox from '~/components/common/LoadingBox.vue'
 
 export default {
   name: 'LessonPage',
@@ -297,6 +306,7 @@ export default {
     PreviewQuizModal,
     PreviewNoteTestModal,
     ModalDesc,
+    LoadingBox,
   },
   layout: 'EducationLayout',
   data() {
@@ -322,13 +332,12 @@ export default {
     },
 
     // 선택한 레슨 가져오기
-    getLessonData({ id, datatable_type }) {
-      const payload = { id, datatable_type }
+    getLessonData({ lesson_idx, datatable_type }) {
+      const payload = { lesson_idx, datatable_type }
       apiLesson
         .getLesson(payload)
         .then(({ data: { data } }) => {
           this.lessonViewData = { ...data, keyword: data.keyword.split(',') }
-          // console.log(data.datarooms)
           const newDatarooms = data.datarooms.map((item) =>
             Object.assign({
               ...item,
@@ -370,7 +379,7 @@ export default {
         keyword: keyword.join(','),
       }
       apiLesson
-        .updateLesson(rest.lesson_idx, payload)
+        .updateLesson(payload)
         .then(() => {
           this.isAddLesson = false
           this.openModalDesc('수정 성공', '레슨을 수정했습니다.')
@@ -381,9 +390,9 @@ export default {
     },
 
     // 레슨 삭제
-    deleteLesson(id) {
+    deleteLesson(data) {
       apiLesson
-        .deleteLesson(id)
+        .deleteLesson(data)
         .then((res) => {
           console.log(res)
         })
@@ -412,8 +421,8 @@ export default {
 
     // 파일 조회
     // 동영상, PDF, YOUTUBE, URL 조회
-    getDataroomFile({ id, type }) {
-      const payload = { id, datatable_type: type }
+    getDataroomFile({ dataroom_idx, type }) {
+      const payload = { dataroom_idx, datatable_type: type }
       apiData
         .getDataroomFile(payload)
         .then(({ data: { data } }) => {
@@ -429,8 +438,8 @@ export default {
     },
 
     // 퀴즈 조회
-    getDataroomQuiz({ id, type }) {
-      const payload = { id, datatable_type: type }
+    getDataroomQuiz({ dataroom_idx, type }) {
+      const payload = { dataroom_idx, datatable_type: type }
       apiData
         .getDataroomQuiz(payload)
         .then(({ data: { data } }) => {
@@ -446,8 +455,8 @@ export default {
     },
 
     // 쪽지시험 조회
-    getDataroomNoteExam({ id, type }) {
-      const payload = { id, datatable_type: type }
+    getDataroomNoteExam({ dataroom_idx, type }) {
+      const payload = { dataroom_idx, datatable_type: type }
       apiData
         .getDataroomNoteExam(payload)
         .then(({ data: { data } }) => {
@@ -465,7 +474,10 @@ export default {
     // 자료 유형별 핸들러
     selectDataroomType(type, data) {
       console.log(data)
-      const payload = { id: data.dataroom_idx, type: data.datatable_type }
+      const payload = {
+        dataroom_idx: data.dataroom_idx,
+        type: data.datatable_type,
+      }
       if (type === '03') return this.getDataroomQuiz(payload)
       else if (type === '04') return this.getDataroomNoteExam(payload)
       else return this.getDataroomFile(payload)
@@ -473,105 +485,73 @@ export default {
 
     // 파일 수정
     // 동영상, PDF, YOUTUBE, URL 수정
-    updateDataroomFile({ category, datatable_type }) {
-      const payload = { id: category, datatable_type }
-
-      const { note_exam, quiz, thumbnail, ...rest } = this.selectReferenceItem
-      console.log(note_exam, quiz, thumbnail)
+    updateDataroomFile() {
+      const { thumbnail, ...rest } = this.selectReferenceItem
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
       }
       apiData
-        .updateDataroomFile(payload, data)
+        .updateDataroomFile(data)
         .then((res) => {
           this.isReferenceAddModal.open = false
           this.uploadInfo.saveFolderPath = ''
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
+          console.log(thumbnail)
         })
     },
 
     // 퀴즈 수정
-    updateDataroomQuiz({ category, datatable_type }) {
-      const payload = { id: category, datatable_type }
-      const { note_exam, thumbnail, ...rest } = this.selectReferenceItem
-      console.log(note_exam, thumbnail)
+    updateDataroomQuiz() {
+      const { thumbnail, ...rest } = this.selectReferenceItem
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
       }
       apiData
-        .updateDataroomQuiz(payload, data)
-        .then((res) => {
+        .updateDataroomQuiz(data)
+        .then(() => {
           this.isQuizAddModal.open = false
           this.uploadInfo.saveFolderPath = ''
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
+          console.log(thumbnail)
         })
     },
 
     // 쪽지 시험 수정
-    updateDataroomNoteExam({ category, datatable_type }) {
-      const payload = { id: category, datatable_type }
-      const { note_exam, thumbnail, ...rest } = this.selectReferenceItem
-      console.log(note_exam, thumbnail)
+    updateDataroomNoteExam() {
+      const { thumbnail, ...rest } = this.selectReferenceItem
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
       }
       apiData
-        .updateDataroomNoteExam(payload, data)
+        .updateDataroomNoteExam(data)
         .then((res) => {
           this.isNoteTestAddModal.open = false
           this.uploadInfo.saveFolderPath = ''
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
+          console.log(thumbnail)
         })
     },
 
     // 파일 삭제
-    // 동영상, PDF, YOUTUBE, URL 삭제
-    deleteDataroomFile({ category, datatable_type }) {
-      const payload = { id: category, datatable_type }
+    // 파일 삭제
+    deleteData({ dataroom_idx, datatable_type }) {
+      const payload = {
+        dataroom_idx,
+        datatable_type,
+      }
       apiData
-        .deleteDataroomFile(payload)
+        .deleteData(payload)
         .then((res) => {
           console.log(res)
-          this.isSelectModal.open = false
-          this.openModalDesc('삭제 성공', '자료를 삭제했습니다.')
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
-
-    // 퀴즈 삭제
-    deleteDataroomQuiz({ category, datatable_type }) {
-      const payload = { id: category, datatable_type }
-      apiData
-        .deleteDataroomQuiz(payload)
-        .then(() => {
-          this.isSelectModal.open = false
-          this.openModalDesc('삭제 성공', '자료를 삭제했습니다.')
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
-
-    // 쪽지 시험 삭제
-    deleteDataroomNoteExam({ category, datatable_type }) {
-      const payload = { id: category, datatable_type }
-      apiData
-        .deleteDataroomNoteExam(payload)
-        .then(() => {
           this.isSelectModal.open = false
           this.openModalDesc('삭제 성공', '자료를 삭제했습니다.')
         })
@@ -1192,7 +1172,7 @@ export default {
 
     // 쪽지시험 예제 추가
     plusExampleList(idx) {
-      const id = this.referenceData.note_exam[idx].ask_view.length + 1
+      const id = this.selectReferenceItem.note_exam[idx].ask_view.length + 1
       const example = { no: id, example: '' }
       this.selectReferenceItem.note_exam[idx].ask_view.push(example)
     },

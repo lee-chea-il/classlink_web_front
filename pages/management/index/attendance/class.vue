@@ -161,7 +161,7 @@
               <div class="ac_manage">
                 <div class="calendar">
                   <div class="info_area">
-                    <div class="class_name">
+                    <div class="name">
                       {{ selectedClass.class }}
                       <span class="ss_txt">
                         {{ selectedClass.student.length }}명

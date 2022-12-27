@@ -1,7 +1,10 @@
 <template>
   <div>
     <PageHeader title="자료실" />
-    <div class="tab-content depth03 ac_manage_dtr">
+
+    <LoadingBox v-if="isLoading" />
+
+    <div v-else class="tab-content depth03 ac_manage_dtr">
       <div class="tab-pane active">
         <!-- 컨트롤 버튼 영역 -->
         <MainBtnBox
@@ -40,7 +43,6 @@
     <!-- 일반용 -->
     <!-- 등록 파일 선택 -->
     <SelectReferenceModal
-      :selectDataType="selectDataType"
       @add-quiz="onOpenQuizAddModal"
       @add-test="onOpenNoteTestAddModal"
       @set-type="setUploadType"
@@ -215,9 +217,7 @@
       :target="isSelectModal.prevPage"
       :data="referenceData"
       @close="onCloseSelectModal"
-      @delete-file="deleteDataroomFile"
-      @delete-quiz="deleteDataroomQuiz"
-      @delete-test="deleteDataroomNoteExam"
+      @submit="deleteData"
     />
 
     <!-- 설명 모달 -->
@@ -274,6 +274,7 @@
     />
 
     <CustomSnackbar :show="isSnackbar.open" :message="isSnackbar.message" />
+    <UploadLoadingBox v-if="isUploading" />
   </div>
 </template>
 
@@ -307,6 +308,7 @@ import UploadVideoFileModal from '~/components/franchise/modal/UploadVideoFileMo
 import initialState from '~/data/common/dataRoom/initialState'
 import { api, apiData } from '~/services'
 import { urlRegex, setNewArray, jsonItem } from '~/utiles/common'
+import LoadingBox from '~/components/common/LoadingBox.vue'
 
 export default {
   name: 'FranchiseReference',
@@ -334,27 +336,24 @@ export default {
     SelectReferenceModal,
     UploadYoutubeModal,
     UploadVideoFileModal,
-  },
+    LoadingBox
+},
   data() {
     return initialState()
   },
   mounted() {
     this.getServerUrl()
     this.identity = localStorage.getItem('identity')
-    this.userInfo = this.$store.state.common.user
-    this.referenceData = {
-      ...this.referenceData,
-      fra_code: this.$store.state.common.user.fra_code,
-      ins_code: this.$store.state.common.user.ins_code,
-      registrant: this.userInfo.mem_idx,
-      registrant_name: this.userInfo.mem_name,
-    }
+    const user = this.$store.state.common.user
     this.initReferenceData = {
       ...this.initReferenceData,
-      fra_code: this.$store.state.common.user.fra_code,
-      ins_code: this.$store.state.common.user.ins_code,
-      registrant: this.userInfo.mem_idx,
-      registrant_name: this.userInfo.mem_name,
+      fra_code: user.fra_code,
+      ins_code: user.ins_code,
+      registrant: user.mem_idx,
+      registrant_name: user.mem_name,
+    }
+    this.referenceData = {
+      ...this.initReferenceData,
     }
   },
   methods: {
@@ -375,11 +374,12 @@ export default {
 
     // api 통신
     // 업로드 주소 가져오기
-    async getServerUrl() {
-      return await apiData
+    getServerUrl() {
+      this.isLoading = true
+      apiData
         .getServerUrl()
-        .then((res) => {
-          console.log(res)
+        .then(() => {
+          this.isLoading = false
         })
         .catch((err) => {
           console.log(err)
@@ -388,6 +388,7 @@ export default {
 
     // 파일서버 업로드
     postFile(file) {
+      this.isUploading = true
       const formData = new FormData()
       formData.append('file', file)
       api
@@ -398,18 +399,18 @@ export default {
           $('#modalDataregi02').modal('hide')
           this.getFileSize(`http://112.171.101.31:45290/file/${data}`)
           this.onOpenReferenceAddModal()
+          this.isUploading = false
         })
         .catch((err) => {
           console.log(err)
-          return false
+          this.isUploading = false
         })
     },
 
     // 파일 업로드
     // 동영상, PDF, YOUTUBE, URL 업로드
     postDataroomFile() {
-      const { note_exam, quiz, thumbnail, ...rest } = this.referenceData
-      // console.log(note_exam, quiz, thumbnail)
+      const { thumbnail, ...rest } = this.referenceData
       const payload = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -421,14 +422,14 @@ export default {
           this.openModalDesc('등록 성공', '자료를 등록했습니다.')
         })
         .catch(() => {
+          console.log(thumbnail)
           this.openModalDesc('등록 실패', '자료 등록을 실패했습니다.')
         })
     },
 
     // 퀴즈 업로드
     postDataroomQuiz() {
-      const { note_exam, thumbnail, ...rest } = this.referenceData
-      console.log(note_exam, thumbnail)
+      const { thumbnail, ...rest } = this.referenceData
       const payload = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -440,14 +441,14 @@ export default {
           this.openModalDesc('등록 성공', '자료를 등록했습니다.')
         })
         .catch(() => {
+          console.log(thumbnail)
           this.openModalDesc('등록 실패', '자료 등록을 실패했습니다.')
         })
     },
 
     // 쪽지시험 업로드
     postDataroomNoteExam() {
-      const { quiz, thumbnail, ...rest } = this.referenceData
-      console.log(quiz, thumbnail)
+      const { thumbnail, ...rest } = this.referenceData
       const payload = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -459,14 +460,15 @@ export default {
           this.openModalDesc('등록 성공', '자료를 등록했습니다.')
         })
         .catch(() => {
+          console.log(thumbnail)
           this.openModalDesc('등록 실패', '자료 등록을 실패했습니다.')
         })
     },
 
     // 파일 조회
     // 동영상, PDF, YOUTUBE, URL 조회
-    getDataroomFile({ id, type }) {
-      const payload = { id, datatable_type: type }
+    getDataroomFile({ dataroom_idx, type }) {
+      const payload = { dataroom_idx, datatable_type: type }
       apiData
         .getDataroomFile(payload)
         .then(({ data: { data } }) => {
@@ -482,8 +484,8 @@ export default {
     },
 
     // 퀴즈 조회
-    getDataroomQuiz({ id, type }) {
-      const payload = { id, datatable_type: type }
+    getDataroomQuiz({ dataroom_idx, type }) {
+      const payload = { dataroom_idx, datatable_type: type }
       apiData
         .getDataroomQuiz(payload)
         .then(({ data: { data } }) => {
@@ -499,8 +501,8 @@ export default {
     },
 
     // 쪽지시험 조회
-    getDataroomNoteExam({ id, type }) {
-      const payload = { id, datatable_type: type }
+    getDataroomNoteExam({ dataroom_idx, type }) {
+      const payload = { dataroom_idx, datatable_type: type }
       apiData
         .getDataroomNoteExam(payload)
         .then(({ data: { data } }) => {
@@ -517,7 +519,10 @@ export default {
 
     // 자료 유형별 핸들러
     selectDataroomType(type, data) {
-      const payload = { id: data.id, type: data.datatable_type }
+      const payload = {
+        dataroom_idx: data.dataroom_idx,
+        type: data.datatable_type,
+      }
       if (type === '03') return this.getDataroomQuiz(payload)
       else if (type === '04') return this.getDataroomNoteExam(payload)
       else return this.getDataroomFile(payload)
@@ -525,102 +530,72 @@ export default {
 
     // 파일 수정
     // 동영상, PDF, YOUTUBE, URL 수정
-    updateDataroomFile({ category, datatable_type }) {
-      const payload = { id: category, datatable_type }
-
-      const { note_exam, quiz, thumbnail, ...rest } = this.referenceData
-      console.log(note_exam, quiz, thumbnail)
+    updateDataroomFile() {
+      const { thumbnail, ...rest } = this.referenceData
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
       }
       apiData
-        .updateDataroomFile(payload, data)
-        .then((res) => {
+        .updateDataroomFile(data)
+        .then(() => {
           this.onCloseReferenceAddModal()
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
         .catch((err) => {
+          console.log(thumbnail)
           console.log(err)
         })
     },
 
     // 퀴즈 수정
-    updateDataroomQuiz({ category, datatable_type }) {
-      const payload = { id: category, datatable_type }
-      const { note_exam, thumbnail, ...rest } = this.referenceData
-      console.log(note_exam, thumbnail)
+    updateDataroomQuiz() {
+      const { thumbnail, ...rest } = this.referenceData
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
       }
       apiData
-        .updateDataroomQuiz(payload, data)
-        .then((res) => {
+        .updateDataroomQuiz(data)
+        .then(() => {
           this.onCloseQuizAddModal()
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
         .catch((err) => {
+          console.log(thumbnail)
           console.log(err)
         })
     },
 
     // 쪽지 시험 수정
-    updateDataroomNoteExam({ category, datatable_type }) {
-      const payload = { id: category, datatable_type }
-      const { note_exam, thumbnail, ...rest } = this.referenceData
-      console.log(note_exam, thumbnail)
+    updateDataroomNoteExam() {
+      const { thumbnail, ...rest } = this.referenceData
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
       }
       apiData
-        .updateDataroomNoteExam(payload, data)
-        .then((res) => {
+        .updateDataroomNoteExam(data)
+        .then(() => {
           this.onCloseNoteTestAddModal()
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
         .catch((err) => {
+          console.log(thumbnail)
           console.log(err)
         })
     },
 
     // 파일 삭제
-    // 동영상, PDF, YOUTUBE, URL 삭제
-    deleteDataroomFile({ category, datatable_type }) {
-      const payload = { id: category, datatable_type }
+    deleteData({ dataroom_idx, datatable_type }) {
+      const payload = {
+        dataroom_idx,
+        datatable_type,
+      }
       apiData
-        .deleteDataroomFile(payload)
+        .deleteData(payload)
         .then((res) => {
           console.log(res)
-          this.isSelectModal.open = false
-          this.openModalDesc('삭제 성공', '자료를 삭제했습니다.')
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
-
-    // 퀴즈 삭제
-    deleteDataroomQuiz({ category, datatable_type }) {
-      const payload = { id: category, datatable_type }
-      apiData
-        .deleteDataroomQuiz(payload)
-        .then(() => {
-          this.isSelectModal.open = false
-          this.openModalDesc('삭제 성공', '자료를 삭제했습니다.')
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
-
-    // 쪽지 시험 삭제
-    deleteDataroomNoteExam({ category, datatable_type }) {
-      const payload = { id: category, datatable_type }
-      apiData
-        .deleteDataroomNoteExam(payload)
-        .then(() => {
           this.isSelectModal.open = false
           this.openModalDesc('삭제 성공', '자료를 삭제했습니다.')
         })
@@ -696,6 +671,7 @@ export default {
         datatable_type: 'ID',
         category: '03',
         fileSize: '0',
+        quiz: [{ ...this.quizItem }],
       }
       this.referenceData.createAt = new Date()
       document.getElementById('referenceSelectClose').click()
@@ -715,6 +691,7 @@ export default {
         datatable_type: 'ID',
         category: '04',
         fileSize: '0',
+        note_exam: [{ ...this.testItem }],
       }
       document.getElementById('referenceSelectClose').click()
       this.isNoteTestAddModal = true

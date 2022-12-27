@@ -16,7 +16,7 @@ const getServerUrl = async () => {
 // 자료 등록
 // 동영상, PDF, 유튜브, URL 등록
 const postDataroomFile = async (data) => {
-  return await http.post('/api/v1/prepare-class/dataroom/file', data)
+  return await http.post('/api/v1/prepare-class/dataroom/data', data)
 }
 
 // 퀴즈 등록
@@ -33,69 +33,44 @@ const postDataroomNoteExam = async (data) => {
 // 동영상, PDF, 유튜브,URL 조회
 const getDataroomFile = async (payload) => {
   return await http.get(
-    `/api/v1/prepare-class/dataroom/file/${payload.id}?datatable_type=${payload.datatable_type}`
+    `/api/v1/prepare-class/dataroom/data/?dataroom_idx=${payload.dataroom_idx}&datatable_type=${payload.datatable_type}`
   )
 }
 
 // 퀴즈 조회
 const getDataroomQuiz = async (payload) => {
   return await http.get(
-    `/api/v1/prepare-class/dataroom/quiz/${payload.id}?datatable_type=${payload.datatable_type}`
+    `/api/v1/prepare-class/dataroom/quiz?dataroom_idx=${payload.dataroom_idx}&datatable_type=${payload.datatable_type}`
   )
 }
 
 // 쪽지시험 조회
 const getDataroomNoteExam = async (payload) => {
   return await http.get(
-    `/api/v1/prepare-class/dataroom/note-exam/${payload.id}?datatable_type=${payload.datatable_type}`
+    `/api/v1/prepare-class/dataroom/note-exam?dataroom_idx=${payload.dataroom_idx}&datatable_type=${payload.datatable_type}`
   )
 }
 
 // 자료 수정
 // 동영상, PDF, 유튜브,URL 수정
-const updateDataroomFile = async (payload, data) => {
-  return await http.patch(
-    `/api/v1/prepare-class/dataroom/file/${payload.id}?datatable_type=${payload.datatable_type}`,
-    data
-  )
+const updateDataroomFile = async (data) => {
+  return await http.put(`/api/v1/prepare-class/dataroom/data`, data)
 }
 
 // 퀴즈 수정
-const updateDataroomQuiz = async (payload, data) => {
-  return await http.patch(
-    `/api/v1/prepare-class/dataroom/quiz/${payload.id}?datatable_type=${payload.datatable_type}`,
-    data
-  )
+const updateDataroomQuiz = async (data) => {
+  return await http.put(`/api/v1/prepare-class/dataroom/quiz`, data)
 }
 
 // 쪽지시험 수정
-const updateDataroomNoteExam = async (payload, data) => {
-  return await http.patch(
-    `/api/v1/prepare-class/dataroom/note-exam/${payload.id}?datatable_type=${payload.datatable_type}`,
-    data
-  )
+const updateDataroomNoteExam = async (data) => {
+  return await http.put(`/api/v1/prepare-class/dataroom/note-exam`, data)
 }
 
 // 자료 삭제
-// 동영상, PDF, 유튜브,URL 삭제
-const deleteDataroomFile = async (payload) => {
-  return await http.delete(
-    `/api/v1/prepare-class/dataroom/file/${payload.id}?datatable_type=${payload.datatable_type}`
-  )
-}
-
-// 퀴즈 삭제
-const deleteDataroomQuiz = async (payload) => {
-  return await http.delete(
-    `/api/v1/prepare-class/dataroom/quiz/${payload.id}?datatable_type=${payload.datatable_type}`
-  )
-}
-
-// 쪽지시험 삭제
-const deleteDataroomNoteExam = async (payload) => {
-  return await http.delete(
-    `/api/v1/prepare-class/dataroom/note-exam/${payload.id}?datatable_type=${payload.datatable_type}`
-  )
+// 자료 수정 All
+const deleteData = async (data) => {
+  return await http.delete('/api/v1/prepare-class/dataroom/data', { data })
 }
 
 const apiData = {
@@ -113,9 +88,7 @@ const apiData = {
   updateDataroomQuiz,
   updateDataroomNoteExam,
 
-  deleteDataroomFile,
-  deleteDataroomQuiz,
-  deleteDataroomNoteExam,
+  deleteData,
 }
 
 export default apiData

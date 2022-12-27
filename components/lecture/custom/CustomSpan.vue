@@ -1,7 +1,8 @@
 <template>
   <td class="spred_text">
     <span v-for="(data, index) in dataList" :key="index">
-      {{ data.name }} {{ spareList[0]?.name }}
+      {{ isClass ? data.name : data.name }}
+      {{ isClass ? '' : spareList[0]?.name }}
     </span>
   </td>
 </template>
@@ -17,6 +18,10 @@ export default {
     spareList: {
       type: Array,
       default: () => [],
+    },
+    isClass: {
+      type: Boolean,
+      default: false,
     },
   },
 }

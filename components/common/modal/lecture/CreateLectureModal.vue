@@ -17,6 +17,7 @@
               :teacherList="teacherList"
               :lectureInfo="lectureInfo"
               :searchValue="searchData.teacher"
+              @filter-teacher="$emit('filter-teacher', $event)"
               @clear-teacher="$emit('clear-teacher')"
               @change-input="$emit('change-input', $event)"
               @show-menu="$emit('show-menu', $event)"
@@ -69,12 +70,12 @@ export default {
   methods: {
     isDisabled(obj) {
       if (
-        obj.name !== '' &&
-        obj.teacher.length > 0 &&
-        obj.className.length > 0
-      ) {
+        obj.title !== '' &&
+        obj.homeroom_teacher.length > 0 &&
+        obj.classroom.length > 0
+      )
         return false
-      } else return true
+      else return true
     },
   },
 }

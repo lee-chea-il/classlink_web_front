@@ -1,0 +1,19 @@
+{
+  "assigned_curriculum": [{}],
+  "assistant_teacher": [{ "idx": 0 }],
+  "classroom": [{ "idx": 0 }],
+  "curriculum": [{ "curriculum_idx": 0, "datatable_type": "string" }],
+  "homeroom_teacher": [{ "idx": 0 }],
+  "image": "string",
+  "timetable": {
+    "after_end_class_exit_time": 0,
+    "before_start_class_alarm_time": 0,
+    "curriculum_assigned": [{}],
+    "end_date": "string",
+    "end_time": "string",
+    "start_date": "string",
+    "start_time": "string",
+    "weeks": [true]
+  },
+  "title": "string"
+}

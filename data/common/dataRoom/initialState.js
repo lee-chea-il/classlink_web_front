@@ -2,12 +2,13 @@ export default function initialState() {
   return {
     currentPageIdx: 0,
     // category: '',
+    isLoading: true,
+    isUploading: false,
     pushKeyword: '',
     identity: 'teacher',
     modalTitle: '등록',
     isCopyType: '',
     selectDataType: '',
-    userInfo: {},
     // Modal Flag
     isSelectType: false,
     isQuizPrint: false,
@@ -98,7 +99,6 @@ export default function initialState() {
       subject: 1,
       description: '',
       keyword: [],
-      worker: '',
       save_path: '',
       public_open_yn: true,
       open_yn: true,
@@ -107,41 +107,14 @@ export default function initialState() {
       category: '',
       fileSize: '',
       thumbnail: '',
-      quiz: [
-        {
-          no: 1,
-          question: '',
-          level: '상',
-          limit_time: '',
-          type: 'OX',
-          correct: 'O',
-          wrong_correct: '',
-        },
-      ],
-      note_exam: [
-        {
-          no: 0,
-          question: '',
-          ask_view: [
-            { no: 1, question: '' },
-            { no: 2, question: '' },
-            { no: 3, question: '' },
-            { no: 4, question: '' },
-          ],
-          level: '상',
-          limit_time: '',
-          answer: 1,
-          isCommentary: true,
-          commentary: '',
-        },
-      ],
+      registrant: 0,
+      registrant_name: '',
     },
     referenceData: {
       title: '',
       subject: 1,
       description: '',
       keyword: [],
-      worker: '',
       save_path: '',
       file: '',
       public_open_yn: true,
@@ -151,34 +124,8 @@ export default function initialState() {
       name: '',
       category: '',
       thumbnail: '',
-      quiz: [
-        {
-          no: 1,
-          question: '',
-          level: '상',
-          limit_time: '',
-          type: 'OX',
-          correct: 'O',
-          wrong_correct: 'X',
-        },
-      ],
-      note_exam: [
-        {
-          no: 1,
-          question: '',
-          ask_view: [
-            { no: 1, question: '' },
-            { no: 2, question: '' },
-            { no: 3, question: '' },
-            { no: 4, question: '' },
-          ],
-          level: '상',
-          limit_time: '',
-          answer: 1,
-          isCommentary: true,
-          commentary: '',
-        },
-      ],
+      registrant: 0,
+      registrant_name: '',
     },
     receiveInstitutionData: [
       {
@@ -191,37 +138,37 @@ export default function initialState() {
                 name: '1단원',
                 children: [
                   {
-                    id: 1,
+                    dataroom_idx: 1,
                     datatable_type: 'ID',
                     name: '국어학습자료 애니메이션.mp4',
                     category: '01',
                   },
                   {
-                    id: 2,
+                    dataroom_idx: 2,
                     datatable_type: 'ID',
                     name: '수학 학습자료.pdf',
                     category: '02',
                   },
                   {
-                    id: 3,
+                    dataroom_idx: 3,
                     datatable_type: 'ID',
                     name: '영어 단어 퀴즈.quiz',
                     category: '03',
                   },
                   {
-                    id: 4,
+                    dataroom_idx: 4,
                     datatable_type: 'ID',
                     name: '수학 쪽지시험.test',
                     category: '04',
                   },
                   {
-                    id: 5,
+                    dataroom_idx: 5,
                     datatable_type: 'ID',
                     name: '사회 쪽지시험 영상.youtube',
                     category: '05',
                   },
                   {
-                    id: 6,
+                    dataroom_idx: 6,
                     datatable_type: 'ID',
                     name: '과학 사이트 참고용.url',
                     category: '06',
@@ -244,7 +191,7 @@ export default function initialState() {
                 name: '1단원',
                 children: [
                   {
-                    id: 2,
+                    dataroom_idx: 2,
                     name: '영어 단어 퀴즈.quiz',
                     datatable_type: 'ID',
                     dbIdx: 3,
@@ -265,7 +212,7 @@ export default function initialState() {
             name: '1단원',
             children: [
               {
-                id: 2,
+                dataroom_idx: 2,
                 name: '영어 단어 퀴즈.quiz',
                 datatable_type: 'ID',
                 category: '01',
@@ -283,7 +230,7 @@ export default function initialState() {
             name: '1단원',
             children: [
               {
-                id: 2,
+                dataroom_idx: 2,
                 name: '공개 퀴즈(1).quiz',
                 datatable_type: 'ID',
                 category: '03',

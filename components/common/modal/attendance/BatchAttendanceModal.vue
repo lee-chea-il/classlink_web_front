@@ -21,7 +21,7 @@
           <div class="modal-body">
             <div class="modal_batchattendance">
               <div class="date_area">
-                <div class="class_name">{{ selectedClass.class }}</div>
+                <div class="name">{{ selectedClass.class }}</div>
                 <div class="date">{{ date }}</div>
                 <div class="dropdown form-inline">
                   <button

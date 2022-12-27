@@ -1,6 +1,7 @@
 export default function initialState() {
   return {
     currentIdx: 0,
+    isLoading: false,
     pushKeyword: '',
     modalTitle: '',
     identity: 'teacher',
@@ -83,6 +84,7 @@ export default function initialState() {
                 children: [
                   {
                     name: '본사 스프링 시즌용.lesson',
+                    lesson_idx: 1,
                     datatable_type: 'IL',
                     title: '2-1반 수업',
                     description: '2-1반 전체 수업 내용',
@@ -151,12 +153,12 @@ export default function initialState() {
                 name: '1단원',
                 children: [
                   {
-                    id: 1,
+                    lesson_idx: 1,
                     datatable_type: 'ID',
                     name: '1-3반 영어 학습 자료 모음.lesson',
                   },
                   {
-                    id: 2,
+                    lesson_idx: 2,
                     datatable_type: 'ID',
                     name: '2-3반 수학 학습 자료 모음.lesson',
                   },
@@ -175,12 +177,12 @@ export default function initialState() {
             name: '1단원',
             children: [
               {
-                id: 1,
+                lesson_idx: 1,
                 datatable_type: 'ID',
                 name: '1-3반 영어 학습 자료 모음.lesson',
               },
               {
-                id: 2,
+                lesson_idx: 2,
                 datatable_type: 'ID',
                 name: '2-3반 수학 학습 자료 모음.lesson',
               },

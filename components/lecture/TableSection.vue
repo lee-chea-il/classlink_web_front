@@ -37,28 +37,30 @@
                 :id="`check${idx}`"
                 type="checkbox"
                 class="custom-control-input"
-                :value="lecture.name"
+                :value="lecture.title"
                 :checked="checkList.includes(lecture)"
                 @input="$emit('check-item', $event)"
               />
               <label class="custom-control-label" :for="`check${idx}`"></label>
             </div>
           </td>
-          <td>{{ lecture.createdAt }}</td>
-          <td>{{ lecture.name }}</td>
+          <td>{{ lecture.timetable?.start_date }}</td>
+          <td>{{ lecture.title }}</td>
           <CustomSpan
-            :dataList="lecture.teacher"
-            :spareList="lecture.spareTeacher"
+            :dataList="lecture.homeroom_teacher"
+            :spareList="lecture.assistant_teacher"
           />
-          <CustomSpan :dataList="lecture.className" />
+          <CustomSpan :dataList="lecture.classroom" :isClass="true" />
           <td>
             <div class="lec_curi">
-              {{ lecture.curriculum }}
+              {{ lecture.curriculum[0].name }}
             </div>
           </td>
           <td>
             <div class="lec_time">
-              {{ lecture.classTime }}
+              {{ setTime(lecture.timetable?.start_time) }}~{{
+                setTime(lecture.timetable?.end_time)
+              }}
             </div>
           </td>
           <td v-if="identity !== 'teacher'">
@@ -131,11 +133,11 @@ export default {
       default: '',
     },
   },
-  // methods: {
-  //   name() {
-
-  //   }
-  // },
+  methods: {
+    setTime(str) {
+      return str?.substr(0, 5)
+    },
+  },
 }
 </script>
 

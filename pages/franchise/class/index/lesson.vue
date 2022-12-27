@@ -2,7 +2,9 @@
   <div>
     <PageHeader title="레슨" />
 
-    <div class="tab-content depth03 ac_manage_dtr">
+    <LoadingBox v-if="isLoading" />
+
+    <div v-else class="tab-content depth03 ac_manage_dtr">
       <div class="tab-pane active">
         <!-- 컨트롤 버튼 영역 -->
         <MainBtnBox
@@ -323,8 +325,8 @@ export default {
     },
 
     // 선택한 레슨 가져오기
-    getLessonData({ id, datatable_type }) {
-      const payload = { id, datatable_type }
+    getLessonData({ lesson_idx, datatable_type }) {
+      const payload = { lesson_idx, datatable_type }
       apiLesson
         .getLesson(payload)
         .then(({ data: { data } }) => {
@@ -371,7 +373,7 @@ export default {
         keyword: keyword.join(','),
       }
       apiLesson
-        .updateLesson(rest.lesson_idx, payload)
+        .updateLesson(payload)
         .then(() => {
           this.isAddLesson = false
           this.openModalDesc('수정 성공', '레슨을 수정했습니다.')
@@ -382,9 +384,9 @@ export default {
     },
 
     // 레슨 삭제
-    deleteLesson(id) {
+    deleteLesson(data) {
       apiLesson
-        .deleteLesson(id)
+        .deleteLesson(data)
         .then((res) => {
           console.log(res)
         })
@@ -413,8 +415,8 @@ export default {
 
     // 파일 조회
     // 동영상, PDF, YOUTUBE, URL 조회
-    getDataroomFile({ id, type }) {
-      const payload = { id, datatable_type: type }
+    getDataroomFile({ dataroom_idx, type }) {
+      const payload = { dataroom_idx, datatable_type: type }
       apiData
         .getDataroomFile(payload)
         .then(({ data: { data } }) => {
@@ -430,8 +432,8 @@ export default {
     },
 
     // 퀴즈 조회
-    getDataroomQuiz({ id, type }) {
-      const payload = { id, datatable_type: type }
+    getDataroomQuiz({ dataroom_idx, type }) {
+      const payload = { dataroom_idx, datatable_type: type }
       apiData
         .getDataroomQuiz(payload)
         .then(({ data: { data } }) => {
@@ -447,8 +449,8 @@ export default {
     },
 
     // 쪽지시험 조회
-    getDataroomNoteExam({ id, type }) {
-      const payload = { id, datatable_type: type }
+    getDataroomNoteExam({ dataroom_idx, type }) {
+      const payload = { dataroom_idx, datatable_type: type }
       apiData
         .getDataroomNoteExam(payload)
         .then(({ data: { data } }) => {
@@ -466,7 +468,10 @@ export default {
     // 자료 유형별 핸들러
     selectDataroomType(type, data) {
       console.log(data)
-      const payload = { id: data.dataroom_idx, type: data.datatable_type }
+      const payload = {
+        dataroom_idx: data.dataroom_idx,
+        type: data.datatable_type,
+      }
       if (type === '03') return this.getDataroomQuiz(payload)
       else if (type === '04') return this.getDataroomNoteExam(payload)
       else return this.getDataroomFile(payload)

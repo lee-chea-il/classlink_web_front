@@ -24,11 +24,7 @@
 
           <div class="class_box">
             <div class="class_first">
-              <div
-                v-for="(item, idx) in classList"
-                :key="idx"
-                class="class_name"
-              >
+              <div v-for="(item, idx) in classList" :key="idx" class="name">
                 <div class="custom-control custom-checkbox form-inline checked">
                   <input
                     :id="item"
@@ -44,7 +40,7 @@
             </div>
 
             <div class="class_second">
-              <div class="class_name">
+              <div class="name">
                 <div class="custom-control custom-checkbox form-inline checked">
                   <input
                     id="chk06"
@@ -57,7 +53,7 @@
                 <span>심화 A반</span>
               </div>
 
-              <div class="class_name">
+              <div class="name">
                 <div class="custom-control custom-checkbox form-inline checked">
                   <input
                     id="chk06"
@@ -70,7 +66,7 @@
                 <span>심화 A반</span>
               </div>
 
-              <div class="class_name">
+              <div class="name">
                 <div class="custom-control custom-checkbox form-inline checked">
                   <input
                     id="chk06"
@@ -83,7 +79,7 @@
                 <span>심화 A반</span>
               </div>
 
-              <div class="class_name">
+              <div class="name">
                 <div class="custom-control custom-checkbox form-inline checked">
                   <input
                     id="chk06"
@@ -96,7 +92,7 @@
                 <span>심화 A반</span>
               </div>
 
-              <div class="class_name">
+              <div class="name">
                 <div class="custom-control custom-checkbox form-inline checked">
                   <input
                     id="chk06"

@@ -3,7 +3,10 @@
     <div class="tit"></div>
     <div class="move_section my_cur">
       <div class="list_section selected">
-        <div class="sum_info">선택된 커리큘럼 <span>2</span>개</div>
+        <div class="sum_info">
+          선택된 커리큘럼 <span>{{ curriculumList.length }}</span
+          >개
+        </div>
         <div class="list_area02">
           <!-- 탭 내용01 -->
           <div
@@ -12,9 +15,9 @@
             role="tabpanel"
             aria-labelledby="grade-tab"
           >
-            <CustomSelectLectureTreeView
+            <CustomMyCurriculum
               ref="myCurriculum"
-              :dataList="dataList"
+              :dataList="curriculumList"
               :editable="false"
               :isPlus="false"
               :isMy="true"
@@ -31,17 +34,18 @@
 </template>
 
 <script>
-import CustomSelectLectureTreeView from '~/components/common/custom/CustomSelectLectureTreeView.vue'
+import CustomMyCurriculum from '~/components/common/custom/CustomMyCurriculum.vue'
 
 export default {
   name: 'SelectCurriculumRightSection',
   components: {
-    CustomSelectLectureTreeView,
+    CustomMyCurriculum,
   },
-  data() {
-    return {
-      dataList: [],
-    }
+  props: {
+    curriculumList: {
+      type: Array,
+      default: () => [],
+    },
   },
 }
 </script>

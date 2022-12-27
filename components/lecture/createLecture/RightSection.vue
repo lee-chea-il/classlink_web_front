@@ -5,8 +5,8 @@
         <CustomSelect
           title="수업을 시작하기"
           desc="전에 알림을 보냅니다."
-          name="startAlarmTime"
-          :value="lectureInfo.startAlarmTime"
+          name="before_start_class_alarm_time"
+          :value="lectureInfo.before_start_class_alarm_time"
           target="lectureInfo"
           @change-input="$emit('change-input', $event)"
         />
@@ -15,8 +15,8 @@
         <CustomSelect
           title="수업을 종료하고"
           desc="후에 수업을 자동으로 끝냅니다."
-          name="endAlarmTime"
-          :value="lectureInfo.endAlarmTime"
+          name="after_end_class_exit_time"
+          :value="lectureInfo.after_end_class_exit_time"
           target="lectureInfo"
           @change-input="$emit('change-input', $event)"
         />
@@ -42,11 +42,11 @@
       </div>
       <div class="list_section">
         <div class="sum_info">
-          선택된 반 <span>{{ lectureInfo.className.length }}</span
+          선택된 반 <span>{{ lectureInfo.classroom.length }}</span
           >개
         </div>
         <ClassList
-          :listItem="lectureInfo.className"
+          :listItem="lectureInfo.classroom"
           :add="false"
           @click-item="$emit('delete-class', $event)"
         />

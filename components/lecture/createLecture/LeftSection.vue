@@ -5,13 +5,13 @@
         <label for="name">강좌 이름</label>
 
         <CustomModalInput
-          id="name"
+          id="title"
           name="강좌 이름"
           placeholder="강좌 이름을 입력해주세요."
           rules="min:2|required"
           type="text"
           target="lectureInfo"
-          :inputValue="lectureInfo.name"
+          :inputValue="lectureInfo.title"
           @change-input="$emit('change-input', $event)"
         />
       </div>
@@ -40,8 +40,8 @@
         />
         <AllTeacherList
           :dataList="teacherList"
-          :teacher="lectureInfo.teacher"
-          :spare="lectureInfo.spareTeacher"
+          :teacher="lectureInfo.homeroom_teacher"
+          :spare="lectureInfo.assistant_teacher"
           @add-teacher="$emit('add-teacher', $event)"
           @add-spare-teacher="$emit('add-spare-teacher', $event)"
           @show-menu="$emit('show-menu', $event)"
@@ -50,11 +50,11 @@
       <div class="list_section">
         <div class="list_area_all">
           <TeacherList
-            :teacherList="lectureInfo.teacher"
+            :teacherList="lectureInfo.homeroom_teacher"
             @delete="$emit('delete-teacher', $event)"
           />
           <TeacherList
-            :teacherList="lectureInfo.spareTeacher"
+            :teacherList="lectureInfo.assistant_teacher"
             @delete="$emit('delete-spare-teacher', $event)"
           />
         </div>

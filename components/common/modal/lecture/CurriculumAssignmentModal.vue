@@ -35,10 +35,16 @@
           >
             이전
           </button>
-          <button class="btn btn_crud_point" data-dismiss="modal">개설</button>
+          <button
+            class="btn btn_crud_point"
+            data-dismiss="modal"
+            @click="$emit('submit')"
+          >
+            개설
+          </button>
         </div>
 
-        <ModalBtnBox v-else submitTxt="저장" />
+        <ModalBtnBox v-else submitTxt="저장" @submit="$emit('submit')" />
       </div>
     </div>
   </div>
@@ -62,14 +68,14 @@ export default {
       type: String,
       default: '',
     },
-    curriculumList:{
+    curriculumList: {
       type: Array,
       default: () => [],
-    }
+    },
   },
-  data(){
+  data() {
     return {
-      curriculumData:[
+      curriculumData: [
         {
           name: '마포 학원',
           children: [
@@ -186,20 +192,20 @@ export default {
           ],
         },
       ],
-      myDatas:{},
+      myDatas: {},
     }
   },
   methods: {
-    dragStart(){
+    dragStart() {
       this.$refs.calendar.$refs.assignmentDragArea.showHideDragArea(true)
     },
-    dragEnd(){
+    dragEnd() {
       this.$refs.calendar.$refs.assignmentDragArea.showHideDragArea(false)
     },
-    sendSelectCurriculumData(data){
+    sendSelectCurriculumData(data) {
       console.log(data)
-      this.$emit('select-curriculum-data',data)
-    }
+      this.$emit('select-curriculum-data', data)
+    },
   },
 }
 </script>
