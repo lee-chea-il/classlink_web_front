@@ -50,9 +50,9 @@ async function getSubjectList(ins_code) {
   )
 }
 // 선생님 과목 수정
-async function updateSubject(ins_code, is_idx, is_title) {
+async function updateSubject(payload) {
   return await http.put(
-    `/api/v1/management/operation/teacher/subject?ins_code=${ins_code}&is_idx=${is_idx}&is_title=${is_title}`
+    `/api/v1/management/operation/teacher/subject?ins_code=${payload.ins_code}&is_idx=${payload.is_idx}&is_title=${payload.is_title}`
   )
 }
 // 선생님 과목 생성
@@ -73,7 +73,7 @@ async function deleteSubject(payload) {
 // 학생 목록
 async function getStudentList(payload) {
   return await http.get(
-    `/api/v1/management/operation/teacher?current_page=${payload.current_page}&ins_code=${payload.ins_code}&latest=${payload.latest}&per_page_num=${payload.per_page_num}&search=${payload.search}&status=${payload.status}`
+    `/api/v1/management/operation/student?attend=${payload.attend}&cond=${payload.cond}&current_page=${payload.current_page}&ins_code=${payload.ins_code}&latest=${payload.latest}&per_page_num=${payload.per_page_num}&search=${payload.search}&status=${payload.status}`
   )
 }
 

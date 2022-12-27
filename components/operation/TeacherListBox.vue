@@ -154,18 +154,28 @@
     <div class="pagination_section">
       <nav aria-label="Page navigation example">
         <ul class="pagination">
-          <li class="page-item">
-            <a class="page-link" href="#">
+          <li class="page-item cursor">
+            <a class="page-link" @click="$emit('click-direction', 'minus')">
               <span class="previous"></span>
             </a>
           </li>
-          <li class="page-item">
+          <!-- <li class="page-item">
             <a class="page-link active" href="#">1</a>
+          </li> -->
+          <li
+            v-for="(item, idx) in endPageNumber"
+            :key="idx"
+            class="page-item cursor"
+          >
+            <a
+              class="page-link"
+              :class="item === currentPage ? 'active' : ''"
+              @click="$emit('click-page', item)"
+              >{{ item }}</a
+            >
           </li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">
+          <li class="page-item cursor">
+            <a class="page-link" @click="$emit('click-direction', 'plus')">
               <span class="next"></span>
             </a>
           </li>
@@ -206,6 +216,14 @@ export default {
     deleteIdxList: {
       type: Array,
       default: () => [],
+    },
+    endPageNumber: {
+      type: Number,
+      default: 0,
+    },
+    currentPage: {
+      type: Number,
+      default: 1,
     },
   },
   methods: {
@@ -265,4 +283,8 @@ export default {
   },
 }
 </script>
-<style scoped></style>
+<style scoped>
+.cursor {
+  cursor: pointer;
+}
+</style>

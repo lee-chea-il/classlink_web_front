@@ -21,11 +21,10 @@
         <div class="tab-pane active">
           <div class="left_area">
             <div class="taskregi_tit">
-              <span class="course_tit">{{ lectureCourse.subject }}</span>
+              <span class="course_tit">{{ lectureInfo.lecture }}</span>
               <span class="course_con"
-                >{{ lectureCourse.lessonTitle }} /
-                {{ lectureCourse.lessonClass }} /
-                {{ lectureCourse.teacher }}</span
+                >{{ lectureInfo.class }} /
+                {{ lectureInfo.teacher }} 선생님</span
               >
             </div>
           </div>
@@ -334,12 +333,20 @@ export default {
   },
   data() {
     return {
+      // 코스 정보
+      lectureInfo: {
+        lectureIdx: this.$route.params.id,
+        class: this.$route.query.class,
+        lecture: this.$route.query.lecture,
+        teacher: this.$route.query.teacher,
+      },
+
       // 강의계획서
       syllabus: {
         file_exist: false,
         lec_idx: this.$route.params.id,
         lep_content: '',
-        lep_delete_yn: 'N',
+        lep_repeat_yn: 'Y',
         lep_idx: 0,
         lep_time_edate: '',
         lep_time_etime: '',

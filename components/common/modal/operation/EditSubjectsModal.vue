@@ -71,7 +71,12 @@
                           :value="newSubjectTitle"
                           @input="$emit('change-input', $event)"
                         />
-                        <button class="btn btn_crud_point">저장</button>
+                        <button
+                          class="btn btn_crud_point"
+                          @click="$emit('update-subject')"
+                        >
+                          저장
+                        </button>
                         <i
                           class="icons_x_circle_off"
                           @click="$emit('close-add')"

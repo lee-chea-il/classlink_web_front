@@ -14,9 +14,9 @@
         </li>
       </ul>
       <LecturePlan
+        :lectureInfo="lectureInfo"
         :syllabusList="syllabusList"
         :lectureCourse="lectureCourse"
-        :searchFlag="searchFlag"
         :searchList="searchList"
         :allCheckBoxFlag="allCheckBoxFlag"
         :lectureStudentCount="lectureStudentCount"
@@ -77,13 +77,20 @@ export default {
       className: this.$route.query.class,
       lectureTitle: this.$route.query.title,
       teacherName: this.$route.query.teacher,
-      searchFlag: 0,
       allCheckBoxFlag: false,
+      // 강좌 정보
+      lectureInfo: {
+        lec_title: '',
+        csm_name_list: '',
+        mem_name: '',
+        student_count: 0,
+      },
       // 강의 계획서 목록
       syllabusList: [],
       lectureStudentCount: 0,
       // 페이지네이션
       currentPage: 1,
+      endPageNumber: 0,
       // 강의 계획서 상세
       syllabus: {},
       // modal
@@ -139,29 +146,47 @@ export default {
   methods: {
     // 강의 계획서 목록 api
     async getSyllabusList() {
+      const payload = {
+        current_page: this.currentPage,
+        keyword: this.searchText,
+        lec_idx: this.lectureIdx,
+        mem_idx: this.userIdx,
+        per_page_num: 10,
+      }
       await apiLectureCourse
-        .getSyllabusList(
-          this.userIdx,
-          this.lectureIdx,
-          this.classIdx,
-          1,
-          10,
-          this.searchText
-        )
-        .then((res) => {
-          console.log(res)
-          this.syllabusList = res.data.data.syllabusList
-          this.lectureStudentCount = res.data.data.lep_stu_cnt
+        .getSyllabusList(payload)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          this.syllabusList = data.syllabusList
+          this.lectureStudentCount = data.lep_stu_cnt
+          this.lectureInfo = {
+            lec_title: data.classInfo[0].lec_title,
+            csm_name_list: data.classInfo.map((x) => x.csm_name).join(', '),
+            mem_name: data.classInfo[0].mem_name,
+            student_count: this.setAllCount(
+              data.classInfo.map((x) => x.student_count)
+            ),
+          }
+          this.endPageNumber = data.pageMaker.end_page
         })
         .catch((err) => {
           console.log(err)
         })
     },
 
+    // 배열의 합 구하기
+    setAllCount(array) {
+      let count = 0
+      array.forEach((x) => {
+        count += x
+      })
+      return count
+    },
+
     // 강의 계획서 상세
     async onClickSyllabus(csmIdx, lepIdx) {
       await apiLectureCourse
-        .getSyllabus(csmIdx, this.lectureIdx, lepIdx, this.userIdx)
+        .getSyllabus(this.lectureIdx, lepIdx, this.userIdx)
         .then(({ data: { data } }) => {
           this.syllabus = data
           this.openLecturePlanDetailModal()
@@ -184,7 +209,7 @@ export default {
     },
     onClickRegisterLecturePlan() {
       this.$router.push(
-        `/class/lecturecourse/registerlectureplan/${this.lectureIdx}?classidx=${this.classIdx}class=${this.className}&title=${this.lectureTitle}&teacher=${this.teacherName}`
+        `/class/lecturecourse/registerlectureplan/${this.lectureIdx}?lecture=${this.lectureInfo.lec_title}&class=${this.lectureInfo.csm_name_list}&teacher=${this.lectureInfo.mem_name}`
       )
     },
     onClickUpdateLecturePlan() {
@@ -288,6 +313,7 @@ export default {
           }
         }
       }
+      console.log(this.deleteIdxList)
     },
     deletePlan() {
       if (this.deleteIdxList.length === 0) {

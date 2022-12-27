@@ -4,17 +4,16 @@
       <!-- 검색 영역 -->
       <div class="search_section">
         <div class="left_area">
-          <span class="course_tit">{{ lectureCourse.subject }}</span>
+          <span class="course_tit">{{ lectureInfo.lec_title }}</span>
           <span class="course_con"
-            >{{ lectureCourse.lessonTitle }} / {{ lectureCourse.lessonClass }} /
-            {{ lectureCourse.teacher }}</span
-          >
+            >{{ lectureInfo.csm_name_list }} / {{ lectureInfo.mem_name }} 선생님
+          </span>
         </div>
         <div class="right_area">
           <nuxt-link to="/class/lecturecourse" class="btn btn_crud_default"
-            >강의목록 보기</nuxt-link
+            >코스목록 보기</nuxt-link
           >
-          <button class="btn btn_crud_default" @click="$emit('delete-plan')">
+          <button class="btn btn_crud_danger" @click="$emit('delete-plan')">
             삭제
           </button>
           <div class="input-group input-search form-inline form-search">
@@ -41,7 +40,7 @@
       <!-- /.검색 영역 -->
       <!-- 테이블 영역 -->
       <!-- [개발참조] 데이터 없을 경우  -->
-      <div v-if="syllabusList === null" class="page_nodata">
+      <div v-if="syllabusList.length === 0" class="page_nodata">
         등록된 강의계획서가 없습니다.
       </div>
 
@@ -78,12 +77,7 @@
             </tr>
           </thead>
           <tbody v-if="searchFlag === 0">
-            <tr
-              v-for="(item, idx) in syllabusList"
-              :key="idx"
-              class="cursor"
-              @click="$emit('click-plan', item.csm_idx, item.lep_idx)"
-            >
+            <tr v-for="(item, idx) in syllabusList" :key="idx" class="cursor">
               <td>
                 <div class="custom-control custom-checkbox form-inline">
                   <input
@@ -99,15 +93,23 @@
                   ></label>
                 </div>
               </td>
-              <td>
+              <td @click="$emit('click-plan', item.csm_idx, item.lep_idx)">
                 <div class="classplan_tit" @click="$emit('open-detail')">
                   {{ item.lep_title }}
                 </div>
               </td>
-              <td>{{ item.mem_name }}</td>
-              <td>{{ item.lep_registration_date }}</td>
-              <td>{{ item.open ? '공개' : '비공개' }}</td>
-              <td>{{ item.lep_view_cnt }}/{{ lectureStudentCount }}</td>
+              <td @click="$emit('click-plan', item.csm_idx, item.lep_idx)">
+                {{ item.mem_name }}
+              </td>
+              <td @click="$emit('click-plan', item.csm_idx, item.lep_idx)">
+                {{ item.lep_registration_date }}
+              </td>
+              <td @click="$emit('click-plan', item.csm_idx, item.lep_idx)">
+                {{ item.open ? '공개' : '비공개' }}
+              </td>
+              <td @click="$emit('click-plan', item.csm_idx, item.lep_idx)">
+                {{ item.lep_view_cnt }}/{{ lectureInfo.student_count }}
+              </td>
               <td></td>
             </tr>
           </tbody>
@@ -207,6 +209,10 @@ export default {
     lectureStudentCount: {
       type: Number,
       default: 0,
+    },
+    lectureInfo: {
+      type: Object,
+      default: () => {},
     },
   },
   methods: {

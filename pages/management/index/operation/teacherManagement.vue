@@ -1,38 +1,38 @@
 <template>
-  <!-- container -->
-  <div id="content" class="content">
-    <div class="content_area">
-      <!--  3Depth -->
-      <NavBox
-        title1="선생님관리"
-        title2="학생 관리"
-        title3="반 관리"
-        title4="시험관리"
-        url1="/management/operation/teachermanagement"
-        url2="/management/operation/studentmanagement"
-        url3="/management/operation/classmanagement"
-        url4="/management/operation/exammanagement"
+  <div>
+    <NavBox
+      title1="선생님관리"
+      title2="학생 관리"
+      title3="반 관리"
+      title4="시험관리"
+      url1="/management/operation/teachermanagement"
+      url2="/management/operation/studentmanagement"
+      url3="/management/operation/classmanagement"
+      url4="/management/operation/exammanagement"
+    />
+    <div class="tab-content depth03 ac_manage_tch">
+      <TeacherListBox
+        :teacherList="teacherList"
+        :stateFlag="stateFlag"
+        :sortFlag="sortFlag"
+        :stateTrue="stateTrue"
+        :stateFalse="stateFalse"
+        :allCheckBoxFlag="allCheckBoxFlag"
+        :deleteIdxList="deleteIdxList"
+        :endPageNumber="endPageNumber"
+        :currentPage="currentPage"
+        @click-page="onClickPagination"
+        @click-direction="paginationDirection"
+        @click-state="onClickState"
+        @click-sort="onClickSort"
+        @delete="onClickDeleteTeacher"
+        @click-detail="getTeacherInfo"
+        @click-register="openRegisterTeacherModalDesc"
+        @select-teacher="onClickCheckBox"
+        @checked-all="selectAll"
+        @change-input="onChangeInput"
+        @search-teacher="searchTeacher"
       />
-      <div class="tab-content depth03 ac_manage_tch">
-        <TeacherListBox
-          :teacherList="teacherList"
-          :stateFlag="stateFlag"
-          :sortFlag="sortFlag"
-          :stateTrue="stateTrue"
-          :stateFalse="stateFalse"
-          :allCheckBoxFlag="allCheckBoxFlag"
-          :deleteIdxList="deleteIdxList"
-          @click-state="onClickState"
-          @click-sort="onClickSort"
-          @delete="onClickDeleteTeacher"
-          @click-detail="getTeacherInfo"
-          @click-register="openRegisterTeacherModalDesc"
-          @select-teacher="onClickCheckBox"
-          @checked-all="selectAll"
-          @change-input="onChangeInput"
-          @search-teacher="searchTeacher"
-        />
-      </div>
     </div>
     <!-- 선생님 등록 -->
     <!-- <RegisterTeacherModal /> -->
@@ -54,6 +54,7 @@
       @click-save="onClickSaveBtn"
       @check-target="onChangeTargetCheck"
       @check-role="onChangeRoleCheck"
+      @check-subject="onChangeSubjectCheck"
       @click-m="onClickGenderMen"
       @click-w="onClickGenderWomen"
       @click-y="onClickStatusTrue"
@@ -72,6 +73,7 @@
       :isIdCheck="isIdCheck"
       :targetCheckList="targetCheckList"
       :roleCheckList="roleCheckList"
+      :subjectList="subjectList"
       @close="onCloseTeacherInfoModalDesc"
       @click-profile="openUploadTeacherImgModalDesc"
       @click-cwimg="openUploadTeacherCWImgModalDesc"
@@ -181,6 +183,7 @@
       :isMoreBtn="isMoreBtn"
       :newSubject="newSubject"
       @add-subject="addSubject"
+      @update-subject="updateSubject"
       @change-input="onChangeSubjectInput"
       @click-add="onClickAddSubject"
       @close-add="onCloseAddSubject"
@@ -190,7 +193,6 @@
       @close="onCloseEditSubjectsModal"
     />
   </div>
-  <!-- //container -->
 </template>
 <script>
 import { apiOperation } from '~/services'
@@ -269,25 +271,14 @@ export default {
         mem_name: '',
         mem_nickname: '',
         mem_phone: '',
-        mem_sex: 'M',
+        mem_sex: '',
         tch_grade: 'T',
         tch_use_yn: 'Y',
-        auth_check: true,
-        auth_list: [
-          { rca_idx: 1, rin_idx: 1 },
-          { rca_idx: 1, rin_idx: 2 },
-          { rca_idx: 1, rin_idx: 3 },
-          { rca_idx: 2, rin_idx: 4 },
-          { rca_idx: 2, rin_idx: 5 },
-          { rca_idx: 2, rin_idx: 6 },
-          { rca_idx: 3, rin_idx: 8 },
-          { rca_idx: 5, rin_idx: 12 },
-          { rca_idx: 5, rin_idx: 13 },
-          { rca_idx: 5, rin_idx: 14 },
-        ],
-        subject_check: true,
-        subject_list: [{ is_idx: 1, is_title: '국어' }],
-        target_check: true,
+        auth_check: false,
+        auth_list: [],
+        subject_check: false,
+        subject_list: [],
+        target_check: false,
         target_list: [],
         img_filepath: '',
       },
@@ -300,25 +291,14 @@ export default {
         mem_name: '',
         mem_nickname: '',
         mem_phone: '',
-        mem_sex: 'M',
+        mem_sex: '',
         tch_grade: 'T',
         tch_use_yn: 'Y',
-        auth_check: true,
-        auth_list: [
-          { rca_idx: 1, rin_idx: 1 },
-          { rca_idx: 1, rin_idx: 2 },
-          { rca_idx: 1, rin_idx: 3 },
-          { rca_idx: 2, rin_idx: 4 },
-          { rca_idx: 2, rin_idx: 5 },
-          { rca_idx: 2, rin_idx: 6 },
-          { rca_idx: 3, rin_idx: 8 },
-          { rca_idx: 5, rin_idx: 12 },
-          { rca_idx: 5, rin_idx: 13 },
-          { rca_idx: 5, rin_idx: 14 },
-        ],
-        subject_check: true,
-        subject_list: [{ is_idx: 1, is_title: '국어' }],
-        target_check: true,
+        auth_check: false,
+        auth_list: [],
+        subject_check: false,
+        subject_list: [],
+        target_check: false,
         target_list: [],
         img_filepath: '',
       },
@@ -388,7 +368,7 @@ export default {
       searchFlag: 0,
       stateFlag: true,
       sortFlag: 1,
-      currentPage: 1,
+
       stateTrue: 0,
       stateFalse: 0,
       searchText: '',
@@ -419,6 +399,9 @@ export default {
       // 선생님 삭제
       deleteIdxList: [],
       allCheckBoxFlag: false,
+      // pagination
+      currentPage: 1,
+      endPageNumber: 0,
     }
   },
   watch: {
@@ -426,6 +409,9 @@ export default {
       this.getTeacherList()
     },
     sortFlag() {
+      this.getTeacherList()
+    },
+    currentPage() {
       this.getTeacherList()
     },
   },
@@ -442,9 +428,17 @@ export default {
   },
   mounted() {
     this.getTeacherList()
-    this.getSubjectList()
+    // this.getSubjectList()
   },
   methods: {
+    // 깊은 복사
+    deepCopy(data) {
+      return JSON.parse(JSON.stringify(data))
+    },
+    // 인덱스
+    setIdxNumber(string) {
+      return Number(string.substr(4))
+    },
     // 선생님 목록 불러오기 api
     async getTeacherList() {
       const payload = {
@@ -465,6 +459,7 @@ export default {
             this.stateTrue = data.activate_count
             this.stateFalse = data.deactivate_count
             this.teacherList = data.dto
+            this.endPageNumber = data.pageMaker.end_page
           }
           console.log(this.teacherList)
         })
@@ -504,6 +499,15 @@ export default {
           this.teacherInfo.auth_list = data.auth_list
           this.teacherInfo.target_list = data.target_list
           this.teacherInfo.subject_list = data.subject_list
+          if (data.auth_list.length > 0) {
+            this.teacherInfo.auth_check = true
+          }
+          if (data.target_list.length > 0) {
+            this.teacherInfo.target_check = true
+          }
+          if (data.subject_list.length > 0) {
+            this.teacherInfo.subject_check = true
+          }
           this.prevId = data.vo.mem_id
           this.prevEmail = data.vo.mem_email
           console.log(this.teacherInfo)
@@ -626,6 +630,26 @@ export default {
       }
       console.log(this.teacherInfo.auth_list)
     },
+    // 과목 수정
+    onChangeSubjectCheck({ target: { id, checked } }) {
+      if (checked) {
+        const subject = this.subjectList.filter((x) => {
+          return x.is_idx === this.setIdxNumber(id)
+        })
+        this.teacherInfo.subject_list.push(subject[0])
+      } else {
+        const index = this.teacherInfo.subject_list
+          .map((x) => x.is_idx)
+          .indexOf(this.setIdxNumber(id))
+        this.teacherInfo.subject_list.splice(index, 1)
+      }
+      if (this.teacherInfo.subject_list.length === 0) {
+        this.teacherInfo.subject_check = false
+      } else {
+        this.teacherInfo.subject_check = true
+      }
+      console.log(this.teacherInfo.subject_list)
+    },
     // 직위 수정
     selectPosition() {
       if (this.teacherInfo.tch_grade === 'M') {
@@ -673,6 +697,19 @@ export default {
         .catch((err) => {
           console.log(err)
         })
+    },
+
+    // 생일 수정
+    selectBirthday(e) {
+      this.birthday = e.id
+    },
+    onClickBirthdayConfirm() {
+      this.teacherInfo.mem_birthday = this.birthday
+      this.datePickerModalDesc.open = false
+    },
+    // 비밀번호 초기화
+    onClickResetBtn() {
+      this.openModalDesc('비밀번호 초기화', '비밀번호가 초기화되었습니다.')
     },
     // 비밀번호 초기화
     async initPassword() {
@@ -795,10 +832,8 @@ export default {
     onCloseEditSubjectsModal() {
       this.editSubjectsModal.open = false
     },
+
     // 선생님 삭제
-    setIdxNumber(string) {
-      return Number(string.substr(4))
-    },
     onClickCheckBox({ target: { id, checked } }) {
       if (checked) {
         const teacher = { mem_idx: this.setIdxNumber(id) }
@@ -883,32 +918,20 @@ export default {
         }
       }
     },
-    // 생일 수정
-    selectBirthday(e) {
-      this.birthday = e.id
-    },
-    onClickBirthdayConfirm() {
-      this.teacherInfo.mem_birthday = this.birthday
-      this.datePickerModalDesc.open = false
-    },
-    // 비밀번호 초기화
-    onClickResetBtn() {
-      this.openModalDesc('비밀번호 초기화', '비밀번호가 초기화되었습니다.')
-    },
 
     // 과목 수정
     // 과목 목록 불러오기 api
-    async getSubjectList() {
-      console.log(this.institutionIdx)
-      await apiOperation
-        .getSubjectList(this.institutionIdx)
-        .then(({ data: { data } }) => {
-          this.subjectList = data
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
+    // async getSubjectList() {
+    //   console.log(this.institutionIdx)
+    //   await apiOperation
+    //     .getSubjectList(this.institutionIdx)
+    //     .then(({ data: { data } }) => {
+    //       this.subjectList = data
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     })
+    // },
 
     // 과목 추가
     onClickAddSubject() {
@@ -975,11 +998,14 @@ export default {
       this.isMoreBtn = false
     },
     // 과목 수정
-    async updateSubjectTitle(title) {
+    updateSubjectTitle(title) {
       this.isAddSubject = false
       this.isMoreBtn = false
       this.isUpdateSubject = true
       this.newSubjectTitle = title
+    },
+    // 과목 수정 api
+    async updateSubject() {
       const subject = this.subjectList.filter((x) => {
         return x.is_title === this.newSubject
       })
@@ -992,7 +1018,7 @@ export default {
         .updateSubject(payload)
         .then(({ data: { data } }) => {
           this.subjectList = data
-          this.isAddSubject = false
+          this.isUpdateSubject = false
           this.newSubjectTitle = ''
         })
         .catch((err) => {
@@ -1000,9 +1026,21 @@ export default {
         })
     },
 
-    // 깊은 복사
-    deepCopy(data) {
-      return JSON.parse(JSON.stringify(data))
+    // [pagination] 숫자로 페이징
+    onClickPagination(number) {
+      this.currentPage = number
+    },
+
+    // [pagination] 방향으로 페이징
+    paginationDirection(direction) {
+      const current = this.currentPage
+      if (direction === 'plus') {
+        if (current < this.endPageNumber) {
+          this.currentPage += 1
+        }
+      } else if (current > 1) {
+        this.currentPage -= 1
+      }
     },
   },
 }

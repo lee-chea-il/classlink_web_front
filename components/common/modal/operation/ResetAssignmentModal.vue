@@ -30,7 +30,6 @@
                     :id="item"
                     type="checkbox"
                     class="custom-control-input"
-                    :checked="studentInfo.class.includes(item)"
                     @input="$emit('check-class', $event)"
                   />
                   <label class="custom-control-label" :for="item"></label>

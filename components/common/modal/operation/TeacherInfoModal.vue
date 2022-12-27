@@ -90,7 +90,7 @@
                           id="mem_nickname"
                           name="닉네임"
                           placeholder="닉네임입력"
-                          rules="min:2|required"
+                          rules="min:2"
                           type="text"
                           :nickNameCheck="nickNameCheck"
                           :inputValue="teacherInfo.mem_nickname"
@@ -196,7 +196,7 @@
                           id="mem_phone"
                           name="연락처"
                           placeholder="연락처입력"
-                          rules="phone|required"
+                          rules="phone"
                           type="text"
                           :inputValue="teacherInfo.mem_phone"
                           @change-input="$emit('change-input', $event)"
@@ -222,7 +222,7 @@
                           id="mem_email"
                           name="이메일"
                           placeholder="이메일입력"
-                          rules="required|email"
+                          rules="email"
                           type="email"
                           :isEmailCheckBtn="true"
                           :isEmailCheck="isEmailCheck"
@@ -302,6 +302,12 @@
                         >가르치는 대상</label
                       >
                       <div class="col">
+                        <div
+                          v-show="!teacherInfo.target_check"
+                          class="invalid_text invalid_margin"
+                        >
+                          필수 입력 정보입니다.
+                        </div>
                         <div class="box_area">
                           <div class="row">
                             <div class="title02">
@@ -433,6 +439,12 @@
                     <div class="form-group row subject">
                       <label for="" class="title01 col-form-label">과목</label>
                       <div class="col">
+                        <div
+                          v-show="!teacherInfo.subject_check"
+                          class="invalid_text invalid_margin"
+                        >
+                          필수 입력 정보입니다.
+                        </div>
                         <div class="box_area">
                           <div class="row">
                             <div
@@ -447,7 +459,12 @@
                                   :id="`sub_${item.is_idx}`"
                                   type="checkbox"
                                   class="custom-control-input"
-                                  checked
+                                  :checked="
+                                    teacherInfo.subject_list
+                                      .map((x) => x.is_idx)
+                                      .includes(item.is_idx)
+                                  "
+                                  @input="$emit('check-subject', $event)"
                                 />
                                 <label
                                   class="custom-control-label"
@@ -993,7 +1010,12 @@
               <div class="btn_right">
                 <button
                   class="btn btn_crud_point"
-                  :disabled="invalid || !isIdCheck || !isEmailCheck"
+                  :disabled="
+                    invalid ||
+                    !isIdCheck ||
+                    !teacherInfo.target_check ||
+                    !teacherInfo.subject_check
+                  "
                   @click="$emit('click-save')"
                 >
                   {{ register ? '등록하기' : '저장하기' }}
@@ -1089,5 +1111,10 @@ export default {
 
 .mt {
   height: 10px;
+}
+
+.invalid_margin {
+  margin-top: -20px;
+  margin-left: 297px;
 }
 </style>

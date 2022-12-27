@@ -110,8 +110,8 @@ export default {
   data() {
     return {
       userInfo: {
-        mem_id: 'master01',
-        mem_pw: 'classlink1!',
+        mem_id: 'test9999',
+        mem_pw: 'test9999',
       },
       isPwEyeOn: false,
       findIdInput: '',

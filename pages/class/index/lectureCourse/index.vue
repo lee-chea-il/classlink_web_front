@@ -1,108 +1,160 @@
 <template>
-  <div id="content" class="content">
-    <div class="content_area">
-      <div class="tab-content depth03 ac_manage_frc ac_manage_course">
-        <div class="tab-pane active">
-          <!-- [개발참조]수강하는 강의코스가 없을때  -->
-          <div v-if="lectureCourseList === null" class="page_nodata">
-            <p>수강하는 강의 코스가 없습니다.</p>
+  <div class="tab-content depth03 ac_manage_frc ac_manage_course">
+    <div class="tab-pane active">
+      <!-- [개발참조]수강하는 강의코스가 없을때  -->
+      <div v-if="lectureCourseList === null" class="page_nodata">
+        <p>수강하는 강의 코스가 없습니다.</p>
+        <button
+          class="btn btn_regi_franchise"
+          data-toggle="modal"
+          data-target="#modalFrcsignup"
+        >
+          프랜차이즈 가입하기
+        </button>
+      </div>
+      <div v-else>
+        <div class="course_line">
+          <div class="dropdown form-inline">
             <button
-              class="btn btn_regi_franchise"
-              data-toggle="modal"
-              data-target="#modalFrcsignup"
+              class="btn dropdown-toggle"
+              type="button"
+              data-toggle="dropdown"
+              aria-expanded="false"
             >
-              프랜차이즈 가입하기
+              {{
+                selectFlag === 0
+                  ? '모든 코스'
+                  : selectFlag === 1
+                  ? '운영중인 코스'
+                  : '종료된 코스'
+              }}
             </button>
-          </div>
-          <div v-else>
-            <div class="course_line">
-              <div class="dropdown form-inline">
-                <button
-                  class="btn dropdown-toggle"
-                  type="button"
-                  data-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  모든 코스
-                </button>
-                <div class="dropdown-menu">
-                  <div class="dropdown-item cursor" @click="selectAllCourse">
-                    모든 코스
-                  </div>
-                  <div class="dropdown-item cursor" @click="selectTrueCourse">
-                    운영중인 코스
-                  </div>
-                  <div class="dropdown-item cursor" @click="selectfalseCourse">
-                    종료된 코스
-                  </div>
-                </div>
+            <div class="dropdown-menu">
+              <div class="dropdown-item cursor" @click="selectAllCourse">
+                모든 코스
               </div>
-
-              <div class="input-group input-search form-inline">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="반/강의이름/선생님 검색"
-                  @input="onChangeInput"
-                  @keyup.enter="searchCourse"
-                />
-                <div class="input-group-append">
-                  <button
-                    class="btn icons_search_off"
-                    type="button"
-                    @click="searchCourse"
-                  ></button>
-                </div>
+              <div class="dropdown-item cursor" @click="selectTrueCourse">
+                운영중인 코스
+              </div>
+              <div class="dropdown-item cursor" @click="selectfalseCourse">
+                종료된 코스
               </div>
             </div>
+          </div>
 
-            <div class="course_center">
-              <div v-if="selectFlag === 0" class="cards_section">
-                <a
-                  v-for="(item, idx) in lectureCourseList"
-                  :key="idx"
-                  class="cursor"
-                  @click="
-                    onClickLecture(
-                      item.lec_idx,
-                      item.csm_idx,
-                      item.csm_name,
-                      item.lec_title,
-                      item.mem_name
-                    )
-                  "
-                >
-                  <div class="card cursor" :class="bgColorList[idx]">
-                    <!-- !item.state ? 'standby' :  -->
-                    <div class="course_tit">{{ item.lec_title }}</div>
-                    <div class="course_time">
-                      {{ item.lec_time_stime }} ~ {{ item.lec_time_etime }}
-                    </div>
-                    <div class="course_info">
-                      {{ item.csm_name }} | {{ item.mem_name }} 선생님
-                    </div>
-                  </div>
-                </a>
-              </div>
-              <div v-else class="cards_section">
-                <a
-                  v-for="(item, idx) in selectLectureList"
-                  :key="idx"
-                  class="cursor"
-                  @click="onClickLecture(idx)"
+          <div class="input-group input-search form-inline">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="반/강의이름/선생님 검색"
+              @input="onChangeInput"
+              @keyup.enter="searchCourse"
+            />
+            <div class="input-group-append">
+              <button
+                class="btn icons_search_off"
+                type="button"
+                @click="searchCourse"
+              ></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="course_center">
+          <div class="cards_section">
+            <div class="cards_section02">
+              <!-- [개발참조] 반이 5개 이상일때는 강좌이름에 class="course_more"을 붙이기 -->
+              <!-- [개발참조]주담임 색상 class="card course_bgcolor01" -->
+              <a v-for="(item, idx) in lectureCourseList" :key="idx">
+                <div
+                  class="card course_bgcolor01 cursor"
+                  @click="onClickLecture(item.lec_idx)"
                 >
                   <div
-                    class="card"
-                    :class="!item.state ? 'standby' : bgColorList[idx]"
+                    class="course_tit"
+                    :class="item.class_info.length > 4 ? 'course_more' : ''"
                   >
-                    <div class="course_tit">{{ item.subject }}</div>
-                    <div class="course_time">{{ item.time }}</div>
-                    <div class="course_info">
-                      {{ item.lessonTitle }} | {{ item.lessonClass }} |
-                      {{ item.teacher }}
-                    </div>
+                    {{ item.lec_title }}
                   </div>
-                </a>
+                  <div
+                    v-for="(
+                      time_item, time_idx
+                    ) in item.lecture_time_list.slice(0, 2)"
+                    :key="`time_${time_idx}`"
+                    class="course_time"
+                  >
+                    {{ setLectureDay(time_item) }}
+                  </div>
+                  <div
+                    v-for="(sub_item, sub_idx) in item.class_info"
+                    :key="sub_idx"
+                    class="course_info"
+                  >
+                    {{ sub_item.csm_name }} | {{ sub_item.mem_name }} 선생님
+                  </div>
+                </div>
+              </a>
+            </div>
+            <div v-if="subTeacherCourseList.length > 0" class="cards_section02">
+              <a v-for="(item, idx) in subTeacherCourseList" :key="idx">
+                <div class="card course_bgcolor02">
+                  <div
+                    class="course_tit"
+                    :class="item.class_info.length > 4 ? 'course_more' : ''"
+                  >
+                    {{ item.lec_title }}
+                  </div>
+                  <div
+                    v-for="(
+                      time_item, time_idx
+                    ) in item.lecture_time_list.slice(0, 2)"
+                    :key="`time_${time_idx}`"
+                    class="course_time"
+                  >
+                    {{ setLectureDay(time_item) }}
+                  </div>
+                  <div
+                    v-for="(sub_item, sub_idx) in item.class_info"
+                    :key="sub_idx"
+                    class="course_info"
+                  >
+                    {{ sub_item.csm_name }} | {{ sub_item.mem_name }} 선생님
+                  </div>
+                </div>
+              </a>
+            </div>
+            <!-- [개발참조] 종료된코스 예 class="card standby" -->
+            <div v-if="endLectureCourseList.length > 0" class="standby_set">
+              <div class="standby_font">종료된 코스</div>
+              <div class="standby_set02">
+                <div
+                  v-for="(item, idx) in endLectureCourseList"
+                  :key="idx"
+                  class="card standby"
+                >
+                  <div
+                    class="course_tit"
+                    :class="item.class_info.length > 4 ? 'course_more' : ''"
+                  >
+                    {{ item.lec_title }}
+                  </div>
+                  <div
+                    v-for="(
+                      time_item, time_idx
+                    ) in item.lecture_time_list.slice(0, 2)"
+                    :key="`time_${time_idx}`"
+                    class="course_time"
+                  >
+                    {{ setLectureDay(time_item) }}
+                  </div>
+                  <div
+                    v-for="(sub_item, sub_idx) in item.class_info"
+                    :key="sub_idx"
+                    class="course_info"
+                  >
+                    {{ sub_item.csm_name }} | {{ sub_item.mem_name }} 선생님
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -130,150 +182,9 @@ export default {
       insCode: '',
       userIdx: 0,
       // 강의코스
-      // lectureCourseList: [
-      //   {
-      //     id: 0,
-      //     academy: '일산어학원',
-      //     time: '월수금 09:00 ~ 12:00',
-      //     subject: '영어심화리딩',
-      //     lessonTitle: '영어',
-      //     lessonClass: '심화 A반',
-      //     teacher: '홍길동 선생님',
-      //     state: true,
-      //   },
-      //   {
-      //     id: 1,
-      //     academy: '김포어학원',
-      //     time: '월수금 09:00 ~ 12:00',
-      //     subject: '수학심화리딩',
-      //     lessonTitle: '수학',
-      //     lessonClass: '심화 B반',
-      //     teacher: '임꺽정 선생님',
-      //     state: true,
-      //   },
-      //   {
-      //     id: 2,
-      //     academy: '광주어학원',
-      //     time: '월수금 09:00 ~ 12:00',
-      //     subject: '과학심화리딩',
-      //     lessonTitle: '과학',
-      //     lessonClass: '심화 C반',
-      //     teacher: '임창정 선생님',
-      //     state: true,
-      //   },
-      //   {
-      //     id: 3,
-      //     academy: '한남어학원',
-      //     time: '월수금 09:00 ~ 12:00',
-      //     subject: '체육심화리딩',
-      //     lessonTitle: '체육',
-      //     lessonClass: '심화 D반',
-      //     teacher: '전현무 선생님',
-      //     state: true,
-      //   },
-      //   {
-      //     id: 4,
-      //     academy: '마포어학원',
-      //     time: '월수금 09:00 ~ 12:00',
-      //     subject: '음악심화리딩',
-      //     lessonTitle: '음악',
-      //     lessonClass: '심화 E반',
-      //     teacher: '김종국 선생님',
-      //     state: true,
-      //   },
-      //   {
-      //     id: 5,
-      //     academy: '홍대어학원',
-      //     time: '월수금 09:00 ~ 12:00',
-      //     subject: '사회심화리딩',
-      //     lessonTitle: '사회',
-      //     lessonClass: '심화 F반',
-      //     teacher: '유재석 선생님',
-      //     state: true,
-      //   },
-      //   {
-      //     id: 6,
-      //     academy: '잠실어학원',
-      //     time: '월수금 09:00 ~ 12:00',
-      //     subject: '국어심화리딩',
-      //     lessonTitle: '국어',
-      //     lessonClass: '심화 G반',
-      //     teacher: '사투리 선생님',
-      //     state: true,
-      //   },
-      //   {
-      //     id: 7,
-      //     academy: '일산어학원',
-      //     time: '월수금 09:00 ~ 12:00',
-      //     subject: '영어심화리딩',
-      //     lessonTitle: '영어',
-      //     lessonClass: '심화 A반',
-      //     teacher: '홍길동 선생님',
-      //     state: true,
-      //   },
-      //   {
-      //     id: 8,
-      //     academy: '김포어학원',
-      //     time: '월수금 09:00 ~ 12:00',
-      //     subject: '수학심화리딩',
-      //     lessonTitle: '수학',
-      //     lessonClass: '심화 B반',
-      //     teacher: '임꺽정 선생님',
-      //     state: true,
-      //   },
-      //   {
-      //     id: 9,
-      //     academy: '광주어학원',
-      //     time: '월수금 09:00 ~ 12:00',
-      //     subject: '과학심화리딩',
-      //     lessonTitle: '과학',
-      //     lessonClass: '심화 C반',
-      //     teacher: '임창정 선생님',
-      //     state: true,
-      //   },
-      //   {
-      //     id: 10,
-      //     academy: '한남어학원',
-      //     time: '월수금 09:00 ~ 12:00',
-      //     subject: '체육심화리딩',
-      //     lessonTitle: '체육',
-      //     lessonClass: '심화 D반',
-      //     teacher: '전현무 선생님',
-      //     state: false,
-      //   },
-      //   {
-      //     id: 11,
-      //     academy: '마포어학원',
-      //     time: '월수금 09:00 ~ 12:00',
-      //     subject: '음악심화리딩',
-      //     lessonTitle: '음악',
-      //     lessonClass: '심화 E반',
-      //     teacher: '김종국 선생님',
-      //     state: false,
-      //   },
-      //   {
-      //     id: 12,
-      //     academy: '홍대어학원',
-      //     time: '월수금 09:00 ~ 12:00',
-      //     subject: '사회심화리딩',
-      //     lessonTitle: '사회',
-      //     lessonClass: '심화 F반',
-      //     teacher: '유재석 선생님',
-      //     state: false,
-      //   },
-      //   {
-      //     id: 13,
-      //     academy: '잠실어학원',
-      //     time: '월수금 09:00 ~ 12:00',
-      //     subject: '국어심화리딩',
-      //     lessonTitle: '국어',
-      //     lessonClass: '심화 G반',
-      //     teacher: '사투리 선생님',
-      //     state: false,
-      //   },
-      // ],
       lectureCourseList: [],
-      bgColors: ['course_bgcolor01', 'course_bgcolor02', 'course_bgcolor03'],
+      endLectureCourseList: [],
+      subTeacherCourseList: [],
       bgColorList: [],
       selectLectureList: [],
       searchText: '',
@@ -285,20 +196,10 @@ export default {
       },
     }
   },
-  created() {
-    const array = []
-    for (let i = 0; i <= this.lectureCourseList.length; i++) {
-      const num = parseInt(i / 4)
-      if (array.length === this.lectureCourseList.length) {
-        break
-      } else if (num === this.bgColors.length) {
-        i = -1
-      } else {
-        array.push(this.bgColors[num])
-      }
-    }
-    this.bgColorList = array
-    console.log(this.bgColorList)
+  watch: {
+    selectFlag() {
+      this.getLectureCourseList()
+    },
   },
   mounted() {
     this.insCode = this.$store.state.common.user.ins_code
@@ -308,24 +209,31 @@ export default {
   methods: {
     // 강의 코스 목록 불러오기 api
     async getLectureCourseList() {
+      const payload = {
+        end_course_check: this.selectFlag,
+        ins_code: this.insCode,
+        keyword: this.searchText,
+        mem_idx: this.userIdx,
+      }
       await apiLectureCourse
-        .getLectureCourse(this.insCode, this.userIdx)
+        .getLectureCourse(payload)
         .then(({ data: { data } }) => {
-          this.lectureCourseList = data.courseList
-          console.log(this.lectureCourseList)
-          // 카드 색상 리스트
-          const array = []
-          for (let i = 0; i <= this.lectureCourseList.length; i++) {
-            const num = parseInt(i / 4)
-            if (array.length === this.lectureCourseList.length) {
-              break
-            } else if (num === this.bgColors.length) {
-              i = -1
-            } else {
-              array.push(this.bgColors[num])
-            }
+          console.log(data)
+          this.lectureCourseList = []
+          this.endLectureCourseList = []
+          this.subTeacherCourseList = []
+          if (data.courseList !== null) {
+            this.lectureCourseList = data.courseList
           }
-          this.bgColorList = array
+          if (data.courseListEnd !== null) {
+            this.endLectureCourseList = data.courseListEnd
+          }
+          if (data.courseListSubTeacher !== null) {
+            this.subTeacherCourseList = data.courseListSubTeacher
+          }
+          console.log(this.lectureCourseList)
+          console.log(this.endLectureCourseList)
+          console.log(this.subTeacherCourseList)
         })
         .catch((err) => {
           console.log(err)
@@ -334,24 +242,9 @@ export default {
 
     selectTrueCourse() {
       this.selectFlag = 1
-      const array = []
-      for (let i = 0; i < this.lectureCourseList.length; i++) {
-        if (this.lectureCourseList[i].state) {
-          array.push(this.lectureCourseList[i])
-        }
-      }
-      this.selectLectureList = array
-      console.log(this.selectLectureList)
     },
     selectfalseCourse() {
-      this.selectFlag = 1
-      const array = []
-      for (let i = 0; i < this.lectureCourseList.length; i++) {
-        if (!this.lectureCourseList[i].state) {
-          array.push(this.lectureCourseList[i])
-        }
-      }
-      this.selectLectureList = array
+      this.selectFlag = 2
     },
     selectAllCourse() {
       this.selectFlag = 0
@@ -362,33 +255,13 @@ export default {
       this.searchText = value
     },
     searchCourse() {
-      if (this.searchText.length < 2) {
-        this.openModalDesc('검색 실패', '검색어는 2글자 이상 입력해주세요.')
-        return false
-      }
-
-      const result = this.lectureCourseList.filter((elem) => {
-        return (
-          elem.lessonTitle.includes(this.searchText) ||
-          elem.subject.includes(this.searchText) ||
-          elem.teacher.includes(this.searchText)
-        )
-      })
-      if (result.length === 0) {
-        this.openModalDesc('검색 실패', '일치하는 강의 코스가 없습니다.')
-        return false
-      } else {
-        this.selectFlag = 4
-        this.selectLectureList = result
-      }
+      this.getLectureCourseList()
     },
 
     // router event
-    onClickLecture(id, csm_idx, csm_name, lec_title, mem_name) {
+    onClickLecture(id) {
       console.log(id)
-      this.$router.push(
-        `lecturecourse/lectureplan/${id}?classidx=${csm_idx}&class=${csm_name}&title=${lec_title}&teacher=${mem_name}`
-      )
+      this.$router.push(`lecturecourse/lectureplan/${id}`)
     },
 
     // 모달 이벤트
@@ -401,6 +274,37 @@ export default {
     },
     onCloseModalDesc() {
       this.modalDesc.open = false
+    },
+
+    // 강좌 요일, 시간
+    setLectureDay(data) {
+      let day = ''
+      let startTime = ''
+      let endTime = ''
+      if (data.lec_mon_yn === '1') {
+        day = day + '월'
+      }
+      if (data.lec_tue_yn === '1') {
+        day = day + '화'
+      }
+      if (data.lec_wed_yn === '1') {
+        day = day + '수'
+      }
+      if (data.lec_thu_yn === '1') {
+        day = day + '목'
+      }
+      if (data.lec_fri_yn === '1') {
+        day = day + '금'
+      }
+      if (data.lec_sat_yn === '1') {
+        day = day + '토'
+      }
+      if (data.lec_sun_yn === '1') {
+        day = day + '일'
+      }
+      startTime = data.lec_time_stime.substr(0, 5)
+      endTime = data.lec_time_etime.substr(0, 5)
+      return day + ' ' + startTime + ' - ' + endTime
     },
   },
 }

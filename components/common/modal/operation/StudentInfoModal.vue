@@ -65,13 +65,13 @@
                     <label for="" class="st_title00 col-form-label">이름</label>
                     <div class="col">
                       <CustomOperationInput
-                        id="name"
+                        id="mem_name"
                         name="이름"
                         placeholder="이름입력"
                         rules="min:2|required"
                         type="text"
                         :isStudentInput="true"
-                        :inputValue="studentInfo.name"
+                        :inputValue="studentInfo.mem_name"
                         @change-input="$emit('change-input', $event)"
                       />
                     </div>
@@ -83,13 +83,13 @@
                     <div class="col">
                       <div class="group">
                         <CustomOperationInput
-                          id="nickname"
+                          id="mem_nickname"
                           name="닉네임"
                           placeholder="닉네임입력"
                           rules="min:2|required"
                           type="text"
                           :nickNameCheck="nickNameCheck"
-                          :inputValue="studentInfo.nickname"
+                          :inputValue="studentInfo.mem_nickname"
                           :isStudentInput="true"
                           :isCheckBox="true"
                           @change-input="$emit('change-input', $event)"
@@ -101,13 +101,13 @@
                     <label for="" class="st_title00 col-form-label">ID</label>
                     <div class="col">
                       <CustomOperationInput
-                        id="account"
+                        id="mem_id"
                         name="ID"
                         placeholder="ID입력"
                         rules="account|required"
                         type="text"
                         :isIdCheckBtn="true"
-                        :inputValue="studentInfo.account"
+                        :inputValue="studentInfo.mem_id"
                         :isStudentInput="true"
                         @change-input="$emit('change-input', $event)"
                       />
@@ -122,22 +122,12 @@
                     <div class="col">
                       <button
                         class="btn btn_choice"
-                        :class="
-                          studentInfo.identity.includes('학생')
-                            ? 'active'
-                            : false
-                        "
                         @click="$emit('click-identity', '학생')"
                       >
                         학생
                       </button>
                       <button
                         class="btn btn_choice"
-                        :class="
-                          studentInfo.identity.includes('학부모')
-                            ? 'active'
-                            : false
-                        "
                         @click="$emit('click-identity', '학부모')"
                       >
                         학부모

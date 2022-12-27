@@ -1,52 +1,44 @@
 <template>
   <div>
-    <!-- container -->
-    <div id="content" class="content">
-      <div class="content_area">
-        <!--  3Depth -->
-        <NavBox
-          title1="선생님관리"
-          title2="학생 관리"
-          title3="반 관리"
-          title4="시험관리"
-          url1="/management/operation/teachermanagement"
-          url2="/management/operation/studentmanagement"
-          url3="/management/operation/classmanagement"
-          url4="/management/operation/exammanagement"
-        />
-        <div class="tab-content depth03 ac_manage_std">
-          <StudentListBox
-            :rangeList="rangeList"
-            :studentList="studentList"
-            :identityList="identityList"
-            :isRangeFlag="isRangeFlag"
-            :statusList="statusList"
-            :studentStatusList="studentStatusList"
-            :isIdentityFlag="isIdentityFlag"
-            :isStatusFlag="isStatusFlag"
-            :isStudentStatusFlag="isStudentStatusFlag"
-            :searchStudentText="searchStudentText"
-            :expandIdx="expandIdx"
-            @click-report="openReportFilterModal"
-            @click-attendance="openStudentAttendanceModal"
-            @click-memo="openStudentMemoModalDesc"
-            @click-lectureInfo="openLectureInfoModalDesc"
-            @click-more="onClickExpandBtn"
-            @search-student="searchStudent"
-            @change-input="changeSearchInput"
-            @click-detail="openStudentInfoModalDesc"
-            @click-addStudent="openNewStudentInfoModalDesc"
-            @click-batchStudent="openBatchRegistrationModalDesc"
-            @select-identity="selectIdentityFlag"
-            @select-range="selectRangeFlag"
-            @select-status="selectStatusFlag"
-            @select-studentStatus="selectStudentStatusFlag"
-          />
-        </div>
-      </div>
+    <NavBox
+      title1="선생님관리"
+      title2="학생 관리"
+      title3="반 관리"
+      title4="시험관리"
+      url1="/management/operation/teachermanagement"
+      url2="/management/operation/studentmanagement"
+      url3="/management/operation/classmanagement"
+      url4="/management/operation/exammanagement"
+    />
+    <div class="tab-content depth03 ac_manage_std">
+      <StudentListBox
+        :rangeList="rangeList"
+        :studentList="studentList"
+        :identityList="identityList"
+        :isRangeFlag="isRangeFlag"
+        :statusList="statusList"
+        :studentStatusList="studentStatusList"
+        :isIdentityFlag="isIdentityFlag"
+        :isStatusFlag="isStatusFlag"
+        :isStudentStatusFlag="isStudentStatusFlag"
+        :searchStudentText="searchStudentText"
+        :expandIdx="expandIdx"
+        @click-report="openReportFilterModal"
+        @click-attendance="openStudentAttendanceModal"
+        @click-memo="openStudentMemoModalDesc"
+        @click-lectureInfo="openLectureInfoModalDesc"
+        @click-more="onClickExpandBtn"
+        @search-student="searchStudent"
+        @change-input="changeSearchInput"
+        @click-detail="openStudentInfoModalDesc"
+        @click-addStudent="openNewStudentInfoModalDesc"
+        @click-batchStudent="openBatchRegistrationModalDesc"
+        @select-identity="selectIdentityFlag"
+        @select-range="selectRangeFlag"
+        @select-status="selectStatusFlag"
+        @select-studentStatus="selectStudentStatusFlag"
+      />
     </div>
-    <!-- //container -->
-
     <!-- 모달 팝업 ------------------------------------->
 
     <!-- 학생 일괄 등록1 - 팝업 M2 -->
@@ -357,6 +349,7 @@
 </template>
 <script>
 import html2pdf from 'html2pdf.js'
+import { apiOperation } from '~/services'
 import NavBox from '@/components/operation/NavBox.vue'
 import StudentListBox from '@/components/operation/StudentListBox.vue'
 import ReportPrintPage from '@/components/operation/ReportPrintPage.vue'
@@ -407,30 +400,72 @@ export default {
   },
   data() {
     return {
+      // studentInfo: {
+      //   id: 0,
+      //   identity: [],
+      //   status: false,
+      //   grade: '초1',
+      //   grade_type: 0,
+      //   class: [],
+      //   name: '',
+      //   nickname: '',
+      //   family: [],
+      //   account: '',
+      //   phone: '',
+      //   parent_phone: '',
+      //   gender: 0,
+      //   student_status: false,
+      //   school: '',
+      //   attendance_num: '',
+      //   created_at: '',
+      //   lecture_date: '',
+      //   birthday: '',
+      //   email: '',
+      //   profile_image: '',
+      //   lectureInfo: [],
+      //   memo: [],
+      // },
       studentInfo: {
-        id: 0,
-        identity: [],
-        status: false,
-        grade: '초1',
-        grade_type: 0,
-        class: [],
-        name: '',
-        nickname: '',
-        family: [],
-        account: '',
-        phone: '',
-        parent_phone: '',
-        gender: 0,
-        student_status: false,
-        school: '',
-        attendance_num: '',
-        created_at: '',
-        lecture_date: '',
-        birthday: '',
-        email: '',
-        profile_image: '',
-        lectureInfo: [],
-        memo: [],
+        mem_name: '',
+        ins_code: '',
+        mem_id: '',
+        mem_nickname: '',
+        mem_email: '',
+        std_status: null,
+        std_year: '',
+        std_adult_yn: '',
+        mem_sex: '',
+        std_grade: '',
+        std_use_yn: '',
+        std_att_num: '',
+        mem_phone: '',
+        std_school: '',
+        st_courses: null,
+        std_birth: '',
+        std_parent_phone: '',
+        itm_acc_yn: '',
+        family_id: [
+          {
+            mem_name: '',
+            mem_idx: '',
+            mem_id: '',
+          },
+        ],
+        lectureInfoDto: [
+          {
+            csm_name: '',
+            csm_idx: '',
+            lec_title: '',
+            lec_idx: '',
+          },
+        ],
+        allLectureInfo: [
+          {
+            csm_name: '',
+            csm_idx: '',
+            check_ban: '',
+          },
+        ],
       },
       initStudent: {},
       studentList: [
@@ -1052,6 +1087,45 @@ export default {
     }
   },
   methods: {
+    // 깊은 복사
+    deepCopy(data) {
+      return JSON.parse(JSON.stringify(data))
+    },
+    // 인덱스
+    setIdxNumber(string) {
+      return Number(string.substr(4))
+    },
+    // 학생 목록 불러오기 api
+    async getStudentList() {
+      const payload = {
+        ins_code: this.institutionIdx,
+        current_page: this.currentPage,
+        per_page_num: 10,
+        status: this.stateFlag,
+        latest: this.sortFlag,
+        cond: '',
+        attend: '',
+        search: this.searchText,
+      }
+      await apiOperation
+        .getStudentList(payload)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          // if (data === null) {
+          //   this.studentList = []
+          // } else {
+          //   this.stateTrue = data.activate_count
+          //   this.stateFalse = data.deactivate_count
+          //   this.teacherList = data.dto
+          //   this.endPageNumber = data.pageMaker.end_page
+          // }
+          console.log(this.teacherList)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
     // 모달 이벤트
     openModalDesc(tit, msg) {
       this.modalDesc = {
@@ -1227,10 +1301,6 @@ export default {
     },
     onCloseReportDetailModal() {
       this.reportDetailModalDesc.open = false
-    },
-    // 깊은 복사
-    deepCopy(data) {
-      return JSON.parse(JSON.stringify(data))
     },
     // 학생 정보 등록/수정
     onChangeUpdateInput({ target: { value, id, checked } }) {
