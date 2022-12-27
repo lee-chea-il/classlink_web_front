@@ -1659,11 +1659,7 @@ export default {
         )
       )
 
-      if (
-        payload.ban_list.length !== 0 &&
-        payload.student_list.length !== 0 &&
-        payload === null // api 실행 막기
-      ) {
+      if (payload.ban_list.length !== 0 && payload.student_list.length !== 0) {
         if (
           // 이동하려는 반이 같은 반이 아닌지 체크
           studentList.filter((x1) =>
@@ -1700,12 +1696,6 @@ export default {
     },
     // 학생 체크박스
     onClickMoveModalLeftCheckbox(items, csmIdx) {
-      console.log(
-        items.mem_idx,
-        this.selectedMoveModalLeftCheckbox.find(
-          (e) => e.mem_idx === items.mem_idx
-        )?.mem_idx
-      )
       if (
         this.selectedMoveModalLeftCheckbox.find(
           (e) => e.mem_idx === items.mem_idx
@@ -1713,7 +1703,7 @@ export default {
       ) {
         this.selectedMoveModalLeftCheckbox =
           this.selectedMoveModalLeftCheckbox.filter(
-            (item) => item.mem_idx === items.mem_idx
+            (item) => item.mem_idx !== items.mem_idx
           )
         console.log('delete')
       } else {
