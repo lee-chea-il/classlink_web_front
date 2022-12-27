@@ -1,5 +1,5 @@
 <template>
-  <div id="content" class="content">
+  <div>
     <div class="content_area">
       <!--  3Depth -->
       <ul class="nav nav-tabs depth03">

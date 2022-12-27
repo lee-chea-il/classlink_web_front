@@ -5538,6 +5538,16 @@ ol {
   border-radius: 5px;
   margin: 10px auto;
 }
+#modalLectureRegi05 .bar {
+  width: 363px;
+  height: 22px;
+  background: #7391FA;
+  border-radius: 5px;
+  margin: 10px auto;
+}
+#modalLectureRegi05 .bar_select {
+  background: #4FCED0;
+}
 #modalLectureRegi05 .text {
   font-weight: 500;
   font-size: 12px;

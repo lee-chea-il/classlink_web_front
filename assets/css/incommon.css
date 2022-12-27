@@ -3553,6 +3553,9 @@ i.btn {
   height: 16px;
   padding: unset;
 }
+.calendar_type02 .calendar .calendar_table .week .calendar-day .curi_box_select {
+  background-color: #4FCED0;
+}
 .calendar_type02 .schedule {
   background: #FFFFFF;
   border-radius: 10px;

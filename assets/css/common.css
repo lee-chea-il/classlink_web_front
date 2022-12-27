@@ -3641,6 +3641,9 @@ i.btn {
   height: 16px;
   padding: unset;
 }
+.calendar_type02 .calendar .calendar_table .week .calendar-day .curi_box_select {
+  background-color: #4FCED0;
+}
 .calendar_type02 .schedule {
   background: #FFFFFF;
   border-radius: 10px;
@@ -8445,7 +8448,6 @@ a {
 }
 .modal_ac_manage_tch .box_area {
   box-sizing: border-box;
-  height: 70px;
   border: 0.4px solid #A7A9AC;
   border-radius: 5px;
 }
@@ -12534,6 +12536,16 @@ a {
   border-radius: 5px;
   margin: 10px auto;
 }
+#modalLectureRegi05 .bar {
+  width: 363px;
+  height: 22px;
+  background: #7391FA;
+  border-radius: 5px;
+  margin: 10px auto;
+}
+#modalLectureRegi05 .bar_select {
+  background: #4FCED0;
+}
 #modalLectureRegi05 .text {
   font-weight: 500;
   font-size: 12px;
@@ -15898,6 +15910,9 @@ a {
   border-radius: 20px;
   margin-top: 5px;
 }
+.ac_manage_course .standby .course_time {
+  padding: 0 0;
+}
 .ac_manage_course .course_info {
   font-weight: 400;
   font-size: 12px;
@@ -15927,6 +15942,9 @@ a {
 .ac_manage_course .cards_section .card.standby::before {
   height: 188px;
 }
+.ac_manage_course .cards_section .card.course_more02::before {
+  height: 305px;
+}
 .ac_manage_course .course_bgcolor02 {
   background: #E7EDFF;
 }
@@ -15954,10 +15972,17 @@ a {
 .ac_manage_course .standby_set02 {
   display: flex;
 }
-.ac_manage_course .cards_section02 {
+.ac_manage_course .cards_section03 {
   display: flex;
   overflow-x: scroll;
   width: 100%;
+}
+.ac_manage_course .cards_section02 {
+  overflow-x: scroll;
+  width: 100%;
+}
+.ac_manage_course .cards_section02-1 {
+  display: flex;
 }
 
 /* 수업-강의코스-강의계획서.html */

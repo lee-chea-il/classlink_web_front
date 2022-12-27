@@ -114,23 +114,6 @@
 										</colgroup> -->
                         <thead>
                           <tr>
-                            <th class="th01">
-                              <div
-                                class="custom-control custom-checkbox form-inline"
-                              >
-                                <input
-                                  :id="`move01`"
-                                  type="checkbox"
-                                  class="custom-control-input"
-                                />
-                                <!-- :checked="moveClassCheckboxRight === idx" -->
-                                <!-- @input="$emit('move-to-class-right', item)" -->
-                                <label
-                                  class="custom-control-label"
-                                  :for="`move01`"
-                                ></label>
-                              </div>
-                            </th>
                             <th>배정X</th>
                           </tr>
                         </thead>
@@ -208,8 +191,8 @@
                                   :id="`move0${idx}`"
                                   type="checkbox"
                                   class="custom-control-input"
-                                  :checked="moveClassCheckboxRight === idx"
-                                  @input="$emit('move-class-right', item)"
+                                  :checked="moveClassCheckbox.includes(item)"
+                                  @input="$emit('move-class', item)"
                                 />
                                 <label
                                   class="custom-control-label"
@@ -243,7 +226,11 @@
                                   :id="`move1${idx}${id}`"
                                   type="checkbox"
                                   class="custom-control-input"
-                                  :checked="leftCheckbox.includes(items)"
+                                  :checked="
+                                    leftCheckbox.some(
+                                      (e) => e.mem_idx === items.mem_idx
+                                    )
+                                  "
                                   @input="
                                     $emit(
                                       'student-list-check',
@@ -258,7 +245,11 @@
                                 ></label>
                               </div>
                             </td>
-                            <td class="td02">{{ items.std_year }}</td>
+                            <td class="td02">
+                              {{
+                                items.std_year === null ? '-' : items.std_year
+                              }}
+                            </td>
                             <td class="td03">{{ items.mem_name }}</td>
                             <td class="td04">{{ items.mem_phone }}</td>
                           </tr>
@@ -373,8 +364,12 @@
                                 :id="`move2${idx}`"
                                 type="checkbox"
                                 class="custom-control-input"
-                                :checked="moveClassCheckbox === idx"
-                                @input="$emit('move-class', item)"
+                                :checked="
+                                  moveClassCheckboxRight.some(
+                                    (e) => e.csm_idx === item.csm_idx
+                                  )
+                                "
+                                @input="$emit('move-class-right', item)"
                               />
                               <label
                                 class="custom-control-label"
@@ -404,10 +399,10 @@
                       id="listStudents01"
                       class="list_class_students"
                     >
-                      <table class="tb">
-                        <tbody>
-                          <!-- 반 소속 학생리스트 -->
-                          <div class="list_class_students">
+                      <div class="list_class_students">
+                        <table class="tb">
+                          <tbody>
+                            <!-- 반 소속 학생리스트 -->
                             <!-- <colgroup>
                               <col width="10%" />
                               <col width="30%" />
@@ -426,7 +421,11 @@
                                     :id="`move3${idx}${id}`"
                                     type="checkbox"
                                     class="custom-control-input"
-                                    :checked="rightCheckbox.includes(items)"
+                                    :checked="
+                                      rightCheckbox.some(
+                                        (e) => e.mem_idx === items.mem_idx
+                                      )
+                                    "
                                     @input="
                                       $emit(
                                         'student-list-check-right',
@@ -443,15 +442,17 @@
                               </td>
                               <td class="text-right">
                                 <i v-if="false" class="icons_new"></i>
-                                {{ items.std_year }}
+                                {{
+                                  items.std_year === null ? '-' : items.std_year
+                                }}
                               </td>
                               <td>{{ items.mem_name }}</td>
                               <td>{{ items.mem_phone }}</td>
                             </tr>
-                          </div>
-                          <!-- /.반 소속 학생리스트 -->
-                        </tbody>
-                      </table>
+                            <!-- /.반 소속 학생리스트 -->
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                   <!-- 반 list -->

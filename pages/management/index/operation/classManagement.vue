@@ -1,5 +1,5 @@
 <template>
-  <div id="content" class="content">
+  <div>
     <div class="content_area">
       <!--  3Depth -->
       <NavBox
@@ -177,6 +177,8 @@
                 <tr
                   v-for="(item, idx) in classList"
                   :key="idx"
+                  draggable
+                  @dragstart="startDrag($event, item, item.csm_display_no)"
                   @drop="onDrop($event, item.csm_display_no)"
                   @dragover.prevent
                   @dragenter.prevent
@@ -209,11 +211,7 @@
                     ></i>
                   </td>
                   <td>
-                    <i
-                      class="btn icons_move_off"
-                      draggable
-                      @dragstart="startDrag($event, item, item.csm_display_no)"
-                    ></i>
+                    <i class="btn icons_move_off"></i>
                   </td>
                 </tr>
               </tbody>
@@ -396,7 +394,7 @@ import ClassMoveModal from '@/components/common/modal/operation/ClassMoveModal.v
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 import DeleteModal from '@/components/lecturecourse/DeletePlanModal.vue'
 import CustomSnackbar from '@/components/common/CustomSnackbar.vue'
-import { apiClassManagement } from '~/services'
+import { apiOperation } from '~/services'
 export default {
   name: 'ClassManagement',
   components: {
@@ -451,14 +449,14 @@ export default {
       selectedStudentList: [],
 
       // 왼쪽
-      // 반 이동 이동시킬 학생 선택
+      // 학생 선택
       selectedMoveModalLeftCheckbox: [],
-      // 반 이동 이동할 반 선택
+      // 반 선택
       selectedMoveToClassCheckbox: [],
       // 오른쪽
-      // 반 이동 이동시킬 학생 선택
+      // 학생 선택
       selectedMoveModalRightCheckbox: [],
-      // 반 이동 이동할 반 선택
+      // 반 선택
       selectedMoveToClassCheckboxRight: [],
       // 배정X 학생 선택
       selectedUnallocationCheckbox: [],
@@ -558,6 +556,9 @@ export default {
       // 페이지 수
       endPage: 1,
       detailEndPage: 1,
+      // 다음/이전
+      next: false,
+      prev: false,
       // 현재 페이지
       currentPage: 1,
       detailCurrentPage: 1,
@@ -653,7 +654,14 @@ export default {
       const itemID = Number(evt.dataTransfer.getData('itemID'))
       const item = this.classList.find((item) => item.csm_display_no === itemID)
       // item.list = list
-      console.log(itemID, item.csm_idx, list)
+      console.log(
+        'csm_display_no',
+        itemID,
+        'csm_idx',
+        item.csm_idx,
+        'update_order_no',
+        list
+      )
       this.getChangeOrder(itemID, item.csm_idx, list)
     },
 
@@ -667,11 +675,13 @@ export default {
         tch_idx: this.tchIdx === 0 ? '' : `&tch_idx=${this.tchIdx}`,
       }
 
-      await apiClassManagement
+      await apiOperation
         .getClassList(this.ins_code, payload)
         .then(({ data: { data } }) => {
           this.classList = data.banList
           this.endPage = data.pageMaker.end_page
+          this.next = data.pageMaker.next
+          this.prev = data.pageMaker.prev
         })
         .catch((err) => {
           console.log(err)
@@ -692,7 +702,7 @@ export default {
         this.showCount === 1 &&
         this.tchIdx === 0
       ) {
-        await apiClassManagement
+        await apiOperation
           .getChangeOrder(payload)
           .then(({ data: { data } }) => {
             console.log(data)
@@ -723,7 +733,7 @@ export default {
             : `&current_page=${this.detailCurrentPage}`,
       }
 
-      await apiClassManagement
+      await apiOperation
         .getClassDetail(payload)
         .then(({ data: { data } }) => {
           console.log(data)
@@ -755,7 +765,7 @@ export default {
             : `&current_page=${this.detailCurrentPage}`,
       }
 
-      await apiClassManagement
+      await apiOperation
         .getClassDetail(payload)
         .then(({ data: { data } }) => {
           console.log(data)
@@ -788,10 +798,10 @@ export default {
             : `&search=${this.classTeacherSearch}`,
       }
 
-      await apiClassManagement
+      await apiOperation
         .getSearchTeacher(payload)
         .then(({ data: { data } }) => {
-          console.log(data)
+          // console.log(data)
           this.teacherList = data
         })
         .catch((err) => {
@@ -811,7 +821,7 @@ export default {
             : `&search=${this.classStudentSearch}`,
       }
 
-      await apiClassManagement
+      await apiOperation
         .getSearchStudent(payload)
         .then(({ data: { data } }) => {
           console.log(data)
@@ -853,7 +863,7 @@ export default {
         payload.studentList.length !== 0 &&
         payload.teacherList.length !== 0
       ) {
-        await apiClassManagement
+        await apiOperation
           .postRegistClass(payload)
           .then((res) => {
             console.log(res)
@@ -899,7 +909,7 @@ export default {
         payload.choice_GradeList[0].studentList.length !== 0 &&
         payload.teacherList.length !== 0
       ) {
-        await apiClassManagement
+        await apiOperation
           .putUpdClass(csmIdx, payload)
           .then((res) => {
             console.log(res)
@@ -924,7 +934,7 @@ export default {
       console.log('checkList', this.checkList)
       console.log(payload)
 
-      await apiClassManagement
+      await apiOperation
         .deleteClassList(payload)
         .then(() => {
           this.checkList = []
@@ -974,7 +984,7 @@ export default {
         now_mem_idx: this.$store.state.common.user.mem_idx,
       }
 
-      await apiClassManagement
+      await apiOperation
         .postClassCopy(payload)
         .then((res) => {
           console.log(res)
@@ -1074,7 +1084,7 @@ export default {
       this.openClassModify.data = null
     },
     async onOpenClassModify(item) {
-      await apiClassManagement
+      await apiOperation
         .getUpdClassList(item.csm_idx, this.ins_code)
         .then(({ data: { data } }) => {
           console.log('res', data, item)
@@ -1118,6 +1128,8 @@ export default {
       this.modalMoveLeftSort = true
       this.modalMoveRightSearch = ''
       this.modalMoveRightSort = true
+      this.selectedMoveToClassCheckbox = []
+      this.selectedMoveToClassCheckboxRight = []
       this.selectedMoveModalLeftCheckbox = []
       this.selectedMoveModalRightCheckbox = []
       this.modalMoveCopy = false
@@ -1168,7 +1180,7 @@ export default {
         sort_check: '',
       }
 
-      await apiClassManagement
+      await apiOperation
         .getNoAssignStudent(payload)
         .then(({ data: { data } }) => {
           console.log(data)
@@ -1178,7 +1190,7 @@ export default {
           console.log(err)
         })
 
-      await apiClassManagement
+      await apiOperation
         .getMoveClass(payload)
         .then(({ data: { data } }) => {
           this.modalMoveRightList = data
@@ -1202,7 +1214,7 @@ export default {
           : `&sort_check=${this.modalUnallocationSort}`,
       }
 
-      await apiClassManagement
+      await apiOperation
         .getNoAssignStudent(payload)
         .then(({ data: { data } }) => {
           this.noAssignStudent = data
@@ -1238,7 +1250,7 @@ export default {
       console.log('sadfasdfag', payload, this.selectedMoveModalRightCheckbox)
 
       if (payload.moveBanDataList.length !== 0) {
-        await apiClassManagement
+        await apiOperation
           .putMoveReverseClass(payload)
           .then(({ data: { data } }) => {
             console.log(data)
@@ -1279,10 +1291,10 @@ export default {
     async onUnallocationPutMoveClass() {
       const banList = []
       const studentList = []
-      for (let i = 0; i < this.selectedMoveToClassCheckbox.length; i++) {
+      for (let i = 0; i < this.selectedMoveToClassCheckboxRight.length; i++) {
         const ban = {
-          csm_idx: this.selectedMoveToClassCheckbox[i].csm_idx,
-          csm_name: this.selectedMoveToClassCheckbox[i].csm_name,
+          csm_idx: this.selectedMoveToClassCheckboxRight[i].csm_idx,
+          csm_name: this.selectedMoveToClassCheckboxRight[i].csm_name,
         }
         banList.push(ban)
       }
@@ -1294,6 +1306,7 @@ export default {
         }
         studentList.push(student)
       }
+      console.log(this.selectedMoveToClassCheckboxRight)
 
       const payload = {
         ban_list: banList,
@@ -1303,7 +1316,7 @@ export default {
         student_list: studentList,
       }
       if (payload.ban_list.length !== 0 && payload.student_list.length !== 0) {
-        await apiClassManagement
+        await apiOperation
           .putMoveClass(payload)
           .then(({ data: { data } }) => {
             console.log(data)
@@ -1347,7 +1360,7 @@ export default {
         }
         const item = []
 
-        await apiClassManagement
+        await apiOperation
           .getMoveClass(payload)
           .then(({ data: { data } }) => {
             for (let i = 0; i < this.checkList.length; i++) {
@@ -1561,7 +1574,7 @@ export default {
       }
       const item = []
 
-      await apiClassManagement
+      await apiOperation
         .getMoveClass(payload)
         .then(({ data: { data } }) => {
           for (let i = 0; i < this.checkList.length; i++) {
@@ -1590,7 +1603,7 @@ export default {
             : `&search=${this.modalMoveRightSearch}`,
       }
 
-      await apiClassManagement
+      await apiOperation
         .getMoveClass(payload)
         .then(({ data: { data } }) => {
           this.modalMoveRightList = data
@@ -1607,6 +1620,8 @@ export default {
     async putMoveClass(type) {
       const studentList = []
       const banList = []
+      const banStudent = []
+      // type => true: 오른쪽 화실표, false: 왼쪽 화살표
       if (type) {
         for (let i = 0; i < this.selectedMoveModalLeftCheckbox.length; i++) {
           const student = {
@@ -1617,12 +1632,23 @@ export default {
           }
           studentList.push(student)
         }
-        for (let i = 0; i < this.selectedMoveToClassCheckbox.length; i++) {
+        for (let i = 0; i < this.selectedMoveToClassCheckboxRight.length; i++) {
           const ban = {
-            csm_idx: this.selectedMoveToClassCheckbox[i].csm_idx,
-            csm_name: this.selectedMoveToClassCheckbox[i].csm_name,
+            csm_idx: this.selectedMoveToClassCheckboxRight[i].csm_idx,
+            csm_name: this.selectedMoveToClassCheckboxRight[i].csm_name,
           }
           banList.push(ban)
+          for (
+            let j = 0;
+            j < this.selectedMoveToClassCheckboxRight[i].studentList.length;
+            j++
+          ) {
+            const studentInfo = {
+              mem_idx:
+                this.selectedMoveToClassCheckboxRight[i].studentList[j].mem_idx,
+            }
+            banStudent.push(studentInfo)
+          }
         }
       } else {
         for (let i = 0; i < this.selectedMoveModalRightCheckbox.length; i++) {
@@ -1634,12 +1660,24 @@ export default {
           }
           studentList.push(student)
         }
-        for (let i = 0; i < this.selectedMoveToClassCheckboxRight.length; i++) {
+        for (let i = 0; i < this.selectedMoveToClassCheckbox.length; i++) {
           const ban = {
-            csm_idx: this.selectedMoveToClassCheckboxRight[i].csm_idx,
-            csm_name: this.selectedMoveToClassCheckboxRight[i].csm_name,
+            csm_idx: this.selectedMoveToClassCheckbox[i].csm_idx,
+            csm_name: this.selectedMoveToClassCheckbox[i].csm_name,
           }
           banList.push(ban)
+
+          for (
+            let j = 0;
+            j < this.selectedMoveToClassCheckbox[i].studentList.length;
+            j++
+          ) {
+            const studentInfo = {
+              mem_idx:
+                this.selectedMoveToClassCheckbox[i].studentList[j].mem_idx,
+            }
+            banStudent.push(studentInfo)
+          }
         }
       }
       console.log(studentList, banList)
@@ -1651,13 +1689,8 @@ export default {
         ins_code: this.ins_code,
         student_list: studentList,
       }
-      console.log(this.selectedMoveToClassCheckboxRight)
-
-      console.log(
-        studentList.filter((x1) =>
-          banList.some((x2) => x1.mem_idx === x2.mem_idx)
-        )
-      )
+      console.log('payload', payload)
+      console.log('ClassCheckboxRight', this.selectedMoveToClassCheckboxRight)
 
       if (payload.ban_list.length !== 0 && payload.student_list.length !== 0) {
         if (
@@ -1666,23 +1699,39 @@ export default {
             banList.some((x2) => x1.csm_idx === x2.csm_idx)
           ).length === 0
         ) {
-          await apiClassManagement
-            .putMoveClass(payload)
-            .then(({ data: { data } }) => {
-              console.log(data)
-              this.openModalDesc('이동 성공', '반 이동을 성공했습니다.')
-              this.getMoveClassLeft()
-              this.getMoveClassRight()
-              this.getClassList()
-            })
-            .catch((err) => {
-              console.log(err)
-            })
+          if (
+            // 이동하려는 반에 같은 학생이 없는지 체크
+            studentList.filter((x1) =>
+              banStudent.some((x2) => x1.mem_idx === x2.mem_idx)
+            ).length === 0
+          ) {
+            await apiOperation
+              .putMoveClass(payload)
+              .then(({ data: { data } }) => {
+                console.log(data)
+                this.selectedMoveToClassCheckbox = []
+                this.selectedMoveToClassCheckboxRight = []
+                this.selectedMoveModalLeftCheckbox = []
+                this.selectedMoveModalRightCheckbox = []
+                this.openModalDesc('이동 성공', '반 이동을 성공했습니다.')
+                this.getMoveClassLeft()
+                this.getMoveClassRight()
+                this.getClassList()
+              })
+              .catch((err) => {
+                console.log(err)
+              })
+          } else {
+            this.openModalDesc('이동 실패', '반 이동을 실패했습니다.')
+          }
         } else {
           this.openModalDesc('이동 실패', '반 이동을 실패했습니다.')
         }
       } else {
-        this.openModalDesc('이동 실패', '이동할 학생과 반을 선택해주세요.')
+        this.onOpenSnackbar('이동할 반을 선택해주세요.')
+        setTimeout(() => {
+          this.onCloseSnackbar()
+        }, 2000)
       }
     },
 
@@ -1694,7 +1743,7 @@ export default {
         this.modalMoveCopy = true
       }
     },
-    // 학생 체크박스
+    // 반 이동 학생 체크박스
     onClickMoveModalLeftCheckbox(items, csmIdx) {
       if (
         this.selectedMoveModalLeftCheckbox.find(
@@ -1711,7 +1760,6 @@ export default {
           ...items,
           csm_idx: csmIdx,
         }
-        // console.log('items', items, payload)
         this.selectedMoveModalLeftCheckbox.push(payload)
       }
       console.log('asfsfsf', this.selectedMoveModalLeftCheckbox)
@@ -1740,7 +1788,7 @@ export default {
       ) {
         this.selectedMoveModalRightCheckbox =
           this.selectedMoveModalRightCheckbox.filter(
-            (item) => item.mem_idx === items.mem_idx
+            (item) => item.mem_idx !== items.mem_idx
           )
       } else {
         const payload = {
@@ -1750,9 +1798,16 @@ export default {
 
         this.selectedMoveModalRightCheckbox.push(payload)
       }
-      console.log(this.selectedMoveModalRightCheckbox)
+      console.log(
+        'RightCheckbox',
+        this.selectedMoveModalRightCheckbox,
+        items,
+        this.selectedMoveModalRightCheckbox.some(
+          (item) => item.mem_idx === items.mem_idx
+        )
+      )
     },
-    // 이동할 반 선택 (오른쪽으로)
+    // 이동할 반 선택 (왼쪽으로)
     onClickMoveToClassRight(item) {
       if (
         this.selectedMoveToClassCheckboxRight.find(

@@ -127,26 +127,29 @@
                       <label class="custom-control-label" for="chk01"></label>
                     </div>
                   </td>
-                  <td
-                    v-if="item.type === 0"
-                    @click="onOpenQuestionViewModal(item)"
-                  >
+                  <td @click="onOpenQuestionViewModal(item)">
                     <div class="study_qustion">
-                      {{ item.title }}
+                      {{ item.questionvo.qtb_title }}
                     </div>
                   </td>
-                  <td
+                  <!-- <td
                     v-else
                     class="study_qustion"
                     @click="onOpenReplyViewModal(item)"
                   >
                     <div class="study_qustion">└─ {{ item.title }}</div>
+                  </td> -->
+                  <td>{{ item.questionvo.mem_name }}</td>
+                  <td>
+                    {{ item.questionvo.qtb_registration_date.substr(0, 10) }}
                   </td>
-                  <td>{{ item.writer }}</td>
-                  <td>{{ item.write_date }}</td>
-                  <td>{{ item.lesson }}</td>
-                  <td>{{ item.public }}</td>
-                  <td>{{ item.view_count }}</td>
+                  <td>{{ item.questionvo.icu_title }}</td>
+                  <td>
+                    {{
+                      item.questionvo.qtb_open_yn === '1' ? '공개' : '비공개'
+                    }}
+                  </td>
+                  <td>{{ item.questionvo.qtb_view_cnt }}</td>
                 </tr>
                 <!-- <tr class="que_reply">
                   <td>
@@ -221,7 +224,7 @@
 import QueFilterModal from '@/components/common/modal/learningbox/QueFilterModal.vue'
 import QuestionViewModal from '@/components/common/modal/learningbox/QuestionViewModal.vue'
 import ReplyViewModal from '@/components/common/modal/learningbox/ReplyViewModal.vue'
-
+import { apiLeaningBox } from '~/services'
 export default {
   name: 'Question',
   components: {
@@ -231,6 +234,8 @@ export default {
   },
   data() {
     return {
+      ins_code: this.$store.state.common.user.ins_code,
+
       openQueFilterModal: {
         open: false,
       },
@@ -253,42 +258,11 @@ export default {
         view_count: 4,
       },
 
-      askingboxList: [
-        {
-          id: 0,
-          type: 0,
-          title: '성격심리학 레슨1 관련 질문드립니다.',
-          content: '이 부분 답이 왜 3번인지 모르겠습니다.',
-          writer: '김지원',
-          write_date: '2022.07.10',
-          lesson: '성격심리학',
-          public: 1,
-          view_count: 4,
-        },
-        {
-          id: 1,
-          type: 1,
-          title: '성격심리학 레슨1 관련 질문드립니다.',
-          content: '이 부분 답이 왜 3번인지 모르겠습니다.',
-          writer: '김지원',
-          write_date: '2022.07.10',
-          lesson: '성격심리학',
-          public: 1,
-          view_count: 4,
-        },
-        {
-          id: 2,
-          type: 0,
-          title: '성격심리학 레슨1 관련 질문드립니다.',
-          content: '이 부분 답이 왜 3번인지 모르겠습니다.',
-          writer: '김지원',
-          write_date: '2022.07.10',
-          lesson: '성격심리학',
-          public: 1,
-          view_count: 4,
-        },
-      ],
+      askingboxList: [],
     }
+  },
+  mounted() {
+    this.getQuestionList()
   },
   methods: {
     // 모달
@@ -311,6 +285,23 @@ export default {
     },
     onCloseReplyViewModal() {
       this.openReplyViewModal.open = false
+    },
+
+    async getQuestionList() {
+      const payload = {
+        ins_code: this.ins_code,
+        lec_idx: 0,
+      }
+
+      await apiLeaningBox
+        .getQuestionList(payload)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          this.askingboxList = data.totaldto
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
   },
 }

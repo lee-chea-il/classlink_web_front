@@ -1960,6 +1960,9 @@ ol {
   border-radius: 20px;
   margin-top: 5px;
 }
+.ac_manage_course .standby .course_time {
+  padding: 0 0;
+}
 .ac_manage_course .course_info {
   font-weight: 400;
   font-size: 12px;
@@ -1989,6 +1992,9 @@ ol {
 .ac_manage_course .cards_section .card.standby::before {
   height: 188px;
 }
+.ac_manage_course .cards_section .card.course_more02::before {
+  height: 305px;
+}
 .ac_manage_course .course_bgcolor02 {
   background: #E7EDFF;
 }
@@ -2016,10 +2022,17 @@ ol {
 .ac_manage_course .standby_set02 {
   display: flex;
 }
-.ac_manage_course .cards_section02 {
+.ac_manage_course .cards_section03 {
   display: flex;
   overflow-x: scroll;
   width: 100%;
+}
+.ac_manage_course .cards_section02 {
+  overflow-x: scroll;
+  width: 100%;
+}
+.ac_manage_course .cards_section02-1 {
+  display: flex;
 }
 
 /* 수업-강의코스-강의계획서.html */

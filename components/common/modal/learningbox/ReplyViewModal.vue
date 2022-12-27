@@ -28,10 +28,13 @@
 						</ul>
 					</div> -->
 
-            <div class="title_area row">
+            <div class="title_area row reply_view">
               <span class="notice_tit">제목</span>
               <span class="notice_title">컴플레인 이슈사항 공지드립니다.</span>
-              <span class="notice_day02">2022.08.02</span>
+              <span class="notice_day02"
+                ><span>2022.08.02</span>(최종수정일
+                <span>2022.12.09</span>)</span
+              >
               <span class="notice_writer">서유진 선생님</span>
               <span class="keyword01">
                 <span class="keyword01-1">선택한 과목</span>

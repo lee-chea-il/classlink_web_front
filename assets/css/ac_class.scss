@@ -28,6 +28,12 @@
     margin-top: 5px;
   }
 
+  .standby {
+    .course_time {
+      padding: 0 0;
+    }
+  }
+
   .course_info {
     font-weight: 400;
     font-size: 12px;
@@ -61,6 +67,10 @@
 
   .cards_section .card.standby::before {
     height: 188px;
+  }
+
+  .cards_section .card.course_more02::before {
+    height: 305px;
   }
 
   .course_bgcolor02 {
@@ -97,10 +107,19 @@
     display: flex;
   }
 
-  .cards_section02 {
+  .cards_section03 {
     display: flex;
     overflow-x: scroll;
     width: 100%;
+  }
+
+  .cards_section02 {
+    overflow-x: scroll;
+    width: 100%;
+  }
+
+  .cards_section02-1 {
+    display: flex;
   }
 }
 
