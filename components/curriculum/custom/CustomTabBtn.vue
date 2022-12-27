@@ -56,8 +56,12 @@ export default {
         return 'icon_institute'
       }else if(this.dataTarget==='franchise'){
         return 'icon_fran'
-      }else{
+      }else if(this.dataTarget==='franReal'){
+        return 'icon_franReal'
+      }else if(this.dataTarget==='mydata'){
         return 'icon_mydata'
+      }else{
+        return ''
       }
     }
   }

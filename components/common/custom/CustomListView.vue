@@ -151,7 +151,7 @@ export default {
 </script>
 
 <style>
-#modalCuriRegi .form-inline{
+#modalCuriRegi .list_box .form-inline{
   width:initial;
 }
 #modalCuriRegi .list_area .icon_institute{

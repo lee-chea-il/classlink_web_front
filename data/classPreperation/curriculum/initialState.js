@@ -3,6 +3,7 @@ export default function initialState() {
     identity: 'teacher',
     copyCheckData: [],
     updateType: '',
+    isShowCopyInsToFranDataModal:false,
     dropMenuData: [
       {
         codeNum: 'WDCS001',

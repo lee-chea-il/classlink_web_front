@@ -15,14 +15,7 @@
             <h5 id="exampleModalLabel" class="modal-title">
               {{ txtInfo.modatTitle }}
             </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <i class="icons_close"></i>
-            </button>
+            <CustomCloseBtn />
           </div>
           <div class="modal-body">
             <div class="modal_curiregi">
@@ -312,6 +305,7 @@ import CustomListView from '@/components/common/custom/CustomListView.vue'
 import CustomImgListView from '@/components/curriculum/custom/CustomImgListView.vue'
 import CustomCurriculumSwiper from '@/components/curriculum/custom/CustomCurriculumSwiper.vue'
 import ModalBtnBox from '@/components/common/ModalBtnBox.vue'
+import CustomCloseBtn from '@/components/common/custom/CustomCloseBtn.vue'
 
 export default {
   name: 'CurriculumUpdateModal',
@@ -320,6 +314,7 @@ export default {
     CustomImgListView,
     CustomCurriculumSwiper,
     ModalBtnBox,
+    CustomCloseBtn,
   },
   props: {
     open: Boolean,
@@ -2430,9 +2425,6 @@ export default {
 .list-group-item {
   padding: 5px 10px;
   cursor: grab;
-}
-#modalCuriRegi .form-inline {
-  width: initial;
 }
 #modalCuriRegi
   .modal_curiregi

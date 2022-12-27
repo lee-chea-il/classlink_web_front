@@ -17,53 +17,35 @@
           <div class="modal-body">
             <!-- 탭 컨텐츠 -->
             <ul id="myTab" class="nav nav-tabs" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button
-                  id="grade-tab"
-                  class="nav-link active"
-                  data-toggle="tab"
-                  data-target="#tab01"
-                  type="button"
-                  role="tab"
-                  aria-controls="home"
-                  aria-selected="true"
-                >
-                  교육기관
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button
-                  id="class-tab"
-                  class="nav-link"
-                  data-toggle="tab"
-                  data-target="#tab02"
-                  type="button"
-                  role="tab"
-                  aria-controls="profile"
-                  aria-selected="false"
-                >
-                  프랜차이즈
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button
-                  id="class-tab"
-                  class="nav-link"
-                  data-toggle="tab"
-                  data-target="#tab03"
-                  type="button"
-                  role="tab"
-                  aria-controls="profile"
-                  aria-selected="false"
-                >
-                  내자료
-                </button>
-              </li>
+              <CustomTabBtn
+                v-if="modalType!='franchise'"
+                idName="grade"
+                :isActive="true"
+                dataTarget="insTreeViewList"
+                ariaControls="home"
+                ariaSelected="true"
+                tabName="교육기관"
+              />
+              <CustomTabBtn
+                idName="class"
+                :isActive="modalType=='franchise'?true:false"
+                dataTarget="franTreeViewList"
+                ariaControls="profile"
+                ariaSelected="false"
+                tabName="프랜차이즈"
+              />
+              <CustomTabBtn
+                idName="grade"
+                dataTarget="myTreeViewList"
+                ariaControls="profile"
+                ariaSelected="false"
+                tabName="내자료"
+              />
             </ul>
             <div id="myTabContent" class="tab-content path_list">
-              <!-- 탭01 내용 -->
               <div
-                id="tab01"
+                v-if="modalType!='franchise'"
+                id="insTreeViewList"
                 class="tab-pane fade show active"
                 role="tabpanel"
                 aria-labelledby="grade-tab"
@@ -76,10 +58,9 @@
                   @folder-click="folderClickInsti"
                 />
               </div>
-              <!-- /.탭01 내용 -->
-              <!-- 탭02 내용 -->
               <div
-                id="tab02"
+                v-if="modalType!='franchise'"
+                id="franTreeViewList"
                 class="tab-pane fade"
                 role="tabpanel"
                 aria-labelledby="class-tab"
@@ -92,10 +73,23 @@
                   @folder-click="folderClickFran"
                 />
               </div>
-              <!-- /.탭02 내용 -->
-              <!-- 탭02 내용 -->
               <div
-                id="tab03"
+                v-else
+                id="franTreeViewList"
+                class="tab-pane fade show active"
+                role="tabpanel"
+                aria-labelledby="class-tab"
+              >
+                <CustomFolderListTreeView
+                  ref="franchiseFolderView"
+                  :dataList="franchiseData"
+                  :expanded="true"
+                  :pidNum="210"
+                  @folder-click="folderClickFran"
+                />
+              </div>
+              <div
+                id="myTreeViewList"
                 class="tab-pane fade"
                 role="tabpanel"
                 aria-labelledby="class-tab"
@@ -155,6 +149,7 @@
 <script>
 import $ from 'jquery'
 import ModalHeader from '../../ModalHeader.vue'
+import CustomTabBtn from '~/components/curriculum/custom/CustomTabBtn.vue'
 import CustomFolderListTreeView from '@/components/common/custom/CustomFolderListTreeView.vue'
 
 export default {
@@ -162,6 +157,7 @@ export default {
   components: {
     ModalHeader,
     CustomFolderListTreeView,
+    CustomTabBtn,
   },
   props: {
     institutionData: {
@@ -184,6 +180,10 @@ export default {
       type: String,
       default: '',
     },
+    modalType:{
+      type: String,
+      default:''
+    }
   },
   data() {
     return {

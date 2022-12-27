@@ -17,60 +17,47 @@
           <div class="modal-body">
             <!-- 탭 컨텐츠 -->
             <div class="input-group input-search form-inline">
-              <input type="text" class="form-control" placeholder="검색어를 입력해주세요">
+              <input
+                v-model="msg"
+                type="text"
+                class="form-control"
+                placeholder="검색어를 입력해주세요"
+              >
               <div class="input-group-append">
                 <button class="btn icons_x_circle_off" type="button"></button>
-                <button class="btn icons_search_off" type="button" data-toggle="modal" data-target="#modalSearchAlert" data-dismiss="modal"></button>
+                <button class="btn icons_search_off" type="button"></button>
               </div>
             </div>
             <ul id="myTab" class="nav nav-tabs" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button
-                  id="grade-tab"
-                  class="nav-link active"
-                  data-toggle="tab"
-                  data-target="#tab01"
-                  type="button"
-                  role="tab"
-                  aria-controls="home"
-                  aria-selected="true"
-                >
-                  교육기관
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button
-                  id="class-tab"
-                  class="nav-link"
-                  data-toggle="tab"
-                  data-target="#tab02"
-                  type="button"
-                  role="tab"
-                  aria-controls="profile"
-                  aria-selected="false"
-                >
-                  프랜차이즈
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button
-                  id="class-tab"
-                  class="nav-link"
-                  data-toggle="tab"
-                  data-target="#tab03"
-                  type="button"
-                  role="tab"
-                  aria-controls="profile"
-                  aria-selected="false"
-                >
-                  내자료
-                </button>
-              </li>
+              <CustomTabBtn
+                v-if="modalType!='franchise'"
+                idName="grade"
+                :isActive="true"
+                dataTarget="findInsTreeViewList"
+                ariaControls="home"
+                ariaSelected="true"
+                tabName="교육기관"
+              />
+              <CustomTabBtn
+                idName="class"
+                :isActive="modalType=='franchise'?true:false"
+                dataTarget="findFranTreeViewList"
+                ariaControls="profile"
+                ariaSelected="false"
+                tabName="프랜차이즈"
+              />
+              <CustomTabBtn
+                idName="grade"
+                dataTarget="findMyTreeViewList"
+                ariaControls="profile"
+                ariaSelected="false"
+                tabName="내자료"
+              />
             </ul>
             <div id="myTabContent" class="tab-content path_list">
-              <!-- 탭01 내용 -->
               <div
-                id="tab01"
+                v-if="modalType!='franchise'"
+                id="findInsTreeViewList"
                 class="tab-pane fade show active"
                 role="tabpanel"
                 aria-labelledby="grade-tab"
@@ -83,10 +70,9 @@
                   @file-click="fileClickInsti"
                 />
               </div>
-              <!-- /.탭01 내용 -->
-              <!-- 탭02 내용 -->
               <div
-                id="tab02"
+                v-if="modalType!='franchise'"
+                id="findFranTreeViewList"
                 class="tab-pane fade"
                 role="tabpanel"
                 aria-labelledby="class-tab"
@@ -99,10 +85,23 @@
                   @file-click="fileClickFran"
                 />
               </div>
-              <!-- /.탭02 내용 -->
-              <!-- 탭02 내용 -->
               <div
-                id="tab03"
+                v-else
+                id="findFranTreeViewList"
+                class="tab-pane fade show active"
+                role="tabpanel"
+                aria-labelledby="class-tab"
+              >
+                <CustomOpenFileListTreeView
+                  ref="franchiseFileView"
+                  :dataList="franchiseData"
+                  :expanded="true"
+                  :pidNum="7100"
+                  @file-click="fileClickFran"
+                />
+              </div>
+              <div
+                id="findMyTreeViewList"
                 class="tab-pane fade"
                 role="tabpanel"
                 aria-labelledby="class-tab"
@@ -115,9 +114,7 @@
                   @file-click="fileClickMyData"
                 />
               </div>
-              <!-- /.탭02 내용 -->
             </div>
-            <!-- /.탭 컨텐츠 -->
             <div class="select_path">
               <span class="tit">선택폴더</span>
               <span>{{ openFileInfo.path }}</span>
@@ -162,6 +159,7 @@
 <script>
 import $ from 'jquery'
 import ModalHeader from '../../ModalHeader.vue'
+import CustomTabBtn from '~/components/curriculum/custom/CustomTabBtn.vue'
 import CustomOpenFileListTreeView from '@/components/common/custom/CustomOpenFileListTreeView.vue'
 
 export default {
@@ -169,6 +167,7 @@ export default {
   components: {
     ModalHeader,
     CustomOpenFileListTreeView,
+    CustomTabBtn,
   },
   props: {
     institutionData: {
@@ -191,6 +190,10 @@ export default {
       type: String,
       default: '',
     },
+    modalType:{
+      type: String,
+      default:''
+    }
   },
   data() {
     return {
@@ -199,6 +202,7 @@ export default {
         type: '',
         lesson: {},
       },
+      msg:'aaa',
     }
   },
   methods: {

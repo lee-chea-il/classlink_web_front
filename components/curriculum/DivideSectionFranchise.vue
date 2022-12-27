@@ -7,20 +7,19 @@
       role="tablist"
     >
       <CustomTabBtn
-        idName="grade"
-        :isActive="true"
-        dataTarget="institute"
-        ariaControls="home"
-        ariaSelected="true"
-        tabName="교육기관"
-      />
-      <CustomTabBtn
         idName="class"
+        :isActive="true"
         dataTarget="franchise"
         ariaControls="profile"
         ariaSelected="false"
         tabName="프랜차이즈"
       />
+      <button
+        class="btn btn_crud_default btn_get"
+        data-toggle="modal"
+        data-target="#modalDataGet"
+        @click="$emit('show-ins-to-fran-modal')"
+      >+ 가져오기</button>
     </ul>
     <ul
       v-else
@@ -31,10 +30,10 @@
       <CustomTabBtn
         idName="grade"
         :isActive="true"
-        dataTarget="mydata"
+        dataTarget="franReal"
         ariaControls="home"
         ariaSelected="true"
-        tabName="내 커리큘럼"
+        tabName="프랜 Real"
       />
     </ul>
 
@@ -44,26 +43,8 @@
       class="tab-content"
     >
       <div
-        id="institute"
-        class="tab-pane fade show active"
-        role="tabpanel"
-        aria-labelledby="grade-tab"
-      >
-        <TreeView
-          ref="institution"
-          :dataList="institutionData"
-          :editable="identity == 'master' ? true : false"
-          :identity="identity"
-          :pidNum="0"
-          :isHideDownload="false"
-          @un-active="$emit('un-active')"
-          @update-data="$emit('update-data',$event,'institution')"
-          @copyDataCallBack="$emit('copyDataCallBack',$event)"
-        />
-      </div>
-      <div
         id="franchise"
-        class="tab-pane fade"
+        class="tab-pane fade show active"
         role="tabpanel"
         aria-labelledby="class-tab"
       >
@@ -128,10 +109,6 @@ export default {
     identity:{
       type: String,
       default: ''
-    },
-    institutionData: {
-      type: Array,
-      default: () => [],
     },
     franchiseData: {
       type: Array,

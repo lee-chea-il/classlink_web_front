@@ -13,20 +13,19 @@
         />
         
         <div class="divide_section">
-          <DivideSection
+          <DivideSectionFranchise
             ref="leftSection"
             directionType="left"
             :identity="identity"
-            :institutionData="receiveInstitutionData"
             :franchiseData="receiveFranchiseData"
             @un-active="unActive"
             @copyDataCallBack="copyDataCallBack"
             @update-data="updateData"
+            @show-ins-to-fran-modal="showInsToFranModal"
           />
-          <DivideSection
+          <DivideSectionFranchise
             ref="rightSection"
             directionType="right"
-            rightListTitle="내 커리큘럼"
             :identity="identity"
             :curriculumData="receiveCurriculumData"
             @un-active="unActive"
@@ -70,6 +69,7 @@
       @update-curiiculum-data="updateCuriiculumData"
     />
     <OpenSearchFileModal
+      modalType="franchise"
       :open="isShowOpenPathModal"
       :institutionData="receiveInstitutionLessonData"
       :franchiseData="receiveFranchiseLessonData"
@@ -82,8 +82,8 @@
       @open-file-info="openFileInfo"
     />
     <SavePathSearchModal
+      modalType="franchise"
       :open="isShowSavePathModal"
-      :institutionData="receiveInstitutionData"
       :franchiseData="receiveFranchiseData"
       :myData="receiveCurriculumData"
       @close="
@@ -92,6 +92,11 @@
         }
       "
       @save-file-path="saveFilePath"
+    />
+    <CopyInsToFranDataModal
+      :open="isShowCopyInsToFranDataModal"
+      :identity="identity"
+      :institutionData="receiveInstitutionData"
     />
     <ModalDesc
       :open="isShowModalDesc"
@@ -113,8 +118,9 @@ import initialState from '~/data/classPreperation/curriculum/initialState'
 import CurriculumUpdateModal from '@/components/common/modal/curriculum/CurriculumUpdateModal.vue'
 import SavePathSearchModal from '@/components/common/modal/curriculum/SavePathSearchModal.vue'
 import OpenSearchFileModal from '@/components/common/modal/curriculum/OpenSearchFileModal.vue'
-import DivideSection from '~/components/curriculum/DivideSection.vue'
+import DivideSectionFranchise from '~/components/curriculum/DivideSectionFranchise.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
+import CopyInsToFranDataModal from '@/components/common/modal/curriculum/CopyInsToFranDataModal.vue'
 
 export default {
   name: 'MyCurriculum',
@@ -124,8 +130,9 @@ export default {
     SavePathSearchModal,
     OpenSearchFileModal,
     MainBtnBox,
-    DivideSection,
+    DivideSectionFranchise,
     ModalDesc,
+    CopyInsToFranDataModal,
   },
   data() {
     return initialState()
@@ -141,31 +148,16 @@ export default {
       this.$refs.curriculumUpdateModal.setData(null)
     },
     copyData() {
-      const instiTab = document.getElementById('institute')
-      if (instiTab.classList.contains('show')) {
-        this.isCopyType = 'institution'
-        this.$refs.leftSection.$refs.institution.copyData()
-      } else {
-        this.isCopyType = 'franchise'
-        this.$refs.leftSection.$refs.franchise.copyData()
-      }
+      this.isCopyType = 'franchise'
+      this.$refs.leftSection.$refs.franchise.copyData()
     },
     pasteData() {
       this.$refs.rightSection.$refs.curriculum.pasteData(this.copyCheckData)
-      if (this.isCopyType === 'institution') {
-        this.$refs.leftSection.$refs.institution.copyComp()
-      } else if (this.isCopyType === 'franchise') {
-        this.$refs.leftSection.$refs.franchise.copyComp()
-      }
+      this.$refs.leftSection.$refs.franchise.copyComp()
     },
     delData() {
       if (this.identity === 'master') {
-        const instiTab = document.getElementById('institute')
-        if (instiTab.classList.contains('show')) {
-          this.$refs.leftSection.$refs.institution.delData()
-        } else {
-          this.$refs.leftSection.$refs.franchise.delData()
-        }
+        this.$refs.leftSection.$refs.franchise.delData()
       }
       this.$refs.rightSection.$refs.curriculum.delData()
     },
@@ -182,7 +174,6 @@ export default {
       this.isShowOpenPathModal = false
     },
     unActive() {
-      this.$refs.leftSection.$refs.institution.unActiveAll()
       this.$refs.leftSection.$refs.franchise.unActiveAll()
       this.$refs.rightSection.$refs.curriculum.unActiveAll()
     },
@@ -192,9 +183,7 @@ export default {
     },
     addCuriiculumData(data){
       this.isShowOpenAddModal = false
-      if(data.type==='institution'){
-        this.$refs.leftSection.$refs.institution.addData(data)
-      }else if(data.type==='franchise'){
+      if(data.type==='franchise'){
         this.$refs.leftSection.$refs.franchise.addData(data)
       }else{
         this.$refs.rightSection.$refs.curriculum.addData(data)
@@ -207,22 +196,21 @@ export default {
       this.$refs.curriculumUpdateModal.setData(data)
     },
     updateFileDel(){
-      if(this.updateType==='institution'){
-        this.$refs.leftSection.$refs.institution.updateFileDel()
-      }else if(this.updateType==='franchise'){
+      if(this.updateType==='franchise'){
         this.$refs.leftSection.$refs.franchise.updateFileDel()
       }else{
         this.$refs.rightSection.$refs.curriculum.updateFileDel()
       }
     },
     updateCuriiculumData(data){
-      if(this.updateType==='institution'){
-        this.$refs.leftSection.$refs.institution.updateFile(data)
-      }else if(this.updateType==='franchise'){
+      if(this.updateType==='franchise'){
         this.$refs.leftSection.$refs.franchise.updateFile(data)
       }else{
         this.$refs.rightSection.$refs.curriculum.updateFile(data)
       }
+    },
+    showInsToFranModal(){
+      this.isShowCopyInsToFranDataModal=true
     }
   },
 }

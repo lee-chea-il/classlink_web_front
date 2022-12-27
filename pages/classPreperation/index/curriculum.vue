@@ -26,7 +26,6 @@
           <DivideSection
             ref="rightSection"
             directionType="right"
-            rightListTitle="내 커리큘럼"
             :identity="identity"
             :curriculumData="receiveCurriculumData"
             @un-active="unActive"
@@ -69,18 +68,6 @@
       @update-file-del="updateFileDel"
       @update-curiiculum-data="updateCuriiculumData"
     />
-    <OpenSearchFileModal
-      :open="isShowOpenPathModal"
-      :institutionData="receiveInstitutionLessonData"
-      :franchiseData="receiveFranchiseLessonData"
-      :myData="receiveLessonList"
-      @close="
-        () => {
-          isShowOpenPathModal = false
-        }
-      "
-      @open-file-info="openFileInfo"
-    />
     <SavePathSearchModal
       :open="isShowSavePathModal"
       :institutionData="receiveInstitutionData"
@@ -92,6 +79,18 @@
         }
       "
       @save-file-path="saveFilePath"
+    />
+    <OpenSearchFileModal
+      :open="isShowOpenPathModal"
+      :institutionData="receiveInstitutionLessonData"
+      :franchiseData="receiveFranchiseLessonData"
+      :myData="receiveLessonList"
+      @close="
+        () => {
+          isShowOpenPathModal = false
+        }
+      "
+      @open-file-info="openFileInfo"
     />
     <ModalDesc
       :open="isShowModalDesc"
