@@ -32,7 +32,8 @@ export default {
     pidNum:{
       type:Number,
       default:0
-    }
+    },
+    isMulti: Boolean,
   },
   data(){
     return {
@@ -181,17 +182,21 @@ export default {
       }
     },
     dragImgDrop(node,dragTaget) {
-      $('#'+node.id).find('img').css('opacity',1).attr("src",this.setRequire(node.nomal_url))
-      if(node.isLink){
-        this.$emit('unlink-data-to-list', node.referId)
+      if(this.isMulti){
+        console.log("dragImgDrop")
+      }else{
+        $('#'+node.id).find('img').css('opacity',1).attr("src",this.setRequire(node.nomal_url))
+        if(node.isLink){
+          this.$emit('unlink-data-to-list', node.referId)
+        }
+        if(dragTaget.model.isLink){
+          this.$emit('unlink-data-to-img', dragTaget.model.linkIdx)
+          this.unLinkData(dragTaget.model.linkIdx)
+        }
+        node.isLink=true
+        node.referId=dragTaget.model.referId
+        this.$emit('link-data', node.referId, node.imgIdx)
       }
-      if(dragTaget.model.isLink){
-        this.$emit('unlink-data-to-img', dragTaget.model.linkIdx)
-        this.unLinkData(dragTaget.model.linkIdx)
-      }
-      node.isLink=true
-      node.referId=dragTaget.model.referId
-      this.$emit('link-data', node.referId, node.imgIdx)
     },
     dragImgClick(node) {
       console.log('dragImgClick', node.id)

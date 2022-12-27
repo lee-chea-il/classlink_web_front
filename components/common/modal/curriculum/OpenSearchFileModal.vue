@@ -3,7 +3,7 @@
     <div
       v-if="open"
       id="modalStoragepath"
-      class="modal modal_ac_manage_dtr double modal-mask"
+      class="modal modal_ac_manage_dtr double modal-mask curisave"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
@@ -16,6 +16,13 @@
 
           <div class="modal-body">
             <!-- 탭 컨텐츠 -->
+            <div class="input-group input-search form-inline">
+              <input type="text" class="form-control" placeholder="검색어를 입력해주세요">
+              <div class="input-group-append">
+                <button class="btn icons_x_circle_off" type="button"></button>
+                <button class="btn icons_search_off" type="button" data-toggle="modal" data-target="#modalSearchAlert" data-dismiss="modal"></button>
+              </div>
+            </div>
             <ul id="myTab" class="nav nav-tabs" role="tablist">
               <li class="nav-item" role="presentation">
                 <button
