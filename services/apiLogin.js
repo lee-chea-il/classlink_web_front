@@ -10,11 +10,11 @@ async function postSignup(payload) {
 }
 // 아이디 중복체크
 async function getIdCheck(id) {
-  return await http.get(`/api/v1/account/sign-up/id-check?id=${id}`)
+  return await http.get(`/api/v1/account/check-id?id=${id}`)
 }
 // 이메일 중복체크
 async function getEmailCheck(email) {
-  return await http.get(`/api/v1/account/sign-up/email-check?email=${email}`)
+  return await http.get(`/api/v1/account/check-email?email=${email}`)
 }
 
 // 교육기관 개설
@@ -39,7 +39,7 @@ async function getFindPw(email, id) {
 
 // 비밀번호 변경
 async function putUpdatePw(payload) {
-  return await http.put('/api/v1/account/upd-pw', payload)
+  return await http.put('/api/v1/account/pw', payload)
 }
 
 const apiLogin = {

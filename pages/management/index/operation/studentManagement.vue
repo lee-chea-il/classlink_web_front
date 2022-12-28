@@ -400,6 +400,7 @@ export default {
   },
   data() {
     return {
+      institutionIdx: this.$store.state.common.user.ins_code,
       // studentInfo: {
       //   id: 0,
       //   identity: [],
@@ -922,33 +923,33 @@ export default {
         open: false,
       },
       // 정렬 필터링
-      isRangeFlag: 0,
-      isIdentityFlag: 0,
-      isStatusFlag: 0,
-      isStudentStatusFlag: 0,
+      isRangeFlag: 1,
+      isIdentityFlag: 1,
+      isStatusFlag: true,
+      isStudentStatusFlag: true,
       rangeList: [
-        { id: 0, title: '최신 등록순' },
-        { id: 1, title: '이름 오름차순' },
-        { id: 2, title: '이름 내림차순' },
-        { id: 3, title: '학년 오름차순' },
-        { id: 4, title: '학년 내림차순' },
+        { id: 1, title: '최신 등록순' },
+        { id: 2, title: '이름 오름차순' },
+        { id: 3, title: '이름 내림차순' },
+        { id: 4, title: '학년 오름차순' },
+        { id: 5, title: '학년 내림차순' },
       ],
       identityList: [
-        { id: 0, title: '학생' },
-        { id: 1, title: '학부모' },
-        { id: 2, title: '학부모&학생' },
+        { id: 1, title: '학생' },
+        { id: 2, title: '학부모' },
+        { id: 3, title: '학부모&학생' },
       ],
       statusList: [
-        { id: 0, title: '활성화' },
-        { id: 1, title: '비활성화' },
+        { id: 1, title: '활성화', value: true },
+        { id: 2, title: '비활성화', value: false },
       ],
       studentStatusList: [
-        { id: 0, title: '재원' },
-        { id: 1, title: '퇴원' },
+        { id: 1, title: '재원', value: true },
+        { id: 2, title: '퇴원', value: false },
       ],
       memoRangeList: [
-        { id: 0, title: '최신 등록순' },
-        { id: 1, title: '오래된 순' },
+        { id: 1, title: '최신 등록순' },
+        { id: 2, title: '오래된 순' },
       ],
       // 정보 수정
       nickNameCheck: false,
@@ -1040,9 +1041,26 @@ export default {
       bgList: ['color01', 'color02', 'color03'],
       reportQuery: '',
       reportHeight: '',
+      // pagination
+      currentPage: 1,
+      endPageNumber: 0,
     }
   },
   watch: {
+    // 목록
+    isRangeFlag() {
+      this.getStudentList()
+    },
+    isIdentityFlag() {
+      this.getStudentList()
+    },
+    isStatusFlag() {
+      this.getStudentList()
+    },
+    isStudentStatusFlag() {
+      this.getStudentList()
+    },
+
     // 현재 날짜와 한달 전 기간
     isMonthRange() {
       const setDate = (date) =>
@@ -1086,6 +1104,9 @@ export default {
       ),
     }
   },
+  mounted() {
+    this.getStudentList()
+  },
   methods: {
     // 깊은 복사
     deepCopy(data) {
@@ -1101,11 +1122,11 @@ export default {
         ins_code: this.institutionIdx,
         current_page: this.currentPage,
         per_page_num: 10,
-        status: this.stateFlag,
-        latest: this.sortFlag,
-        cond: '',
-        attend: '',
-        search: this.searchText,
+        status: this.isStatusFlag,
+        latest: this.isRangeFlag,
+        cond: this.isIdentityFlag,
+        attend: this.isStudentStatusFlag,
+        search: this.searchStudentText,
       }
       await apiOperation
         .getStudentList(payload)
@@ -1512,21 +1533,18 @@ export default {
     selectIdentityFlag(idx) {
       this.isIdentityFlag = idx
     },
-    selectStatusFlag(idx) {
-      this.isStatusFlag = idx
+    selectStatusFlag(value) {
+      this.isStatusFlag = value
     },
-    selectStudentStatusFlag(idx) {
-      this.isStudentStatusFlag = idx
+    selectStudentStatusFlag(value) {
+      this.isStudentStatusFlag = value
     },
     // 학생 이름 검색
     changeSearchInput({ target: { value } }) {
       this.searchStudentText = value
     },
     searchStudent() {
-      const result = this.studentList.filter((elem) => {
-        return elem.name.includes(this.searchStudentText)
-      })
-      this.studentList = result
+      this.getStudentList()
     },
     onClickExpandBtn(idx) {
       if (this.expandIdx.includes(idx)) {

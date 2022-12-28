@@ -32,6 +32,9 @@ async function putUpdateInstitution(payload) {
   return await http.put('/api/v1/account/mypage/update-institution', payload)
 }
 
+// 과제함
+// 과제함 목록
+
 const apiLectureCourse = {
   getLectureCourse,
   getSyllabusList,

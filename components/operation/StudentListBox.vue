@@ -21,7 +21,7 @@
             data-toggle="dropdown"
             aria-expanded="false"
           >
-            {{ rangeList[isRangeFlag].title }}
+            {{ rangeList[isRangeFlag - 1].title }}
           </button>
           <div class="dropdown-menu">
             <a
@@ -41,7 +41,7 @@
             data-toggle="dropdown"
             aria-expanded="false"
           >
-            {{ identityList[isIdentityFlag].title }}
+            {{ identityList[isIdentityFlag - 1].title }}
           </button>
           <div class="dropdown-menu">
             <a
@@ -61,7 +61,7 @@
             data-toggle="dropdown"
             aria-expanded="false"
           >
-            {{ statusList[isStatusFlag].title }}
+            {{ isStatusFlag ? '활성화' : '비활성화' }}
           </button>
           <div class="dropdown-menu">
             <a
@@ -69,7 +69,7 @@
               :key="idx"
               class="dropdown-item"
               href="#"
-              @click="$emit('select-status', item.id)"
+              @click="$emit('select-status', item.value)"
               >{{ item.title }}</a
             >
           </div>
@@ -81,7 +81,7 @@
             data-toggle="dropdown"
             aria-expanded="false"
           >
-            {{ studentStatusList[isStudentStatusFlag].title }}
+            {{ isStudentStatusFlag ? '재원' : '퇴원' }}
           </button>
           <div class="dropdown-menu">
             <a
@@ -89,7 +89,7 @@
               :key="idx"
               class="dropdown-item"
               href="#"
-              @click="$emit('select-studentStatus', item.id)"
+              @click="$emit('select-studentStatus', item.value)"
               >{{ item.title }}</a
             >
           </div>
@@ -253,12 +253,12 @@ export default {
       default: 0,
     },
     isStatusFlag: {
-      type: Number,
-      default: 0,
+      type: Boolean,
+      default: true,
     },
     isStudentStatusFlag: {
-      type: Number,
-      default: 0,
+      type: Boolean,
+      default: true,
     },
     searchStudentText: {
       type: String,

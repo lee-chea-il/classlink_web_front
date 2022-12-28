@@ -184,7 +184,7 @@ export default {
       },
     }
   },
-  
+
   methods: {
     // 모달 이벤트
     openModalDesc(tit, msg) {
@@ -259,6 +259,7 @@ export default {
       await apiLogin
         .getIdCheck(this.userInfo.mem_id)
         .then(({ data: { data } }) => {
+          console.log(data)
           if (data) {
             this.isIdCheck = true
             this.openModalDesc('아이디 중복확인', '사용가능한 아이디입니다.')

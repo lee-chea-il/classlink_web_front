@@ -346,7 +346,7 @@ export default {
         file_exist: false,
         lec_idx: this.$route.params.id,
         lep_content: '',
-        lep_repeat_yn: 'Y',
+        lep_repeat_yn: true,
         lep_idx: 0,
         lep_time_edate: '',
         lep_time_etime: '',
