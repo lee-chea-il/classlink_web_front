@@ -49,6 +49,8 @@
       :receiveMyData="receiveMyData"
       :receiveLessonList="receiveLessonList"
       :uploadInfo="uploadInfo"
+      :isContinuedRegist="isContinuedRegist"
+      @change-continue="changeContinuedRegist"
       @add-reference="addReferenceOfLesson"
       @change-lesson="changeCreateLesson"
       @call-back="copyDataCallBack"
@@ -314,8 +316,14 @@ export default {
   },
   mounted() {
     this.identity = localStorage.getItem('identity')
-    this.userInfo = this.$store.state.common.user
-    this.uploadInfo.registrant = this.$store.state.common.user.mem_name
+    const user = this.$store.state.common.user
+    this.initLessonData = {
+      ...this.initLessonData,
+      // fra_code: user.fra_code,
+      ins_code: user.ins_code,
+      registrant_name: user.mem_name,
+    }
+    this.setInitLessonData()
   },
   methods: {
     // api 통신
@@ -334,22 +342,52 @@ export default {
     // 선택한 레슨 가져오기
     getLessonData({ lesson_idx, datatable_type }) {
       const payload = { lesson_idx, datatable_type }
+      const setView = (data) => {
+        const newDatarooms = data.datarooms.map((item) =>
+          Object.assign({
+            ...item,
+            name: item.title,
+          })
+        )
+        this.lessonViewData = {
+          ...data,
+          keyword: data.keyword.split(','),
+          datarooms: newDatarooms,
+        }
+      }
+
       apiLesson
         .getLesson(payload)
         .then(({ data: { data } }) => {
-          this.lessonViewData = { ...data, keyword: data.keyword.split(',') }
-          const newDatarooms = data.datarooms.map((item) =>
-            Object.assign({
-              ...item,
-              name: item.title,
-            })
-          )
-          this.lessonViewData.referenceList = newDatarooms
-          this.selectReferenceItem = data.datarooms[0]
+          setView(data)
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {})
+    },
+
+    // 선택한 레슨 수정
+    getChangeLessonData({ lesson_idx, datatable_type }) {
+      const payload = { lesson_idx, datatable_type }
+      const setChange = (data) => {
+        const newDatarooms = data.datarooms.map((item) =>
+          Object.assign({
+            ...item,
+            name: item.title,
+          })
+        )
+        this.lessonData = {
+          ...data,
+          keyword: data.keyword.split(','),
+          referenceList: newDatarooms,
+        }
+        this.treeReferenceList = newDatarooms
+      }
+
+      apiLesson
+        .getLesson(payload)
+        .then(({ data: { data } }) => {
+          setChange(data)
         })
+        .catch(() => {})
     },
 
     // 레슨 등록
@@ -359,11 +397,20 @@ export default {
         ...rest,
         keyword: keyword.join(','),
       }
+      const isContinue = (bool) => {
+        this.setInitLessonData()
+
+        if (bool) {
+          this.openModalDesc('등록 성공', '레슨을 등록했습니다.', 'isAddLesson')
+        } else {
+          this.isAddLesson.open = false
+          this.openModalDesc('등록 성공', '레슨을 등록했습니다.')
+        }
+      }
       apiLesson
         .postLesson(payload)
         .then(() => {
-          this.isAddLesson = false
-          this.openModalDesc('등록 성공', '레슨을 등록했습니다.')
+          isContinue(this.isContinuedRegist)
         })
         .catch((err) => {
           console.log(err)
@@ -381,7 +428,7 @@ export default {
       apiLesson
         .updateLesson(payload)
         .then(() => {
-          this.isAddLesson = false
+          this.isAddLesson.open = false
           this.openModalDesc('수정 성공', '레슨을 수정했습니다.')
         })
         .catch((res) => {
@@ -408,9 +455,13 @@ export default {
       api
         .postFile(formData)
         .then(({ data: { data } }) => {
-          this.selectReferenceItem.save_path = `http://112.171.101.31:45290/file/${data}`
-          this.selectReferenceItem.file = `http://112.171.101.31:45290/file/${data}`
-          this.getFileSize(`http://112.171.101.31:45290/file/${data}`)
+          this.selectReferenceItem = {
+            ...this.selectReferenceItem,
+            file: data.savedNm,
+            save_path: data.savePath,
+            registration_date: data.uploadDate,
+          }
+          this.getFileSize(`http://112.171.101.31:45290/file/${data.savedNm}`)
           this.onOpenReferenceAddModal()
         })
         .catch((err) => {
@@ -486,7 +537,8 @@ export default {
     // 파일 수정
     // 동영상, PDF, YOUTUBE, URL 수정
     updateDataroomFile() {
-      const { thumbnail, ...rest } = this.selectReferenceItem
+      const { thumbnail, registrant_name, full_path, ...rest } =
+        this.selectReferenceItem
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -505,7 +557,7 @@ export default {
 
     // 퀴즈 수정
     updateDataroomQuiz() {
-      const { thumbnail, ...rest } = this.selectReferenceItem
+      const { thumbnail, registrant_name, ...rest } = this.selectReferenceItem
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -524,7 +576,7 @@ export default {
 
     // 쪽지 시험 수정
     updateDataroomNoteExam() {
-      const { thumbnail, ...rest } = this.selectReferenceItem
+      const { thumbnail, registrant_name, ...rest } = this.selectReferenceItem
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -592,7 +644,7 @@ export default {
     // [공통] 안내 모달 Event
     openModalDesc(tit, msg, to) {
       if (to) {
-        this[to] = false
+        this[to].open = false
       }
       this.modalDesc = {
         open: true,
@@ -605,23 +657,13 @@ export default {
     onCloseModalDesc() {
       this.modalDesc.open = false
       if (this.modalDesc.path) {
-        this[this.modalDesc.path] = true
+        this[this.modalDesc.path].open = true
       }
     },
 
     // [레슨] 레슨 등록 모달
     openLessonAdd() {
-      this.lessonData = {
-        name: '',
-        educationgoal: '',
-        description: '',
-        save_path: '',
-        keyword: [],
-        public_open_yn: true,
-        isContinuedRegist: true,
-        createAt: '',
-        datarooms: [],
-      }
+      this.setInitLessonData()
       this.setModalTitle('등록')
       this.treeReferenceList = []
       this.isAddLesson.open = true
@@ -637,21 +679,13 @@ export default {
         this.closeLessonBrowseModal()
       }
       this.setModalTitle('수정')
-      const newItem = jsonItem(data)
-      this.lessonData = newItem
-      this.treeReferenceList = newItem.datarooms
+      this.getChangeLessonData(data)
       this.isAddLesson.open = true
     },
 
     closeLessonChangeModal() {
       this.isChangeLesson.open = false
     },
-
-    // [레슨] 열람 데이터 초기 설정
-    // setViewLesson(item) {
-    //   this.setViewLessonFirstReference(jsonItem(item))
-    //   return (this.lessonViewData = jsonItem(item))
-    // },
 
     setViewLessonFirstReference(item) {
       const result = item.referenceList
@@ -752,7 +786,7 @@ export default {
 
     // [레슨] 레슨 열람 자료실 자료 보기
     setSelectReference: _.debounce(function (reference) {
-      this.selectDataroomType(reference.category, reference)
+      this.selectDataroomType(reference.datatype, reference)
       this.currentIdx = 0
     }, 600),
 
@@ -800,15 +834,27 @@ export default {
       this.postLessonData(this.lessonData.datarooms)
     },
 
+    // [레슨] 레슨 계속 등록
+    changeContinuedRegist({ target: { name, value, checked } }) {
+      return (this[name] = checked)
+    },
+
+    // 레슨 초기화
+    setInitLessonData() {
+      const copy = JSON.parse(JSON.stringify(this.initLessonData))
+      this.treeReferenceList = []
+      return (this.lessonData = copy)
+    },
+
     // [자료실] 자료 클릭시 해당자료 열기
     openReference: _.debounce(function (item, prev) {
-      const { category } = item
+      const { datatype } = item
       if (this[prev]) {
         this[prev].open = false
       }
-      this.selectDataroomType(category, item)
-      if (category === '03') return this.openBrowseQuiz(prev)
-      else if (category === '04') return this.openBrowseNoteTest(prev)
+      this.selectDataroomType(datatype, item)
+      if (datatype === '03') return this.openBrowseQuiz(prev)
+      else if (datatype === '04') return this.openBrowseNoteTest(prev)
       else return this.openReferenceBrowse(prev)
     }, 500),
 
@@ -1020,9 +1066,10 @@ export default {
         this.selectReferenceItem = {
           ...this.selectReferenceItem,
           name: files[0].name,
+          full_path: URL.createObjectURL(files[0]),
           file_name: files[0].name,
           datatable_type: 'ID',
-          category: name,
+          datatype: name,
         }
       }
     },

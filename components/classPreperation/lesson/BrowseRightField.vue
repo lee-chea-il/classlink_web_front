@@ -4,35 +4,36 @@
     <div
       class="thumb_box"
       :class="{
-        quiz: referenceItem.category === '03',
-        notetest: referenceItem.category === '04',
+        quiz: referenceItem.datatype === '03',
+        notetest: referenceItem.datatype === '04',
       }"
     >
       <div class="title col-12">자료 열람</div>
-
+      <!-- 자료 없을때 -->
+      <BrowseNullData v-if="isEmptyObj(referenceItem)" />
       <!-- 동영상 -->
       <BrowseContent
-        :show="isContent(referenceItem.category)"
+        :show="isContent(referenceItem.datatype)"
         :reference="referenceItem"
       />
 
       <!-- 퀴즈 -->
       <BrowseQuiz
-        v-show="referenceItem.category === '03'"
+        v-show="referenceItem.datatype === '03'"
         :reference="referenceItem"
         :currentIdx="currentIdx"
       />
 
       <!-- 쪽지시험 -->
       <NoteTestEditorField
-        v-show="referenceItem.category === '04'"
+        v-show="referenceItem.datatype === '04'"
         :reference="referenceItem"
         :currentIdx="currentIdx"
       />
 
       <!-- 페이지전환 및 미리보기 버튼 -->
       <PaginationPrevBox
-        v-show="isQuiz(referenceItem) || referenceItem.category === '04'"
+        v-show="isQuiz(referenceItem) || referenceItem.datatype === '04'"
         :length="
           isQuiz(referenceItem)
             ? referenceItem.quiz?.length
@@ -48,13 +49,18 @@
       />
 
       <!-- 공통 데이터 -->
-      <LessonDataInfo :reference="referenceItem" :pageRoot="pageRoot" />
+      <LessonDataInfo
+        v-if="!isEmptyObj(referenceItem)"
+        :reference="referenceItem"
+        :pageRoot="pageRoot"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import BrowseContent from './BrowseContent.vue'
+import BrowseNullData from './BrowseNullData.vue'
 // import BrowseNoteTest from './BrowseNoteTest.vue'
 import BrowseQuiz from './BrowseQuiz.vue'
 import LessonDataInfo from './LessonDataInfo.vue'
@@ -68,6 +74,7 @@ export default {
     LessonDataInfo,
     NoteTestEditorField,
     PaginationPrevBox,
+    BrowseNullData,
   },
   props: {
     referenceItem: {
@@ -88,11 +95,16 @@ export default {
       this.$emit('pagination', item, idx)
     },
     isContent(item) {
-      if (item === '03' || item === '04') return false
+      if (!item || item === '03' || item === '04') return false
       else return true
     },
     isQuiz(item) {
-      return item.category === '03'
+      return item.datatype === '03'
+    },
+    isEmptyObj(obj) {
+      if (obj.constructor === Object && Object.keys(obj).length === 0)
+        return true
+      return false
     },
   },
 }

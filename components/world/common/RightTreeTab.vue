@@ -19,6 +19,7 @@
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @download-data="$emit('download-data', $event)"
         @un-active="$emit('un-active')"
+        @get-savepath="$emit('get-savepath', $event)"
       />
     </div>
     <!-- /.탭 내용01 -->

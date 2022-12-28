@@ -301,8 +301,8 @@ export default {
     PreviewQuizModal,
     PreviewNoteTestModal,
     ModalDesc,
-    LoadingBox
-},
+    LoadingBox,
+  },
   data() {
     return initialState()
   },
@@ -403,9 +403,13 @@ export default {
       api
         .postFile(formData)
         .then(({ data: { data } }) => {
-          this.selectReferenceItem.save_path = `http://112.171.101.31:45290/file/${data}`
-          this.selectReferenceItem.file = `http://112.171.101.31:45290/file/${data}`
-          this.getFileSize(`http://112.171.101.31:45290/file/${data}`)
+          this.selectReferenceItem = {
+            ...this.selectReferenceItem,
+            file: data.savedNm,
+            save_path: data.savePath,
+            registration_date: data.uploadDate,
+          }
+          this.getFileSize(`http://112.171.101.31:45290/file/${data.savedNm}`)
           this.onOpenReferenceAddModal()
         })
         .catch((err) => {
@@ -480,8 +484,8 @@ export default {
 
     // 파일 수정
     // 동영상, PDF, YOUTUBE, URL 수정
-    updateDataroomFile({ category, datatable_type }) {
-      const payload = { id: category, datatable_type }
+    updateDataroomFile({ datatype, datatable_type }) {
+      const payload = { id: datatype, datatable_type }
 
       const { note_exam, quiz, thumbnail, ...rest } = this.selectReferenceItem
       console.log(note_exam, quiz, thumbnail)
@@ -502,8 +506,8 @@ export default {
     },
 
     // 퀴즈 수정
-    updateDataroomQuiz({ category, datatable_type }) {
-      const payload = { id: category, datatable_type }
+    updateDataroomQuiz({ datatype, datatable_type }) {
+      const payload = { id: datatype, datatable_type }
       const { note_exam, thumbnail, ...rest } = this.selectReferenceItem
       console.log(note_exam, thumbnail)
       const data = {
@@ -523,8 +527,8 @@ export default {
     },
 
     // 쪽지 시험 수정
-    updateDataroomNoteExam({ category, datatable_type }) {
-      const payload = { id: category, datatable_type }
+    updateDataroomNoteExam({ datatype, datatable_type }) {
+      const payload = { id: datatype, datatable_type }
       const { note_exam, thumbnail, ...rest } = this.selectReferenceItem
       console.log(note_exam, thumbnail)
       const data = {
@@ -545,8 +549,8 @@ export default {
 
     // 파일 삭제
     // 동영상, PDF, YOUTUBE, URL 삭제
-    deleteDataroomFile({ category, datatable_type }) {
-      const payload = { id: category, datatable_type }
+    deleteDataroomFile({ datatype, datatable_type }) {
+      const payload = { id: datatype, datatable_type }
       apiData
         .deleteDataroomFile(payload)
         .then((res) => {
@@ -560,8 +564,8 @@ export default {
     },
 
     // 퀴즈 삭제
-    deleteDataroomQuiz({ category, datatable_type }) {
-      const payload = { id: category, datatable_type }
+    deleteDataroomQuiz({ datatype, datatable_type }) {
+      const payload = { id: datatype, datatable_type }
       apiData
         .deleteDataroomQuiz(payload)
         .then(() => {
@@ -574,8 +578,8 @@ export default {
     },
 
     // 쪽지 시험 삭제
-    deleteDataroomNoteExam({ category, datatable_type }) {
-      const payload = { id: category, datatable_type }
+    deleteDataroomNoteExam({ datatype, datatable_type }) {
+      const payload = { id: datatype, datatable_type }
       apiData
         .deleteDataroomNoteExam(payload)
         .then(() => {
@@ -779,7 +783,7 @@ export default {
 
     // [레슨] 레슨 열람 자료실 자료 보기
     setSelectReference: _.debounce(function (reference) {
-      this.selectDataroomType(reference.category, reference)
+      this.selectDataroomType(reference.datatype, reference)
       this.currentIdx = 0
     }, 600),
 
@@ -829,13 +833,13 @@ export default {
 
     // [자료실] 자료 클릭시 해당자료 열기
     openReference: _.debounce(function (item, prev) {
-      const { category } = item
+      const { datatype } = item
       if (this[prev]) {
         this[prev].open = false
       }
-      this.selectDataroomType(category, item)
-      if (category === '03') return this.openBrowseQuiz(prev)
-      else if (category === '04') return this.openBrowseNoteTest(prev)
+      this.selectDataroomType(datatype, item)
+      if (datatype === '03') return this.openBrowseQuiz(prev)
+      else if (datatype === '04') return this.openBrowseNoteTest(prev)
       else return this.openReferenceBrowse(prev)
     }, 500),
 
@@ -1049,7 +1053,7 @@ export default {
           name: files[0].name,
           file_name: files[0].name,
           datatable_type: 'ID',
-          category: name,
+          datatype: name,
         }
       }
     },

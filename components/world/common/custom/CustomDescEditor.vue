@@ -117,7 +117,7 @@ export default {
       api
         .postFile(formData)
         .then(({ data: { data } }) => {
-          const img = `http://112.171.101.31:45290/file/${data}`
+          const img = `http://112.171.101.31:45290/file/${data.savedNm}`
           Editor.insertEmbed(cursorLocation, 'image', img)
           resetUploader()
         })

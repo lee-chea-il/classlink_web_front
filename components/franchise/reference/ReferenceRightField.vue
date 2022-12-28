@@ -7,32 +7,32 @@
           <ChangeFileTitle
             :show="
               open &&
-              (reference.category === '01' ||
-                reference.category === '07' ||
-                reference.category === '02')
+              (reference.datatype === '01' ||
+                reference.datatype === '07' ||
+                reference.datatype === '02')
             "
-            :name="reference.category"
+            :name="reference.datatype"
             @change-file="$emit('change-file', $event)"
           />
           <div class="thumbnail_view">
             <video
               v-show="
-                reference.category === '01' || reference.category === '07'
+                reference.datatype === '01' || reference.datatype === '07'
               "
               id="video"
               class="video"
-              :src="reference.save_path"
+              :src="reference.full_path"
               controls
             />
             <iframe
               v-show="
-                reference.category === '02' ||
-                reference.category === '05' ||
-                reference.category === '06'
+                reference.datatype === '02' ||
+                reference.datatype === '05' ||
+                reference.datatype === '06'
               "
               id="movie_player"
               class="embed"
-              :src="reference.save_path"
+              :src="reference.full_path"
               frameborder="0"
               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
@@ -46,20 +46,19 @@
         />
         <ContentLabel
           title="유형"
-          :value="setContentType(reference.category)"
+          :value="setContentType(reference.datatype)"
         />
         <!-- <ContentLabel title="등록 일시" :value="getDate" /> -->
 
         <ContentLabel
-          v-if="reference.category === '05' || reference.category === '06'"
+          v-if="reference.datatype === '05' || reference.datatype === '06'"
           title="주소"
-          :value="reference.save_path"
+          :value="reference.full_path.replace(/\/\//, '')"
         />
 
         <ContentLabel v-else title="용량" :value="uploadInfo.fileSize" />
-        <!-- getByteSize(reference.fileSize) -->
         <ContentLabel
-          v-if="reference.category === '05'"
+          v-if="reference.datatype === '05'"
           title="재생 시간"
           :value="setPlayTime(uploadInfo.youtubePlayTime)"
         />

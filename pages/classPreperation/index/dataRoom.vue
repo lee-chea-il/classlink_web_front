@@ -134,6 +134,7 @@
       :open="isReferenceBrowse"
       :identity="identity"
       :selectData="referenceData"
+      :uploadInfo="uploadInfo"
       @close="onCloseReferenceBrowseModal"
       @reference-change="onOpenReferenceChangeModal"
       @view-url="onOpenShareViewModal"
@@ -158,6 +159,7 @@
       :identity="identity"
       :selectData="referenceData"
       :currentPageIdx="currentPageIdx"
+      :uploadInfo="uploadInfo"
       @change-number="onClickPagination"
       @close="onCloseQuizBrowseModal"
       @pagination="onClickQuizPagination"
@@ -184,6 +186,7 @@
       :identity="identity"
       :selectData="referenceData"
       :currentPageIdx="currentPageIdx"
+      :uploadInfo="uploadInfo"
       @change-number="onClickPagination"
       @close="onCloseNoteTestBrowseModal"
       @pagination="onClickQuizPagination"
@@ -349,9 +352,8 @@ export default {
     const user = this.$store.state.common.user
     this.initReferenceData = {
       ...this.initReferenceData,
-      fra_code: user.fra_code,
+      // fra_code: user.fra_code,
       ins_code: user.ins_code,
-      registrant: user.mem_idx,
       registrant_name: user.mem_name,
     }
     this.referenceData = {
@@ -396,26 +398,29 @@ export default {
       api
         .postFile(formData)
         .then(({ data: { data } }) => {
-          this.referenceData.save_path = `http://112.171.101.31:45290/file/${data}`
-          this.referenceData.file = `http://112.171.101.31:45290/file/${data}`
+          this.referenceData = {
+            ...this.referenceData,
+            file: data.savedNm,
+            save_path: data.savePath,
+            registration_date: data.uploadDate,
+          }
           $('#modalDataregi02').modal('hide')
-          this.getFileSize(`http://112.171.101.31:45290/file/${data}`)
+          this.getFileSize(`http://112.171.101.31:45290/file/${data.savedNm}`)
           this.onOpenReferenceAddModal()
           this.isUploading = false
         })
-        .catch((err) => {
-          console.log(err)
-          this.isUploading = false
-        })
+        .catch(() => {})
     },
 
     // 파일 업로드
     // 동영상, PDF, YOUTUBE, URL 업로드
     postDataroomFile() {
-      const { thumbnail, ...rest } = this.referenceData
+      const { thumbnail, registrant_name, full_path, name, ...rest } =
+        this.referenceData
       const payload = {
         ...rest,
         keyword: rest.keyword.join(','),
+        title: name,
       }
       apiData
         .postDataroomFile(payload)
@@ -424,14 +429,13 @@ export default {
           this.openModalDesc('등록 성공', '자료를 등록했습니다.')
         })
         .catch(() => {
-          console.log(thumbnail)
           this.openModalDesc('등록 실패', '자료 등록을 실패했습니다.')
         })
     },
 
     // 퀴즈 업로드
     postDataroomQuiz() {
-      const { thumbnail, ...rest } = this.referenceData
+      const { thumbnail, registrant_name, ...rest } = this.referenceData
       const payload = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -443,14 +447,14 @@ export default {
           this.openModalDesc('등록 성공', '자료를 등록했습니다.')
         })
         .catch(() => {
-          console.log(thumbnail)
+          console.log(thumbnail, registrant_name)
           this.openModalDesc('등록 실패', '자료 등록을 실패했습니다.')
         })
     },
 
     // 쪽지시험 업로드
     postDataroomNoteExam() {
-      const { thumbnail, ...rest } = this.referenceData
+      const { thumbnail, registrant_name, ...rest } = this.referenceData
       const payload = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -462,7 +466,7 @@ export default {
           this.openModalDesc('등록 성공', '자료를 등록했습니다.')
         })
         .catch(() => {
-          console.log(thumbnail)
+          console.log(thumbnail, registrant_name)
           this.openModalDesc('등록 실패', '자료 등록을 실패했습니다.')
         })
     },
@@ -480,9 +484,7 @@ export default {
             name: data.title,
           }
         })
-        .catch((err) => {
-          console.log(err)
-        })
+        .catch(() => {})
     },
 
     // 퀴즈 조회
@@ -497,9 +499,7 @@ export default {
             name: data.title,
           }
         })
-        .catch((err) => {
-          console.log(err)
-        })
+        .catch(() => {})
     },
 
     // 쪽지시험 조회
@@ -533,7 +533,8 @@ export default {
     // 파일 수정
     // 동영상, PDF, YOUTUBE, URL 수정
     updateDataroomFile() {
-      const { thumbnail, ...rest } = this.referenceData
+      const { thumbnail, registrant_name, full_path, ...rest } =
+        this.referenceData
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -544,15 +545,14 @@ export default {
           this.onCloseReferenceAddModal()
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
-        .catch((err) => {
-          console.log(thumbnail)
-          console.log(err)
+        .catch(() => {
+          console.log(thumbnail, registrant_name, full_path)
         })
     },
 
     // 퀴즈 수정
     updateDataroomQuiz() {
-      const { thumbnail, ...rest } = this.referenceData
+      const { thumbnail, registrant_name, ...rest } = this.referenceData
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -563,15 +563,14 @@ export default {
           this.onCloseQuizAddModal()
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
-        .catch((err) => {
-          console.log(thumbnail)
-          console.log(err)
+        .catch(() => {
+          console.log(thumbnail, registrant_name)
         })
     },
 
     // 쪽지 시험 수정
     updateDataroomNoteExam() {
-      const { thumbnail, ...rest } = this.referenceData
+      const { thumbnail, registrant_name, ...rest } = this.referenceData
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -582,9 +581,8 @@ export default {
           this.onCloseNoteTestAddModal()
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
-        .catch((err) => {
-          console.log(thumbnail)
-          console.log(err)
+        .catch(() => {
+          console.log(thumbnail, registrant_name)
         })
     },
 
@@ -671,8 +669,7 @@ export default {
       this.referenceData = {
         ...this.referenceData,
         datatable_type: 'ID',
-        category: '03',
-        fileSize: '0',
+        datatype: '03',
         quiz: [{ ...this.quizItem }],
       }
       this.referenceData.createAt = new Date()
@@ -691,8 +688,7 @@ export default {
       this.referenceData = {
         ...this.referenceData,
         datatable_type: 'ID',
-        category: '04',
-        fileSize: '0',
+        datatype: '04',
         note_exam: [{ ...this.testItem }],
       }
       document.getElementById('referenceSelectClose').click()
@@ -984,9 +980,9 @@ export default {
       }
 
       const filterCategory = () => {
-        if (filter.category?.length)
+        if (filter.datatype?.length)
           return filterDivision().filter((item) =>
-            filter.category.includes(this.setType(item.category))
+            filter.datatype.includes(this.setType(item.datatype))
           )
         else return filterDivision()
       }
@@ -1100,8 +1096,9 @@ export default {
           ...this.referenceData,
           name: files[0].name,
           file_name: files[0].name,
+          full_path: URL.createObjectURL(files[0]),
           datatable_type: 'ID',
-          category: '01',
+          datatype: '01',
         }
       } else {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
@@ -1121,8 +1118,9 @@ export default {
           ...this.referenceData,
           name: target.name,
           file_name: target.name,
+          full_path: URL.createObjectURL(files[0]),
           datatable_type: 'ID',
-          category: '02',
+          datatype: '02',
         }
       } else {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
@@ -1146,14 +1144,13 @@ export default {
               file_name: item.snippet.localized.title,
               description: item.snippet.localized.description,
               datatable_type: 'ID',
-              category: '05',
-              save_path: `//www.youtube.com/embed/${youtubeUrl}`,
+              datatype: '05',
+              full_path: `//www.youtube.com/embed/${youtubeUrl}`,
               file: `//www.youtube.com/embed/${youtubeUrl}`,
             }
             // 유튜브 재생시간 가져오기
             const playTime = item.contentDetails.duration
             this.uploadInfo.youtubePlayTime = playTime
-
             $('#modalDataregi03').modal('hide')
             this.onOpenReferenceAddModal()
           }
@@ -1179,8 +1176,8 @@ export default {
           name: url,
           file_name: url,
           datatable_type: 'ID',
-          category: '06',
-          save_path: url,
+          datatype: '06',
+          full_path: url,
           file: url,
         }
         $('#modalDataregi03').modal('hide')
@@ -1200,9 +1197,10 @@ export default {
         this.referenceData = {
           ...this.referenceData,
           name: files[0].name,
+          full_path: URL.createObjectURL(files[0]),
           file_name: files[0].name,
           datatable_type: 'ID',
-          category: name,
+          datatype: name,
         }
       }
     },
@@ -1345,14 +1343,14 @@ export default {
     // 자료 클릭 이벤트
     onClickSelectData(data) {
       this.referenceData = jsonItem(data)
-      if (data.category === '03') return this.onOpenQuizBrowseModal()
-      else if (data.category === '04') return this.onOpenNoteTestBrowseModal()
+      if (data.datatype === '03') return this.onOpenQuizBrowseModal()
+      else if (data.datatype === '04') return this.onOpenNoteTestBrowseModal()
       else return this.onOpenReferenceBrowseModal()
     },
 
     // 자료 조회
     onClickView(params) {
-      const type = params.category
+      const type = params.datatype
       this.selectDataroomType(type, params)
       if (type === '03') return this.onOpenQuizBrowseModal()
       else if (type === '04') return this.onOpenNoteTestBrowseModal()
@@ -1362,7 +1360,7 @@ export default {
     // 자료 수정
     updateSelectData(data) {
       this.setModalTitle('수정')
-      const type = data.category
+      const type = data.datatype
       this.selectDataroomType(type, data)
       this.getFileSize(data.save_path)
       if (type === '03') return this.onOpenQuizChangeModal()
@@ -1455,7 +1453,7 @@ export default {
     downloadSelectData(data) {
       const newItem = jsonItem(data)
       this.referenceData = newItem
-      const type = data.category
+      const type = data.datatype
       if (type === '03') return false
       else if (type === '04') return false
       return this.createAtag(newItem.save_path)

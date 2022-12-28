@@ -230,6 +230,8 @@
                     :treeReference="referenceList"
                     :pushKeyword="pushKeyword"
                     :uploadInfo="uploadInfo"
+                    :isContinuedRegist="isContinuedRegist"
+                    @change-continue="$emit('change-continue', $event)"
                     @change-lesson="$emit('change-lesson', $event)"
                     @add-reference="$emit('add-reference', $event)"
                     @remove-reference="$emit('remove-reference', $event)"
@@ -292,6 +294,7 @@ export default {
     receiveMyData: { type: Array, default: () => {} },
     receiveLessonList: { type: Array, default: () => {} },
     uploadInfo: { type: Object, default: () => {} },
+    isContinuedRegist: { type: Boolean, default: false },
   },
   methods: {
     moreShowClick(data) {

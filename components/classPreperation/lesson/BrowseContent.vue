@@ -1,7 +1,7 @@
 <template>
   <div v-show="show" class="thumbnail_view">
     <video
-      v-show="reference.category === '01'"
+      v-show="reference.datatype === '01'"
       class="video"
       :src="reference.save_path"
       autoplay
@@ -9,12 +9,12 @@
       controls
     ></video>
     <iframe
-      v-show="reference.category === '06'"
+      v-show="reference.datatype === '06'"
       class="iframe"
       :src="reference.save_path"
     ></iframe>
     <embed
-      v-show="reference.category === '02' || reference.category === '05'"
+      v-show="reference.datatype === '02' || reference.datatype === '05'"
       class="embed"
       :src="reference.save_path"
     />

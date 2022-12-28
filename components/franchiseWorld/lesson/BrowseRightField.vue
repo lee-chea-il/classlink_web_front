@@ -4,35 +4,35 @@
     <div
       class="thumb_box"
       :class="{
-        quiz: referenceItem.category === '03',
-        notetest: referenceItem.category === '04',
+        quiz: referenceItem.datatype === '03',
+        notetest: referenceItem.datatype === '04',
       }"
     >
       <div class="title col-12">자료 열람</div>
 
       <!-- 동영상 -->
       <BrowseContent
-        :show="isContent(referenceItem.category)"
+        :show="isContent(referenceItem.datatype)"
         :reference="referenceItem"
       />
 
       <!-- 퀴즈 -->
       <BrowseQuiz
-        v-show="referenceItem.category === '03'"
+        v-show="referenceItem.datatype === '03'"
         :reference="referenceItem"
         :currentIdx="currentIdx"
       />
 
       <!-- 쪽지시험 -->
       <NoteTestEditorField
-        v-show="referenceItem.category === '04'"
+        v-show="referenceItem.datatype === '04'"
         :reference="referenceItem"
         :currentIdx="currentIdx"
       />
 
       <!-- 페이지전환 및 미리보기 버튼 -->
       <PaginationPrevBox
-        v-show="isQuiz(referenceItem) || referenceItem.category === '04'"
+        v-show="isQuiz(referenceItem) || referenceItem.datatype === '04'"
         :length="
           isQuiz(referenceItem)
             ? referenceItem.quiz?.length
@@ -92,7 +92,7 @@ export default {
       else return true
     },
     isQuiz(item) {
-      return item.category === '03'
+      return item.datatype === '03'
     },
   },
 }

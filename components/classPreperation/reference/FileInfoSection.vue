@@ -15,10 +15,10 @@
     />
     <CustomSubTitle
       title="콘텐츠 유형"
-      :value="setContentType(fileInfo.category)"
+      :value="setContentType(fileInfo.datatype)"
     />
     <CustomSubTitle title="공개 여부" :value="setOpen(fileInfo)" />
-    <CustomSubTitle title="경로" :value="fileInfo.save_path" />
+    <CustomSubTitle title="경로" :value="uploadInfo?.saveFolderPath" />
   </div>
 </template>
 
@@ -30,14 +30,9 @@ export default {
   name: 'InfoSection',
   components: { CustomTitle, CustomSubTitle },
   props: {
-    fileInfo: {
-      type: Object,
-      default: () => {},
-    },
-    pageRoot: {
-      type: String,
-      default: '',
-    },
+    fileInfo: { type: Object, default: () => {} },
+    uploadInfo: { type: Object, default: () => {} },
+    pageRoot: { type: String, default: '' },
   },
   methods: {
     setOpen(item) {

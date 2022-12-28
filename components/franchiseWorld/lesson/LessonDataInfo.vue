@@ -27,7 +27,7 @@
       <BrowseLabel title="공개 여부" :value="setOpen(reference)" />
       <BrowseLabel
         title="콘텐츠 유형"
-        :value="setContentType(reference.category)"
+        :value="setContentType(reference.datatype)"
       />
       <BrowseLabel title="경로" :value="reference.save_path" />
     </div>

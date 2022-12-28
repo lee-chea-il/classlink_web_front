@@ -406,7 +406,7 @@ export default {
           file_name: files[0].name,
           datatable_type: 'ID',
           worker: this.userInfo.mem_name,
-          category: '07',
+          datatype: '07',
           fileSize: files[0].size,
           createAt: files[0].lastModifiedDate,
           save_path: URL.createObjectURL(files[0]),
@@ -441,10 +441,13 @@ export default {
       api
         .postFile(formData)
         .then(({ data: { data } }) => {
-          this.referenceData.save_path = `http://112.171.101.31:45290/file/${data}`
-          this.referenceData.file = `http://112.171.101.31:45290/file/${data}`
+          this.referenceData = {
+            file: data.savedNm,
+            save_path: data.savePath,
+            registration_date: data.uploadDate,
+          }
           $('#modalDataregi02').modal('hide')
-          this.getFileSize(`http://112.171.101.31:45290/file/${data}`)
+          this.getFileSize(`http://112.171.101.31:45290/file/${data.savedNm}`)
           this.onOpenReferenceAddModal()
           this.isUploading = false
         })
@@ -716,7 +719,7 @@ export default {
       this.referenceData = {
         ...this.referenceData,
         datatable_type: 'ID',
-        category: '03',
+        datatype: '03',
         fileSize: '0',
         quiz: [{ ...this.quizItem }],
       }
@@ -736,7 +739,7 @@ export default {
       this.referenceData = {
         ...this.referenceData,
         datatable_type: 'ID',
-        category: '04',
+        datatype: '04',
         fileSize: '0',
         note_exam: [{ ...this.testItem }],
       }
@@ -1029,9 +1032,9 @@ export default {
       }
 
       const filterCategory = () => {
-        if (filter.category?.length)
+        if (filter.datatype?.length)
           return filterDivision().filter((item) =>
-            filter.category.includes(this.setType(item.category))
+            filter.datatype.includes(this.setType(item.datatype))
           )
         else return filterDivision()
       }
@@ -1146,7 +1149,7 @@ export default {
           name: files[0].name,
           file_name: files[0].name,
           datatable_type: 'ID',
-          category: '01',
+          datatype: '01',
         }
       } else {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
@@ -1167,7 +1170,7 @@ export default {
           name: target.name,
           file_name: target.name,
           datatable_type: 'ID',
-          category: '02',
+          datatype: '02',
         }
       } else {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
@@ -1191,7 +1194,7 @@ export default {
               file_name: item.snippet.localized.title,
               description: item.snippet.localized.description,
               datatable_type: 'ID',
-              category: '05',
+              datatype: '05',
               save_path: `//www.youtube.com/embed/${youtubeUrl}`,
               file: `//www.youtube.com/embed/${youtubeUrl}`,
             }
@@ -1224,7 +1227,7 @@ export default {
           name: url,
           file_name: url,
           datatable_type: 'ID',
-          category: '06',
+          datatype: '06',
           save_path: url,
           file: url,
         }
@@ -1247,7 +1250,7 @@ export default {
           name: files[0].name,
           file_name: files[0].name,
           datatable_type: 'ID',
-          category: name,
+          datatype: name,
         }
       }
     },
@@ -1390,14 +1393,14 @@ export default {
     // 자료 클릭 이벤트
     onClickSelectData(data) {
       this.referenceData = jsonItem(data)
-      if (data.category === '03') return this.onOpenQuizBrowseModal()
-      else if (data.category === '04') return this.onOpenNoteTestBrowseModal()
+      if (data.datatype === '03') return this.onOpenQuizBrowseModal()
+      else if (data.datatype === '04') return this.onOpenNoteTestBrowseModal()
       else return this.onOpenReferenceBrowseModal()
     },
 
     // 자료 조회
     onClickView(params) {
-      const type = params.category
+      const type = params.datatype
       this.selectDataroomType(type, params)
       if (type === '03') return this.onOpenQuizBrowseModal()
       else if (type === '04') return this.onOpenNoteTestBrowseModal()
@@ -1407,7 +1410,7 @@ export default {
     // 자료 수정
     updateSelectData(data) {
       this.setModalTitle('수정')
-      const type = data.category
+      const type = data.datatype
       this.selectDataroomType(type, data)
       this.getFileSize(data.save_path)
       if (type === '03') return this.onOpenQuizChangeModal()
@@ -1500,7 +1503,7 @@ export default {
     downloadSelectData(data) {
       const newItem = jsonItem(data)
       this.referenceData = newItem
-      const type = data.category
+      const type = data.datatype
       if (type === '03') return false
       else if (type === '04') return false
       return this.createAtag(newItem.save_path)

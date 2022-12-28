@@ -15,7 +15,7 @@
     />
     <CustomSubTitle
       title="콘텐츠 유형"
-      :value="setContentType(fileInfo.category)"
+      :value="setContentType(fileInfo.datatype)"
     />
     <CustomSubTitle title="공개 여부" :value="setOpen(fileInfo)" />
     <CustomSubTitle title="경로" :value="fileInfo.save_path" />

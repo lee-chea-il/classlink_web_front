@@ -5,7 +5,7 @@
     <CustomTitle title="교육 목표" :value="lessonItem?.educationgoal" />
 
     <LessonFileField
-      :reference="lessonItem?.referenceList"
+      :reference="lessonItem?.datarooms"
       @select-reference="$emit('select-reference', $event)"
     />
 

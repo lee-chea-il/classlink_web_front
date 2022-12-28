@@ -77,7 +77,7 @@ export default {
   props: {
     open: Boolean,
     pageRoot: { type: String, default: '' },
-    category: { type: String, default: '' },
+    datatype: { type: String, default: '' },
     uploadFile: { type: [Object, File], default: () => {} },
     reference: { type: Object, default: () => {} },
     pushKeyword: { type: String, default: '' },
@@ -93,7 +93,7 @@ export default {
     },
     setSubmit(type) {
       if (type === '수정') {
-        return this.$emit('change-submit',this.reference)
+        return this.$emit('change-submit', this.reference)
       } else return this.$emit('submit')
     },
   },

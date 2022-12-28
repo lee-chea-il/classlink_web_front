@@ -55,7 +55,7 @@
             <LessonAddTreeView
               ref="myLessonTreeview"
               list-type="lessonList"
-              :dataList="lessonData.referenceList"
+              :dataList="lessonData.datarooms"
               :expanded="false"
               :pidNum="20000"
               @moreShowClick="$emit('moreShowClick', $event)"
@@ -94,7 +94,7 @@
           id="open_yn"
           type="checkbox"
           class="custom-control-input"
-          name="public_open_yn1"
+          name="open_yn"
           :value="lessonData.open_yn"
           :checked="lessonData.open_yn"
           @input="$emit('change-lesson', $event)"
@@ -113,9 +113,9 @@
           type="checkbox"
           class="custom-control-input"
           name="isContinuedRegist"
-          :value="lessonData.isContinuedRegist"
-          :checked="lessonData.isContinuedRegist"
-          @input="$emit('change-lesson', $event)"
+          :value="isContinuedRegist"
+          :checked="isContinuedRegist"
+          @input="$emit('change-continue', $event)"
         />
         <label class="custom-control-label checkbox07" for="isContinuedRegist"
           >계속 등록하기</label
@@ -140,6 +140,7 @@ export default {
   },
   props: {
     isChange: { type: Boolean, default: false },
+    isContinuedRegist: { type: Boolean, default: false },
     pushKeyword: { type: String, default: '' },
     modalTitle: { type: String, default: '' },
     lessonData: { type: Object, default: () => {} },

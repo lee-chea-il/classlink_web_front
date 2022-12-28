@@ -15,21 +15,21 @@
           <ModalHeader title="자료 열람" @close="$emit('close')" />
           <div class="modal-body">
             <VideoView
-              :open="selectData.category === '01'"
+              :open="selectData.datatype === '01'"
               :data="selectData"
             />
             <MusicView
-              :open="selectData.category === '07'"
+              :open="selectData.datatype === '07'"
               :data="selectData"
             />
 
-            <PdfView :open="selectData.category === '02'" :data="selectData" />
+            <PdfView :open="selectData.datatype === '02'" :data="selectData" />
             <YoutubeView
-              :open="selectData.category === '05'"
+              :open="selectData.datatype === '05'"
               :data="selectData"
             />
 
-            <UrlView :open="selectData.category === '06'" :data="selectData" />
+            <UrlView :open="selectData.datatype === '06'" :data="selectData" />
 
             <div class="btnsec">
               <ReferenceBtn

@@ -42,6 +42,7 @@
         @update-data="$emit('update-data', $event)"
         @download-data="$emit('download-data', $event)"
         @un-active="$emit('un-active')"
+        @get-savepath="$emit('get-savepath', $event)"
       />
     </div>
     <!-- /.탭 내용02 -->
@@ -64,6 +65,7 @@
         @update-data="$emit('update-data', $event)"
         @download-data="$emit('download-data', $event)"
         @un-active="$emit('un-active')"
+        @get-savepath="$emit('get-savepath', $event)"
       />
     </div>
     <!-- /.탭 내용03 -->

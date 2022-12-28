@@ -42,9 +42,9 @@
                   id="checkbox_category_"
                   className="filter_forth"
                   title="유형"
-                  name="category"
+                  name="datatype"
                   :itemList="categoryList"
-                  :listData="searchData.category"
+                  :listData="searchData.datatype"
                   @click-item="$emit('click-item', $event)"
                 />
               </div>
