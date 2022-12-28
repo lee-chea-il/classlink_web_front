@@ -21,11 +21,22 @@
           <div class="modal-body">
             <div class="title_area row notice_detail">
               <span class="notice_tit">제목</span>
-              <span class="notice_title">컴플레인 이슈사항 공지드립니다.</span>
+              <span class="notice_title">{{
+                data.selectQuestionBox?.qtb_title
+              }}</span>
               <span class="notice_day02"
-                ><span>2022.08.02</span>(최종수정일
-                <span>2022.12.09</span>)</span
-              >
+                ><span>{{
+                  data.selectQuestionBox?.qtb_registration_date
+                    .substr(0, 10)
+                    .replaceAll('-', '.')
+                }}</span>
+                (최종수정일<span>{{
+                  data.selectQuestionBox?.qtb_update_date
+                    .substr(0, 10)
+                    .replaceAll('-', '.')
+                }}</span
+                >)
+              </span>
               <span class="notice_writer">서유진 선생님</span>
             </div>
 
@@ -37,7 +48,7 @@
             </div>
 
             <VueEditor
-              :value="data.content"
+              :value="data.selectQuestionBox?.qtb_description"
               :editorOptions="editorOptions"
               disabled
             />

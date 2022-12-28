@@ -1,148 +1,147 @@
 <template>
   <div>
-    <div class="content_area">
-      <!--  3Depth -->
-      <NavBox
-        title1="선생님관리"
-        title2="학생 관리"
-        title3="반 관리"
-        title4="시험관리"
-        url1="/management/operation/teachermanagement"
-        url2="/management/operation/studentmanagement"
-        url3="/management/operation/classmanagement"
-        url4="/management/operation/exammanagement"
-      />
+    <!--  3Depth -->
+    <NavBox
+      title1="선생님관리"
+      title2="학생 관리"
+      title3="반 관리"
+      title4="시험관리"
+      url1="/management/operation/teachermanagement"
+      url2="/management/operation/studentmanagement"
+      url3="/management/operation/classmanagement"
+      url4="/management/operation/exammanagement"
+    />
 
-      <div class="tab-content depth03 ac_manage_cls">
-        <!-- [개발참조] 등록된 학생이 없는 경우 -->
-        <div v-if="classList.length === 0" class="nothing_txt">
-          <div class="txt">
-            등록된 반이 없습니다.<br />
-            먼저 반을 등록해주세요.
+    <div class="tab-content depth03 ac_manage_cls">
+      <!-- [개발참조] 등록된 학생이 없는 경우 -->
+      <div v-if="classList.length === 0" class="nothing_txt">
+        <div class="txt">
+          등록된 반이 없습니다.<br />
+          먼저 반을 등록해주세요.
+        </div>
+        <div class="btn_area">
+          <button class="btn btn_crud_point" @click="onOpenClassRegist()">
+            반 만들기
+          </button>
+        </div>
+      </div>
+      <!-- /.등록된 학생이 없는 경우 -->
+
+      <div v-else class="tab-pane active">
+        <!-- 컨트롤 버튼 영역 -->
+        <div class="search_section">
+          <div class="left_area">
+            <div class="btn btn_crud_default" @click="onClickClassCopy">
+              복사
+            </div>
+            <button class="btn btn_crud_default" @click="onClickClassMove">
+              이동
+            </button>
+            <button class="btn btn_crud_danger" @click="onClickClassDelete">
+              삭제
+            </button>
+            <!-- [개발참조]toasts 메세지 '반을 선택해주세요.'' : 아무런 반을 체크하지 않고 복사를 누르면 -->
           </div>
-          <div class="btn_area">
+          <div class="right_area">
             <button class="btn btn_crud_point" @click="onOpenClassRegist()">
               반 만들기
             </button>
+            <button class="btn btn_crud_default" @click="onClickUnallocation">
+              배정 X
+            </button>
           </div>
         </div>
-        <!-- /.등록된 학생이 없는 경우 -->
-
-        <div v-else class="tab-pane active">
-          <!-- 컨트롤 버튼 영역 -->
-          <div class="search_section">
-            <div class="left_area">
-              <div class="btn btn_crud_default" @click="onClickClassCopy">
-                복사
-              </div>
-              <button class="btn btn_crud_default" @click="onClickClassMove">
-                이동
+        <!-- /.컨트롤 버튼 영역 -->
+        <!-- 검색 영역 -->
+        <div class="search_section">
+          <div class="left_area">
+            <div class="dropdown form-inline">
+              <button
+                class="btn dropdown-toggle"
+                type="button"
+                data-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {{ sortTeacherSelect }}
               </button>
-              <button class="btn btn_crud_danger" @click="onClickClassDelete">
-                삭제
-              </button>
-              <!-- [개발참조]toasts 메세지 '반을 선택해주세요.'' : 아무런 반을 체크하지 않고 복사를 누르면 -->
-            </div>
-            <div class="right_area">
-              <button class="btn btn_crud_point" @click="onOpenClassRegist()">
-                반 만들기
-              </button>
-              <button class="btn btn_crud_default" @click="onClickUnallocation">
-                배정 X
-              </button>
-            </div>
-          </div>
-          <!-- /.컨트롤 버튼 영역 -->
-          <!-- 검색 영역 -->
-          <div class="search_section">
-            <div class="left_area">
-              <div class="dropdown form-inline">
-                <button
-                  class="btn dropdown-toggle"
-                  type="button"
-                  data-toggle="dropdown"
-                  aria-expanded="false"
+              <div class="dropdown-menu">
+                <a class="dropdown-item cursor" @click="onChangeTeacherSort">
+                  선생님 전체
+                </a>
+                <a
+                  v-for="(item, idx) in teacherList"
+                  :key="idx"
+                  class="dropdown-item cursor"
+                  @click="onChangeTeacherSort($event, item.tch_idx)"
                 >
-                  {{ sortTeacherSelect }}
-                </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item cursor" @click="onChangeTeacherSort">
-                    선생님 전체
-                  </a>
-                  <a
-                    v-for="(item, idx) in teacherList"
-                    :key="idx"
-                    class="dropdown-item cursor"
-                    @click="onChangeTeacherSort($event, item.tch_idx)"
-                  >
-                    {{ item.mem_name }} 선생님
-                  </a>
-                </div>
-              </div>
-              <div class="dropdown form-inline">
-                <button
-                  class="btn dropdown-toggle"
-                  type="button"
-                  data-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  {{ sortNumberSelect }}
-                </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item cursor" @click="onChangeNumberSort"
-                    >10개씩 보기</a
-                  >
-                  <a class="dropdown-item cursor" @click="onChangeNumberSort"
-                    >100개씩 보기</a
-                  >
-                  <a class="dropdown-item cursor" @click="onChangeNumberSort"
-                    >200개씩 보기</a
-                  >
-                </div>
+                  {{ item.mem_name }} 선생님
+                </a>
               </div>
             </div>
-            <div class="right_area">
-              <div class="custom-control custom-radio custom-control-inline">
-                <input
-                  id="radio01"
-                  type="radio"
-                  name="radio00"
-                  class="custom-control-input"
-                  checked
-                  @input="searchRadio(true)"
-                />
-                <label class="custom-control-label" for="radio01">반</label>
-              </div>
-              <div class="custom-control custom-radio custom-control-inline">
-                <input
-                  id="radio02"
-                  type="radio"
-                  name="radio00"
-                  class="custom-control-input"
-                  @input="searchRadio(false)"
-                />
-                <label class="custom-control-label" for="radio02">이름</label>
-                <!-- <label class="custom-control-label" for="radio02">학생</label> -->
-              </div>
-              <div class="input-group input-search form-inline">
-                <input
-                  v-model="searchText"
-                  type="text"
-                  placeholder="반 이름 검색"
-                  class="form-control"
-                  @keyup.enter="getClassList"
-                />
-                <div class="input-group-append" @click="getClassList">
-                  <button class="btn icons_search_off" type="button"></button>
-                </div>
+            <div class="dropdown form-inline">
+              <button
+                class="btn dropdown-toggle"
+                type="button"
+                data-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {{ sortNumberSelect }}
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item cursor" @click="onChangeNumberSort"
+                  >10개씩 보기</a
+                >
+                <a class="dropdown-item cursor" @click="onChangeNumberSort"
+                  >100개씩 보기</a
+                >
+                <a class="dropdown-item cursor" @click="onChangeNumberSort"
+                  >200개씩 보기</a
+                >
               </div>
             </div>
           </div>
-          <!-- 검색 영역 -->
-          <!-- 테이블 영역 -->
-          <div class="table_section">
-            <table class="table">
-              <!-- <colgroup>
+          <div class="right_area">
+            <div class="custom-control custom-radio custom-control-inline">
+              <input
+                id="radio01"
+                type="radio"
+                name="radio00"
+                class="custom-control-input"
+                checked
+                @input="searchRadio(true)"
+              />
+              <label class="custom-control-label" for="radio01">반</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input
+                id="radio02"
+                type="radio"
+                name="radio00"
+                class="custom-control-input"
+                @input="searchRadio(false)"
+              />
+              <label class="custom-control-label" for="radio02">이름</label>
+              <!-- <label class="custom-control-label" for="radio02">학생</label> -->
+            </div>
+            <div class="input-group input-search form-inline">
+              <input
+                v-model="searchText"
+                type="text"
+                placeholder="반 이름 검색"
+                class="form-control"
+                @keyup.enter="getClassList"
+              />
+              <div class="input-group-append" @click="getClassList">
+                <button class="btn icons_search_off" type="button"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 검색 영역 -->
+        <!-- 테이블 영역 -->
+        <div class="table_section">
+          <table class="table">
+            <!-- <colgroup>
 								<col width="80">
 								<col>
 								<col>
@@ -151,100 +150,99 @@
 								<col width="80">
 								<col width="80">
 							</colgroup> -->
-              <thead>
-                <tr>
-                  <th>
-                    <div class="custom-control custom-checkbox form-inline">
-                      <input
-                        id="chkAll"
-                        type="checkbox"
-                        class="custom-control-input"
-                        :checked="allCheck"
-                        @input="onClickClassAllCheck"
-                      />
-                      <label class="custom-control-label" for="chkAll"></label>
-                    </div>
-                  </th>
-                  <th>반</th>
-                  <th>학생 수</th>
-                  <th>담당 선생님</th>
-                  <th>수정</th>
-                  <th>상세</th>
-                  <th>이동</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="(item, idx) in classList"
-                  :key="idx"
-                  draggable
-                  @dragstart="startDrag($event, item, item.csm_display_no)"
-                  @drop="onDrop($event, item.csm_display_no)"
-                  @dragover.prevent
-                  @dragenter.prevent
-                >
-                  <td>
-                    <div class="custom-control custom-checkbox form-inline">
-                      <input
-                        :id="idx"
-                        type="checkbox"
-                        class="custom-control-input"
-                        :checked="checkList.includes(item.csm_idx)"
-                        @input="onClickCheckBox(item.csm_idx)"
-                      />
-                      <label class="custom-control-label" :for="idx"></label>
-                    </div>
-                  </td>
-                  <td class="classroom">{{ item.csm_name }}</td>
-                  <td>{{ item.std_num }}</td>
-                  <td>{{ item.mem_name }} 선생님</td>
-                  <td>
-                    <i
-                      class="btn icons_pencil_off"
-                      @click="onOpenClassModify(item)"
-                    ></i>
-                  </td>
-                  <td>
-                    <i
-                      class="btn icons_zoom_off"
-                      @click="getClassDetail(item.csm_idx, item.csm_name)"
-                    ></i>
-                  </td>
-                  <td>
-                    <i class="btn icons_move_off"></i>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- /.테이블 영역 -->
-          <!-- 페이징 영역 -->
-          <div class="pagination_section">
-            <nav aria-label="Page navigation example">
-              <ul class="pagination">
-                <li class="page-item">
-                  <a class="page-link cursor" @click="onClickPrevPage">
-                    <span class="previous"></span>
-                  </a>
-                </li>
-                <li v-for="(item, idx) in endPage" :key="idx" class="page-item">
-                  <a
-                    class="page-link cursor"
-                    :class="{ active: currentPage === item }"
-                    @click="onClickCurrentPage(item)"
-                    >{{ item }}</a
-                  >
-                </li>
-                <li class="page-item">
-                  <a class="page-link cursor" @click="onClickNextPage">
-                    <span class="next"></span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-          <!-- /.페이징 영역 -->
+            <thead>
+              <tr>
+                <th>
+                  <div class="custom-control custom-checkbox form-inline">
+                    <input
+                      id="chkAll"
+                      type="checkbox"
+                      class="custom-control-input"
+                      :checked="allCheck"
+                      @input="onClickClassAllCheck"
+                    />
+                    <label class="custom-control-label" for="chkAll"></label>
+                  </div>
+                </th>
+                <th>반</th>
+                <th>학생 수</th>
+                <th>담당 선생님</th>
+                <th>수정</th>
+                <th>상세</th>
+                <th>이동</th>
+              </tr>
+            </thead>
+            <draggable
+              v-model="classList"
+              class="drag-box"
+              tag="tbody"
+              animation="200"
+              draggable=".classList"
+              handle=".icons_move_off"
+              @end="onDrop"
+            >
+              <tr v-for="(item, idx) in classList" :key="idx" class="classList">
+                <td>
+                  <div class="custom-control custom-checkbox form-inline">
+                    <input
+                      :id="idx"
+                      type="checkbox"
+                      class="custom-control-input"
+                      :checked="checkList.includes(item.csm_idx)"
+                      @input="onClickCheckBox(item.csm_idx)"
+                    />
+                    <label class="custom-control-label" :for="idx"></label>
+                  </div>
+                </td>
+                <td class="classroom">{{ item.csm_name }}</td>
+                <td>{{ item.std_num }}</td>
+                <td>{{ item.mem_name }} 선생님</td>
+                <td>
+                  <i
+                    class="btn icons_pencil_off"
+                    @click="onOpenClassModify(item)"
+                  ></i>
+                </td>
+                <td>
+                  <i
+                    class="btn icons_zoom_off"
+                    @click="getClassDetail(item.csm_idx, item.csm_name)"
+                  ></i>
+                </td>
+                <td>
+                  <i class="btn icons_move_off"></i>
+                </td>
+              </tr>
+            </draggable>
+          </table>
         </div>
+        <!-- /.테이블 영역 -->
+        <!-- 페이징 영역 -->
+        <div class="pagination_section">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link cursor" @click="onClickPrevPage">
+                  <span class="previous"></span>
+                </a>
+              </li>
+              <li v-for="(item, idx) in endPage" :key="idx" class="page-item">
+                <a
+                  class="page-link cursor"
+                  :class="{ active: currentPage === item }"
+                  @click="onClickCurrentPage(item)"
+                  >{{ item }}</a
+                >
+              </li>
+              <li class="page-item">
+                <a class="page-link cursor" @click="onClickNextPage">
+                  <span class="next"></span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <!-- /.페이징 영역 -->
       </div>
     </div>
 
@@ -387,6 +385,7 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 import NavBox from '@/components/operation/NavBox.vue'
 import ClassModifyModal from '@/components/common/modal/operation/ClassModifyModal.vue'
 import ClassDetailModal from '@/components/common/modal/operation/ClassDetailModal.vue'
@@ -405,6 +404,7 @@ export default {
     ModalDesc,
     DeleteModal,
     CustomSnackbar,
+    draggable,
   },
   data() {
     return {
@@ -645,24 +645,19 @@ export default {
   },
   methods: {
     // 드래그 앤 드롭 기능
-    startDrag(evt, item) {
-      evt.dataTransfer.dropEffect = 'move'
-      evt.dataTransfer.effectAllowed = 'move'
-      evt.dataTransfer.setData('itemID', item.csm_display_no)
-    },
-    onDrop(evt, list) {
-      const itemID = Number(evt.dataTransfer.getData('itemID'))
-      const item = this.classList.find((item) => item.csm_display_no === itemID)
+    onDrop(evt) {
       // item.list = list
       console.log(
-        'csm_display_no',
-        itemID,
-        'csm_idx',
-        item.csm_idx,
-        'update_order_no',
-        list
+        '이전',
+        evt.oldDraggableIndex,
+        this.classList[evt.oldDraggableIndex].csm_display_no
       )
-      this.getChangeOrder(itemID, item.csm_idx, list)
+      console.log('이후', evt.newDraggableIndex)
+      this.getChangeOrder(
+        this.classList[evt.oldDraggableIndex].csm_display_no,
+        this.classList[evt.oldDraggableIndex].csm_idx,
+        this.classList[evt.newDraggableIndex].csm_display_no
+      )
     },
 
     // 반 리스트 api
@@ -720,7 +715,7 @@ export default {
 
       this.csmIdx = csm_idx
       const payload = {
-        csm_idx: this.csmIdx,
+        csm_idx: `&csm_idx=${this.csmIdx}`,
         ins_code: this.ins_code,
         search: this.detailSearch === '' ? '' : `&search=${this.detailSearch}`,
         filter: this.detailFilter === 1 ? '' : `&filter=${this.detailFilter}`,
@@ -899,6 +894,7 @@ export default {
             studentList: selStudentList,
           },
         ],
+        csm_idx: csmIdx,
         fra_code: this.fra_code,
         ins_code: this.ins_code,
         teacherList: this.selectedTeacher,
@@ -910,7 +906,7 @@ export default {
         payload.teacherList.length !== 0
       ) {
         await apiOperation
-          .putUpdClass(csmIdx, payload)
+          .putUpdClass(payload)
           .then((res) => {
             console.log(res)
             this.openModalDesc('수정 성공', '반 수정을 성공했습니다.')
@@ -1933,5 +1929,8 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.drag-box {
+  display: contents;
 }
 </style>

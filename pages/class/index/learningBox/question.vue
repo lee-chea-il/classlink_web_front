@@ -1,204 +1,226 @@
 <template>
-  <div id="content" class="content">
-    <div class="content_area">
-      <!--  3Depth -->
-      <ul class="nav nav-tabs depth03">
-        <li class="nav-item">
-          <NuxtLink
-            class="nav-link"
-            :class="{ active: $route.fullPath.includes('/question') }"
-            to="/class/learningBox/question"
-            >질문함</NuxtLink
+  <div>
+    <!--  3Depth -->
+    <ul class="nav nav-tabs depth03">
+      <li class="nav-item">
+        <NuxtLink
+          class="nav-link"
+          :class="{ active: $route.fullPath.includes('/question') }"
+          to="/class/learningBox/question"
+          >질문함</NuxtLink
+        >
+      </li>
+      <li class="nav-item">
+        <NuxtLink
+          class="nav-link"
+          :class="{ active: $route.fullPath.includes('/report') }"
+          to="/class/learningBox/report"
+          >리포트</NuxtLink
+        >
+      </li>
+    </ul>
+    <div class="tab-content depth03 ac_manage_que">
+      <!-- <div v-if="askingboxList.length === 0" class="tab-pane active">
+        [개발참조] 데이터가 없는 경우
+        <div class="page_nodata">
+          <div class="txt">질문이 없습니다.</div>
+          <button
+            class="btn btn_crud_point"
+            data-toggle="modal"
+            data-target="#modalLectureRegi"
           >
-        </li>
-        <li class="nav-item">
-          <NuxtLink
-            class="nav-link"
-            :class="{ active: $route.fullPath.includes('/report') }"
-            to="/class/learningBox/report"
-            >리포트</NuxtLink
-          >
-        </li>
-      </ul>
-      <div class="tab-content depth03 ac_manage_que">
-        <div class="tab-pane active">
-          <!-- [개발참조] 데이터가 없는 경우 
-					<div class="page_nodata">
-						<div class="txt">
-							질문이 없습니다.
-						</div>
-						<button class="btn btn_crud_point" data-toggle="modal" data-target="#modalLectureRegi">강좌 만들기</button>
-					</div>
-					-->
-          <!-- /.데이터가 없는 경우 -->
-          <!-- 검색 영역 -->
-          <!-- [개발참조] 필터링한 목록이 없는 경우 출력됨 -->
-          <!-- <div class="search_section">
-						<div class="left_area">
-							<button class="btn btn_crud_default">삭제</button>
-						</div>
-						<div class="right_area">
-							<div class="input-group input-search form-inline form-lec">
-								<input type="text" placeholder="키워드 검색" class="form-control">
-								<div class="input-group-append">
-									<button class="btn icons_search_off" type="button"></button>
-								</div>
-							</div>
-							<button class="btn btn_filter">필터</button>
-							<button class="btn btn_crud_default" disabled>필터 해제</button>
-						</div>
-					</div> -->
-
-          <!-- [개발참조] 필터링한 목록이 있는 경우 출력됨 -->
-          <div class="search_section">
-            <div class="left_area">
-              <div class="row">
-                <div class="keyword_area left_area">
-                  <div class="keyword_area_01">
-                    <span
-                      v-for="(item, idx) in 20"
-                      :key="idx"
-                      class="keyword01"
-                    >
-                      <span class="keyword01-1">내가 한 질문</span
-                      ><span class="x cursor"></span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="right_area">
-              <button class="btn btn_crud_danger">삭제</button>
-              <div class="input-group input-search form-inline form-lec">
-                <input
-                  type="text"
-                  placeholder="키워드 검색"
-                  class="form-control"
-                />
-                <div class="input-group-append">
-                  <button class="btn icons_search_off" type="button"></button>
-                </div>
-              </div>
-              <button class="btn btn_filter" @click="onOpenQueFilterModal">
-                필터
-              </button>
-              <button class="btn btn_crud_default filter_lift" disabled>
-                필터 해제
-              </button>
-            </div>
-          </div>
-          <!-- 검색 영역 -->
-          <!-- 테이블 영역 -->
-          <div class="table_section">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>
-                    <div class="custom-control custom-checkbox form-inline">
-                      <input
-                        id="chkAll"
-                        type="checkbox"
-                        class="custom-control-input"
-                      />
-                      <label class="custom-control-label" for="chkAll"></label>
-                    </div>
-                  </th>
-                  <th>제목</th>
-                  <th>작성자</th>
-                  <th>작성일</th>
-                  <th>강좌</th>
-                  <th>공개여부</th>
-                  <th>조회</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="(item, idx) in askingboxList"
-                  :key="idx"
-                  :class="item.type === 1 ? 'que_reply' : ''"
-                >
-                  <td>
-                    <div class="custom-control custom-checkbox form-inline">
-                      <input
-                        id="chk01"
-                        type="checkbox"
-                        class="custom-control-input"
-                      />
-                      <label class="custom-control-label" for="chk01"></label>
-                    </div>
-                  </td>
-                  <td @click="onOpenQuestionViewModal(item)">
-                    <div class="study_qustion">
-                      {{ item.questionvo.qtb_title }}
-                    </div>
-                  </td>
-                  <!-- <td
-                    v-else
-                    class="study_qustion"
-                    @click="onOpenReplyViewModal(item)"
-                  >
-                    <div class="study_qustion">└─ {{ item.title }}</div>
-                  </td> -->
-                  <td>{{ item.questionvo.mem_name }}</td>
-                  <td>
-                    {{ item.questionvo.qtb_registration_date.substr(0, 10) }}
-                  </td>
-                  <td>{{ item.questionvo.icu_title }}</td>
-                  <td>
-                    {{
-                      item.questionvo.qtb_open_yn === '1' ? '공개' : '비공개'
-                    }}
-                  </td>
-                  <td>{{ item.questionvo.qtb_view_cnt }}</td>
-                </tr>
-                <!-- <tr class="que_reply">
-                  <td>
-                    <div class="custom-control custom-checkbox form-inline">
-                      <input
-                        id="chk01"
-                        type="checkbox"
-                        class="custom-control-input"
-                      />
-                      <label class="custom-control-label" for="chk01"></label>
-                    </div>
-                  </td>
-                  <td class="study_qustion" @click="onOpenReplyViewModal">
-                    └─ 답변드립니다.
-                  </td>
-                  <td>정미미 선생님</td>
-                  <td>2022.07.10</td>
-                  <td>성격심리학</td>
-                  <td>공개</td>
-                  <td>4</td>
-                </tr> -->
-              </tbody>
-            </table>
-          </div>
-          <!-- /.테이블 영역 -->
-          <!-- 페이징 영역 -->
-          <div class="pagination_section">
-            <nav aria-label="Page navigation example">
-              <ul class="pagination">
-                <li class="page-item">
-                  <a class="page-link" href="#">
-                    <span class="previous"></span>
-                  </a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link active" href="#">1</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                  <a class="page-link" href="#">
-                    <span class="next"></span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-          <!-- /.페이징 영역 -->
+            강좌 만들기
+          </button>
         </div>
+        /.데이터가 없는 경우
+      </div> -->
+      <div class="tab-pane active">
+        <!-- 검색 영역 -->
+        <!-- [개발참조] 필터링한 목록이 없는 경우 출력됨 -->
+        <div v-if="filterList.length === 0" class="search_section">
+          <button class="btn btn_crud_danger" @click="onClickQuestionDelete">
+            삭제
+          </button>
+          <div class="right_area">
+            <div class="input-group input-search form-inline form-lec">
+              <input
+                v-model="search"
+                type="text"
+                placeholder="키워드 검색"
+                class="form-control"
+              />
+              <div class="input-group-append">
+                <button class="btn icons_search_off" type="button"></button>
+              </div>
+            </div>
+            <button class="btn btn_filter" @click="onOpenQueFilterModal">
+              필터
+            </button>
+            <button class="btn btn_crud_default filter_lift" disabled>
+              필터 해제
+            </button>
+          </div>
+        </div>
+
+        <!-- [개발참조] 필터링한 목록이 있는 경우 출력됨 -->
+        <div v-else class="search_section">
+          <div class="left_area">
+            <div class="row">
+              <div class="keyword_area left_area">
+                <div class="keyword_area_01">
+                  <span v-for="(item, idx) in 20" :key="idx" class="keyword01">
+                    <span class="keyword01-1">내가 한 질문</span
+                    ><span class="x cursor"></span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="right_area">
+            <button class="btn btn_crud_danger" @click="onClickQuestionDelete">
+              삭제
+            </button>
+            <div class="input-group input-search form-inline form-lec">
+              <input
+                v-model="search"
+                type="text"
+                placeholder="키워드 검색"
+                class="form-control"
+                @keyup.enter="getQuestionList"
+              />
+              <div class="input-group-append" @click="getQuestionList">
+                <button class="btn icons_search_off" type="button"></button>
+              </div>
+            </div>
+            <button class="btn btn_filter" @click="onOpenQueFilterModal">
+              필터
+            </button>
+            <button class="btn btn_crud_default filter_lift" disabled>
+              필터 해제
+            </button>
+          </div>
+        </div>
+        <!-- 검색 영역 -->
+        <!-- 테이블 영역 -->
+        <div class="table_section">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>
+                  <div class="custom-control custom-checkbox form-inline">
+                    <input
+                      id="chkAll"
+                      type="checkbox"
+                      class="custom-control-input"
+                    />
+                    <label class="custom-control-label" for="chkAll"></label>
+                  </div>
+                </th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>강좌</th>
+                <th>공개여부</th>
+                <th>조회</th>
+              </tr>
+            </thead>
+            <tbody v-for="(item, idx) in askingboxList" :key="idx">
+              <tr :class="item.type === 1 ? 'que_reply' : ''">
+                <td>
+                  <div class="custom-control custom-checkbox form-inline">
+                    <input
+                      id="chk01"
+                      type="checkbox"
+                      class="custom-control-input"
+                      :checked="checkList.includes(idx)"
+                    />
+                    <label class="custom-control-label" for="chk01"></label>
+                  </div>
+                </td>
+                <td @click="onOpenQuestionViewModal(item.questionvo.qtb_idx)">
+                  <div class="study_qustion">
+                    {{ item.questionvo.qtb_title }}
+                  </div>
+                </td>
+                <td>{{ item.questionvo.mem_name }}</td>
+                <td>
+                  {{
+                    item.questionvo.qtb_registration_date
+                      .substr(0, 10)
+                      .replaceAll('-', '.')
+                  }}
+                </td>
+                <td>{{ item.questionvo.icu_title }}</td>
+                <td>
+                  {{ item.questionvo.qtb_open_yn === '1' ? '공개' : '비공개' }}
+                </td>
+                <td>{{ item.questionvo.qtb_view_cnt }}</td>
+              </tr>
+              <tr
+                v-for="(items, id) in item.answervo"
+                :key="id"
+                class="que_reply"
+              >
+                <td>
+                  <div class="custom-control custom-checkbox form-inline">
+                    <input
+                      id="chk01"
+                      type="checkbox"
+                      class="custom-control-input"
+                    />
+                    <label class="custom-control-label" for="chk01"></label>
+                  </div>
+                </td>
+                <td class="study_qustion" @click="onOpenReplyViewModal">
+                  └─ {{ items.qba_title }}
+                </td>
+                <td>{{ items.mem_name }} 선생님</td>
+                <td>
+                  {{
+                    items.qba_registration_date
+                      .substr(0, 10)
+                      .replace('-', '.')
+                      .replace('-', '.')
+                  }}
+                </td>
+                <td>{{ items.icu_title === null ? '-' : items.icu_title }}</td>
+                <td>
+                  {{ items.qba_open_yn === '1' ? '공개' : '비공개' }}
+                </td>
+                <td>
+                  {{ items.qba_view_cnt === null ? 0 : items.qba_view_cnt }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- /.테이블 영역 -->
+        <!-- 페이징 영역 -->
+        <div class="pagination_section">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link cursor" @click="onClickPrevPage">
+                  <span class="previous"></span>
+                </a>
+              </li>
+              <li v-for="(item, idx) in endPage" :key="idx" class="page-item">
+                <a
+                  class="page-link cursor"
+                  :class="{ active: currentPage === item }"
+                  @click="onClickCurrentPage(item)"
+                  >{{ item }}</a
+                >
+              </li>
+              <li class="page-item">
+                <a class="page-link cursor" @click="onClickNextPage">
+                  <span class="next"></span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <!-- /.페이징 영역 -->
       </div>
     </div>
 
@@ -217,6 +239,14 @@
       :data="questionData"
       @close="onCloseReplyViewModal"
     />
+
+    <DeleteModal
+      :open="deleteModalDesc.open"
+      :title="deleteModalDesc.title"
+      @delete="deleteQuestionList"
+      @close="onCloseDeleteModalDesc"
+    />
+    <CustomSnackbar :show="openSnackbar.open" :message="message" />
   </div>
 </template>
 
@@ -224,6 +254,8 @@
 import QueFilterModal from '@/components/common/modal/learningbox/QueFilterModal.vue'
 import QuestionViewModal from '@/components/common/modal/learningbox/QuestionViewModal.vue'
 import ReplyViewModal from '@/components/common/modal/learningbox/ReplyViewModal.vue'
+import DeleteModal from '@/components/lecturecourse/DeletePlanModal.vue'
+import CustomSnackbar from '@/components/common/CustomSnackbar.vue'
 import { apiLeaningBox } from '~/services'
 export default {
   name: 'Question',
@@ -231,6 +263,8 @@ export default {
     QueFilterModal,
     QuestionViewModal,
     ReplyViewModal,
+    DeleteModal,
+    CustomSnackbar,
   },
   data() {
     return {
@@ -245,6 +279,18 @@ export default {
       openReplyViewModal: {
         open: false,
       },
+      deleteModalDesc: {
+        open: false,
+        title: '',
+      },
+
+      // 스낵바
+      openSnackbar: {
+        open: false,
+      },
+      message: '',
+
+      filterList: ['ㅁ'],
 
       questionData: {
         id: 0,
@@ -259,10 +305,28 @@ export default {
       },
 
       askingboxList: [],
+
+      checkList: [],
+
+      // 리스트 검색
+      search: '',
+
+      // 총 페이지 개수
+      endPage: 1,
+      // 현재 페이지
+      currentPage: 1,
+      // 다음/이전 페이지 존재 유무
+      next: false,
+      prev: false,
     }
   },
-  mounted() {
-    this.getQuestionList()
+  watch: {
+    currentPage: {
+      handler() {
+        this.getQuestionList()
+      },
+      immediate: true,
+    },
   },
   methods: {
     // 모달
@@ -272,9 +336,9 @@ export default {
     onCloseQueFilterModal() {
       this.openQueFilterModal.open = false
     },
-    onOpenQuestionViewModal(data) {
+    onOpenQuestionViewModal(qtb_idx) {
       this.openQuestionViewModal.open = true
-      this.questionData = data
+      this.getSelQuestionbox(qtb_idx)
     },
     onCloseQuestionViewModal() {
       this.openQuestionViewModal.open = false
@@ -287,10 +351,37 @@ export default {
       this.openReplyViewModal.open = false
     },
 
+    // 스낵바 모달
+    onOpenSnackbar(text) {
+      this.openSnackbar.open = true
+      this.message = text
+    },
+    onCloseSnackbar() {
+      this.openSnackbar.open = false
+      this.message = ''
+    },
+
+    // 삭제 모달
+    openDeleteModalDesc(tit) {
+      this.deleteModalDesc = {
+        open: true,
+        title: tit,
+      }
+    },
+    onCloseDeleteModalDesc() {
+      this.deleteModalDesc.open = false
+    },
+    deleteQuestionList() {},
+
+    // 질문 리스트 api
     async getQuestionList() {
       const payload = {
-        ins_code: this.ins_code,
-        lec_idx: 0,
+        checkMine: '',
+        current_page: `&current_page=${this.currentPage}`,
+        ins_code: `ins_code=${this.ins_code}`,
+        keyword: this.search === '' ? '' : `&keyword=${this.search}`,
+        lec_idx: `&lec_idx=${1}`,
+        per_page_num: `&per_page_num=${8}`,
       }
 
       await apiLeaningBox
@@ -298,10 +389,59 @@ export default {
         .then(({ data: { data } }) => {
           console.log(data)
           this.askingboxList = data.totaldto
+          this.endPage = data.pageMaker.end_page
+          this.next = data.pageMaker.next
+          this.prev = data.pageMaker.prev
         })
         .catch((err) => {
           console.log(err)
         })
+    },
+
+    // 질문 상세
+    async getSelQuestionbox(qtb_idx) {
+      console.log(qtb_idx)
+      const payload = {
+        ins_code: `ins_code=${this.ins_code}`,
+        qtb_idx: `&qtb_idx=${qtb_idx}`,
+      }
+
+      await apiLeaningBox
+        .getSelQuestionbox(payload)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          this.questionData = data
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
+    // 질문/답변 삭제
+    onClickQuestionDelete() {
+      if (this.checkList.length === 0) {
+        this.onOpenSnackbar('질문을 선택해주세요.')
+        setTimeout(() => {
+          this.onCloseSnackbar()
+        }, 2000)
+      } else {
+        this.openDeleteModalDesc('질문')
+      }
+    },
+
+    // 페이지네이션
+    onClickCurrentPage(item) {
+      this.currentPage = item
+    },
+    onClickPrevPage() {
+      if (this.prev) {
+        this.currentPage = this.currentPage - 1
+      }
+    },
+    onClickNextPage() {
+      if (this.next) {
+        this.currentPage = this.currentPage + 1
+      }
     },
   },
 }
@@ -310,5 +450,8 @@ export default {
 <style scoped>
 .cursor {
   cursor: pointer;
+}
+.table tbody + tbody {
+  border-top: 0;
 }
 </style>
