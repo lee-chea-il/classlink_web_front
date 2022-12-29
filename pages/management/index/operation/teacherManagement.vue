@@ -293,7 +293,7 @@ export default {
         mem_phone: '',
         mem_sex: '',
         tch_grade: 'T',
-        tch_use_yn: 'Y',
+        tch_use_yn: true,
         auth_check: false,
         auth_list: [],
         subject_check: false,
@@ -428,7 +428,7 @@ export default {
   },
   mounted() {
     this.getTeacherList()
-    // this.getSubjectList()
+    this.getSubjectList()
   },
   methods: {
     // 깊은 복사
@@ -445,7 +445,7 @@ export default {
         current_page: this.currentPage,
         ins_code: this.institutionIdx,
         latest: this.sortFlag,
-        per_page_num: 10,
+        per_page_num: 1,
         search: this.searchText,
         status: this.stateFlag,
       }
@@ -593,7 +593,6 @@ export default {
     },
     onClickStatusFalse() {
       this.teacherInfo.tch_use_yn = false
-      console.log(this.teacherInfo.tch_use_yn)
     },
     // 가르치는 대상 수정
     onChangeTargetCheck({ target: { id, checked } }) {
@@ -921,17 +920,17 @@ export default {
 
     // 과목 수정
     // 과목 목록 불러오기 api
-    // async getSubjectList() {
-    //   console.log(this.institutionIdx)
-    //   await apiOperation
-    //     .getSubjectList(this.institutionIdx)
-    //     .then(({ data: { data } }) => {
-    //       this.subjectList = data
-    //     })
-    //     .catch((err) => {
-    //       console.log(err)
-    //     })
-    // },
+    async getSubjectList() {
+      console.log(this.institutionIdx)
+      await apiOperation
+        .getSubjectList(this.institutionIdx)
+        .then(({ data: { data } }) => {
+          this.subjectList = data
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
 
     // 과목 추가
     onClickAddSubject() {

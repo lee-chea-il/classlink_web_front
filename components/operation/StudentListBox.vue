@@ -1,18 +1,25 @@
 <template>
   <div class="tab-pane active">
     <!-- [개발참조] 등q록된 학생이 없는 경우 -- -->
-    <div v-if="studentList.length === 0" class="nothing_txt">
+    <!-- <div v-if="studentList.length === 0" class="nothing_txt">
       <div class="txt">
         등록된 학생이 없습니다.<br />
         먼저 학생을 등록해주세요.
       </div>
       <div class="btn_area">
-        <button class="btn btn_regi_studentsall">학생 일괄 등록</button>
-        <button class="btn btn_regi_student">학생 개별 등록</button>
+        <button
+          class="btn btn_regi_studentsall"
+          @click="$emit('click-batchStudent')"
+        >
+          학생 일괄 등록
+        </button>
+        <button class="btn btn_regi_student" @click="$emit('click-addStudent')">
+          학생 개별 등록
+        </button>
       </div>
-    </div>
+    </div> -->
     <!-- 검색 영역 -->
-    <div v-else class="search_section">
+    <div class="search_section">
       <div class="left_area">
         <div class="dropdown form-inline">
           <button
@@ -147,7 +154,7 @@
         </thead>
         <tbody>
           <tr v-for="(item, idx) in studentList" :key="idx">
-            <td>{{ item.id }}</td>
+            <td>{{ item.std_idx }}</td>
             <td>
               <i v-if="item.identity === '학부모'" class="icons_parent"></i>
               <i
@@ -155,18 +162,18 @@
                 class="icons_parentstd"
               ></i>
             </td>
-            <td>{{ item.status }}</td>
-            <td>{{ item.grade }}</td>
-            <td>{{ item.name }}</td>
+            <td>{{ setStatusName(item.itm_status) }}</td>
+            <td>{{ item.std_year }}</td>
+            <td>{{ item.mem_name }}</td>
             <td>{{ item.nickname }}</td>
-            <td>{{ setFamilyNameList(item.family) }}</td>
-            <td>{{ item.account }}</td>
-            <td>{{ item.phone }}</td>
-            <td>{{ item.parent_phone }}</td>
+            <td>{{ item.family_names }}</td>
+            <td>{{ item.mem_id }}</td>
+            <td>{{ item.mem_phone }}</td>
+            <td>{{ item.std_parent_phone }}</td>
             <td>
               <i
                 class="btn icons_zoom_off"
-                @click="$emit('click-detail', item.id)"
+                @click="$emit('click-detail', item.std_idx)"
               ></i>
             </td>
             <td>
@@ -276,6 +283,26 @@ export default {
         nameList.push(value.name)
       }
       return nameList.join(', ')
+    },
+    setStatusName(number) {
+      let answer = ''
+      switch (number) {
+        case '01':
+          answer = '퇴원'
+          break
+        case '02':
+          answer = '재원'
+          break
+        case '03':
+          answer = '휴먼'
+          break
+        case '99':
+          answer = '거절'
+          break
+
+        default:
+      }
+      return answer
     },
   },
 }

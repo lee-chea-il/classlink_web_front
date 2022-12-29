@@ -106,7 +106,7 @@
             <th>닉네임</th>
             <th>ID</th>
             <th>담당 과목</th>
-            <th>소속 그룹</th>
+            <th>신분</th>
             <th>연락처</th>
             <th>상세</th>
           </tr>
@@ -137,7 +137,7 @@
             <td>{{ item.mem_nickname }}</td>
             <td>{{ item.mem_id }}</td>
             <td>{{ setSubjectArray(item.subject_list) }}</td>
-            <td>{{ setTargetArray(item.teach_target) }}</td>
+            <td>{{ setTargetArray(item.identity_list) }}</td>
             <td>{{ item.mem_phone }}</td>
             <td>
               <i
@@ -246,20 +246,23 @@ export default {
     setTargetName(initial) {
       let answer = ''
       switch (initial) {
-        case '01':
-          answer = '초등'
+        case 'T':
+          answer = '선생님'
           break
-        case '02':
-          answer = '중등'
+        case 'P':
+          answer = '학부모'
           break
-        case '03':
-          answer = '고등'
+        case 'F':
+          answer = '프랜차이즈장'
           break
-        case '04':
-          answer = '대학생'
+        case 'I':
+          answer = '교육기관장'
           break
-        case '05':
-          answer = '성인'
+        case 'M':
+          answer = '교육기관 관리자'
+          break
+        case 'A':
+          answer = '프랜차이즈 관리자'
           break
         default:
       }
@@ -270,9 +273,9 @@ export default {
         if (array.length !== 0) {
           const names = []
           for (const x of array) {
-            names.push(this.setTargetName(x.ttm_target))
+            names.push(this.setTargetName(x))
           }
-          return names.join(', ')
+          return names.join('/')
         } else {
           return '-'
         }

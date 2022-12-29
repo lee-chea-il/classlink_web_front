@@ -520,6 +520,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isRegister: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {

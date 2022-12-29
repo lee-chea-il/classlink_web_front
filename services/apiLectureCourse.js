@@ -11,7 +11,7 @@ async function getLectureCourse(payload) {
 // 강의계획서 목록
 async function getSyllabusList(payload) {
   return await http.get(
-    `/api/v1/class/course/syllabuses?current_page=${payload.current_page}&keyword=${payload.keyword}&lec_idx=${payload.lec_idx}&mem_idx=${payload.mem_idx}&per_page_num=${payload.per_page_num}`
+    `/api/v1/class/course/syllabuses?current_page=${payload.current_page}&keyword=${payload.keyword}&lec_idx=${payload.lec_idx}&ins_code=${payload.ins_code}&per_page_num=${payload.per_page_num}`
   )
 }
 

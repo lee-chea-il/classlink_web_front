@@ -30,7 +30,7 @@
         @click-more="onClickExpandBtn"
         @search-student="searchStudent"
         @change-input="changeSearchInput"
-        @click-detail="openStudentInfoModalDesc"
+        @click-detail="getStudentInfo"
         @click-addStudent="openNewStudentInfoModalDesc"
         @click-batchStudent="openBatchRegistrationModalDesc"
         @select-identity="selectIdentityFlag"
@@ -85,12 +85,13 @@
       @search-family="onClickSearchBtn"
     />
 
-    <!-- 학생 개별 등록/학생 상세 정보 -->
+    <!-- 학생 상세 정보 -->
     <StudentInfoModal
       :studentInfo="studentInfo"
       :open="studentInfoModalDesc.open"
       :nickNameCheck="nickNameCheck"
       :familySearchText="familySearchText"
+      :isRegister="isRegister"
       @close="onCloseStudentInfoModalDesc"
       @change-input="onChangeUpdateInput"
       @click-birthday="openDatePickerModalDesc"
@@ -401,6 +402,7 @@ export default {
   data() {
     return {
       institutionIdx: this.$store.state.common.user.ins_code,
+      isRegister: false,
       // studentInfo: {
       //   id: 0,
       //   identity: [],
@@ -434,17 +436,17 @@ export default {
         mem_email: '',
         std_status: null,
         std_year: '',
-        std_adult_yn: '',
+        std_adult_yn: 'N',
         mem_sex: '',
-        std_grade: '',
+        std_grade: 'S',
         std_use_yn: '',
-        std_att_num: '',
+        std_att_num: 0,
         mem_phone: '',
         std_school: '',
         st_courses: null,
         std_birth: '',
         std_parent_phone: '',
-        itm_acc_yn: '',
+        itm_acc_yn: '1',
         family_id: [
           {
             mem_name: '',
@@ -452,7 +454,7 @@ export default {
             mem_id: '',
           },
         ],
-        lectureInfoDto: [
+        lecture_info_dto: [
           {
             csm_name: '',
             csm_idx: '',
@@ -460,276 +462,16 @@ export default {
             lec_idx: '',
           },
         ],
-        allLectureInfo: [
+        all_lecture_info: [
           {
             csm_name: '',
             csm_idx: '',
-            check_ban: '',
+            check_ban: false,
           },
         ],
       },
       initStudent: {},
-      studentList: [
-        {
-          id: 0,
-          identity: ['학생', '학부모'],
-          status: true,
-          grade: '중1',
-          grade_type: 0,
-          class: ['심화 A반', '심화 B반'],
-          name: '김유진',
-          nickname: '유진쓰',
-          family: [
-            {
-              id: 0,
-              identity: '학생',
-              status: '재원',
-              grade: '중1',
-              name: '홍길동',
-              nickname: '길동쓰',
-              account: 'rlfehd1004',
-              phone: '010-1234-1234',
-              parent_phone: '010-1234-1111',
-              gender: '남',
-            },
-            {
-              id: 2,
-              identity: '학부모',
-              status: '재원',
-              grade: '중1',
-              name: '이성국',
-              nickname: '성국쓰',
-              family: '홍길순, 홍길삼, 홍길사',
-              account: 'rlfehd1004',
-              phone: '010-1234-1234',
-              parent_phone: '010-1234-1111',
-              gender: '남',
-            },
-          ],
-          account: 'rlfehd1004',
-          phone: '010-1234-1234',
-          parent_phone: '010-1234-1111',
-          gender: 0,
-          student_status: false,
-          school: '스노우',
-          attendance_num: '12345',
-          created_at: '2022.11.22',
-          lecture_date: '2022.11.30',
-          birthday: '2022.11.01',
-          email: 'test@naver.com',
-          profile_image: require('@/assets/images/mypage/profile1.png'),
-          lectureInfo: [
-            {
-              id: 0,
-              lectureTitle: '영어리딩심화1',
-              class: '심화 A반',
-              dueDate: '2022-11-28',
-              lectureDate: '2022-11-29',
-              memo: [
-                {
-                  id: 0,
-                  contents: '안녕하세요 메모입니다.',
-                  updatedAt: '2022-08-05',
-                  writer: '서유진',
-                },
-                {
-                  id: 1,
-                  contents: '안녕하세요 메모일까요.',
-                  updatedAt: '2022-08-05',
-                  writer: '서유진',
-                },
-              ],
-            },
-            {
-              id: 1,
-              lectureTitle: '영어리딩심화2',
-              class: '심화 B반',
-              dueDate: '2022-11-28',
-              lectureDate: '2022-11-29',
-              memo: [],
-            },
-            {
-              id: 2,
-              lectureTitle: '영어리딩심화3',
-              class: '심화 C반',
-              dueDate: '2022-11-28',
-              lectureDate: '2022-11-29',
-              memo: [],
-            },
-          ],
-          memo: [
-            {
-              id: 11,
-              createdAt: '2022.08.17 PM 09:00',
-              consultant: '김유진',
-              contents: '상담내용입니다.',
-            },
-            {
-              id: 12,
-              createdAt: '2022.08.17 PM 09:00',
-              consultant: '이성국',
-              contents: '학생메모입니다.',
-            },
-            {
-              id: 13,
-              createdAt: '2022.08.17 PM 09:00',
-              consultant: '유잔',
-              contents: '학생의 메모',
-            },
-          ],
-        },
-        {
-          id: 1,
-          identity: ['학생', '학부모'],
-          status: true,
-          grade: '중1',
-          grade_type: 0,
-          class: ['심화 A반', '심화 B반'],
-          name: '김유진',
-          nickname: '유진쓰',
-          family: [
-            {
-              id: 0,
-              identity: '학생',
-              status: '재원',
-              grade: '중1',
-              name: '홍길동',
-              nickname: '길동쓰',
-              account: 'rlfehd1004',
-              phone: '010-1234-1234',
-              parent_phone: '010-1234-1111',
-              gender: '남',
-            },
-            {
-              id: 2,
-              identity: '학부모',
-              status: '재원',
-              grade: '중1',
-              name: '이성국',
-              nickname: '성국쓰',
-              family: '홍길순, 홍길삼, 홍길사',
-              account: 'rlfehd1004',
-              phone: '010-1234-1234',
-              parent_phone: '010-1234-1111',
-              gender: '남',
-            },
-          ],
-          account: 'rlfehd1004',
-          phone: '010-1234-1234',
-          parent_phone: '010-1234-1111',
-          gender: 0,
-          student_status: false,
-          school: '스노우',
-          attendance_num: '12345',
-          created_at: '2022.11.22',
-          lecture_date: '2022.11.30',
-          birthday: '2022.11.01',
-          email: 'test@naver.com',
-          profile_image: require('@/assets/images/mypage/profile1.png'),
-          lectureInfo: [
-            {
-              id: 4,
-              lectureTitle: '영어리딩심화4',
-              class: '심화 D반',
-              dueDate: '2022-11-28',
-              lectureDate: '2022-11-29',
-              memo: [
-                {
-                  id: 3,
-                  contents: '안녕하세요 메모일까요.',
-                  updatedAt: '2022-08-05',
-                  writer: '서유진',
-                },
-              ],
-            },
-            {
-              id: 5,
-              lectureTitle: '영어리딩심화5',
-              class: '심화 E반',
-              dueDate: '2022-11-28',
-              lectureDate: '2022-11-29',
-              memo: [
-                {
-                  id: 4,
-                  contents: '안녕하세요 메모일까요.',
-                  updatedAt: '2022-08-05',
-                  writer: '서유진',
-                },
-              ],
-            },
-            {
-              id: 6,
-              lectureTitle: '영어리딩심화6',
-              class: '심화 F반',
-              dueDate: '2022-11-28',
-              lectureDate: '2022-11-29',
-              memo: [],
-            },
-          ],
-          memo: [
-            {
-              id: 14,
-              createdAt: '',
-              consultant: '이성국 ',
-              contents: '상담내용입니까??.',
-            },
-            {
-              id: 15,
-              createdAt: '',
-              consultant: '이성국',
-              contents: '학생메모입니다요',
-            },
-            {
-              id: 16,
-              createdAt: '',
-              consultant: '성국',
-              contents: '학생의 메모',
-            },
-          ],
-        },
-        {
-          id: 2,
-          identity: ['학생'],
-          status: '재원',
-          grade: '중1',
-          name: '이성국',
-          nickname: '성국쓰',
-          class: [],
-          family: [],
-          account: 'rlfehd1004',
-          phone: '010-1234-1234',
-          parent_phone: '010-1234-1111',
-          gender: '남',
-        },
-        {
-          id: 3,
-          identity: ['학생'],
-          status: '퇴원',
-          grade: '중1',
-          name: '김단우',
-          class: [],
-          nickname: '단우쓰',
-          family: [],
-          account: 'rlfehd1004',
-          phone: '010-1234-1234',
-          parent_phone: '010-1234-1111',
-          gender: '남',
-        },
-        {
-          id: 4,
-          identity: ['학생'],
-          status: '재원',
-          grade: '중1',
-          name: '박세익',
-          class: [],
-          nickname: '세익쓰',
-          family: [],
-          account: 'rlfehd1004',
-          phone: '010-1234-1234',
-          parent_phone: '010-1234-1111',
-          gender: '여',
-        },
-      ],
+      studentList: [],
       // 교육기관 반 리스트
       classList: ['심화 A반', '심화 B반', '심화 C반', '심화 D반', '심화 E반'],
       // 학습리포트
@@ -1132,6 +874,7 @@ export default {
         .getStudentList(payload)
         .then(({ data: { data } }) => {
           console.log(data)
+          this.studentList = data.dtoList
           // if (data === null) {
           //   this.studentList = []
           // } else {
@@ -1146,7 +889,19 @@ export default {
           console.log(err)
         })
     },
-
+    // 학생 상세 api
+    async getStudentInfo(std_idx) {
+      await apiOperation
+        .getStudentInfo(std_idx)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          this.studentInfo = data
+          this.openStudentInfoModalDesc()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
     // 모달 이벤트
     openModalDesc(tit, msg) {
       this.modalDesc = {
@@ -1166,9 +921,7 @@ export default {
     },
     // 학생 상세 정보 / 수정
     openStudentInfoModalDesc(id) {
-      const student = this.studentList.find((result) => result.id === id)
-      console.log(student)
-      Object.assign(this.studentInfo, student)
+      // Object.assign(this.studentInfo, student)
       this.studentInfoModalDesc.open = true
     },
     onCloseStudentInfoModalDesc() {

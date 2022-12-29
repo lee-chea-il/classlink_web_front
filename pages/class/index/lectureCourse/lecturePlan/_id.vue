@@ -72,6 +72,7 @@ export default {
     return {
       // 유저 정보
       userIdx: this.$store.state.common.user.mem_idx,
+      institutionIdx: this.$store.state.common.user.ins_code,
       lectureIdx: this.$route.params.id,
       classIdx: this.$route.query.classidx,
       className: this.$route.query.class,
@@ -150,7 +151,7 @@ export default {
         current_page: this.currentPage,
         keyword: this.searchText,
         lec_idx: this.lectureIdx,
-        mem_idx: this.userIdx,
+        ins_code: this.institutionIdx,
         per_page_num: 10,
       }
       await apiLectureCourse

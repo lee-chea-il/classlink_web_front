@@ -22,11 +22,11 @@ async function updateTeacherInfo(payload) {
 }
 // 아이디 중복체크
 async function getIdCheck(id) {
-  return await http.get(`/api/v1/account/sign-up/id-check?id=${id}`)
+  return await http.get(`/api/v1/account/check-id?id=${id}`)
 }
 // 이메일 중복체크
 async function getEmailCheck(email) {
-  return await http.get(`/api/v1/account/sign-up/email-check?email=${email}`)
+  return await http.get(`/api/v1/account/check-email?email=${email}`)
 }
 // 선생님 등록
 async function registerTeacher(payload) {
@@ -80,7 +80,7 @@ async function registerStudent(payload) {
 // 학생 상세
 async function getStudentInfo(std_idx) {
   return await http.get(
-    `/api/v1/management/operation/student?stu_idx=${std_idx}`
+    `/api/v1/management/operation/student?std_idx=${std_idx}`
   )
 }
 
