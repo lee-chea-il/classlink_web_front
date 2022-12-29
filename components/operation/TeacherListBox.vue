@@ -159,9 +159,6 @@
               <span class="previous"></span>
             </a>
           </li>
-          <!-- <li class="page-item">
-            <a class="page-link active" href="#">1</a>
-          </li> -->
           <li
             v-for="(item, idx) in endPageNumber"
             :key="idx"

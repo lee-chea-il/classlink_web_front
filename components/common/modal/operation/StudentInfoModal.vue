@@ -97,7 +97,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-group form-inlinebox row">
+                  <div class="form-group row">
                     <label for="" class="st_title00 col-form-label">ID</label>
                     <div class="col">
                       <CustomOperationInput
@@ -122,12 +122,24 @@
                     <div class="col">
                       <button
                         class="btn btn_choice"
+                        :class="
+                          studentInfo.std_grade === 'S' ||
+                          studentInfo.std_grade === 'F'
+                            ? 'active'
+                            : false
+                        "
                         @click="$emit('click-identity', '학생')"
                       >
                         학생
                       </button>
                       <button
                         class="btn btn_choice"
+                        :class="
+                          studentInfo.std_grade === 'P' ||
+                          studentInfo.std_grade === 'F'
+                            ? 'active'
+                            : false
+                        "
                         @click="$emit('click-identity', '학부모')"
                       >
                         학부모
@@ -184,14 +196,14 @@
                     <div class="col">
                       <button
                         class="btn btn_activated"
-                        :class="studentInfo.gender === 0 ? 'active' : ''"
+                        :class="studentInfo.mem_sex === 'M' ? 'active' : ''"
                         @click="$emit('click-men')"
                       >
                         남
                       </button>
                       <button
                         class="btn btn_activated"
-                        :class="studentInfo.gender === 1 ? 'active' : ''"
+                        :class="studentInfo.mem_sex === 'W' ? 'active' : ''"
                         @click="$emit('click-women')"
                       >
                         여
@@ -252,7 +264,7 @@
               <!-- 왼쪽 영역 -->
               <div class="left_area">
                 <div class="info_area left">
-                  <div class="form-group form-inlinebox row">
+                  <div class="form-group row">
                     <label for="" class="st_title00 col-form-label"
                       >출결번호</label
                     >

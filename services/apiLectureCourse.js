@@ -18,13 +18,21 @@ async function getSyllabusList(payload) {
 // 강의계획서 상세
 async function getSyllabus(payload) {
   return await http.get(
-    `/api/v1/class/course/syllabus?csm_idx=${payload.csm_idx}&lec_idx=${payload.lec_idx}&lep_idx=${payload.lep_idx}&mem_idx=${payload.mem_idx}`
+    `/api/v1/class/course/syllabus?lec_idx=${payload.lec_idx}&lep_idx=${payload.lep_idx}`
   )
 }
-
 // 강의계획서 등록
 async function postRegisterSyllabus(payload) {
   return await http.post('/api/v1/class/course/syllabus', payload)
+}
+// 강의계획서 수정
+async function updateSyllabus(payload) {
+  return await http.put('/api/v1/class/course/syllabus', payload)
+}
+
+// 강의계획서 삭제
+async function deleteSyllabus(payload) {
+  return await http.delete('/api/v1/class/course/syllabus', payload)
 }
 
 // 교육기관 정보 수정
@@ -39,6 +47,8 @@ const apiLectureCourse = {
   getLectureCourse,
   getSyllabusList,
   getSyllabus,
+  updateSyllabus,
+  deleteSyllabus,
   postRegisterSyllabus,
   putUpdateInstitution,
 }

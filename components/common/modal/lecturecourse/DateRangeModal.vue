@@ -68,7 +68,7 @@
               id="lep_time_etime"
               type="text"
               placeholder="11:59"
-              max-length="5"
+              maxlength="5"
               :value="rangeInfo.lep_time_etime"
               class="form-control form-inline form-time"
               @input="$emit('change-input', $event)"

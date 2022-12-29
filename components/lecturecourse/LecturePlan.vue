@@ -85,7 +85,12 @@
                     name="chk"
                     type="checkbox"
                     class="custom-control-input"
-                    @input="$emit('select-plan', $event)"
+                    :checked="
+                      deleteIdxList
+                        .map((x) => x.lep_idxs)
+                        .includes(item.lep_idx)
+                    "
+                    @input="$emit('select-plan', $event, item.mem_idx)"
                   />
                   <label
                     class="custom-control-label"
@@ -93,54 +98,23 @@
                   ></label>
                 </div>
               </td>
-              <td @click="$emit('click-plan', item.csm_idx, item.lep_idx)">
-                <div class="classplan_tit" @click="$emit('open-detail')">
+              <td @click="$emit('click-plan', item.lec_idx, item.lep_idx)">
+                <div class="classplan_tit">
                   {{ item.lep_title }}
                 </div>
               </td>
-              <td @click="$emit('click-plan', item.csm_idx, item.lep_idx)">
+              <td @click="$emit('click-plan', item.lec_idx, item.lep_idx)">
                 {{ item.mem_name }}
               </td>
-              <td @click="$emit('click-plan', item.csm_idx, item.lep_idx)">
+              <td @click="$emit('click-plan', item.lec_idx, item.lep_idx)">
                 {{ item.lep_registration_date }}
               </td>
-              <td @click="$emit('click-plan', item.csm_idx, item.lep_idx)">
-                {{ item.open ? '공개' : '비공개' }}
+              <td @click="$emit('click-plan', item.lec_idx, item.lep_idx)">
+                {{ item.lep_repeat_yn ? '공개' : '비공개' }}
               </td>
-              <td @click="$emit('click-plan', item.csm_idx, item.lep_idx)">
+              <td @click="$emit('click-plan', item.lec_idx, item.lep_idx)">
                 {{ item.lep_view_cnt }}/{{ lectureInfo.student_count }}
               </td>
-              <td></td>
-            </tr>
-          </tbody>
-          <tbody v-if="searchFlag === 1">
-            <tr v-for="(item, idx) in searchList" :key="idx">
-              <td>
-                <div class="custom-control custom-checkbox form-inline">
-                  <input
-                    :id="item.id"
-                    name="chk-plan"
-                    type="checkbox"
-                    class="custom-control-input"
-                    @input="$emit('select-plan', $event)"
-                  />
-                  <label class="custom-control-label" :for="item.id"></label>
-                </div>
-              </td>
-              <td>
-                <div
-                  class="classplan_tit"
-                  data-toggle="modal"
-                  data-target="#modalNoticeView"
-                  data-dismiss="modal"
-                >
-                  {{ item.title }}
-                </div>
-              </td>
-              <td>{{ item.writer }}</td>
-              <td>{{ item.created_at }}</td>
-              <td>{{ item.open ? '공개' : '비공개' }}</td>
-              <td>{{ item.views }}/{{ lectureCourse.students }}</td>
               <td></td>
             </tr>
           </tbody>
@@ -151,18 +125,25 @@
       <div class="pagination_section">
         <nav aria-label="Page navigation example">
           <ul class="pagination">
-            <li class="page-item">
-              <a class="page-link" href="#">
+            <li class="page-item cursor">
+              <a class="page-link" @click="$emit('click-direction', 'minus')">
                 <span class="previous"></span>
               </a>
             </li>
-            <li class="page-item">
-              <a class="page-link active" href="#">1</a>
+            <li
+              v-for="(item, idx) in endPageNumber"
+              :key="idx"
+              class="page-item cursor"
+            >
+              <a
+                class="page-link"
+                :class="item === currentPage ? 'active' : ''"
+                @click="$emit('click-page', item)"
+                >{{ item }}</a
+              >
             </li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#">
+            <li class="page-item cursor">
+              <a class="page-link" @click="$emit('click-direction', 'plus')">
                 <span class="next"></span>
               </a>
             </li>
@@ -186,21 +167,9 @@ export default {
       type: Array,
       default: () => [],
     },
-    lecturePlanList: {
-      type: Array,
-      default: () => [],
-    },
-    lectureCourse: {
-      type: Object,
-      default: () => {},
-    },
     searchFlag: {
       type: Number,
       default: 0,
-    },
-    searchList: {
-      type: Array,
-      default: () => [],
     },
     allCheckBoxFlag: {
       type: Boolean,
@@ -213,6 +182,18 @@ export default {
     lectureInfo: {
       type: Object,
       default: () => {},
+    },
+    deleteIdxList: {
+      type: Array,
+      default: () => [],
+    },
+    endPageNumber: {
+      type: Number,
+      default: 0,
+    },
+    currentPage: {
+      type: Number,
+      default: 1,
     },
   },
   methods: {

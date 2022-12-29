@@ -156,11 +156,8 @@
           <tr v-for="(item, idx) in studentList" :key="idx">
             <td>{{ item.std_idx }}</td>
             <td>
-              <i v-if="item.identity === '학부모'" class="icons_parent"></i>
-              <i
-                v-if="item.identity === '학부모&학생'"
-                class="icons_parentstd"
-              ></i>
+              <i v-if="item.std_grade === 'P'" class="icons_parent"></i>
+              <i v-if="item.std_grade === 'F'" class="icons_parentstd"></i>
             </td>
             <td>{{ setStatusName(item.itm_status) }}</td>
             <td>{{ item.std_year }}</td>

@@ -874,7 +874,7 @@ export default {
         .getStudentList(payload)
         .then(({ data: { data } }) => {
           console.log(data)
-          this.studentList = data.dtoList
+          this.studentList = data.dto_list
           // if (data === null) {
           //   this.studentList = []
           // } else {
@@ -883,7 +883,6 @@ export default {
           //   this.teacherList = data.dto
           //   this.endPageNumber = data.pageMaker.end_page
           // }
-          console.log(this.teacherList)
         })
         .catch((err) => {
           console.log(err)

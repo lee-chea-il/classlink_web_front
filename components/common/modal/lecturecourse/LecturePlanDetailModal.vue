@@ -23,9 +23,9 @@
               <span class="notice_writer">{{ syllabus.mem_name }}</span>
             </div>
 
-            <div class="file_info">
+            <div v-if="syllabus.fileList.length !== 0" class="file_info">
               <span class="file_icon"></span>
-              일반 첨부파일 1개(10KB)
+              일반 첨부파일 {{ syllabus.fileList.length }}개(10KB)
               <span class="save">모두 저장</span>
               <div
                 v-for="(item, idx) in syllabus.fileList"

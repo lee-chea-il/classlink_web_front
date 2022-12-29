@@ -445,7 +445,7 @@ export default {
         current_page: this.currentPage,
         ins_code: this.institutionIdx,
         latest: this.sortFlag,
-        per_page_num: 1,
+        per_page_num: 10,
         search: this.searchText,
         status: this.stateFlag,
       }

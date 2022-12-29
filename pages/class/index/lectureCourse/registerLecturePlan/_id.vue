@@ -250,12 +250,13 @@
           </div> -->
             <div class="custom-control custom-checkbox form-inline open_regi">
               <input
-                id="open"
+                id="lep_repeat_yn"
                 type="checkbox"
                 class="custom-control-input"
+                :checked="syllabus.lep_repeat_yn"
                 @input="onChangePlanInput"
               />
-              <label class="custom-control-label" for="open"
+              <label class="custom-control-label" for="lep_repeat_yn"
                 >글을 공개 상태로 등록합니다.</label
               >
             </div>
@@ -340,14 +341,12 @@ export default {
         lecture: this.$route.query.lecture,
         teacher: this.$route.query.teacher,
       },
-
       // 강의계획서
       syllabus: {
-        file_exist: false,
-        lec_idx: this.$route.params.id,
+        file_exist: true,
+        lec_idx: Number(this.$route.params.id),
         lep_content: '',
         lep_repeat_yn: true,
-        lep_idx: 0,
         lep_time_edate: '',
         lep_time_etime: '',
         lep_time_sdate: '',
@@ -355,7 +354,6 @@ export default {
         lep_title: '',
         lpa_file: ['파일이름'],
         lpa_size: [0],
-        mem_idx: this.$store.state.common.user.mem_idx,
       },
       lectureCourse: {
         id: 0,
@@ -444,6 +442,7 @@ export default {
         .postRegisterSyllabus(payload)
         .then((res) => {
           console.log(res)
+          this.onClickLecturePlan()
         })
         .catch((err) => {
           console.log(err)
@@ -451,12 +450,11 @@ export default {
     },
     // 강의계획서 등록/수정
     onChangePlanInput({ target: { value, id, checked } }) {
-      this.syllabus[id] = value
-      // if (id === 'open') {
-      //   this.syllabus[id] = checked
-      // } else {
-      //   this.syllabus[id] = value
-      // }
+      if (id === 'lep_repeat_yn') {
+        this.syllabus[id] = checked
+      } else {
+        this.syllabus[id] = value
+      }
       if (id === 'lep_time_stime' || id === 'lep_time_etime') {
         this.syllabus[id] = value
           .replace(/[^0-9]/g, '')
@@ -521,7 +519,6 @@ export default {
     onClickNoteBox() {
       this.$router.push(`/class/lecturecourse/notebox/${this.$route.params.id}`)
     },
-
     onClickFileInputBtn() {
       const inputBtn = document.getElementById('upload-input')
       inputBtn.click()

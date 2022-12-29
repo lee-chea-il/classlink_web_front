@@ -16,12 +16,12 @@
       <LecturePlan
         :lectureInfo="lectureInfo"
         :syllabusList="syllabusList"
-        :lectureCourse="lectureCourse"
-        :searchList="searchList"
         :allCheckBoxFlag="allCheckBoxFlag"
         :lectureStudentCount="lectureStudentCount"
         :currentPage="currentPage"
         :onClickPagination="onClickPagination"
+        :deleteIdxList="deleteIdxList"
+        :endPageNumber="endPageNumber"
         @click-plan="onClickSyllabus"
         @change-input="onChangeInput"
         @search-plan="searchLecturePlan"
@@ -30,6 +30,8 @@
         @checked-all="selectAll"
         @click-register="onClickRegisterLecturePlan"
         @open-detail="openLecturePlanDetailModal"
+        @click-direction="paginationDirection"
+        @click-page="onClickPagination"
       />
     </div>
     <!-- 설명 모달 -->
@@ -43,6 +45,7 @@
     <DeletePlanModal
       :open="deleteModalDesc.open"
       :title="deleteModalDesc.title"
+      @delete="deleteSyllabus"
       @close="onCloseDeleteModalDesc"
     />
     <!-- 강의계획서 상세 모달 -->
@@ -74,10 +77,6 @@ export default {
       userIdx: this.$store.state.common.user.mem_idx,
       institutionIdx: this.$store.state.common.user.ins_code,
       lectureIdx: this.$route.params.id,
-      classIdx: this.$route.query.classidx,
-      className: this.$route.query.class,
-      lectureTitle: this.$route.query.title,
-      teacherName: this.$route.query.teacher,
       allCheckBoxFlag: false,
       // 강좌 정보
       lectureInfo: {
@@ -89,11 +88,29 @@ export default {
       // 강의 계획서 목록
       syllabusList: [],
       lectureStudentCount: 0,
-      // 페이지네이션
-      currentPage: 1,
-      endPageNumber: 0,
-      // 강의 계획서 상세
-      syllabus: {},
+      syllabus: {
+        fileList: [
+          {
+            lep_idx: 0,
+            lpa_file: 'string',
+            lpa_idx: 0,
+            lpa_registration_date: 'string',
+            lpa_size: 'string',
+          },
+        ],
+        lec_idx: 0,
+        lep_content: '',
+        lep_idx: 0,
+        lep_registration_date: '',
+        lep_time_edate: '',
+        lep_time_etime: '',
+        lep_time_sdate: '',
+        lep_time_stime: '',
+        lep_title: '',
+        lep_update_date: '',
+        mem_idx: 0,
+        mem_name: '',
+      },
       // modal
       LecturePlanDetailModalDesc: {
         open: false,
@@ -109,37 +126,16 @@ export default {
       },
       //
       searchText: '',
-      searchList: [],
       deleteIdxList: [],
-      // mock
-      lectureCourse: {
-        id: 0,
-        academy: '일산어학원',
-        time: '월수금 09:00 ~ 12:00',
-        subject: '영어심화리딩',
-        lessonTitle: '영어',
-        lessonClass: '심화 A반',
-        teacher: '홍길동 선생님',
-        state: true,
-        students: 12,
-      },
-      lecturePlan: {
-        id: 0,
-        course_id: 0,
-        title: '성격심리학 레슨1 강의계획서0',
-        writer: '홍길동 선생님',
-        created_at: '2022.07.10',
-        date_range_start: '2022.08.05',
-        date_range_end: '2022.08.07',
-        time_range_start: '09:00',
-        time_range_end: '11:59',
-        time_range_start_m: 0,
-        time_range_end_m: 1,
-        open: false,
-        views: 3,
-        contents: '성격심리학 레슨1 강의계획서입니다. 수업에 참고해 주세요',
-      },
+      // pagination
+      currentPage: 1,
+      endPageNumber: 0,
     }
+  },
+  watch: {
+    currentPage() {
+      this.getSyllabusList()
+    },
   },
   mounted() {
     this.getSyllabusList()
@@ -185,11 +181,16 @@ export default {
     },
 
     // 강의 계획서 상세
-    async onClickSyllabus(csmIdx, lepIdx) {
+    async onClickSyllabus(lecIdx, lepIdx) {
+      const payload = {
+        lec_idx: lecIdx,
+        lep_idx: lepIdx,
+      }
       await apiLectureCourse
-        .getSyllabus(this.lectureIdx, lepIdx, this.userIdx)
+        .getSyllabus(payload)
         .then(({ data: { data } }) => {
           this.syllabus = data
+          console.log(this.syllabus)
           this.openLecturePlanDetailModal()
         })
         .catch((err) => {
@@ -199,14 +200,10 @@ export default {
 
     // click tab-menu
     onClickHomeWorkBox() {
-      this.$router.push(
-        `/class/lecturecourse/homeworkbox/${this.lectureIdx}?classidx=${this.classIdx}class=${this.className}&title=${this.lectureTitle}&teacher=${this.teacherName}`
-      )
+      this.$router.push(`/class/lecturecourse/homeworkbox/${this.lectureIdx}`)
     },
     onClickNoteBox() {
-      this.$router.push(
-        `/class/lecturecourse/notebox/${this.lectureIdx}?classidx=${this.classIdx}class=${this.className}&title=${this.lectureTitle}&teacher=${this.teacherName}`
-      )
+      this.$router.push(`/class/lecturecourse/notebox/${this.lectureIdx}`)
     },
     onClickRegisterLecturePlan() {
       this.$router.push(
@@ -215,7 +212,7 @@ export default {
     },
     onClickUpdateLecturePlan() {
       this.$router.push(
-        `/class/lecturecourse/updatelectureplan/${this.lectureIdx}?classidx=${this.classIdx}class=${this.className}&title=${this.lectureTitle}&teacher=${this.teacherName}`
+        `/class/lecturecourse/updatelectureplan/${this.lectureIdx}?lecture=${this.lectureInfo.lec_title}&class=${this.lectureInfo.csm_name_list}&teacher=${this.lectureInfo.mem_name}&lepidx=${this.syllabus.lep_idx}`
       )
     },
     // modal event
@@ -274,16 +271,12 @@ export default {
     // [pagination] 방향으로 페이징
     paginationDirection(direction) {
       const current = this.currentPage
-      const max = this.currentNumberList(this.pagiNumberList)
-      const isPlus = max.length === 10
       if (direction === 'plus') {
-        if (isPlus) {
-          this.currentPageNumber += 1
-          this.currentPage = this.currentNumberList(this.pagiNumberList)[0]
+        if (current < this.endPageNumber) {
+          this.currentPage += 1
         }
       } else if (current > 1) {
-        this.currentPageNumber -= 1
-        this.currentPage = this.currentNumberList(this.pagiNumberList)[0]
+        this.currentPage -= 1
       }
     },
 
@@ -302,20 +295,43 @@ export default {
     },
 
     // 강의계획서 삭제
-    onClickCheckBox({ target: { id, checked } }) {
+    onClickCheckBox({ target: { id, checked } }, mem_idx) {
       if (checked) {
-        console.log(id)
-        this.deleteIdxList.push(id)
+        console.log(Number(id), mem_idx)
+        const plan = {
+          lep_idxs: Number(id),
+          mem_idxs: mem_idx,
+        }
+        this.deleteIdxList.push(plan)
+        console.log(this.deleteIdxList)
       } else {
         this.allCheckBoxFlag = false
-        for (let i = 0; i < this.deleteIdxList.length; i++) {
-          if (this.deleteIdxList[i] === id) {
-            this.deleteIdxList.splice(i, 1)
-          }
-        }
+        const index = this.deleteIdxList.findIndex(
+          (x) => x.lep_idxs === Number(id)
+        )
+        this.deleteIdxList.splice(index, 1)
+        console.log(this.deleteIdxList)
       }
-      console.log(this.deleteIdxList)
     },
+    // 강의계획서 삭제 api
+    async deleteSyllabus() {
+      const payload = {
+        data: {
+          list: this.deleteIdxList,
+        },
+      }
+      await apiLectureCourse
+        .deleteSyllabus(payload)
+        .then(() => {
+          this.getSyllabusList()
+          this.deleteIdxList = []
+          this.onCloseDeleteModalDesc()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
     deletePlan() {
       if (this.deleteIdxList.length === 0) {
         this.openModalDesc(
