@@ -95,6 +95,7 @@ export default function initialState() {
       { id: 4, name: '쪽지시험' },
     ],
     initReferenceData: {
+      name: '',
       title: '',
       subject: 1,
       description: '',
@@ -109,6 +110,7 @@ export default function initialState() {
       registrant_name: '',
     },
     referenceData: {
+      name: '',
       title: '',
       subject: 1,
       description: '',
@@ -119,7 +121,6 @@ export default function initialState() {
       open_yn: true,
       file_name: '',
       datatable_type: '',
-      name: '',
       datatype: '',
       thumbnail: '',
       registrant_name: '',
@@ -135,13 +136,13 @@ export default function initialState() {
                 name: '1단원',
                 children: [
                   {
-                    dataroom_idx: 1,
+                    dataroom_idx: 24,
                     datatable_type: 'ID',
                     name: '국어학습자료 애니메이션.mp4',
                     datatype: '01',
                   },
                   {
-                    dataroom_idx: 2,
+                    dataroom_idx: 21,
                     datatable_type: 'ID',
                     name: '수학 학습자료.pdf',
                     datatype: '02',

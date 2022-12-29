@@ -57,7 +57,6 @@
             placeholder="등록자 입력"
             rules="min:2|required"
             type="text"
-            :readonly="true"
             :inputValue="reference.registrant_name"
             @change-input="$emit('change-input', $event)"
           />
@@ -82,7 +81,7 @@
         :public_open_yn="reference.public_open_yn"
         :open_yn="reference.open_yn"
         :pageRoot="pageRoot"
-        @change-input="$emit('public_open_yn', $event)"
+        @change-input="$emit('change-input', $event)"
       />
       <br />
 
@@ -135,5 +134,11 @@ export default {
 
 .span {
   cursor: pointer;
+}
+
+#modalDataRegiModi .form-group label,
+#modalDataRegiQuiz .form-group label,
+#modalDataRegiNote .form-group label {
+  line-height: 39px;
 }
 </style>

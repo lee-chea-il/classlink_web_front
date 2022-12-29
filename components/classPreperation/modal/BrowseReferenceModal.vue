@@ -24,6 +24,7 @@
             />
 
             <PdfView :open="selectData.datatype === '02'" :data="selectData" />
+            
             <YoutubeView
               :open="selectData.datatype === '05'"
               :data="selectData"

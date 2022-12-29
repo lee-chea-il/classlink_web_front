@@ -6,7 +6,14 @@
       <span class="list"></span>
       <span class="full" @click="getFullscreen"></span>
     </div>
-    <embed class="embed" :src="data.save_path" type="application/pdf" />
+    <iframe
+      class="embed"
+      :src="data.full_path"
+      type="application/pdf"
+      frameborder="0"
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+    />
   </div>
 </template>
 

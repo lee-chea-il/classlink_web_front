@@ -352,7 +352,6 @@ export default {
     const user = this.$store.state.common.user
     this.initReferenceData = {
       ...this.initReferenceData,
-      // fra_code: user.fra_code,
       ins_code: user.ins_code,
       registrant_name: user.mem_name,
     }
@@ -366,11 +365,12 @@ export default {
     // 등록 자료 내용 변경
     onChangeUploadFile({ target: { id, value, type, checked, name } }) {
       const elem = this.referenceData
-      const isCheckbox = name === 'open_yn' || name === 'public_open_yn'
+      const newVal = value.replace(/\.|mp4|pdf|quiz|test/gi, '')
+      console.log(id, value, type, checked, name, elem[id])
       if (type === 'checkbox') {
-        if (checked) return (elem[id] = true)
-        else return (elem[id] = false)
-      } else if (isCheckbox) return (elem[name] = value)
+        if (checked) return (elem[name] = true)
+        else return (elem[name] = false)
+      } else if (id === 'name') return (elem[id] = newVal)
       else return (elem[id] = value)
     },
     // 일반용
@@ -402,14 +402,41 @@ export default {
             ...this.referenceData,
             file: data.savedNm,
             save_path: data.savePath,
-            registration_date: data.uploadDate,
+            upload_date: data.uploadDate,
           }
           $('#modalDataregi02').modal('hide')
-          this.getFileSize(`http://112.171.101.31:45290/file/${data.savedNm}`)
           this.onOpenReferenceAddModal()
           this.isUploading = false
         })
         .catch(() => {})
+    },
+
+    // 업로드 시 확장자 붙히기
+    setExtension(code) {
+      let msg
+      switch (code) {
+        case '01':
+          msg = '.mp4'
+          break
+        case '02':
+          msg = '.pdf'
+          break
+        case '03':
+          msg = '.quiz'
+          break
+        case '04':
+          msg = '.exam'
+          break
+        case '05':
+          msg = '.youtube'
+          break
+        case '06':
+          msg = '.url'
+          break
+        default:
+          msg = ''
+      }
+      return msg
     },
 
     // 파일 업로드
@@ -417,11 +444,13 @@ export default {
     postDataroomFile() {
       const { thumbnail, registrant_name, full_path, name, ...rest } =
         this.referenceData
+      console.log(rest)
       const payload = {
         ...rest,
         keyword: rest.keyword.join(','),
-        title: name,
+        title: name + this.setExtension(rest.datatype),
       }
+      console.log(payload)
       apiData
         .postDataroomFile(payload)
         .then(() => {
@@ -483,6 +512,7 @@ export default {
             keyword: data.keyword.split(','),
             name: data.title,
           }
+          this.getFileSize(data.full_path)
         })
         .catch(() => {})
     },
@@ -1076,12 +1106,21 @@ export default {
 
     // 파일 사이즈 가져오기
     async getFileSize(url) {
-      if (url) {
+      const getByteSize = (size) => {
+        const byteUnits = ['KB', 'MB', 'GB', 'TB']
+        for (const i in byteUnits) {
+          size = Math.floor(size / 1024)
+          if (size < 1024) return size.toFixed(1) + byteUnits[i]
+        }
+      }
+      if (url.toString().includes('http')) {
         await file_size_url(url)
           .then((res) => {
             this.uploadInfo.fileSize = res
           })
           .catch((error) => console.log(error))
+      } else {
+        this.uploadInfo.fileSize = getByteSize(url)
       }
     },
 
@@ -1094,12 +1133,13 @@ export default {
         this.postFile(files[0])
         this.referenceData = {
           ...this.referenceData,
-          name: files[0].name,
+          name: files[0].name.replace('.mp4', ''),
           file_name: files[0].name,
           full_path: URL.createObjectURL(files[0]),
           datatable_type: 'ID',
           datatype: '01',
         }
+        this.getFileSize(files[0].size)
       } else {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
       }
@@ -1116,12 +1156,13 @@ export default {
         this.postFile(files[0])
         this.referenceData = {
           ...this.referenceData,
-          name: target.name,
+          name: target.name.replace('.pdf', ''),
           file_name: target.name,
           full_path: URL.createObjectURL(files[0]),
           datatable_type: 'ID',
           datatype: '02',
         }
+        this.getFileSize(files[0].size)
       } else {
         this.openModalDesc('', '형식의 맞는 파일을 업로드해주세요.')
       }
@@ -1140,7 +1181,9 @@ export default {
           }) => {
             this.referenceData = {
               ...this.referenceData,
-              name: item.snippet.localized.title,
+              name: item.snippet.localized.title
+                .replace(/\./, '')
+                .substr(0, 25),
               file_name: item.snippet.localized.title,
               description: item.snippet.localized.description,
               datatable_type: 'ID',
@@ -1362,7 +1405,6 @@ export default {
       this.setModalTitle('수정')
       const type = data.datatype
       this.selectDataroomType(type, data)
-      this.getFileSize(data.save_path)
       if (type === '03') return this.onOpenQuizChangeModal()
       else if (type === '04') return this.onOpenNoteTestChangeModal()
       else return this.onOpenReferenceChangeModal()

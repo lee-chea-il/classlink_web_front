@@ -446,7 +446,7 @@ export default {
             ...this.referenceData,
             file: data.savedNm,
             save_path: data.savePath,
-            registration_date: data.uploadDate,
+            upload_date: data.uploadDate,
           }
           $('#modalDataregi02').modal('hide')
           this.getFileSize(`http://112.171.101.31:45290/file/${data.savedNm}`)

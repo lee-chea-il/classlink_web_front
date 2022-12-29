@@ -21,7 +21,7 @@
       :value="lessonItem?.subject"
     />
     <CustomData title="등록자" :value="lessonItem?.registrant_name" />
-    <CustomData title="등록일" :value="lessonItem?.registration_date" />
+    <CustomData title="등록일" :value="lessonItem?.upload_date" />
     <CustomData title="저장 경로" :value="uploadInfo?.savePathLesson" />
 
     <span class="custom-control custom-checkbox form-inline div_cont">

@@ -1,19 +1,14 @@
 {
-  "assigned_curriculum": [{}],
-  "assistant_teacher": [{ "idx": 0 }],
-  "classroom": [{ "idx": 0 }],
-  "curriculum": [{ "curriculum_idx": 0, "datatable_type": "string" }],
-  "homeroom_teacher": [{ "idx": 0 }],
-  "image": "string",
-  "timetable": {
-    "after_end_class_exit_time": 0,
-    "before_start_class_alarm_time": 0,
-    "curriculum_assigned": [{}],
-    "end_date": "string",
-    "end_time": "string",
-    "start_date": "string",
-    "start_time": "string",
-    "weeks": [true]
-  },
-  "title": "string"
+  "title": "𝐏𝐥𝐚𝐲𝐥𝐢𝐬𝐭 다가오는 크리스.youtube",
+  "subject": 1,
+  "description": "#크리스마스 #Christmas #캐롤 #플레이리스트\n#playlist #christmascarol #크리스마스노래 \n#alliwantforchristmasisyou #겨울 #christmasmusic",
+  "keyword": "12",
+  "save_path": "",
+  "public_open_yn": true,
+  "open_yn": true,
+  "file_name": "𝐏𝐥𝐚𝐲𝐥𝐢𝐬𝐭 다가오는 크리스",
+  "datatable_type": "ID",
+  "datatype": "05",
+  "ins_code": "12345678",
+  "file": "//www.youtube.com/embed/1CYbySbtyF0"
 }

@@ -4,7 +4,7 @@
       <span class="pdf_title">{{ data.name }}</span>
     </div>
     <audio controls>
-      <source src="http://112.171.101.31:58080/file/test.mp3" />
+      <source :src="data.full_path" />
     </audio>
   </div>
 </template>
