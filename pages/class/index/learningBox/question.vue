@@ -110,8 +110,10 @@
                   <div class="custom-control custom-checkbox form-inline">
                     <input
                       id="chkAll"
+                      :checked="allCheck"
                       type="checkbox"
                       class="custom-control-input"
+                      @input="onClickQuestionAllCheck"
                     />
                     <label class="custom-control-label" for="chkAll"></label>
                   </div>
@@ -129,15 +131,27 @@
                 <td>
                   <div class="custom-control custom-checkbox form-inline">
                     <input
-                      id="chk01"
+                      :id="`question${idx}`"
                       type="checkbox"
                       class="custom-control-input"
-                      :checked="checkList.includes(idx)"
+                      :checked="checkList.includes(item.questionvo.qtb_idx)"
+                      @input="onClickQuestionCheck(item.questionvo.qtb_idx)"
                     />
-                    <label class="custom-control-label" for="chk01"></label>
+                    <label
+                      class="custom-control-label"
+                      :for="`question${idx}`"
+                    ></label>
                   </div>
                 </td>
-                <td @click="onOpenQuestionViewModal(item.questionvo.qtb_idx)">
+                <td
+                  class="cursor"
+                  @click="
+                    onOpenQuestionViewModal(
+                      item.questionvo.qtb_idx,
+                      item.questionvo.qtb_open_yn
+                    )
+                  "
+                >
                   <div class="study_qustion">
                     {{ item.questionvo.qtb_title }}
                   </div>
@@ -171,7 +185,12 @@
                     <label class="custom-control-label" for="chk01"></label>
                   </div>
                 </td>
-                <td class="study_qustion" @click="onOpenReplyViewModal">
+                <td
+                  class="study_qustion"
+                  @click="
+                    onOpenReplyViewModal(items.qba_idx, items.qba_open_yn)
+                  "
+                >
                   └─ {{ items.qba_title }}
                 </td>
                 <td>{{ items.mem_name }} 선생님</td>
@@ -179,8 +198,7 @@
                   {{
                     items.qba_registration_date
                       .substr(0, 10)
-                      .replace('-', '.')
-                      .replace('-', '.')
+                      .replaceAll('-', '.')
                   }}
                 </td>
                 <td>{{ items.icu_title === null ? '-' : items.icu_title }}</td>
@@ -236,7 +254,7 @@
     />
     <ReplyViewModal
       :open="openReplyViewModal.open"
-      :data="questionData"
+      :data="answerData"
       @close="onCloseReplyViewModal"
     />
 
@@ -292,20 +310,26 @@ export default {
 
       filterList: ['ㅁ'],
 
+      // 질문함 리스트
+      askingboxList: [],
+      // 질문 상세
       questionData: {
-        id: 0,
-        type: 0,
-        title: '성격심리학 레슨1 관련 질문드립니다.',
-        content: '이 부분 답이 왜 3번인지 모르겠습니다.',
-        writer: '김지원',
-        write_date: '2022.07.10',
-        lesson: '성격심리학',
-        public: 1,
-        view_count: 4,
+        questionBoxFile: [{}],
+        selectQuestionBox: {
+          qtb_registration_date: '',
+          qtb_update_date: '',
+        },
+      },
+      // 답변상세
+      answerData: {
+        answerFile: [{}],
+        answerList: {
+          qba_registration_date: '',
+          qba_update_date: '',
+        },
       },
 
-      askingboxList: [],
-
+      allCheck: false,
       checkList: [],
 
       // 리스트 검색
@@ -336,16 +360,20 @@ export default {
     onCloseQueFilterModal() {
       this.openQueFilterModal.open = false
     },
-    onOpenQuestionViewModal(qtb_idx) {
-      this.openQuestionViewModal.open = true
-      this.getSelQuestionbox(qtb_idx)
+    onOpenQuestionViewModal(qtb_idx, open) {
+      if (open === '1' || open === 1) {
+        this.openQuestionViewModal.open = true
+        this.getSelQuestionbox(qtb_idx)
+      }
     },
     onCloseQuestionViewModal() {
       this.openQuestionViewModal.open = false
     },
-    onOpenReplyViewModal(data) {
-      this.openReplyViewModal.open = true
-      this.questionData = data
+    onOpenReplyViewModal(qba_idx, open) {
+      if (open === '1' || open === 1) {
+        this.openReplyViewModal.open = true
+        this.getSelAnswer(qba_idx)
+      }
     },
     onCloseReplyViewModal() {
       this.openReplyViewModal.open = false
@@ -411,6 +439,25 @@ export default {
         .then(({ data: { data } }) => {
           console.log(data)
           this.questionData = data
+          this.getQuestionList()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 답변상세
+    async getSelAnswer(qbaIdx) {
+      const payload = {
+        ins_code: `ins_code=${this.ins_code}`,
+        qba_idx: `&qba_idx=${qbaIdx}`,
+      }
+
+      await apiLeaningBox
+        .getSelAnswer(payload)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          this.answerData = data
+          this.getQuestionList()
         })
         .catch((err) => {
           console.log(err)
@@ -442,6 +489,36 @@ export default {
       if (this.next) {
         this.currentPage = this.currentPage + 1
       }
+    },
+
+    // 체크박스
+    onClickQuestionCheck(qtb_idx) {
+      if (this.checkList.includes(qtb_idx)) {
+        this.checkList = this.checkList.filter((item) => item !== qtb_idx)
+        if (this.checkList.length !== this.askingboxList.length) {
+          this.allCheck = false
+        }
+      } else {
+        this.checkList.push(qtb_idx)
+        if (this.checkList.length === this.askingboxList.length) {
+          this.allCheck = true
+        }
+      }
+      console.log(this.checkList)
+    },
+    // 질문 전체 체크
+    onClickQuestionAllCheck() {
+      if (this.allCheck) {
+        this.checkList = []
+        this.allCheck = false
+      } else {
+        this.checkList = []
+        for (let i = 0; i < this.askingboxList.length; i++) {
+          this.checkList.push(this.askingboxList[i].questionvo.qtb_idx)
+        }
+        this.allCheck = true
+      }
+      console.log(this.checkList)
     },
   },
 }

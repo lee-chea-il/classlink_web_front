@@ -30,12 +30,27 @@
 
             <div class="title_area row reply_view">
               <span class="notice_tit">제목</span>
-              <span class="notice_title">컴플레인 이슈사항 공지드립니다.</span>
-              <span class="notice_day02"
-                ><span>2022.08.02</span>(최종수정일
-                <span>2022.12.09</span>)</span
+              <span class="notice_title">{{ data.answerList.qba_title }}</span>
+              <span class="notice_day02">
+                <span>{{
+                  data.answerList.qba_registration_date
+                    .substr(0, 10)
+                    .replaceAll('-', '.')
+                }}</span>
+                (최종수정일
+                <span>
+                  {{
+                    data.answerList === null
+                      ? '-'
+                      : data.answerList.qba_update_date
+                          ?.substr(0, 10)
+                          .replaceAll('-', '.')
+                  }}</span
+                >)
+              </span>
+              <span class="notice_writer"
+                >{{ data.answerList.mem_name }} 선생님</span
               >
-              <span class="notice_writer">서유진 선생님</span>
               <span class="keyword01">
                 <span class="keyword01-1">선택한 과목</span>
               </span>
@@ -46,13 +61,20 @@
 
             <div class="file_info">
               <span class="file_icon"></span>
-              일반 첨부파일 1개(10KB)
+              일반 첨부파일
+              {{
+                data.answerFile === null ? 0 : data.answerFile.length
+              }}개(10KB)
               <span class="save">모두 저장</span>
-              <div class="file_name">컴플레인 응대 매뉴얼.hwp</div>
+              <div v-if="data.answerFile !== null" class="file_name">
+                <div v-for="(item, idx) in data.answerFile" :key="idx">
+                  {{ item.qbat_file }}
+                </div>
+              </div>
             </div>
 
             <VueEditor
-              :value="data.content"
+              :value="data.answerList.qba_description"
               :editorOptions="editorOptions"
               disabled
             />

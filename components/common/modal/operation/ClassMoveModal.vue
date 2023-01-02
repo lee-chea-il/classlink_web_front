@@ -590,6 +590,7 @@ export default {
 
 .classroom {
   max-width: 52px;
+  width: 75px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

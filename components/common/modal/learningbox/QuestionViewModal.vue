@@ -30,21 +30,35 @@
                     .substr(0, 10)
                     .replaceAll('-', '.')
                 }}</span>
-                (최종수정일<span>{{
-                  data.selectQuestionBox?.qtb_update_date
-                    .substr(0, 10)
-                    .replaceAll('-', '.')
+                (최종수정일
+                <span>{{
+                  data.answerList === null
+                    ? '-'
+                    : data.selectQuestionBox?.qtb_update_date
+                        .substr(0, 10)
+                        .replaceAll('-', '.')
                 }}</span
                 >)
               </span>
-              <span class="notice_writer">서유진 선생님</span>
+              <span class="notice_writer">{{
+                data.selectQuestionBox.mem_name
+              }}</span>
             </div>
 
             <div class="file_info">
               <span class="file_icon"></span>
-              일반 첨부파일 1개(10KB)
+              일반 첨부파일
+              {{
+                data.questionBoxFile === null
+                  ? 0
+                  : data.questionBoxFile?.length
+              }}개(10KB)
               <span class="save">모두 저장</span>
-              <div class="file_name">컴플레인 응대 매뉴얼.hwp</div>
+              <div v-if="data.questionBoxFile !== null" class="file_name">
+                <div v-for="(item, idx) in data.questionBoxFile" :key="idx">
+                  {{ item.qba_file }}
+                </div>
+              </div>
             </div>
 
             <VueEditor
@@ -56,7 +70,7 @@
           <!-- div class="modal-body" -->
           <div class="modal-footer">
             <NuxtLink
-              to="/class/learningBox/regist/question/reply"
+              :to="`/class/learningBox/regist/question/reply/${data.selectQuestionBox.qtb_idx}`"
               class="btn btn_crud_point"
               >답변하기</NuxtLink
             >
