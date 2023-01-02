@@ -172,14 +172,14 @@
                 <th>이동</th>
               </tr>
             </thead>
-            <draggable
+            <Draggable
               v-model="classList"
               class="drag-box"
               tag="tbody"
               animation="200"
               draggable=".classList"
               handle=".icons_move_off"
-              @end="onDrop"
+              @change="onDrop"
             >
               <tr v-for="(item, idx) in classList" :key="idx" class="classList">
                 <td>
@@ -213,7 +213,7 @@
                   <i class="btn icons_move_off"></i>
                 </td>
               </tr>
-            </draggable>
+            </Draggable>
           </table>
         </div>
         <!-- /.테이블 영역 -->
@@ -385,7 +385,7 @@
 </template>
 
 <script>
-import draggable from 'vuedraggable'
+import Draggable from 'vuedraggable'
 import NavBox from '@/components/operation/NavBox.vue'
 import ClassModifyModal from '@/components/common/modal/operation/ClassModifyModal.vue'
 import ClassDetailModal from '@/components/common/modal/operation/ClassDetailModal.vue'
@@ -404,7 +404,7 @@ export default {
     ModalDesc,
     DeleteModal,
     CustomSnackbar,
-    draggable,
+    Draggable,
   },
   data() {
     return {
@@ -645,19 +645,29 @@ export default {
   },
   methods: {
     // 드래그 앤 드롭 기능
+
     onDrop(evt) {
-      // item.list = list
+      console.log(evt.moved)
       console.log(
-        '이전',
-        evt.oldDraggableIndex,
-        this.classList[evt.oldDraggableIndex].csm_display_no
+        evt.moved.element.csm_display_no,
+        evt.moved.element.csm_idx,
+        this.classList[evt.moved.newIndex - 1]?.csm_display_no
       )
-      console.log('이후', evt.newDraggableIndex)
-      this.getChangeOrder(
-        this.classList[evt.oldDraggableIndex].csm_display_no,
-        this.classList[evt.oldDraggableIndex].csm_idx,
-        this.classList[evt.newDraggableIndex].csm_display_no
-      )
+      console.log(this.classList)
+      // item.list = list
+      // if (element.moved !== evt.newDraggableIndex) {
+      // console.log(
+      //   '이전',
+      //   evt.oldDraggableIndex,
+      //   this.classList[evt.oldDraggableIndex].csm_display_no
+      // )
+      // console.log('이후', evt.newDraggableIndex)
+      // this.getChangeOrder(
+      //   evt.moved.element.csm_display_no,
+      //   evt.moved.element.csm_idx,
+      //   this.classList[evt.moved.oldIndex].csm_display_no
+      // )
+      // }
     },
 
     // 반 리스트 api

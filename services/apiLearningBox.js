@@ -13,10 +13,22 @@ async function getSelQuestionbox(payload) {
     `/api/v1/class/leaningbox/questionbox/sel-questionbox?${payload.ins_code}${payload.qtb_idx}`
   )
 }
+// 답변 상세 보기
+async function getSelAnswer(payload) {
+  return await http.get(
+    `/api/v1/class/leaningbox/questionbox/sel-answer?${payload.ins_code}${payload.qba_idx}`
+  )
+}
+// 답변 등록
+async function postRegistAnswer(payload) {
+  return await http.post(`/api/v1/class/leaningbox/questionbox/answer`, payload)
+}
 
 const apiLeaningBox = {
   getQuestionList,
   getSelQuestionbox,
+  getSelAnswer,
+  postRegistAnswer,
 }
 
 export default apiLeaningBox
