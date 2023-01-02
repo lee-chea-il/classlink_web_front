@@ -14,16 +14,25 @@ const addFolderTreeViewList = async (payload) => {
   )
 }
 
-// 트리뷰에 폴더 생성
+// 트리뷰에 폴더 삭제
 const deleteFolderTreeViewList = async (payload) => {
-  return await http.delete(
-    '/api/v1/prepare-class/curriculum/tree-view-list/folder', payload
+  console.log('-------- MD/1-2-3 ',payload)
+  return await http.delete(`/api/v1/prepare-class/curriculum/tree-view-list/folder/${payload}`)
+}
+
+// 트리뷰에 폴더 수정
+const updateFolderTreeViewList = async (data) => {
+  console.log('--------',data)
+  return await http.put(
+    '/api/v1/prepare-class/curriculum/tree-view-list/folder', data
   )
 }
+
 const apiClassCurriculum = {
   getTreeViewList,
   addFolderTreeViewList,
   deleteFolderTreeViewList,
+  updateFolderTreeViewList,
 }
 
 export default apiClassCurriculum
