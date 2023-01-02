@@ -10,13 +10,15 @@
         class="form-control"
         :class="
           (isError ? 'is-invalid' : classes,
-          isIdCheckBtn || isEmailCheckBtn
+          isIdCheckBtn || isEmailCheckBtn || isAttNumberCheckBtn
             ? 'form-inline id_form'
-            : isBirthdayBtn
+            : isBirthdayBtn || isCoursesBtn
             ? 'form_calendar datePicker'
             : '')
         "
-        :maxlength="id === 'mem_phone' ? '13' : ''"
+        :maxlength="
+          id.includes('phone') ? '13' : id === 'std_att_num' ? '5' : ''
+        "
         autocomplete="off"
         @input="$emit('change-input', $event)"
       />
@@ -26,6 +28,15 @@
         :class="isStudentInput ? 'btn-custom2' : 'btn-custom'"
         :disabled="invalid || isIdCheck"
         @click="$emit('check-id')"
+      >
+        중복체크
+      </button>
+      <button
+        v-if="isAttNumberCheckBtn"
+        class="btn btn_crud_default btn_margin"
+        :class="isStudentInput ? 'btn-custom2' : 'btn-custom'"
+        :disabled="invalid || isAttNumberCheck"
+        @click="$emit('check-sttnumber')"
       >
         중복체크
       </button>
@@ -43,6 +54,11 @@
         v-if="isBirthdayBtn"
         class="btn icons_calendar_off"
         @click="$emit('click-birthday')"
+      ></button>
+      <button
+        v-if="isCoursesBtn"
+        class="btn icons_calendar_off"
+        @click="$emit('click-lecturedate')"
       ></button>
       <div
         v-if="isCheckBox"
@@ -69,6 +85,31 @@
       </div>
       <div v-else class="invalid_text" :class="isIdCheckBtn ? 'text-mt' : ''">
         {{ errors[0] }}
+      </div>
+      <div
+        v-if="
+          isAttNumberCheckBtn &&
+          !isAttNumberCheck &&
+          inputValue.length > 0 &&
+          !invalid
+        "
+        class="invalid_text check-margin"
+      >
+        출결번호 중복확인을 해주세요.
+      </div>
+      <div
+        v-if="
+          isEmailCheckBtn && !isEmailCheck && inputValue.length > 0 && !invalid
+        "
+        class="invalid_text check-margin"
+      >
+        이메일 중복확인을 해주세요.
+      </div>
+      <div
+        v-if="isIdCheckBtn && !isIdCheck && inputValue.length > 0 && !invalid"
+        class="invalid_text id-check-margin"
+      >
+        아이디 중복확인을 해주세요.
       </div>
     </ValidationProvider>
   </div>
@@ -146,6 +187,18 @@ export default {
       default: false,
       type: Boolean,
     },
+    isAttNumberCheckBtn: {
+      default: false,
+      type: Boolean,
+    },
+    isAttNumberCheck: {
+      default: false,
+      type: Boolean,
+    },
+    isCoursesBtn: {
+      default: false,
+      type: Boolean,
+    },
   },
 }
 </script>
@@ -195,5 +248,13 @@ button {
 .btn_margin {
   margin-top: 0px !important;
   font-size: 12px !important;
+}
+.check-margin {
+  margin-top: -19px;
+  margin-bottom: -35px;
+}
+.id-check-margin {
+  margin-top: -30px;
+  margin-bottom: -35px;
 }
 </style>

@@ -65,11 +65,17 @@
       :open="newStudentInfoModalDesc.open"
       :nickNameCheck="nickNameCheck"
       :familySearchText="familySearchText"
+      :isRegister="true"
+      :isIdCheck="isIdCheck"
+      :isEmailCheck="isEmailCheck"
+      :isAttNumberCheck="isAttNumberCheck"
+      :isStayRegister="isStayRegister"
       @close="onCloseNewStudentInfoModalDesc"
       @change-input="onChangeUpdateInput"
       @click-birthday="openDatePickerModalDesc"
       @click-lecturedate="openDatePickerLectureDateModalDesc"
-      @click-identity="onClickIdentityBtn"
+      @click-student="onClickStudentBtn"
+      @click-parent="onClickParentBtn"
       @click-grade="onClickTypeGrade"
       @click-adult="onClickTypeAdult"
       @click-men="onClickGenderMen"
@@ -78,11 +84,18 @@
       @click-statusFalse="onClickStatusFalse"
       @click-stuStatusTrue="onClickStudentStatusTrue"
       @click-stuStatusFalse="onClickStudentStatusFalse"
+      @click-stuStatusNo="onClickStudentStatusNo"
       @select-grade="selectGrade"
       @click-profile="openUploadStudentImgModalDesc"
       @click-deleteFamily="onClickFamilyDeleteBtn"
       @change-familyInput="onChangeFamilySearchInput"
       @search-family="onClickSearchBtn"
+      @add-student="registerStudent"
+      @check-id="getIdCheck"
+      @check-email="getEmailCheck"
+      @check-sttnumber="getAttendanceNumberCheck"
+      @check-stay="checkStayRegister"
+      @update-student="updateStudentInfo"
     />
 
     <!-- 학생 상세 정보 -->
@@ -91,12 +104,14 @@
       :open="studentInfoModalDesc.open"
       :nickNameCheck="nickNameCheck"
       :familySearchText="familySearchText"
-      :isRegister="isRegister"
+      :isEmailCheck="isEmailCheck"
+      :isAttNumberCheck="isAttNumberCheck"
       @close="onCloseStudentInfoModalDesc"
       @change-input="onChangeUpdateInput"
       @click-birthday="openDatePickerModalDesc"
       @click-lecturedate="openDatePickerLectureDateModalDesc"
-      @click-identity="onClickIdentityBtn"
+      @click-student="onClickStudentBtn"
+      @click-parent="onClickParentBtn"
       @click-grade="onClickTypeGrade"
       @click-adult="onClickTypeAdult"
       @click-men="onClickGenderMen"
@@ -105,11 +120,17 @@
       @click-statusFalse="onClickStatusFalse"
       @click-stuStatusTrue="onClickStudentStatusTrue"
       @click-stuStatusFalse="onClickStudentStatusFalse"
+      @click-stuStatusNo="onClickStudentStatusNo"
       @select-grade="selectGrade"
       @click-profile="openUploadStudentImgModalDesc"
       @click-deleteFamily="onClickFamilyDeleteBtn"
       @change-familyInput="onChangeFamilySearchInput"
       @search-family="onClickSearchBtn"
+      @check-id="getIdCheck"
+      @check-email="getEmailCheck"
+      @check-sttnumber="getAttendanceNumberCheck"
+      @update-student="updateStudentInfo"
+      @add-student="registerStudent"
     />
 
     <!-- 일촌등록 - 팝업 M2 -->
@@ -137,7 +158,7 @@
     <!-- 생일 날짜 선택 모달 -->
     <DatePickerModal
       :open="datePickerModalDesc.open"
-      :date="studentInfo.birthday"
+      :date="studentInfo.mem_birthday"
       @close="onCloseDatePickerModalDesc"
       @select-date="selectDay"
       @confirm="onClickBirthdayConfirm"
@@ -146,7 +167,7 @@
     <!-- 수강일 선택 모달 -->
     <DatePickerModal
       :open="datePickerLectureDateModalDesc.open"
-      :date="studentInfo.lecture_date"
+      :date="studentInfo.std_courses"
       @close="onCloseDatePickerLectureDateModalDesc"
       @select-date="selectLectureDate"
       @confirm="onClickLectureDateConfirm"
@@ -188,12 +209,12 @@
     />
 
     <!-- 납부일 설정 모달 -->
-    <DatePickerModal
+    <!-- <DatePickerModal
       :open="datePickerModalDesc.open"
       @close="onCloseDatePickerModalDesc"
       @select-date="selectDay"
       @confirm="onClickDueDateConfirm"
-    />
+    /> -->
 
     <!-- 메모-팝업 L -->
     <StudentMemoModal
@@ -402,73 +423,36 @@ export default {
   data() {
     return {
       institutionIdx: this.$store.state.common.user.ins_code,
-      isRegister: false,
-      // studentInfo: {
-      //   id: 0,
-      //   identity: [],
-      //   status: false,
-      //   grade: '초1',
-      //   grade_type: 0,
-      //   class: [],
-      //   name: '',
-      //   nickname: '',
-      //   family: [],
-      //   account: '',
-      //   phone: '',
-      //   parent_phone: '',
-      //   gender: 0,
-      //   student_status: false,
-      //   school: '',
-      //   attendance_num: '',
-      //   created_at: '',
-      //   lecture_date: '',
-      //   birthday: '',
-      //   email: '',
-      //   profile_image: '',
-      //   lectureInfo: [],
-      //   memo: [],
-      // },
       studentInfo: {
         mem_name: '',
-        ins_code: '',
+        ins_code: this.$store.state.common.user.ins_code,
+        fra_code: '',
+        mem_img: '',
         mem_id: '',
         mem_nickname: '',
         mem_email: '',
-        std_status: null,
+        itm_status: '02',
         std_year: '',
-        std_adult_yn: 'N',
-        mem_sex: '',
+        std_adult_yn: false,
+        mem_sex: 'M',
         std_grade: 'S',
-        std_use_yn: '',
-        std_att_num: 0,
+        std_use_yn: true,
+        std_att_num: '',
         mem_phone: '',
         std_school: '',
-        st_courses: null,
-        std_birth: '',
+        std_courses: '',
+        mem_birthday: '',
         std_parent_phone: '',
-        itm_acc_yn: '1',
-        family_id: [
-          {
-            mem_name: '',
-            mem_idx: '',
-            mem_id: '',
-          },
-        ],
-        lecture_info_dto: [
-          {
-            csm_name: '',
-            csm_idx: '',
-            lec_title: '',
-            lec_idx: '',
-          },
-        ],
-        all_lecture_info: [
-          {
-            csm_name: '',
-            csm_idx: '',
-            check_ban: false,
-          },
-        ],
+        itm_acc_yn: true,
+        // family_id: null,
+        // lecture_info_dto: [],
+        // all_lecture_info: [
+        //   {
+        //     csm_name: '',
+        //     csm_idx: '',
+        //     check_ban: false,
+        //   },
+        // ],
       },
       initStudent: {},
       studentList: [],
@@ -703,6 +687,10 @@ export default {
       familySearchList: [],
       registerFamilyList: [],
       deleteFamilyId: 0,
+      isIdCheck: false,
+      isEmailCheck: false,
+      isAttNumberCheck: false,
+      isStayRegister: false,
       // 학생 일괄 등록
       uploadFileName: null,
       // 학생 이름 검색
@@ -901,6 +889,245 @@ export default {
           console.log(err)
         })
     },
+    // 학생 수정 api
+    async updateStudentInfo() {
+      const payload = this.studentInfo
+      await apiOperation
+        .updateStudentInfo(payload)
+        .then((res) => {
+          console.log(res)
+          this.openModalDesc('학생 상세 정보', '학생 정보가 수정되었습니다.')
+          this.getStudentList()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 학생 등록 api
+    async registerStudent() {
+      const payload = this.studentInfo
+      await apiOperation
+        .registerStudent(payload)
+        .then((res) => {
+          console.log(res)
+          this.openModalDesc('학생 개별 등록', '새로운 학생이 등록되었습니다.')
+          if (this.isStayRegister) {
+            this.studentInfo = this.deepCopy(this.initStudent)
+            this.getStudentList()
+          } else {
+            this.onCloseNewStudentInfoModalDesc()
+            this.getStudentList()
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 아이디 중복체크 api
+    async getIdCheck() {
+      await apiOperation
+        .getIdCheck(this.studentInfo.mem_id)
+        .then(({ data: { data } }) => {
+          if (data) {
+            this.isIdCheck = true
+            this.openModalDesc('아이디 중복확인', '사용 가능한 아이디입니다.')
+          } else {
+            this.isIdCheck = false
+            this.openModalDesc('아이디 중복확인', '중복된 아이디입니다.')
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 이메일 중복체크 api
+    async getEmailCheck() {
+      await apiOperation
+        .getEmailCheck(this.studentInfo.mem_email)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          if (data) {
+            this.isEmailCheck = true
+            this.openModalDesc('이메일 중복확인', '사용 가능한 이메일입니다.')
+          } else {
+            this.isEmailCheck = false
+            this.openModalDesc('이메일 중복확인', '중복된 이메일입니다.')
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 학생 정보 수정
+    onChangeUpdateInput({ target: { value, id, checked } }) {
+      this.studentInfo[id] = value
+      if (checked) {
+        this.studentInfo.mem_nickname = this.studentInfo.mem_name
+        this.nickNameCheck = true
+      }
+      if (this.studentInfo.mem_nickname !== this.studentInfo.mem_name) {
+        this.nickNameCheck = false
+      } else {
+        this.nickNameCheck = true
+      }
+      if (id.includes('phone')) {
+        this.studentInfo[id] = value
+          .replace(/[^0-9]/g, '')
+          .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
+          .replace(/(-{1,2})$/g, '')
+          .replace(/ /g, '')
+          .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
+      }
+      if (id === 'std_att_num') {
+        this.studentInfo[id] = value
+          .replace(/[^0-9]/g, '')
+          .replace(/ /g, '')
+          .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
+      }
+      if (id === 'mem_id') {
+        this.isIdCheck = false
+      }
+      if (id === 'std_att_num') {
+        this.isAttNumberCheck = false
+      }
+      if (id === 'mem_email') {
+        this.isEmailCheck = false
+      }
+    },
+    // 나의 신분 수정
+    onClickStudentBtn() {
+      if (this.studentInfo.std_grade === 'P') {
+        this.studentInfo.std_grade = 'F'
+      } else {
+        this.studentInfo.std_grade = 'S'
+      }
+    },
+    onClickParentBtn() {
+      if (this.studentInfo.std_grade === 'S') {
+        this.studentInfo.std_grade = 'F'
+      } else {
+        this.studentInfo.std_grade = 'P'
+      }
+    },
+    // 학년 수정
+    onClickTypeGrade() {
+      this.studentInfo.std_adult_yn = false
+    },
+    onClickTypeAdult() {
+      this.studentInfo.std_adult_yn = true
+      this.studentInfo.std_year = ''
+    },
+    selectGrade(grade) {
+      this.studentInfo.std_year = grade
+    },
+    // 성별 수정
+    onClickGenderMen() {
+      this.studentInfo.mem_sex = 'M'
+    },
+    onClickGenderWomen() {
+      this.studentInfo.mem_sex = 'W'
+    },
+    // 활성화 여부 수정
+    onClickStatusTrue() {
+      this.studentInfo.std_use_yn = true
+    },
+    onClickStatusFalse() {
+      this.studentInfo.std_use_yn = false
+    },
+    // 학생 상태 수정
+    onClickStudentStatusTrue() {
+      this.studentInfo.itm_status = '02'
+    },
+    onClickStudentStatusFalse() {
+      this.studentInfo.itm_status = '01'
+    },
+    onClickStudentStatusNo() {
+      this.studentInfo.itm_status = '99'
+    },
+    // 출결번호 중복체크 api
+    async getAttendanceNumberCheck() {
+      await apiOperation
+        .getAttendanceNumberCheck(
+          this.studentInfo.std_att_num,
+          this.institutionIdx
+        )
+        .then(({ data: { data } }) => {
+          if (data) {
+            this.isAttNumberCheck = true
+            this.openModalDesc(
+              '출결번호 중복확인',
+              '사용 가능한 출결번호입니다.'
+            )
+          } else {
+            this.isAttNumberCheck = false
+            this.openModalDesc('출결번호 중복확인', '중복된 출결번호입니다.')
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 생일 수정
+    selectDay(e) {
+      this.selectedDate = e.id
+      console.log(this.selectedDate)
+    },
+    onClickBirthdayConfirm() {
+      this.studentInfo.mem_birthday = this.selectedDate
+      this.datePickerModalDesc.open = false
+    },
+    // 수강일 수정
+    selectLectureDate(e) {
+      this.lectureDate = e.id
+    },
+    onClickLectureDateConfirm() {
+      this.studentInfo.std_courses = this.lectureDate
+      this.datePickerLectureDateModalDesc.open = false
+    },
+    // 일촌
+    onChangeFamilySearchInput({ target: { value } }) {
+      this.familySearchText = value
+    },
+    resetFamilySearchInput() {
+      this.familySearchText = ''
+    },
+    // 일촌 검색 api
+    async searchFamily() {
+      await apiOperation
+        .searchFamily(this.institutionIdx, this.familySearchText)
+        .then(({ data: { data } }) => {
+          console.log(data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
+    // 계속 등록하기
+    checkStayRegister({ target: { checked } }) {
+      this.isStayRegister = checked
+    },
+
+    // searchFamily() {
+    //   if (this.familySearchText.length < 2) {
+    //     this.openModalDesc('일촌 검색', '검색어는 2글자 이상 입력해주세요.')
+    //     return false
+    //   }
+    //   const result = this.studentList.filter((elem) => {
+    //     return (
+    //       elem.name.includes(this.familySearchText) ||
+    //       elem.account.includes(this.familySearchText)
+    //     )
+    //   })
+    //   if (result.length === 0) {
+    //     this.openModalDesc('일촌 검색', '일치하는 학생이 없습니다.')
+    //     return false
+    //   } else {
+    //     this.familySearchList = result
+    //     console.log(this.familySearchList)
+    //   }
+    // },
+
     // 모달 이벤트
     openModalDesc(tit, msg) {
       this.modalDesc = {
@@ -922,10 +1149,15 @@ export default {
     openStudentInfoModalDesc(id) {
       // Object.assign(this.studentInfo, student)
       this.studentInfoModalDesc.open = true
+      this.isEmailCheck = true
+      this.isAttNumberCheck = true
     },
     onCloseStudentInfoModalDesc() {
       Object.assign(this.studentInfo, this.initStudent)
       this.studentInfoModalDesc.open = false
+      this.selectedDate = ''
+      this.lectureDate = ''
+      this.familySearchText = ''
     },
     // 학생 개별 등록
     openNewStudentInfoModalDesc() {
@@ -934,6 +1166,9 @@ export default {
     },
     onCloseNewStudentInfoModalDesc() {
       this.newStudentInfoModalDesc.open = false
+      this.selectedDate = ''
+      this.lectureDate = ''
+      this.familySearchText = ''
     },
     // 생년월일
     openDatePickerModalDesc() {
@@ -1075,87 +1310,7 @@ export default {
     onCloseReportDetailModal() {
       this.reportDetailModalDesc.open = false
     },
-    // 학생 정보 등록/수정
-    onChangeUpdateInput({ target: { value, id, checked } }) {
-      this.studentInfo[id] = value
-      if (checked) {
-        this.studentInfo.nickname = this.studentInfo.name
-        this.nickNameCheck = true
-      }
-      if (this.studentInfo.nickname !== this.studentInfo.name) {
-        this.nickNameCheck = false
-      } else {
-        this.nickNameCheck = true
-      }
-      if (id.includes('phone')) {
-        this.studentInfo[id] = value
-          .replace(/[^0-9]/g, '')
-          .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
-          .replace(/(-{1,2})$/g, '')
-          .replace(/ /g, '')
-          .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
-      }
-    },
-    // 생일 수정
-    selectDay(e) {
-      this.selectedDate = e.id
-    },
-    onClickBirthdayConfirm() {
-      this.studentInfo.birthday = this.selectedDate
-      this.datePickerModalDesc.open = false
-    },
-    // 수강일 수정
-    selectLectureDate(e) {
-      this.lectureDate = e.id
-    },
-    onClickLectureDateConfirm() {
-      this.studentInfo.lecture_date = this.lectureDate
-      this.datePickerLectureDateModalDesc.open = false
-    },
-    // 나의 신분 수정
-    onClickIdentityBtn(identity) {
-      if (this.studentInfo.identity.includes(identity)) {
-        for (let i = 0; i < this.studentInfo.identity.length; i++) {
-          if (this.studentInfo.identity[i] === identity) {
-            this.studentInfo.identity.splice(i, 1)
-          }
-        }
-      } else {
-        this.studentInfo.identity.push(identity)
-      }
-      console.log(this.studentInfo.identity)
-    },
-    // 학년 수정
-    onClickTypeGrade() {
-      this.studentInfo.grade_type = 0
-    },
-    onClickTypeAdult() {
-      this.studentInfo.grade_type = 1
-    },
-    selectGrade(grade) {
-      this.studentInfo.grade = grade
-    },
-    // 성별 수정
-    onClickGenderMen() {
-      this.studentInfo.gender = 0
-    },
-    onClickGenderWomen() {
-      this.studentInfo.gender = 1
-    },
-    // 상태 변경 수정
-    onClickStatusTrue() {
-      this.studentInfo.status = true
-    },
-    onClickStatusFalse() {
-      this.studentInfo.status = false
-    },
-    // 학생상태 변경 수정
-    onClickStudentStatusTrue() {
-      this.studentInfo.student_status = true
-    },
-    onClickStudentStatusFalse() {
-      this.studentInfo.student_status = false
-    },
+
     checkResetClass({ target: { id, checked } }) {
       // 반 재배정
       if (checked) {
@@ -1202,32 +1357,7 @@ export default {
     onClickResetBtn() {
       this.openModalDesc('비밀번호 초기화', '비밀번호가 초기화되었습니다.')
     },
-    // 일촌
-    onChangeFamilySearchInput({ target: { value } }) {
-      this.familySearchText = value
-    },
-    resetFamilySearchInput() {
-      this.familySearchText = ''
-    },
-    searchFamily() {
-      if (this.familySearchText.length < 2) {
-        this.openModalDesc('일촌 검색', '검색어는 2글자 이상 입력해주세요.')
-        return false
-      }
-      const result = this.studentList.filter((elem) => {
-        return (
-          elem.name.includes(this.familySearchText) ||
-          elem.account.includes(this.familySearchText)
-        )
-      })
-      if (result.length === 0) {
-        this.openModalDesc('일촌 검색', '일치하는 학생이 없습니다.')
-        return false
-      } else {
-        this.familySearchList = result
-        console.log(this.familySearchList)
-      }
-    },
+
     checkSelectedFamily({ target: { id, checked } }) {
       console.log(id, checked)
       if (checked) {
@@ -1374,13 +1504,13 @@ export default {
       this.lectureId = lectureId
       this.datePickerModalDesc.open = true
     },
-    onClickDueDateConfirm() {
-      const lecture = this.studentInfo.lectureInfo.find(
-        (result) => result.id === this.lectureId
-      )
-      lecture.dueDate = this.selectedDate
-      this.datePickerModalDesc.open = false
-    },
+    // onClickDueDateConfirm() {
+    //   const lecture = this.studentInfo.lectureInfo.find(
+    //     (result) => result.id === this.lectureId
+    //   )
+    //   lecture.dueDate = this.selectedDate
+    //   this.datePickerModalDesc.open = false
+    // },
     // 납부일 위와 동일
     onClickSameDate(lectureId) {
       this.lectureId = lectureId

@@ -83,6 +83,22 @@ async function getStudentInfo(std_idx) {
     `/api/v1/management/operation/student?std_idx=${std_idx}`
   )
 }
+// 학생 수정
+async function updateStudentInfo(payload) {
+  return await http.put('/api/v1/management/operation/student', payload)
+}
+// 출결번호 중복 확인
+async function getAttendanceNumberCheck(att_num, ins_code) {
+  return await http.get(
+    `/api/v1/management/operation/student/check-attendance-num?att_num=${att_num}&ins_code=${ins_code}`
+  )
+}
+// 일촌 검색
+async function searchFamily(ins_code, search) {
+  return await http.get(
+    `/api/v1/management/operation/student/family-id?ins_code=${ins_code}&search=${search}`
+  )
+}
 
 // 반관리
 // 반 목록 및 검색
@@ -178,6 +194,9 @@ const apiOperation = {
   getStudentList,
   registerStudent,
   getStudentInfo,
+  getAttendanceNumberCheck,
+  searchFamily,
+  updateStudentInfo,
 
   getClassList,
   getClassDetail,

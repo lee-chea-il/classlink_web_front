@@ -162,7 +162,7 @@
             <td>{{ setStatusName(item.itm_status) }}</td>
             <td>{{ item.std_year }}</td>
             <td>{{ item.mem_name }}</td>
-            <td>{{ item.nickname }}</td>
+            <td>{{ item.mem_nickname }}</td>
             <td>{{ item.family_names }}</td>
             <td>{{ item.mem_id }}</td>
             <td>{{ item.mem_phone }}</td>
