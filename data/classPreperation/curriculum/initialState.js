@@ -1806,43 +1806,7 @@ export default function initialState() {
       type: 'institution',
       name: 'test.link',
     },
-    receiveInstitutionData: [
-      {
-        name: '마포 학원',
-        children: [
-          {
-            name: '국어',
-            children: [
-              {
-                name: '1단원',
-                children: [
-                  {
-                    subTitle: 'sub1',
-                    desc: 'desc1',
-                    savepathInfo: {
-                      path: '마포 학원 > 국어 > 1단원',
-                      type: 'institution',
-                      filename: '수학1',
-                    },
-                    cwId: 'WDCS001',
-                    linkData: [
-                      { codeNum: '005', referId: 1 },
-                      { codeNum: '008', referId: 2 },
-                      { codeNum: '012', referId: 4 },
-                    ],
-                    isOpenEducation: true,
-                    isContinuedRegist: true,
-                    lessonId: 0,
-                    type: 'institution',
-                    name: '수학1.link',
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    ],
+    receiveInstitutionData: [],
     receiveFranchiseData: [
       {
         name: '서울 학원',

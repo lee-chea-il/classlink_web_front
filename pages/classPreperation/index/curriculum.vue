@@ -17,8 +17,6 @@
             ref="leftSection"
             directionType="left"
             :identity="identity"
-            :institutionData="receiveInstitutionData"
-            :franchiseData="receiveFranchiseData"
             @un-active="unActive"
             @copyDataCallBack="copyDataCallBack"
             @update-data="updateData"
@@ -27,7 +25,6 @@
             ref="rightSection"
             directionType="right"
             :identity="identity"
-            :curriculumData="receiveCurriculumData"
             @un-active="unActive"
             @copyDataCallBack="copyDataCallBack"
             @update-data="updateData"
@@ -114,6 +111,7 @@ import SavePathSearchModal from '@/components/common/modal/curriculum/SavePathSe
 import OpenSearchFileModal from '@/components/common/modal/curriculum/OpenSearchFileModal.vue'
 import DivideSection from '~/components/curriculum/DivideSection.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
+import { apiClassCurriculum } from '~/services'
 
 export default {
   name: 'MyCurriculum',
@@ -133,8 +131,50 @@ export default {
     /* setTimeout(() => {
       this.addCuriiculumData(this.testData)
     },1000) */
+    this.getInsTreeViewList()
+    this.getFranTreeViewList()
+    this.getMyTreeViewList()
   },
   methods: {
+    async getInsTreeViewList() {
+      await apiClassCurriculum
+        .getTreeViewList({type: "ID"})
+        .then(({ data: { data } }) => {
+          this.setInsTreeViewData(data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    setInsTreeViewData(data){
+      this.$refs.leftSection.$refs.institution.setData(data)
+    },
+    async getFranTreeViewList() {
+      await apiClassCurriculum
+        .getTreeViewList({type: "FD"})
+        .then(({ data: { data } }) => {
+          this.setFranTreeViewData(data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    setFranTreeViewData(data){
+      this.$refs.leftSection.$refs.franchise.setData(data)
+    },
+    async getMyTreeViewList() {
+      await apiClassCurriculum
+        .getTreeViewList({type: "MD"})
+        .then(({ data: { data } }) => {
+          this.setMyTreeViewData(data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    setMyTreeViewData(data){
+      this.$refs.rightSection.$refs.curriculum.setData(data)
+    },
     openCurriculumAdd() {
       this.isShowOpenAddModal = true
       this.$refs.curriculumUpdateModal.setData(null)

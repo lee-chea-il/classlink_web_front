@@ -16,6 +16,7 @@
     @more-menu-view="moreMenuView"
     @more-menu-dell="moreMenuDell"
     @more-menu-copy="moreMenuCopy"
+    @add-node="addFolder"
   >
     <span slot="addTreeNodeIcon" class="icon">＋</span>
     <span slot="addLeafNodeIcon" class="icon"></span>
@@ -27,16 +28,14 @@
 
 <script>
 import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
+import { apiClassCurriculum } from '~/services'
+
 export default {
   name: 'TreeView',
   components: {
     VueTreeList,
   },
   props: {
-    dataList: {
-      type: Array,
-      default: () => [],
-    },
     editable: {
       type: Boolean,
       default: true,
@@ -57,6 +56,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    treeViewType: {
+      type: String,
+      default: 'ins',
+    },
   },
   data() {
     return {
@@ -65,42 +68,80 @@ export default {
       updateNode: null,
     }
   },
-  mounted() {
-    const dataMapping = (data, isReadOnly) => {
-      const result = []
-      const len = data.length
-      for (let i = 0; i < len; i++) {
-        const newStr = JSON.stringify(data[i])
-        const nObj = JSON.parse(newStr)
-        nObj.id = this.pid
-        nObj.pid = this.pid
-        nObj.isChecked = false
-        nObj.readOnly = isReadOnly
-        nObj.active = false
-
-        if (data[i].children !== undefined) {
-          nObj.isLeaf = false
-          nObj.children = []
-
-          result[i] = nObj
-          this.pid++
-
-          result[i].children = dataMapping(data[i].children, isReadOnly)
-        } else {
-          nObj.isLeaf = true
-
-          result[i] = nObj
-          this.pid++
-        }
-      }
-      return result
-    }
-    this.datas = new Tree(
-      !this.editable,
-      dataMapping(this.dataList, !this.editable)
-    )
-  },
   methods: {
+    async addFolder(node) {
+      await apiClassCurriculum
+        .addTreeViewListFolder( this.sendFolderData(node) )
+        .then(({ data: { data } }) => {
+          this.setData(data)
+          // console.log(node.target.treeViewId)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    sendFolderData(node){
+      if(this.treeViewType==="ID"){
+        return {
+          datatable_type: this.treeViewType,
+          ins_idx: "12345678",
+          parent_id: node.target.treeViewId,
+          title: '새 폴더'
+        }
+      }else if(this.treeViewType==="FD"){
+        return {
+          datatable_type: this.treeViewType,
+          fra_idx: "11111111",
+          parent_id: node.target.treeViewId,
+          title: '새 폴더'
+        }
+      }else{
+        return {
+          datatable_type: this.treeViewType,
+          mem_idx: 253,
+          parent_id: node.target.treeViewId,
+          title: '새 폴더'
+        }
+
+      }
+    },
+    setData(dataList){
+      console.log(dataList)
+      const dataMapping = (data, isReadOnly) => {
+        const result = []
+        const len = data.length
+        for (let i = 0; i < len; i++) {
+          const nObj = data[i]
+          nObj.treeViewId = nObj.id
+          nObj.id = this.pid
+          nObj.pid = this.pid
+          nObj.isChecked = false
+          nObj.readOnly = isReadOnly
+          nObj.active = false
+          nObj.name = nObj.title
+          nObj.type = this.treeViewType
+
+          if (nObj.group_yn) {
+            nObj.isLeaf = false
+            
+            result[i] = nObj
+            this.pid++
+            if(nObj.children) {
+              result[i].children = dataMapping(nObj.children, isReadOnly)
+            }
+          } else {
+            nObj.isLeaf = true
+            result[i] = nObj
+            this.pid++
+          }
+        }
+        return result
+      }
+      this.datas = new Tree(
+        !this.editable,
+        dataMapping(dataList, !this.editable)
+      )
+    },
     onDel(node) {
       console.log(node)
       node.remove()

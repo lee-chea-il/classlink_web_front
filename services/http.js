@@ -8,6 +8,7 @@ const http = axios.create({
     'Content-Type': 'application/json',
   },
   baseURL: 'http://112.171.101.31:45490',
+  /* baseURL: 'http://localhost:8301', */
   timeout: 10000,
 })
 

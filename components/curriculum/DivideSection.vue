@@ -51,7 +51,7 @@
       >
         <TreeView
           ref="institution"
-          :dataList="institutionData"
+          treeViewType="ID"
           :editable="identity == 'master' ? true : false"
           :identity="identity"
           :pidNum="0"
@@ -69,7 +69,7 @@
       >
         <TreeView
           ref="franchise"
-          :dataList="franchiseData"
+          treeViewType="FD"
           :editable="identity == 'master' ? true : false"
           :identity="identity"
           :pidNum="1000"
@@ -94,8 +94,8 @@
       >
         <TreeView
           ref="curriculum"
+          treeViewType="MD"
           :expanded="true"
-          :dataList="curriculumData"
           identity="master"
           :pidNum="2000"
           :isHideDownload="false"
@@ -128,18 +128,6 @@ export default {
     identity:{
       type: String,
       default: ''
-    },
-    institutionData: {
-      type: Array,
-      default: () => [],
-    },
-    franchiseData: {
-      type: Array,
-      default: () => [],
-    },
-    curriculumData: {
-      type: Array,
-      default: () => [],
     },
     isUpdate: Boolean,
   },

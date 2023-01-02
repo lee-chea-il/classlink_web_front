@@ -8,6 +8,7 @@ import apiFranchise from './apiFranchise'
 import apiOperation from './apiOperation'
 import apiLecture from './apiLecture'
 import apiLeaningBox from './apiLearningBox'
+import apiClassCurriculum from './apiClassCurriculum'
 
 export {
   api,
@@ -20,4 +21,5 @@ export {
   apiOperation,
   apiLecture,
   apiLeaningBox,
+  apiClassCurriculum,
 }
