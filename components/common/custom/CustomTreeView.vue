@@ -71,16 +71,17 @@ export default {
   methods: {
     async addFolder(node) {
       await apiClassCurriculum
-        .addTreeViewListFolder( this.sendFolderData(node) )
+        .addFolderTreeViewList( this.addFolderData(node) )
         .then(({ data: { data } }) => {
-          this.setData(data)
-          // console.log(node.target.treeViewId)
+          if(data){
+            this.$emit(`tree-view-${this.treeViewType.toLowerCase()}`)
+          }
         })
         .catch((err) => {
           console.log(err)
         })
     },
-    sendFolderData(node){
+    addFolderData(node){
       if(this.treeViewType==="ID"){
         return {
           datatable_type: this.treeViewType,
@@ -102,7 +103,36 @@ export default {
           parent_id: node.target.treeViewId,
           title: '새 폴더'
         }
-
+      }
+    },
+    async deleteFolder(node) {
+      await apiClassCurriculum
+        .deleteFolderTreeViewList( this.deleteFolderData(node) )
+        .then(({ data: { data } }) => {
+          if(data){
+            this.$emit(`tree-view-${this.treeViewType.toLowerCase()}`)
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    deleteFolderData(node){
+      if(this.treeViewType==="ID"){
+        return {
+          datatable_type: this.treeViewType,
+          treeinfo_idx: 1
+        }
+      }else if(this.treeViewType==="FD"){
+        return {
+          datatable_type: this.treeViewType,
+          treeinfo_idx:1
+        }
+      }else{
+        return {
+          datatable_type: this.treeViewType,
+          treeinfo_idx:1
+        }
       }
     },
     setData(dataList){
@@ -325,7 +355,8 @@ export default {
           }
         }
         if (oldNode.isChecked) {
-          oldNode.remove()
+          // oldNode.remove()
+          console.log('vvv   ',oldNode)
         }
       }
       _dell(this.datas)
@@ -375,7 +406,8 @@ export default {
       console.log(`view ${node}`)
     },
     moreMenuDell(node) {
-      node.remove()
+      console.log(node)
+      // node.remove()
     },
     moreMenuCopy(node) {
       console.log(`copy ${node}`)

@@ -20,6 +20,8 @@
             @un-active="unActive"
             @copyDataCallBack="copyDataCallBack"
             @update-data="updateData"
+            @tree-view-id="getInsTreeViewList"
+            @tree-view-fd="getFranTreeViewList"
           />
           <DivideSection
             ref="rightSection"
@@ -28,6 +30,7 @@
             @un-active="unActive"
             @copyDataCallBack="copyDataCallBack"
             @update-data="updateData"
+            @tree-view-md="getMyTreeViewList"
           />
         </div>
       </div>

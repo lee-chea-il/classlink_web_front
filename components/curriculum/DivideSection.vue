@@ -57,6 +57,7 @@
           :pidNum="0"
           :isHideDownload="false"
           @un-active="$emit('un-active')"
+          @tree-view-id="$emit('tree-view-id')"
           @update-data="$emit('update-data',$event,'institution')"
           @copyDataCallBack="$emit('copyDataCallBack',$event)"
         />
@@ -76,6 +77,7 @@
           :isHideDownload="false"
           @un-active="$emit('un-active')"
           @update-data="$emit('update-data',$event,'franchise')"
+          @tree-view-fd="$emit('tree-view-fd')"
           @copyDataCallBack="copyDataCallBack"
         />
       </div>
@@ -101,6 +103,7 @@
           :isHideDownload="false"
           :isUpdate="isUpdate"
           @un-active="$emit('un-active')"
+          @tree-view-md="$emit('tree-view-md')"
           @update-data="$emit('update-data',$event,'curriculum')"
         />
         <br />
