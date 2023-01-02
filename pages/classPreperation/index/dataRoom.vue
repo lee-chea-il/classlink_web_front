@@ -1,7 +1,6 @@
 <template>
   <div>
     <PageHeader title="자료실" />
-
     <LoadingBox v-if="isLoading" />
 
     <div v-else class="tab-content depth03 ac_manage_dtr">
@@ -365,8 +364,7 @@ export default {
     // 등록 자료 내용 변경
     onChangeUploadFile({ target: { id, value, type, checked, name } }) {
       const elem = this.referenceData
-      const newVal = value.replace(/\.|mp4|pdf|quiz|test/gi, '')
-      console.log(id, value, type, checked, name, elem[id])
+      const newVal = value.replace(/\./gi, '')
       if (type === 'checkbox') {
         if (checked) return (elem[name] = true)
         else return (elem[name] = false)
@@ -444,13 +442,11 @@ export default {
     postDataroomFile() {
       const { thumbnail, registrant_name, full_path, name, ...rest } =
         this.referenceData
-      console.log(rest)
       const payload = {
         ...rest,
         keyword: rest.keyword.join(','),
         title: name + this.setExtension(rest.datatype),
       }
-      console.log(payload)
       apiData
         .postDataroomFile(payload)
         .then(() => {
@@ -468,6 +464,7 @@ export default {
       const payload = {
         ...rest,
         keyword: rest.keyword.join(','),
+        title: rest.name + this.setExtension(rest.datatype),
       }
       apiData
         .postDataroomQuiz(payload)
@@ -484,9 +481,15 @@ export default {
     // 쪽지시험 업로드
     postDataroomNoteExam() {
       const { thumbnail, registrant_name, ...rest } = this.referenceData
+      const setItem = rest.note_exam.map((item) => {
+        return { ...item, limit_time: Number(item.limit_time) * 60 }
+      })
+      console.log(setItem)
       const payload = {
         ...rest,
         keyword: rest.keyword.join(','),
+        title: rest.name + this.setExtension(rest.datatype),
+        note_exam: setItem,
       }
       apiData
         .postDataroomNoteExam(payload)
@@ -510,7 +513,7 @@ export default {
           this.referenceData = {
             ...data,
             keyword: data.keyword.split(','),
-            name: data.title,
+            name: data.title.replace(/.mp4|.pdf|.youtube|.url/g, ''),
           }
           this.getFileSize(data.full_path)
         })
@@ -526,7 +529,7 @@ export default {
           this.referenceData = {
             ...data,
             keyword: data.keyword.split(','),
-            name: data.title,
+            name: data.title.replace(/.quiz/g, ''),
           }
         })
         .catch(() => {})
@@ -535,13 +538,18 @@ export default {
     // 쪽지시험 조회
     getDataroomNoteExam({ dataroom_idx, type }) {
       const payload = { dataroom_idx, datatable_type: type }
+
       apiData
         .getDataroomNoteExam(payload)
         .then(({ data: { data } }) => {
+          const setItem = data.note_exam.map((item) => {
+            return { ...item, limit_time: Number(item.limit_time) / 60 }
+          })
           this.referenceData = {
             ...data,
             keyword: data.keyword.split(','),
-            name: data.title,
+            name: data.title.replace(/.exam/g, ''),
+            note_exam: setItem,
           }
         })
         .catch((err) => {
@@ -554,6 +562,7 @@ export default {
       const payload = {
         dataroom_idx: data.dataroom_idx,
         type: data.datatable_type,
+        title: data.name + this.setExtension(data.datatype),
       }
       if (type === '03') return this.getDataroomQuiz(payload)
       else if (type === '04') return this.getDataroomNoteExam(payload)
@@ -568,6 +577,7 @@ export default {
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
+        title: rest.name + this.setExtension(rest.datatype),
       }
       apiData
         .updateDataroomFile(data)
@@ -586,6 +596,7 @@ export default {
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
+        title: rest.name + this.setExtension(rest.datatype),
       }
       apiData
         .updateDataroomQuiz(data)
@@ -604,6 +615,7 @@ export default {
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
+        title: rest.name + this.setExtension(rest.datatype),
       }
       apiData
         .updateDataroomNoteExam(data)
@@ -684,7 +696,6 @@ export default {
 
     // 자료 추가 모달
     onOpenReferenceAddModal() {
-      this.setModalTitle('등록')
       this.isReferenceAddModal = true
     },
 
@@ -702,8 +713,6 @@ export default {
         datatype: '03',
         quiz: [{ ...this.quizItem }],
       }
-      this.referenceData.createAt = new Date()
-      document.getElementById('referenceSelectClose').click()
       this.isQuizAddModal = true
     },
 
@@ -721,7 +730,6 @@ export default {
         datatype: '04',
         note_exam: [{ ...this.testItem }],
       }
-      document.getElementById('referenceSelectClose').click()
       this.isNoteTestAddModal = true
     },
 
@@ -772,7 +780,7 @@ export default {
     onOpenNoteTestChangeModal() {
       this.setModalTitle('수정')
       if (this.isNoteTestBrowse) {
-        this.isQuizBrowse = false
+        this.isNoteTestBrowse = false
       }
       this.isNoteTestAddModal = true
     },
@@ -1047,6 +1055,7 @@ export default {
 
     // 퀴즈 변경 핸들러
     onChangeQuiz({ target: { value, id } }, idx) {
+      console.log(value, id)
       const numberOnly = value.replace(/[^0-9.]/g, '').replace(/ /g, '')
       if (id === 'limit_time') {
         return (this.referenceData.quiz[idx][id] = numberOnly)
@@ -1076,7 +1085,7 @@ export default {
     // 키워드 변경 핸들러
     setKeyword({ target: { value } }) {
       const noSpace = /\s/g
-      if (!noSpace.test(value) && value.length > 0) {
+      if (!noSpace.test(value) && value.length > 0 && value.length < 26) {
         const keywordList = [...this.referenceData.keyword, value]
         this.referenceData.keyword = setNewArray(keywordList)
         this.pushKeyword = this.pushKeyword.replace(/.+/g, '')
@@ -1183,9 +1192,11 @@ export default {
               ...this.referenceData,
               name: item.snippet.localized.title
                 .replace(/\./, '')
-                .substr(0, 25),
-              file_name: item.snippet.localized.title,
-              description: item.snippet.localized.description,
+                .substring(0, 60),
+              file_name: item.snippet.localized.title
+                .replace(/\./, '')
+                .substring(0, 60),
+              description: item.snippet.localized.description.substring(0, 100),
               datatable_type: 'ID',
               datatype: '05',
               full_path: `//www.youtube.com/embed/${youtubeUrl}`,
@@ -1297,7 +1308,9 @@ export default {
     onDeleteQuizItem(idx) {
       if (this.referenceData.quiz.length > 1) {
         this.referenceData.quiz.splice(idx, 1)
-        this.currentPageIdx = idx - 1
+        if (idx !== 0) {
+          this.currentPageIdx = 0
+        }
         this.focusEditorField()
       }
     },
@@ -1308,13 +1321,13 @@ export default {
       console.log(value)
       if (num === 'OX') {
         target.correct = 'O'
-        target.wrong_correct = 'X'
+        target.wrong = 'X'
       } else if (num === 'SA') {
         target.correct = ''
-        target.wrong_correct = ''
+        target.wrong = ''
       } else {
         target.correct = ''
-        target.wrong_correct = ''
+        target.wrong = ''
       }
       return (target.type = value)
     },
@@ -1323,10 +1336,10 @@ export default {
     onSelectOx(idx, correct) {
       if (correct === 'O') {
         this.referenceData.quiz[idx].correct = 'O'
-        this.referenceData.quiz[idx].wrong_correct = 'x'
+        this.referenceData.quiz[idx].wrong = 'x'
       } else {
         this.referenceData.quiz[idx].correct = 'X'
-        this.referenceData.quiz[idx].wrong_correct = 'O'
+        this.referenceData.quiz[idx].wrong = 'O'
       }
     },
 
@@ -1361,7 +1374,9 @@ export default {
     onDeleteNoteTest(idx) {
       if (this.referenceData.note_exam.length > 1) {
         this.referenceData.note_exam.splice(idx, 1)
-        this.currentPageIdx = idx - 1
+        if (idx !== 0) {
+          this.currentPageIdx = idx - 1
+        }
         this.focusEditorField()
       }
     },

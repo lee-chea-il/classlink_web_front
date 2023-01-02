@@ -21,7 +21,7 @@
       v-if="quiz.type === 'EQ'"
       title="오답"
       placeholder="오답입력"
-      :value="quiz.wrong_correct"
+      :value="quiz.wrong"
     />
     <CustomBrowseInput
       v-if="quiz.type !== 'EQ'"

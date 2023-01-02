@@ -133,6 +133,30 @@ Object.keys(rules).forEach((rule) => {
     message: '내용을 입력해주세요.',
   })
 
+  // 자료 등록시
+  //  제목 글자수 제한
+  extend('max_title', (value) => {
+    if (value.length > Number(60)) {
+      return '제목을 60자 이하로 입력해주세요'
+    }
+    return true
+  })
+
+  // 설명 유효성 검사
+  extend('end_desc', (value) => {
+    if (value.length > Number(100)) {
+      return `설명을 100자 이하로 입력해 주세요.`
+    }
+    return true
+  })
+
+  // 키워드 글자수 제한
+  extend('max_keyword', (value) => {
+    if (value.length > Number(25)) {
+      return '키워드를 25자 이하로 입력해 주세요.'
+    }
+    return true
+  })
 })
 
 // config setting

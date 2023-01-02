@@ -319,9 +319,9 @@ export default {
     const user = this.$store.state.common.user
     this.initLessonData = {
       ...this.initLessonData,
-      // fra_code: user.fra_code,
       ins_code: user.ins_code,
       registrant_name: user.mem_name,
+      registrant: user.mem_idx,
     }
     this.setInitLessonData()
   },
@@ -1157,13 +1157,13 @@ export default {
       console.log(value)
       if (num === 'OX') {
         target.correct = 'O'
-        target.wrong_correct = 'X'
+        target.wrong = 'X'
       } else if (num === 'SA') {
         target.correct = ''
-        target.wrong_correct = ''
+        target.wrong = ''
       } else {
         target.correct = ''
-        target.wrong_correct = ''
+        target.wrong = ''
       }
       return (target.type = value)
     },
@@ -1172,10 +1172,10 @@ export default {
     onSelectOx(idx, correct) {
       if (correct === 'O') {
         this.selectReferenceItem.quiz[idx].correct = 'O'
-        this.selectReferenceItem.quiz[idx].wrong_correct = 'x'
+        this.selectReferenceItem.quiz[idx].wrong = 'x'
       } else {
         this.selectReferenceItem.quiz[idx].correct = 'X'
-        this.selectReferenceItem.quiz[idx].wrong_correct = 'O'
+        this.selectReferenceItem.quiz[idx].wrong = 'O'
       }
     },
 

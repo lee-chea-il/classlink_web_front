@@ -1316,13 +1316,13 @@ export default {
       console.log(value)
       if (num === 'OX') {
         target.correct = 'O'
-        target.wrong_correct = 'X'
+        target.wrong = 'X'
       } else if (num === 'SA') {
         target.correct = ''
-        target.wrong_correct = ''
+        target.wrong = ''
       } else {
         target.correct = ''
-        target.wrong_correct = ''
+        target.wrong = ''
       }
       return (target.type = value)
     },
@@ -1331,10 +1331,10 @@ export default {
     onSelectOx(idx, correct) {
       if (correct === 'O') {
         this.referenceData.quiz[idx].correct = 'O'
-        this.referenceData.quiz[idx].wrong_correct = 'x'
+        this.referenceData.quiz[idx].wrong = 'x'
       } else {
         this.referenceData.quiz[idx].correct = 'X'
-        this.referenceData.quiz[idx].wrong_correct = 'O'
+        this.referenceData.quiz[idx].wrong = 'O'
       }
     },
 

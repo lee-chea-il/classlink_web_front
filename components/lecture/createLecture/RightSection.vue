@@ -43,7 +43,7 @@
       <div class="list_section">
         <div class="sum_info">
           선택된 반 <span>{{ lectureInfo.classroom.length }}</span
-          >개
+          >개 / 인원 3명
         </div>
         <ClassList
           :listItem="lectureInfo.classroom"

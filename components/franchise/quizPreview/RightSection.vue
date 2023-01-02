@@ -83,7 +83,7 @@
               </div>
               <div class="aa_result">
                 <div class="aa_wrong">
-                  {{ quiz.wrong_correct }}
+                  {{ quiz.wrong }}
                 </div>
               </div>
             </div>

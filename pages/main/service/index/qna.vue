@@ -15,7 +15,7 @@
       <table v-for="(item, idx) in qnaList" :key="idx" class="table">
         <tbody>
           <tr class="main_notice02" @click="toggleShow(item)">
-            <td class="main_notice_tit"></td>
+            <!-- <td class="main_notice_tit"></td>
             <td class="main_notice_tit02">Q. {{ item.title }}</td>
             <td class="main_notice_tit03">{{ item.createdAt }}</td>
             <td>
@@ -24,16 +24,27 @@
                 class="btn arrow_ico"
                 :class="{ active: !item.isShow }"
               ></button>
-            </td>
+            </td> -->
+            <span class="main_notice03">
+              <td class="main_notice_tit">공지</td>
+              <td class="main_notice_tit02">Q. {{ item.title }}</td>
+              <td class="main_notice_tit03">{{ item.createdAt }}</td>
+              <td>
+                <button
+                  id="btnExpand"
+                  class="btn icons_arrow_dn btn_expand"
+                ></button>
+              </td>
+            </span>
           </tr>
           <!-- 상세 tr [개발참조] 공지사항 상세 TR 펼치고 접기 -->
-          <tr id="trExpand" class="tr_expand" :style="isShowFlag(item.isShow)">
+          <!-- <tr id="trExpand" class="tr_expand" :style="isShowFlag(item.isShow)">
             <td class="td_expand" colspan="8">
               <div class="notice_contents">
                 {{ item.desc }}
               </div>
             </td>
-          </tr>
+          </tr> -->
           <!-- /.상세 tr -->
         </tbody>
       </table>
@@ -97,7 +108,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<!-- <style scoped>
 .arrow_ico {
   display: inline-block;
   width: 16px;
@@ -118,4 +129,4 @@ export default {
 .main_notice02 {
   cursor: pointer;
 }
-</style>
+</style> -->

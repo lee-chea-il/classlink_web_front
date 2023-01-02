@@ -151,10 +151,10 @@
             <div class="tit stit">오답</div>
             <QuizInput
               rules="required_quiz"
-              idProp="wrong_correct"
+              idProp="wrong"
               nameProp="오답"
               :idx="idx"
-              :value="item.wrong_correct"
+              :value="item.wrong"
               placeholder="오답 입력"
               :disabled="item.type !== 'EQ'"
               @change-item="setChangeInput"

@@ -62,7 +62,11 @@
           title="재생 시간"
           :value="setPlayTime(uploadInfo.youtubePlayTime)"
         />
-        <ContentLabel v-else title="등록자" value="홍길동" />
+        <ContentLabel
+          v-else
+          title="등록자"
+          :value="reference.registrant_name"
+        />
       </div>
     </div>
   </div>
