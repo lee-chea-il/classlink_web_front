@@ -69,11 +69,9 @@
           </div>
           <!-- div class="modal-body" -->
           <div class="modal-footer">
-            <NuxtLink
-              :to="`/class/learningBox/regist/question/reply/${data.selectQuestionBox.qtb_idx}`"
-              class="btn btn_crud_point"
-              >답변하기</NuxtLink
-            >
+            <button class="btn btn_crud_point" @click="$emit('move', data)">
+              답변하기
+            </button>
             <button class="btn btn_crud_default" @click="$emit('close')">
               취소
             </button>

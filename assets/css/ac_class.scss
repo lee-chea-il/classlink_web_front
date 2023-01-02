@@ -212,6 +212,19 @@
     display: flex;
     justify-content: center;
   }
+
+  .reply_onoff {
+    text-align: center;
+    margin-top: 20px;
+    background: #F9F9FC;
+    padding: 10px 0px;
+
+    label {
+      font-weight: 400;
+      font-size: 17px;
+      line-height: 23px;
+    }
+  }
 }
 
 /* 강의계획서 미리보기/열람 상세보기 (팝업 L) */

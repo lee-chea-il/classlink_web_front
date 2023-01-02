@@ -159,10 +159,12 @@
                               </div>
                             </td>
                             <td class="td02">
-                              {{ item.std_year === null ? '-' : item.std_year }}
+                              {{ item.std_year === '' ? '-' : item.std_year }}
                             </td>
                             <td class="td03">{{ item.mem_name }}</td>
-                            <td class="td04">{{ item.mem_phone }}</td>
+                            <td class="td04">
+                              {{ item.mem_phone === '' ? '-' : item.mem_phone }}
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -215,7 +217,7 @@
 										</colgroup> -->
                         <tbody>
                           <tr
-                            v-for="(items, id) in item?.studentList"
+                            v-for="(items, id) in item?.student_list"
                             :key="id"
                           >
                             <td class="td01">
@@ -251,7 +253,11 @@
                               }}
                             </td>
                             <td class="td03">{{ items.mem_name }}</td>
-                            <td class="td04">{{ items.mem_phone }}</td>
+                            <td class="td04">
+                              {{
+                                items.mem_phone === '' ? '-' : items.mem_phone
+                              }}
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -384,7 +390,7 @@
                             <button
                               id="showStudents01"
                               class="btn btn_filter"
-                              :class="{ active: idx === moveDetail }"
+                              :class="{ active: moveDetail === idx }"
                               @click="$emit('open-detail', idx)"
                             >
                               {{ idx === moveDetail ? '접기' : '펴기' }}
@@ -395,7 +401,7 @@
                     </table>
 
                     <div
-                      v-if="idx === moveDetail"
+                      v-if="moveDetail === idx"
                       id="listStudents01"
                       class="list_class_students"
                     >
@@ -410,7 +416,7 @@
                               <col width="100%" />
                             </colgroup> -->
                             <tr
-                              v-for="(items, id) in item?.studentList"
+                              v-for="(items, id) in item?.student_list"
                               :key="id"
                             >
                               <td>
@@ -424,6 +430,9 @@
                                     :checked="
                                       rightCheckbox.some(
                                         (e) => e.mem_idx === items.mem_idx
+                                      ) &&
+                                      rightCheckbox.some(
+                                        (e) => e.csm_idx === item.csm_idx
                                       )
                                     "
                                     @input="

@@ -155,9 +155,10 @@ async function getNoAssignStudent(payload) {
   )
 }
 // 목록 이동
-async function getChangeOrder(payload) {
-  return await http.get(
-    `/api/v1/management/operation/change-classroom-order?csm_display_no=${payload.csm_display_no}&csm_idx=${payload.csm_idx}&update_order_no=${payload.update_order_no}`
+async function putChangeOrder(payload) {
+  return await http.put(
+    `/api/v1/management/operation/change-classroom-order`,
+    payload
   )
 }
 
@@ -191,7 +192,7 @@ const apiOperation = {
   putMoveClass,
   putMoveReverseClass,
   getNoAssignStudent,
-  getChangeOrder,
+  putChangeOrder,
 }
 
 export default apiOperation

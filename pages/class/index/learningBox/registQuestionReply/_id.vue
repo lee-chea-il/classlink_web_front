@@ -5,7 +5,7 @@
       <li class="nav-item">
         <NuxtLink
           class="nav-link"
-          :class="{ active: $route.fullPath.includes('/question') }"
+          :class="{ active: $route.fullPath.includes('/registquestionreply') }"
           to="/class/learningBox/question"
           >질문함</NuxtLink
         >
@@ -82,31 +82,13 @@
                 </tr>
               </thead>
               <tbody>
-                <!-- <tr>
+                <tr v-if="fileList.length === 0">
                   <td colspan="6">
                     <span class="exp_txt">마우스로 파일을 끌어오세요</span>
                   </td>
-                </tr> -->
-
-                <tr>
-                  <td>
-                    <div class="custom-control custom-checkbox form-inline">
-                      <input
-                        id="chk01"
-                        type="checkbox"
-                        class="custom-control-input"
-                      />
-                      <label class="custom-control-label" for="chk01"></label>
-                    </div>
-                  </td>
-                  <td class="table001">영어리딩심화.pdf</td>
-                  <td></td>
-                  <td>4MB</td>
-                  <td>대용량첨부</td>
-                  <td>~22/08/01(30일간)</td>
                 </tr>
 
-                <tr>
+                <tr v-for="(item, idx) in fileList" v-else :key="idx">
                   <td>
                     <div class="custom-control custom-checkbox form-inline">
                       <input
@@ -147,13 +129,24 @@
         </div>
       </div>
     </div>
+
+    <ModalDesc
+      :open="modalDesc.open"
+      :title="modalDesc.title"
+      :desc="modalDesc.desc"
+      @close="onCloseModalDesc"
+    />
   </div>
 </template>
 
 <script>
 import { apiLeaningBox } from '~/services'
+import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 export default {
   name: 'Reply',
+  components: {
+    ModalDesc,
+  },
   data() {
     return {
       questionData: {
@@ -167,6 +160,16 @@ export default {
       answer: {
         qbaTitle: '',
         qbaDescription: '',
+      },
+
+      // 첨부파일 목록
+      fileList: [],
+
+      // 모달
+      modalDesc: {
+        open: false,
+        title: '',
+        desc: '',
       },
 
       // vueEditor
@@ -209,42 +212,51 @@ export default {
     },
     // 답변 등록
     async postRegistAnswer() {
+      // const file = {
+      //   qbat_end_date: '2023-01-02T01:24:29.366Z',
+      //   qbat_file: 'string',
+      //   qbat_idx: 0,
+      //   qbat_size: 0,
+      // }
+
       const payload = {
-        answerdto: [
-          {
-            csm_idx: 0,
-            cstm_idx: 0,
-            fra_code: this.fra_code,
-            icu_idx: 0,
-            ins_code: this.ins_code,
-            itm_idx: 0,
-            mem_idx: 0,
-            qba_idx: 0,
-            qbat_end_date: '2022-12-29T05:09:45.858Z',
-            qbat_file: 'string',
-            qbat_size: 0,
-            qtb_idx: 0,
-            std_idx: 0,
-          },
-        ],
-        fileCheck: true,
-        ins_code: 'string',
+        answerdto: this.fileList,
+        fileCheck: this.fileList.length !== 0,
+        ins_code: this.ins_code,
         qba_description: this.answer.qbaDescription,
-        qba_idx: 0,
-        qba_open_yn: 'Y',
+        // qba_idx: 0,
+        qba_open_yn: this.$route.query.open_yn,
         qba_title: this.answer.qbaTitle,
         qtb_idx: this.qtbIdx,
       }
       console.log(payload)
+      console.log(this.$route.query.open_yn)
 
       if (this.answer.qbaTitle !== '' && this.answer.qbaDescription === '') {
         await apiLeaningBox
           .postRegistAnswer(payload)
-          .then(() => {})
+          .then(() => {
+            this.$router.push(`/class/learningBox/question`)
+            this.openModalDesc('등록 성공', '답변을 등록했습니다.')
+          })
           .catch((err) => {
             console.log(err)
           })
+      } else {
+        this.openModalDesc('등록 실패', '답변을 작성해주세요.')
       }
+    },
+
+    // 모달
+    openModalDesc(tit, msg) {
+      this.modalDesc = {
+        open: true,
+        title: tit,
+        desc: msg,
+      }
+    },
+    onCloseModalDesc() {
+      this.modalDesc.open = false
     },
   },
 }

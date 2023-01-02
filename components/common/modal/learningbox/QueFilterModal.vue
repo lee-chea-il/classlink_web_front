@@ -95,30 +95,28 @@
                             class="custom-control custom-checkbox form-inline"
                           >
                             <input
-                              id="chkMore01all"
+                              id="subjectAll"
                               type="checkbox"
                               class="custom-control-input"
                               checked
                             />
-                            <label
-                              class="custom-control-label"
-                              for="chkMore01all"
+                            <label class="custom-control-label" for="subjectAll"
                               >전체</label
                             >
                           </div>
                         </li>
-                        <li>
+                        <li v-for="(item, idx) in 2" :key="idx">
                           <div
                             class="custom-control custom-checkbox form-inline"
                           >
                             <input
-                              id="chkMore0101"
+                              :id="`subject${idx}`"
                               type="checkbox"
                               class="custom-control-input"
                             />
                             <label
                               class="custom-control-label"
-                              for="chkMore0101"
+                              :for="`subject${idx}`"
                               >영어</label
                             >
                           </div>
@@ -158,62 +156,28 @@
                             class="custom-control custom-checkbox form-inline"
                           >
                             <input
-                              id="chkMore01all"
+                              id="lectureAll"
                               type="checkbox"
                               class="custom-control-input"
                               checked
                             />
-                            <label
-                              class="custom-control-label"
-                              for="chkMore01all"
+                            <label class="custom-control-label" for="lectureAll"
                               >전체</label
                             >
                           </div>
                         </li>
-                        <li>
+                        <li v-for="(item, idx) in 2" :key="idx">
                           <div
                             class="custom-control custom-checkbox form-inline"
                           >
                             <input
-                              id="chkMore0101"
+                              :id="`lecture${idx}`"
                               type="checkbox"
                               class="custom-control-input"
                             />
                             <label
                               class="custom-control-label"
-                              for="chkMore0101"
-                              >영어리딩기초</label
-                            >
-                          </div>
-                        </li>
-                        <li>
-                          <div
-                            class="custom-control custom-checkbox form-inline"
-                          >
-                            <input
-                              id="chkMore0101"
-                              type="checkbox"
-                              class="custom-control-input"
-                            />
-                            <label
-                              class="custom-control-label"
-                              for="chkMore0101"
-                              >영어리딩기초</label
-                            >
-                          </div>
-                        </li>
-                        <li>
-                          <div
-                            class="custom-control custom-checkbox form-inline"
-                          >
-                            <input
-                              id="chkMore0101"
-                              type="checkbox"
-                              class="custom-control-input"
-                            />
-                            <label
-                              class="custom-control-label"
-                              for="chkMore0101"
+                              :for="`lecture${idx}`"
                               >영어리딩기초</label
                             >
                           </div>

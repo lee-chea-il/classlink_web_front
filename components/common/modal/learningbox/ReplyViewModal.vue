@@ -82,7 +82,11 @@
           <!-- div class="modal-body" -->
           <div class="modal-footer">
             <NuxtLink
-              to="/class/learningBox/regist/question/reply"
+              v-if="
+                userPermission.includes('I') ||
+                data.answerList.mem_idx === $store.state.common.user.mem_idx
+              "
+              to="/class/learningBox/updatequestionreply"
               class="btn btn_crud_point"
               >수정</NuxtLink
             >
@@ -107,6 +111,10 @@ export default {
     data: {
       type: Object,
       default: () => {},
+    },
+    userPermission: {
+      type: Array,
+      default: () => [],
     },
   },
   data() {

@@ -251,10 +251,12 @@
       :open="openQuestionViewModal.open"
       :data="questionData"
       @close="onCloseQuestionViewModal"
+      @move="onMoveQuestionReply"
     />
     <ReplyViewModal
       :open="openReplyViewModal.open"
       :data="answerData"
+      :userPermission="userPermission"
       @close="onCloseReplyViewModal"
     />
 
@@ -287,6 +289,7 @@ export default {
   data() {
     return {
       ins_code: this.$store.state.common.user.ins_code,
+      userPermission: this.$store.state.common.user.idt_name,
 
       openQueFilterModal: {
         open: false,
@@ -409,7 +412,7 @@ export default {
         ins_code: `ins_code=${this.ins_code}`,
         keyword: this.search === '' ? '' : `&keyword=${this.search}`,
         lec_idx: `&lec_idx=${1}`,
-        per_page_num: `&per_page_num=${8}`,
+        per_page_num: `&per_page_num=${10}`,
       }
 
       await apiLeaningBox
@@ -519,6 +522,25 @@ export default {
         this.allCheck = true
       }
       console.log(this.checkList)
+    },
+
+    // 답변 등록으로 이동
+    onMoveQuestionReply(data) {
+      console.log(
+        this.askingboxList.find(
+          (e) => e.questionvo.qtb_idx === data.selectQuestionBox.qtb_idx
+        )
+      )
+      console.log(data.selectQuestionBox.qtb_idx)
+      this.$router.push(
+        `/class/learningBox/registquestionreply/${
+          data.selectQuestionBox.qtb_idx
+        }?open_yn=${
+          this.askingboxList.find(
+            (e) => e.questionvo.qtb_idx === data.selectQuestionBox.qtb_idx
+          ).questionvo.qtb_open_yn
+        }`
+      )
     },
   },
 }

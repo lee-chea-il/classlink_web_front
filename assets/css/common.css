@@ -8911,6 +8911,23 @@ a {
   overflow-y: auto;
 }
 
+/* (완)선생님관리.html
+리스트 수정 */
+.ac_manage_tch .tc_active {
+  border-radius: 10px;
+  width: 16px;
+  height: 16px;
+  background: #4FCED0;
+  margin-top: 5px;
+}
+.ac_manage_tch .tc_inactive {
+  border-radius: 10px;
+  width: 16px;
+  height: 16px;
+  background: #D1D3D4;
+  margin-top: 5px;
+}
+
 /* 출결관리-학생출결.html */
 /*  동명이인 검색 결과 - 팝업
  [개발참조]: 동명이인이 있는 경우 출력되는 팝업창 */
@@ -16053,6 +16070,17 @@ a {
   margin-bottom: 40px;
   display: flex;
   justify-content: center;
+}
+.ac_manage_taskregi .reply_onoff {
+  text-align: center;
+  margin-top: 20px;
+  background: #F9F9FC;
+  padding: 10px 0px;
+}
+.ac_manage_taskregi .reply_onoff label {
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 23px;
 }
 
 /* 강의계획서 미리보기/열람 상세보기 (팝업 L) */

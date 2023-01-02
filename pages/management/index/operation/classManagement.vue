@@ -14,7 +14,7 @@
 
     <div class="tab-content depth03 ac_manage_cls">
       <!-- [개발참조] 등록된 학생이 없는 경우 -->
-      <div v-if="classList.length === 0" class="nothing_txt">
+      <div v-if="classListB.length === 0" class="nothing_txt">
         <div class="txt">
           등록된 반이 없습니다.<br />
           먼저 반을 등록해주세요.
@@ -179,6 +179,7 @@
               animation="200"
               draggable=".classList"
               handle=".icons_move_off"
+              @start="onStart"
               @change="onDrop"
             >
               <tr v-for="(item, idx) in classList" :key="idx" class="classList">
@@ -534,6 +535,8 @@ export default {
       ins_code: this.$store.state.common.user.ins_code,
       fra_code: this.$store.state.common.user.fra_code,
 
+      orderList: [],
+
       // 반 등록 반이름
       className: '',
       // 반 등록 반 선생님 검색
@@ -645,29 +648,39 @@ export default {
   },
   methods: {
     // 드래그 앤 드롭 기능
-
+    onStart() {
+      const order_list = []
+      for (let i = this.classList.length - 1; i >= 0; i--) {
+        const order = {
+          csm_idx: this.classList[i].csm_idx,
+          csm_display_no: this.classList[i].csm_display_no,
+        }
+        order_list.push(order)
+      }
+      this.orderList = order_list
+    },
     onDrop(evt) {
       console.log(evt.moved)
       console.log(
-        evt.moved.element.csm_display_no,
+        'csm_idx',
         evt.moved.element.csm_idx,
-        this.classList[evt.moved.newIndex - 1]?.csm_display_no
+        'index',
+        this.classList.length - evt.moved.oldIndex,
+        'update_index',
+        this.classList.length - evt.moved.newIndex
       )
       console.log(this.classList)
-      // item.list = list
-      // if (element.moved !== evt.newDraggableIndex) {
-      // console.log(
-      //   '이전',
-      //   evt.oldDraggableIndex,
-      //   this.classList[evt.oldDraggableIndex].csm_display_no
-      // )
-      // console.log('이후', evt.newDraggableIndex)
-      // this.getChangeOrder(
-      //   evt.moved.element.csm_display_no,
-      //   evt.moved.element.csm_idx,
-      //   this.classList[evt.moved.oldIndex].csm_display_no
-      // )
-      // }
+
+      if (evt.moved.oldIndex !== evt.moved.newIndex) {
+        this.putChangeOrder(
+          evt.moved.element.csm_idx,
+          this.classList.length - evt.moved.oldIndex,
+          this.classList.length - evt.moved.newIndex,
+          this.orderList
+        )
+
+        this.orderList = []
+      }
     },
 
     // 반 리스트 api
@@ -679,7 +692,6 @@ export default {
         show_count: this.showCount === 1 ? '' : `&show_count=${this.showCount}`,
         tch_idx: this.tchIdx === 0 ? '' : `&tch_idx=${this.tchIdx}`,
       }
-
       await apiOperation
         .getClassList(this.ins_code, payload)
         .then(({ data: { data } }) => {
@@ -687,20 +699,29 @@ export default {
           this.endPage = data.pageMaker.end_page
           this.next = data.pageMaker.next
           this.prev = data.pageMaker.prev
+
+          if (this.classListB.length === 0) {
+            this.getClassListCheck()
+          }
         })
         .catch((err) => {
           console.log(err)
         })
     },
+    getClassListCheck() {
+      this.classListB = this.classList
+    },
 
     // 반 목록 이동
-    async getChangeOrder(display, idx, update) {
+    async putChangeOrder(csmIdx, indexNum, update, orderList) {
       const payload = {
-        csm_display_no: display,
-        csm_idx: idx,
-        update_order_no: update,
+        csm_idx: csmIdx,
+        index: indexNum,
+        ins_code: this.ins_code,
+        order_list: orderList,
+        update_index: update,
       }
-      console.log(payload.update_order_no)
+      console.log(orderList)
       if (
         this.cond === true &&
         this.searchText === '' &&
@@ -708,7 +729,7 @@ export default {
         this.tchIdx === 0
       ) {
         await apiOperation
-          .getChangeOrder(payload)
+          .putChangeOrder(payload)
           .then(({ data: { data } }) => {
             console.log(data)
             this.getClassList()
@@ -719,7 +740,7 @@ export default {
       }
     },
 
-    // 상세 api
+    // 반 상세 api
     async getClassDetail(csm_idx, classroom) {
       this.onInitDetailFilterSearch()
 
@@ -743,7 +764,7 @@ export default {
         .then(({ data: { data } }) => {
           console.log(data)
           this.modalDetailMore = null
-          this.classInfo = data.dtoList
+          this.classInfo = data.dto_list
 
           this.detailEndPage = data.pageMaker.end_page
           this.openClassDetailModal.class = classroom
@@ -757,7 +778,7 @@ export default {
     // 상세모달 학생검색/필터 api
     async onSearchFilterDetail() {
       const payload = {
-        csm_idx: this.csmIdx,
+        csm_idx: `&csm_idx=${this.csmIdx}`,
         ins_code: this.ins_code,
         search: this.detailSearch === '' ? '' : `&search=${this.detailSearch}`,
         filter: this.detailFilter === 1 ? '' : `&filter=${this.detailFilter}`,
@@ -775,7 +796,7 @@ export default {
         .then(({ data: { data } }) => {
           console.log(data)
           this.modalDetailMore = null
-          this.classInfo = data.dtoList
+          this.classInfo = data.dto_list
         })
         .catch((err) => {
           console.log(err)
@@ -1560,6 +1581,7 @@ export default {
     // 반 펴기
     onClickOpenDetail(idx) {
       if (this.modalMoveDetail === idx) {
+        // this.modalMoveDetail.filter((item) => item !== idx)
         this.modalMoveDetail = null
       } else {
         this.modalMoveDetail = idx
@@ -1646,12 +1668,13 @@ export default {
           banList.push(ban)
           for (
             let j = 0;
-            j < this.selectedMoveToClassCheckboxRight[i].studentList.length;
+            j < this.selectedMoveToClassCheckboxRight[i].student_list.length;
             j++
           ) {
             const studentInfo = {
               mem_idx:
-                this.selectedMoveToClassCheckboxRight[i].studentList[j].mem_idx,
+                this.selectedMoveToClassCheckboxRight[i].student_list[j]
+                  .mem_idx,
             }
             banStudent.push(studentInfo)
           }
@@ -1675,12 +1698,12 @@ export default {
 
           for (
             let j = 0;
-            j < this.selectedMoveToClassCheckbox[i].studentList.length;
+            j < this.selectedMoveToClassCheckbox[i].student_list.length;
             j++
           ) {
             const studentInfo = {
               mem_idx:
-                this.selectedMoveToClassCheckbox[i].studentList[j].mem_idx,
+                this.selectedMoveToClassCheckbox[i].student_list[j].mem_idx,
             }
             banStudent.push(studentInfo)
           }
@@ -1791,6 +1814,7 @@ export default {
         this.selectedMoveModalRightCheckbox.find(
           (e) => e.mem_idx === items.mem_idx
         )?.mem_idx === items.mem_idx
+        // this.selectedMoveModalRightCheckbox.some((e) => e.csm_idx === csmIdx)
       ) {
         this.selectedMoveModalRightCheckbox =
           this.selectedMoveModalRightCheckbox.filter(
