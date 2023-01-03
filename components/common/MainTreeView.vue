@@ -16,6 +16,7 @@
     @more-menu-view="moreMenuView"
     @more-menu-dell="moreMenuDell"
     @more-menu-copy="copyData"
+    @add-node="addFolder"
     @leaf-name-click="$emit('un-active')"
     @click="$emit('un-active')"
     @drag-start="$emit('un-active')"
@@ -29,16 +30,13 @@
 
 <script>
 import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
+import { apiData } from '~/services'
 export default {
   name: 'MainTreeView',
   components: {
     VueTreeList,
   },
   props: {
-    dataList: {
-      type: Array,
-      default: () => [],
-    },
     editable: {
       type: Boolean,
       default: true,
@@ -72,46 +70,105 @@ export default {
     return {
       datas: new Tree(false, []),
       pid: this.pidNum,
+      deleteList:[],
     }
-  },
-  mounted() {
-    const dataMapping = (data, isReadOnly) => {
-      const result = []
-      const len = data.length
-      for (let i = 0; i < len; i++) {
-        const newStr = JSON.stringify(data[i])
-        const nObj = JSON.parse(newStr)
-        nObj.treeViewId = nObj.id
-        nObj.id = this.pid
-        nObj.pid = this.pid
-        nObj.isChecked = false
-        nObj.readOnly = isReadOnly
-        nObj.active = false
-        nObj.name = nObj.title
-        nObj.type = this.setType(nObj.datatable_type)
-        // if(nObj.group_yn){
-        // API연동 후 변경 예정
-        if (nObj.children !== undefined) {
-          nObj.isLeaf = false
-          result[i] = nObj
-          this.pid++
-          if (nObj.children) {
-            result[i].children = dataMapping(nObj.children, isReadOnly)
-          }
-        } else {
-          nObj.isLeaf = true
-          result[i] = nObj
-          this.pid++
-        }
-      }
-      return result
-    }
-    this.datas = new Tree(
-      !this.editable,
-      dataMapping(this.dataList, !this.editable)
-    )
   },
   methods: {
+    async addFolder(node) {
+      await apiData
+        .addFolderTreeViewList( this.addFolderData(node) )
+        .then(({ data: { data } }) => {
+          if(data){
+            this.$emit(`tree-view-${this.treeViewType.toLowerCase()}`)
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    addFolderData(node){
+      if(this.treeViewType==="ID"){
+        return {
+          datatable_type: this.treeViewType,
+          ins_idx: "1",
+          parent_id: node.target.treeViewId,
+          title: '새 폴더'
+        }
+      }else if(this.treeViewType==="FD"){
+        return {
+          datatable_type: this.treeViewType,
+          fra_idx: "1",
+          parent_id: node.target.treeViewId,
+          title: '새 폴더'
+        }
+      }else if(this.treeViewType==="OD"){
+        return {
+          datatable_type: this.treeViewType,
+          fra_idx: "1",
+          parent_id: node.target.treeViewId,
+          title: '새 폴더'
+        }
+      }else{
+        return {
+          datatable_type: this.treeViewType,
+          mem_idx: 11,
+          parent_id: node.target.treeViewId,
+          title: '새 폴더'
+        }
+      }
+    },
+    deleteFolder(ids) {
+      const payload = `${this.treeViewType}/${ids}`
+      apiData
+        .deleteFolderTreeViewList(payload) /* {
+          /* treeinfo_list:this.deleteList * /
+          datatable_type:this.treeViewType,
+          treeinfo_idx:5
+        } ) */
+        .then(({ data: { data } }) => {
+          if(data){
+            this.$emit(`tree-view-${this.treeViewType.toLowerCase()}`)
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    setData(dataList){
+      const dataMapping = (data, isReadOnly) => {
+        const result = []
+        const len = data.length
+        for (let i = 0; i < len; i++) {
+          const nObj = data[i]
+          nObj.treeViewId = nObj.id
+          nObj.id = this.pid
+          nObj.pid = this.pid
+          nObj.isChecked = false
+          nObj.readOnly = isReadOnly
+          nObj.active = false
+          nObj.name = nObj.title
+          nObj.type = this.treeViewType
+
+          if (nObj.group_yn) {
+            nObj.isLeaf = false      
+            result[i] = nObj
+            this.pid++
+            if(nObj.children) {
+              result[i].children = dataMapping(nObj.children, isReadOnly)
+            }
+          } else {
+            nObj.isLeaf = true
+            result[i] = nObj
+            this.pid++
+          }
+        }
+        return result
+      }
+      this.datas = new Tree(
+        !this.editable,
+        dataMapping(dataList, !this.editable)
+      )
+    },
     setType(type) {
       let newType = ''
       switch (type) {
@@ -300,21 +357,33 @@ export default {
     },
 
     delData() {
+      this.deleteList=[]
+      const deleteList=this.deleteList
+      this.$emit('un-active')
+
       function _dell(oldNode) {
-        if (
-          !oldNode.isChecked &&
-          oldNode.children &&
-          oldNode.children.length > 0
-        ) {
-          for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            _dell(oldNode.children[len - i - 1])
-          }
-        }
         if (oldNode.isChecked) {
-          oldNode.remove()
+          deleteList.push(oldNode.treeViewId)
+        }
+        if (oldNode.children && oldNode.children.length > 0) {
+          for (let i = 0, len = oldNode.children.length; i < len; i++) {
+            _dell(oldNode.children[i])
+          }
         }
       }
       _dell(this.datas)
+      const len=this.deleteList.length
+      if(len>0){
+        let deleteStr = ''
+        for (let i = 0; i < len; i++) {
+          if(i<len-1){
+            deleteStr+=this.deleteList[i]+'-'
+          }else{
+            deleteStr+=this.deleteList[i]
+          }
+        }
+        this.deleteFolder(deleteStr)
+      }
     },
 
     moreMenu({ e }) {

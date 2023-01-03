@@ -10,8 +10,7 @@
       <TreeView
         ref="mydata"
         treeViewType="MD"
-        :expanded="false"
-        :dataList="myDataList"
+        :expanded="true"
         identity="master"
         :pidNum="2000"
         :isHideDownload="pageType === 'reference' ? true : false"
@@ -21,6 +20,7 @@
         @download-data="$emit('download-data', $event)"
         @un-active="$emit('un-active')"
         @get-savepath="$emit('get-savepath', $event)"
+        @tree-view-md="$emit('tree-view-md')"
       />
     </div>
     <!-- /.탭 내용01 -->

@@ -73,22 +73,45 @@ const deleteData = async (data) => {
   return await http.delete('/api/v1/prepare-class/dataroom/data', { data })
 }
 
+// 트리뷰 리스트 가져오기
+const getTreeViewList = async (payload) => {
+  return await http.get(
+    `/api/v1/prepare-class/dataroom/tree-view-list?type=${payload.type}`
+  )
+}
+
+// 트리뷰에 폴더 생성
+const addFolderTreeViewList = async (payload) => {
+  return await http.post(
+    '/api/v1/prepare-class/dataroom/tree-view-list/folder', payload
+  )
+}
+
+// 트리뷰에 폴더 삭제
+const deleteFolderTreeViewList = async (payload) => {
+  // console.log('-------- MD/1-2-3 ',payload)
+  return await http.delete(`/api/v1/prepare-class/dataroom/tree-view-list/folder/${payload}`)
+}
+
 const apiData = {
   getYoutubeData,
   getServerUrl,
   getDataroomFile,
   getDataroomQuiz,
   getDataroomNoteExam,
+  getTreeViewList,
 
   postDataroomFile,
   postDataroomQuiz,
   postDataroomNoteExam,
+  addFolderTreeViewList,
 
   updateDataroomFile,
   updateDataroomQuiz,
   updateDataroomNoteExam,
 
   deleteData,
+  deleteFolderTreeViewList,
 }
 
 export default apiData

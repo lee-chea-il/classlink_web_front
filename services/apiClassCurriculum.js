@@ -16,7 +16,7 @@ const addFolderTreeViewList = async (payload) => {
 
 // 트리뷰에 폴더 삭제
 const deleteFolderTreeViewList = async (payload) => {
-  console.log('-------- MD/1-2-3 ',payload)
+  // console.log('-------- MD/1-2-3 ',payload)
   return await http.delete(`/api/v1/prepare-class/curriculum/tree-view-list/folder/${payload}`)
 }
 

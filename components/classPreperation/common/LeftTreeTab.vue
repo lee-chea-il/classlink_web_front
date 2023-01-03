@@ -10,7 +10,6 @@
       <TreeView
         ref="institution"
         treeViewType="ID"
-        :dataList="institutionData"
         :editable="identity == 'master' ? true : false"
         :identity="identity"
         :pidNum="0"
@@ -21,6 +20,7 @@
         @download-data="$emit('download-data', $event)"
         @un-active="$emit('un-active')"
         @get-savepath="$emit('get-savepath', $event)"
+        @tree-view-id="$emit('tree-view-id')"
       />
     </div>
     <!-- /.탭 내용01 -->
@@ -34,7 +34,6 @@
       <TreeView
         ref="franchise"
         treeViewType="FD"
-        :dataList="franchiseData"
         :editable="identity == 'master' ? true : false"
         :identity="identity"
         :pidNum="1000"
@@ -45,6 +44,7 @@
         @download-data="$emit('download-data', $event)"
         @un-active="$emit('un-active')"
         @get-savepath="$emit('get-savepath', $event)"
+        @tree-view-fd="$emit('tree-view-fd')"
       />
     </div>
     <!-- /.탭 내용02 -->
@@ -69,6 +69,7 @@
         @download-data="$emit('download-data', $event)"
         @un-active="$emit('un-active')"
         @get-savepath="$emit('get-savepath', $event)"
+        @tree-view-od="$emit('tree-view-od')"
       />
     </div>
     <!-- /.탭 내용03 -->
@@ -84,14 +85,6 @@ export default {
     TreeView,
   },
   props: {
-    institutionData: {
-      type: Array,
-      default: () => [],
-    },
-    franchiseData: {
-      type: Array,
-      default: () => [],
-    },
     openData: {
       type: Array,
       default: () => [],

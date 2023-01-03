@@ -17,6 +17,8 @@
         @update-data="$emit('update-data', $event)"
         @un-active="unActive"
         @get-savepath="$emit('get-savepath', $event)"
+        @tree-view-id="$emit('tree-view-id')"
+        @tree-view-fd="$emit('tree-view-fd')"
       />
       <!-- /.탭 컨텐츠 -->
     </div>
@@ -36,6 +38,7 @@
         @update-data="$emit('update-data', $event)"
         @un-active="unActive"
         @get-savepath="$emit('get-savepath', $event)"
+        @tree-view-md="$emit('tree-view-md')"
       />
       <!-- /.탭 컨텐츠 -->
     </div>

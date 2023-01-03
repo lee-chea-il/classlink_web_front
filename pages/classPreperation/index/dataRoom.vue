@@ -25,15 +25,15 @@
           ref="mainEducation"
           pageType="reference"
           :identity="identity"
-          :institutionData="receiveInstitutionData"
-          :franchiseData="receiveFranchiseData"
-          :openData="receiveOpenData"
-          :myDataList="receiveMyData"
           @open-data="onClickView"
           @copyDataCallBack="copyDataCallBack"
           @download-data="downloadSelectData"
           @update-data="updateSelectData"
           @get-savepath="getSavePath"
+          @tree-view-id="getInsTreeViewList"
+          @tree-view-fd="getFranTreeViewList"
+          @tree-view-od="getPublicTreeViewList"
+          @tree-view-md="getMyTreeViewList"
         />
         <!-- /.2단 분류 컨텐츠 -->
       </div>
@@ -356,8 +356,74 @@ export default {
       registrant_name: user.mem_name,
     }
     this.referenceData = jsonItem(this.initReferenceData)
+    setTimeout(()=>{
+      this.getInsTreeViewList()
+      this.getFranTreeViewList()
+      this.getMyTreeViewList()
+      /*
+      api 미작업 상태
+      this.getPublicTreeViewList()
+      */
+    },300)
   },
   methods: {
+    async getInsTreeViewList() {
+      await apiData
+        .getTreeViewList({type: "ID"})
+        .then(({ data: { data } }) => {
+          this.setInsTreeViewData(data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    setInsTreeViewData(data){
+      this.$refs.mainEducation.$refs.education.$refs.institution.setData(data)
+    },
+
+    async getFranTreeViewList() {
+      await apiData
+        .getTreeViewList({type: "FD"})
+        .then(({ data: { data } }) => {
+          this.setFranTreeViewData(data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    setFranTreeViewData(data){
+      this.$refs.mainEducation.$refs.education.$refs.franchise.setData(data)
+    },
+
+    async getMyTreeViewList() {
+      console.log("---getMyTreeViewList-   ")
+      await apiData
+        .getTreeViewList({type: "MD"})
+        .then(({ data: { data } }) => {
+          this.setMyTreeViewData(data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    setMyTreeViewData(data){
+      this.$refs.mainEducation.$refs.myData.$refs.mydata.setData(data)
+    },
+
+    async getPublicTreeViewList() {
+      await apiData
+        .getTreeViewList({type: "OD"})
+        .then(({ data: { data } }) => {
+          this.setPublicTreeViewData(data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    setPublicTreeViewData(data){
+      console.log(data)
+      // this.$refs.mainEducation.$refs.myData.$refs.mydata.setData(data)
+    },
     // 일반용
     // 일반용
     // 등록 자료 내용 변경

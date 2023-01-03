@@ -70,7 +70,15 @@ export default {
     }
   },
   methods: {
+    /* addFolder(node){
+      console.log(node)
+      console.log('---  1  -',this.$store.state.common.user)
+      console.log('---  2  -',this.$store.state.common.user.ins_idx)
+      console.log('---  3  -',this.$store.state.common.user.fra_idx)
+      console.log('---  3  -',this.$store.state.common.user.mem_idx)
+    }, */
     async addFolder(node) {
+      /* this.$store.state.common.user */
       await apiClassCurriculum
         .addFolderTreeViewList( this.addFolderData(node) )
         .then(({ data: { data } }) => {
@@ -86,21 +94,21 @@ export default {
       if(this.treeViewType==="ID"){
         return {
           datatable_type: this.treeViewType,
-          ins_idx: "12345678",
+          ins_idx: "1",
           parent_id: node.target.treeViewId,
           title: '새 폴더'
         }
       }else if(this.treeViewType==="FD"){
         return {
           datatable_type: this.treeViewType,
-          fra_idx: "11111111",
+          fra_idx: "1",
           parent_id: node.target.treeViewId,
           title: '새 폴더'
         }
       }else{
         return {
           datatable_type: this.treeViewType,
-          mem_idx: 253,
+          mem_idx: 11,
           parent_id: node.target.treeViewId,
           title: '새 폴더'
         }
