@@ -80,22 +80,24 @@
                     <td>
                       <div class="custom-control custom-checkbox form-inline">
                         <input
-                          :id="item.id"
+                          :id="`stu_${item.vo.mem_idx}`"
                           type="checkbox"
                           class="custom-control-input"
                           @input="$emit('check-family', $event)"
                         />
                         <label
                           class="custom-control-label"
-                          :for="item.id"
+                          :for="`stu_${item.vo.mem_idx}`"
                         ></label>
                       </div>
                     </td>
-                    <td>{{ item.name }}</td>
-                    <td class="id">{{ item.account }}</td>
-                    <td>{{ item.phone }}</td>
-                    <td>{{ item.gender }}</td>
-                    <td>-</td>
+                    <td>{{ item.vo.mem_name }}</td>
+                    <td class="id">{{ item.vo.mem_id }}</td>
+                    <td>{{ item.vo.mem_phone }}</td>
+                    <td>
+                      {{ item.vo.mem_sex === 'M' ? '남자' : '여자' }}
+                    </td>
+                    <td>{{ item.age }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -110,7 +112,7 @@
           >
             등록
           </button>
-          <button class="btn btn_crud_default" data-dismiss="modal">
+          <button class="btn btn_crud_default" data-dismiss="modal" >
             취소
           </button>
         </div>

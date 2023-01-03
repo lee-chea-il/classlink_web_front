@@ -1,39 +1,37 @@
 <template>
-  <div id="content" class="content">
-    <div class="content_area">
-      <!--  3Depth -->
-      <ul class="nav nav-tabs depth03">
-        <li class="nav-item cursor">
-          <div class="nav-link active">강의계획서</div>
-        </li>
-        <li class="nav-item cursor">
-          <div class="nav-link" @click="onClickHomeWorkBox">과제함</div>
-        </li>
-        <li class="nav-item cursor">
-          <div class="nav-link" @click="onClickNoteBox">노트함</div>
-        </li>
-      </ul>
-      <LecturePlan
-        :lectureInfo="lectureInfo"
-        :syllabusList="syllabusList"
-        :allCheckBoxFlag="allCheckBoxFlag"
-        :lectureStudentCount="lectureStudentCount"
-        :currentPage="currentPage"
-        :onClickPagination="onClickPagination"
-        :deleteIdxList="deleteIdxList"
-        :endPageNumber="endPageNumber"
-        @click-plan="onClickSyllabus"
-        @change-input="onChangeInput"
-        @search-plan="searchLecturePlan"
-        @select-plan="onClickCheckBox"
-        @delete-plan="deletePlan"
-        @checked-all="selectAll"
-        @click-register="onClickRegisterLecturePlan"
-        @open-detail="openLecturePlanDetailModal"
-        @click-direction="paginationDirection"
-        @click-page="onClickPagination"
-      />
-    </div>
+  <div>
+    <!--  3Depth -->
+    <ul class="nav nav-tabs depth03">
+      <li class="nav-item cursor">
+        <div class="nav-link active">강의계획서</div>
+      </li>
+      <li class="nav-item cursor">
+        <div class="nav-link" @click="onClickHomeWorkBox">과제함</div>
+      </li>
+      <li class="nav-item cursor">
+        <div class="nav-link" @click="onClickNoteBox">노트함</div>
+      </li>
+    </ul>
+    <LecturePlan
+      :lectureInfo="lectureInfo"
+      :syllabusList="syllabusList"
+      :allCheckBoxFlag="allCheckBoxFlag"
+      :lectureStudentCount="lectureStudentCount"
+      :currentPage="currentPage"
+      :onClickPagination="onClickPagination"
+      :deleteIdxList="deleteIdxList"
+      :endPageNumber="endPageNumber"
+      @click-plan="onClickSyllabus"
+      @change-input="onChangeInput"
+      @search-plan="searchLecturePlan"
+      @select-plan="onClickCheckBox"
+      @delete-plan="deletePlan"
+      @checked-all="selectAll"
+      @click-register="onClickRegisterLecturePlan"
+      @open-detail="openLecturePlanDetailModal"
+      @click-direction="paginationDirection"
+      @click-page="onClickPagination"
+    />
     <!-- 설명 모달 -->
     <ModalDesc
       :open="modalDesc.open"
@@ -297,7 +295,6 @@ export default {
     // 강의계획서 삭제
     onClickCheckBox({ target: { id, checked } }, mem_idx) {
       if (checked) {
-        console.log(Number(id), mem_idx)
         const plan = {
           lep_idxs: Number(id),
           mem_idxs: mem_idx,

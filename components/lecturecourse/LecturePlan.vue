@@ -167,10 +167,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    searchFlag: {
-      type: Number,
-      default: 0,
-    },
     allCheckBoxFlag: {
       type: Boolean,
       default: false,

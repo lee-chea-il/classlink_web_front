@@ -4,20 +4,17 @@
       <!-- 검색 영역 -->
       <div class="search_section">
         <div class="left_area">
-          <span class="course_tit">{{ lectureCourse.subject }}</span>
-          <span class="course_con"
-            >{{ lectureCourse.lessonTitle }} / {{ lectureCourse.lessonClass }} /
-            {{ lectureCourse.teacher }}</span
+          <span class="course_tit">{{ lectureInfo.lec_title }}</span>
+          <span class="course_con">
+            {{ lectureInfo.csm_name_list }} /
+            {{ lectureInfo.mem_name }} 선생님</span
           >
         </div>
         <div class="right_area">
           <nuxt-link to="/class/lecturecourse" class="btn btn_crud_default"
-            >강의목록 보기</nuxt-link
+            >코스목록 보기</nuxt-link
           >
-          <button
-            class="btn btn_crud_default"
-            @click="$emit('delete-homework')"
-          >
+          <button class="btn btn_crud_danger" @click="$emit('delete-homework')">
             삭제
           </button>
           <div class="input-group input-search form-inline form-search">
@@ -44,7 +41,7 @@
       <!-- /.검색 영역 -->
       <!-- 테이블 영역 -->
       <!-- [개발참조] 데이터 없을 경우  -->
-      <div v-if="homeWorkList.length === 0" class="page_nodata">
+      <div v-if="taskList.length === 0" class="page_nodata">
         등록된 과제가 없습니다.
       </div>
 
@@ -74,30 +71,41 @@
               <th></th>
             </tr>
           </thead>
-          <tbody v-if="searchFlag === 0">
-            <tr v-for="(item, idx) in homeWorkList" :key="idx">
+          <tbody>
+            <tr v-for="(item, idx) in taskList" :key="idx">
               <td>
                 <div class="custom-control custom-checkbox form-inline">
                   <input
-                    :id="item.id"
+                    :id="item.hwb_idx"
                     name="chk"
                     type="checkbox"
                     class="custom-control-input"
-                    @input="$emit('select-homework', $event)"
+                    :checked="
+                      deleteIdxList
+                        .map((x) => x.hwb_idxs)
+                        .includes(item.hwb_idx)
+                    "
+                    @input="$emit('select-homework', $event, item.mem_idx)"
                   />
-                  <label class="custom-control-label" :for="item.id"></label>
+                  <label
+                    class="custom-control-label"
+                    :for="item.hwb_idx"
+                  ></label>
                 </div>
               </td>
               <td>
-                <div class="classplan_tit" @click="$emit('open-detail')">
-                  성격심리학 레슨1 과제입니다
+                <div
+                  class="classplan_tit"
+                  @click="$emit('open-detail', item.hwb_idx)"
+                >
+                  {{ item.hwb_title }}
                 </div>
               </td>
-              <td>{{ item.writer }}</td>
-              <td>{{ item.created_at }}</td>
-              <td>{{ item.open ? '공개' : '비공개' }}</td>
-              <td>{{ item.views }}</td>
-              <td>{{ item.submitted }}/{{ lectureCourse.students }}</td>
+              <td>{{ item.mem_name }}</td>
+              <td>{{ item.hwb_registration_date.substr(0, 10) }}</td>
+              <td>{{ item.hwb_open_yn ? '공개' : '비공개' }}</td>
+              <td>{{ item.hwb_view_cnt }}</td>
+              <td>{{ item.submitCount }}/{{ item.studentCount }}</td>
               <td>
                 <i
                   class="icons_zoom_off"
@@ -178,11 +186,11 @@
 export default {
   name: 'HomeWorkBox',
   props: {
-    lectureCourse: {
+    lectureInfo: {
       type: Object,
       default: () => {},
     },
-    homeWorkList: {
+    taskList: {
       type: Array,
       default: () => [],
     },
@@ -197,6 +205,10 @@ export default {
     allCheckBoxFlag: {
       type: Boolean,
       default: false,
+    },
+    deleteIdxList: {
+      type: Array,
+      default: () => [],
     },
   },
 }

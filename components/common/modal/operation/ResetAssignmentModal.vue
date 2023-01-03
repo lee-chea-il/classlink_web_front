@@ -20,94 +20,35 @@
           </button>
         </div>
         <div class="modal-body">
-          {{ studentInfo.name }} 학생을 재배정하시겠습니까?
+          <div class="reassign_tit">
+            {{ studentInfo.mem_name }} 학생을 재배정하시겠습니까?
+          </div>
 
-          <div class="class_box">
-            <div class="class_first">
-              <div v-for="(item, idx) in classList" :key="idx" class="name">
-                <div class="custom-control custom-checkbox form-inline checked">
-                  <input
-                    :id="item"
-                    type="checkbox"
-                    class="custom-control-input"
-                    @input="$emit('check-class', $event)"
-                  />
-                  <label class="custom-control-label" :for="item"></label>
-                </div>
-                <span>{{ item }}</span>
-              </div>
-            </div>
+          <ul class="class_box">
+            <li
+              v-for="(item, idx) in studentInfo.all_lecture_info"
+              :key="idx"
+              class="class_name"
+            >
+              <span class="custom-control custom-checkbox form-inline checked">
+                <input
+                  :id="`csm_${item.csm_idx}`"
+                  type="checkbox"
+                  class="custom-control-input"
+                  :checked="item.check_ban"
+                  @input="$emit('check-class', $event)"
+                />
+                <label
+                  class="custom-control-label"
+                  :for="`csm_${item.csm_idx}`"
+                ></label> </span
+              ><span>{{ item.csm_name }}</span>
+            </li>
+          </ul>
 
-            <div class="class_second">
-              <div class="name">
-                <div class="custom-control custom-checkbox form-inline checked">
-                  <input
-                    id="chk06"
-                    type="checkbox"
-                    class="custom-control-input"
-                    checked
-                  />
-                  <label class="custom-control-label" for="chk06"></label>
-                </div>
-                <span>심화 A반</span>
-              </div>
-
-              <div class="name">
-                <div class="custom-control custom-checkbox form-inline checked">
-                  <input
-                    id="chk06"
-                    type="checkbox"
-                    class="custom-control-input"
-                    checked
-                  />
-                  <label class="custom-control-label" for="chk06"></label>
-                </div>
-                <span>심화 A반</span>
-              </div>
-
-              <div class="name">
-                <div class="custom-control custom-checkbox form-inline checked">
-                  <input
-                    id="chk06"
-                    type="checkbox"
-                    class="custom-control-input"
-                    checked
-                  />
-                  <label class="custom-control-label" for="chk06"></label>
-                </div>
-                <span>심화 A반</span>
-              </div>
-
-              <div class="name">
-                <div class="custom-control custom-checkbox form-inline checked">
-                  <input
-                    id="chk06"
-                    type="checkbox"
-                    class="custom-control-input"
-                    checked
-                  />
-                  <label class="custom-control-label" for="chk06"></label>
-                </div>
-                <span>심화 A반</span>
-              </div>
-
-              <div class="name">
-                <div class="custom-control custom-checkbox form-inline checked">
-                  <input
-                    id="chk06"
-                    type="checkbox"
-                    class="custom-control-input"
-                    checked
-                  />
-                  <label class="custom-control-label" for="chk06"></label>
-                </div>
-                <span>심화 A반</span>
-              </div>
-            </div>
-            <div class="content">
-              <i class="icons_information"></i>
-              전체해제 버튼을 누른 후 재배정을 누르면 ‘배정X’반으로 이동합니다.
-            </div>
+          <div class="reassign_info">
+            <i class="icons_information"></i>
+            전체해제 버튼을 누른 후 재배정을 누르면 ‘배정X’반으로 이동합니다.
           </div>
         </div>
         <div class="modal-footer">

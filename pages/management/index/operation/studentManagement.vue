@@ -23,6 +23,10 @@
         :isStudentStatusFlag="isStudentStatusFlag"
         :searchStudentText="searchStudentText"
         :expandIdx="expandIdx"
+        :endPageNumber="endPageNumber"
+        :currentPage="currentPage"
+        @click-page="onClickPagination"
+        @click-direction="paginationDirection"
         @click-report="openReportFilterModal"
         @click-attendance="openStudentAttendanceModal"
         @click-memo="openStudentMemoModalDesc"
@@ -142,7 +146,7 @@
       @reset-input="resetFamilySearchInput"
       @search-family="searchFamily"
       @check-family="checkSelectedFamily"
-      @add-family="addFamily"
+      @add-family="registerFamily"
     />
 
     <!-- 학생재배정 - 팝업 M1 -->
@@ -151,8 +155,8 @@
       :classList="classList"
       :studentInfo="studentInfo"
       :resetClassList="resetClassList"
-      @check-class="checkResetClass"
-      @reset-check="resetAllCheck"
+      @check-class="onChangeStudentClass"
+      @reset-check="onClickNoClass"
     />
 
     <!-- 생일 날짜 선택 모달 -->
@@ -185,7 +189,7 @@
     />
 
     <!-- 비밀번호초기화 -->
-    <ResetPasswordModal @reset="onClickResetBtn" />
+    <ResetPasswordModal @reset="initPassword" />
 
     <!-- 수강정보-팝업 M1 -->
     <LectureInfoModal
@@ -338,35 +342,6 @@
       @delete="deleteStudentMemo"
       @close="onCloseDeleteStudentMemoModal"
     />
-
-    <!-- 학생 개별 등록2(학생등록완료) - 팝업 S2 -->
-    <div
-      id="modalMyinfoPop"
-      class="modal fade ac_manage_std double"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 id="exampleModalLabel" class="modal-title">학생 개별 등록</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <i class="icons_close"></i>
-            </button>
-          </div>
-          <div class="modal-body">새로운 학생이 등록되었습니다.</div>
-          <div class="modal-footer">
-            <button class="btn btn_crud_point">확인</button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 <script>
@@ -444,15 +419,10 @@ export default {
         mem_birthday: '',
         std_parent_phone: '',
         itm_acc_yn: true,
-        // family_id: null,
-        // lecture_info_dto: [],
-        // all_lecture_info: [
-        //   {
-        //     csm_name: '',
-        //     csm_idx: '',
-        //     check_ban: false,
-        //   },
-        // ],
+        std_idx: 0,
+        family_id: null,
+        lecture_info_dto: [],
+        all_lecture_info: [],
       },
       initStudent: {},
       studentList: [],
@@ -779,15 +749,22 @@ export default {
   watch: {
     // 목록
     isRangeFlag() {
+      this.currentPage = 1
       this.getStudentList()
     },
     isIdentityFlag() {
+      this.currentPage = 1
       this.getStudentList()
     },
     isStatusFlag() {
+      this.currentPage = 1
       this.getStudentList()
     },
     isStudentStatusFlag() {
+      this.currentPage = 1
+      this.getStudentList()
+    },
+    currentPage() {
       this.getStudentList()
     },
 
@@ -863,18 +840,32 @@ export default {
         .then(({ data: { data } }) => {
           console.log(data)
           this.studentList = data.dto_list
-          // if (data === null) {
-          //   this.studentList = []
-          // } else {
-          //   this.stateTrue = data.activate_count
-          //   this.stateFalse = data.deactivate_count
-          //   this.teacherList = data.dto
-          //   this.endPageNumber = data.pageMaker.end_page
-          // }
+          this.endPageNumber = data.pageMaker.end_page
         })
         .catch((err) => {
           console.log(err)
         })
+    },
+    // 정렬 필터링
+    selectRangeFlag(idx) {
+      this.isRangeFlag = idx
+    },
+    selectIdentityFlag(idx) {
+      this.isIdentityFlag = idx
+    },
+    selectStatusFlag(value) {
+      this.isStatusFlag = value
+    },
+    selectStudentStatusFlag(value) {
+      this.isStudentStatusFlag = value
+    },
+    // 학생 이름 검색
+    changeSearchInput({ target: { value } }) {
+      this.searchStudentText = value
+    },
+    searchStudent() {
+      this.currentPage = 1
+      this.getStudentList()
     },
     // 학생 상세 api
     async getStudentInfo(std_idx) {
@@ -1044,6 +1035,24 @@ export default {
     onClickStudentStatusNo() {
       this.studentInfo.itm_status = '99'
     },
+    // 학생 재배정
+    onChangeStudentClass({ target: { id, checked } }) {
+      const classIdx = this.setIdxNumber(id)
+      const index = this.studentInfo.all_lecture_info.findIndex(
+        (x) => x.csm_idx === classIdx
+      )
+      if (checked) {
+        this.studentInfo.all_lecture_info[index].check_ban = true
+      } else {
+        this.studentInfo.all_lecture_info[index].check_ban = false
+      }
+    },
+    // 학생 재배정 전체해제
+    onClickNoClass() {
+      this.studentInfo.all_lecture_info.forEach((x) => {
+        x.check_ban = false
+      })
+    },
     // 출결번호 중복체크 api
     async getAttendanceNumberCheck() {
       await apiOperation
@@ -1091,12 +1100,77 @@ export default {
     resetFamilySearchInput() {
       this.familySearchText = ''
     },
+    onClickSearchBtn() {
+      const btn = document.getElementById('modalFamilySearch')
+      btn.click()
+      this.searchFamily()
+    },
     // 일촌 검색 api
     async searchFamily() {
       await apiOperation
         .searchFamily(this.institutionIdx, this.familySearchText)
         .then(({ data: { data } }) => {
-          console.log(data)
+          this.familySearchList = data
+          console.log(this.familySearchList)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 일촌 체크
+    checkSelectedFamily({ target: { id, checked } }) {
+      const idx = this.setIdxNumber(id)
+      if (checked) {
+        this.registerFamilyList.push(idx)
+      } else {
+        const index = this.registerFamilyList.indexOf(idx)
+        this.registerFamilyList.splice(index, 1)
+      }
+      console.log(this.registerFamilyList)
+    },
+    // 일촌 등록 api
+    async registerFamily() {
+      const payload = {
+        ins_code: this.institutionIdx,
+        mem_idx_list: this.registerFamilyList,
+        std_idx: this.studentInfo.std_idx,
+      }
+      await apiOperation
+        .registerFamily(payload)
+        .then((res) => {
+          console.log(res)
+          this.getStudentInfo(this.studentInfo.std_idx)
+          this.getStudentList()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 일촌 삭제
+    onClickFamilyDeleteBtn(id) {
+      this.deleteFamilyId = id
+      this.openDeleteSimpleModalDesc('일촌 ID를 삭제하시겠습니까?')
+    },
+    // 일촌 삭제 api
+    async deleteFamily() {
+      await apiOperation
+        .deleteFamily(this.deleteFamilyId, this.studentInfo.std_idx)
+        .then(() => {
+          this.onCloseDeleteSimpleModalDesc()
+          this.getStudentInfo(this.studentInfo.std_idx)
+          this.getStudentList()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 비밀번호 초기화
+    async initPassword() {
+      await apiOperation
+        .initPassword(this.studentInfo.mem_id)
+        .then((res) => {
+          console.log(res)
+          this.openModalDesc('비밀번호 초기화', '비밀번호가 초기화되었습니다.')
         })
         .catch((err) => {
           console.log(err)
@@ -1107,26 +1181,6 @@ export default {
     checkStayRegister({ target: { checked } }) {
       this.isStayRegister = checked
     },
-
-    // searchFamily() {
-    //   if (this.familySearchText.length < 2) {
-    //     this.openModalDesc('일촌 검색', '검색어는 2글자 이상 입력해주세요.')
-    //     return false
-    //   }
-    //   const result = this.studentList.filter((elem) => {
-    //     return (
-    //       elem.name.includes(this.familySearchText) ||
-    //       elem.account.includes(this.familySearchText)
-    //     )
-    //   })
-    //   if (result.length === 0) {
-    //     this.openModalDesc('일촌 검색', '일치하는 학생이 없습니다.')
-    //     return false
-    //   } else {
-    //     this.familySearchList = result
-    //     console.log(this.familySearchList)
-    //   }
-    // },
 
     // 모달 이벤트
     openModalDesc(tit, msg) {
@@ -1153,11 +1207,13 @@ export default {
       this.isAttNumberCheck = true
     },
     onCloseStudentInfoModalDesc() {
-      Object.assign(this.studentInfo, this.initStudent)
       this.studentInfoModalDesc.open = false
-      this.selectedDate = ''
-      this.lectureDate = ''
-      this.familySearchText = ''
+      setTimeout(() => {
+        Object.assign(this.studentInfo, this.initStudent)
+        this.selectedDate = ''
+        this.lectureDate = ''
+        this.familySearchText = ''
+      }, 500)
     },
     // 학생 개별 등록
     openNewStudentInfoModalDesc() {
@@ -1166,9 +1222,12 @@ export default {
     },
     onCloseNewStudentInfoModalDesc() {
       this.newStudentInfoModalDesc.open = false
-      this.selectedDate = ''
-      this.lectureDate = ''
-      this.familySearchText = ''
+
+      setTimeout(() => {
+        this.selectedDate = ''
+        this.lectureDate = ''
+        this.familySearchText = ''
+      }, 500)
     },
     // 생년월일
     openDatePickerModalDesc() {
@@ -1353,53 +1412,7 @@ export default {
       this.studentInfo.profile_image = this.uploadImageFile
       this.uploadStudentImgModalDesc.open = false
     },
-    // 비밀번호 초기화
-    onClickResetBtn() {
-      this.openModalDesc('비밀번호 초기화', '비밀번호가 초기화되었습니다.')
-    },
 
-    checkSelectedFamily({ target: { id, checked } }) {
-      console.log(id, checked)
-      if (checked) {
-        this.registerFamilyList.push(id)
-      } else {
-        for (let i = 0; i < this.registerFamilyList.length; i++) {
-          if (this.registerFamilyList[i] === id) {
-            this.registerFamilyList.splice(i, 1)
-          }
-        }
-      }
-      console.log(this.registerFamilyList)
-    },
-    addFamily() {
-      // for (let i = 0; i < this.registerFamilyList.length; i++) {
-      const result = this.studentList.filter(
-        (elem, idx) => elem.id === Number(this.registerFamilyList[idx])
-      )
-      console.log(result)
-      const newArray = [...this.studentInfo.family, ...result]
-
-      this.studentInfo.family = Array.from(new Set(newArray))
-      // }
-      console.log(this.studentInfo.family)
-    },
-    onClickFamilyDeleteBtn(id) {
-      this.deleteFamilyId = id
-      this.openDeleteSimpleModalDesc('일촌 ID를 삭제하시겠습니까?')
-    },
-    deleteFamily() {
-      for (let i = 0; i < this.studentInfo.family.length; i++) {
-        if (this.studentInfo.family[i].id === this.deleteFamilyId) {
-          this.studentInfo.family.splice(i, 1)
-        }
-      }
-      this.deleteSimpleModalDesc.open = false
-    },
-    onClickSearchBtn() {
-      const btn = document.getElementById('modalFamilySearch')
-      btn.click()
-      this.searchFamily()
-    },
     // 학생 일괄 등록
     onClickInputFileButton() {
       const inputBtn = document.getElementById('upload-file')
@@ -1408,26 +1421,8 @@ export default {
     onXlsxFileSelected({ target }) {
       this.uploadFileName = target.files[0].name
     },
-    // 정렬 필터링
-    selectRangeFlag(idx) {
-      this.isRangeFlag = idx
-    },
-    selectIdentityFlag(idx) {
-      this.isIdentityFlag = idx
-    },
-    selectStatusFlag(value) {
-      this.isStatusFlag = value
-    },
-    selectStudentStatusFlag(value) {
-      this.isStudentStatusFlag = value
-    },
-    // 학생 이름 검색
-    changeSearchInput({ target: { value } }) {
-      this.searchStudentText = value
-    },
-    searchStudent() {
-      this.getStudentList()
-    },
+
+    // 더보기
     onClickExpandBtn(idx) {
       if (this.expandIdx.includes(idx)) {
         this.expandIdx.pop()
@@ -1770,6 +1765,23 @@ export default {
           compressPDF: true,
         },
       })
+    },
+
+    // [pagination] 숫자로 페이징
+    onClickPagination(number) {
+      this.currentPage = number
+    },
+
+    // [pagination] 방향으로 페이징
+    paginationDirection(direction) {
+      const current = this.currentPage
+      if (direction === 'plus') {
+        if (current < this.endPageNumber) {
+          this.currentPage += 1
+        }
+      } else if (current > 1) {
+        this.currentPage -= 1
+      }
     },
   },
 }

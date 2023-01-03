@@ -1,6 +1,6 @@
 <template>
-  <div id="content" class="content">
-    <div class="content_area">
+  <div>
+    <div>
       <!--  3Depth -->
       <ul class="nav nav-tabs depth03">
         <li class="nav-item cursor">
@@ -14,18 +14,19 @@
         </li>
       </ul>
       <HomeWorkBox
-        :lectureCourse="lectureCourse"
-        :homeWorkList="homeWorkList"
         :searchFlag="searchFlag"
         :searchList="searchList"
         :allCheckBoxFlag="allCheckBoxFlag"
+        :taskList="taskList"
+        :lectureInfo="lectureInfo"
+        :deleteIdxList="deleteIdxList"
         @checked-all="selectAll"
         @change-input="onChangeInput"
         @search-homework="searchHomeWork"
         @select-homework="onClickCheckBox"
         @delete-homework="deleteHomeWork"
         @click-register="onClickRegisterHomeWork"
-        @open-detail="openHomeWorkDetailModal"
+        @open-detail="onClickTask"
         @click-submission="openSubmissionStatusModal"
       />
     </div>
@@ -40,6 +41,7 @@
     <DeletePlanModal
       :open="deleteModalDesc.open"
       :title="deleteModalDesc.title"
+      @delete="deleteTask"
       @close="onCloseDeleteModalDesc"
     />
     <!-- 과제 상세 모달 -->
@@ -59,6 +61,7 @@
   </div>
 </template>
 <script>
+import { apiLectureCourse } from '~/services'
 import DeletePlanModal from '@/components/lecturecourse/DeletePlanModal.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 import HomeWorkBox from '@/components/lecturecourse/HomeWorkBox.vue'
@@ -76,6 +79,16 @@ export default {
   },
   data() {
     return {
+      // 유저 정보
+      userIdx: this.$store.state.common.user.mem_idx,
+      institutionIdx: this.$store.state.common.user.ins_code,
+      lectureIdx: this.$route.params.id,
+      // 강좌 정보
+      lectureInfo: {
+        lec_title: '',
+        csm_name_list: '',
+        mem_name: '',
+      },
       // Flag
       searchFlag: 0,
       allCheckBoxFlag: false,
@@ -173,122 +186,40 @@ export default {
           contents: '과제를 제출합니다 과제를 제출합니다요',
         },
       ],
-      homeWorkList: [
-        {
-          id: 0,
-          course_id: 0,
-          title: '성격심리학 레슨1 과제',
-          writer: '홍길동 선생님',
-          created_at: '2022.07.10',
-          open: false,
-          views: 3,
-          submitted: 3,
-          contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
-        },
-        {
-          id: 1,
-          course_id: 0,
-          title: '성격심리학 레슨1 과제',
-          writer: '김지원 선생님',
-          created_at: '2022.07.10',
-          open: true,
-          views: 4,
-          submitted: 3,
-          contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
-        },
-        {
-          id: 2,
-          course_id: 0,
-          title: '성격심리학 레슨1 과제',
-          writer: '임꺽정 선생님',
-          created_at: '2022.07.10',
-          open: false,
-          views: 0,
-          submitted: 3,
-          contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
-        },
-        {
-          id: 3,
-          course_id: 0,
-          title: '성격심리학 레슨1 과제',
-          writer: '임꺽정 선생님',
-          created_at: '2022.07.10',
-          open: true,
-          views: 2,
-          submitted: 3,
-          contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
-        },
-        {
-          id: 4,
-          course_id: 0,
-          title: '성격심리학 레슨1 과제',
-          writer: '임창정 선생님',
-          created_at: '2022.07.10',
-          open: true,
-          views: 7,
-          submitted: 3,
-          contents: '성격심리학 레슨1 과제입니다. 수업에 참고 필수',
-        },
-        {
-          id: 5,
-          course_id: 0,
-          title: '성격심리학 레슨1 과제',
-          writer: '임창정 선생님',
-          created_at: '2022.07.10',
-          open: false,
-          views: 7,
-          submitted: 3,
-          contents: '성격심리학 레슨1 과제입니다 수업에 참고 필수',
-        },
-        {
-          id: 6,
-          course_id: 0,
-          title: '성격심리학 레슨1 강의계획서',
-          writer: '임창정 선생님',
-          created_at: '2022.07.10',
-          open: false,
-          views: 8,
-          submitted: 3,
-          contents: '성격심리학 레슨1 강의계획서입니다.  수업에 참고 필수',
-        },
-        {
-          id: 7,
-          course_id: 0,
-          title: '성격심리학 레슨1 강의계획서',
-          writer: '임창정 선생님',
-          created_at: '2022.07.10',
-          open: true,
-          views: 0,
-          submitted: 3,
-          contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
-        },
-        {
-          id: 8,
-          course_id: 0,
-          title: '성격심리학 레슨1 강의계획서',
-          writer: '임창정 선생님',
-          created_at: '2022.07.10',
-          open: true,
-          views: 0,
-          submitted: 3,
-          contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
-        },
-        {
-          id: 9,
-          course_id: 0,
-          title: '성격심리학 레슨1 강의계획서',
-          writer: '김지원 선생님',
-          created_at: '2022.07.10',
-          open: true,
-          views: 0,
-          submitted: 3,
-          contents: '성격심리학 레슨1 과제입니다. 수업에 참고해 주세요',
-        },
-      ],
+      taskList: [],
+      // pagination
+      currentPage: 1,
+      endPageNumber: 0,
     }
   },
-  created() {},
+  mounted() {
+    this.getTaskList()
+  },
   methods: {
+    // 과제함 목록 api
+    async getTaskList() {
+      const payload = {
+        current_page: this.currentPage,
+        keyword: this.searchText,
+        lec_idx: this.lectureIdx,
+        ins_code: this.institutionIdx,
+        per_page_num: 10,
+      }
+      await apiLectureCourse
+        .getTaskList(payload)
+        .then(({ data: { data } }) => {
+          this.taskList = data.assignmentListvo
+          this.lectureInfo = {
+            lec_title: data.classInfo[0].lec_title,
+            csm_name_list: data.classInfo.map((x) => x.csm_name).join(', '),
+            mem_name: data.classInfo[0].mem_name,
+          }
+          this.endPageNumber = data.pageMaker.end_page
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
     // click tab-menu
     onClickLecturePlan() {
       this.$router.push(
@@ -300,13 +231,30 @@ export default {
     },
     onClickRegisterHomeWork() {
       this.$router.push(
-        `/class/lecturecourse/registerhomework/${this.$route.params.id}`
+        `/class/lecturecourse/registerhomework/${this.$route.params.id}?lecture=${this.lectureInfo.lec_title}&class=${this.lectureInfo.csm_name_list}&teacher=${this.lectureInfo.mem_name}`
       )
     },
     onClickUpdateHomeWork() {
       this.$router.push(
         `/class/lecturecourse/Updatehomework/${this.$route.params.id}`
       )
+    },
+
+    // 과제 상세 api
+    async onClickTask(hwbIdx) {
+      const payload = {
+        lec_idx: this.lectureIdx,
+        hwb_idx: hwbIdx,
+      }
+      await apiLectureCourse
+        .getTask(payload)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          this.openHomeWorkDetailModal()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
 
     // modal event
@@ -365,6 +313,7 @@ export default {
     },
     onCloseHomeWorkDetailModal() {
       this.HomeWorkDetailModalDesc.open = false
+      this.getTaskList()
     },
 
     // 과제 수정
@@ -375,40 +324,48 @@ export default {
 
     //  과제 검색
     searchHomeWork() {
-      if (this.searchText.length < 2) {
+      if (this.searchText.length === 1) {
         this.openModalDesc('과제 검색', '검색어는 2글자 이상 입력해주세요.')
         return false
       }
-      const result = this.homeWorkList.filter((elem) => {
-        return (
-          elem.title.includes(this.searchText) ||
-          elem.writer.includes(this.searchText) ||
-          elem.contents.includes(this.searchText)
-        )
-      })
-      if (result.length === 0) {
-        this.openModalDesc('과제 검색', '일치하는 과제가 없습니다.')
-        return false
-      } else {
-        this.searchFlag = 1
-        this.searchList = result
-        console.log(this.searchList)
-      }
+      this.getTaskList()
     },
 
     // 과제 삭제
-    onClickCheckBox({ target: { id, checked } }) {
+    onClickCheckBox({ target: { id, checked } }, mem_idx) {
       if (checked) {
-        console.log(id)
-        this.deleteIdxList.push(id)
+        const task = {
+          hwb_idxs: Number(id),
+          mem_idxs: mem_idx,
+        }
+        this.deleteIdxList.push(task)
+        console.log(this.deleteIdxList)
       } else {
         this.allCheckBoxFlag = false
-        for (let i = 0; i < this.deleteIdxList.length; i++) {
-          if (this.deleteIdxList[i] === id) {
-            this.deleteIdxList.splice(i, 1)
-          }
-        }
+        const index = this.deleteIdxList.findIndex(
+          (x) => x.hwb_idxs === Number(id)
+        )
+        this.deleteIdxList.splice(index, 1)
+        console.log(this.deleteIdxList)
       }
+    },
+    // 과제 삭제 api
+    async deleteTask() {
+      const payload = {
+        data: {
+          list: this.deleteIdxList,
+        },
+      }
+      await apiLectureCourse
+        .deleteTask(payload)
+        .then(() => {
+          this.getTaskList()
+          this.deleteIdxList = []
+          this.onCloseDeleteModalDesc()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
     deleteHomeWork() {
       if (this.deleteIdxList.length === 0) {

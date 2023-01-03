@@ -1002,7 +1002,9 @@
               <div v-show="!register" class="btn_left">
                 <button
                   class="btn btn_crud_default"
-                  @click="$emit('init-password')"
+                  data-dismiss="modal"
+                  data-toggle="modal"
+                  data-target="#modalPwchange"
                 >
                   비밀번호 초기화
                 </button>

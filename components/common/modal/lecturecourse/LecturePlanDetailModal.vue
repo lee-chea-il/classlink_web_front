@@ -17,9 +17,10 @@
             <div class="title_area row">
               <span class="notice_tit">제목</span>
               <span class="notice_title">{{ syllabus.lep_title }}</span>
-              <span class="notice_day02">{{
-                dateFormat(syllabus.lep_registration_date)
-              }}</span>
+              <span class="notice_day02"
+                ><span>{{ dateFormat(syllabus.lep_registration_date) }}</span
+                >(최종수정일 <span>2022.12.09</span>)
+              </span>
               <span class="notice_writer">{{ syllabus.mem_name }}</span>
             </div>
 
@@ -102,7 +103,11 @@ export default {
   },
 }
 </script>
-<style scoped></style>
+<style scoped>
+.notice_day02 {
+  width: 31% !important;
+}
+</style>
 <style lang="postcss" scoped>
 /deep/.quillWrapper {
   margin-top: 15px !important;

@@ -1,6 +1,6 @@
 <template>
-  <div id="content" class="content">
-    <div class="content_area">
+  <div>
+    <div>
       <!--  3Depth -->
       <ul class="nav nav-tabs depth03">
         <li class="nav-item cursor">

@@ -99,6 +99,19 @@ async function searchFamily(ins_code, search) {
     `/api/v1/management/operation/student/family-id?ins_code=${ins_code}&search=${search}`
   )
 }
+// 일촌 등록
+async function registerFamily(payload) {
+  return await http.post(
+    '/api/v1/management/operation/student/family-id',
+    payload
+  )
+}
+// 일촌 삭제
+async function deleteFamily(mem_idx, std_idx) {
+  return await http.delete(
+    `/api/v1/management/operation/student/family-id?mem_idx=${mem_idx}&std_idx=${std_idx}`
+  )
+}
 
 // 반관리
 // 반 목록 및 검색
@@ -197,6 +210,8 @@ const apiOperation = {
   getAttendanceNumberCheck,
   searchFamily,
   updateStudentInfo,
+  registerFamily,
+  deleteFamily,
 
   getClassList,
   getClassDetail,

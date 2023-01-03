@@ -1,289 +1,268 @@
 <template>
-  <div id="content" class="content">
-    <div class="content_area">
-      <!--  3Depth -->
-      <ul class="nav nav-tabs depth03">
-        <li class="nav-item cursor">
-          <div class="nav-link active" @click="onClickLecturePlan">
-            강의계획서
+  <div>
+    <!--  3Depth -->
+    <ul class="nav nav-tabs depth03">
+      <li class="nav-item cursor">
+        <div class="nav-link active" @click="onClickLecturePlan">
+          강의계획서
+        </div>
+      </li>
+      <li class="nav-item cursor">
+        <div class="nav-link" @click="onClickHomeWorkBox">과제함</div>
+      </li>
+      <li class="nav-item cursor">
+        <div class="nav-link" @click="onClickNoteBox">노트함</div>
+      </li>
+    </ul>
+    <div
+      class="tab-content depth03 ac_manage_notice notice_rigi ac_manage_taskregi"
+    >
+      <div class="tab-pane active">
+        <div class="left_area">
+          <div class="taskregi_tit">
+            <span class="course_tit">{{ lectureInfo.lecture }}</span>
+            <span class="course_con"
+              >{{ lectureInfo.class }} / {{ lectureInfo.teacher }} 선생님</span
+            >
           </div>
-        </li>
-        <li class="nav-item cursor">
-          <div class="nav-link" @click="onClickHomeWorkBox">과제함</div>
-        </li>
-        <li class="nav-item cursor">
-          <div class="nav-link" @click="onClickNoteBox">노트함</div>
-        </li>
-      </ul>
-      <div
-        class="tab-content depth03 ac_manage_notice notice_rigi ac_manage_taskregi"
-      >
-        <div class="tab-pane active">
-          <div class="left_area">
-            <div class="taskregi_tit">
-              <span class="course_tit">{{ lectureInfo.lecture }}</span>
-              <span class="course_con"
-                >{{ lectureInfo.class }} /
-                {{ lectureInfo.teacher }} 선생님</span
-              >
-            </div>
-          </div>
-          <ValidationObserver v-slot="{ invalid }">
-            <div class="setting_section">
-              <div class="left_section">
-                <ValidationProvider v-slot="{ errors }" rules="required">
-                  <div class="subject_area">
-                    <span class="title">제목</span>
-                    <input
-                      id="lep_title"
-                      name="제목"
-                      type="text"
-                      placeholder="제목을 입력해주세요."
-                      class="form-control form-inline"
-                      rules="required"
-                      :value="syllabus.lep_title"
-                      @input="onChangePlanInput"
-                    />
-                    <span class="content"
-                      >작성자는 자동으로 기록에 남습니다.</span
-                    >
-                    <div
-                      v-if="errors[0] !== ''"
-                      class="invalid_text text_position_title"
-                    >
-                      {{ errors[0] }}
-                    </div>
+        </div>
+        <ValidationObserver v-slot="{ invalid }">
+          <div class="setting_section">
+            <div class="left_section">
+              <ValidationProvider v-slot="{ errors }" rules="required">
+                <div class="subject_area">
+                  <span class="title">제목</span>
+                  <input
+                    id="lep_title"
+                    name="제목"
+                    type="text"
+                    placeholder="제목을 입력해주세요."
+                    class="form-control form-inline"
+                    rules="required"
+                    :value="syllabus.lep_title"
+                    @input="onChangePlanInput"
+                  />
+                  <span class="content"
+                    >작성자는 자동으로 기록에 남습니다.</span
+                  >
+                  <div
+                    v-if="errors[0] !== ''"
+                    class="invalid_text text_position_title"
+                  >
+                    {{ errors[0] }}
                   </div>
-                </ValidationProvider>
-                <div class="file_area">
-                  <span class="title">파일첨부</span>
-                  <button
-                    class="btn btn_crud_default mypc"
-                    @click="onClickFileInputBtn"
-                  >
-                    내 PC
-                  </button>
-                  <button class="btn btn_crud_default">삭제</button>
-                  <input id="upload-input" type="file" />
                 </div>
-              </div>
-              <div class="right_section">
-                <div class="date_area">
-                  <button
-                    class="btn btn_crud_default"
-                    data-toggle="modal"
-                    data-target="#modalNoticeData"
-                  >
-                    기한 설정
-                  </button>
-                  <span class="box01 box_padding">
-                    <span
-                      v-if="syllabus.lep_time_sdate !== ''"
-                      class="content02"
-                    >
-                      {{ syllabus.lep_time_sdate }} ~
-                      {{ syllabus.lep_time_edate }}
-                      {{ syllabus.time_range_start_m === 0 ? '오전' : '오후' }}
-                      {{ syllabus.lep_time_stime }} -
-                      {{ syllabus.time_range_end_m === 0 ? '오전' : '오후' }}
-                      {{ syllabus.lep_time_etime }}
-                    </span>
-                    <span v-else class="content02"> 기한을 설정해주세요. </span>
-                  </span>
-                </div>
+              </ValidationProvider>
+              <div class="file_area">
+                <span class="title">파일첨부</span>
+                <button
+                  class="btn btn_crud_default mypc"
+                  @click="onClickFileInputBtn"
+                >
+                  내 PC
+                </button>
+                <button class="btn btn_crud_default">삭제</button>
+                <input id="upload-input" type="file" />
               </div>
             </div>
-            <div class="file_list">
-              <div id="searchTable" class="search_result">
-                <table class="table table-borderless">
-                  <thead>
-                    <tr>
-                      <th scope="col">선택</th>
-                      <th scope="col">파일이름</th>
-                      <th scope="col">업로드 상태</th>
-                      <th scope="col">용량</th>
-                      <th scope="col">첨부방식(전환)</th>
-                      <th scope="col">다운로드 가능기간</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <!-- [개발참조] 첨부파일 없을때	
+            <div class="right_section">
+              <div class="date_area">
+                <button
+                  class="btn btn_crud_default"
+                  data-toggle="modal"
+                  data-target="#modalNoticeData"
+                >
+                  기한 설정
+                </button>
+                <span class="box01 box_padding">
+                  <span v-if="syllabus.lep_time_sdate !== ''" class="content02">
+                    {{ syllabus.lep_time_sdate }} ~
+                    {{ syllabus.lep_time_edate }}
+                    {{ isStartTime ? '오전' : '오후' }}
+                    {{ syllabus.lep_time_stime }} -
+                    {{ isEndTime ? '오전' : '오후' }}
+                    {{ syllabus.lep_time_etime }}
+                  </span>
+                  <span v-else class="content02"> 기한을 설정해주세요. </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="file_list">
+            <div id="searchTable" class="search_result">
+              <table class="table table-borderless">
+                <thead>
+                  <tr>
+                    <th scope="col">선택</th>
+                    <th scope="col">파일이름</th>
+                    <th scope="col">업로드 상태</th>
+                    <th scope="col">용량</th>
+                    <th scope="col">첨부방식(전환)</th>
+                    <th scope="col">다운로드 가능기간</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <!-- [개발참조] 첨부파일 없을때	
 										<td colspan="6">
 											<span class="exp_txt">마우스로 파일을 끌어오세요</span>
 										</td> -->
-                      <td>
-                        <div class="custom-control custom-checkbox form-inline">
-                          <input
-                            id="chk01"
-                            type="checkbox"
-                            class="custom-control-input"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="chk01"
-                          ></label>
-                        </div>
-                      </td>
-                      <td>영어리딩심화.pdf</td>
-                      <td></td>
-                      <td>4MB</td>
-                      <td>대용량첨부</td>
-                      <td>~22/08/01(30일간)</td>
-                    </tr>
+                    <td>
+                      <div class="custom-control custom-checkbox form-inline">
+                        <input
+                          id="chk01"
+                          type="checkbox"
+                          class="custom-control-input"
+                        />
+                        <label class="custom-control-label" for="chk01"></label>
+                      </div>
+                    </td>
+                    <td>영어리딩심화.pdf</td>
+                    <td></td>
+                    <td>4MB</td>
+                    <td>대용량첨부</td>
+                    <td>~22/08/01(30일간)</td>
+                  </tr>
 
-                    <tr>
-                      <!-- [개발참조] 첨부파일 없을때	
+                  <tr>
+                    <!-- [개발참조] 첨부파일 없을때	
 											<td colspan="6">
 												<span class="exp_txt">마우스로 파일을 끌어오세요</span>
 											</td> -->
-                      <td>
-                        <div class="custom-control custom-checkbox form-inline">
-                          <input
-                            id="chk01"
-                            type="checkbox"
-                            class="custom-control-input"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="chk01"
-                          ></label>
-                        </div>
-                      </td>
-                      <td>영어리딩심화.pdf</td>
-                      <td></td>
-                      <td>4MB</td>
-                      <td>일반첨부</td>
-                      <td>제한없음</td>
-                    </tr>
+                    <td>
+                      <div class="custom-control custom-checkbox form-inline">
+                        <input
+                          id="chk01"
+                          type="checkbox"
+                          class="custom-control-input"
+                        />
+                        <label class="custom-control-label" for="chk01"></label>
+                      </div>
+                    </td>
+                    <td>영어리딩심화.pdf</td>
+                    <td></td>
+                    <td>4MB</td>
+                    <td>일반첨부</td>
+                    <td>제한없음</td>
+                  </tr>
 
-                    <tr>
-                      <!-- [개발참조] 첨부파일 없을때	
+                  <tr>
+                    <!-- [개발참조] 첨부파일 없을때	
 												<td colspan="6">
 													<span class="exp_txt">마우스로 파일을 끌어오세요</span>
 												</td> -->
-                      <td>
-                        <div class="custom-control custom-checkbox form-inline">
-                          <input
-                            id="chk01"
-                            type="checkbox"
-                            class="custom-control-input"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="chk01"
-                          ></label>
-                        </div>
-                      </td>
-                      <td>영어리딩심화.pdf</td>
-                      <td></td>
-                      <td>4MB</td>
-                      <td>일반첨부</td>
-                      <td>제한없음</td>
-                    </tr>
+                    <td>
+                      <div class="custom-control custom-checkbox form-inline">
+                        <input
+                          id="chk01"
+                          type="checkbox"
+                          class="custom-control-input"
+                        />
+                        <label class="custom-control-label" for="chk01"></label>
+                      </div>
+                    </td>
+                    <td>영어리딩심화.pdf</td>
+                    <td></td>
+                    <td>4MB</td>
+                    <td>일반첨부</td>
+                    <td>제한없음</td>
+                  </tr>
 
-                    <tr>
-                      <!-- [개발참조] 첨부파일 없을때	
+                  <tr>
+                    <!-- [개발참조] 첨부파일 없을때	
 												<td colspan="6">
 													<span class="exp_txt">마우스로 파일을 끌어오세요</span>
 												</td> -->
-                      <td>
-                        <div class="custom-control custom-checkbox form-inline">
-                          <input
-                            id="chk01"
-                            type="checkbox"
-                            class="custom-control-input"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="chk01"
-                          ></label>
-                        </div>
-                      </td>
-                      <td>영어리딩심화.pdf</td>
-                      <td></td>
-                      <td>4MB</td>
-                      <td>일반첨부</td>
-                      <td>제한없음</td>
-                    </tr>
+                    <td>
+                      <div class="custom-control custom-checkbox form-inline">
+                        <input
+                          id="chk01"
+                          type="checkbox"
+                          class="custom-control-input"
+                        />
+                        <label class="custom-control-label" for="chk01"></label>
+                      </div>
+                    </td>
+                    <td>영어리딩심화.pdf</td>
+                    <td></td>
+                    <td>4MB</td>
+                    <td>일반첨부</td>
+                    <td>제한없음</td>
+                  </tr>
 
-                    <tr>
-                      <!-- [개발참조] 첨부파일 없을때	
+                  <tr>
+                    <!-- [개발참조] 첨부파일 없을때	
 											<td colspan="6">
 												<span class="exp_txt">마우스로 파일을 끌어오세요</span>
 											</td> -->
-                      <td>
-                        <div class="custom-control custom-checkbox form-inline">
-                          <input
-                            id="chk01"
-                            type="checkbox"
-                            class="custom-control-input"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="chk01"
-                          ></label>
-                        </div>
-                      </td>
-                      <td>영어리딩심화.pdf</td>
-                      <td></td>
-                      <td>4MB</td>
-                      <td>일반첨부</td>
-                      <td>제한없음</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                    <td>
+                      <div class="custom-control custom-checkbox form-inline">
+                        <input
+                          id="chk01"
+                          type="checkbox"
+                          class="custom-control-input"
+                        />
+                        <label class="custom-control-label" for="chk01"></label>
+                      </div>
+                    </td>
+                    <td>영어리딩심화.pdf</td>
+                    <td></td>
+                    <td>4MB</td>
+                    <td>일반첨부</td>
+                    <td>제한없음</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <ValidationProvider v-slot="{ errors }" rules="contents_required">
-              <VueEditor
-                v-model="syllabus.lep_content"
-                :editorOptions="editorOptions"
-                :editorToolbar="editorToolbar"
-              />
-              <div v-if="errors[0] !== ''" class="invalid_text text_position">
-                {{ errors[0] }}
-              </div>
-            </ValidationProvider>
-            <!-- <div class="write_area">
+          </div>
+          <ValidationProvider v-slot="{ errors }" rules="contents_required">
+            <VueEditor
+              v-model="syllabus.lep_content"
+              :editorOptions="editorOptions"
+              :editorToolbar="editorToolbar"
+            />
+            <div v-if="errors[0] !== ''" class="invalid_text text_position">
+              {{ errors[0] }}
+            </div>
+          </ValidationProvider>
+          <!-- <div class="write_area">
             <div class="page_nodata">글쓰기 공간입니다.</div>
           </div> -->
-            <div class="custom-control custom-checkbox form-inline open_regi">
-              <input
-                id="lep_repeat_yn"
-                type="checkbox"
-                class="custom-control-input"
-                :checked="syllabus.lep_repeat_yn"
-                @input="onChangePlanInput"
-              />
-              <label class="custom-control-label" for="lep_repeat_yn"
-                >글을 공개 상태로 등록합니다.</label
-              >
-            </div>
-            <div class="btn_area">
-              <button
-                class="btn btn_crud_point"
-                :disabled="invalid"
-                @click="registerSyllabus"
-              >
-                등록
-              </button>
-              <a class="btn btn_crud_default" @click="openPreviousPageModal"
-                >취소</a
-              >
-              <button class="btn btn_crud_default" @click="openPreviewModal">
-                미리보기
-              </button>
-            </div>
-          </ValidationObserver>
-        </div>
+          <div class="custom-control custom-checkbox form-inline open_regi">
+            <input
+              id="lep_repeat_yn"
+              type="checkbox"
+              class="custom-control-input"
+              :checked="syllabus.lep_repeat_yn"
+              @input="onChangePlanInput"
+            />
+            <label class="custom-control-label" for="lep_repeat_yn"
+              >글을 공개 상태로 등록합니다.</label
+            >
+          </div>
+          <div class="btn_area">
+            <button
+              class="btn btn_crud_point"
+              :disabled="invalid"
+              @click="registerSyllabus"
+            >
+              등록
+            </button>
+            <a class="btn btn_crud_default" @click="openPreviousPageModal"
+              >취소</a
+            >
+            <button class="btn btn_crud_default" @click="openPreviewModal">
+              미리보기
+            </button>
+          </div>
+        </ValidationObserver>
       </div>
     </div>
     <!-- 강의계획서 미리보기 -->
     <PreviewModal
       title="강의계획서"
       :syllabus="syllabus"
-      :lecturePlan="lecturePlan"
+      :lecturePlan="syllabus"
       :open="previewModalDesc.open"
       @close="onClosePreviewModal"
     />
@@ -354,33 +333,6 @@ export default {
         lep_title: '',
         lpa_file: ['파일이름'],
         lpa_size: [0],
-      },
-      lectureCourse: {
-        id: 0,
-        academy: '일산어학원',
-        time: '월수금 09:00 ~ 12:00',
-        subject: '영어심화리딩',
-        lessonTitle: '영어',
-        lessonClass: '심화 A반',
-        teacher: '홍길동 선생님',
-        state: true,
-        students: 12,
-      },
-      lecturePlan: {
-        id: 0,
-        course_id: 0,
-        title: '',
-        writer: '',
-        created_at: '',
-        date_range_start: '',
-        date_range_end: '',
-        time_range_start: '',
-        time_range_end: '',
-        time_range_start_m: 0,
-        time_range_end_m: 0,
-        open: true,
-        views: 0,
-        contents: '',
       },
       // modal
       previewModalDesc: {

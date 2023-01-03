@@ -475,18 +475,18 @@
                     <!-- 일촌 id검색 결과 -->
                     <div class="friend_search">
                       <div
-                        v-for="(item, idx) in studentInfo.family"
+                        v-for="(item, idx) in studentInfo.family_id"
                         :key="idx"
                         class="friends"
                       >
-                        <span>{{ item.name }}</span
+                        <span>{{ item.mem_name }}</span
                         ><span class="divid"></span
-                        ><span class="frid">{{ item.account }}</span>
+                        ><span class="frid">{{ item.mem_id }}</span>
                         <button class="btn btn_crud_default">상세</button>
                         <button
                           class="btn icons_minus_circle_off"
                           type="button"
-                          @click="$emit('click-deleteFamily', item.id)"
+                          @click="$emit('click-deleteFamily', item.mem_idx)"
                         ></button>
                       </div>
                     </div>

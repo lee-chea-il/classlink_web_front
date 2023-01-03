@@ -40,11 +40,22 @@
               </span>
             </span>
             <input
+              v-if="!isTask"
               id="lep_time_stime"
               type="text"
               placeholder="09:00"
               maxlength="5"
               :value="rangeInfo.lep_time_stime"
+              class="form-control form-inline form-time"
+              @input="$emit('change-input', $event)"
+            />
+            <input
+              v-if="isTask"
+              id="hwb_time_stime"
+              type="text"
+              placeholder="09:00"
+              maxlength="5"
+              :value="rangeInfo.hwb_time_stime"
               class="form-control form-inline form-time"
               @input="$emit('change-input', $event)"
             />
@@ -65,11 +76,22 @@
               </div>
             </div>
             <input
+              v-if="!isTask"
               id="lep_time_etime"
               type="text"
               placeholder="11:59"
               maxlength="5"
               :value="rangeInfo.lep_time_etime"
+              class="form-control form-inline form-time"
+              @input="$emit('change-input', $event)"
+            />
+            <input
+              v-if="isTask"
+              id="hwb_time_etime"
+              type="text"
+              placeholder="11:59"
+              maxlength="5"
+              :value="rangeInfo.hwb_time_etime"
               class="form-control form-inline form-time"
               @input="$emit('change-input', $event)"
             />
@@ -114,10 +136,6 @@ export default {
     DatePicker,
   },
   props: {
-    syllabus: {
-      type: Object,
-      default: () => {},
-    },
     rangeInfo: {
       type: Object,
       default: () => {},
@@ -133,6 +151,10 @@ export default {
     isEndTime: {
       type: Boolean,
       default: true,
+    },
+    isTask: {
+      type: Boolean,
+      default: false,
     },
   },
 }

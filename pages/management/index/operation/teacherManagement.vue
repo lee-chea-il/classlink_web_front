@@ -87,7 +87,6 @@
       @click-w="onClickGenderWomen"
       @click-y="onClickStatusTrue"
       @click-n="onClickStatusFalse"
-      @init-password="initPassword"
       @check-email="getEmailCheck"
       @edit-subjects="openEditSubjectsModal"
     />
@@ -146,7 +145,7 @@
     />
 
     <!-- 팝업 S2-비밀번호초기화 -->
-    <ResetPasswordModal @reset="onClickResetBtn" />
+    <ResetPasswordModal @reset="initPassword" />
 
     <!-- 팝업 S2-선생님수 초과 알림 팝업창 -->
     <TeacherCountAlertModal />
@@ -452,7 +451,6 @@ export default {
       await apiOperation
         .getTeacherList(payload)
         .then(({ data: { data } }) => {
-          console.log(data)
           if (data === null) {
             this.teacherList = []
           } else {
@@ -461,7 +459,6 @@ export default {
             this.teacherList = data.dto
             this.endPageNumber = data.pageMaker.end_page
           }
-          console.log(this.teacherList)
         })
         .catch((err) => {
           console.log(err)
@@ -494,7 +491,6 @@ export default {
       await apiOperation
         .getTeacherInfo(mem_idx)
         .then(({ data: { data } }) => {
-          console.log(data)
           Object.assign(this.teacherInfo, data.vo)
           this.teacherInfo.auth_list = data.auth_list
           this.teacherInfo.target_list = data.target_list
@@ -510,7 +506,6 @@ export default {
           }
           this.prevId = data.vo.mem_id
           this.prevEmail = data.vo.mem_email
-          console.log(this.teacherInfo)
         })
         .catch((err) => {
           console.log(err)
@@ -535,7 +530,6 @@ export default {
     // 선생님 정보 수정 api
     async updateTeacherInfo() {
       const payload = this.teacherInfo
-      console.log(this.teacherInfo)
       await apiOperation
         .updateTeacherInfo(payload)
         .then(() => {
@@ -548,10 +542,8 @@ export default {
     },
     // 선생님 정보 수정
     onChangeUpdateInput({ target: { value, id, checked } }) {
-      console.log(checked)
       this.teacherInfo[id] = value
       if (checked) {
-        console.log(checked)
         this.teacherInfo.mem_nickname = this.teacherInfo.mem_name
         this.nickNameCheck = true
       }
@@ -598,7 +590,6 @@ export default {
     onChangeTargetCheck({ target: { id, checked } }) {
       if (checked) {
         this.teacherInfo.target_list.push({ ttm_target: id })
-        console.log(this.teacherInfo.target_list)
       } else {
         const index = this.teacherInfo.target_list
           .map((x) => x.ttm_target)
@@ -627,7 +618,6 @@ export default {
       } else {
         this.teacherInfo.auth_check = true
       }
-      console.log(this.teacherInfo.auth_list)
     },
     // 과목 수정
     onChangeSubjectCheck({ target: { id, checked } }) {
@@ -647,7 +637,6 @@ export default {
       } else {
         this.teacherInfo.subject_check = true
       }
-      console.log(this.teacherInfo.subject_list)
     },
     // 직위 수정
     selectPosition() {
@@ -684,7 +673,6 @@ export default {
       await apiOperation
         .getEmailCheck(this.teacherInfo.mem_email)
         .then(({ data: { data } }) => {
-          console.log(data)
           if (data) {
             this.isEmailCheck = true
             this.openModalDesc('이메일 중복확인', '사용 가능한 이메일입니다.')
@@ -707,16 +695,11 @@ export default {
       this.datePickerModalDesc.open = false
     },
     // 비밀번호 초기화
-    onClickResetBtn() {
-      this.openModalDesc('비밀번호 초기화', '비밀번호가 초기화되었습니다.')
-    },
-    // 비밀번호 초기화
     async initPassword() {
       await apiOperation
         .initPassword(this.teacherInfo.mem_id)
         .then((res) => {
-          console.log(res)
-          this.openModalDesc('', '비밀번호가 초기화되었습니다.')
+          this.openModalDesc('비밀번호 초기화', '비밀번호가 초기화되었습니다.')
         })
         .catch((err) => {
           console.log(err)
@@ -854,7 +837,6 @@ export default {
           checkboxes[i].checked = true
           const teacher = { mem_idx: this.setIdxNumber(checkboxes[i].id) }
           this.deleteIdxList.push(teacher)
-          console.log(this.deleteIdxList)
         }
       } else {
         this.allCheckBoxFlag = false
@@ -880,7 +862,6 @@ export default {
           mem_idx_list: this.deleteIdxList,
         },
       }
-      console.log(payload)
       await apiOperation
         .deleteTeacher(payload)
         .then(() => {
@@ -921,7 +902,6 @@ export default {
     // 과목 수정
     // 과목 목록 불러오기 api
     async getSubjectList() {
-      console.log(this.institutionIdx)
       await apiOperation
         .getSubjectList(this.institutionIdx)
         .then(({ data: { data } }) => {
@@ -944,7 +924,6 @@ export default {
         ins_code: this.institutionIdx,
         is_title: this.newSubjectTitle,
       }
-      console.log(this.institutionIdx)
       await apiOperation
         .addSubject(payload)
         .then(({ data: { data } }) => {
@@ -969,12 +948,10 @@ export default {
     onClickSubjectMore(is_title) {
       if (this.isMoreBtn && this.newSubject === is_title) {
         this.isMoreBtn = false
-        console.log(this.isMoreBtn)
         return false
       }
       this.isMoreBtn = true
       this.newSubject = is_title
-      console.log(this.isMoreBtn, this.newSubject)
     },
     // 과목 삭제
     async deleteSubject() {

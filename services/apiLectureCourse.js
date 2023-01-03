@@ -29,7 +29,6 @@ async function postRegisterSyllabus(payload) {
 async function updateSyllabus(payload) {
   return await http.put('/api/v1/class/course/syllabus', payload)
 }
-
 // 강의계획서 삭제
 async function deleteSyllabus(payload) {
   return await http.delete('/api/v1/class/course/syllabus', payload)
@@ -42,6 +41,29 @@ async function putUpdateInstitution(payload) {
 
 // 과제함
 // 과제함 목록
+async function getTaskList(payload) {
+  return await http.get(
+    `/api/v1/class/course/tasks?current_page=${payload.current_page}&ins_code=${payload.ins_code}&keyword=${payload.keyword}&lec_idx=${payload.lec_idx}&per_page_num=${payload.per_page_num}`
+  )
+}
+// 과제함 상세
+async function getTask(payload) {
+  return await http.get(
+    `/api/v1/class/course/task?hwb_idx=${payload.hwb_idx}&lec_idx=${payload.lec_idx}`
+  )
+}
+// 과제함 등록
+async function postRegisterTask(payload) {
+  return await http.post('/api/v1/class/course/task', payload)
+}
+// 과제함 수정
+async function updateTask(payload) {
+  return await http.put('/api/v1/class/course/task', payload)
+}
+// 과제함 삭제
+async function deleteTask(payload) {
+  return await http.delete('/api/v1/class/course/task', payload)
+}
 
 const apiLectureCourse = {
   getLectureCourse,
@@ -51,6 +73,11 @@ const apiLectureCourse = {
   deleteSyllabus,
   postRegisterSyllabus,
   putUpdateInstitution,
+  getTaskList,
+  getTask,
+  postRegisterTask,
+  updateTask,
+  deleteTask,
 }
 
 export default apiLectureCourse
