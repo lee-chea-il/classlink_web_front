@@ -1,10 +1,10 @@
 <template>
   <div v-if="open" class="audio">
     <div class="bar">
-      <span class="pdf_title">{{ data.name }}</span>
+      <span class="pdf_title">{{ data.title }}</span>
     </div>
     <audio controls>
-      <source src="http://112.171.101.31:58080/file/test.mp3" />
+      <source :src="data.full_path" />
     </audio>
   </div>
 </template>

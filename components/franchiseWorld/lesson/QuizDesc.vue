@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(quiz, idx) in reference.quizList" :key="idx">
+    <div v-for="(quiz, idx) in reference.quiz_asks" :key="idx">
       <div v-if="idx === currentIdx" class="quiz_sec01 row">
         <div class="left_area left col-lg-6">
           <CustomTitle title="유형" :value="setType(quiz)" />

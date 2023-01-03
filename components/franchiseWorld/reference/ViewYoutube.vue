@@ -2,9 +2,9 @@
   <!-- [개발참조] 유튜브 열람 시 -->
   <div v-if="open" class="pdf">
     <div class="bar">
-      <span class="pdf_title">{{ data.name }}</span>
+      <span class="pdf_title">{{ data.title }}</span>
     </div>
-    <iframe class="iframe" :src="data.save_path" />
+    <iframe class="iframe" :src="data.full_path" />
   </div>
 </template>
 

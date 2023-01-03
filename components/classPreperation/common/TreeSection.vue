@@ -93,11 +93,11 @@ export default {
   },
   methods: {
     unActive() {
-      console.log('feafefaw')
+      // console.log('feafefaw')
       this.$refs.education.$refs.institution.unActiveAll()
       this.$refs.education.$refs.franchise.unActiveAll()
       this.$refs.education.$refs.open.unActiveAll()
-      this.$refs.myData.$refs.curriculum.unActiveAll()
+      // this.$refs.myData.$refs.myData.unActiveAll()
     },
   },
 }

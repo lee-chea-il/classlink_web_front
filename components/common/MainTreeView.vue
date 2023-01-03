@@ -63,6 +63,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    treeViewType: {
+      type: String,
+      default: 'ins',
+    },
   },
   data() {
     return {
@@ -73,25 +77,27 @@ export default {
   mounted() {
     const dataMapping = (data, isReadOnly) => {
       const result = []
-      let isDragDisable = false
-      if (this.listType === 'lesson') {
-        isDragDisable = true
-      }
       const len = data.length
       for (let i = 0; i < len; i++) {
         const newStr = JSON.stringify(data[i])
         const nObj = JSON.parse(newStr)
+        nObj.treeViewId = nObj.id
         nObj.id = this.pid
         nObj.pid = this.pid
         nObj.isChecked = false
         nObj.readOnly = isReadOnly
-        if (data[i].children !== undefined) {
+        nObj.active = false
+        nObj.name = nObj.title
+        nObj.type = this.setType(nObj.datatable_type)
+        // if(nObj.group_yn){
+        // API연동 후 변경 예정
+        if (nObj.children !== undefined) {
           nObj.isLeaf = false
-          nObj.children = []
-          nObj.dragDisabled = isDragDisable
           result[i] = nObj
           this.pid++
-          result[i].children = dataMapping(data[i].children, isReadOnly)
+          if (nObj.children) {
+            result[i].children = dataMapping(nObj.children, isReadOnly)
+          }
         } else {
           nObj.isLeaf = true
           result[i] = nObj
@@ -106,6 +112,30 @@ export default {
     )
   },
   methods: {
+    setType(type) {
+      let newType = ''
+      switch (type) {
+        case 'IL':
+        case 'ID':
+          newType = 'ID'
+          break
+        case 'FL':
+        case 'FD':
+          newType = 'FD'
+          break
+        case 'ML':
+        case 'MD':
+          newType = 'MD'
+          break
+        case 'OD':
+          newType = 'OD'
+          break
+        default:
+          newType = ''
+          break
+      }
+      return newType
+    },
     onDel(node) {
       console.log(node)
       node.remove()

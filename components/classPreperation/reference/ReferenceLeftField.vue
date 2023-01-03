@@ -5,12 +5,12 @@
         <label for="" class="data_title">파일 이름</label>
         <div class="col">
           <CustomModalInput
-            id="name"
+            id="title"
             name="파일 이름"
             placeholder="파일 이름 입력"
             rules="min:2|required|max_title"
             type="text"
-            :inputValue="reference.name"
+            :inputValue="reference.title"
             @change-input="$emit('change-input', $event)"
           />
         </div>

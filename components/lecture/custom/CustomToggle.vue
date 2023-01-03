@@ -1,7 +1,7 @@
 <template>
   <span
-    :id="`week_btn_${idx}`"
     class="week"
+    :class="{ active: isChecked }"
     @click="$emit('select-day', $event)"
     >{{ day }}</span
   >
@@ -15,10 +15,7 @@ export default {
       type: String,
       default: '',
     },
-    idx: {
-      type: String,
-      default: '',
-    },
+    isChecked: { type: Boolean, default: false },
   },
 }
 </script>

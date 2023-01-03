@@ -67,6 +67,7 @@
                     </div>
 
                     <WeekDaySelectField
+                      :weekDayList="scheduleItem.selectWeekDay"
                       @select-day="$emit('select-day', $event)"
                     />
 

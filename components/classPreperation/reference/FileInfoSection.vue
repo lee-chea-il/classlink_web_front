@@ -1,6 +1,6 @@
 <template>
   <div class="info_section">
-    <CustomTitle title="파일 이름" :value="fileInfo.name" />
+    <CustomTitle title="파일 이름" :value="fileInfo.title" />
     <CustomTitle title="설명" :value="fileInfo.description" />
     <div class="line"></div>
 

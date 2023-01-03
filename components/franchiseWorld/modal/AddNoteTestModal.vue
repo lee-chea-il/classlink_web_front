@@ -40,7 +40,7 @@
                 <!-- 오른쪽 영역 -->
                 <NoteTestRightField
                   :isCreate="true"
-                  :noteTestList="reference.note_exam"
+                  :noteTestList="reference.note_exam_asks"
                   :currentIdx="currentPageIdx"
                   :uploadInfo="uploadInfo"
                   @change-number="$emit('change-number', $event)"

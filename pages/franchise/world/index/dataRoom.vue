@@ -207,7 +207,7 @@
     <!-- 쪽지시험 미리보기 -->
     <PreviewNoteTestModal
       :open="isNoteTestPreviewModal.open"
-      :testList="referenceData.note_exam"
+      :testList="referenceData.note_exam_asks"
       :currentPageIdx="currentPageIdx"
       @close="onCloseNoteTestPreviewModal"
       @pagination="onClickQuizPagination"
@@ -279,7 +279,7 @@
     <!-- 쪽지시험 프린트 영역 -->
     <PrintNoteTestModal
       v-show="isNoteTestPrint"
-      :noteTestList="referenceData.note_exam"
+      :noteTestList="referenceData.note_exam_asks"
     />
 
     <CustomSnackbar :show="isSnackbar.open" :message="isSnackbar.message" />
@@ -741,7 +741,7 @@ export default {
         datatable_type: 'ID',
         datatype: '04',
         fileSize: '0',
-        note_exam: [{ ...this.testItem }],
+        note_exam_asks: [{ ...this.testItem }],
       }
       document.getElementById('referenceSelectClose').click()
       this.isNoteTestAddModal = true
@@ -1080,7 +1080,7 @@ export default {
     // 쪽지시험 변경 핸들러
     onChangeTest({ target: { value, name, type, checked, id } }, idx) {
       const numberOnly = value.replace(/[^0-9.]/g, '').replace(/ /g, '')
-      const testElem = this.referenceData.note_exam[idx]
+      const testElem = this.referenceData.note_exam_asks[idx]
       if (type === 'checkbox') {
         if (checked) return (testElem[name] = true)
         else {
@@ -1344,20 +1344,20 @@ export default {
 
     // 난이도 설정 쪽지 시험
     onSelectDificultadeTest(idx, num) {
-      this.referenceData.note_exam[idx].level = num
+      this.referenceData.note_exam_asks[idx].level = num
     },
 
     // 쪽지 시험
     // 쪽지 시험 추가
     onPlusNoteTestList() {
       const target = this.referenceData
-      const len = target.note_exam.length
+      const len = target.note_exam_asks.length
       const isLength = len <= 19
       const setId = len + 1
       this.currentPageIdx = len
       if (isLength) {
-        target.note_exam = [
-          ...target.note_exam,
+        target.note_exam_asks = [
+          ...target.note_exam_asks,
           { ...this.testItem, no: setId },
         ]
         this.focusEditorField()
@@ -1366,8 +1366,8 @@ export default {
 
     // 선택한 쪽지시험 지우기
     onDeleteNoteTest(idx) {
-      if (this.referenceData.note_exam.length > 1) {
-        this.referenceData.note_exam.splice(idx, 1)
+      if (this.referenceData.note_exam_asks.length > 1) {
+        this.referenceData.note_exam_asks.splice(idx, 1)
         this.currentPageIdx = idx - 1
         this.focusEditorField()
       }
@@ -1375,19 +1375,23 @@ export default {
 
     // 정답 입력
     onSelectAnswer(idx, targetIdx) {
-      this.referenceData.note_exam[idx].answer = Number(targetIdx + 1)
+      this.referenceData.note_exam_asks[idx].correct_no = Number(targetIdx + 1)
     },
 
     // 쪽지시험 예제 추가
     plusExampleList(idx) {
-      const id = this.referenceData.note_exam[idx].ask_view.length + 1
+      const id =
+        this.referenceData.note_exam_asks[idx].note_exam_ask_views.length + 1
       const example = { no: id, question: '' }
-      this.referenceData.note_exam[idx].ask_view.push(example)
+      this.referenceData.note_exam_asks[idx].note_exam_ask_views.push(example)
     },
 
     // 쪽지시험 예제 제거
     deleteExample(idx, targetIdx) {
-      this.referenceData.note_exam[idx].ask_view.splice(targetIdx, 1)
+      this.referenceData.note_exam_asks[idx].note_exam_ask_views.splice(
+        targetIdx,
+        1
+      )
     },
 
     // 자료 클릭 이벤트

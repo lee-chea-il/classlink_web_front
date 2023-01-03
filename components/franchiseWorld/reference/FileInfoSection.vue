@@ -1,6 +1,6 @@
 <template>
   <div class="info_section">
-    <CustomTitle title="파일 이름" :value="fileInfo.name" />
+    <CustomTitle title="파일 이름" :value="fileInfo.title" />
     <CustomTitle title="설명" :value="fileInfo.description" />
     <div class="line"></div>
 
@@ -18,7 +18,7 @@
       :value="setContentType(fileInfo.datatype)"
     />
     <CustomSubTitle title="공개 여부" :value="setOpen(fileInfo)" />
-    <CustomSubTitle title="경로" :value="fileInfo.save_path" />
+    <CustomSubTitle title="경로" :value="uploadInfo?.saveFolderPath" />
   </div>
 </template>
 
@@ -30,14 +30,9 @@ export default {
   name: 'InfoSection',
   components: { CustomTitle, CustomSubTitle },
   props: {
-    fileInfo: {
-      type: Object,
-      default: () => {},
-    },
-    pageRoot: {
-      type: String,
-      default: '',
-    },
+    fileInfo: { type: Object, default: () => {} },
+    uploadInfo: { type: Object, default: () => {} },
+    pageRoot: { type: String, default: '' },
   },
   methods: {
     setOpen(item) {

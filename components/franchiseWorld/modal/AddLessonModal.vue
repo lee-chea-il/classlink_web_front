@@ -277,7 +277,7 @@ export default {
     RightSection,
     TopNavigation,
     TreeView,
-    ModalBtnBox,
+  ModalBtnBox,
   },
   props: {
     open: { type: Boolean, default: false },

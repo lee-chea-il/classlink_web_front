@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(quiz, idx) in reference.quiz" :key="idx">
+    <div v-for="(quiz, idx) in reference.quiz_asks" :key="idx">
       <div v-if="idx === currentIdx" class="row">
         <div class="thumbnail_view02">
           <div v-html="quiz.question"></div>

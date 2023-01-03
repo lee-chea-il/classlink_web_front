@@ -2,7 +2,7 @@
   <!-- [개발참조] url 열람 시 -->
   <div v-if="open" class="pdf">
     <div class="bar">
-      <span class="pdf_title">{{ data.name }}</span>
+      <span class="pdf_title">{{ data.title }}</span>
     </div>
     <iframe class="iframe" :src="data.save_path" />
   </div>

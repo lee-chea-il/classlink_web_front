@@ -1,7 +1,7 @@
 <template>
   <div v-if="open" class="video">
     <div class="bar">
-      <span class="pdf_title">{{ data.name }}</span>
+      <span class="pdf_title">{{ data.title }}</span>
     </div>
     <video class="video" :src="data.full_path" controls />
   </div>

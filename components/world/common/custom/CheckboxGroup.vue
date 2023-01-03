@@ -2,7 +2,7 @@
   <div class="check_sec">
     <span class="custom-control custom-checkbox form-inline">
       <input
-        :id="setTarget"
+        id="public_open_yn"
         type="checkbox"
         class="custom-control-input"
         name="public_open_yn"
@@ -10,7 +10,7 @@
         :checked="public_open_yn"
         @input="$emit('change-input', $event)"
       />
-      <label class="custom-control-label checkbox06" :for="setTarget"
+      <label class="custom-control-label checkbox06" for="public_open_yn"
         >교육기관에 해당 자료를 공개합니다.</label
       >
     </span>
@@ -19,7 +19,7 @@
       class="custom-control custom-checkbox form-inline"
     >
       <input
-        :id="setTargetTwo"
+        id="open_yn"
         type="checkbox"
         class="custom-control-input"
         name="open_yn"
@@ -27,7 +27,7 @@
         :checked="open_yn"
         @input="$emit('change-input', $event)"
       />
-      <label class="custom-control-label checkbox07" :for="setTargetTwo"
+      <label class="custom-control-label checkbox07" for="open_yn"
         >공개자료실에 해당 자료를 공개합니다.</label
       >
     </span>
@@ -49,38 +49,6 @@ export default {
     pageRoot: {
       type: String,
       default: '',
-    },
-  },
-  computed: {
-    setTarget() {
-      if (this.target === 'quiz') {
-        return 'quizTarget'
-      } else if (this.target === 'noteTest') {
-        return 'noteTestTarget'
-      } else if (this.target === 'referenceChange') {
-        return 'referenceChangeTarget'
-      } else if (this.target === 'quizChange') {
-        return 'quizChangeTarget'
-      } else if (this.target === 'noteTestChange') {
-        return 'noteTestChangeTarget'
-      } else {
-        return 'refereceTarget'
-      }
-    },
-    setTargetTwo() {
-      if (this.target === 'quiz') {
-        return 'quizTargetTwo'
-      } else if (this.target === 'noteTest') {
-        return 'noteTestTargetTwo'
-      } else if (this.target === 'referenceChange') {
-        return 'referenceChangeTargetTwo'
-      } else if (this.target === 'quizChange') {
-        return 'quizChangeTargetTwo'
-      } else if (this.target === 'noteTestChange') {
-        return 'noteTestChangeTargetTwo'
-      } else {
-        return 'refereceTargetTwo'
-      }
     },
   },
 }

@@ -1,7 +1,7 @@
 <template>
   <div v-if="open" class="audio">
     <div class="bar">
-      <span class="pdf_title">{{ data.name }}</span>
+      <span class="pdf_title">{{ data.title }}</span>
     </div>
     <audio controls>
       <source :src="data.full_path" />

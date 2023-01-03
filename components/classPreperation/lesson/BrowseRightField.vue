@@ -36,8 +36,8 @@
         v-show="isQuiz(referenceItem) || referenceItem.datatype === '04'"
         :length="
           isQuiz(referenceItem)
-            ? referenceItem.quiz?.length
-            : referenceItem.note_exam?.length
+            ? referenceItem.quiz_asks?.length
+            : referenceItem.note_exam_asks?.length
         "
         :currentIdx="currentIdx"
         @pagination="paginationEmit"

@@ -4,12 +4,12 @@
       <label for="">제목</label>
       <div class="col">
         <CustomModalInput
-          id="name"
+          id="title"
           name="제목"
           placeholder="제목을 입력해 주세요"
           rules="min:2|required"
           type="text"
-          :inputValue="lessonData.name"
+          :inputValue="lessonData.title"
           @change-input="$emit('change-lesson', $event)"
         />
       </div>
@@ -55,7 +55,7 @@
             <LessonAddTreeView
               ref="myLessonTreeview"
               list-type="lessonList"
-              :dataList="lessonData.referenceList"
+              :dataList="lessonData.datarooms"
               :expanded="false"
               :pidNum="20000"
               @moreShowClick="$emit('moreShowClick', $event)"

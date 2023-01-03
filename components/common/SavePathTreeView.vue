@@ -25,6 +25,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    treeViewType: {
+      type: String,
+      default: 'ins',
+    },
   },
   data() {
     return {
@@ -40,21 +44,22 @@ export default {
       for (let i = 0; i < len; i++) {
         const newStr = JSON.stringify(data[i])
         const nObj = JSON.parse(newStr)
-        nObj.id='folder' + this.pid
-        nObj.pid=this.pid
-        nObj.isChecked=false
-        nObj.readOnly=isReadOnly
-
+        nObj.id = 'folder' + this.pid
+        nObj.pid = this.pid
+        nObj.isChecked = false
+        nObj.readOnly = isReadOnly
+        nObj.name = nObj.title
+        nObj.type = this.setType(nObj.datatable_type)
         if (data[i].children !== undefined) {
-          nObj.isLeaf=false
-          nObj.children=[]
+          nObj.isLeaf = false
+          nObj.children = []
 
           result[i] = nObj
           this.pid++
 
           result[i].children = dataMapping(data[i].children, isReadOnly)
         } else {
-          nObj.isLeaf=true
+          nObj.isLeaf = true
 
           result[i] = nObj
           this.pid++
@@ -68,6 +73,30 @@ export default {
     )
   },
   methods: {
+    setType(type) {
+      let newType = ''
+      switch (type) {
+        case 'IL':
+        case 'ID':
+          newType = 'ID'
+          break
+        case 'FL':
+        case 'FD':
+          newType = 'FD'
+          break
+        case 'ML':
+        case 'MD':
+          newType = 'MD'
+          break
+        case 'OD':
+          newType = 'OD'
+          break
+        default:
+          newType = ''
+          break
+      }
+      return newType
+    },
     onClick(params) {
       $('.vtl-node-main').removeClass('active')
       $('#' + params.id)

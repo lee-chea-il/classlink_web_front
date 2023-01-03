@@ -11,7 +11,7 @@
       <!-- [개발참조]문제 선택 시 출력  -->
       <div
         :class="
-          noteTest.answer === index + 1
+          noteTest.correct_no === index + 1
             ? 'aa_number_select aa_correct'
             : 'aa_number'
         "
@@ -21,12 +21,12 @@
       <!--  [개발참조]정답일때 출력 : class="aa_num_correct"  -->
       <div
         :class="
-          noteTest.answer === index + 1 ? 'aa_result_select' : 'aa_result'
+          noteTest.correct_no === index + 1 ? 'aa_result_select' : 'aa_result'
         "
       >
         <div
           class="answer"
-          :class="noteTest.answer === index + 1 ? 'aa_correct' : 'aa_wrong'"
+          :class="noteTest.correct_no === index + 1 ? 'aa_correct' : 'aa_wrong'"
           v-html="
             isImg(example.question)
               ? setImg(example.question)

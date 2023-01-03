@@ -11,9 +11,9 @@
           <ul>
             <li v-for="(item, idx) in reference" :key="idx">
               <span
-                :class="item.type === 'institution' ? 'inst' : 'fran'"
+                :class="item.datatable_type === 'ID' ? 'inst' : 'fran'"
               ></span>
-              <span>{{ item.name }}</span>
+              <span>{{ item.title }}</span>
               <i
                 class="btn icons_zoom_off"
                 @click="$emit('select-reference', item)"

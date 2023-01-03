@@ -1,14 +1,29 @@
 {
-  "title": "𝐏𝐥𝐚𝐲𝐥𝐢𝐬𝐭 명곡 부자인 드라마 OST 모음.youtube",
-  "subject": 1,
-  "description": "이 플리 끝까지 듣는 사람 👍👍\n\n* 본 영상은 수익을 창출하지 않습니다",
-  "keyword": "명곡",
-  "save_path": "",
-  "public_open_yn": true,
-  "open_yn": true,
-  "file_name": "𝐏𝐥𝐚𝐲𝐥𝐢𝐬𝐭 명곡 부자인 드라마 OST 모음",
-  "datatable_type": "ID",
-  "datatype": "05",
-  "ins_code": "12345678",
-  "file": "//www.youtube.com/embed/nelpnaJZZGQ"
+  "datatable_type": "string",
+  "display_no": "string",
+  "fra_idx": 0,
+  "ins_idx": 0,
+  "keyword": "string",
+  "note_exam_asks": [
+    {
+      "correct_no": 0,
+      "level": "string",
+      "limit_time": "string",
+      "no": 0,
+      "note_exam_ask_views": [
+        {
+          "no": 0,
+          "question": "string"
+        }
+      ],
+      "question": "string",
+      "type": "string"
+    }
+  ],
+  "open_yn": "string",
+  "parent_treeinfo_idx": 0,
+  "public_open_yn": "string",
+  "registrant": 0,
+  "subject": 0,
+  "title": "string"
 }

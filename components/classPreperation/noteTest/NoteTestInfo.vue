@@ -1,7 +1,7 @@
 <template>
   <div class="reading_section modal_dataquiz note_divide">
     <LeftSection
-      :noteTestList="selectData.note_exam"
+      :noteTestList="selectData.note_exam_asks"
       :currentIdx="currentIdx"
       @change-number="setChangeNumber"
       @pagination="setPagination"
@@ -9,7 +9,7 @@
     />
 
     <div class="right_section">
-      <div v-for="(item, idx) in selectData.note_exam" :key="idx">
+      <div v-for="(item, idx) in selectData.note_exam_asks" :key="idx">
         <div v-if="idx === currentIdx" class="info_area">
           <div class="row">
             <div class="col-12">
@@ -31,10 +31,10 @@
             <div class="col-12">
               <div class="tit">정답</div>
               <select
-                id="answer"
-                name="answer"
+                id="correct_no"
+                name="correct_no"
                 class="cnt"
-                :value="item.answer"
+                :value="item.correct_no"
               >
                 <option :value="1">1</option>
                 <option :value="2">2</option>

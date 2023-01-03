@@ -9,7 +9,8 @@
       }"
     >
       <div class="title col-12">자료 열람</div>
-
+      <!-- 자료 없을때 -->
+      <BrowseNullData v-if="isEmptyObj(referenceItem)" />
       <!-- 동영상 -->
       <BrowseContent
         :show="isContent(referenceItem.datatype)"
@@ -35,8 +36,8 @@
         v-show="isQuiz(referenceItem) || referenceItem.datatype === '04'"
         :length="
           isQuiz(referenceItem)
-            ? referenceItem.quiz?.length
-            : referenceItem.note_exam?.length
+            ? referenceItem.quiz_asks?.length
+            : referenceItem.note_exam_asks?.length
         "
         :currentIdx="currentIdx"
         @pagination="paginationEmit"
@@ -48,13 +49,18 @@
       />
 
       <!-- 공통 데이터 -->
-      <LessonDataInfo :reference="referenceItem" :pageRoot="pageRoot" />
+      <LessonDataInfo
+        v-if="!isEmptyObj(referenceItem)"
+        :reference="referenceItem"
+        :pageRoot="pageRoot"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import BrowseContent from './BrowseContent.vue'
+import BrowseNullData from './BrowseNullData.vue'
 // import BrowseNoteTest from './BrowseNoteTest.vue'
 import BrowseQuiz from './BrowseQuiz.vue'
 import LessonDataInfo from './LessonDataInfo.vue'
@@ -68,6 +74,7 @@ export default {
     LessonDataInfo,
     NoteTestEditorField,
     PaginationPrevBox,
+    BrowseNullData,
   },
   props: {
     referenceItem: {
@@ -88,11 +95,16 @@ export default {
       this.$emit('pagination', item, idx)
     },
     isContent(item) {
-      if (item === '03' || item === '04') return false
+      if (!item || item === '03' || item === '04') return false
       else return true
     },
     isQuiz(item) {
       return item.datatype === '03'
+    },
+    isEmptyObj(obj) {
+      if (obj.constructor === Object && Object.keys(obj).length === 0)
+        return true
+      return false
     },
   },
 }

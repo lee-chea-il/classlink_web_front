@@ -229,11 +229,13 @@ export default {
     },
   },
   mounted() {
-    this.scheduleItem = {
-      ...this.scheduleItem,
+    this.initScheduleItem = {
+      ...this.initScheduleItem,
       startDay: String(this.getTodayFull),
       endDay: String(this.getEndDayFull),
     }
+    const newItem = deepCopy(this.initScheduleItem)
+    this.scheduleItem = newItem
     this.getEarlyData()
   },
   methods: {
@@ -293,7 +295,6 @@ export default {
 
     // 달력 모달
     openModalCalendar() {
-      console.log(this.scheduleItem)
       this.range = {
         start: this.scheduleItem.startDay,
         end: this.scheduleItem.endDay,
@@ -512,7 +513,6 @@ export default {
           i === callback.findIndex(({ name }) => name === item.name)
       )
       this.lectureInfo.curriculum = newArr
-      console.log(this.lectureInfo)
     },
 
     // 스케줄
@@ -614,25 +614,13 @@ export default {
     },
 
     // 스케줄 요일 토글 이벤트
-    onSelectWeekDay({ target: { classList, innerHTML } }) {
-      let newArr = []
-      const isClass = classList.contains('active')
-      const filter = (item) => item?.filter((data) => data !== innerHTML)
-      const settingTarget = this.scheduleItem.selectWeekDay
-
-      if (isClass) {
-        newArr = filter(settingTarget)
-        classList.remove('active')
-      } else {
-        newArr = [...settingTarget, innerHTML]
-        classList.add('active')
-      }
-      return (this.scheduleItem.selectWeekDay = setNewArray(newArr))
+    onSelectWeekDay(item) {
+      if (item.isChecked) return (item.isChecked = false)
+      else return (item.isChecked = true)
     },
 
     // 달력 날자 설정
     onChangeDate({ start, end }) {
-      // console.log('start', start, 'end', end)
       const setDate = (date) =>
         `${date?.getFullYear()}.${date?.getMonth() + 1}.${date?.getDate()}`
       this.scheduleItem.startDay = setDate(start)
@@ -660,30 +648,26 @@ export default {
 
     // 검색 내용 초기화
     resetSearchShedule() {
-      const now = this.getToday
-      return (this.scheduleItem = {
-        startTime: '0000',
-        endTime: '',
-        startDay: `${now.year}.${now.month}.${now.day}`,
-        endDay: `${now.year}.${now.month}.${now.day + 1}`,
-        selectWeekDay: [],
-        bgColor: this.getColor(),
-        isRepeat: false,
-      })
+      const newItem = deepCopy(this.initScheduleItem)
+      return (this.scheduleItem = newItem)
     },
 
     // 검색 완료시 버튼 초기화
     resetBtn() {
-      for (let j = 0; j < 7; j++)
-        document.getElementById(`week_btn_${j}`).classList.remove('active')
+      const target = this.scheduleItem.selectWeekDay
+      for (const x of target) {
+        x.isChecked = false
+      }
+      // for (let j = 0; j < 7; j++)
+      //   document.getElementById(`week_btn_${j}`).classList.remove('active')
     },
 
     // 검색완료시 시간표 데이터 보여주기
     addScheduleWeekList(idx, schedule) {
+      console.log('idx=', idx, 'schedule=', schedule)
       const weekList = this.weekIdx
       const target = this.lectureInfo.scheduleWeekList
       target[weekList[idx]] = [...target[weekList[idx]], schedule]
-      console.log(target)
     },
 
     // 동일한 시간 체크
@@ -728,7 +712,11 @@ export default {
       ) {
         let isHave = false
 
-        for (const i of selectWeekDay) {
+        const newWeek = selectWeekDay
+          .filter((item) => item.isChecked)
+          .map((item) => item.name)
+
+        for (const i of newWeek) {
           if (this.selectArrayLength(i, startTime).length) {
             this.openModalDesc('실패', '해당하는 날짜의 강의가 이미 있습니다.')
             return false

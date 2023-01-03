@@ -5,12 +5,12 @@
         <label for="" class="data_title">파일 이름</label>
         <div class="col">
           <CustomModalInput
-            id="name"
+            id="title"
             name="파일 이름"
             placeholder="파일 이름 입력"
-            rules="min:2|required"
+            rules="min:2|required|max_title"
             type="text"
-            :inputValue="reference.name"
+            :inputValue="reference.title"
             @change-input="$emit('change-input', $event)"
           />
         </div>
@@ -33,7 +33,7 @@
             id="description"
             name="설명"
             placeholder="설명 입력"
-            rules="min:2|required"
+            rules="min:2|required|end_desc"
             type="text"
             :inputValue="reference.description"
             @change-input="$emit('change-input', $event)"
@@ -44,6 +44,7 @@
       <CustomKeywordBox
         :pushKeyword="pushKeyword"
         :keyword="reference.keyword"
+        rules="max_keyword"
         @change-keyword="$emit('change-keyword', $event)"
         @set-keyword="$emit('set-keyword', $event)"
         @delete-keyword="$emit('delete-keyword', $event)"
@@ -57,7 +58,6 @@
             placeholder="등록자 입력"
             rules="min:2|required"
             type="text"
-            :readonly="true"
             :inputValue="reference.registrant_name"
             @change-input="$emit('change-input', $event)"
           />
@@ -82,7 +82,7 @@
         :public_open_yn="reference.public_open_yn"
         :open_yn="reference.open_yn"
         :pageRoot="pageRoot"
-        @change-input="$emit('public_open_yn', $event)"
+        @change-input="$emit('change-input', $event)"
       />
       <br />
 
@@ -135,5 +135,11 @@ export default {
 
 .span {
   cursor: pointer;
+}
+
+#modalDataRegiModi .form-group label,
+#modalDataRegiQuiz .form-group label,
+#modalDataRegiNote .form-group label {
+  line-height: 39px;
 }
 </style>

@@ -27,6 +27,7 @@
               >
                 <TreeView
                   ref="institutionFolderView"
+                  treeViewType="ID"
                   :dataList="institutionData"
                   :expanded="true"
                   :pidNum="110"
@@ -59,6 +60,7 @@
               >
                 <TreeView
                   ref="myDataFolderView"
+                  treeViewType="MD"
                   :dataList="myData"
                   :expanded="true"
                   :pidNum="310"

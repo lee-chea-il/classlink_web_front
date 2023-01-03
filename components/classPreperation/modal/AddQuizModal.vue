@@ -40,7 +40,7 @@
                 <!-- 오른쪽 영역 -->
                 <QuizRightField
                   :isCreate="true"
-                  :quizList="reference.quiz"
+                  :quizList="reference.quiz_asks"
                   :currentPageIdx="currentPageIdx"
                   :uploadInfo="uploadInfo"
                   @change-item="onChangeItem"

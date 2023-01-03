@@ -52,7 +52,7 @@
             </div>
 
             <!-- [개발참조] 하단 info_section 부분은 열람 팝업 공통 -->
-            <FileInfoSection :fileInfo="selectData" />
+            <FileInfoSection :fileInfo="selectData" :uploadInfo="uploadInfo" />
           </div>
         </div>
       </div>
@@ -70,22 +70,11 @@ export default {
   name: 'BrowseNoteTestModal',
   components: { FileInfoSection, ModalHeader, NoteTestInfo, ReferenceBtn },
   props: {
-    open: {
-      type: Boolean,
-      default: false,
-    },
-    identity: {
-      type: String,
-      default: '',
-    },
-    selectData: {
-      type: Object,
-      default: () => {},
-    },
-    currentPageIdx: {
-      type: Number,
-      default: 0,
-    },
+    open: { type: Boolean, default: false },
+    identity: { type: String, default: '' },
+    selectData: { type: Object, default: () => {} },
+    currentPageIdx: { type: Number, default: 0 },
+    uploadInfo: { type: Object, default: () => {} },
   },
   methods: {
     setChangeNumber(e, idx) {

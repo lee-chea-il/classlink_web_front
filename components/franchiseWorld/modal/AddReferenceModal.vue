@@ -47,7 +47,13 @@
             </div>
 
             <ModalBtnBox
-              :invalid="isDisabled(invalid, reference.keyword?.length === 0)"
+              :invalid="
+                isDisabled(
+                  invalid,
+                  reference.keyword?.length === 0,
+                  reference.keyword?.length > 10
+                )
+              "
               :submitTxt="modalTitle"
               @submit="setSubmit(modalTitle)"
               @close="$emit('close')"
@@ -86,8 +92,8 @@ export default {
     uploadInfo: { type: Object, default: () => {} },
   },
   methods: {
-    isDisabled(aFlag, bFlag) {
-      if (!aFlag && !bFlag) {
+    isDisabled(aFlag, bFlag, cFlag) {
+      if (!aFlag && !bFlag && !cFlag) {
         return false
       } else return true
     },

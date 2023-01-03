@@ -20,7 +20,6 @@
   >
     <span slot="addTreeNodeIcon" class="icon">＋</span>
     <span slot="addLeafNodeIcon" class="icon"></span>
-
     <span slot="addTreeNodeIcon" class="icon"></span>
     <span slot="delNodeIcon" class="icon"></span>
   </vue-tree-list>
@@ -153,8 +152,7 @@ export default {
           nObj.type = this.treeViewType
 
           if (nObj.group_yn) {
-            nObj.isLeaf = false
-            
+            nObj.isLeaf = false      
             result[i] = nObj
             this.pid++
             if(nObj.children) {

@@ -4,7 +4,7 @@
       <div v-if="idx === currentIdx" class="quiz_sec01 row">
         <div class="left_area02 left col-lg-6">
           <CustomTitle title="유형" value="쪽지시험" />
-          <CustomTitle title="정답" :value="test.answer" />
+          <CustomTitle title="정답" :value="test.correct_no" />
           <CustomTitle title="난이도" :value="setDificultade(test)" />
           <CustomTitle title="제한시간" :value="test.limit_time" />
         </div>

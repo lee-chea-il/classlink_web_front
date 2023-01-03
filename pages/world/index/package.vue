@@ -95,7 +95,7 @@
     <!-- 쪽지시험 미리보기 -->
     <PreviewNoteTestModal
       :open="isNoteTestPreviewModal.open"
-      :testList="selectReferenceItem.note_exam"
+      :testList="selectReferenceItem.note_exam_asks"
       :currentPageIdx="currentIdx"
       @pagination="setPagination"
       @close="closeNoteTestPreview"
@@ -487,8 +487,9 @@ export default {
     updateDataroomFile({ datatype, datatable_type }) {
       const payload = { id: datatype, datatable_type }
 
-      const { note_exam, quiz, thumbnail, ...rest } = this.selectReferenceItem
-      console.log(note_exam, quiz, thumbnail)
+      const { note_exam_asks, quiz, thumbnail, ...rest } =
+        this.selectReferenceItem
+      console.log(note_exam_asks, quiz, thumbnail)
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -508,8 +509,8 @@ export default {
     // 퀴즈 수정
     updateDataroomQuiz({ datatype, datatable_type }) {
       const payload = { id: datatype, datatable_type }
-      const { note_exam, thumbnail, ...rest } = this.selectReferenceItem
-      console.log(note_exam, thumbnail)
+      const { note_exam_asks, thumbnail, ...rest } = this.selectReferenceItem
+      console.log(note_exam_asks, thumbnail)
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -529,8 +530,8 @@ export default {
     // 쪽지 시험 수정
     updateDataroomNoteExam({ datatype, datatable_type }) {
       const payload = { id: datatype, datatable_type }
-      const { note_exam, thumbnail, ...rest } = this.selectReferenceItem
-      console.log(note_exam, thumbnail)
+      const { note_exam_asks, thumbnail, ...rest } = this.selectReferenceItem
+      console.log(note_exam_asks, thumbnail)
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -1110,8 +1111,8 @@ export default {
 
     // 선택한 쪽지시험 지우기
     onDeleteNoteTest(idx) {
-      if (this.selectReferenceItem.note_exam.length > 1) {
-        this.selectReferenceItem.note_exam.splice(idx, 1)
+      if (this.selectReferenceItem.note_exam_asks.length > 1) {
+        this.selectReferenceItem.note_exam_asks.splice(idx, 1)
         this.currentPageIdx = idx - 1
         this.focusEditorField()
       }
@@ -1170,12 +1171,12 @@ export default {
 
     // [자료실] 난이도 설정 쪽지 시험
     onSelectDificultadeTest(idx, num) {
-      this.selectReferenceItem.note_exam[idx].level = num
+      this.selectReferenceItem.note_exam_asks[idx].level = num
     },
 
     // [자료실] 쪽지시험 내용 수정
     onChangeTest({ target: { value, name, type, checked } }, idx) {
-      const item = this.selectReferenceItem.note_exam[idx]
+      const item = this.selectReferenceItem.note_exam_asks[idx]
       if (type === 'checkbox') return (item[name] = checked)
       else return (item[name] = value)
     },
@@ -1183,13 +1184,13 @@ export default {
     // 쪽지 시험 추가
     onPlusNoteTestList() {
       const target = this.selectReferenceItem
-      const len = target.note_exam.length
+      const len = target.note_exam_asks.length
       const isLength = len <= 19
       const setId = len + 1
       this.currentPageIdx = len
       if (isLength) {
-        target.note_exam = [
-          ...target.note_exam,
+        target.note_exam_asks = [
+          ...target.note_exam_asks,
           { ...this.testItem, no: setId },
         ]
         this.focusEditorField()
@@ -1198,19 +1199,27 @@ export default {
 
     // 정답 입력
     onSelectAnswer(idx, targetIdx) {
-      this.selectReferenceItem.note_exam[idx].answer = Number(targetIdx + 1)
+      this.selectReferenceItem.note_exam_asks[idx].answer = Number(
+        targetIdx + 1
+      )
     },
 
     // 쪽지시험 예제 추가
     plusExampleList(idx) {
-      const id = this.referenceData.note_exam[idx].ask_view.length + 1
+      const id =
+        this.referenceData.note_exam_asks[idx].note_exam_ask_views.length + 1
       const example = { no: id, example: '' }
-      this.selectReferenceItem.note_exam[idx].ask_view.push(example)
+      this.selectReferenceItem.note_exam_asks[idx].note_exam_ask_views.push(
+        example
+      )
     },
 
     // 쪽지시험 예제 제거
     deleteExample(idx, targetIdx) {
-      this.selectReferenceItem.note_exam[idx].ask_view.splice(targetIdx, 1)
+      this.selectReferenceItem.note_exam_asks[idx].note_exam_ask_views.splice(
+        targetIdx,
+        1
+      )
     },
 
     // [자료실]PDF변환

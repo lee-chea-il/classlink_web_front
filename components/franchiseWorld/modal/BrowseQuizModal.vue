@@ -18,14 +18,14 @@
             <!-- 자료 열람 -->
             <div class="reading_section modal_dataquiz">
               <QuizLeftSection
-                :quizList="selectData.quiz"
+                :quizList="selectData.quiz_asks"
                 :currentIdx="currentPageIdx"
                 @pagination="setPagination"
                 @change-number="$emit('change-number', $event)"
               />
 
               <QuizRightSection
-                :quizList="selectData.quiz"
+                :quizList="selectData.quiz_asks"
                 :currentIdx="currentPageIdx"
                 @preview="setPreview"
               />
@@ -59,7 +59,7 @@
             </div>
 
             <!-- [개발참조] 하단 info_section 부분은 열람 팝업 공통 -->
-            <FileInfoSection :fileInfo="selectData" />
+            <FileInfoSection :fileInfo="selectData" :uploadInfo="uploadInfo" />
           </div>
         </div>
       </div>
@@ -85,18 +85,10 @@ export default {
   },
   props: {
     open: Boolean,
-    selectData: {
-      type: Object,
-      default: () => {},
-    },
-    identity: {
-      type: String,
-      default: '',
-    },
-    currentPageIdx: {
-      type: Number,
-      default: 0,
-    },
+    selectData: { type: Object, default: () => {} },
+    identity: { type: String, default: '' },
+    currentPageIdx: { type: Number, default: 0 },
+    uploadInfo: { type: Object, default: () => {} },
   },
   methods: {
     setPagination(e, idx) {

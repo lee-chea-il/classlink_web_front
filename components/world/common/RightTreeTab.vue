@@ -8,7 +8,8 @@
       aria-labelledby="grade-tab"
     >
       <TreeView
-        ref="curriculum"
+        ref="mydata"
+        treeViewType="MD"
         :expanded="false"
         :dataList="myDataList"
         identity="master"

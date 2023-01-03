@@ -87,7 +87,7 @@
     <!-- 퀴즈 미리보기 -->
     <PreviewQuizModal
       :open="isQuizPreviewModal.open"
-      :quizList="selectReferenceItem.quiz"
+      :quizList="selectReferenceItem.quiz_asks"
       :currentPageIdx="currentIdx"
       @close="closeQuizPreview"
       @pagination="setPagination"
@@ -96,7 +96,7 @@
     <!-- 쪽지시험 미리보기 -->
     <PreviewNoteTestModal
       :open="isNoteTestPreviewModal.open"
-      :testList="selectReferenceItem.note_exam"
+      :testList="selectReferenceItem.note_exam_asks"
       :currentPageIdx="currentIdx"
       @pagination="setPagination"
       @close="closeNoteTestPreview"
@@ -264,6 +264,7 @@
 <script>
 import html2pdf from 'html2pdf.js'
 import _ from 'lodash'
+import file_size_url from 'file_size_url'
 import PageHeader from '~/components/common/PageHeader.vue'
 import MainBtnBox from '~/components/common/MainBtnBox.vue'
 import DeleteModal from '~/components/common/modal/DeleteModal.vue'
@@ -321,22 +322,20 @@ export default {
       ...this.initLessonData,
       ins_code: user.ins_code,
       registrant_name: user.mem_name,
-      registrant: user.mem_idx,
     }
     this.setInitLessonData()
   },
   methods: {
     // api 통신
     // 업로드 주소 가져오기
-    async getServerUrl() {
-      return await apiData
+    getServerUrl() {
+      this.isLoading = true
+      apiData
         .getServerUrl()
-        .then((res) => {
-          console.log(res)
+        .then(() => {
+          this.isLoading = false
         })
-        .catch((err) => {
-          console.log(err)
-        })
+        .catch(() => {})
     },
 
     // 선택한 레슨 가져오기
@@ -344,10 +343,7 @@ export default {
       const payload = { lesson_idx, datatable_type }
       const setView = (data) => {
         const newDatarooms = data.datarooms.map((item) =>
-          Object.assign({
-            ...item,
-            name: item.title,
-          })
+          Object.assign({ ...item })
         )
         this.lessonViewData = {
           ...data,
@@ -371,7 +367,6 @@ export default {
         const newDatarooms = data.datarooms.map((item) =>
           Object.assign({
             ...item,
-            name: item.title,
           })
         )
         this.lessonData = {
@@ -422,7 +417,7 @@ export default {
       const { keyword, ...rest } = this.lessonData
       const payload = {
         ...rest,
-        name: '나는 만재 지니어스',
+        title: '나는 만재 지니어스',
         keyword: keyword.join(','),
       }
       apiLesson
@@ -459,15 +454,40 @@ export default {
             ...this.selectReferenceItem,
             file: data.savedNm,
             save_path: data.savePath,
-            upload_date: data.uploadDate,
+            registration_date: data.uploadDate,
           }
           this.getFileSize(`http://112.171.101.31:45290/file/${data.savedNm}`)
           this.onOpenReferenceAddModal()
         })
-        .catch((err) => {
-          console.log(err)
-          return false
-        })
+        .catch(() => {})
+    },
+
+    // 업로드 시 확장자 붙히기
+    setExtension(code) {
+      let msg
+      switch (code) {
+        case '01':
+          msg = '.mp4'
+          break
+        case '02':
+          msg = '.pdf'
+          break
+        case '03':
+          msg = '.quiz'
+          break
+        case '04':
+          msg = '.exam'
+          break
+        case '05':
+          msg = '.youtube'
+          break
+        case '06':
+          msg = '.url'
+          break
+        default:
+          msg = ''
+      }
+      return msg
     },
 
     // 파일 조회
@@ -480,12 +500,11 @@ export default {
           this.selectReferenceItem = {
             ...data,
             keyword: data.keyword.split(','),
-            name: data.title,
+            title: data.title.replace(/.mp4|.pdf|.youtube|.url/g, ''),
           }
+          this.getFileSize(data.full_path)
         })
-        .catch((err) => {
-          console.log(err)
-        })
+        .catch(() => {})
     },
 
     // 퀴즈 조회
@@ -497,12 +516,10 @@ export default {
           this.selectReferenceItem = {
             ...data,
             keyword: data.keyword.split(','),
-            name: data.title,
+            title: data.title.replace(/.quiz/g, ''),
           }
         })
-        .catch((err) => {
-          console.log(err)
-        })
+        .catch(() => {})
     },
 
     // 쪽지시험 조회
@@ -511,15 +528,17 @@ export default {
       apiData
         .getDataroomNoteExam(payload)
         .then(({ data: { data } }) => {
+          const setItem = data.note_exam_asks.map((item) => {
+            return { ...item, limit_time: Number(item.limit_time) / 60 }
+          })
           this.selectReferenceItem = {
             ...data,
             keyword: data.keyword.split(','),
-            name: data.title,
+            title: data.title.replace(/.exam/g, ''),
+            note_exam_asks: setItem,
           }
         })
-        .catch((err) => {
-          console.log(err)
-        })
+        .catch(() => {})
     },
 
     // 자료 유형별 핸들러
@@ -528,6 +547,7 @@ export default {
       const payload = {
         dataroom_idx: data.dataroom_idx,
         type: data.datatable_type,
+        title: data.title + this.setExtension(data.datatype),
       }
       if (type === '03') return this.getDataroomQuiz(payload)
       else if (type === '04') return this.getDataroomNoteExam(payload)
@@ -537,11 +557,11 @@ export default {
     // 파일 수정
     // 동영상, PDF, YOUTUBE, URL 수정
     updateDataroomFile() {
-      const { thumbnail, registrant_name, full_path, ...rest } =
-        this.selectReferenceItem
+      const { keyword, title, full_path, ...rest } = this.selectReferenceItem
       const data = {
         ...rest,
-        keyword: rest.keyword.join(','),
+        keyword: keyword.join(','),
+        title: title + this.setExtension(rest.datatype),
       }
       apiData
         .updateDataroomFile(data)
@@ -550,17 +570,16 @@ export default {
           this.uploadInfo.saveFolderPath = ''
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
-        .catch(() => {
-          console.log(thumbnail)
-        })
+        .catch(() => {})
     },
 
     // 퀴즈 수정
     updateDataroomQuiz() {
-      const { thumbnail, registrant_name, ...rest } = this.selectReferenceItem
+      const { keyword, title, ...rest } = this.selectReferenceItem
       const data = {
         ...rest,
-        keyword: rest.keyword.join(','),
+        keyword: keyword.join(','),
+        title: title + this.setExtension(rest.datatype),
       }
       apiData
         .updateDataroomQuiz(data)
@@ -569,28 +588,25 @@ export default {
           this.uploadInfo.saveFolderPath = ''
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
-        .catch(() => {
-          console.log(thumbnail)
-        })
+        .catch(() => {})
     },
 
     // 쪽지 시험 수정
     updateDataroomNoteExam() {
-      const { thumbnail, registrant_name, ...rest } = this.selectReferenceItem
+      const { keyword, title, ...rest } = this.selectReferenceItem
       const data = {
         ...rest,
-        keyword: rest.keyword.join(','),
+        keyword: keyword.join(','),
+        title: title + this.setExtension(rest.datatype),
       }
       apiData
         .updateDataroomNoteExam(data)
-        .then((res) => {
+        .then(() => {
           this.isNoteTestAddModal.open = false
           this.uploadInfo.saveFolderPath = ''
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
-        .catch(() => {
-          console.log(thumbnail)
-        })
+        .catch(() => {})
     },
 
     // 파일 삭제
@@ -602,14 +618,11 @@ export default {
       }
       apiData
         .deleteData(payload)
-        .then((res) => {
-          console.log(res)
+        .then(() => {
           this.isSelectModal.open = false
           this.openModalDesc('삭제 성공', '자료를 삭제했습니다.')
         })
-        .catch((err) => {
-          console.log(err)
-        })
+        .catch(() => {})
     },
 
     setModalTitle(str) {
@@ -801,7 +814,7 @@ export default {
     // [레슨] 레슨 지우기 수정 필요
     removeReferenceOfLessonItem({ name }) {
       const newArray = this.treeReferenceList
-      const filterItem = newArray.filter((data) => data.name !== name)
+      const filterItem = newArray.filter((data) => data.title !== name)
       this.treeReferenceList = filterItem
     },
 
@@ -1048,6 +1061,25 @@ export default {
       this.uploadInfo.savePathLesson = path
     },
 
+    async getFileSize(url) {
+      const getByteSize = (size) => {
+        const byteUnits = ['KB', 'MB', 'GB', 'TB']
+        for (const i in byteUnits) {
+          size = Math.floor(size / 1024)
+          if (size < 1024) return size.toFixed(1) + byteUnits[i]
+        }
+      }
+      if (url.toString().includes('http')) {
+        await file_size_url(url)
+          .then((res) => {
+            this.uploadInfo.fileSize = res
+          })
+          .catch((error) => console.log(error))
+      } else {
+        this.uploadInfo.fileSize = getByteSize(url)
+      }
+    },
+
     // [자료실] 등록 자료 내용 변경
     onChangeUploadFile({ target: { id, value, type, checked, name } }) {
       const elem = this.selectReferenceItem
@@ -1065,7 +1097,7 @@ export default {
         this.postFile(files[0])
         this.selectReferenceItem = {
           ...this.selectReferenceItem,
-          name: files[0].name,
+          title: files[0].name,
           full_path: URL.createObjectURL(files[0]),
           file_name: files[0].name,
           datatable_type: 'ID',
@@ -1098,7 +1130,7 @@ export default {
 
     // [자료실] 퀴즈 내용 수정
     onChangeQuizItem({ target: { value, name } }, idx) {
-      this.selectReferenceItem.quiz[idx][name] = value
+      this.selectReferenceItem.quiz_asks[idx][name] = value
     },
 
     // 퀴즈 변경 UI
@@ -1117,8 +1149,8 @@ export default {
 
     // 선택한 퀴즈 지우기
     onDeleteQuizItem(idx) {
-      if (this.selectReferenceItem.quiz.length > 1) {
-        this.selectReferenceItem.quiz.splice(idx, 1)
+      if (this.selectReferenceItem.quiz_asks.length > 1) {
+        this.selectReferenceItem.quiz_asks.splice(idx, 1)
         this.currentPageIdx = idx - 1
         this.focusEditorField()
       }
@@ -1126,8 +1158,8 @@ export default {
 
     // 선택한 쪽지시험 지우기
     onDeleteNoteTest(idx) {
-      if (this.selectReferenceItem.note_exam.length > 1) {
-        this.selectReferenceItem.note_exam.splice(idx, 1)
+      if (this.selectReferenceItem.note_exam_asks.length > 1) {
+        this.selectReferenceItem.note_exam_asks.splice(idx, 1)
         this.currentPageIdx = idx - 1
         this.focusEditorField()
       }
@@ -1136,12 +1168,12 @@ export default {
     // [자료실] 퀴즈 추가
     onPlusQuizList() {
       const target = this.selectReferenceItem
-      const len = target.quiz.length
+      const len = target.quiz_asks.length
       const isLength = len <= 19
       this.currentPageIdx = len
       if (isLength) {
-        target.quiz = [
-          ...target.quiz,
+        target.quiz_asks = [
+          ...target.quiz_asks,
           {
             ...this.quizItem,
             no: len + 1,
@@ -1153,7 +1185,7 @@ export default {
 
     // 퀴즈 타입 변경
     onClickQuizType({ target: { value } }, idx, num) {
-      const target = this.selectReferenceItem.quiz[idx]
+      const target = this.selectReferenceItem.quiz_asks[idx]
       console.log(value)
       if (num === 'OX') {
         target.correct = 'O'
@@ -1171,27 +1203,27 @@ export default {
     // ox클릭 이벤트
     onSelectOx(idx, correct) {
       if (correct === 'O') {
-        this.selectReferenceItem.quiz[idx].correct = 'O'
-        this.selectReferenceItem.quiz[idx].wrong = 'x'
+        this.selectReferenceItem.quiz_asks[idx].correct = 'O'
+        this.selectReferenceItem.quiz_asks[idx].wrong = 'x'
       } else {
-        this.selectReferenceItem.quiz[idx].correct = 'X'
-        this.selectReferenceItem.quiz[idx].wrong = 'O'
+        this.selectReferenceItem.quiz_asks[idx].correct = 'X'
+        this.selectReferenceItem.quiz_asks[idx].wrong = 'O'
       }
     },
 
     // [자료실] 난이도 설정
     onSelectDificultade(idx, num) {
-      this.selectReferenceItem.quiz[idx].level = num
+      this.selectReferenceItem.quiz_asks[idx].level = num
     },
 
     // [자료실] 난이도 설정 쪽지 시험
     onSelectDificultadeTest(idx, num) {
-      this.selectReferenceItem.note_exam[idx].level = num
+      this.selectReferenceItem.note_exam_asks[idx].level = num
     },
 
     // [자료실] 쪽지시험 내용 수정
     onChangeTest({ target: { value, name, type, checked } }, idx) {
-      const item = this.selectReferenceItem.note_exam[idx]
+      const item = this.selectReferenceItem.note_exam_asks[idx]
       if (type === 'checkbox') return (item[name] = checked)
       else return (item[name] = value)
     },
@@ -1199,13 +1231,13 @@ export default {
     // 쪽지 시험 추가
     onPlusNoteTestList() {
       const target = this.selectReferenceItem
-      const len = target.note_exam.length
+      const len = target.note_exam_asks.length
       const isLength = len <= 19
       const setId = len + 1
       this.currentPageIdx = len
       if (isLength) {
-        target.note_exam = [
-          ...target.note_exam,
+        target.note_exam_asks = [
+          ...target.note_exam_asks,
           { ...this.testItem, no: setId },
         ]
         this.focusEditorField()
@@ -1214,19 +1246,28 @@ export default {
 
     // 정답 입력
     onSelectAnswer(idx, targetIdx) {
-      this.selectReferenceItem.note_exam[idx].answer = Number(targetIdx + 1)
+      this.selectReferenceItem.note_exam_asks[idx].correct_no = Number(
+        targetIdx + 1
+      )
     },
 
     // 쪽지시험 예제 추가
     plusExampleList(idx) {
-      const id = this.selectReferenceItem.note_exam[idx].ask_view.length + 1
+      const id =
+        this.selectReferenceItem.note_exam_asks[idx].note_exam_ask_views
+          .length + 1
       const example = { no: id, example: '' }
-      this.selectReferenceItem.note_exam[idx].ask_view.push(example)
+      this.selectReferenceItem.note_exam_asks[idx].note_exam_ask_views.push(
+        example
+      )
     },
 
     // 쪽지시험 예제 제거
     deleteExample(idx, targetIdx) {
-      this.selectReferenceItem.note_exam[idx].ask_view.splice(targetIdx, 1)
+      this.selectReferenceItem.note_exam_asks[idx].note_exam_ask_views.splice(
+        targetIdx,
+        1
+      )
     },
 
     // [자료실]PDF변환

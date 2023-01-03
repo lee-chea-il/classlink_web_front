@@ -85,7 +85,7 @@
     <!-- 퀴즈 미리보기 -->
     <PreviewQuizModal
       :open="isQuizPreviewModal.open"
-      :quizList="selectReferenceItem.quiz"
+      :quizList="selectReferenceItem.quiz_asks"
       :currentPageIdx="currentIdx"
       @close="closeQuizPreview"
       @pagination="setPagination"
@@ -94,7 +94,7 @@
     <!-- 쪽지시험 미리보기 -->
     <PreviewNoteTestModal
       :open="isNoteTestPreviewModal.open"
-      :testList="selectReferenceItem.note_exam"
+      :testList="selectReferenceItem.note_exam_asks"
       :currentPageIdx="currentIdx"
       @pagination="setPagination"
       @close="closeNoteTestPreview"
@@ -486,9 +486,9 @@ export default {
     updateDataroomFile({ datatype, datatable_type }) {
       const payload = { id: datatype, datatable_type }
 
-      const { note_exam, quiz, thumbnail, registrant_name, ...rest } =
+      const { note_exam_asks, quiz_asks, thumbnail, registrant_name, ...rest } =
         this.selectReferenceItem
-      console.log(note_exam, quiz, thumbnail)
+      console.log(note_exam_asks, quiz_asks, thumbnail)
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -508,9 +508,9 @@ export default {
     // 퀴즈 수정
     updateDataroomQuiz({ datatype, datatable_type }) {
       const payload = { id: datatype, datatable_type }
-      const { note_exam, thumbnail, registrant_name, ...rest } =
+      const { note_exam_asks, thumbnail, registrant_name, ...rest } =
         this.selectReferenceItem
-      console.log(note_exam, thumbnail)
+      console.log(note_exam_asks, thumbnail)
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -530,8 +530,8 @@ export default {
     // 쪽지 시험 수정
     updateDataroomNoteExam({ datatype, datatable_type }) {
       const payload = { id: datatype, datatable_type }
-      const { note_exam, thumbnail, ...rest } = this.selectReferenceItem
-      console.log(note_exam, thumbnail)
+      const { note_exam_asks, thumbnail, ...rest } = this.selectReferenceItem
+      console.log(note_exam_asks, thumbnail)
       const data = {
         ...rest,
         keyword: rest.keyword.join(','),
@@ -1083,7 +1083,7 @@ export default {
 
     // [자료실] 퀴즈 내용 수정
     onChangeQuizItem({ target: { value, name } }, idx) {
-      this.selectReferenceItem.quiz[idx][name] = value
+      this.selectReferenceItem.quiz_asks[idx][name] = value
     },
 
     // 퀴즈 변경 UI
@@ -1102,8 +1102,8 @@ export default {
 
     // 선택한 퀴즈 지우기
     onDeleteQuizItem(idx) {
-      if (this.selectReferenceItem.quiz.length > 1) {
-        this.selectReferenceItem.quiz.splice(idx, 1)
+      if (this.selectReferenceItem.quiz_asks.length > 1) {
+        this.selectReferenceItem.quiz_asks.splice(idx, 1)
         this.currentPageIdx = idx - 1
         this.focusEditorField()
       }
@@ -1111,8 +1111,8 @@ export default {
 
     // 선택한 쪽지시험 지우기
     onDeleteNoteTest(idx) {
-      if (this.selectReferenceItem.note_exam.length > 1) {
-        this.selectReferenceItem.note_exam.splice(idx, 1)
+      if (this.selectReferenceItem.note_exam_asks.length > 1) {
+        this.selectReferenceItem.note_exam_asks.splice(idx, 1)
         this.currentPageIdx = idx - 1
         this.focusEditorField()
       }
@@ -1121,12 +1121,12 @@ export default {
     // [자료실] 퀴즈 추가
     onPlusQuizList() {
       const target = this.selectReferenceItem
-      const len = target.quiz.length
+      const len = target.quiz_asks.length
       const isLength = len <= 19
       this.currentPageIdx = len
       if (isLength) {
-        target.quiz = [
-          ...target.quiz,
+        target.quiz_asks = [
+          ...target.quiz_asks,
           {
             ...this.quizItem,
             no: len + 1,
@@ -1138,7 +1138,7 @@ export default {
 
     // 퀴즈 타입 변경
     onClickQuizType({ target: { value } }, idx, num) {
-      const target = this.selectReferenceItem.quiz[idx]
+      const target = this.selectReferenceItem.quiz_asks[idx]
       console.log(value)
       if (num === 'OX') {
         target.correct = 'O'
@@ -1156,27 +1156,27 @@ export default {
     // ox클릭 이벤트
     onSelectOx(idx, correct) {
       if (correct === 'O') {
-        this.selectReferenceItem.quiz[idx].correct = 'O'
-        this.selectReferenceItem.quiz[idx].wrong = 'x'
+        this.selectReferenceItem.quiz_asks[idx].correct = 'O'
+        this.selectReferenceItem.quiz_asks[idx].wrong = 'x'
       } else {
-        this.selectReferenceItem.quiz[idx].correct = 'X'
-        this.selectReferenceItem.quiz[idx].wrong = 'O'
+        this.selectReferenceItem.quiz_asks[idx].correct = 'X'
+        this.selectReferenceItem.quiz_asks[idx].wrong = 'O'
       }
     },
 
     // [자료실] 난이도 설정
     onSelectDificultade(idx, num) {
-      this.selectReferenceItem.quiz[idx].level = num
+      this.selectReferenceItem.quiz_asks[idx].level = num
     },
 
     // [자료실] 난이도 설정 쪽지 시험
     onSelectDificultadeTest(idx, num) {
-      this.selectReferenceItem.note_exam[idx].level = num
+      this.selectReferenceItem.note_exam_asks[idx].level = num
     },
 
     // [자료실] 쪽지시험 내용 수정
     onChangeTest({ target: { value, name, type, checked } }, idx) {
-      const item = this.selectReferenceItem.note_exam[idx]
+      const item = this.selectReferenceItem.note_exam_asks[idx]
       if (type === 'checkbox') return (item[name] = checked)
       else return (item[name] = value)
     },
@@ -1184,13 +1184,13 @@ export default {
     // 쪽지 시험 추가
     onPlusNoteTestList() {
       const target = this.selectReferenceItem
-      const len = target.note_exam.length
+      const len = target.note_exam_asks.length
       const isLength = len <= 19
       const setId = len + 1
       this.currentPageIdx = len
       if (isLength) {
-        target.note_exam = [
-          ...target.note_exam,
+        target.note_exam_asks = [
+          ...target.note_exam_asks,
           { ...this.testItem, no: setId },
         ]
         this.focusEditorField()
@@ -1199,19 +1199,27 @@ export default {
 
     // 정답 입력
     onSelectAnswer(idx, targetIdx) {
-      this.selectReferenceItem.note_exam[idx].answer = Number(targetIdx + 1)
+      this.selectReferenceItem.note_exam_asks[idx].correct_no = Number(
+        targetIdx + 1
+      )
     },
 
     // 쪽지시험 예제 추가
     plusExampleList(idx) {
-      const id = this.referenceData.note_exam[idx].ask_view.length + 1
+      const id =
+        this.referenceData.note_exam_asks[idx].note_exam_ask_views.length + 1
       const example = { no: id, example: '' }
-      this.selectReferenceItem.note_exam[idx].ask_view.push(example)
+      this.selectReferenceItem.note_exam_asks[idx].note_exam_ask_views.push(
+        example
+      )
     },
 
     // 쪽지시험 예제 제거
     deleteExample(idx, targetIdx) {
-      this.selectReferenceItem.note_exam[idx].ask_view.splice(targetIdx, 1)
+      this.selectReferenceItem.note_exam_asks[idx].note_exam_ask_views.splice(
+        targetIdx,
+        1
+      )
     },
 
     // [자료실]PDF변환

@@ -9,6 +9,7 @@
     >
       <TreeView
         ref="institution"
+        treeViewType="ID"
         :dataList="institutionData"
         :editable="identity == 'master' ? true : false"
         :identity="identity"
@@ -32,6 +33,7 @@
     >
       <TreeView
         ref="franchise"
+        treeViewType="FD"
         :dataList="franchiseData"
         :editable="identity == 'master' ? true : false"
         :identity="identity"
@@ -55,6 +57,7 @@
     >
       <TreeView
         ref="open"
+        treeViewType="OD"
         :dataList="openData"
         :editable="identity == 'master' ? true : false"
         :identity="identity"

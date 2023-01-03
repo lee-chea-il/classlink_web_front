@@ -73,6 +73,7 @@ export default {
       for (let i = 0; i < len; i++) {
         const newStr = JSON.stringify(data[i])
         const nObj = JSON.parse(newStr)
+        nObj.treeViewId = nObj.id
         nObj.id = 'lectureTree_' + this.pid
         nObj.pid = this.pid
         nObj.isChecked = false

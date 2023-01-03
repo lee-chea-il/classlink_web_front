@@ -70,15 +70,24 @@ export default function initialState() {
         set: [],
       },
     },
-    scheduleItem: {
+    initScheduleItem: {
       startTime: '0000',
       endTime: '2400',
-      startDay: new Date(),
+      startDay: '',
       endDay: '',
-      selectWeekDay: [],
+      selectWeekDay: [
+        { name: '일', isChecked: false },
+        { name: '월', isChecked: false },
+        { name: '화', isChecked: false },
+        { name: '수', isChecked: false },
+        { name: '목', isChecked: false },
+        { name: '금', isChecked: false },
+        { name: '토', isChecked: false },
+      ],
       isRepeat: false,
       bgColor: '#8fa7fb',
     },
+    scheduleItem: {},
     weekIdx: {
       일: 'sun',
       월: 'mon',

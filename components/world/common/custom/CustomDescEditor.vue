@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div v-for="(item, idx) in itemList.ask_view" :key="idx" class="example">
+    <div
+      v-for="(item, idx) in itemList.note_exam_ask_views"
+      :key="idx"
+      class="example"
+    >
       <div class="tit">
         <div class="custom-control custom-radio custom-control-inline">
           <input

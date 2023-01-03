@@ -15,7 +15,7 @@
             <!-- /.문제의 보기  -->
             <!-- [개발참조] 보기 4까지 생성되었을 때는 추가 버튼 보이지 않음 -->
             <div
-              v-if="noteTestList[currentIdx].ask_view?.length < 4"
+              v-if="noteTestList[currentIdx].note_exam_ask_views?.length < 4"
               class="example"
             >
               <button

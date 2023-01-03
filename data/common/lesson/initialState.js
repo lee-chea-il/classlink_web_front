@@ -35,7 +35,7 @@ export default function initialState() {
     isSavePathModal: { open: false, prevPage: '' },
     lessonViewData: {},
     initLessonData: {
-      name: '',
+      title: '',
       educationgoal: '',
       description: '',
       keyword: [],
@@ -45,7 +45,7 @@ export default function initialState() {
       ins_code: '',
     },
     lessonData: {
-      name: '',
+      title: '',
       educationgoal: '',
       description: '',
       keyword: [],
@@ -68,7 +68,7 @@ export default function initialState() {
     testItem: {
       id: 0,
       question: '',
-      exampleList: [
+      note_exam_ask_views: [
         { id: '', example: '' },
         { id: '', example: '' },
         { id: '', example: '' },
@@ -77,22 +77,25 @@ export default function initialState() {
       ],
       level: 0,
       limit_time: '',
-      answer: 1,
+      correct_no: 1,
     },
     copyCheckData: [],
     treeReferenceList: [],
     receiveInstitutionLessonData: [
       {
-        name: '마포 학원',
+        title: '마포 학원',
+        group_yn: true,
         children: [
           {
-            name: '국어',
+            title: '국어',
+            group_yn: true,
             children: [
               {
-                name: '1단원',
+                title: '1단원',
+                group_yn: false,
                 children: [
                   {
-                    name: '본사 스프링 시즌용.lesson',
+                    title: '본사 스프링 시즌용.lesson',
                     lesson_idx: 1,
                     datatable_type: 'IL',
                   },
@@ -105,23 +108,23 @@ export default function initialState() {
     ],
     receiveFranchiseLessonData: [
       {
-        name: '서울 학원',
+        title: '서울 학원',
         children: [
           {
-            name: '과학',
+            title: '과학',
             children: [
               {
-                name: '1단원',
+                title: '1단원',
                 children: [
                   {
                     lesson_idx: 1,
-                    datatable_type: 'ID',
-                    name: '1-3반 영어 학습 자료 모음.lesson',
+                    datatable_type: 'FL',
+                    title: '1-3반 영어 학습 자료 모음.lesson',
                   },
                   {
                     lesson_idx: 2,
-                    datatable_type: 'ID',
-                    name: '2-3반 수학 학습 자료 모음.lesson',
+                    datatable_type: 'FL',
+                    title: '2-3반 수학 학습 자료 모음.lesson',
                   },
                 ],
               },
@@ -132,20 +135,20 @@ export default function initialState() {
     ],
     receiveLessonList: [
       {
-        name: '국어',
+        title: '국어',
         children: [
           {
-            name: '1단원',
+            title: '1단원',
             children: [
               {
                 lesson_idx: 1,
-                datatable_type: 'ID',
-                name: '1-3반 영어 학습 자료 모음.lesson',
+                datatable_type: 'ML',
+                title: '1-3반 영어 학습 자료 모음.lesson',
               },
               {
                 lesson_idx: 2,
-                datatable_type: 'ID',
-                name: '2-3반 수학 학습 자료 모음.lesson',
+                datatable_type: 'ML',
+                title: '2-3반 수학 학습 자료 모음.lesson',
               },
             ],
           },
@@ -154,48 +157,48 @@ export default function initialState() {
     ],
     receiveInstitutionData: [
       {
-        name: '마포 학원',
+        title: '마포 학원',
         children: [
           {
-            name: '국어',
+            title: '국어',
             children: [
               {
-                name: '1단원',
+                title: '1단원',
                 children: [
                   {
-                    dataroom_idx: 1,
+                    dataroom_idx: 30,
                     datatable_type: 'ID',
-                    name: '국어학습자료 애니메이션.mp4',
+                    title: '국어학습자료 애니메이션.mp4',
                     datatype: '01',
                   },
                   {
-                    dataroom_idx: 2,
+                    dataroom_idx: 31,
                     datatable_type: 'ID',
-                    name: '수학 학습자료.pdf',
+                    title: '수학 학습자료.pdf',
                     datatype: '02',
                   },
                   {
                     dataroom_idx: 3,
                     datatable_type: 'ID',
-                    name: '영어 단어 퀴즈.quiz',
+                    title: '영어 단어 퀴즈.quiz',
                     datatype: '03',
                   },
                   {
                     dataroom_idx: 4,
                     datatable_type: 'ID',
-                    name: '수학 쪽지시험.test',
+                    title: '수학 쪽지시험.test',
                     datatype: '04',
                   },
                   {
                     dataroom_idx: 5,
                     datatable_type: 'ID',
-                    name: '사회 쪽지시험 영상.youtube',
+                    title: '사회 쪽지시험 영상.youtube',
                     datatype: '05',
                   },
                   {
                     dataroom_idx: 6,
                     datatable_type: 'ID',
-                    name: '과학 사이트 참고용.url',
+                    title: '과학 사이트 참고용.url',
                     datatype: '06',
                   },
                 ],
@@ -207,18 +210,18 @@ export default function initialState() {
     ],
     receiveFranchiseData: [
       {
-        name: '서울 학원',
+        title: '서울 학원',
         children: [
           {
-            name: '과학',
+            title: '과학',
             children: [
               {
-                name: '1단원',
+                title: '1단원',
                 children: [
                   {
                     dataroom_idx: 1,
-                    datatable_type: 'ID',
-                    name: '국어학습자료 애니메이션.mp4',
+                    datatable_type: 'FD',
+                    title: '국어학습자료 애니메이션.mp4',
                     datatype: '01',
                   },
                 ],
@@ -230,15 +233,15 @@ export default function initialState() {
     ],
     receiveMyData: [
       {
-        name: '국어',
+        title: '국어',
         children: [
           {
-            name: '1단원',
+            title: '1단원',
             children: [
               {
                 dataroom_idx: 1,
-                datatable_type: 'ID',
-                name: '국어학습자료 애니메이션.mp4',
+                datatable_type: 'MD',
+                title: '국어학습자료 애니메이션.mp4',
                 datatype: '01',
               },
             ],

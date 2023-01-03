@@ -29,7 +29,7 @@ o
         <!-- 쪽지시험 - 미리보기 - 답변 이미지없는 경우 -->
         <div class="answer_area04">
           <div
-            v-for="(children, index) in noteTestList[idx].ask_view"
+            v-for="(children, index) in noteTestList[idx].note_exam_ask_views"
             :key="index"
             class="aa_question row"
           >

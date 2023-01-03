@@ -78,7 +78,7 @@
       :open="isQuizAddModal"
       :modalTitle="modalTitle"
       :reference="referenceData"
-      :quizList="referenceData.quiz"
+      :quizList="referenceData.quiz_asks"
       :currentPageIdx="currentPageIdx"
       :pushKeyword="pushKeyword"
       :uploadInfo="uploadInfo"
@@ -172,7 +172,7 @@
     <!-- 퀴즈 미리보기 -->
     <PreviewQuizModal
       :open="isQuizPreviewModal.open"
-      :quizList="referenceData.quiz"
+      :quizList="referenceData.quiz_asks"
       :currentPageIdx="currentPageIdx"
       @close="onCloseQuizPreviewModal"
       @pagination="onClickQuizPagination"
@@ -198,7 +198,7 @@
     <!-- 쪽지시험 미리보기 -->
     <PreviewNoteTestModal
       :open="isNoteTestPreviewModal.open"
-      :testList="referenceData.note_exam"
+      :testList="referenceData.note_exam_asks"
       :currentPageIdx="currentPageIdx"
       @close="onCloseNoteTestPreviewModal"
       @pagination="onClickQuizPagination"
@@ -265,12 +265,12 @@
     />
 
     <!-- 퀴즈 프린트 영역 -->
-    <PrintQuizModal v-show="isQuizPrint" :quizList="referenceData.quiz" />
+    <PrintQuizModal v-show="isQuizPrint" :quizList="referenceData.quiz_asks" />
 
     <!-- 쪽지시험 프린트 영역 -->
     <PrintNoteTestModal
       v-show="isNoteTestPrint"
-      :noteTestList="referenceData.note_exam"
+      :noteTestList="referenceData.note_exam_asks"
     />
 
     <CustomSnackbar :show="isSnackbar.open" :message="isSnackbar.message" />
@@ -675,7 +675,7 @@ export default {
         datatable_type: 'ID',
         datatype: '03',
         fileSize: '0',
-        quiz: [{ ...this.quizItem }],
+        quiz_asks: [{ ...this.quizItem }],
       }
       this.referenceData.createAt = new Date()
       document.getElementById('referenceSelectClose').click()
@@ -695,7 +695,7 @@ export default {
         datatable_type: 'ID',
         datatype: '04',
         fileSize: '0',
-        note_exam: [{ ...this.testItem }],
+        note_exam_asks: [{ ...this.testItem }],
       }
       document.getElementById('referenceSelectClose').click()
       this.isNoteTestAddModal = true
@@ -1025,16 +1025,16 @@ export default {
     onChangeQuiz({ target: { value, id } }, idx) {
       const numberOnly = value.replace(/[^0-9.]/g, '').replace(/ /g, '')
       if (id === 'limit_time') {
-        return (this.referenceData.quiz[idx][id] = numberOnly)
+        return (this.referenceData.quiz_asks[idx][id] = numberOnly)
       } else {
-        return (this.referenceData.quiz[idx][id] = value)
+        return (this.referenceData.quiz_asks[idx][id] = value)
       }
     },
 
     // 쪽지시험 변경 핸들러
     onChangeTest({ target: { value, name, type, checked, id } }, idx) {
       const numberOnly = value.replace(/[^0-9.]/g, '').replace(/ /g, '')
-      const testElem = this.referenceData.note_exam[idx]
+      const testElem = this.referenceData.note_exam_asks[idx]
       if (type === 'checkbox') {
         if (checked) return (testElem[name] = true)
         else {
@@ -1239,12 +1239,12 @@ export default {
     //  퀴즈 추가
     onPlusQuizList() {
       const target = this.referenceData
-      const len = target.quiz.length
+      const len = target.quizquiz.length
       const isLength = len <= 19
       this.currentPageIdx = len
       if (isLength) {
-        target.quiz = [
-          ...target.quiz,
+        target.quizquiz = [
+          ...target.quizquiz,
           {
             ...this.quizItem,
             no: len + 1,
@@ -1256,8 +1256,8 @@ export default {
 
     // 선택한 퀴즈 지우기
     onDeleteQuizItem(idx) {
-      if (this.referenceData.quiz.length > 1) {
-        this.referenceData.quiz.splice(idx, 1)
+      if (this.referenceData.quiz_asks.length > 1) {
+        this.referenceData.quiz_asks.splice(idx, 1)
         this.currentPageIdx = idx - 1
         this.focusEditorField()
       }
@@ -1265,7 +1265,7 @@ export default {
 
     // 퀴즈 타입 변경
     onClickQuizType({ target: { value } }, idx, num) {
-      const target = this.referenceData.quiz[idx]
+      const target = this.referenceData.quiz_asks[idx]
       console.log(value)
       if (num === 'OX') {
         target.correct = 'O'
@@ -1283,35 +1283,35 @@ export default {
     // ox클릭 이벤트
     onSelectOx(idx, correct) {
       if (correct === 'O') {
-        this.referenceData.quiz[idx].correct = 'O'
-        this.referenceData.quiz[idx].wrong = 'x'
+        this.referenceData.quiz_asks[idx].correct = 'O'
+        this.referenceData.quiz_asks[idx].wrong = 'x'
       } else {
-        this.referenceData.quiz[idx].correct = 'X'
-        this.referenceData.quiz[idx].wrong = 'O'
+        this.referenceData.quiz_asks[idx].correct = 'X'
+        this.referenceData.quiz_asks[idx].wrong = 'O'
       }
     },
 
     // 난이도 설정
     onSelectDificultade(idx, num) {
-      this.referenceData.quiz[idx].level = num
+      this.referenceData.quiz_asks[idx].level = num
     },
 
     // 난이도 설정 쪽지 시험
     onSelectDificultadeTest(idx, num) {
-      this.referenceData.note_exam[idx].level = num
+      this.referenceData.note_exam_asks[idx].level = num
     },
 
     // 쪽지 시험
     // 쪽지 시험 추가
     onPlusNoteTestList() {
       const target = this.referenceData
-      const len = target.note_exam.length
+      const len = target.note_exam_asks.length
       const isLength = len <= 19
       const setId = len + 1
       this.currentPageIdx = len
       if (isLength) {
-        target.note_exam = [
-          ...target.note_exam,
+        target.note_exam_asks = [
+          ...target.note_exam_asks,
           { ...this.testItem, no: setId },
         ]
         this.focusEditorField()
@@ -1320,8 +1320,8 @@ export default {
 
     // 선택한 쪽지시험 지우기
     onDeleteNoteTest(idx) {
-      if (this.referenceData.note_exam.length > 1) {
-        this.referenceData.note_exam.splice(idx, 1)
+      if (this.referenceData.note_exam_asks.length > 1) {
+        this.referenceData.note_exam_asks.splice(idx, 1)
         this.currentPageIdx = idx - 1
         this.focusEditorField()
       }
@@ -1329,19 +1329,23 @@ export default {
 
     // 정답 입력
     onSelectAnswer(idx, targetIdx) {
-      this.referenceData.note_exam[idx].answer = Number(targetIdx + 1)
+      this.referenceData.note_exam_asks[idx].correct_no = Number(targetIdx + 1)
     },
 
     // 쪽지시험 예제 추가
     plusExampleList(idx) {
-      const id = this.referenceData.note_exam[idx].ask_view.length + 1
+      const id =
+        this.referenceData.note_exam_asks[idx].note_exam_ask_views.length + 1
       const example = { no: id, question: '' }
-      this.referenceData.note_exam[idx].ask_view.push(example)
+      this.referenceData.note_exam_asks[idx].note_exam_ask_views.push(example)
     },
 
     // 쪽지시험 예제 제거
     deleteExample(idx, targetIdx) {
-      this.referenceData.note_exam[idx].ask_view.splice(targetIdx, 1)
+      this.referenceData.note_exam_asks[idx].note_exam_ask_views.splice(
+        targetIdx,
+        1
+      )
     },
 
     // 자료 클릭 이벤트

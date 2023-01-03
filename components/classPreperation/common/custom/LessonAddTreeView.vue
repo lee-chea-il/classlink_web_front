@@ -74,6 +74,30 @@ export default {
     }
   },
   methods: {
+    setType(type) {
+      let newType = ''
+      switch (type) {
+        case 'IL':
+        case 'ID':
+          newType = 'ID'
+          break
+        case 'FL':
+        case 'FD':
+          newType = 'FD'
+          break
+        case 'ML':
+        case 'MD':
+          newType = 'MD'
+          break
+        case 'OD':
+          newType = 'OD'
+          break
+        default:
+          newType = ''
+          break
+      }
+      return newType
+    },
     moreShowClick(node) {
       console.log('show', node)
       this.$emit('moreShowClick', node)
@@ -88,10 +112,13 @@ export default {
     copyData(data) {
       const newStr = JSON.stringify(data)
       const newData = JSON.parse(newStr)
+      newData.treeViewId = newData.id
       newData.id = 'list_' + this.pid
       newData.pid = this.pid
       newData.isLeaf = true
       newData.readOnly = true
+      newData.name = newData.title
+      newData.type = this.setType(newData.datatable_type)
       return newData
     },
     dataMapping(item) {
@@ -105,7 +132,7 @@ export default {
     setEmptyArea() {
       const dummy = [
         {
-          name: '',
+          title: '',
           type: '',
           dbIdx: -1,
         },
@@ -155,20 +182,24 @@ export default {
   },
 }
 </script>
-<style>
-.modal_Lessonregi .divide_area.right .vtl .custom-checkbox {
+<style scoped>
+.modal_Lessonregi .divide_area.right .vtl::v-deep .custom-checkbox {
   display: none;
 }
 #modalLessonRegi .check_sec .form-inline {
   display: block;
 }
-.modal_Lessonregi .divide_area.right .vtl .icon_mp4_sm,
-.modal_Lessonregi .divide_area.right .vtl .icon_pdf_sm,
-.modal_Lessonregi .divide_area.right .vtl .icon_exam_sm,
-.modal_Lessonregi .divide_area.right .vtl .icon_quiz_sm,
-.modal_Lessonregi .divide_area.right .vtl .icon_link_sm,
-.modal_Lessonregi .divide_area.right .vtl .utobe {
+.modal_Lessonregi .divide_area.right .vtl::v-deep .icon_mp4_sm,
+.modal_Lessonregi .divide_area.right .vtl::v-deep .icon_pdf_sm,
+.modal_Lessonregi .divide_area.right .vtl::v-deep .icon_exam_sm,
+.modal_Lessonregi .divide_area.right .vtl::v-deep .icon_quiz_sm,
+.modal_Lessonregi .divide_area.right .vtl::v-deep .icon_link_sm,
+.modal_Lessonregi .divide_area.right .vtl::v-deep .utobe {
   margin-right: 10px;
+}
+
+.modal_Lessonregi .divide_area.right .vtl::v-deep .icon_mydata {
+  margin: 0px !important;
 }
 .icons_zoom_off {
   margin-left: auto;

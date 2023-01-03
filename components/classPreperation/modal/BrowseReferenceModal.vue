@@ -24,7 +24,7 @@
             />
 
             <PdfView :open="selectData.datatype === '02'" :data="selectData" />
-            
+
             <YoutubeView
               :open="selectData.datatype === '05'"
               :data="selectData"
@@ -41,12 +41,12 @@
               <ReferenceBtn
                 title="공유"
                 @click-event="
-                  $emit('view-url', 'isReferenceBrowse', selectData.save_path)
+                  $emit('view-url', 'isReferenceBrowse', selectData.full_path)
                 "
               />
               <button class="btn btn_crud_default">
                 <a
-                  :href="selectData.save_path"
+                  :href="selectData.full_path"
                   download="abc.mp4"
                   target="_blank"
                   >다운로드</a

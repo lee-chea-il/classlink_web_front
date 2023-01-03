@@ -21,7 +21,7 @@
             <button
               class="btn btn_activated"
               :disabled="item.type !== 'OX'"
-              :class="{ active: item.oxAnswer === 'O' }"
+              :class="{ active: item.correct === 'O' }"
               @click="$emit('select-ox', idx, 'O')"
             >
               O
@@ -29,7 +29,7 @@
             <button
               class="btn btn_activated"
               :disabled="item.type !== 'OX'"
-              :class="{ active: item.oxAnswer === 'X' }"
+              :class="{ active: item.correct === 'X' }"
               @click="$emit('select-ox', idx, 'X')"
             >
               X

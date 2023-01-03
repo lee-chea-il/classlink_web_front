@@ -2,7 +2,7 @@
   <!-- [개발참조] 문서자료 열람 시 -->
   <div v-if="open" ref="pdf" class="pdf">
     <div class="bar">
-      <span class="pdf_title">{{ data.name }}</span>
+      <span class="pdf_title">{{ data.title }}</span>
       <span class="list"></span>
       <span class="full" @click="getFullscreen"></span>
     </div>

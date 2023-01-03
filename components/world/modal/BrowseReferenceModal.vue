@@ -24,6 +24,7 @@
             />
 
             <PdfView :open="selectData.datatype === '02'" :data="selectData" />
+            
             <YoutubeView
               :open="selectData.datatype === '05'"
               :data="selectData"
@@ -64,7 +65,11 @@
             </div>
 
             <!-- [개발참조] 하단 info_section 부분은 열람 팝업 공통 -->
-            <FileInfoSection :pageRoot="pageRoot" :fileInfo="selectData" />
+            <FileInfoSection
+              :pageRoot="pageRoot"
+              :fileInfo="selectData"
+              :uploadInfo="uploadInfo"
+            />
           </div>
         </div>
       </div>
@@ -95,22 +100,11 @@ export default {
     ReferenceBtn,
   },
   props: {
-    open: {
-      type: Boolean,
-      default: false,
-    },
-    identity: {
-      type: String,
-      default: '',
-    },
-    pageRoot: {
-      type: String,
-      default: '',
-    },
-    selectData: {
-      type: Object,
-      default: () => {},
-    },
+    open: { type: Boolean, default: false },
+    identity: { type: String, default: '' },
+    pageRoot: { type: String, default: '' },
+    selectData: { type: Object, default: () => {} },
+    uploadInfo: { type: Object, default: () => {} },
   },
   methods: {
     isShowBtn(iden, type) {

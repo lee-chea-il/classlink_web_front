@@ -20,7 +20,7 @@ export default {
   name: 'CustomSelect',
   props: {
     inputValue: {
-      type: Number,
+      type: [Number, String],
       default: 0,
     },
   },
