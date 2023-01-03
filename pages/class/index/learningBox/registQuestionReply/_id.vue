@@ -156,6 +156,9 @@ export default {
       ins_code: this.$store.state.common.user.ins_code,
       fra_code: this.$store.state.common.user.fra_code,
       qtbIdx: Number(this.$route.params.id),
+      openYN: Boolean(this.$route.query.open_yn),
+      cstmIdx: Number(this.$route.query.cstm_idx),
+      icuIdx: Number(this.$route.query.icu_idx),
 
       answer: {
         qbaTitle: '',
@@ -193,46 +196,27 @@ export default {
     }
   },
   methods: {
-    // 질문 상세
-    async getSelAnswer() {
-      const payload = {
-        ins_code: `ins_code=${this.ins_code}`,
-        qtb_idx: `&qtb_idx=${this.qtbIdx}`,
-      }
-
-      await apiLeaningBox
-        .getSelQuestionbox(payload)
-        .then(({ data: { data } }) => {
-          console.log(data)
-          this.questionData = data
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
     // 답변 등록
     async postRegistAnswer() {
       // const file = {
-      //   qbat_end_date: '2023-01-02T01:24:29.366Z',
-      //   qbat_file: 'string',
-      //   qbat_idx: 0,
-      //   qbat_size: 0,
+      //   qbat_file: "string",
+      //   qbat_size: 0
       // }
 
       const payload = {
-        answerdto: this.fileList,
+        answerFileList: this.fileList,
+        cstm_idx: this.cstmIdx,
         fileCheck: this.fileList.length !== 0,
+        icu_idx: this.icuIdx,
         ins_code: this.ins_code,
         qba_description: this.answer.qbaDescription,
-        // qba_idx: 0,
-        qba_open_yn: this.$route.query.open_yn,
         qba_title: this.answer.qbaTitle,
         qtb_idx: this.qtbIdx,
       }
       console.log(payload)
       console.log(this.$route.query.open_yn)
 
-      if (this.answer.qbaTitle !== '' && this.answer.qbaDescription === '') {
+      if (this.answer.qbaTitle !== '' && this.answer.qbaDescription !== '') {
         await apiLeaningBox
           .postRegistAnswer(payload)
           .then(() => {
@@ -241,6 +225,7 @@ export default {
           })
           .catch((err) => {
             console.log(err)
+            this.openModalDesc('등록 실패', '답변 등록을 실패했습니다.')
           })
       } else {
         this.openModalDesc('등록 실패', '답변을 작성해주세요.')

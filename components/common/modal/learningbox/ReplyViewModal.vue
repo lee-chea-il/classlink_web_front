@@ -81,15 +81,16 @@
           </div>
           <!-- div class="modal-body" -->
           <div class="modal-footer">
-            <NuxtLink
+            <button
               v-if="
                 userPermission.includes('I') ||
                 data.answerList.mem_idx === $store.state.common.user.mem_idx
               "
-              to="/class/learningBox/updatequestionreply"
               class="btn btn_crud_point"
-              >수정</NuxtLink
+              @click="$emit('move', data)"
             >
+              수정
+            </button>
             <button class="btn btn_crud_default" @click="$emit('close')">
               취소
             </button>

@@ -98,14 +98,14 @@
                               id="subjectAll"
                               type="checkbox"
                               class="custom-control-input"
-                              checked
+                              :checked="icuTitleCheck.length === 0"
                             />
                             <label class="custom-control-label" for="subjectAll"
                               >전체</label
                             >
                           </div>
                         </li>
-                        <li v-for="(item, idx) in 2" :key="idx">
+                        <li v-for="(item, idx) in icuTitle" :key="idx">
                           <div
                             class="custom-control custom-checkbox form-inline"
                           >
@@ -117,7 +117,7 @@
                             <label
                               class="custom-control-label"
                               :for="`subject${idx}`"
-                              >영어</label
+                              >{{ item }}</label
                             >
                           </div>
                         </li>
@@ -159,14 +159,14 @@
                               id="lectureAll"
                               type="checkbox"
                               class="custom-control-input"
-                              checked
+                              :checked="isTitleCheck.length === 0"
                             />
                             <label class="custom-control-label" for="lectureAll"
                               >전체</label
                             >
                           </div>
                         </li>
-                        <li v-for="(item, idx) in 2" :key="idx">
+                        <li v-for="(item, idx) in isTitle" :key="idx">
                           <div
                             class="custom-control custom-checkbox form-inline"
                           >
@@ -178,7 +178,7 @@
                             <label
                               class="custom-control-label"
                               :for="`lecture${idx}`"
-                              >영어리딩기초</label
+                              >{{ item }}</label
                             >
                           </div>
                         </li>
@@ -209,6 +209,22 @@ export default {
     open: {
       type: Boolean,
       default: false,
+    },
+    icuTitle: {
+      type: Array,
+      default: () => [],
+    },
+    icuTitleCheck: {
+      type: Array,
+      default: () => [],
+    },
+    isTitle: {
+      type: Array,
+      default: () => [],
+    },
+    isTitleCheck: {
+      type: Array,
+      default: () => [],
     },
   },
 }

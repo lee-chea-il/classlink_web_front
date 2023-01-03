@@ -3,7 +3,7 @@
     <div
       v-show="open.open"
       id="modalClassDetail"
-      class="modal modal_ac_manage_cls modal-mask"
+      class="modal modalIndex modal_ac_manage_cls modal-mask"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
@@ -257,41 +257,14 @@
 
       <!-- [개발참조] : 이하 모달은 학생관리의 모달 팝업들과 동일 / 겹치는 모달팝업이므로 class="double" 추가 -->
       <!-- 학생 개별 등록/학생 상세 정보 -->
-      <StudentInfoModal
-        :studentInfo="studentInfo"
-        :open="studentInfoModalDesc.open"
-        :nickNameCheck="nickNameCheck"
-        :familySearchText="familySearchText"
-        @close="$emit('close')"
-        @change-input="$emit('change-input')"
-        @click-birthday="$emit('click-birthday')"
-        @click-lecturedate="$emit('click-lecturedate')"
-        @click-identity="$emit('click-identity')"
-        @click-grade="$emit('click-grade')"
-        @click-adult="$emit('click-adult')"
-        @click-men="$emit('click-men')"
-        @click-women="$emit('click-women')"
-        @click-statusTrue="$emit('click-statusTrue')"
-        @click-statusFalse="$emit('click-statusFalse')"
-        @click-stuStatusTrue="$emit('click-stuStatusTrue')"
-        @click-stuStatusFalse="$emit('click-stuStatusFalse')"
-        @select-grade="$emit('select-grade')"
-        @click-profile="$emit('click-profile')"
-        @click-deleteFamily="$emit('click-deleteFamily')"
-        @change-familyInput="$emit('change-familyInput')"
-        @search-family="$emit('search-family')"
-      />
     </div>
   </Transition>
 </template>
 
 <script>
-import StudentInfoModal from '@/components/common/modal/operation/StudentInfoModal.vue'
 export default {
   name: 'ClassDetailModal',
-  components: {
-    StudentInfoModal,
-  },
+  components: {},
   props: {
     open: {
       type: Object,
@@ -301,10 +274,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    studentInfo: {
-      type: Object,
-      default: () => {},
-    },
     modalDetailMore: {
       type: Number,
       default: 0,
@@ -312,14 +281,6 @@ export default {
     studentInfoModalDesc: {
       type: Object,
       default: () => {},
-    },
-    nickNameCheck: {
-      type: Boolean,
-      default: false,
-    },
-    familySearchText: {
-      type: String,
-      default: '',
     },
     detailSearch: {
       type: String,
@@ -374,5 +335,8 @@ export default {
 <style scoped>
 .cursor {
   cursor: pointer;
+}
+.modalIndex {
+  z-index: 998;
 }
 </style>

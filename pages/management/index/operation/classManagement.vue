@@ -287,11 +287,8 @@
     <ClassDetailModal
       :open="openClassDetailModal"
       :classInfo="classInfo"
-      :studentInfo="studentInfo"
       :modalDetailMore="modalDetailMore"
       :studentInfoModalDesc="studentInfoModalDesc"
-      :nickNameCheck="nickNameCheck"
-      :familySearchText="familySearchText"
       :detailSearch.sync="detailSearch"
       :sortDetailChange="sortDetailChange"
       :sortCheckStd="sortCheckStd"
@@ -307,24 +304,6 @@
       @change-check="onChangeCheckStdSort"
       @change-status="onChangeStatusSort"
       @open="onOpenStudentInfoModalDesc"
-      @close="onCloseStudentInfoModalDesc"
-      @change-input="onChangeUpdateInput"
-      @click-birthday="openDatePickerModalDesc"
-      @click-lecturedate="openDatePickerLectureDateModalDesc"
-      @click-identity="onClickIdentityBtn"
-      @click-grade="onClickTypeGrade"
-      @click-adult="onClickTypeAdult"
-      @click-men="onClickGenderMen"
-      @click-women="onClickGenderWomen"
-      @click-statusTrue="onClickStatusTrue"
-      @click-statusFalse="onClickStatusFalse"
-      @click-stuStatusTrue="onClickStudentStatusTrue"
-      @click-stuStatusFalse="onClickStudentStatusFalse"
-      @select-grade="selectGrade"
-      @click-profile="openUploadStudentImgModalDesc"
-      @click-deleteFamily="onClickFamilyDeleteBtn"
-      @change-familyInput="onChangeFamilySearchInput"
-      @search-family="onClickSearchBtn"
       @open-detail="onClickOpenDetailMore"
       @search="onSearchFilterDetail"
     />
@@ -368,6 +347,31 @@
       @unallocation-check="onClickUnallocationCheckbox"
     />
 
+    <StudentInfoModal
+      :studentInfo="studentInfo"
+      :open="studentInfoModalDesc.open"
+      :nickNameCheck="nickNameCheck"
+      :familySearchText="familySearchText"
+      @close="onCloseStudentInfoModalDesc"
+      @change-input="onChangeUpdateInput"
+      @click-birthday="openDatePickerModalDesc"
+      @click-lecturedate="openDatePickerLectureDateModalDesc"
+      @click-identity="onClickIdentityBtn"
+      @click-grade="onClickTypeGrade"
+      @click-adult="onClickTypeAdult"
+      @click-men="onClickGenderMen"
+      @click-women="onClickGenderWomen"
+      @click-statusTrue="onClickStatusTrue"
+      @click-statusFalse="onClickStatusFalse"
+      @click-stuStatusTrue="onClickStudentStatusTrue"
+      @click-stuStatusFalse="onClickStudentStatusFalse"
+      @select-grade="selectGrade"
+      @click-profile="openUploadStudentImgModalDesc"
+      @click-deleteFamily="onClickFamilyDeleteBtn"
+      @change-familyInput="onChangeFamilySearchInput"
+      @search-family="onClickSearchBtn"
+    />
+
     <ModalDesc
       :open="modalDesc.open"
       :title="modalDesc.title"
@@ -393,8 +397,10 @@ import ClassDetailModal from '@/components/common/modal/operation/ClassDetailMod
 import ClassMoveModal from '@/components/common/modal/operation/ClassMoveModal.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 import DeleteModal from '@/components/lecturecourse/DeletePlanModal.vue'
+import StudentInfoModal from '@/components/common/modal/operation/StudentInfoModal.vue'
 import CustomSnackbar from '@/components/common/CustomSnackbar.vue'
 import { apiOperation } from '~/services'
+
 export default {
   name: 'ClassManagement',
   components: {
@@ -406,6 +412,7 @@ export default {
     DeleteModal,
     CustomSnackbar,
     Draggable,
+    StudentInfoModal,
   },
   data() {
     return {

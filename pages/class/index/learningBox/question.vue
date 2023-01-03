@@ -145,18 +145,19 @@
                 </td>
                 <td
                   class="cursor"
-                  @click="
-                    onOpenQuestionViewModal(
-                      item.questionvo.qtb_idx,
-                      item.questionvo.qtb_open_yn
-                    )
-                  "
+                  @click="onOpenQuestionViewModal(item.questionvo.qtb_idx)"
                 >
                   <div class="study_qustion">
                     {{ item.questionvo.qtb_title }}
                   </div>
                 </td>
-                <td>{{ item.questionvo.mem_name }}</td>
+                <td>
+                  {{
+                    item.questionvo.qtb_writer_public_yn
+                      ? item.questionvo.mem_name
+                      : '비공개'
+                  }}
+                </td>
                 <td>
                   {{
                     item.questionvo.qtb_registration_date
@@ -166,7 +167,7 @@
                 </td>
                 <td>{{ item.questionvo.icu_title }}</td>
                 <td>
-                  {{ item.questionvo.qtb_open_yn === '1' ? '공개' : '비공개' }}
+                  {{ item.questionvo.qtb_open_yn ? '공개' : '비공개' }}
                 </td>
                 <td>{{ item.questionvo.qtb_view_cnt }}</td>
               </tr>
@@ -178,18 +179,25 @@
                 <td>
                   <div class="custom-control custom-checkbox form-inline">
                     <input
-                      id="chk01"
+                      :id="`answer${idx}${id}`"
                       type="checkbox"
                       class="custom-control-input"
+                      :checked="
+                        answerCheckList.some(
+                          (e) => e.qba_idxs === items.qba_idx
+                        )
+                      "
+                      @input="onClickAnswerCheck(items.qba_idx, items.mem_idx)"
                     />
-                    <label class="custom-control-label" for="chk01"></label>
+                    <label
+                      class="custom-control-label"
+                      :for="`answer${idx}${id}`"
+                    ></label>
                   </div>
                 </td>
                 <td
                   class="study_qustion"
-                  @click="
-                    onOpenReplyViewModal(items.qba_idx, items.qba_open_yn)
-                  "
+                  @click="onOpenReplyViewModal(items.qba_idx)"
                 >
                   └─ {{ items.qba_title }}
                 </td>
@@ -203,7 +211,7 @@
                 </td>
                 <td>{{ items.icu_title === null ? '-' : items.icu_title }}</td>
                 <td>
-                  {{ items.qba_open_yn === '1' ? '공개' : '비공개' }}
+                  {{ items.qba_open_yn ? '공개' : '비공개' }}
                 </td>
                 <td>
                   {{ items.qba_view_cnt === null ? 0 : items.qba_view_cnt }}
@@ -244,6 +252,10 @@
 
     <QueFilterModal
       :open="openQueFilterModal.open"
+      :icuTitle="icuTitle"
+      :icuTitleCheck="icuTitleCheck"
+      :isTitle="isTitle"
+      :isTitleCheck="isTitleCheck"
       @close="onCloseQueFilterModal"
     />
 
@@ -251,13 +263,14 @@
       :open="openQuestionViewModal.open"
       :data="questionData"
       @close="onCloseQuestionViewModal"
-      @move="onMoveQuestionReply"
+      @move="onMoveRegistQuestionReply"
     />
     <ReplyViewModal
       :open="openReplyViewModal.open"
       :data="answerData"
       :userPermission="userPermission"
       @close="onCloseReplyViewModal"
+      @move="onMoveUpdateQuestionReply"
     />
 
     <DeleteModal
@@ -290,6 +303,7 @@ export default {
     return {
       ins_code: this.$store.state.common.user.ins_code,
       userPermission: this.$store.state.common.user.idt_name,
+      mem_idx: this.$store.state.common.user.mem_idx,
 
       openQueFilterModal: {
         open: false,
@@ -332,8 +346,17 @@ export default {
         },
       },
 
+      // 학원이 가진 과목이름 목록
+      icuTitle: [],
+      icuTitleCheck: [],
+      // 학원이 가진 강좌이름 목록
+      isTitle: [],
+      isTitleCheck: [],
+
+      // 체크박스
       allCheck: false,
       checkList: [],
+      answerCheckList: [],
 
       // 리스트 검색
       search: '',
@@ -363,20 +386,16 @@ export default {
     onCloseQueFilterModal() {
       this.openQueFilterModal.open = false
     },
-    onOpenQuestionViewModal(qtb_idx, open) {
-      if (open === '1' || open === 1) {
-        this.openQuestionViewModal.open = true
-        this.getSelQuestionbox(qtb_idx)
-      }
+    onOpenQuestionViewModal(qtb_idx) {
+      this.openQuestionViewModal.open = true
+      this.getSelQuestionbox(qtb_idx)
     },
     onCloseQuestionViewModal() {
       this.openQuestionViewModal.open = false
     },
-    onOpenReplyViewModal(qba_idx, open) {
-      if (open === '1' || open === 1) {
-        this.openReplyViewModal.open = true
-        this.getSelAnswer(qba_idx)
-      }
+    onOpenReplyViewModal(qba_idx) {
+      this.openReplyViewModal.open = true
+      this.getSelAnswer(qba_idx)
     },
     onCloseReplyViewModal() {
       this.openReplyViewModal.open = false
@@ -402,7 +421,34 @@ export default {
     onCloseDeleteModalDesc() {
       this.deleteModalDesc.open = false
     },
-    deleteQuestionList() {},
+    deleteQuestionList() {
+      this.deleteAnswer()
+    },
+    async deleteAnswer() {
+      const payload = {
+        data: {
+          list: this.answerCheckList,
+        },
+      }
+      console.log(payload)
+
+      if (
+        this.userPermission.includes('I') ||
+        this.answerCheckList.some((e) => e.mem_idxs === this.mem_idx)
+      ) {
+        await apiLeaningBox
+          .deleteAnswer(payload)
+          .then(() => {
+            this.answerCheckList = []
+            this.checkList = []
+            this.onCloseDeleteModalDesc()
+            this.getQuestionList()
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      }
+    },
 
     // 질문 리스트 api
     async getQuestionList() {
@@ -420,6 +466,9 @@ export default {
         .then(({ data: { data } }) => {
           console.log(data)
           this.askingboxList = data.totaldto
+          this.icuTitle = data.icu_title
+          this.isTitle = data.is_title
+
           this.endPage = data.pageMaker.end_page
           this.next = data.pageMaker.next
           this.prev = data.pageMaker.prev
@@ -469,7 +518,7 @@ export default {
 
     // 질문/답변 삭제
     onClickQuestionDelete() {
-      if (this.checkList.length === 0) {
+      if (this.checkList.length === 0 && this.answerCheckList.length === 0) {
         this.onOpenSnackbar('질문을 선택해주세요.')
         setTimeout(() => {
           this.onCloseSnackbar()
@@ -494,7 +543,7 @@ export default {
       }
     },
 
-    // 체크박스
+    // 질문 체크박스
     onClickQuestionCheck(qtb_idx) {
       if (this.checkList.includes(qtb_idx)) {
         this.checkList = this.checkList.filter((item) => item !== qtb_idx)
@@ -509,23 +558,50 @@ export default {
       }
       console.log(this.checkList)
     },
+    // 답변 체크박스
+    onClickAnswerCheck(qba_idx, mem_idx) {
+      if (this.answerCheckList.some((e) => e.qba_idxs === qba_idx)) {
+        this.answerCheckList = this.answerCheckList.filter(
+          (item) => item.qba_idxs !== qba_idx
+        )
+      } else {
+        const answerInfo = {
+          mem_idxs: mem_idx,
+          qba_idxs: qba_idx,
+        }
+        this.answerCheckList.push(answerInfo)
+      }
+      console.log(this.answerCheckList)
+    },
     // 질문 전체 체크
     onClickQuestionAllCheck() {
       if (this.allCheck) {
         this.checkList = []
+        this.answerCheckList = []
         this.allCheck = false
       } else {
         this.checkList = []
         for (let i = 0; i < this.askingboxList.length; i++) {
           this.checkList.push(this.askingboxList[i].questionvo.qtb_idx)
+          if (this.askingboxList[i].answervo !== null) {
+            for (let j = 0; j < this.askingboxList[i].answervo.length; j++) {
+              const answerInfo = {
+                mem_idxs: this.askingboxList[i].answervo[j].mem_idx,
+                qba_idxs: this.askingboxList[i].answervo[j].qba_idx,
+              }
+
+              this.answerCheckList.push(answerInfo)
+            }
+          }
         }
         this.allCheck = true
       }
-      console.log(this.checkList)
+      console.log(this.checkList, this.answerCheckList)
     },
 
+    // router
     // 답변 등록으로 이동
-    onMoveQuestionReply(data) {
+    onMoveRegistQuestionReply(data) {
       console.log(
         this.askingboxList.find(
           (e) => e.questionvo.qtb_idx === data.selectQuestionBox.qtb_idx
@@ -539,7 +615,17 @@ export default {
           this.askingboxList.find(
             (e) => e.questionvo.qtb_idx === data.selectQuestionBox.qtb_idx
           ).questionvo.qtb_open_yn
+        }&cstm_idx=${data.selectQuestionBox.cstm_idx}&icu_idx=${
+          data.selectQuestionBox.icu_idx
         }`
+      )
+    },
+    // 답변 수정으로 이동
+    onMoveUpdateQuestionReply(data) {
+      console.log(data)
+      localStorage.setItem('answerData', JSON.stringify(data))
+      this.$router.push(
+        `/class/learningBox/updatequestionreply/${data.answerList.qba_idx}`
       )
     },
   },

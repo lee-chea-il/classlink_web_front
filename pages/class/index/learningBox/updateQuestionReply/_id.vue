@@ -82,24 +82,27 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-if="fileList.length === 0">
+                <tr v-if="answerFileList === null">
                   <td colspan="6">
                     <span class="exp_txt">마우스로 파일을 끌어오세요</span>
                   </td>
                 </tr>
 
-                <tr v-for="(item, idx) in fileList" v-else :key="idx">
+                <tr v-for="(item, idx) in answerFileList" v-else :key="idx">
                   <td>
                     <div class="custom-control custom-checkbox form-inline">
                       <input
-                        id="chk01"
+                        :id="`file${idx}`"
                         type="checkbox"
                         class="custom-control-input"
                       />
-                      <label class="custom-control-label" for="chk01"></label>
+                      <label
+                        class="custom-control-label"
+                        :for="`file${idx}`"
+                      ></label>
                     </div>
                   </td>
-                  <td class="table001">영어리딩심화.pdf</td>
+                  <td class="table001">{{ item.qbat_file }}</td>
                   <td></td>
                   <td>4MB</td>
                   <td>대용량첨부</td>
@@ -118,7 +121,7 @@
         />
 
         <div class="btn_area">
-          <button class="btn btn_crud_point" @click="postRegistAnswer">
+          <button class="btn btn_crud_point" @click="putUpdateAnswer">
             완료
           </button>
           <NuxtLink
@@ -155,15 +158,25 @@ export default {
 
       ins_code: this.$store.state.common.user.ins_code,
       fra_code: this.$store.state.common.user.fra_code,
-      qtbIdx: Number(this.$route.params.id),
+      qbaIdx: Number(this.$route.params.id),
 
+      answerData: {
+        answerList: {
+          cstm_idx: 1,
+          qba_title: '',
+          qba_description: '',
+          icu_idx: 1,
+          qtb_idx: 1,
+        },
+        answerFile: {},
+      },
       answer: {
         qbaTitle: '',
         qbaDescription: '',
       },
 
       // 첨부파일 목록
-      fileList: [],
+      answerFileList: null,
 
       // 모달
       modalDesc: {
@@ -192,58 +205,54 @@ export default {
       ],
     }
   },
+  mounted() {
+    this.answerData = JSON.parse(localStorage.getItem('answerData'))
+    this.answer.qbaTitle = this.answerData.answerList.qba_title
+    this.answer.qbaDescription = this.answerData.answerList.qba_description
+    this.answerFileList = this.answerData.answerFile
+    console.log('answerData', this.answerData)
+  },
   methods: {
-    // 질문 상세
-    async getSelAnswer() {
-      const payload = {
-        ins_code: `ins_code=${this.ins_code}`,
-        qtb_idx: `&qtb_idx=${this.qtbIdx}`,
+    // 답변 수정
+    async putUpdateAnswer() {
+      const fileList = []
+      if (this.answerFileList !== null) {
+        for (let i = 0; i < this.answerFileList.length; i++) {
+          const file = {
+            qbat_file: this.answerFileList[i].qbat_file,
+            qbat_size: this.answerFileList[i].qbat_size,
+          }
+          fileList.push(file)
+        }
       }
 
-      await apiLeaningBox
-        .getSelQuestionbox(payload)
-        .then(({ data: { data } }) => {
-          console.log(data)
-          this.questionData = data
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
-    // 답변 등록
-    async postRegistAnswer() {
-      // const file = {
-      //   qbat_end_date: '2023-01-02T01:24:29.366Z',
-      //   qbat_file: 'string',
-      //   qbat_idx: 0,
-      //   qbat_size: 0,
-      // }
-
       const payload = {
-        answerdto: this.fileList,
-        fileCheck: this.fileList.length !== 0,
+        answerFileList: fileList,
+        cstm_idx: this.answerData.answerList.cstm_idx,
+        icu_idx: this.answerData.answerList.icu_idx,
         ins_code: this.ins_code,
         qba_description: this.answer.qbaDescription,
-        // qba_idx: 0,
-        qba_open_yn: this.$route.query.open_yn,
+        qba_idx: this.qbaIdx,
         qba_title: this.answer.qbaTitle,
-        qtb_idx: this.qtbIdx,
+        qtb_idx: this.answerData.answerList.qtb_idx,
+        updateFileCheck: fileList.length !== 0,
       }
-      console.log(payload)
-      console.log(this.$route.query.open_yn)
 
-      if (this.answer.qbaTitle !== '' && this.answer.qbaDescription === '') {
+      console.log(payload)
+
+      if (this.answer.qbaTitle !== '' && this.answer.qbaDescription !== '') {
         await apiLeaningBox
-          .postRegistAnswer(payload)
+          .putUpdateAnswer(payload)
           .then(() => {
             this.$router.push(`/class/learningBox/question`)
-            this.openModalDesc('등록 성공', '답변을 등록했습니다.')
+            this.openModalDesc('수정 성공', '답변을 수정했습니다.')
           })
           .catch((err) => {
             console.log(err)
+            this.openModalDesc('수정 실패', '답변 수정을 실패했습니다.')
           })
       } else {
-        this.openModalDesc('등록 실패', '답변을 작성해주세요.')
+        this.openModalDesc('수정 실패', '답변 수정을 실패했습니다.')
       }
     },
 
