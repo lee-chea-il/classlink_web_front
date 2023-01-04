@@ -31,6 +31,9 @@ async function putUpdateAnswer(payload) {
 async function deleteAnswer(payload) {
   return await http.delete(`/api/v1/class/leaning-box/question/answer`, payload)
 }
+async function deleteQuestion(payload) {
+  return await http.delete(`/api/v1/class/leaning-box/question`, payload)
+}
 
 const apiLeaningBox = {
   getQuestionList,
@@ -39,6 +42,7 @@ const apiLeaningBox = {
   postRegistAnswer,
   putUpdateAnswer,
   deleteAnswer,
+  deleteQuestion,
 }
 
 export default apiLeaningBox

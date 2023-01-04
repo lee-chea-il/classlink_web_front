@@ -115,10 +115,15 @@
                       data-toggle="dropdown"
                       aria-expanded="false"
                     >
-                      재원
+                      {{ sortAttend ? '재원' : '퇴원' }}
                     </button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item cursor">퇴원</a>
+                      <a
+                        class="dropdown-item cursor"
+                        @click="$emit('change-attend', !sortAttend)"
+                      >
+                        {{ sortAttend ? '퇴원' : '재원' }}
+                      </a>
                     </div>
                   </div>
                   <div class="info_txt">{{ classInfo.length }}명</div>
@@ -177,7 +182,7 @@
                       <td>
                         <i
                           class="btn icons_zoom_off"
-                          @click="$emit('open', item)"
+                          @click="$emit('open-student', item.std_idx)"
                         ></i>
                       </td>
                       <td>
@@ -295,6 +300,10 @@ export default {
       default: true,
     },
     sortStatus: {
+      type: Boolean,
+      default: true,
+    },
+    sortAttend: {
       type: Boolean,
       default: true,
     },

@@ -56,7 +56,11 @@
             <button class="btn btn_filter" @click="onOpenQueFilterModal">
               필터
             </button>
-            <button class="btn btn_crud_default filter_lift" disabled>
+            <button
+              class="btn btn_crud_default filter_lift"
+              :disabled="filterList.length === 0"
+              @click="onClickDeleteFilter"
+            >
               필터 해제
             </button>
           </div>
@@ -68,7 +72,7 @@
             <div class="row">
               <div class="keyword_area left_area">
                 <div class="keyword_area_01">
-                  <span v-for="(item, idx) in 20" :key="idx" class="keyword01">
+                  <span v-for="(item, idx) in 19" :key="idx" class="keyword01">
                     <span class="keyword01-1">내가 한 질문</span
                     ><span class="x cursor"></span>
                   </span>
@@ -95,7 +99,11 @@
             <button class="btn btn_filter" @click="onOpenQueFilterModal">
               필터
             </button>
-            <button class="btn btn_crud_default filter_lift" disabled>
+            <button
+              class="btn btn_crud_default filter_lift"
+              :disabled="filterList.length === 0"
+              @click="onClickDeleteFilter"
+            >
               필터 해제
             </button>
           </div>
@@ -134,8 +142,17 @@
                       :id="`question${idx}`"
                       type="checkbox"
                       class="custom-control-input"
-                      :checked="checkList.includes(item.questionvo.qtb_idx)"
-                      @input="onClickQuestionCheck(item.questionvo.qtb_idx)"
+                      :checked="
+                        checkList.some(
+                          (e) => e.qtb_idxs === item.questionvo.qtb_idx
+                        )
+                      "
+                      @input="
+                        onClickQuestionCheck(
+                          item.questionvo.qtb_idx,
+                          item.questionvo.smem_idx
+                        )
+                      "
                     />
                     <label
                       class="custom-control-label"
@@ -422,32 +439,51 @@ export default {
       this.deleteModalDesc.open = false
     },
     deleteQuestionList() {
-      this.deleteAnswer()
+      this.deleteQuestion()
     },
-    async deleteAnswer() {
-      const payload = {
+    // 질문/답변 삭제
+    async deleteQuestion() {
+      const payloadQuestion = {
+        data: {
+          list: this.checkList,
+        },
+      }
+      const payloadAnswer = {
         data: {
           list: this.answerCheckList,
         },
       }
-      console.log(payload)
-
+      // 질문 삭제
       if (
-        this.userPermission.includes('I') ||
-        this.answerCheckList.some((e) => e.mem_idxs === this.mem_idx)
+        this.userPermission.includes('I') &&
+        payloadQuestion.data.list.length !== 0
       ) {
         await apiLeaningBox
-          .deleteAnswer(payload)
-          .then(() => {
-            this.answerCheckList = []
-            this.checkList = []
-            this.onCloseDeleteModalDesc()
-            this.getQuestionList()
-          })
+          .deleteQuestion(payloadQuestion)
+          .then(() => {})
           .catch((err) => {
             console.log(err)
           })
       }
+      // 답변 삭제
+      if (
+        !this.userPermission.includes('I') &&
+        this.answerCheckList.some((e) => this.mem_idx !== e.mem_idxs) &&
+        payloadAnswer.data.list.length === 0
+      ) {
+        return false
+      } else {
+        await apiLeaningBox
+          .deleteAnswer(payloadAnswer)
+          .then(() => {})
+          .catch((err) => {
+            console.log(err)
+          })
+      }
+      this.checkList = []
+      this.answerCheckList = []
+      this.onCloseDeleteModalDesc()
+      this.getQuestionList()
     },
 
     // 질문 리스트 api
@@ -497,7 +533,7 @@ export default {
           console.log(err)
         })
     },
-    // 답변상세
+    // 답변 상세
     async getSelAnswer(qbaIdx) {
       const payload = {
         ins_code: `ins_code=${this.ins_code}`,
@@ -544,14 +580,22 @@ export default {
     },
 
     // 질문 체크박스
-    onClickQuestionCheck(qtb_idx) {
-      if (this.checkList.includes(qtb_idx)) {
-        this.checkList = this.checkList.filter((item) => item !== qtb_idx)
+    onClickQuestionCheck(qtb_idx, mem_idx) {
+      if (this.checkList.some((e) => e.qtb_idxs === qtb_idx)) {
+        this.checkList = this.checkList.filter(
+          (item) => item.qtb_idxs !== qtb_idx
+        )
+
         if (this.checkList.length !== this.askingboxList.length) {
           this.allCheck = false
         }
       } else {
-        this.checkList.push(qtb_idx)
+        const questionInfo = {
+          mem_idxs: mem_idx,
+          qtb_idxs: qtb_idx,
+        }
+        this.checkList.push(questionInfo)
+
         if (this.checkList.length === this.askingboxList.length) {
           this.allCheck = true
         }
@@ -573,7 +617,7 @@ export default {
       }
       console.log(this.answerCheckList)
     },
-    // 질문 전체 체크
+    // 질문, 답변 전체 체크
     onClickQuestionAllCheck() {
       if (this.allCheck) {
         this.checkList = []
@@ -581,8 +625,14 @@ export default {
         this.allCheck = false
       } else {
         this.checkList = []
+        this.answerCheckList = []
         for (let i = 0; i < this.askingboxList.length; i++) {
-          this.checkList.push(this.askingboxList[i].questionvo.qtb_idx)
+          const questionInfo = {
+            mem_idxs: this.askingboxList[i].questionvo.smem_idx,
+            qtb_idxs: this.askingboxList[i].questionvo.qtb_idx,
+          }
+          this.checkList.push(questionInfo)
+
           if (this.askingboxList[i].answervo !== null) {
             for (let j = 0; j < this.askingboxList[i].answervo.length; j++) {
               const answerInfo = {
@@ -599,6 +649,11 @@ export default {
       console.log(this.checkList, this.answerCheckList)
     },
 
+    // 필터 해제
+    onClickDeleteFilter() {
+      this.filterList = []
+    },
+
     // router
     // 답변 등록으로 이동
     onMoveRegistQuestionReply(data) {
@@ -608,16 +663,12 @@ export default {
         )
       )
       console.log(data.selectQuestionBox.qtb_idx)
+      localStorage.setItem(
+        'questionData',
+        JSON.stringify(data.selectQuestionBox)
+      )
       this.$router.push(
-        `/class/learningBox/registquestionreply/${
-          data.selectQuestionBox.qtb_idx
-        }?open_yn=${
-          this.askingboxList.find(
-            (e) => e.questionvo.qtb_idx === data.selectQuestionBox.qtb_idx
-          ).questionvo.qtb_open_yn
-        }&cstm_idx=${data.selectQuestionBox.cstm_idx}&icu_idx=${
-          data.selectQuestionBox.icu_idx
-        }`
+        `/class/learningBox/registquestionreply/${data.selectQuestionBox.qtb_idx}`
       )
     },
     // 답변 수정으로 이동

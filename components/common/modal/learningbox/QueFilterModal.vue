@@ -98,14 +98,14 @@
                               id="subjectAll"
                               type="checkbox"
                               class="custom-control-input"
-                              :checked="icuTitleCheck.length === 0"
+                              :checked="isTitleCheck.length === 0"
                             />
                             <label class="custom-control-label" for="subjectAll"
                               >전체</label
                             >
                           </div>
                         </li>
-                        <li v-for="(item, idx) in icuTitle" :key="idx">
+                        <li v-for="(item, idx) in isTitle" :key="idx">
                           <div
                             class="custom-control custom-checkbox form-inline"
                           >
@@ -159,14 +159,14 @@
                               id="lectureAll"
                               type="checkbox"
                               class="custom-control-input"
-                              :checked="isTitleCheck.length === 0"
+                              :checked="icuTitleCheck.length === 0"
                             />
                             <label class="custom-control-label" for="lectureAll"
                               >전체</label
                             >
                           </div>
                         </li>
-                        <li v-for="(item, idx) in isTitle" :key="idx">
+                        <li v-for="(item, idx) in icuTitle" :key="idx">
                           <div
                             class="custom-control custom-checkbox form-inline"
                           >

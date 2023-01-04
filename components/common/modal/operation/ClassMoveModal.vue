@@ -248,9 +248,7 @@
                               </div>
                             </td>
                             <td class="td02">
-                              {{
-                                items.std_year === null ? '-' : items.std_year
-                              }}
+                              {{ items.std_year === '' ? '-' : items.std_year }}
                             </td>
                             <td class="td03">{{ items.mem_name }}</td>
                             <td class="td04">
@@ -450,13 +448,29 @@
                                 </div>
                               </td>
                               <td class="text-right">
-                                <i v-if="false" class="icons_new"></i>
+                                <i
+                                  v-if="
+                                    Math.abs(
+                                      (new Date(items.reg_date).getTime() -
+                                        new Date().getTime()) /
+                                        (1000 * 60 * 60 * 24)
+                                    ) < 3
+                                  "
+                                  class="icons_new"
+                                ></i>
                                 {{
-                                  items.std_year === null ? '-' : items.std_year
+                                  items.std_year === null ||
+                                  items.std_year === ''
+                                    ? '-'
+                                    : items.std_year
                                 }}
                               </td>
                               <td>{{ items.mem_name }}</td>
-                              <td>{{ items.mem_phone }}</td>
+                              <td>
+                                {{
+                                  items.mem_phone === '' ? '-' : items.mem_phone
+                                }}
+                              </td>
                             </tr>
                             <!-- /.반 소속 학생리스트 -->
                           </tbody>

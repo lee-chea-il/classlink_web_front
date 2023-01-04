@@ -152,13 +152,14 @@ export default {
       questionData: {
         content: '',
       },
+      questionInfo: {},
 
       ins_code: this.$store.state.common.user.ins_code,
       fra_code: this.$store.state.common.user.fra_code,
       qtbIdx: Number(this.$route.params.id),
-      openYN: Boolean(this.$route.query.open_yn),
-      cstmIdx: Number(this.$route.query.cstm_idx),
-      icuIdx: Number(this.$route.query.icu_idx),
+      // openYN: Boolean(this.$route.query.open_yn),
+      // cstmIdx: Number(this.$route.query.cstm_idx),
+      // icuIdx: Number(this.$route.query.icu_idx),
 
       answer: {
         qbaTitle: '',
@@ -195,6 +196,10 @@ export default {
       ],
     }
   },
+  mounted() {
+    this.questionInfo = JSON.parse(localStorage.getItem('questionData'))
+    console.log(this.questionInfo)
+  },
   methods: {
     // 답변 등록
     async postRegistAnswer() {
@@ -205,9 +210,9 @@ export default {
 
       const payload = {
         answerFileList: this.fileList,
-        cstm_idx: this.cstmIdx,
+        cstm_idx: this.questionInfo.cstm_idx,
         fileCheck: this.fileList.length !== 0,
-        icu_idx: this.icuIdx,
+        icu_idx: this.questionInfo.icu_idx,
         ins_code: this.ins_code,
         qba_description: this.answer.qbaDescription,
         qba_title: this.answer.qbaTitle,

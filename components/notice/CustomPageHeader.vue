@@ -36,7 +36,8 @@
         반
       </NuxtLink>
     </li>
-    <li class="nav-item">
+    <!-- 개인 탭은 나중에 구현 예정-->
+    <!-- <li class="nav-item">
       <NuxtLink
         class="nav-link"
         to="/management/notice/individual/student"
@@ -44,7 +45,7 @@
       >
         개인
       </NuxtLink>
-    </li>
+    </li> -->
     <li class="nav-item">
       <NuxtLink
         class="nav-link"

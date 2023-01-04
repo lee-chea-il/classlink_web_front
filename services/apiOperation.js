@@ -123,7 +123,7 @@ async function getClassList(ins_code, payload) {
 // 반 상세
 async function getClassDetail(payload) {
   return await http.get(
-    `/api/v1/management/operation/classroom?ins_code=${payload.ins_code}${payload.csm_idx}${payload.current_page}${payload.search}${payload.filter}${payload.status}${payload.check_std}`
+    `/api/v1/management/operation/classroom?ins_code=${payload.ins_code}${payload.csm_idx}${payload.current_page}${payload.search}${payload.filter}${payload.status}${payload.check_std}${payload.std_status}`
   )
 }
 // 반 등록/수정 반 선생님 검색
