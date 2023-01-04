@@ -47,6 +47,7 @@
     <!-- 과제 상세 모달 -->
     <HomeWorkDetailModal
       :open="HomeWorkDetailModalDesc.open"
+      :task="task"
       @update="onClickUpdateHomeWorkBtn"
       @close="onCloseHomeWorkDetailModal"
     />
@@ -113,17 +114,6 @@ export default {
       searchList: [],
       deleteIdxList: [],
       // mock
-      lectureCourse: {
-        id: 0,
-        academy: '일산어학원',
-        time: '월수금 09:00 ~ 12:00',
-        subject: '영어심화리딩',
-        lessonTitle: '영어',
-        lessonClass: '심화 A반',
-        teacher: '홍길동 선생님',
-        state: true,
-        students: 12,
-      },
       homeWork: {
         id: 0,
         course_id: 0,
@@ -187,6 +177,17 @@ export default {
         },
       ],
       taskList: [],
+      task: {
+        hwb_title: '',
+        hwb_idx: 0,
+        hwb_open_yn: true,
+        hwb_content: '',
+        mem_name: '',
+        mem_idx: 0,
+        hwb_registration_date: '',
+        hwb_update_date: '',
+        assignmentFile: null,
+      },
       // pagination
       currentPage: 1,
       endPageNumber: 0,
@@ -250,6 +251,7 @@ export default {
         .getTask(payload)
         .then(({ data: { data } }) => {
           console.log(data)
+          this.task = data
           this.openHomeWorkDetailModal()
         })
         .catch((err) => {
@@ -310,6 +312,7 @@ export default {
     // 과제 상세/미리보기 모달
     openHomeWorkDetailModal() {
       this.HomeWorkDetailModalDesc.open = true
+      console.log(this.HomeWorkDetailModalDesc.open)
     },
     onCloseHomeWorkDetailModal() {
       this.HomeWorkDetailModalDesc.open = false

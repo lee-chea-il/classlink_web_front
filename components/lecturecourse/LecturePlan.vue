@@ -76,7 +76,7 @@
               <th></th>
             </tr>
           </thead>
-          <tbody v-if="searchFlag === 0">
+          <tbody >
             <tr v-for="(item, idx) in syllabusList" :key="idx" class="cursor">
               <td>
                 <div class="custom-control custom-checkbox form-inline">
