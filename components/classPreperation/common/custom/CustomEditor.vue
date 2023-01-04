@@ -69,6 +69,11 @@ export default {
       ],
     }
   },
+  watch: {
+    itemList(newValue, oldValue) {
+      console.log(newValue)
+    },
+  },
   methods: {
     handleImageAdded(file, Editor, cursorLocation, resetUploader) {
       const formData = new FormData()

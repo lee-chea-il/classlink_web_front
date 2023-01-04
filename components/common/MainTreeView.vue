@@ -4,8 +4,8 @@
     :model="datas"
     :default-expanded="expanded"
     default-tree-node-name="새 폴더"
-    :is-drop="identity == 'master' ? true : false"
-    :is-show-option="identity == 'master' ? true : false"
+    :is-drop="identity == 'institution' ? true : false"
+    :is-show-option="identity == 'institution' ? true : false"
     :list-type="listType"
     :isHideDownload="isHideDownload"
     @more-show-click="moreShowClick"
@@ -65,20 +65,29 @@ export default {
       type: String,
       default: 'ins',
     },
+    dataList: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
       datas: new Tree(false, []),
       pid: this.pidNum,
-      deleteList:[],
+      deleteList: [],
     }
+  },
+  watch: {
+    dataList(newValue) {
+      this.setData(newValue)
+    },
   },
   methods: {
     async addFolder(node) {
       await apiData
-        .addFolderTreeViewList( this.addFolderData(node) )
+        .addFolderTreeViewList(this.addFolderData(node))
         .then(({ data: { data } }) => {
-          if(data){
+          if (data) {
             this.$emit(`tree-view-${this.treeViewType.toLowerCase()}`)
           }
         })
@@ -86,47 +95,43 @@ export default {
           console.log(err)
         })
     },
-    addFolderData(node){
-      if(this.treeViewType==="ID"){
+    addFolderData(node) {
+      if (this.treeViewType === 'ID') {
         return {
           datatable_type: this.treeViewType,
-          ins_idx: "1",
+          ins_idx: this.$store.state.common.user.mem_idx,
           parent_id: node.target.treeViewId,
-          title: '새 폴더'
+          title: '새 폴더',
         }
-      }else if(this.treeViewType==="FD"){
+      } else if (this.treeViewType === 'FD') {
         return {
           datatable_type: this.treeViewType,
-          fra_idx: "1",
+          fra_idx: this.$store.state.common.user.mem_idx,
           parent_id: node.target.treeViewId,
-          title: '새 폴더'
+          title: '새 폴더',
         }
-      }else if(this.treeViewType==="OD"){
+      } else if (this.treeViewType === 'OD') {
         return {
           datatable_type: this.treeViewType,
-          fra_idx: "1",
+          fra_idx: this.$store.state.common.user.mem_idx,
           parent_id: node.target.treeViewId,
-          title: '새 폴더'
+          title: '새 폴더',
         }
-      }else{
+      } else {
         return {
           datatable_type: this.treeViewType,
-          mem_idx: 11,
+          mem_idx: this.$store.state.common.user.mem_idx,
           parent_id: node.target.treeViewId,
-          title: '새 폴더'
+          title: '새 폴더',
         }
       }
     },
     deleteFolder(ids) {
       const payload = `${this.treeViewType}/${ids}`
       apiData
-        .deleteFolderTreeViewList(payload) /* {
-          /* treeinfo_list:this.deleteList * /
-          datatable_type:this.treeViewType,
-          treeinfo_idx:5
-        } ) */
+        .deleteFolderTreeViewList(payload)
         .then(({ data: { data } }) => {
-          if(data){
+          if (data) {
             this.$emit(`tree-view-${this.treeViewType.toLowerCase()}`)
           }
         })
@@ -134,7 +139,7 @@ export default {
           console.log(err)
         })
     },
-    setData(dataList){
+    setData(dataList) {
       const dataMapping = (data, isReadOnly) => {
         const result = []
         const len = data.length
@@ -150,10 +155,10 @@ export default {
           nObj.type = this.treeViewType
 
           if (nObj.group_yn) {
-            nObj.isLeaf = false      
+            nObj.isLeaf = false
             result[i] = nObj
             this.pid++
-            if(nObj.children) {
+            if (nObj.children) {
               result[i].children = dataMapping(nObj.children, isReadOnly)
             }
           } else {
@@ -357,8 +362,8 @@ export default {
     },
 
     delData() {
-      this.deleteList=[]
-      const deleteList=this.deleteList
+      this.deleteList = []
+      const deleteList = this.deleteList
       this.$emit('un-active')
 
       function _dell(oldNode) {
@@ -372,14 +377,14 @@ export default {
         }
       }
       _dell(this.datas)
-      const len=this.deleteList.length
-      if(len>0){
+      const len = this.deleteList.length
+      if (len > 0) {
         let deleteStr = ''
         for (let i = 0; i < len; i++) {
-          if(i<len-1){
-            deleteStr+=this.deleteList[i]+'-'
-          }else{
-            deleteStr+=this.deleteList[i]
+          if (i < len - 1) {
+            deleteStr += this.deleteList[i] + '-'
+          } else {
+            deleteStr += this.deleteList[i]
           }
         }
         this.deleteFolder(deleteStr)
@@ -435,7 +440,7 @@ export default {
       }
       getParentName(node.parent)
       this.moreMenuClose()
-      this.$emit('get-savepath', path)
+      this.$emit('get-savepath', { ...node, path })
     },
 
     moreMenuView(node) {
@@ -450,7 +455,7 @@ export default {
       }
       getParentName(node.parent)
       this.moreMenuClose()
-      this.$emit('get-savepath', path)
+      this.$emit('get-savepath', { ...node, path })
     },
 
     moreMenuDell(node) {

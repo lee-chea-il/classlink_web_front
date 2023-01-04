@@ -1,9 +1,7 @@
 <template>
   <div>
     <PageHeader title="자료실" />
-
     <LoadingBox v-if="isLoading" />
-
     <div v-else class="tab-content depth03 ac_manage_dtr">
       <div class="tab-pane active">
         <!-- 컨트롤 버튼 영역 -->
@@ -25,6 +23,10 @@
           ref="mainEducation"
           pageType="reference"
           :identity="identity"
+          :insData="institutionData"
+          :franchiseData="franchiseData"
+          :myData="myData"
+          :openData="openData"
           @open-data="onClickView"
           @copyDataCallBack="copyDataCallBack"
           @download-data="downloadSelectData"
@@ -233,10 +235,11 @@
 
     <!-- 저장경로 설정 -->
     <SavePathModal
+      ref="savepathRef"
       :open="isSavePathModal.open"
-      :institutionData="receiveInstitutionData"
-      :franchiseData="receiveFranchiseData"
-      :myData="receiveMyData"
+      :institutionData="treeInstitutionData"
+      :franchiseData="treeFranchiseData"
+      :myData="treeMyData"
       @save-file-path="setSavePath"
       @close="onCloseSavePathModal"
     />
@@ -347,7 +350,6 @@ export default {
     return initialState()
   },
   mounted() {
-    this.getServerUrl()
     this.identity = localStorage.getItem('identity')
     const user = this.$store.state.common.user
     this.initReferenceData = {
@@ -356,73 +358,85 @@ export default {
       registrant_name: user.mem_name,
     }
     this.referenceData = jsonItem(this.initReferenceData)
-    setTimeout(()=>{
-      this.getInsTreeViewList()
-      this.getFranTreeViewList()
-      this.getMyTreeViewList()
-      /*
-      api 미작업 상태
-      this.getPublicTreeViewList()
-      */
-    },300)
+    this.getEarlyData()
   },
   methods: {
+    getEarlyData() {
+      this.isLoading = true
+      Promise.all([
+        this.getServerUrl(),
+        this.getInsTreeViewList(),
+        this.getFranTreeViewList(),
+        this.getMyTreeViewList(),
+        this.getPublicTreeViewList(),
+      ])
+    },
+
+    // 교육기관 트리 가져오기
     async getInsTreeViewList() {
       await apiData
-        .getTreeViewList({type: "ID"})
+        .getTreeViewList({ type: 'ID' })
         .then(({ data: { data } }) => {
-          this.setInsTreeViewData(data)
+          this.isLoading = false
+          const newItem = jsonItem(data)
+          this.institutionData = jsonItem(newItem)
+          this.treeInstitutionData = jsonItem(newItem)
         })
         .catch((err) => {
           console.log(err)
         })
     },
-    setInsTreeViewData(data){
-      this.$refs.mainEducation.$refs.education.$refs.institution.setData(data)
-    },
 
+    // 프랜차이즈 트리 가져오기
     async getFranTreeViewList() {
       await apiData
-        .getTreeViewList({type: "FD"})
+        .getTreeViewList({ type: 'FD' })
         .then(({ data: { data } }) => {
-          this.setFranTreeViewData(data)
+          const newItem = jsonItem(data)
+          this.franchiseData = jsonItem(newItem)
+          this.treeFranchiseData = jsonItem(newItem)
         })
         .catch((err) => {
           console.log(err)
         })
     },
-    setFranTreeViewData(data){
-      this.$refs.mainEducation.$refs.education.$refs.franchise.setData(data)
-    },
 
+    // 내 트리 가져오기
     async getMyTreeViewList() {
-      console.log("---getMyTreeViewList-   ")
       await apiData
-        .getTreeViewList({type: "MD"})
+        .getTreeViewList({ type: 'MD' })
         .then(({ data: { data } }) => {
-          this.setMyTreeViewData(data)
+          const newItem = jsonItem(data)
+          this.myData = jsonItem(newItem)
+          this.treeMyData = jsonItem(newItem)
         })
         .catch((err) => {
           console.log(err)
         })
     },
-    setMyTreeViewData(data){
-      this.$refs.mainEducation.$refs.myData.$refs.mydata.setData(data)
-    },
 
+    // 공개 자료실 트리 가져오기
     async getPublicTreeViewList() {
       await apiData
-        .getTreeViewList({type: "OD"})
+        .getTreeViewList({ type: 'OD' })
         .then(({ data: { data } }) => {
-          this.setPublicTreeViewData(data)
+          this.openData = jsonItem(data)
+          this.treeOpenData = jsonItem(data)
         })
         .catch((err) => {
           console.log(err)
         })
     },
-    setPublicTreeViewData(data){
-      console.log(data)
-      // this.$refs.mainEducation.$refs.myData.$refs.mydata.setData(data)
+
+    // 자료등록시 트리 호출
+    setUpdateTree(type) {
+      if (type === 'ID') {
+        this.getInsTreeViewList()
+      } else if (type === 'FD') {
+        this.getFranTreeViewList()
+      } else {
+        this.getMyTreeViewList()
+      }
     },
     // 일반용
     // 일반용
@@ -513,6 +527,7 @@ export default {
         .postDataroomFile(payload)
         .then(() => {
           this.onCloseReferenceAddModal()
+          this.setUpdateTree(payload.datatable_type)
           this.openModalDesc('등록 성공', '자료를 등록했습니다.')
         })
         .catch(() => {
@@ -532,6 +547,7 @@ export default {
         .postDataroomQuiz(payload)
         .then(() => {
           this.onCloseQuizAddModal()
+          this.setUpdateTree(payload.datatable_type)
           this.openModalDesc('등록 성공', '자료를 등록했습니다.')
         })
         .catch(() => {
@@ -541,20 +557,17 @@ export default {
 
     // 쪽지시험 업로드
     postDataroomNoteExam() {
-      const { note_exam_asks, title, keyword, ...rest } = this.referenceData
-      const setItem = note_exam_asks.map((item) => {
-        return { ...item, limit_time: Number(item.limit_time) * 60 }
-      })
+      const { title, keyword, ...rest } = this.referenceData
       const payload = {
         ...rest,
         keyword: keyword.join(','),
         title: title + this.setExtension(rest.datatype),
-        note_exam_asks: setItem,
       }
       apiData
         .postDataroomNoteExam(payload)
         .then(() => {
           this.onCloseNoteTestAddModal()
+          this.setUpdateTree(payload.datatable_type)
           this.openModalDesc('등록 성공', '자료를 등록했습니다.')
         })
         .catch(() => {
@@ -564,8 +577,8 @@ export default {
 
     // 파일 조회
     // 동영상, PDF, YOUTUBE, URL 조회
-    getDataroomFile({ dataroom_idx, type }) {
-      const payload = { dataroom_idx, datatable_type: type }
+    getDataroomFile({ treeinfo_idx, type }) {
+      const payload = { treeinfo_idx, datatable_type: type }
       apiData
         .getDataroomFile(payload)
         .then(({ data: { data } }) => {
@@ -575,13 +588,18 @@ export default {
             title: data.title.replace(/.mp4|.pdf|.youtube|.url/g, ''),
           }
           this.getFileSize(data.full_path)
+          if (this.modalTitle === '수정') {
+            this.onOpenReferenceAddModal()
+          } else {
+            this.onOpenReferenceBrowseModal()
+          }
         })
         .catch(() => {})
     },
 
     // 퀴즈 조회
-    async getDataroomQuiz({ dataroom_idx, type }) {
-      const payload = { dataroom_idx, datatable_type: type }
+    async getDataroomQuiz({ treeinfo_idx, type }) {
+      const payload = { treeinfo_idx, datatable_type: type }
       await apiData
         .getDataroomQuiz(payload)
         .then(({ data: { data } }) => {
@@ -590,24 +608,30 @@ export default {
             keyword: data.keyword.split(','),
             title: data.title.replace(/.quiz/g, ''),
           }
+          if (this.modalTitle === '수정') {
+            this.isQuizAddModal = true
+          } else {
+            this.onOpenQuizBrowseModal()
+          }
         })
         .catch(() => {})
     },
 
     // 쪽지시험 조회
-    getDataroomNoteExam({ dataroom_idx, type }) {
-      const payload = { dataroom_idx, datatable_type: type }
+    getDataroomNoteExam({ treeinfo_idx, type }) {
+      const payload = { treeinfo_idx, datatable_type: type }
       apiData
         .getDataroomNoteExam(payload)
         .then(({ data: { data } }) => {
-          const setItem = data.note_exam_asks.map((item) => {
-            return { ...item, limit_time: Number(item.limit_time) / 60 }
-          })
           this.referenceData = {
             ...data,
             keyword: data.keyword.split(','),
             title: data.title.replace(/.exam/g, ''),
-            note_exam_asks: setItem,
+          }
+          if (this.modalTitle === '수정') {
+            this.isNoteTestAddModal = true
+          } else {
+            this.onOpenNoteTestBrowseModal()
           }
         })
         .catch(() => {})
@@ -615,13 +639,13 @@ export default {
 
     // 자료 유형별 핸들러
     selectDataroomType(type, data) {
+      const { title } = data
       const payload = {
-        dataroom_idx: data.dataroom_idx,
-        type: data.datatable_type,
-        title: data.title + this.setExtension(data.datatype),
+        treeinfo_idx: data.treeViewId,
+        type: data.type,
       }
-      if (type === '03') return this.getDataroomQuiz(payload)
-      else if (type === '04') return this.getDataroomNoteExam(payload)
+      if (title.includes('.quiz')) return this.getDataroomQuiz(payload)
+      else if (title.includes('.exam')) return this.getDataroomNoteExam(payload)
       else return this.getDataroomFile(payload)
     },
 
@@ -629,6 +653,7 @@ export default {
     // 동영상, PDF, YOUTUBE, URL 수정
     updateDataroomFile() {
       const { keyword, title, ...rest } = this.referenceData
+      console.log(this.referenceData)
       const data = {
         ...rest,
         keyword: keyword.join(','),
@@ -638,6 +663,7 @@ export default {
         .updateDataroomFile(data)
         .then(() => {
           this.onCloseReferenceAddModal()
+          this.setUpdateTree(data.datatable_type)
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
         .catch(() => {})
@@ -655,6 +681,7 @@ export default {
         .updateDataroomQuiz(data)
         .then(() => {
           this.onCloseQuizAddModal()
+          this.setUpdateTree(data.datatable_type)
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
         .catch(() => {})
@@ -672,22 +699,25 @@ export default {
         .updateDataroomNoteExam(data)
         .then(() => {
           this.onCloseNoteTestAddModal()
+          this.setUpdateTree(data.datatable_type)
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
         .catch(() => {})
     },
 
     // 파일 삭제
-    deleteData({ dataroom_idx, datatable_type }) {
+    deleteData({ datatable_type }) {
       const payload = {
-        dataroom_idx,
+        treeinfo_idx: this.deleteTreeIdx,
         datatable_type,
       }
       apiData
         .deleteData(payload)
         .then(() => {
           this.isSelectModal.open = false
-          this.openModalDesc('삭제 성공', '자료를 삭제했습니다.')
+          console.log(payload)
+          this.setUpdateTree(payload.datatable_type)
+          // this.openModalDesc('삭제 성공', '자료를 삭제했습니다.')
         })
         .catch(() => {})
     },
@@ -755,7 +785,6 @@ export default {
       this.setModalTitle('등록')
       this.referenceData = {
         ...this.referenceData,
-        datatable_type: 'ID',
         datatype: '03',
         quiz_asks: [{ ...this.quizItem }],
       }
@@ -772,7 +801,6 @@ export default {
       this.setModalTitle('등록')
       this.referenceData = {
         ...this.referenceData,
-        datatable_type: 'ID',
         datatype: '04',
         note_exam_asks: [{ ...this.testItem }],
       }
@@ -1101,7 +1129,6 @@ export default {
 
     // 퀴즈 변경 핸들러
     onChangeQuiz({ target: { value, id } }, idx) {
-      console.log(value, id)
       const numberOnly = value.replace(/[^0-9.]/g, '').replace(/ /g, '')
       if (id === 'limit_time') {
         return (this.referenceData.quiz_asks[idx][id] = Number(numberOnly))
@@ -1150,13 +1177,19 @@ export default {
     },
 
     // 저장 경로 선택 하기
-    setSavePath(path) {
-      return (this.uploadInfo.saveFolderPath = path)
+    setSavePath(data) {
+      this.referenceData = {
+        ...this.referenceData,
+        parent_treeinfo_idx: data.id,
+        datatable_type: data.type,
+      }
+      return (this.uploadInfo.saveFolderPath = data.path)
     },
 
     // 트리 저장경로 설정
     getSavePath(path) {
-      this.uploadInfo.saveFolderPath = path
+      this.deleteTreeIdx = path.treeViewId
+      this.uploadInfo.saveFolderPath = path.path
     },
 
     // 파일 사이즈 가져오기
@@ -1191,7 +1224,7 @@ export default {
           title: files[0].name.replace('.mp4', ''),
           file_name: files[0].name,
           full_path: URL.createObjectURL(files[0]),
-          datatable_type: 'ID',
+          // datatable_type: 'ID',
           datatype: '01',
         }
         this.getFileSize(files[0].size)
@@ -1214,7 +1247,7 @@ export default {
           title: target.name.replace('.pdf', ''),
           file_name: target.name,
           full_path: URL.createObjectURL(files[0]),
-          datatable_type: 'ID',
+          // datatable_type: 'ID',
           datatype: '02',
         }
         this.getFileSize(files[0].size)
@@ -1243,7 +1276,7 @@ export default {
                 .replace(/\./, '')
                 .substring(0, 60),
               description: item.snippet.localized.description.substring(0, 100),
-              datatable_type: 'ID',
+              // datatable_type: 'ID',
               datatype: '05',
               full_path: `//www.youtube.com/embed/${youtubeUrl}`,
               file: `//www.youtube.com/embed/${youtubeUrl}`,
@@ -1275,7 +1308,7 @@ export default {
           ...this.referenceData,
           name: url,
           file_name: url,
-          datatable_type: 'ID',
+          // datatable_type: 'ID',
           datatype: '06',
           full_path: url,
           file: url,
@@ -1299,7 +1332,7 @@ export default {
           title: files[0].name,
           full_path: URL.createObjectURL(files[0]),
           file_name: files[0].name,
-          datatable_type: 'ID',
+          // datatable_type: 'ID',
           datatype: name,
         }
       }
@@ -1364,7 +1397,6 @@ export default {
     // 퀴즈 타입 변경
     onClickQuizType({ target: { value } }, idx, num) {
       const target = this.referenceData.quiz_asks[idx]
-      console.log(value)
       if (num === 'OX') {
         target.correct = 'O'
         target.wrong = 'X'
@@ -1448,21 +1480,20 @@ export default {
       )
     },
 
-    // 자료 클릭 이벤트
-    onClickSelectData(data) {
-      this.referenceData = jsonItem(data)
-      if (data.datatype === '03') return this.onOpenQuizBrowseModal()
-      else if (data.datatype === '04') return this.onOpenNoteTestBrowseModal()
-      else return this.onOpenReferenceBrowseModal()
-    },
+    // // 자료 클릭 이벤트
+    // onClickSelectData(data) {
+    //   this.referenceData = jsonItem(data)
+    //   thi
+    //   if (data.datatype === '03') return this.onOpenQuizBrowseModal()
+    //   else if (data.datatype === '04') return this.onOpenNoteTestBrowseModal()
+    //   else return this.onOpenReferenceBrowseModal()
+    // },
 
     // 자료 조회
-    onClickView(params) {
-      const type = params.datatype
-      this.selectDataroomType(type, params)
-      if (type === '03') return this.onOpenQuizBrowseModal()
-      else if (type === '04') return this.onOpenNoteTestBrowseModal()
-      else return this.onOpenReferenceBrowseModal()
+    onClickView(data) {
+      this.setModalTitle('등록')
+      const type = data.datatype
+      this.selectDataroomType(type, data)
     },
 
     // 자료 수정
@@ -1470,9 +1501,6 @@ export default {
       this.setModalTitle('수정')
       const type = data.datatype
       this.selectDataroomType(type, data)
-      if (type === '03') return this.onOpenQuizChangeModal()
-      else if (type === '04') return this.onOpenNoteTestChangeModal()
-      else return this.onOpenReferenceChangeModal()
     },
 
     copyData() {
@@ -1498,7 +1526,7 @@ export default {
     },
 
     delData() {
-      if (this.identity === 'master') {
+      if (this.identity === 'institution') {
         const instiTab = document.getElementById('institute')
         if (instiTab.classList.contains('show'))
           this.$refs.mainEducation.$refs.education.$refs.institution.delData()

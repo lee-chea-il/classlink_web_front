@@ -11,7 +11,7 @@
           @delete="delData"
           @copyDataCallBack="copyDataCallBack"
         />
-        
+
         <div class="divide_section">
           <DivideSectionFranchise
             ref="leftSection"
@@ -39,12 +39,12 @@
       ref="curriculumUpdateModal"
       :isCurriculum="true"
       :txtInfo="{
-        'fileSet':'link',
-        'modatTitle':'커리큘럼 등록 / 수정',
-        'ioTitle':'CW 교실',
-        'rightTitle':'레슨정보',
-        'listTitle':'레슨 자료',
-        'listEmptyTxt':'현재 불러온 레슨이 없습니다.'
+        fileSet: 'link',
+        modatTitle: '커리큘럼 등록 / 수정',
+        ioTitle: 'CW 교실',
+        rightTitle: '레슨정보',
+        listTitle: '레슨 자료',
+        listEmptyTxt: '현재 불러온 레슨이 없습니다.',
       }"
       :dropMenuData="dropMenuData"
       :open="isShowOpenAddModal"
@@ -137,7 +137,7 @@ export default {
   data() {
     return initialState()
   },
-  mounted(){
+  mounted() {
     /* setTimeout(() => {
       this.addCuriiculumData(this.testData)
     },1000) */
@@ -156,7 +156,7 @@ export default {
       this.$refs.leftSection.$refs.franchise.copyComp()
     },
     delData() {
-      if (this.identity === 'master') {
+      if (this.identity === 'institution') {
         this.$refs.leftSection.$refs.franchise.delData()
       }
       this.$refs.rightSection.$refs.curriculum.delData()
@@ -177,41 +177,41 @@ export default {
       this.$refs.leftSection.$refs.franchise.unActiveAll()
       this.$refs.rightSection.$refs.curriculum.unActiveAll()
     },
-    changeModalDescMsg(msg){
-      this.isShowModalDesc=true
-      this.modalDescMsg=msg
+    changeModalDescMsg(msg) {
+      this.isShowModalDesc = true
+      this.modalDescMsg = msg
     },
-    addCuriiculumData(data){
+    addCuriiculumData(data) {
       this.isShowOpenAddModal = false
-      if(data.type==='franchise'){
+      if (data.type === 'franchise') {
         this.$refs.leftSection.$refs.franchise.addData(data)
-      }else{
+      } else {
         this.$refs.rightSection.$refs.curriculum.addData(data)
       }
     },
-    updateData(data,type){
-      this.updateType=type
+    updateData(data, type) {
+      this.updateType = type
       this.isShowOpenAddModal = true
-      $("#modalCuriRegi").modal("show")
+      $('#modalCuriRegi').modal('show')
       this.$refs.curriculumUpdateModal.setData(data)
     },
-    updateFileDel(){
-      if(this.updateType==='franchise'){
+    updateFileDel() {
+      if (this.updateType === 'franchise') {
         this.$refs.leftSection.$refs.franchise.updateFileDel()
-      }else{
+      } else {
         this.$refs.rightSection.$refs.curriculum.updateFileDel()
       }
     },
-    updateCuriiculumData(data){
-      if(this.updateType==='franchise'){
+    updateCuriiculumData(data) {
+      if (this.updateType === 'franchise') {
         this.$refs.leftSection.$refs.franchise.updateFile(data)
-      }else{
+      } else {
         this.$refs.rightSection.$refs.curriculum.updateFile(data)
       }
     },
-    showInsToFranModal(){
-      this.isShowCopyInsToFranDataModal=true
-    }
+    showInsToFranModal() {
+      this.isShowCopyInsToFranDataModal = true
+    },
   },
 }
 </script>

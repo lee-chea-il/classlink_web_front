@@ -10,7 +10,6 @@
 
       <div class="write_area">
         <PreviewField :currentPageIdx="currentPageIdx" @preview="setPreview" />
-
         <CustomEditor
           rules="start_limit|end_limit|edit_required"
           :itemList="quizList"

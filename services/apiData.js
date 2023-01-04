@@ -33,21 +33,21 @@ const postDataroomNoteExam = async (data) => {
 // 동영상, PDF, 유튜브,URL 조회
 const getDataroomFile = async (payload) => {
   return await http.get(
-    `/api/v1/prepare-class/dataroom/data/?dataroom_idx=${payload.dataroom_idx}&datatable_type=${payload.datatable_type}`
+    `/api/v1/prepare-class/dataroom/data?treeinfo_idx=${payload.treeinfo_idx}&datatable_type=${payload.datatable_type}`
   )
 }
 
 // 퀴즈 조회
 const getDataroomQuiz = async (payload) => {
   return await http.get(
-    `/api/v1/prepare-class/dataroom/quiz?dataroom_idx=${payload.dataroom_idx}&datatable_type=${payload.datatable_type}`
+    `/api/v1/prepare-class/dataroom/quiz?treeinfo_idx=${payload.treeinfo_idx}&datatable_type=${payload.datatable_type}`
   )
 }
 
 // 쪽지시험 조회
 const getDataroomNoteExam = async (payload) => {
   return await http.get(
-    `/api/v1/prepare-class/dataroom/note-exam?dataroom_idx=${payload.dataroom_idx}&datatable_type=${payload.datatable_type}`
+    `/api/v1/prepare-class/dataroom/note-exam?treeinfo_idx=${payload.treeinfo_idx}&datatable_type=${payload.datatable_type}`
   )
 }
 

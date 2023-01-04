@@ -10,9 +10,10 @@
       <TreeView
         ref="institution"
         treeViewType="ID"
-        :editable="identity == 'master' ? true : false"
+        :editable="identity == 'institution' ? true : false"
         :identity="identity"
         :pidNum="0"
+        :dataList="insData"
         :isHideDownload="pageType === 'reference' ? true : false"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @open-data="$emit('open-data', $event)"
@@ -34,9 +35,10 @@
       <TreeView
         ref="franchise"
         treeViewType="FD"
-        :editable="identity == 'master' ? true : false"
+        :editable="identity == 'institution' ? true : false"
         :identity="identity"
         :pidNum="1000"
+        :dataList="franchiseData"
         :isHideDownload="pageType === 'reference' ? true : false"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @open-data="$emit('open-data', $event)"
@@ -59,7 +61,7 @@
         ref="open"
         treeViewType="OD"
         :dataList="openData"
-        :editable="identity == 'master' ? true : false"
+        :editable="identity == 'institution' ? true : false"
         :identity="identity"
         :pidNum="1000"
         :isHideDownload="pageType === 'reference' ? true : false"
@@ -85,18 +87,11 @@ export default {
     TreeView,
   },
   props: {
-    openData: {
-      type: Array,
-      default: () => [],
-    },
-    identity: {
-      type: String,
-      default: '',
-    },
-    pageType: {
-      type: String,
-      default: '',
-    },
+    openData: { type: Array, default: () => [] },
+    identity: { type: String, default: '' },
+    pageType: { type: String, default: '' },
+    insData: { type: Array, default: () => [] },
+    franchiseData: { type: Array, default: () => [] },
   },
 }
 </script>

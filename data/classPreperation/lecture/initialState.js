@@ -6,7 +6,7 @@ export default function initialState() {
     currentPageNumber: 1,
     postPerPage: 10,
     postPerPageNum: 10,
-    identity: 'master',
+    identity: 'institution',
     modalTitle: '강좌 등록',
     isCalendar: false,
     isSchedule: false,

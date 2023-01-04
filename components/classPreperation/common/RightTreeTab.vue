@@ -11,7 +11,8 @@
         ref="mydata"
         treeViewType="MD"
         :expanded="true"
-        identity="master"
+        :dataList="myData"
+        identity="institution"
         :pidNum="2000"
         :isHideDownload="pageType === 'reference' ? true : false"
         @open-data="$emit('open-data', $event)"
@@ -35,7 +36,7 @@ export default {
     TreeView,
   },
   props: {
-    myDataList: {
+    myData: {
       type: Array,
       default: () => [],
     },

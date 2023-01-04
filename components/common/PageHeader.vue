@@ -1,7 +1,7 @@
 <template>
   <ul class="nav nav-tabs depth03">
     <li class="nav-item">
-      <a class="nav-link active"> {{ title }} </a>
+      <p class="nav-link active">{{ title }}</p>
     </li>
   </ul>
 </template>

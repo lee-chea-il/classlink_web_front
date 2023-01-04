@@ -1,7 +1,7 @@
 <template>
   <div :class="`divide_area ${directionType}`">
     <ul
-      v-if="directionType==='left'"
+      v-if="directionType === 'left'"
       id="myTab"
       class="nav nav-tabs"
       role="tablist"
@@ -19,14 +19,11 @@
         data-toggle="modal"
         data-target="#modalDataGet"
         @click="$emit('show-ins-to-fran-modal')"
-      >+ 가져오기</button>
+      >
+        + 가져오기
+      </button>
     </ul>
-    <ul
-      v-else
-      id="myTab"
-      class="nav nav-tabs"
-      role="tablist"
-    >
+    <ul v-else id="myTab" class="nav nav-tabs" role="tablist">
       <CustomTabBtn
         idName="grade"
         :isActive="true"
@@ -37,11 +34,7 @@
       />
     </ul>
 
-    <div
-      v-if="directionType==='left'"
-      id="myTabContent"
-      class="tab-content"
-    >
+    <div v-if="directionType === 'left'" id="myTabContent" class="tab-content">
       <div
         id="franchise"
         class="tab-pane fade show active"
@@ -51,22 +44,18 @@
         <TreeView
           ref="franchise"
           :dataList="franchiseData"
-          :editable="identity == 'master' ? true : false"
+          :editable="identity == 'institution' ? true : false"
           :identity="identity"
           :pidNum="1000"
           :isHideDownload="false"
           @un-active="$emit('un-active')"
-          @update-data="$emit('update-data',$event,'franchise')"
+          @update-data="$emit('update-data', $event, 'franchise')"
           @copyDataCallBack="copyDataCallBack"
         />
       </div>
     </div>
 
-    <div
-      v-else
-      id="myTabContent"
-      class="tab-content"
-    >
+    <div v-else id="myTabContent" class="tab-content">
       <div
         id="mydata"
         class="tab-pane fade show active"
@@ -77,12 +66,12 @@
           ref="curriculum"
           :expanded="true"
           :dataList="curriculumData"
-          identity="master"
+          identity="institution"
           :pidNum="2000"
           :isHideDownload="false"
           :isUpdate="isUpdate"
           @un-active="$emit('un-active')"
-          @update-data="$emit('update-data',$event,'curriculum')"
+          @update-data="$emit('update-data', $event, 'curriculum')"
         />
         <br />
         <br />
@@ -99,16 +88,16 @@ export default {
   name: 'DivideSection',
   components: {
     CustomTabBtn,
-    TreeView
+    TreeView,
   },
   props: {
-    directionType:{
+    directionType: {
       type: String,
-      default: 'left'
+      default: 'left',
     },
-    identity:{
+    identity: {
       type: String,
-      default: ''
+      default: '',
     },
     franchiseData: {
       type: Array,
@@ -120,19 +109,15 @@ export default {
     },
     isUpdate: Boolean,
   },
-  data(){
-    return {
-      
-    }
+  data() {
+    return {}
   },
-  methods:{
-    unActive(){
+  methods: {
+    unActive() {
       console.log('unActive')
     },
-    copyDataCallBack(){
-
-    }
-  }
+    copyDataCallBack() {},
+  },
 }
 </script>
 

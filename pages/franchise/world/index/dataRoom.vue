@@ -1445,7 +1445,7 @@ export default {
     },
 
     delData() {
-      if (this.identity === 'master') {
+      if (this.identity === 'institution') {
         const instiTab = document.getElementById('institute')
         if (instiTab.classList.contains('show'))
           this.$refs.mainEducation.$refs.education.$refs.institution.delData()

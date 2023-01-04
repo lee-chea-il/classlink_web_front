@@ -10,7 +10,7 @@
       <TreeView
         ref="institution"
         :dataList="institutionData"
-        :editable="identity == 'master' ? true : false"
+        :editable="identity == 'institution' ? true : false"
         :identity="identity"
         :pidNum="0"
         :isHideDownload="pageType === 'reference' ? true : false"
@@ -32,7 +32,7 @@
       <TreeView
         ref="franchise"
         :dataList="franchiseData"
-        :editable="identity == 'master' ? true : false"
+        :editable="identity == 'institution' ? true : false"
         :identity="identity"
         :pidNum="1000"
         :isHideDownload="pageType === 'reference' ? true : false"

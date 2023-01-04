@@ -100,6 +100,7 @@ export default function initialState() {
       description: '',
       keyword: [],
       save_path: '',
+      parent_treeinfo_idx: 0,
       public_open_yn: true,
       open_yn: true,
       file_name: '',
@@ -108,92 +109,16 @@ export default function initialState() {
       thumbnail: '',
       registrant_name: '',
     },
+    deleteTreeIdx: 0,
     referenceData: {},
-    receiveInstitutionData: [
-      {
-        title: '마포 학원',
-        children: [
-          {
-            dataroom_idx: 30,
-            datatable_type: 'ID',
-            title: '국어학습자료 애니메이션.mp4',
-            datatype: '01',
-          },
-          {
-            dataroom_idx: 31,
-            datatable_type: 'ID',
-            title: '수학 학습자료.pdf',
-            datatype: '02',
-          },
-          {
-            dataroom_idx: 113,
-            datatable_type: 'ID',
-            title: '영어 단어 퀴즈.quiz',
-            datatype: '03',
-          },
-          {
-            dataroom_idx: 4,
-            datatable_type: 'ID',
-            title: '수학 쪽지시험.test',
-            datatype: '04',
-          },
-          {
-            dataroom_idx: 35,
-            datatable_type: 'ID',
-            title: '사회 쪽지시험 영상.youtube',
-            datatype: '05',
-          },
-          {
-            dataroom_idx: 36,
-            datatable_type: 'ID',
-            title: '과학 사이트 참고용.url',
-            datatype: '06',
-          },
-        ],
-      },
-    ],
-    receiveFranchiseData: [
-      {
-        title: '서울 학원',
-        children: [
-          {
-            dataroom_idx: 2,
-            title: '영어 단어 퀴즈.mp4',
-            datatable_type: 'FD',
-            // dbIdx: 3,
-            datatype: '01',
-          },
-        ],
-      },
-    ],
-    receiveMyData: [
-      {
-        title: '국어',
-        children: [
-          {
-            dataroom_idx: 2,
-            title: '수학 단어 퀴즈.mp4',
-            datatable_type: 'MD',
-            // dbIdx: 3,
-            datatype: '01',
-          },
-        ],
-      },
-    ],
-    receiveOpenData: [
-      {
-        title: '국어',
-        children: [
-          {
-            dataroom_idx: 2,
-            title: '영어 단어 퀴즈.mp4',
-            datatable_type: 'OD',
-            // dbIdx: 3,
-            datatype: '01',
-          },
-        ],
-      },
-    ],
+    institutionData: [],
+    franchiseData: [],
+    openData: [],
+    myData: [],
+    treeMyData: [],
+    treeInstitutionData: [],
+    treeFranchiseData: [],
+    treeOpenData: [],
     referenceList: [
       {
         id: 0,

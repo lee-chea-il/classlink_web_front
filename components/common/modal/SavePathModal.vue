@@ -1,7 +1,7 @@
 <template>
   <Transition name="modal">
     <div
-      v-if="open"
+      v-show="open"
       id="modalStoragepath"
       class="modal modal_ac_manage_dtr double modal-mask"
       tabindex="-1"
@@ -13,7 +13,6 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <ModalHeader title="저장 경로" @close="$emit('close')" />
-
           <div class="modal-body">
             <!-- 탭 컨텐츠 -->
             <SavePathHeader />
@@ -119,6 +118,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    type: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -126,25 +129,30 @@ export default {
         path: '',
         type: '',
         filename: '',
+        id: 0,
       },
     }
   },
   methods: {
-    folderClickInsti(pathInfo) {
+    folderClickInsti(pathInfo, data) {
       this.folderInfo.path = pathInfo
-      this.folderInfo.type = 'institution'
+      this.folderInfo.id = data.treeViewId
+      // this.folderInfo.id = 157
+      this.folderInfo.type = 'ID'
     },
-    folderClickFran(pathInfo) {
+    folderClickFran(pathInfo, data) {
       this.folderInfo.path = pathInfo
-      this.folderInfo.type = 'franchise'
+      this.folderInfo.id = data.treeViewId
+      this.folderInfo.type = 'FD'
     },
-    folderClickMyData(pathInfo) {
+    folderClickMyData(pathInfo, data) {
       this.folderInfo.path = pathInfo
-      this.folderInfo.type = 'curriculum'
+      this.folderInfo.id = data.treeViewId
+      this.folderInfo.type = 'MD'
     },
     saveFilePath() {
       this.folderInfo.filename = $('#inputSavePath').val()
-      this.$emit('save-file-path', this.folderInfo.path)
+      this.$emit('save-file-path', this.folderInfo)
       this.$emit('close')
     },
   },

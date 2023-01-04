@@ -11,7 +11,7 @@
           @delete="delData"
           @copyDataCallBack="copyDataCallBack"
         />
-        
+
         <div class="divide_section">
           <DivideSection
             ref="leftSection"
@@ -39,12 +39,12 @@
       ref="curriculumUpdateModal"
       :isCurriculum="true"
       :txtInfo="{
-        'fileSet':'link',
-        'modatTitle':'커리큘럼 등록 / 수정',
-        'ioTitle':'CW 교실',
-        'rightTitle':'레슨정보',
-        'listTitle':'레슨 자료',
-        'listEmptyTxt':'현재 불러온 레슨이 없습니다.'
+        fileSet: 'link',
+        modatTitle: '커리큘럼 등록 / 수정',
+        ioTitle: 'CW 교실',
+        rightTitle: '레슨정보',
+        listTitle: '레슨 자료',
+        listEmptyTxt: '현재 불러온 레슨이 없습니다.',
       }"
       :dropMenuData="dropMenuData"
       :open="isShowOpenAddModal"
@@ -130,7 +130,7 @@ export default {
   data() {
     return initialState()
   },
-  mounted(){
+  mounted() {
     /* setTimeout(() => {
       this.addCuriiculumData(this.testData)
     },1000) */
@@ -141,7 +141,7 @@ export default {
   methods: {
     async getInsTreeViewList() {
       await apiClassCurriculum
-        .getTreeViewList({type: "ID"})
+        .getTreeViewList({ type: 'ID' })
         .then(({ data: { data } }) => {
           this.setInsTreeViewData(data)
         })
@@ -149,12 +149,12 @@ export default {
           console.log(err)
         })
     },
-    setInsTreeViewData(data){
+    setInsTreeViewData(data) {
       this.$refs.leftSection.$refs.institution.setData(data)
     },
     async getFranTreeViewList() {
       await apiClassCurriculum
-        .getTreeViewList({type: "FD"})
+        .getTreeViewList({ type: 'FD' })
         .then(({ data: { data } }) => {
           this.setFranTreeViewData(data)
         })
@@ -162,12 +162,12 @@ export default {
           console.log(err)
         })
     },
-    setFranTreeViewData(data){
+    setFranTreeViewData(data) {
       this.$refs.leftSection.$refs.franchise.setData(data)
     },
     async getMyTreeViewList() {
       await apiClassCurriculum
-        .getTreeViewList({type: "MD"})
+        .getTreeViewList({ type: 'MD' })
         .then(({ data: { data } }) => {
           this.setMyTreeViewData(data)
         })
@@ -175,7 +175,7 @@ export default {
           console.log(err)
         })
     },
-    setMyTreeViewData(data){
+    setMyTreeViewData(data) {
       this.$refs.rightSection.$refs.curriculum.setData(data)
     },
     openCurriculumAdd() {
@@ -201,7 +201,7 @@ export default {
       }
     },
     delData() {
-      if (this.identity === 'master') {
+      if (this.identity === 'institution') {
         const instiTab = document.getElementById('institute')
         if (instiTab.classList.contains('show')) {
           this.$refs.leftSection.$refs.institution.delData()
@@ -228,44 +228,44 @@ export default {
       this.$refs.leftSection.$refs.franchise.unActiveAll()
       this.$refs.rightSection.$refs.curriculum.unActiveAll()
     },
-    changeModalDescMsg(msg){
-      this.isShowModalDesc=true
-      this.modalDescMsg=msg
+    changeModalDescMsg(msg) {
+      this.isShowModalDesc = true
+      this.modalDescMsg = msg
     },
-    addCuriiculumData(data){
+    addCuriiculumData(data) {
       this.isShowOpenAddModal = false
-      if(data.type==='institution'){
+      if (data.type === 'institution') {
         this.$refs.leftSection.$refs.institution.addData(data)
-      }else if(data.type==='franchise'){
+      } else if (data.type === 'franchise') {
         this.$refs.leftSection.$refs.franchise.addData(data)
-      }else{
+      } else {
         this.$refs.rightSection.$refs.curriculum.addData(data)
       }
     },
-    updateData(data,type){
-      this.updateType=type
+    updateData(data, type) {
+      this.updateType = type
       this.isShowOpenAddModal = true
-      $("#modalCuriRegi").modal("show")
+      $('#modalCuriRegi').modal('show')
       this.$refs.curriculumUpdateModal.setData(data)
     },
-    updateFileDel(){
-      if(this.updateType==='institution'){
+    updateFileDel() {
+      if (this.updateType === 'institution') {
         this.$refs.leftSection.$refs.institution.updateFileDel()
-      }else if(this.updateType==='franchise'){
+      } else if (this.updateType === 'franchise') {
         this.$refs.leftSection.$refs.franchise.updateFileDel()
-      }else{
+      } else {
         this.$refs.rightSection.$refs.curriculum.updateFileDel()
       }
     },
-    updateCuriiculumData(data){
-      if(this.updateType==='institution'){
+    updateCuriiculumData(data) {
+      if (this.updateType === 'institution') {
         this.$refs.leftSection.$refs.institution.updateFile(data)
-      }else if(this.updateType==='franchise'){
+      } else if (this.updateType === 'franchise') {
         this.$refs.leftSection.$refs.franchise.updateFile(data)
-      }else{
+      } else {
         this.$refs.rightSection.$refs.curriculum.updateFile(data)
       }
-    }
+    },
   },
 }
 </script>

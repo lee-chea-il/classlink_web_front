@@ -100,7 +100,7 @@
                           ref="institution"
                           listType="lesson"
                           :dataList="receiveInstitutionLessonData"
-                          :editable="identity == 'master' ? true : false"
+                          :editable="identity == 'institution' ? true : false"
                           :identity="identity"
                           :pidNum="10000"
                           :dragDisabled="true"
@@ -121,7 +121,7 @@
                           ref="franchise"
                           listType="lesson"
                           :dataList="receiveFranchiseLessonData"
-                          :editable="identity == 'master' ? true : false"
+                          :editable="identity == 'institution' ? true : false"
                           :identity="identity"
                           :pidNum="11000"
                           :dragDisabled="true"
@@ -141,7 +141,7 @@
                           ref="franchise"
                           listType="lesson"
                           :dataList="receiveLessonList"
-                          :editable="identity == 'master' ? true : false"
+                          :editable="identity == 'institution' ? true : false"
                           :identity="identity"
                           :pidNum="11000"
                           :dragDisabled="true"
@@ -168,7 +168,7 @@
                           ref="myLesson"
                           listType="lesson"
                           :dataList="receiveInstitutionData"
-                          :editable="identity == 'master' ? true : false"
+                          :editable="identity == 'institution' ? true : false"
                           :identity="identity"
                           :pidNum="12000"
                           @moreShowClick="moreShowClickReference"
@@ -188,7 +188,7 @@
                           ref="myFranchise"
                           listType="lesson"
                           :dataList="receiveFranchiseData"
-                          :editable="identity == 'master' ? true : false"
+                          :editable="identity == 'institution' ? true : false"
                           :identity="identity"
                           :pidNum="13000"
                           @moreShowClick="moreShowClickReference"
@@ -208,7 +208,7 @@
                           ref="myFranchise"
                           listType="lesson"
                           :dataList="receiveMyData"
-                          :editable="identity == 'master' ? true : false"
+                          :editable="identity == 'institution' ? true : false"
                           :identity="identity"
                           :pidNum="13000"
                           @moreShowClick="moreShowClickReference"
@@ -277,7 +277,7 @@ export default {
     RightSection,
     TopNavigation,
     TreeView,
-  ModalBtnBox,
+    ModalBtnBox,
   },
   props: {
     open: { type: Boolean, default: false },

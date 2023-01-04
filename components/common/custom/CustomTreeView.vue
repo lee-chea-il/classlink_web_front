@@ -3,8 +3,8 @@
     :model="datas"
     :default-expanded="expanded"
     default-tree-node-name="새 폴더"
-    :is-drop="identity == 'master' ? true : false"
-    :is-show-option="identity == 'master' ? true : false"
+    :is-drop="identity == 'institution' ? true : false"
+    :is-show-option="identity == 'institution' ? true : false"
     :isHideDownload="isHideDownload"
     @leaf-name-click="$emit('un-active')"
     @click="$emit('un-active')"
@@ -65,8 +65,8 @@ export default {
       datas: new Tree(false, []),
       pid: this.pidNum,
       updateNode: null,
-      deleteList:[],
-      updateFolderInfo:{}
+      deleteList: [],
+      updateFolderInfo: {},
     }
   },
   methods: {
@@ -80,9 +80,9 @@ export default {
     async addFolder(node) {
       /* this.$store.state.common.user */
       await apiClassCurriculum
-        .addFolderTreeViewList( this.addFolderData(node) )
+        .addFolderTreeViewList(this.addFolderData(node))
         .then(({ data: { data } }) => {
-          if(data){
+          if (data) {
             this.$emit(`tree-view-${this.treeViewType.toLowerCase()}`)
           }
         })
@@ -90,27 +90,27 @@ export default {
           console.log(err)
         })
     },
-    addFolderData(node){
-      if(this.treeViewType==="ID"){
+    addFolderData(node) {
+      if (this.treeViewType === 'ID') {
         return {
           datatable_type: this.treeViewType,
-          ins_idx: "1",
+          ins_idx: '1',
           parent_id: node.target.treeViewId,
-          title: '새 폴더'
+          title: '새 폴더',
         }
-      }else if(this.treeViewType==="FD"){
+      } else if (this.treeViewType === 'FD') {
         return {
           datatable_type: this.treeViewType,
-          fra_idx: "1",
+          fra_idx: '1',
           parent_id: node.target.treeViewId,
-          title: '새 폴더'
+          title: '새 폴더',
         }
-      }else{
+      } else {
         return {
           datatable_type: this.treeViewType,
           mem_idx: 11,
           parent_id: node.target.treeViewId,
-          title: '새 폴더'
+          title: '새 폴더',
         }
       }
     },
@@ -123,7 +123,7 @@ export default {
           treeinfo_idx:5
         } ) */
         .then(({ data: { data } }) => {
-          if(data){
+          if (data) {
             this.$emit(`tree-view-${this.treeViewType.toLowerCase()}`)
           }
         })
@@ -133,9 +133,9 @@ export default {
     },
     async updateFolder() {
       await apiClassCurriculum
-        .updateFolderTreeViewList( this.updateFolderInfo )
+        .updateFolderTreeViewList(this.updateFolderInfo)
         .then(({ data: { data } }) => {
-          if(data){
+          if (data) {
             this.$emit(`tree-view-${this.treeViewType.toLowerCase()}`)
           }
         })
@@ -143,7 +143,7 @@ export default {
           console.log(err)
         })
     },
-    setData(dataList){
+    setData(dataList) {
       console.log(dataList)
       const dataMapping = (data, isReadOnly) => {
         const result = []
@@ -160,10 +160,10 @@ export default {
           nObj.type = this.treeViewType
 
           if (nObj.group_yn) {
-            nObj.isLeaf = false      
+            nObj.isLeaf = false
             result[i] = nObj
             this.pid++
-            if(nObj.children) {
+            if (nObj.children) {
               result[i].children = dataMapping(nObj.children, isReadOnly)
             }
           } else {
@@ -180,10 +180,10 @@ export default {
       )
     },
     delData() {
-      this.deleteList=[]
-      const deleteList=this.deleteList
+      this.deleteList = []
+      const deleteList = this.deleteList
       this.$emit('un-active')
-      
+
       function _dell(oldNode) {
         if (oldNode.isChecked) {
           deleteList.push(oldNode.treeViewId)
@@ -195,33 +195,31 @@ export default {
         }
       }
       _dell(this.datas)
-      const len=this.deleteList.length
-      if(len>0){
+      const len = this.deleteList.length
+      if (len > 0) {
         let deleteStr = ''
         for (let i = 0; i < len; i++) {
-          if(i<len-1){
-            deleteStr+=this.deleteList[i]+'-'
-          }else{
-            deleteStr+=this.deleteList[i]
+          if (i < len - 1) {
+            deleteStr += this.deleteList[i] + '-'
+          } else {
+            deleteStr += this.deleteList[i]
           }
         }
         this.deleteFolder(deleteStr)
       }
     },
     onChangeName(params) {
-      if(params.eventType&&params.eventType==='blur'){
-        console.log('000---- ',params)
-        console.log('000---- ',params.node.treeViewId)
-        this.updateFolderInfo={
+      if (params.eventType && params.eventType === 'blur') {
+        console.log('000---- ', params)
+        console.log('000---- ', params.node.treeViewId)
+        this.updateFolderInfo = {
           datatable_type: this.treeViewType,
           treeinfo_idx: params.node.treeViewId,
-          title: params.newName
+          title: params.newName,
         }
         this.updateFolder()
       }
     },
-
-
 
     onDel(node) {
       console.log(node)

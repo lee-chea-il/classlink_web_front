@@ -58,7 +58,7 @@
               nameProp="제한시간"
               :idx="idx"
               :value="item.limit_time"
-              placeholder="제한시간(분)"
+              placeholder="제한시간(초)"
               @change-item="setChangeInput"
             />
           </div>

@@ -1,7 +1,7 @@
 <template>
   <div :class="`divide_area ${directionType}`">
     <ul
-      v-if="directionType==='left'"
+      v-if="directionType === 'left'"
       id="myTab"
       class="nav nav-tabs"
       role="tablist"
@@ -22,12 +22,7 @@
         tabName="프랜차이즈"
       />
     </ul>
-    <ul
-      v-else
-      id="myTab"
-      class="nav nav-tabs"
-      role="tablist"
-    >
+    <ul v-else id="myTab" class="nav nav-tabs" role="tablist">
       <CustomTabBtn
         idName="grade"
         :isActive="true"
@@ -38,11 +33,7 @@
       />
     </ul>
 
-    <div
-      v-if="directionType==='left'"
-      id="myTabContent"
-      class="tab-content"
-    >
+    <div v-if="directionType === 'left'" id="myTabContent" class="tab-content">
       <div
         id="institute"
         class="tab-pane fade show active"
@@ -52,14 +43,14 @@
         <TreeView
           ref="institution"
           treeViewType="ID"
-          :editable="identity == 'master' ? true : false"
+          :editable="identity == 'institution' ? true : false"
           :identity="identity"
           :pidNum="0"
           :isHideDownload="false"
           @un-active="$emit('un-active')"
           @tree-view-id="$emit('tree-view-id')"
-          @update-data="$emit('update-data',$event,'institution')"
-          @copyDataCallBack="$emit('copyDataCallBack',$event)"
+          @update-data="$emit('update-data', $event, 'institution')"
+          @copyDataCallBack="$emit('copyDataCallBack', $event)"
         />
       </div>
       <div
@@ -71,23 +62,19 @@
         <TreeView
           ref="franchise"
           treeViewType="FD"
-          :editable="identity == 'master' ? true : false"
+          :editable="identity == 'institution' ? true : false"
           :identity="identity"
           :pidNum="1000"
           :isHideDownload="false"
           @un-active="$emit('un-active')"
-          @update-data="$emit('update-data',$event,'franchise')"
+          @update-data="$emit('update-data', $event, 'franchise')"
           @tree-view-fd="$emit('tree-view-fd')"
           @copyDataCallBack="copyDataCallBack"
         />
       </div>
     </div>
 
-    <div
-      v-else
-      id="myTabContent"
-      class="tab-content"
-    >
+    <div v-else id="myTabContent" class="tab-content">
       <div
         id="mydata"
         class="tab-pane fade show active"
@@ -98,13 +85,13 @@
           ref="curriculum"
           treeViewType="MD"
           :expanded="true"
-          identity="master"
+          identity="institution"
           :pidNum="2000"
           :isHideDownload="false"
           :isUpdate="isUpdate"
           @un-active="$emit('un-active')"
           @tree-view-md="$emit('tree-view-md')"
-          @update-data="$emit('update-data',$event,'curriculum')"
+          @update-data="$emit('update-data', $event, 'curriculum')"
         />
         <br />
         <br />
@@ -121,32 +108,28 @@ export default {
   name: 'DivideSection',
   components: {
     CustomTabBtn,
-    TreeView
+    TreeView,
   },
   props: {
-    directionType:{
+    directionType: {
       type: String,
-      default: 'left'
+      default: 'left',
     },
-    identity:{
+    identity: {
       type: String,
-      default: ''
+      default: '',
     },
     isUpdate: Boolean,
   },
-  data(){
-    return {
-      
-    }
+  data() {
+    return {}
   },
-  methods:{
-    unActive(){
+  methods: {
+    unActive() {
       console.log('unActive')
     },
-    copyDataCallBack(){
-
-    }
-  }
+    copyDataCallBack() {},
+  },
 }
 </script>
 

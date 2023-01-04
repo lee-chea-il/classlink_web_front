@@ -3,10 +3,11 @@
     <!-- 왼쪽 영역 -->
     <div class="divide_area left">
       <!-- 탭 컨텐츠 -->
-      <EducationTabMenu :isOpenData="openData.length > 0" />
+      <EducationTabMenu />
+      <!-- :isOpenData="openData.length > 0" -->
       <LeftTreeTab
         ref="education"
-        :institutionData="institutionData"
+        :insData="insData"
         :franchiseData="franchiseData"
         :openData="openData"
         :identity="identity"
@@ -30,7 +31,7 @@
       <MyTabMenu title="내 자료" />
       <RightTreeTab
         ref="myData"
-        :myDataList="myDataList"
+        :myData="myData"
         :pageType="pageType"
         @open-data="$emit('open-data', $event)"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
@@ -60,30 +61,12 @@ export default {
     RightTreeTab,
   },
   props: {
-    identity: {
-      type: String,
-      default: 'teacher',
-    },
-    pageType: {
-      type: String,
-      default: '',
-    },
-    institutionData: {
-      type: Array,
-      default: () => [],
-    },
-    franchiseData: {
-      type: Array,
-      default: () => [],
-    },
-    openData: {
-      type: Array,
-      default: () => [],
-    },
-    myDataList: {
-      type: Array,
-      default: () => [],
-    },
+    identity: { type: String, default: 'teacher' },
+    pageType: { type: String, default: '' },
+    insData: { type: Array, default: () => [] },
+    franchiseData: { type: Array, default: () => [] },
+    openData: { type: Array, default: () => [] },
+    myData: { type: Array, default: () => [] },
   },
   data() {
     return {

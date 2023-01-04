@@ -11,7 +11,7 @@
         ref="curriculum"
         :expanded="false"
         :dataList="myDataList"
-        identity="master"
+        identity="institution"
         :pidNum="2000"
         :isHideDownload="pageType === 'reference' ? true : false"
         @open-data="$emit('open-data', $event)"
