@@ -87,9 +87,7 @@ export default {
       await apiData
         .addFolderTreeViewList(this.addFolderData(node))
         .then(({ data: { data } }) => {
-          if (data) {
-            this.$emit(`tree-view-${this.treeViewType.toLowerCase()}`)
-          }
+          this.$emit(`tree-view-${this.treeViewType.toLowerCase()}`)
         })
         .catch((err) => {
           console.log(err)
@@ -99,28 +97,24 @@ export default {
       if (this.treeViewType === 'ID') {
         return {
           datatable_type: this.treeViewType,
-          ins_idx: this.$store.state.common.user.mem_idx,
           parent_id: node.target.treeViewId,
           title: '새 폴더',
         }
       } else if (this.treeViewType === 'FD') {
         return {
           datatable_type: this.treeViewType,
-          fra_idx: this.$store.state.common.user.mem_idx,
           parent_id: node.target.treeViewId,
           title: '새 폴더',
         }
       } else if (this.treeViewType === 'OD') {
         return {
           datatable_type: this.treeViewType,
-          fra_idx: this.$store.state.common.user.mem_idx,
           parent_id: node.target.treeViewId,
           title: '새 폴더',
         }
       } else {
         return {
           datatable_type: this.treeViewType,
-          mem_idx: this.$store.state.common.user.mem_idx,
           parent_id: node.target.treeViewId,
           title: '새 폴더',
         }
@@ -219,28 +213,6 @@ export default {
       const node = new TreeNode({ name: 'new node', isLeaf: false })
       if (!this.data.children) this.data.children = []
       this.data.addChildren(node)
-    },
-
-    getNewTree() {
-      const vm = this
-      function _dfs(oldNode) {
-        const newNode = {}
-
-        for (const k in oldNode) {
-          if (k !== 'children' && k !== 'parent') {
-            newNode[k] = oldNode[k]
-          }
-        }
-
-        if (oldNode.children && oldNode.children.length > 0) {
-          newNode.children = []
-          for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            newNode.children.push(_dfs(oldNode.children[i]))
-          }
-        }
-        return newNode
-      }
-      console.log(_dfs(vm.data))
     },
 
     copyData() {
@@ -366,17 +338,20 @@ export default {
       const deleteList = this.deleteList
       this.$emit('un-active')
 
-      function _dell(oldNode) {
-        if (oldNode.isChecked) {
+      function _dell(oldNode,isChildAll) {
+        if(isChildAll){
           deleteList.push(oldNode.treeViewId)
+        }else if(oldNode.isChecked){
+          deleteList.push(oldNode.treeViewId)
+          if(oldNode.group_yn)isChildAll=true
         }
         if (oldNode.children && oldNode.children.length > 0) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            _dell(oldNode.children[i])
+            _dell(oldNode.children[i],isChildAll)
           }
         }
       }
-      _dell(this.datas)
+      _dell(this.datas,false)
       const len = this.deleteList.length
       if (len > 0) {
         let deleteStr = ''

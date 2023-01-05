@@ -131,9 +131,6 @@ export default {
     return initialState()
   },
   mounted() {
-    /* setTimeout(() => {
-      this.addCuriiculumData(this.testData)
-    },1000) */
     this.getInsTreeViewList()
     this.getFranTreeViewList()
     this.getMyTreeViewList()
@@ -201,6 +198,7 @@ export default {
       }
     },
     delData() {
+      this.identity = 'institution'
       if (this.identity === 'institution') {
         const instiTab = document.getElementById('institute')
         if (instiTab.classList.contains('show')) {

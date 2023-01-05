@@ -3,8 +3,8 @@
     :model="datas"
     :default-expanded="expanded"
     default-tree-node-name="새 폴더"
-    :is-drop="identity == 'institution' ? true : false"
-    :is-show-option="identity == 'institution' ? true : false"
+    :is-drop="true"
+    :is-show-option="true"
     :isHideDownload="isHideDownload"
     @leaf-name-click="$emit('un-active')"
     @click="$emit('un-active')"
@@ -70,21 +70,12 @@ export default {
     }
   },
   methods: {
-    /* addFolder(node){
-      console.log(node)
-      console.log('---  1  -',this.$store.state.common.user)
-      console.log('---  2  -',this.$store.state.common.user.ins_idx)
-      console.log('---  3  -',this.$store.state.common.user.fra_idx)
-      console.log('---  3  -',this.$store.state.common.user.mem_idx)
-    }, */
     async addFolder(node) {
-      /* this.$store.state.common.user */
       await apiClassCurriculum
         .addFolderTreeViewList(this.addFolderData(node))
         .then(({ data: { data } }) => {
-          if (data) {
-            this.$emit(`tree-view-${this.treeViewType.toLowerCase()}`)
-          }
+          console.log("data   ",data)
+          this.$emit(`tree-view-${this.treeViewType.toLowerCase()}`)
         })
         .catch((err) => {
           console.log(err)
@@ -94,21 +85,18 @@ export default {
       if (this.treeViewType === 'ID') {
         return {
           datatable_type: this.treeViewType,
-          ins_idx: '1',
           parent_id: node.target.treeViewId,
           title: '새 폴더',
         }
       } else if (this.treeViewType === 'FD') {
         return {
           datatable_type: this.treeViewType,
-          fra_idx: '1',
           parent_id: node.target.treeViewId,
           title: '새 폴더',
         }
       } else {
         return {
           datatable_type: this.treeViewType,
-          mem_idx: 11,
           parent_id: node.target.treeViewId,
           title: '새 폴더',
         }
@@ -117,11 +105,7 @@ export default {
     deleteFolder(ids) {
       const payload = `${this.treeViewType}/${ids}`
       apiClassCurriculum
-        .deleteFolderTreeViewList(payload) /* {
-          /* treeinfo_list:this.deleteList * /
-          datatable_type:this.treeViewType,
-          treeinfo_idx:5
-        } ) */
+        .deleteFolderTreeViewList(payload)
         .then(({ data: { data } }) => {
           if (data) {
             this.$emit(`tree-view-${this.treeViewType.toLowerCase()}`)
@@ -184,17 +168,20 @@ export default {
       const deleteList = this.deleteList
       this.$emit('un-active')
 
-      function _dell(oldNode) {
-        if (oldNode.isChecked) {
+      function _dell(oldNode,isChildAll) {
+        if(isChildAll){
           deleteList.push(oldNode.treeViewId)
+        }else if(oldNode.isChecked){
+          deleteList.push(oldNode.treeViewId)
+          if(oldNode.group_yn)isChildAll=true
         }
         if (oldNode.children && oldNode.children.length > 0) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            _dell(oldNode.children[i])
+            _dell(oldNode.children[i],isChildAll)
           }
         }
       }
-      _dell(this.datas)
+      _dell(this.datas,false)
       const len = this.deleteList.length
       if (len > 0) {
         let deleteStr = ''
