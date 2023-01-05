@@ -1,26 +1,39 @@
 <template>
   <Transition name="modal">
     <div
-      v-show="open"
-      id="modalTaskView"
-      class="modal modal-mask"
+      v-if="open"
+      id="modalTaskDetail"
+      class="modal ac_manage_note modal-mask"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
       style="display: block"
     >
-      <div class="background_close" @click="$emit('close')"></div>
+      <div class="background_close"></div>
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-          <ModalHeader title="제출 현황" @close="$emit('close')" />
+          <div class="modal-header">
+            <h5 id="exampleModalLabel" class="modal-title">제출 현황</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              @click="$emit('close')"
+            >
+              <i class="icons_close"></i>
+            </button>
+          </div>
           <div class="modal-body">
-            <div class="tab-content depth03 ac_manage_notice">
+            <div class="tab-content ac_manage_notice">
               <div class="tab-pane active">
                 <div class="title_area row">
                   <span class="notice_tit">제목</span>
-                  <span class="notice_title">{{ homeWork.title }}</span>
-                  <span class="notice_day02">{{ homeWork.created_at }}</span>
-                  <span class="notice_writer">{{ homeWork.writer }}</span>
+                  <span class="notice_title">{{ task.hwb_title }}</span>
+                  <span class="notice_day02">{{
+                    task.hwb_registration_date.substr(0, 10)
+                  }}</span>
+                  <span class="notice_writer">{{ task.mem_name }} 선생님</span>
                 </div>
                 <!-- 검색 영역 -->
                 <div class="search_section">
@@ -31,11 +44,15 @@
                         type="button"
                         data-toggle="dropdown"
                       >
-                        정렬
+                        {{ submissionFlag ? '이름순' : '정렬' }}
                       </button>
                       <div class="dropdown-menu">
                         <!-- <a class="dropdown-item" href="#">최신순</a> -->
-                        <a class="dropdown-item" href="#">이름순</a>
+                        <a
+                          class="dropdown-item"
+                          @click="$emit('click-range')"
+                          >{{ !submissionFlag ? '이름순' : '정렬' }}</a
+                        >
                       </div>
                     </div>
                   </div>
@@ -63,14 +80,14 @@
                     <tbody v-for="(item, idx) in submissionList" :key="idx">
                       <tr>
                         <td></td>
-                        <td>{{ item.grade }}</td>
-                        <td>{{ item.student_name }}</td>
-                        <td>{{ item.student_phone }}</td>
-                        <td>{{ item.progress }}</td>
-                        <td>{{ item.submission_time }}</td>
+                        <td>{{ item.std_year }}</td>
+                        <td>{{ item.mem_name }}</td>
+                        <td>{{ item.mem_phone }}</td>
+                        <td>{{ item.hbs_stubbornness }}</td>
+                        <td>{{ item.hbs_registration_date }}</td>
                         <td>
                           <div class="task_file">
-                            {{ item.submission_file }}
+                            {{ item.fileList }}
                           </div>
                         </td>
                         <td>
@@ -97,10 +114,10 @@
                             <span class="save">모두 저장</span>
                           </div>
                           <div class="file_name">
-                            {{ item.submission_file }}
+                            {{ item.fileList }}
                           </div>
                           <div class="notice_contents">
-                            {{ item.contents }}
+                            {{ item.hbs_content }}
                           </div>
                         </td>
                       </tr>
@@ -139,29 +156,32 @@
               </div>
             </div>
           </div>
-          <!-- //container -->
         </div>
       </div>
     </div>
   </Transition>
 </template>
 <script>
-import ModalHeader from '@/components/common/ModalHeader.vue'
+// import ModalHeader from '@/components/common/ModalHeader.vue'
 export default {
   name: 'SubmissionStatusModal',
-  components: { ModalHeader },
+  // components: { ModalHeader },
   props: {
     open: {
       type: Boolean,
       default: false,
     },
-    homeWork: {
-      type: Object,
-      default: () => {},
-    },
     submissionList: {
       type: Array,
       default: () => [],
+    },
+    task: {
+      type: Object,
+      default: () => {},
+    },
+    submissionFlag: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -191,5 +211,17 @@ export default {
 }
 .expand-detail {
   display: '';
+}
+.modal {
+  overflow-y: auto !important;
+}
+/* .scroll {
+  overflow-y: auto !important;
+} */
+.modal-body {
+  /* overflow-y: scroll; */
+  height: 100% !important;
+  min-height: 110px;
+  max-height: 850px;
 }
 </style>

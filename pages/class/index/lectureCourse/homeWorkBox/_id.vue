@@ -54,8 +54,10 @@
     <!-- 제출 현황 모달 -->
     <SubmissionStatusModal
       :open="submissionStatusModalDesc.open"
-      :homeWork="homeWork"
+      :task="task"
       :submissionList="submissionList"
+      :submissionFlag="submissionFlag"
+      @click-range="onClickSubmissionRange"
       @close="onCloseSubmissionStatusModal"
       @click-expand="onClickExpandBtn"
     />
@@ -126,54 +128,17 @@ export default {
       },
       submissionList: [
         {
-          id: 0,
-          grade: '1학년',
-          student_name: '김지원',
-          student_phone: '010-3566-1888',
-          progress: '100',
-          submission_time: '22.08.13 오후 11:00',
-          submission_file: '성격심리학.docx',
-          contents: '과제를 제출합니다 과제를 제출합니다요',
-        },
-        {
-          id: 0,
-          grade: '1학년',
-          student_name: '김지원',
-          student_phone: '010-3566-1888',
-          progress: '100',
-          submission_time: '22.08.13 오후 11:00',
-          submission_file: '성격심리학.docx',
-          contents: '과제를 제출합니다 과제를 제출합니다요',
-        },
-        {
-          id: 0,
-          grade: '1학년',
-          student_name: '김지원',
-          student_phone: '010-3566-1888',
-          progress: '100',
-          submission_time: '22.08.13 오후 11:00',
-          submission_file: '성격심리학.docx',
-          contents: '과제를 제출합니다 과제를 제출합니다요',
-        },
-        {
-          id: 0,
-          grade: '1학년',
-          student_name: '김지원',
-          student_phone: '010-3566-1888',
-          progress: '100',
-          submission_time: '22.08.13 오후 11:00',
-          submission_file: '성격심리학.docx',
-          contents: '과제를 제출합니다 과제를 제출합니다요',
-        },
-        {
-          id: 0,
-          grade: '1학년',
-          student_name: '김지원',
-          student_phone: '010-3566-1888',
-          progress: '100',
-          submission_time: '22.08.13 오후 11:00',
-          submission_file: '성격심리학.docx',
-          contents: '과제를 제출합니다 과제를 제출합니다요',
+          hwb_idx: 0,
+          hbs_idx: 0,
+          smem_idx: 0,
+          mem_name: '이성국',
+          mem_phone: '010-1111-1111',
+          std_year: '초1',
+          hbs_stubbornness: '완강률',
+          hbs_title: '과제제출 제목',
+          hbs_content: '과제제출 내용 내용 내용',
+          hbs_registration_date: '2023-01-04',
+          fileList: null,
         },
       ],
       taskList: [],
@@ -191,7 +156,16 @@ export default {
       // pagination
       currentPage: 1,
       endPageNumber: 0,
+      // 과제 제출 pagination
+      subCurrentPage: 1,
+      subEndPageNumber: 0,
+      submissionFlag: false,
     }
+  },
+  watch: {
+    submissionFlag() {
+      this.getSubmissions()
+    },
   },
   mounted() {
     this.getTaskList()
@@ -236,8 +210,9 @@ export default {
       )
     },
     onClickUpdateHomeWork() {
+      localStorage.setItem('taskData', JSON.stringify(this.task))
       this.$router.push(
-        `/class/lecturecourse/Updatehomework/${this.$route.params.id}`
+        `/class/lecturecourse/Updatehomework/${this.$route.params.id}?lecture=${this.lectureInfo.lec_title}&class=${this.lectureInfo.csm_name_list}&teacher=${this.lectureInfo.mem_name}`
       )
     },
 
@@ -250,7 +225,6 @@ export default {
       await apiLectureCourse
         .getTask(payload)
         .then(({ data: { data } }) => {
-          console.log(data)
           this.task = data
           this.openHomeWorkDetailModal()
         })
@@ -380,15 +354,45 @@ export default {
       }
     },
 
+    // 과제 제출 현황 api
+    async getSubmissions(hwbIdx) {
+      const payload = {
+        current_page: this.subCurrentPage,
+        lec_idx: this.lectureIdx,
+        hwb_idx: hwbIdx,
+        ins_code: this.institutionIdx,
+        per_page_num: 5,
+        arrange: this.submissionFlag,
+      }
+      await apiLectureCourse
+        .getSubmissions(payload)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          this.openSubmissionStatusModal()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
     // 과제 제출 현황
-    openSubmissionStatusModal() {
+    openSubmissionStatusModal(item) {
       this.submissionStatusModalDesc.open = true
+      Object.assign(this.task, item)
     },
     onCloseSubmissionStatusModal() {
       this.submissionStatusModalDesc.open = false
     },
     onClickExpandBtn(idx) {
       console.log(idx)
+    },
+    // 과제 제출 현황 정렬
+    onClickSubmissionRange() {
+      if (this.submissionFlag) {
+        this.submissionFlag = false
+      } else {
+        this.submissionFlag = true
+      }
     },
   },
 }

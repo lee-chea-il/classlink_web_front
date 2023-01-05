@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       selectId: 0,
-      authList: [
+      allAuthList: [
         {
           id: 1,
           idProps: 'radio01',
@@ -67,6 +67,7 @@ export default {
           path: '/franchise',
         },
       ],
+      authList: [],
       userPermission: [],
       identityName: '',
     }
@@ -74,7 +75,6 @@ export default {
   computed: {},
   mounted() {
     this.getUserInfo()
-    this.authList[0].checked = true
   },
   methods: {
     async getUserInfo() {
@@ -83,13 +83,22 @@ export default {
         .then(({ data: { data } }) => {
           this.$store.commit('common/setUserLogin')
           this.$store.commit('common/setUser', data)
-
+          console.log('common/setUser', data)
           if (data.idt_name === null) {
             this.userPermission = ['I', 'T']
           } else {
             const { idt_name } = data
             this.userPermission = idt_name
           }
+          for (const permission of this.userPermission) {
+            const auth = this.allAuthList.filter((x) => {
+              return x.account === permission
+            })
+            if (auth.length > 0) {
+              this.authList.push(auth[0])
+            }
+          }
+          this.authList[0].checked = true
         })
         .catch((err) => {
           console.log(err)
@@ -108,18 +117,22 @@ export default {
     moveToHome() {
       const pathItem = this.authList.filter((item) => item.checked)[0]
       this.$store.commit('common/setUserIdentity', pathItem.account)
+      console.log('common/setUserIdentity', pathItem.account)
       if (
         pathItem.account === 'I' &&
         this.$store.state.common.user.ins_code === null
       ) {
         localStorage.setItem('identity', 'temporary institution')
+        console.log('identity', 'temporary institution')
       } else if (
         pathItem.account === 'F' &&
         this.$store.state.common.user.fra_code === null
       ) {
         localStorage.setItem('identity', 'temporary franchise')
+        console.log('identity', 'temporary franchise')
       } else {
         localStorage.setItem('identity', this.setIdentityName(pathItem.account))
+        console.log('identity', this.setIdentityName(pathItem.account))
       }
       this.$router.push(pathItem.path)
     },

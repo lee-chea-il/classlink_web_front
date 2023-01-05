@@ -64,6 +64,12 @@ async function updateTask(payload) {
 async function deleteTask(payload) {
   return await http.delete('/api/v1/class/course/task', payload)
 }
+// 과제 제출 현황
+async function getSubmissions(payload) {
+  return await http.get(
+    `/api/v1/class/course/task/submissions?arrange=${payload.arrange}&current_page=${payload.current_page}&hwb_idx=${payload.hwb_idx}&ins_code=${payload.ins_code}&lec_idx=${payload.lec_idx}&per_page_num=${payload.per_page_num}`
+  )
+}
 
 const apiLectureCourse = {
   getLectureCourse,
@@ -78,6 +84,7 @@ const apiLectureCourse = {
   postRegisterTask,
   updateTask,
   deleteTask,
+  getSubmissions,
 }
 
 export default apiLectureCourse

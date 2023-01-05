@@ -181,7 +181,8 @@ export default {
       await apiLogin
         .getFindId(this.findIdInput)
         .then(({ data }) => {
-          if (data.statusCode === 400) {
+          console.log(data)
+          if (data.status_code === 400) {
             this.openModalDesc('아이디 찾기', '일치하는 회원이 없습니다.')
             return false
           } else {
@@ -210,12 +211,12 @@ export default {
       await apiLogin
         .getFindPw(this.findPwInput.pw_mem_email, this.findPwInput.pw_mem_id)
         .then(({ data }) => {
-          if (data.statusCode === 400) {
+          if (data.status_code === 400) {
             this.openModalDesc('비밀번호 찾기', '일치하는 회원이 없습니다.')
             return false
           } else {
             this.$store.commit(
-              'userInfo/setUserEmail',
+              'common/setUserEmail',
               this.findPwInput.pw_mem_email
             )
             document.getElementById('modal_close').click()

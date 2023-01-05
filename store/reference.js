@@ -1,6 +1,5 @@
 // import http from '@/services/http'
 export const state = () => ({
-  activeNavIdx: 0,
 })
 
 export const mutations = {

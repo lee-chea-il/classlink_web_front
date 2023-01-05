@@ -109,40 +109,7 @@
               <td>
                 <i
                   class="icons_zoom_off"
-                  @click="$emit('click-submission')"
-                ></i>
-              </td>
-              <td></td>
-            </tr>
-          </tbody>
-          <tbody v-if="searchFlag === 1">
-            <tr v-for="(item, idx) in searchList" :key="idx">
-              <td>
-                <div class="custom-control custom-checkbox form-inline">
-                  <input
-                    :id="item.id"
-                    name="chk-homework"
-                    type="checkbox"
-                    class="custom-control-input"
-                    @input="$emit('select-plan', $event)"
-                  />
-                  <label class="custom-control-label" :for="item.id"></label>
-                </div>
-              </td>
-              <td>
-                <div class="classplan_tit" @click="$emit('open-detail')">
-                  {{ item.title }}
-                </div>
-              </td>
-              <td>{{ item.writer }}</td>
-              <td>{{ item.created_at }}</td>
-              <td>{{ item.open ? '공개' : '비공개' }}</td>
-              <td>{{ item.views }}/{{ lectureCourse.students }}</td>
-              <td>{{ item.submitted }}/{{ lectureCourse.students }}</td>
-              <td>
-                <i
-                  class="icons_zoom_off"
-                  @click="$emit('click-submission')"
+                  @click="$emit('click-submission', item)"
                 ></i>
               </td>
               <td></td>

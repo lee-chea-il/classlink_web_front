@@ -5,7 +5,6 @@ const initState = {
   isLogin: false,
   loginIdentity: '',
   userEmail: '',
-  activeNavIdx: 0,
 }
 export const state = () => {
   return _.cloneDeep(initState)

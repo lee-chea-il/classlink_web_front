@@ -139,7 +139,7 @@ export default {
     async handleSubmit() {
       const payload = {
         auth_code: 0,
-        mem_email: this.$store.state.userInfo.userEmail,
+        mem_email: this.$store.state.common.userEmail,
         pwd: this.userInfo.password,
       }
       await apiLogin

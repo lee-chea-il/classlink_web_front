@@ -1,7 +1,7 @@
 <template>
   <Transition name="modal">
     <div
-      v-show="open"
+      v-if="open"
       id="modalTaskDetail"
       class="modal ac_manage_note modal-mask"
       tabindex="-1"
@@ -28,9 +28,14 @@
             <!-- [개발참조] 첨부파일 없을때 출력되는 화면 -->
             <!-- <div class="title_area row">
 							<span class="notice_tit">제목</span>
-							<span class="notice_title">성격심리학 레슨1 과제입니다</span>
-							<span class="notice_day02">2022.08.02</span>
-							<span class="notice_writer">서유진</span>
+							<span class="notice_title">{{ task.hwb_title }}</span>
+							<span class="notice_day02"
+                  ><span>{{ task.hwb_registration_date.substr(0, 10) }}</span
+                  >(최종수정일
+                  <span>{{ task.hwb_update_date.substr(0, 10) }}</span
+                  >)</span
+                >
+							<span class="notice_writer">{{ task.mem_name }} 선생님</span>
 					</div>
 
 					<div class="file_info">
@@ -50,16 +55,17 @@
 
             <!-- [개발참조] 첨부파일 있을때 출력되는 화면 -->
             <div class="divide_section row">
-              <!-- <div class="title_area row">
+              <div class="title_area row">
                 <span class="notice_tit">제목</span>
                 <span class="notice_title">{{ task.hwb_title }}</span>
                 <span class="notice_day02"
-                  ><span>{{ task.hwb_registration_date }}</span
-                  >(최종수정일 <span>{{ task.hwb_update_date }}</span
-                  >)</span
+                  ><span>{{ task.hwb_registration_date.substr(0, 10) }}</span>
+                  <span v-if="task.hwb_update_date !== null"
+                    >(최종수정일{{ task.hwb_update_date.substr(0, 10) }})</span
+                  ></span
                 >
                 <span class="notice_writer">{{ task.mem_name }} 선생님</span>
-              </div> -->
+              </div>
 
               <div class="divide_area left_area">
                 <div class="file_info">
@@ -69,7 +75,7 @@
                   <div class="file_name">성격심리학 강의계획서.hwp</div>
                 </div>
                 <VueEditor
-                  :value="homeWork.contents"
+                  :value="task.hwb_content"
                   :editorOptions="editorOptions"
                   disabled
                 />
@@ -150,16 +156,6 @@ export default {
   },
   data() {
     return {
-      homeWork: {
-        id: 0,
-        course_id: 0,
-        title: '성격심리학 레슨1 과제입니당',
-        writer: '이성국 선생님',
-        created_at: '2022.07.10',
-        open: false,
-        views: 3,
-        contents: '성격심리학 레슨1 과제입니다. 지금 당장 제출하세요.',
-      },
       editorOptions: {
         modules: {
           toolbar: false,

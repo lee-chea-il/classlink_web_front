@@ -285,7 +285,6 @@ export default {
     },
     onChangePlanInput({ target: { value, id } }) {
       this.lecturePlan[id] = value
-      console.log(this.lecturePlan[id])
     },
     onClickFileInputBtn() {
       const inputBtn = document.getElementById('upload-input')
