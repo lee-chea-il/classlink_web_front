@@ -779,6 +779,29 @@ export default {
           ),
           end: setDate(new Date()),
         }
+      } else {
+        const setDate = (date) =>
+          `${date?.getFullYear()}.${date?.getMonth() + 1}.${date?.getDate()}`
+        this.dateRange = {
+          start: setDate(
+            new Date(
+              new Date().setDate(
+                new Date().getDate() -
+                  new Date().getDay() +
+                  (new Date().getDay() === 0 ? -6 : 1)
+              )
+            )
+          ),
+          end: setDate(
+            new Date(
+              new Date().setDate(
+                new Date().getDate() -
+                  new Date().getDay() +
+                  (new Date().getDay() === 0 ? -6 : 7)
+              )
+            )
+          ),
+        }
       }
     },
   },
@@ -825,6 +848,7 @@ export default {
     },
     // 학생 목록 불러오기 api
     async getStudentList() {
+      this.expandIdx = []
       const payload = {
         ins_code: this.institutionIdx,
         current_page: this.currentPage,
@@ -1108,7 +1132,11 @@ export default {
     // 일촌 검색 api
     async searchFamily() {
       await apiOperation
-        .searchFamily(this.institutionIdx, this.familySearchText)
+        .searchFamily(
+          this.institutionIdx,
+          this.familySearchText,
+          this.studentInfo.std_idx
+        )
         .then(({ data: { data } }) => {
           this.familySearchList = data
           console.log(this.familySearchList)

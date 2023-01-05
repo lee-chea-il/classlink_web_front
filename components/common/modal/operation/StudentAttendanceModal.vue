@@ -20,7 +20,9 @@
           </div>
           <div class="modal-body">
             <div class="modal_moreattendance">
-              <div class="name">{{ studentInfo.name }} <span>1/10</span></div>
+              <div class="name">
+                {{ studentInfo.mem_name }} <span>1/10</span>
+              </div>
               <!-- 달력 전체 영역 -->
               <div class="calendar_type01">
                 <div class="search_section">
@@ -553,6 +555,10 @@ export default {
     isLectureTitleIdx: {
       type: Number,
       default: 0,
+    },
+    isMonthRange: {
+      type: Boolean,
+      default: false,
     },
   },
 }

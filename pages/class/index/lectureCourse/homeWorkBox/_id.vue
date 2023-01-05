@@ -20,6 +20,8 @@
         :taskList="taskList"
         :lectureInfo="lectureInfo"
         :deleteIdxList="deleteIdxList"
+        :endPageNumber="endPageNumber"
+        :currentPage="currentPage"
         @checked-all="selectAll"
         @change-input="onChangeInput"
         @search-homework="searchHomeWork"
@@ -28,6 +30,8 @@
         @click-register="onClickRegisterHomeWork"
         @open-detail="onClickTask"
         @click-submission="openSubmissionStatusModal"
+        @click-page="onClickPagination"
+        @click-direction="paginationDirection"
       />
     </div>
     <!-- 설명 모달 -->
@@ -57,9 +61,13 @@
       :task="task"
       :submissionList="submissionList"
       :submissionFlag="submissionFlag"
+      :endPageNumber="subEndPageNumber"
+      :currentPage="subCurrentPage"
       @click-range="onClickSubmissionRange"
       @close="onCloseSubmissionStatusModal"
       @click-expand="onClickExpandBtn"
+      @click-page="onClickSubPagination"
+      @click-direction="subPaginationDirection"
     />
   </div>
 </template>
@@ -165,6 +173,9 @@ export default {
   watch: {
     submissionFlag() {
       this.getSubmissions()
+    },
+    currentPage() {
+      this.getTaskList()
     },
   },
   mounted() {
@@ -355,11 +366,11 @@ export default {
     },
 
     // 과제 제출 현황 api
-    async getSubmissions(hwbIdx) {
+    async getSubmissions() {
       const payload = {
         current_page: this.subCurrentPage,
         lec_idx: this.lectureIdx,
-        hwb_idx: hwbIdx,
+        hwb_idx: this.task.hwb_idx,
         ins_code: this.institutionIdx,
         per_page_num: 5,
         arrange: this.submissionFlag,
@@ -367,8 +378,8 @@ export default {
       await apiLectureCourse
         .getSubmissions(payload)
         .then(({ data: { data } }) => {
-          console.log(data)
-          this.openSubmissionStatusModal()
+          this.submissionList = data.submitList
+          this.subEndPageNumber = data.pageMaker.end_page
         })
         .catch((err) => {
           console.log(err)
@@ -377,8 +388,9 @@ export default {
 
     // 과제 제출 현황
     openSubmissionStatusModal(item) {
-      this.submissionStatusModalDesc.open = true
       Object.assign(this.task, item)
+      this.getSubmissions()
+      this.submissionStatusModalDesc.open = true
     },
     onCloseSubmissionStatusModal() {
       this.submissionStatusModalDesc.open = false
@@ -392,6 +404,40 @@ export default {
         this.submissionFlag = false
       } else {
         this.submissionFlag = true
+      }
+    },
+
+    // [pagination] 숫자로 페이징
+    onClickPagination(number) {
+      this.currentPage = number
+    },
+
+    // [pagination] 방향으로 페이징
+    paginationDirection(direction) {
+      const current = this.currentPage
+      if (direction === 'plus') {
+        if (current < this.endPageNumber) {
+          this.currentPage += 1
+        }
+      } else if (current > 1) {
+        this.currentPage -= 1
+      }
+    },
+
+    // 제출 현황 [pagination] 숫자로 페이징
+    onClickSubPagination(number) {
+      this.subCurrentPage = number
+    },
+
+    // 제출 현황 [pagination] 방향으로 페이징
+    subPaginationDirection(direction) {
+      const current = this.subCurrentPage
+      if (direction === 'plus') {
+        if (current < this.subEndPageNumber) {
+          this.subCurrentPage += 1
+        }
+      } else if (current > 1) {
+        this.subCurrentPage -= 1
       }
     },
   },

@@ -86,7 +86,9 @@
                   <div class="row">
                     <div class="title">자료 열람</div>
                     <div class="thumbnail_view">
+                      <i class="icons_arrow_square_l"></i>
                       <button class="btn icons_fullscreen"></button>
+                      <i class="icons_arrow_square_r"></i>
                     </div>
                   </div>
 
@@ -120,6 +122,13 @@
                         <span>수학</span>
                       </div>
                     </div>
+
+                    <!-- <div class="row">
+										<label for="" class="title02 cont">경로</label>
+										<div class="col cont">
+											<span>저장 경로가 입력되는 공간입니다.</span>
+										</div>
+									</div>  -->
                   </div>
                 </div>
                 <!-- div class="thumb_box" -->

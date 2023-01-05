@@ -61,7 +61,7 @@
                 <!-- 테이블 영역 -->
                 <!-- [개발참조] 데이터 없을 경우 -->
                 <div v-if="submissionList.length === 0" class="page_nodata">
-                  등록된 공지사항이 없습니다.
+                  제출한 과제가 없습니다.
                 </div>
                 <div v-else class="table_section">
                   <table class="table">
@@ -130,22 +130,31 @@
                 <div class="pagination_section">
                   <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                      <li class="page-item">
-                        <a class="page-link" href="#">
+                      <li class="page-item cursor">
+                        <a
+                          class="page-link"
+                          @click="$emit('click-direction', 'minus')"
+                        >
                           <span class="previous"></span>
                         </a>
                       </li>
-                      <li class="page-item">
-                        <a class="page-link active" href="#">1</a>
+                      <li
+                        v-for="(item, idx) in endPageNumber"
+                        :key="idx"
+                        class="page-item cursor"
+                      >
+                        <a
+                          class="page-link"
+                          :class="item === currentPage ? 'active' : ''"
+                          @click="$emit('click-page', item)"
+                          >{{ item }}</a
+                        >
                       </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#">
+                      <li class="page-item cursor">
+                        <a
+                          class="page-link"
+                          @click="$emit('click-direction', 'plus')"
+                        >
                           <span class="next"></span>
                         </a>
                       </li>
@@ -182,6 +191,14 @@ export default {
     submissionFlag: {
       type: Boolean,
       default: false,
+    },
+    endPageNumber: {
+      type: Number,
+      default: 0,
+    },
+    currentPage: {
+      type: Number,
+      default: 1,
     },
   },
   data() {
@@ -223,5 +240,8 @@ export default {
   height: 100% !important;
   min-height: 110px;
   max-height: 850px;
+}
+.cursor {
+  cursor: pointer;
 }
 </style>

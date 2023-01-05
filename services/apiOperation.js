@@ -94,9 +94,9 @@ async function getAttendanceNumberCheck(att_num, ins_code) {
   )
 }
 // 일촌 검색
-async function searchFamily(ins_code, search) {
+async function searchFamily(ins_code, search, std_idx) {
   return await http.get(
-    `/api/v1/management/operation/student/family-id?ins_code=${ins_code}&search=${search}`
+    `/api/v1/management/operation/student/family-id?ins_code=${ins_code}&search=${search}&std_idx=${std_idx}`
   )
 }
 // 일촌 등록
@@ -110,6 +110,52 @@ async function registerFamily(payload) {
 async function deleteFamily(mem_idx, std_idx) {
   return await http.delete(
     `/api/v1/management/operation/student/family-id?mem_idx=${mem_idx}&std_idx=${std_idx}`
+  )
+}
+// 수강정보 목록
+async function getStudentLectureList(payload) {
+  return await http.get(
+    `/api/v1/management/operation/student/lectures?ins_code=${payload.ins_code}&mem_idx=${payload.mem_idx}&std_idx=${payload.std_idx}`
+  )
+}
+// 수강정보 메모 등록
+async function addLectureMemo(payload) {
+  return await http.post(
+    '/api/v1/management/operation/student/lecture/memo',
+    payload
+  )
+}
+// 수강정보 메모 수정
+async function updateLectureMemo(payload) {
+  return await http.put(
+    '/api/v1/management/operation/student/lecture/memo',
+    payload
+  )
+}
+// 수강정보 메모 삭제
+async function deleteLectureMemo(sl_idx) {
+  return await http.delete(
+    `/api/v1/management/operation/student/lecture/memo?sl_idx=${sl_idx}`
+  )
+}
+// 메모 목록
+async function getStudentMemoList(payload) {
+  return await http.get(
+    `/api/v1/management/operation/student/memos?current_page=${payload.current_page}&ins_code=${payload.ins_code}&per_page_num=${payload.per_page_num}&std_idx=${payload.std_idx}`
+  )
+}
+// 메모 등록
+async function addStudentMemo(payload) {
+  return await http.post('/api/v1/management/operation/student/memo', payload)
+}
+// 메모 수정
+async function updateStudentMemo(payload) {
+  return await http.put('/api/v1/management/operation/student/memo', payload)
+}
+// 메모 삭제
+async function deleteStudentMemo(sm_idx) {
+  return await http.delete(
+    `/api/v1/management/operation/student/memo?sm_idx=${sm_idx}`
   )
 }
 
@@ -212,6 +258,14 @@ const apiOperation = {
   updateStudentInfo,
   registerFamily,
   deleteFamily,
+  getStudentLectureList,
+  addLectureMemo,
+  updateLectureMemo,
+  deleteLectureMemo,
+  getStudentMemoList,
+  addStudentMemo,
+  updateStudentMemo,
+  deleteStudentMemo,
 
   getClassList,
   getClassDetail,

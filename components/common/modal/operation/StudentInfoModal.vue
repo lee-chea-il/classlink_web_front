@@ -505,7 +505,7 @@
                         :key="idx"
                         class="lacture"
                       >
-                        {{ item }}
+                        {{ item.lec_title }} | {{ item.csm_name }}
                       </div>
                     </div>
                   </div>
