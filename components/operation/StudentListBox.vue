@@ -178,19 +178,17 @@
             <td>
               <i
                 class="btn icons_mu_off more_mu"
-                @click="$emit('click-more', idx)"
+                @click="$emit('click-more', item.std_idx)"
               >
                 <div
                   class="more_list"
                   style="display: none"
-                  :class="expandIdx.includes(idx) ? 'expand-more' : ''"
+                  :class="expandIdx.includes(item.std_idx) ? 'expand-more' : ''"
                 >
                   <ul>
-                    <li @click="$emit('click-lectureInfo', item.id)">
-                      수강 정보
-                    </li>
+                    <li @click="$emit('click-lectureInfo')">수강 정보</li>
                     <li @click="$emit('click-attendance', item.id)">출결</li>
-                    <li @click="$emit('click-memo', item.id)">메모</li>
+                    <li @click="$emit('click-memo')">메모</li>
                     <li @click="$emit('click-report', item.id)">학습 리포트</li>
                   </ul>
                 </div>

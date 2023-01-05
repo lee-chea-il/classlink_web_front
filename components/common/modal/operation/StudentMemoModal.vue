@@ -27,21 +27,16 @@
                   data-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  {{ memoRangeList[isMemoRangeFlag].title }}
+                  {{ memoRange ? '최신 등록 순' : '오래된 순' }}
                 </button>
                 <div class="dropdown-menu">
-                  <a
-                    v-for="(item, idx) in memoRangeList"
-                    :key="idx"
-                    class="dropdown-item"
-                    href="#"
-                    @click="$emit('select-range', item.id)"
-                    >{{ item.title }}</a
-                  >
+                  <a class="dropdown-item" @click="$emit('select-range')">{{
+                    memoRange ? '오래된 순' : '최신 등록 순'
+                  }}</a>
                 </div>
               </div>
               <button class="btn btn_crud_point" @click="$emit('click-add')">
-                등록
+                메모 추가
               </button>
             </div>
             <div class="table_area">
@@ -77,19 +72,33 @@
 								</colgroup> -->
                   <tbody>
                     <tr v-if="isNewStudentMemoFlag">
-                      <td class="td01">0</td>
-                      <td class="td02">2022.08.17 PM 09:00</td>
-                      <td class="td03">본인 이름</td>
+                      <td class="td01">
+                        {{ isNewStudentMemoFlag ? '' : item.sm_idx }}
+                      </td>
+                      <td class="td02">
+                        {{ studentMemo.sm_consult_date.substr(0, 10) }}
+                      </td>
+                      <td class="td03">{{ studentMemo.sm_consultant }}</td>
                       <td class="memo td04">
                         <input
                           type="text"
                           placeholder="내용 입력"
                           class="form-control"
-                          :value="studentMemo.contents"
+                          rules="required"
+                          :value="studentMemo.sm_desc"
                           @input="$emit('change-input', $event)"
                         />
-                        <button @click="$emit('add-memo')">등록</button>
-                        <button @click="$emit('click-cancel')">엑스</button>
+                        <button
+                          class="btn btn_crud_point"
+                          :disabled="studentMemo.sm_desc.length === 0"
+                          @click="$emit('add-memo')"
+                        >
+                          등록
+                        </button>
+                        <i
+                          class="icons_x_circle_off"
+                          @click="$emit('click-cancel')"
+                        ></i>
                       </td>
                       <td>
                         <i class="btn icons_mu_off more_mu">
@@ -103,13 +112,14 @@
                       </td>
                     </tr>
 
-                    <tr v-for="(item, idx) in memoList" :key="idx">
-                      <td class="td01">{{ item.id }}</td>
-                      <td class="td02">{{ item.createdAt }}</td>
-                      <td class="td03">{{ item.consultant }}</td>
+                    <tr v-for="(item, idx) in studentMemoList" :key="idx">
+                      <td class="td01">{{ item.sm_idx }}</td>
+                      <td class="td02">{{ item.sm_consult_date }}</td>
+                      <td class="td03">{{ item.sm_consultant }}</td>
                       <td
                         v-if="
-                          isUpdateStudentMemoFlag && studentMemoId === item.id
+                          isUpdateStudentMemoFlag &&
+                          studentMemoId === item.sm_idx
                         "
                         class="memo td04"
                       >
@@ -117,29 +127,45 @@
                           type="text"
                           placeholder="내용 입력"
                           class="form-control"
-                          :value="studentMemo.contents"
+                          :value="studentMemo.sm_desc"
                           @input="$emit('change-input', $event)"
                         />
-                        <button @click="$emit('update-memo')">저장</button>
-                        <button @click="$emit('click-cancel')">엑스</button>
+                        <button
+                          class="btn btn_crud_point"
+                          :disabled="studentMemo.sm_desc.length === 0"
+                          @click="$emit('update-memo')"
+                        >
+                          저장
+                        </button>
+                        <i
+                          class="icons_x_circle_off"
+                          @click="$emit('click-cancel')"
+                        ></i>
                       </td>
                       <td v-else class="memo td04">
-                        {{ item.contents }}
+                        {{ item.sm_desc }}
                       </td>
                       <td>
                         <i
                           class="btn icons_mu_off more_mu"
-                          @click="$emit('click-more', item.id)"
+                          @click="$emit('click-more', item.sm_idx)"
                         >
                           <div
                             class="more_list"
                             :class="
                               isStudentMemoMoreFlag === true &&
-                              studentMemoId === item.id
+                              studentMemoId === item.sm_idx
                                 ? 'show-more'
                                 : ''
                             "
+                            style="display: none"
                           >
+                            <!-- :class="
+                              isStudentMemoMoreFlag === true &&
+                              studentMemoId === item.sm_idx
+                                ? 'show-more'
+                                : ''
+                            " -->
                             <ul>
                               <li @click="$emit('click-update')">수정</li>
                               <li @click="$emit('click-delete')">삭제</li>
@@ -154,16 +180,31 @@
             </div>
             <nav aria-label="Page navigation example">
               <ul class="pagination">
-                <li class="page-item">
-                  <a class="page-link" href="#">
+                <li class="page-item cursor">
+                  <a
+                    class="page-link"
+                    @click="$emit('click-direction', 'minus')"
+                  >
                     <span class="previous"></span>
                   </a>
                 </li>
-                <li class="page-item">
-                  <a class="page-link active" href="#">1</a>
+                <li
+                  v-for="(item, idx) in endPageNumber"
+                  :key="idx"
+                  class="page-item cursor"
+                >
+                  <a
+                    class="page-link"
+                    :class="item === currentPage ? 'active' : ''"
+                    @click="$emit('click-page', item)"
+                    >{{ item }}</a
+                  >
                 </li>
-                <li class="page-item">
-                  <a class="page-link" href="#">
+                <li class="page-item cursor">
+                  <a
+                    class="page-link"
+                    @click="$emit('click-direction', 'plus')"
+                  >
                     <span class="next"></span>
                   </a>
                 </li>
@@ -176,14 +217,16 @@
   </Transition>
 </template>
 <script>
+// import { ValidationObserver, ValidationProvider } from 'vee-validate'
 export default {
   name: 'StudentMemoModal',
+  // components: { ValidationObserver, ValidationProvider },
   props: {
     open: {
       type: Boolean,
       default: false,
     },
-    memoList: {
+    studentMemoList: {
       type: Array,
       default: () => [],
     },
@@ -207,13 +250,17 @@ export default {
       type: Boolean,
       default: false,
     },
-    memoRangeList: {
-      type: Array,
-      default: () => [],
+    memoRange: {
+      type: Boolean,
+      default: true,
     },
-    isMemoRangeFlag: {
+    endPageNumber: {
       type: Number,
       default: 0,
+    },
+    currentPage: {
+      type: Number,
+      default: 1,
     },
   },
 }
@@ -227,5 +274,22 @@ export default {
 }
 .show-more {
   display: block !important;
+}
+.btn_crud_point {
+  min-width: 82px !important;
+  height: 40px;
+  padding: 7px 24px !important;
+}
+.form-control {
+  width: 80% !important;
+  height: 39px !important;
+  padding: 10px !important;
+  font-size: 14px !important;
+  border-radius: 5px !important;
+  border-color: rgba(167, 169, 172, 0.4) !important;
+  border-width: 0.4px !important;
+}
+.cursor {
+  cursor: pointer;
 }
 </style>

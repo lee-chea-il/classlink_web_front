@@ -46,20 +46,20 @@
 									<col width="100">
 									<col width="55">
 								</colgroup> -->
-                  <tbody v-for="(item, idx) in lectureInfo" :key="idx">
+                  <tbody v-for="(item, idx) in lectureList" :key="idx">
                     <tr>
-                      <td class="td01">{{ item.lectureTitle }}</td>
+                      <td class="td01">{{ item.lec_title }}</td>
                       <td class="td02">
                         <div class="date">
                           <div class="box01 mr-1">{{ item.dueDate }}</div>
                           <i
                             class="icons_calendar_off mr-1"
-                            @click="$emit('click-date', item.id)"
+                            @click="$emit('click-date', item.lec_idx)"
                           ></i>
                           <div
                             class="btn btn_crud_default"
                             :class="idx == 0 ? 'disabled' : ''"
-                            @click="$emit('click-sameBtn', item.id)"
+                            @click="$emit('click-sameBtn', item.lec_idx)"
                           >
                             위와 동일
                           </div>
@@ -69,7 +69,7 @@
                       <td class="i td04">
                         <i
                           class="icons_plus_circle_off"
-                          @click="$emit('click-newMemo', item.id)"
+                          @click="$emit('click-newMemo', item.lec_idx)"
                         ></i>
                       </td>
                     </tr>
@@ -98,7 +98,8 @@
 
                     <!-- 메모입력 TR : 메모입력 후-->
                     <tr
-                      v-for="(child_item, child_idx) in lectureInfo[idx].memo"
+                      v-for="(child_item, child_idx) in lectureList[idx]
+                        .memo_list"
                       :key="child_idx"
                       class="memo"
                     >
@@ -201,6 +202,10 @@ export default {
     lectureInfoMemo: {
       type: Object,
       default: () => {},
+    },
+    lectureList: {
+      type: Array,
+      default: () => [],
     },
   },
 }

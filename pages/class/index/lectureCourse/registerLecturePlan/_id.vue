@@ -228,17 +228,19 @@
           <!-- <div class="write_area">
             <div class="page_nodata">글쓰기 공간입니다.</div>
           </div> -->
-          <div class="custom-control custom-checkbox form-inline open_regi">
-            <input
-              id="lep_repeat_yn"
-              type="checkbox"
-              class="custom-control-input"
-              :checked="syllabus.lep_repeat_yn"
-              @input="onChangePlanInput"
-            />
-            <label class="custom-control-label" for="lep_repeat_yn"
-              >글을 공개 상태로 등록합니다.</label
-            >
+          <div class="reply_onoff">
+            <div class="custom-control custom-switch">
+              <input
+                id="lep_repeat_yn"
+                type="checkbox"
+                class="custom-control-input"
+                :checked="syllabus.lep_repeat_yn"
+                @input="onChangePlanInput"
+              />
+              <label class="custom-control-label" for="lep_repeat_yn"
+                >공개 ON / OFF</label
+              >
+            </div>
           </div>
           <div class="btn_area">
             <button

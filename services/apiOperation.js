@@ -141,7 +141,7 @@ async function deleteLectureMemo(sl_idx) {
 // 메모 목록
 async function getStudentMemoList(payload) {
   return await http.get(
-    `/api/v1/management/operation/student/memos?current_page=${payload.current_page}&ins_code=${payload.ins_code}&per_page_num=${payload.per_page_num}&std_idx=${payload.std_idx}`
+    `/api/v1/management/operation/student/memos?current_page=${payload.current_page}&filter=${payload.filter}&ins_code=${payload.ins_code}&per_page_num=${payload.per_page_num}&std_idx=${payload.std_idx}`
   )
 }
 // 메모 등록

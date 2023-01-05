@@ -243,17 +243,19 @@
             <!-- <div class="write_area">
             <div class="page_nodata">글쓰기 공간입니다.</div>
           </div> -->
-            <div class="custom-control custom-checkbox form-inline open_regi">
-              <input
-                id="hwb_open_yn"
-                type="checkbox"
-                class="custom-control-input"
-                :checked="task.hwb_open_yn"
-                @input="onChangeHomeWorkInput"
-              />
-              <label class="custom-control-label" for="hwb_open_yn"
-                >글을 공개 상태로 등록합니다.</label
-              >
+            <div class="reply_onoff">
+              <div class="custom-control custom-switch">
+                <input
+                  id="hwb_open_yn"
+                  type="checkbox"
+                  class="custom-control-input"
+                  :checked="task.hwb_open_yn"
+                  @input="onChangeHomeWorkInput"
+                />
+                <label class="custom-control-label" for="hwb_open_yn"
+                  >공개 ON / OFF</label
+                >
+              </div>
             </div>
             <div class="btn_area">
               <button
@@ -399,6 +401,8 @@ export default {
   mounted() {
     const taskData = JSON.parse(localStorage.getItem('taskData'))
     Object.assign(this.task, taskData)
+    this.task.hwb_time_stime = this.setStartTimeFormat(this.task.hwb_time_stime)
+    this.task.hwb_time_etime = this.setEndTimeFormat(this.task.hwb_time_etime)
     console.log(this.task)
   },
   methods: {
@@ -469,7 +473,7 @@ export default {
         this.isEndTime = true
       }
     },
-    // 시간 변환
+    // 시간 변환해서 보내기
     changeTimeFormat(m, time) {
       if (!m) {
         let hh = time.slice(0, 2)
@@ -479,6 +483,37 @@ export default {
       } else {
         return time
       }
+    },
+    // 시간 변환해서 가져오기
+    setStartTimeFormat(time) {
+      let hh = time.slice(0, 2)
+      const mm = time.slice(3, 5)
+      if (Number(hh) >= 12) {
+        this.isStartTime = false
+        if (hh - 12 < 10) {
+          hh = '0' + String(hh - 12)
+        } else {
+          hh = String(hh - 12)
+        }
+      } else {
+        this.isStartTime = true
+      }
+      return `${hh}:${mm}`
+    },
+    setEndTimeFormat(time) {
+      let hh = time.slice(0, 2)
+      const mm = time.slice(3, 5)
+      if (Number(hh) >= 12) {
+        this.isEndTime = false
+        if (hh - 12 < 10) {
+          hh = '0' + String(hh - 12)
+        } else {
+          hh = String(hh - 12)
+        }
+      } else {
+        this.isEndTime = true
+      }
+      return `${hh}:${mm}`
     },
 
     onClickConfirmBtn() {

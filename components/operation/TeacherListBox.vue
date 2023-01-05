@@ -102,6 +102,7 @@
                 <label class="custom-control-label" for="chkAll"></label>
               </div>
             </th>
+            <th></th>
             <th>선생님 이름</th>
             <th>닉네임</th>
             <th>ID</th>
@@ -131,12 +132,15 @@
                 ></label>
               </div>
             </td>
+            <td><div :class="item.tch_use_yn ? 'tc_active' : ''"></div></td>
             <td>
               <span>{{ item.mem_name }}</span> 선생님
             </td>
             <td>{{ item.mem_nickname }}</td>
             <td>{{ item.mem_id }}</td>
-            <td>{{ setSubjectArray(item.subject_list) }}</td>
+            <td class="first_cousin">
+              {{ setSubjectArray(item.subject_list) }}
+            </td>
             <td>{{ setTargetArray(item.identity_list) }}</td>
             <td>{{ item.mem_phone }}</td>
             <td>
@@ -250,16 +254,16 @@ export default {
           answer = '학부모'
           break
         case 'F':
-          answer = '프랜차이즈장'
+          answer = '프랜장'
           break
         case 'I':
-          answer = '교육기관장'
+          answer = '기관장'
           break
         case 'M':
-          answer = '교육기관 관리자'
+          answer = '교.관'
           break
         case 'A':
-          answer = '프랜차이즈 관리자'
+          answer = '프.관'
           break
         default:
       }
@@ -286,5 +290,13 @@ export default {
 <style scoped>
 .cursor {
   cursor: pointer;
+}
+.first_cousin {
+  display: inline-block;
+  max-width: 160px;
+  line-height: 26px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
