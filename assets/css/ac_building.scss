@@ -25,7 +25,7 @@
         // width: 300px;
         width: 49%;
         min-height: 265px;
-        margin-bottom: 20px;
+        margin-bottom: 34px;
         @include mixin.border_common;
 
         .btn_close {
@@ -57,14 +57,29 @@
           cursor: pointer;
         }
 
+        .thumb_list_list {
+          background-color: theme.$color_background;
+          padding-top: 5px;
+
+          .thumb_list_tc {
+            margin-left: 10px;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 17px;
+          }
+        }
+
         .thumb_list {
           position: relative;
           width: 100%;
           height: calc(100% - 194px);
           display: flex;
           align-items: center;
-          justify-content: space-around;
+          flex-wrap: nowrap;
+          justify-content: flex-start;
           background-color: theme.$color_background;
+          overflow-x: auto;
+          border-radius: 5px;
 
           .thumbnail {
             position: relative;
@@ -75,6 +90,8 @@
             background-size: cover;
             background-image: url('../images/sample_teacher_noimg.jpg');
             @include mixin.border_common;
+            margin: 0px 9px;
+            flex: 0 0 auto;
 
             .btn_cancel {
               position: absolute;
@@ -90,7 +107,7 @@
     .right_area {
       position: relative;
       width: 35%;
-      height: 550px;
+      height: 590px;
       @include mixin.border_common;
 
       .placement_area {
@@ -116,7 +133,7 @@
 
           .tab-content {
             padding: 10px;
-            height: 435px;
+            height: 475px;
             overflow-y: auto;
           }
 

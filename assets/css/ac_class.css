@@ -2104,6 +2104,17 @@ ol {
   display: flex;
   justify-content: center;
 }
+.ac_manage_taskregi .reply_onoff {
+  text-align: center;
+  margin-top: 20px;
+  background: #F9F9FC;
+  padding: 10px 0px;
+}
+.ac_manage_taskregi .reply_onoff label {
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 23px;
+}
 
 /* 강의계획서 미리보기/열람 상세보기 (팝업 L) */
 #modalNoticeView .notice_tit {
@@ -2214,11 +2225,27 @@ ol {
   padding: 10px 0px;
   margin-top: 10px;
   width: 100%;
+  position: relative;
 }
 #modalTaskDetail .icons_fullscreen {
   position: absolute;
-  top: 107px;
+  top: 17px !important;
   right: 15px;
+}
+#modalTaskDetail .icons_arrow_square_l {
+  position: absolute;
+  top: 120px;
+  right: 490px;
+}
+@media (max-width: 1199.98px) {
+  #modalTaskDetail .icons_arrow_square_l {
+    right: 400px;
+  }
+}
+#modalTaskDetail .icons_arrow_square_r {
+  position: absolute;
+  top: 120px;
+  right: 10px;
 }
 #modalTaskDetail .title02 {
   margin-left: 20px;

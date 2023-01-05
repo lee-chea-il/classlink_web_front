@@ -3427,17 +3427,25 @@ footer .footer_tit02 {
     width: 100%;
   }
 }
+.web_only_main .main_notice .main_table td,
+.web_only_main .main_notice .main_table th,
+.web_only_main .main_notice .main_table_q td,
+.web_only_main .main_notice .main_table_q th {
+  border-top: none;
+  padding: 0.75rem;
+  vertical-align: top;
+}
 .web_only_main .main_notice .main_notice_tit {
   font-weight: 700;
   font-size: 16px;
   line-height: 55px;
   color: #A7A9AC;
   width: 10%;
-  padding-left: 30px;
+  padding-left: 30px !important;
 }
 @media (max-width: 575.98px) {
   .web_only_main .main_notice .main_notice_tit {
-    width: 51px;
+    width: 71px;
     padding-left: 10px;
   }
 }
@@ -3469,7 +3477,7 @@ footer .footer_tit02 {
 }
 @media (max-width: 575.98px) {
   .web_only_main .main_notice .main_notice_tit02 {
-    width: 10%;
+    width: 32%;
   }
 }
 .web_only_main .main_notice .main_notice_tit03 {
@@ -3484,7 +3492,7 @@ footer .footer_tit02 {
   line-height: 55px;
   display: flex;
   align-items: center;
-  width: 78%;
+  width: 100%;
   border-radius: 5px;
 }
 .web_only_main .main_notice .main_notice03 {
@@ -3493,40 +3501,105 @@ footer .footer_tit02 {
 .web_only_main .main_notice .input-search {
   width: 30%;
 }
-.web_only_main .main_notice .table {
+.web_only_main .main_notice .main_table {
   margin-top: 20px;
   box-shadow: 0 0 0 1px #D1D3D4;
   border-radius: 5px;
   display: flex;
 }
-.web_only_main .main_notice .tr_expand {
+.web_only_main .main_notice .main_table .tr_expand {
   border-top: 0.4px solid rgb(167, 169, 172);
   display: flex;
-  width: 79.5%;
+  width: 100%;
 }
 @media (max-width: 1272px) {
-  .web_only_main .main_notice .tr_expand {
+  .web_only_main .main_notice .main_table .tr_expand {
     width: 68%;
   }
 }
 @media (max-width: 1199.98px) {
-  .web_only_main .main_notice .tr_expand {
-    width: 57%;
+  .web_only_main .main_notice .main_table .tr_expand {
+    width: 100%;
   }
 }
 @media (max-width: 767.98px) {
-  .web_only_main .main_notice .tr_expand {
+  .web_only_main .main_notice .main_table .tr_expand {
     width: 40%;
   }
 }
 @media (max-width: 575.98px) {
-  .web_only_main .main_notice .tr_expand {
-    width: 21%;
+  .web_only_main .main_notice .main_table .tr_expand {
+    width: 100%;
   }
 }
-.web_only_main .main_notice .table td,
-.web_only_main .main_notice .table th {
-  border-top: none;
+.web_only_main .main_notice .main_table tbody {
+  width: 100%;
+}
+.web_only_main .main_notice .main_table_q {
+  margin-top: 20px;
+  box-shadow: 0 0 0 1px #D1D3D4;
+  border-radius: 5px;
+  width: 100%;
+  display: flex;
+}
+.web_only_main .main_notice .main_table_q .tr_expand {
+  border-top: 0.4px solid rgb(167, 169, 172);
+  display: flex;
+  width: 92.5%;
+}
+@media (max-width: 1272px) {
+  .web_only_main .main_notice .main_table_q .tr_expand {
+    width: 68%;
+  }
+}
+@media (max-width: 1199.98px) {
+  .web_only_main .main_notice .main_table_q .tr_expand {
+    width: 57%;
+  }
+}
+@media (max-width: 767.98px) {
+  .web_only_main .main_notice .main_table_q .tr_expand {
+    width: 40%;
+  }
+}
+@media (max-width: 575.98px) {
+  .web_only_main .main_notice .main_table_q .tr_expand {
+    width: 100%;
+  }
+}
+.web_only_main .main_notice .main_table_q .main_notice02 {
+  width: 100%;
+}
+.web_only_main .main_notice .main_table_q .main_notice_tit02 {
+  font-weight: 700;
+  font-size: 16px;
+  text-align: left;
+  display: inline-block;
+  width: 75%;
+  line-height: 26px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 1220px) {
+  .web_only_main .main_notice .main_table_q .main_notice_tit02 {
+    width: 60%;
+  }
+}
+@media (max-width: 1199.98px) {
+  .web_only_main .main_notice .main_table_q .main_notice_tit02 {
+    width: 38%;
+  }
+}
+@media (max-width: 767.98px) {
+  .web_only_main .main_notice .main_table_q .main_notice_tit02 {
+    width: 30%;
+  }
+}
+@media (max-width: 575.98px) {
+  .web_only_main .main_notice .main_table_q .main_notice_tit02 {
+    width: 51%;
+  }
 }
 .web_only_main .main_notice .icons_arrow_dn {
   display: inline-block;

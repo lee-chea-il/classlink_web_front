@@ -3787,7 +3787,7 @@ ol {
 }
 #modalPreviewQuiz .answer_area03 .aa_result_select,
 #modalPreviewTest .answer_area03 .aa_result_select {
-  width: 187px;
+  width: 357px;
   height: 67px;
   background: #FFFFFF;
   border: 1px solid #7391FA;
@@ -4283,6 +4283,13 @@ ol {
   margin-left: 20px;
   margin-bottom: 10px;
 }
+#modalDataRead .quiz_area04_quiz,
+#modalDataReadQuiz .quiz_area04_quiz,
+#modalDataReadNote .quiz_area04_quiz {
+  width: 45%;
+  margin-left: 20px;
+  margin-bottom: 50px;
+}
 #modalDataRead .quiz_area,
 #modalDataReadQuiz .quiz_area,
 #modalDataReadNote .quiz_area {
@@ -4305,6 +4312,13 @@ ol {
   width: 100%;
   margin-left: 20px;
   margin-bottom: 10px;
+}
+#modalDataRead .quiz_area02_quiz,
+#modalDataReadQuiz .quiz_area02_quiz,
+#modalDataReadNote .quiz_area02_quiz {
+  width: 100%;
+  margin-left: 20px;
+  margin-bottom: 50px;
 }
 #modalDataRead .modal-body .reading_section.modal_dataquiz .info_area .tit,
 #modalDataReadQuiz .modal-body .reading_section.modal_dataquiz .info_area .tit,

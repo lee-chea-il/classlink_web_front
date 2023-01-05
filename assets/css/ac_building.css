@@ -1960,7 +1960,7 @@ ol {
   position: relative;
   width: 49%;
   min-height: 265px;
-  margin-bottom: 20px;
+  margin-bottom: 34px;
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
 }
@@ -1990,14 +1990,27 @@ ol {
   border-bottom: 0.4px solid rgba(167, 169, 172, 0.4);
   cursor: pointer;
 }
+.ac_manage_building .place_section .left_area .place_box .thumb_list_list {
+  background-color: #F9F9FC;
+  padding-top: 5px;
+}
+.ac_manage_building .place_section .left_area .place_box .thumb_list_list .thumb_list_tc {
+  margin-left: 10px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+}
 .ac_manage_building .place_section .left_area .place_box .thumb_list {
   position: relative;
   width: 100%;
   height: calc(100% - 194px);
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
   background-color: #F9F9FC;
+  overflow-x: auto;
+  border-radius: 5px;
 }
 .ac_manage_building .place_section .left_area .place_box .thumb_list .thumbnail {
   position: relative;
@@ -2009,6 +2022,8 @@ ol {
   background-image: url("../images/sample_teacher_noimg.jpg");
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
+  margin: 0px 9px;
+  flex: 0 0 auto;
 }
 .ac_manage_building .place_section .left_area .place_box .thumb_list .thumbnail .btn_cancel {
   position: absolute;
@@ -2019,7 +2034,7 @@ ol {
 .ac_manage_building .place_section .right_area {
   position: relative;
   width: 35%;
-  height: 550px;
+  height: 590px;
   border: 0.4px solid rgba(167, 169, 172, 0.4);
   border-radius: 5px;
 }
@@ -2044,7 +2059,7 @@ ol {
 }
 .ac_manage_building .place_section .right_area .placement_area .list_area .tab-content {
   padding: 10px;
-  height: 435px;
+  height: 475px;
   overflow-y: auto;
 }
 .ac_manage_building .place_section .right_area .placement_area .list_area .tab-pane ul li {
