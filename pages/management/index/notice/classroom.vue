@@ -3,7 +3,7 @@
     <div class="content_area">
       <!--  3Depth -->
       <CustomPageHeader />
-      <div class="tab-content depth03 ac_manage_notice ac_managa_notice_class">
+      <div class="tab-content depth03 ac_manage_notice ac_manage_notice_class">
         <div class="tab-pane active">
           <!-- 검색 영역 -->
           <div class="search_section">
@@ -80,7 +80,7 @@
                 </tr>
               </thead>
               <tbody v-for="(item, idx) in noticeList" :key="idx">
-                <tr class="cursor" @click="onClickShowContent(idx)">
+                <tr>
                   <td>
                     <div class="custom-control custom-checkbox form-inline">
                       <input
@@ -118,7 +118,7 @@
                   <td>{{ item.attributes.view_count }}</td>
                   <td>
                     <button
-                      id="btnExpand"
+                      id="btnExpand cursor"
                       class="btn icons_arrow_dn btn_expand"
                       :class="{ up: open_detail.includes(idx) }"
                       @click="onClickShowContent(idx)"

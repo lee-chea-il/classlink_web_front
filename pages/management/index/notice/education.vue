@@ -87,7 +87,7 @@
               </tbody>
 
               <tbody v-for="(item, idx) in noticeList" v-else :key="idx">
-                <tr class="cursor" @click="onClickShowContent(idx)">
+                <tr>
                   <td>
                     <div class="custom-control custom-checkbox form-inline">
                       <input
@@ -128,9 +128,10 @@
                   <td>{{ item.attributes.view_count }}</td>
                   <td>
                     <button
-                      id="btnExpand"
+                      id="btnExpand cursor"
                       class="btn icons_arrow_dn btn_expand"
                       :class="{ up: open_detail.includes(idx) }"
+                      @click="onClickShowContent(idx)"
                     ></button>
                   </td>
                 </tr>

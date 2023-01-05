@@ -40,8 +40,10 @@
                 (최종수정일
                 <span>
                   {{
-                    data.answerList === null
-                      ? '-'
+                    data.answerList.qba_update_date === null
+                      ? data.answerList.qba_registration_date
+                          ?.substr(0, 10)
+                          .replaceAll('-', '.')
                       : data.answerList.qba_update_date
                           ?.substr(0, 10)
                           .replaceAll('-', '.')

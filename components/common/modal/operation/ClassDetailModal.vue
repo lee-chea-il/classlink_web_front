@@ -198,10 +198,7 @@
                               >
                                 수강 정보
                               </li>
-                              <li
-                                data-toggle="modal"
-                                data-target="#modalMoreAttendance"
-                              >
+                              <li @click="$emit('open-attendance', item)">
                                 출결
                               </li>
                               <li
@@ -210,10 +207,7 @@
                               >
                                 메모
                               </li>
-                              <li
-                                data-toggle="modal"
-                                data-target="#modalMoreReports"
-                              >
+                              <li @click="$emit('open-reportFilter', item)">
                                 학습 리포트
                               </li>
                             </ul>

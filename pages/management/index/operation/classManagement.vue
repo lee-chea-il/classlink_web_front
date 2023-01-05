@@ -13,238 +13,36 @@
     />
 
     <div class="tab-content depth03 ac_manage_cls">
-      <!-- [개발참조] 등록된 학생이 없는 경우 -->
-      <div v-if="classListB.length === 0" class="nothing_txt">
-        <div class="txt">
-          등록된 반이 없습니다.<br />
-          먼저 반을 등록해주세요.
-        </div>
-        <div class="btn_area">
-          <button class="btn btn_crud_point" @click="onOpenClassRegist()">
-            반 만들기
-          </button>
-        </div>
-      </div>
-      <!-- /.등록된 학생이 없는 경우 -->
-
-      <div v-else class="tab-pane active">
-        <!-- 컨트롤 버튼 영역 -->
-        <div class="search_section">
-          <div class="left_area">
-            <div class="btn btn_crud_default" @click="onClickClassCopy">
-              복사
-            </div>
-            <button class="btn btn_crud_default" @click="onClickClassMove">
-              이동
-            </button>
-            <button class="btn btn_crud_danger" @click="onClickClassDelete">
-              삭제
-            </button>
-            <!-- [개발참조]toasts 메세지 '반을 선택해주세요.'' : 아무런 반을 체크하지 않고 복사를 누르면 -->
-          </div>
-          <div class="right_area">
-            <button class="btn btn_crud_point" @click="onOpenClassRegist()">
-              반 만들기
-            </button>
-            <button class="btn btn_crud_default" @click="onClickUnallocation">
-              배정 X
-            </button>
-          </div>
-        </div>
-        <!-- /.컨트롤 버튼 영역 -->
-        <!-- 검색 영역 -->
-        <div class="search_section">
-          <div class="left_area">
-            <div class="dropdown form-inline">
-              <button
-                class="btn dropdown-toggle"
-                type="button"
-                data-toggle="dropdown"
-                aria-expanded="false"
-              >
-                {{ sortTeacherSelect }}
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item cursor" @click="onChangeTeacherSort">
-                  선생님 전체
-                </a>
-                <a
-                  v-for="(item, idx) in teacherList"
-                  :key="idx"
-                  class="dropdown-item cursor"
-                  @click="onChangeTeacherSort($event, item.tch_idx)"
-                >
-                  {{ item.mem_name }} 선생님
-                </a>
-              </div>
-            </div>
-            <div class="dropdown form-inline">
-              <button
-                class="btn dropdown-toggle"
-                type="button"
-                data-toggle="dropdown"
-                aria-expanded="false"
-              >
-                {{ sortNumberSelect }}
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item cursor" @click="onChangeNumberSort"
-                  >10개씩 보기</a
-                >
-                <a class="dropdown-item cursor" @click="onChangeNumberSort"
-                  >100개씩 보기</a
-                >
-                <a class="dropdown-item cursor" @click="onChangeNumberSort"
-                  >200개씩 보기</a
-                >
-              </div>
-            </div>
-          </div>
-          <div class="right_area">
-            <div class="custom-control custom-radio custom-control-inline">
-              <input
-                id="radio01"
-                type="radio"
-                name="radio00"
-                class="custom-control-input"
-                checked
-                @input="searchRadio(true)"
-              />
-              <label class="custom-control-label" for="radio01">반</label>
-            </div>
-            <div class="custom-control custom-radio custom-control-inline">
-              <input
-                id="radio02"
-                type="radio"
-                name="radio00"
-                class="custom-control-input"
-                @input="searchRadio(false)"
-              />
-              <label class="custom-control-label" for="radio02">이름</label>
-              <!-- <label class="custom-control-label" for="radio02">학생</label> -->
-            </div>
-            <div class="input-group input-search form-inline">
-              <input
-                v-model="searchText"
-                type="text"
-                placeholder="반 이름 검색"
-                class="form-control"
-                @keyup.enter="getClassList"
-              />
-              <div class="input-group-append" @click="getClassList">
-                <button class="btn icons_search_off" type="button"></button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- 검색 영역 -->
-        <!-- 테이블 영역 -->
-        <div class="table_section">
-          <table class="table">
-            <!-- <colgroup>
-								<col width="80">
-								<col>
-								<col>
-								<col>
-								<col width="80">
-								<col width="80">
-								<col width="80">
-							</colgroup> -->
-            <thead>
-              <tr>
-                <th>
-                  <div class="custom-control custom-checkbox form-inline">
-                    <input
-                      id="chkAll"
-                      type="checkbox"
-                      class="custom-control-input"
-                      :checked="allCheck"
-                      @input="onClickClassAllCheck"
-                    />
-                    <label class="custom-control-label" for="chkAll"></label>
-                  </div>
-                </th>
-                <th>반</th>
-                <th>학생 수</th>
-                <th>담당 선생님</th>
-                <th>수정</th>
-                <th>상세</th>
-                <th>이동</th>
-              </tr>
-            </thead>
-            <Draggable
-              v-model="classList"
-              class="drag-box"
-              tag="tbody"
-              animation="200"
-              draggable=".classList"
-              handle=".icons_move_off"
-              @start="onStart"
-              @change="onDrop"
-            >
-              <tr v-for="(item, idx) in classList" :key="idx" class="classList">
-                <td>
-                  <div class="custom-control custom-checkbox form-inline">
-                    <input
-                      :id="idx"
-                      type="checkbox"
-                      class="custom-control-input"
-                      :checked="checkList.includes(item.csm_idx)"
-                      @input="onClickCheckBox(item.csm_idx)"
-                    />
-                    <label class="custom-control-label" :for="idx"></label>
-                  </div>
-                </td>
-                <td class="classroom">{{ item.csm_name }}</td>
-                <td>{{ item.std_num }}</td>
-                <td>{{ item.mem_name }} 선생님</td>
-                <td>
-                  <i
-                    class="btn icons_pencil_off"
-                    @click="onOpenClassModify(item)"
-                  ></i>
-                </td>
-                <td>
-                  <i
-                    class="btn icons_zoom_off"
-                    @click="getClassDetail(item.csm_idx, item.csm_name)"
-                  ></i>
-                </td>
-                <td>
-                  <i class="btn icons_move_off"></i>
-                </td>
-              </tr>
-            </Draggable>
-          </table>
-        </div>
-        <!-- /.테이블 영역 -->
-        <!-- 페이징 영역 -->
-        <div class="pagination_section">
-          <nav aria-label="Page navigation example">
-            <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link cursor" @click="onClickPrevPage">
-                  <span class="previous"></span>
-                </a>
-              </li>
-              <li v-for="(item, idx) in endPage" :key="idx" class="page-item">
-                <a
-                  class="page-link cursor"
-                  :class="{ active: currentPage === item }"
-                  @click="onClickCurrentPage(item)"
-                  >{{ item }}</a
-                >
-              </li>
-              <li class="page-item">
-                <a class="page-link cursor" @click="onClickNextPage">
-                  <span class="next"></span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-        <!-- /.페이징 영역 -->
-      </div>
+      <ClassListBox
+        :classList.sync="classList"
+        :classListB="classListB"
+        :sortTeacherSelect="sortTeacherSelect"
+        :teacherList="teacherList"
+        :sortNumberSelect="sortNumberSelect"
+        :searchText.sync="searchText"
+        :allCheck="allCheck"
+        :checkList="checkList"
+        :endPage="endPage"
+        :currentPage="currentPage"
+        @class-copy="onClickClassCopy"
+        @class-move="onClickClassMove"
+        @class-delete="onClickClassDelete"
+        @class-regist="onOpenClassRegist"
+        @unallocation-student="onClickUnallocation"
+        @sort-teacher="onChangeTeacherSort"
+        @sort-number="onChangeNumberSort"
+        @search-radio="searchRadio"
+        @search-classlist="getClassList"
+        @click-allcheck="onClickClassAllCheck"
+        @drag-start="onStart"
+        @drag-change="onDrop"
+        @click-checkbox="onClickCheckBox"
+        @open-modify="onOpenClassModify"
+        @open-detail="getClassDetail"
+        @prev-page="onClickPrevPage"
+        @next-page="onClickNextPage"
+        @current-page="onClickCurrentPage"
+      />
     </div>
 
     <!-- ------- 모달 --------- -->
@@ -309,6 +107,8 @@
       @change-attend="onChangeAttendSort"
       @open-detail="onClickOpenDetailMore"
       @search="onSearchFilterDetail"
+      @open-attendance="openStudentAttendanceModal"
+      @open-reportFilter="openReportFilterModal"
     />
 
     <!-- 반관리-반이동 - 팝업 L -->
@@ -411,6 +211,59 @@
       @confirm="onClickLectureDateConfirm"
     />
 
+    <!-- 출결-팝업 L -->
+    <StudentAttendanceModal
+      :open="studentAttendanceModal.open"
+      :studentInfo="studentInfo"
+      :dateRange="dateRange"
+      :isLectureTitleIdx="isLectureTitleIdx"
+      @click-lecture="selectAttendanceLecture"
+      @click-nextWeek="openCustomSnackbarNext"
+      @click-prevWeek="openCustomSnackbarPrev"
+      @close="onCloseStudentAttendanceModal"
+      @click-calendar="openModalCalendar"
+    />
+    <!-- 토스트메세지 victor.js ------------------------------------->
+    <!-- [개발참조] : 출결팝업의 선택날짜범위 밖으로의 이전 다음 버튼 클리 시 노출 -->
+    <CustomSnackbar
+      :show="customSnackbarDesc.show"
+      :message="customSnackbarDesc.message"
+    />
+    <!-- 달력 기간 모달 호출 -->
+    <RangeDataPicker
+      :open="isRangeCalendar"
+      :isMonthRange="isMonthRange"
+      @select-date="onChangeDate"
+      @close="closeModalCalendar"
+    />
+
+    <!-- 학습리포트 : 필터 -팝업 L -->
+    <ReportFilterModal
+      :open="reportFilterModal.open"
+      :dateRange="dateRange"
+      :studentInfo="studentInfo"
+      :filterList="filterList"
+      :tagList="tagList"
+      :searchTextList="searchTextList"
+      @search-filter="searchFilterList"
+      @change-input="changeReportSearchInput"
+      @click-calendar="openModalCalendar"
+      @click-search="openReportDetailModal"
+      @close="onCloseReportFilterModal"
+      @all-check="onClickTagAllCheck"
+      @add-tag="onClickTagList"
+      @complete="onClickAddFilterTag"
+    />
+    <!-- 학습리포트 : 리포트열람 -팝업 L -->
+    <ReportDetailModal
+      :open="reportDetailModalDesc.open"
+      :reportList="reportList"
+      :studentInfo="studentInfo"
+      :bgList="bgList"
+      @click-save="exportPdf"
+      @close="onCloseReportDetailModal"
+    />
+
     <ModalDesc
       :open="modalDesc.open"
       :title="modalDesc.title"
@@ -429,8 +282,9 @@
 </template>
 
 <script>
-import Draggable from 'vuedraggable'
+import html2pdf from 'html2pdf.js'
 import NavBox from '@/components/operation/NavBox.vue'
+import ClassListBox from '@/components/operation/ClassListBox.vue'
 import ClassModifyModal from '@/components/common/modal/operation/ClassModifyModal.vue'
 import ClassDetailModal from '@/components/common/modal/operation/ClassDetailModal.vue'
 import ClassMoveModal from '@/components/common/modal/operation/ClassMoveModal.vue'
@@ -442,22 +296,29 @@ import { apiOperation } from '~/services'
 
 import UploadStudentImg from '@/components/common/modal/operation/UploadTeacherImg.vue'
 import DatePickerModal from '@/components/common/modal/operation/DatePickerModal.vue'
-
+import StudentAttendanceModal from '@/components/common/modal/operation/StudentAttendanceModal.vue'
+import RangeDataPicker from '~/components/common/modal/RangeDataPicker.vue'
+import ReportFilterModal from '@/components/common/modal/operation/ReportFilterModal.vue'
+import ReportDetailModal from '@/components/common/modal/operation/ReportDetailModal.vue'
 export default {
   name: 'ClassManagement',
   components: {
     NavBox,
+    ClassListBox,
     ClassModifyModal,
     ClassDetailModal,
     ClassMoveModal,
     ModalDesc,
     DeleteModal,
     CustomSnackbar,
-    Draggable,
     StudentInfoModal,
 
     UploadStudentImg,
     DatePickerModal,
+    StudentAttendanceModal,
+    RangeDataPicker,
+    ReportFilterModal,
+    ReportDetailModal,
   },
   data() {
     return {
@@ -514,6 +375,183 @@ export default {
         all_lecture_info: [],
       },
       studentTab: 0,
+
+      // 출결
+      studentAttendanceModal: {
+        open: false,
+      },
+      customSnackbarDesc: {
+        show: false,
+        message: '',
+      },
+      isRangeCalendar: false,
+      dateRange: {
+        start: '',
+        end: '',
+      },
+      isLectureTitleIdx: 0,
+      isMonthRange: false,
+
+      // 학습리포트
+      reportFilterModal: {
+        open: false,
+      },
+      reportDetailModalDesc: {
+        open: false,
+      },
+      filterList: {
+        class: ['심화A반', '심화B반', '심화C반'],
+        subject: ['수학', '국어', '영어', '사회'],
+        course: ['영어리딩심화', '영어리딩기초', '영어리딩기초1'],
+        exam: ['쪽지시험', '퀴즈', '정기시험'],
+      },
+      tagList: {
+        classList: [],
+        subjectList: [],
+        courseList: [],
+        examList: [],
+      },
+      searchTextList: {
+        classSearchText: '',
+        subjectSearchText: '',
+        courseSearchText: '',
+        examSearchText: '',
+      },
+      reportList: [
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어리딩심화',
+          class: '심화A',
+          attendancePercent: '80%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 80,
+          classAverage: '70',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어리딩기초',
+          class: '심화A',
+          attendancePercent: '70%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 20,
+          classAverage: '70',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어회화기초',
+          class: '심화A',
+          attendancePercent: '20%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 50,
+          classAverage: '60',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어리딩심화',
+          class: '심화A',
+          attendancePercent: '80%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 80,
+          classAverage: '70',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어리딩기초',
+          class: '심화A',
+          attendancePercent: '70%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 20,
+          classAverage: '70',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어회화기초',
+          class: '심화A',
+          attendancePercent: '20%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 50,
+          classAverage: '60',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어리딩심화',
+          class: '심화A',
+          attendancePercent: '80%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 80,
+          classAverage: '70',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어리딩기초',
+          class: '심화A',
+          attendancePercent: '70%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 20,
+          classAverage: '70',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어회화기초',
+          class: '심화A',
+          attendancePercent: '20%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 50,
+          classAverage: '60',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어리딩심화',
+          class: '심화A',
+          attendancePercent: '80%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 80,
+          classAverage: '70',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어리딩기초',
+          class: '심화A',
+          attendancePercent: '70%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 20,
+          classAverage: '70',
+          question: '12/15',
+        },
+        {
+          learningRange: '22.05.11 - 22.05.21',
+          lectureTitle: '영어회화기초',
+          class: '심화A',
+          attendancePercent: '20%',
+          examType: '쪽지시험',
+          date: '22.05.11',
+          score: 50,
+          classAverage: '60',
+          question: '12/15',
+        },
+      ],
+      bgList: ['color01', 'color02', 'color03'],
 
       // 반 리스트
       classList: [],
@@ -723,6 +761,68 @@ export default {
       },
       immediate: false,
     },
+
+    // 현재 날짜와 한달 전 기간
+    isMonthRange() {
+      const setDate = (date) =>
+        `${date?.getFullYear()}.${date?.getMonth() + 1}.${date?.getDate()}`
+      if (this.isMonthRange) {
+        this.dateRange = {
+          start: setDate(
+            new Date(new Date().setMonth(new Date().getMonth() - 1))
+          ),
+          end: setDate(new Date()),
+        }
+      } else {
+        const setDate = (date) =>
+          `${date?.getFullYear()}.${date?.getMonth() + 1}.${date?.getDate()}`
+        this.dateRange = {
+          start: setDate(
+            new Date(
+              new Date().setDate(
+                new Date().getDate() -
+                  new Date().getDay() +
+                  (new Date().getDay() === 0 ? -6 : 1)
+              )
+            )
+          ),
+          end: setDate(
+            new Date(
+              new Date().setDate(
+                new Date().getDate() -
+                  new Date().getDay() +
+                  (new Date().getDay() === 0 ? -6 : 7)
+              )
+            )
+          ),
+        }
+      }
+    },
+  },
+  created() {
+    // 현재 날짜의 월요일, 일요일 구하기
+    const setDate = (date) =>
+      `${date?.getFullYear()}.${date?.getMonth() + 1}.${date?.getDate()}`
+    this.dateRange = {
+      start: setDate(
+        new Date(
+          new Date().setDate(
+            new Date().getDate() -
+              new Date().getDay() +
+              (new Date().getDay() === 0 ? -6 : 1)
+          )
+        )
+      ),
+      end: setDate(
+        new Date(
+          new Date().setDate(
+            new Date().getDate() -
+              new Date().getDay() +
+              (new Date().getDay() === 0 ? -6 : 7)
+          )
+        )
+      ),
+    }
   },
   mounted() {
     this.getClassList()
@@ -2233,6 +2333,263 @@ export default {
     onClickLectureDateConfirm() {
       this.studentInfo.std_courses = this.lectureDate
       this.datePickerLectureDateModalDesc.open = false
+    },
+
+    // 반 상세 출결 모달
+    // 학생 출결관리
+    openStudentAttendanceModal(item) {
+      // const student = this.studentList.find((result) => result.id === id)
+      Object.assign(this.studentInfo, item)
+      this.studentAttendanceModal.open = true
+    },
+    onCloseStudentAttendanceModal() {
+      this.studentAttendanceModal.open = false
+    },
+    // 달력 날짜 설정
+    selectAttendanceLecture(idx) {
+      this.isLectureTitleIdx = idx + 1
+    },
+    // 커스텀 스낵바
+    openCustomSnackbarNext() {
+      this.customSnackbarDesc = {
+        show: true,
+        message: '다음 주로 이동할 수 없습니다.',
+      }
+      setTimeout(() => {
+        this.onCloseCustomSnackbar()
+      }, 2000)
+    },
+    onCloseCustomSnackbar() {
+      this.customSnackbarDesc.show = false
+    },
+    openCustomSnackbarPrev() {
+      this.customSnackbarDesc = {
+        show: true,
+        message: '지난 주로 이동할 수 없습니다.',
+      }
+      setTimeout(() => {
+        this.onCloseCustomSnackbar()
+      }, 2000)
+    },
+    // 기간 달력 모달
+    openModalCalendar() {
+      this.isRangeCalendar = true
+    },
+    closeModalCalendar() {
+      this.isRangeCalendar = false
+    },
+    // 달력 날짜 설정
+    onChangeDate({ start, end }) {
+      const setDate = (date) =>
+        `${date?.getFullYear()}.${date?.getMonth() + 1}.${date?.getDate()}`
+      console.log(setDate(start), setDate(end))
+      this.dateRange.start = setDate(start)
+      this.dateRange.end = setDate(end)
+      this.isRangeCalendar = false
+    },
+
+    // 학습리포트
+    openReportFilterModal(item) {
+      // const student = this.studentList.find((result) => result.id === id)
+      Object.assign(this.studentInfo, item)
+      this.reportFilterModal.open = true
+      this.isMonthRange = true
+    },
+    onCloseReportFilterModal() {
+      this.reportFilterModal.open = false
+      this.isMonthRange = false
+    },
+    searchFilterList(id) {
+      if (id === 'classSearchText') {
+        this.filterList.class = this.deepCopy(this.initFilterList.class)
+        const result = this.filterList.class.filter((elem) => {
+          return elem.includes(this.searchTextList.classSearchText)
+        })
+        this.filterList.class = result
+      } else if (id === 'subjectSearchText') {
+        this.filterList.subject = this.deepCopy(this.initFilterList.subject)
+        const result = this.filterList.subject.filter((elem) => {
+          return elem.includes(this.searchTextList.subjectSearchText)
+        })
+        this.filterList.subject = result
+      } else if (id === 'courseSearchText') {
+        this.filterList.course = this.deepCopy(this.initFilterList.course)
+        const result = this.filterList.course.filter((elem) => {
+          return elem.includes(this.searchTextList.courseSearchText)
+        })
+        this.filterList.course = result
+      } else if (id === 'examSearchText') {
+        this.filterList.exam = this.deepCopy(this.initFilterList.exam)
+        const result = this.filterList.exam.filter((elem) => {
+          return elem.includes(this.searchTextList.examSearchText)
+        })
+        this.filterList.exam = result
+      }
+    },
+    changeReportSearchInput({ target: { value, id } }) {
+      this.searchTextList[id] = value
+    },
+    openReportDetailModal() {
+      const array = []
+      for (let i = 0; i < this.reportList.length; i++) {
+        const count = i
+        if (array.length === this.reportList.length) {
+          break
+        } else if (count === this.bgList.length) {
+          i = -1
+        } else {
+          array.push(this.bgList[count])
+        }
+      }
+      this.bgList = array
+      this.onCloseReportFilterModal()
+      this.reportDetailModalDesc.open = true
+    },
+    onCloseReportDetailModal() {
+      this.reportDetailModalDesc.open = false
+    },
+    // 필터 태그
+    onClickTagAllCheck(title) {
+      if (title === 'classList') {
+        this.tagList.classList = []
+      } else if (title === 'subjectList') {
+        this.tagList.subjectList = []
+      } else if (title === 'courseList') {
+        this.tagList.courseList = []
+      } else if (title === 'examList') {
+        this.tagList.examList = []
+      }
+      console.log(this.tagList.classList)
+    },
+    onClickTagList(text, title, e) {
+      if (title === 'classList') {
+        if (this.tagList.classList.includes(text)) {
+          this.tagList.classList = this.tagList.class.filter(
+            (item) => item !== text
+          )
+        } else {
+          console.log(text)
+          this.tagList.classList.push(text)
+          if (this.tagList.classList.length === this.filterList.class.length) {
+            this.tagList.classList = []
+            e.target.checked = false
+          }
+        }
+      } else if (title === 'subjectList') {
+        if (this.tagList.subjectList.includes(text)) {
+          this.tagList.subjectList = this.tagList.subjectList.filter(
+            (item) => item !== text
+          )
+        } else {
+          console.log(text)
+          this.tagList.subjectList.push(text)
+          if (
+            this.tagList.subjectList.length === this.filterList.subject.length
+          ) {
+            this.tagList.subjectList = []
+            e.target.checked = false
+          }
+        }
+      } else if (title === 'courseList') {
+        if (this.tagList.courseList.includes(text)) {
+          this.tagList.courseList = this.tagList.courseList.filter(
+            (item) => item !== text
+          )
+        } else {
+          console.log(text)
+          this.tagList.courseList.push(text)
+          if (
+            this.tagList.courseList.length === this.filterList.course.length
+          ) {
+            this.tagList.courseList = []
+            e.target.checked = false
+          }
+        }
+      } else if (title === 'examList') {
+        if (this.tagList.examList.includes(text)) {
+          this.tagList.examList = this.tagList.examList.filter(
+            (item) => item !== text
+          )
+        } else {
+          console.log(text)
+          this.tagList.examList.push(text)
+          if (this.tagList.examList.length === this.filterList.exam.length) {
+            this.tagList.examList = []
+            e.target.checked = false
+          }
+        }
+      }
+      console.log(
+        this.tagList.subjectList.length,
+        this.filterList.subject.length
+      )
+      console.log(this.tagList)
+    },
+    onClickAddFilterTag() {
+      if (
+        this.tagList.classList.length !== 0 ||
+        this.tagList.subjectList.length !== 0 ||
+        this.tagList.courseList.length !== 0 ||
+        this.tagList.examList.length !== 0 ||
+        this.tagList.studentList.length !== 0
+      ) {
+        for (const value in this.tagList.classList) {
+          this.filterTag.push(this.tagList.classList[value])
+        }
+        for (const value in this.tagList.subjectList) {
+          this.filterTag.push(this.tagList.subjectList[value])
+        }
+        for (const value in this.tagList.courseList) {
+          this.filterTag.push(this.tagList.courseList[value])
+        }
+        for (const value in this.tagList.examList) {
+          this.filterTag.push(this.tagList.examList[value])
+        }
+        for (const value in this.tagList.studentList) {
+          this.filterTag.push(this.tagList.studentList[value])
+        }
+        this.tagList = {
+          classList: [],
+          subjectList: [],
+          courseList: [],
+          examList: [],
+          studentList: [],
+        }
+      }
+      this.openReportDetailModal()
+    },
+    // PDF변환
+    exportPdf(name) {
+      window.scrollTo(0, 0)
+      const targetElem = document.querySelector('#pdfPrintSave')
+      console.log(targetElem)
+      const el = document.getElementById('pdfArea')
+      this.reportHeight = el.scrollHeight + 'px'
+      console.log(el.style.height)
+      html2pdf(targetElem, {
+        margin: [10, 0, 10, 0],
+        filename: `${name}_report.pdf`,
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: {
+          scrollY: 0,
+          scale: 1,
+          dpi: 300,
+          letterRendering: true,
+          allowTaint: false,
+          ignoreElements(element) {
+            // pdf에 출력하지 않아야할 dom이 있다면 해당 옵션 사용
+            if (element.id === 'noneItem') {
+              return true
+            }
+          },
+        },
+        jsPDF: {
+          orientation: 'landscape',
+          unit: 'mm',
+          format: 'a4',
+          compressPDF: true,
+        },
+      })
     },
   },
 }

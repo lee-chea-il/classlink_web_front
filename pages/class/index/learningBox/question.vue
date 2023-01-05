@@ -20,251 +20,28 @@
       </li>
     </ul>
     <div class="tab-content depth03 ac_manage_que">
-      <!-- <div v-if="askingboxList.length === 0" class="tab-pane active">
-        [개발참조] 데이터가 없는 경우
-        <div class="page_nodata">
-          <div class="txt">질문이 없습니다.</div>
-          <button
-            class="btn btn_crud_point"
-            data-toggle="modal"
-            data-target="#modalLectureRegi"
-          >
-            강좌 만들기
-          </button>
-        </div>
-        /.데이터가 없는 경우
-      </div> -->
-      <div class="tab-pane active">
-        <!-- 검색 영역 -->
-        <!-- [개발참조] 필터링한 목록이 없는 경우 출력됨 -->
-        <div v-if="filterList.length === 0" class="search_section">
-          <button class="btn btn_crud_danger" @click="onClickQuestionDelete">
-            삭제
-          </button>
-          <div class="right_area">
-            <div class="input-group input-search form-inline form-lec">
-              <input
-                v-model="search"
-                type="text"
-                placeholder="키워드 검색"
-                class="form-control"
-              />
-              <div class="input-group-append">
-                <button class="btn icons_search_off" type="button"></button>
-              </div>
-            </div>
-            <button class="btn btn_filter" @click="onOpenQueFilterModal">
-              필터
-            </button>
-            <button
-              class="btn btn_crud_default filter_lift"
-              :disabled="filterList.length === 0"
-              @click="onClickDeleteFilter"
-            >
-              필터 해제
-            </button>
-          </div>
-        </div>
-
-        <!-- [개발참조] 필터링한 목록이 있는 경우 출력됨 -->
-        <div v-else class="search_section">
-          <div class="left_area">
-            <div class="row">
-              <div class="keyword_area left_area">
-                <div class="keyword_area_01">
-                  <span v-for="(item, idx) in 19" :key="idx" class="keyword01">
-                    <span class="keyword01-1">내가 한 질문</span
-                    ><span class="x cursor"></span>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="right_area">
-            <button class="btn btn_crud_danger" @click="onClickQuestionDelete">
-              삭제
-            </button>
-            <div class="input-group input-search form-inline form-lec">
-              <input
-                v-model="search"
-                type="text"
-                placeholder="키워드 검색"
-                class="form-control"
-                @keyup.enter="getQuestionList"
-              />
-              <div class="input-group-append" @click="getQuestionList">
-                <button class="btn icons_search_off" type="button"></button>
-              </div>
-            </div>
-            <button class="btn btn_filter" @click="onOpenQueFilterModal">
-              필터
-            </button>
-            <button
-              class="btn btn_crud_default filter_lift"
-              :disabled="filterList.length === 0"
-              @click="onClickDeleteFilter"
-            >
-              필터 해제
-            </button>
-          </div>
-        </div>
-        <!-- 검색 영역 -->
-        <!-- 테이블 영역 -->
-        <div class="table_section">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>
-                  <div class="custom-control custom-checkbox form-inline">
-                    <input
-                      id="chkAll"
-                      :checked="allCheck"
-                      type="checkbox"
-                      class="custom-control-input"
-                      @input="onClickQuestionAllCheck"
-                    />
-                    <label class="custom-control-label" for="chkAll"></label>
-                  </div>
-                </th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일</th>
-                <th>강좌</th>
-                <th>공개여부</th>
-                <th>조회</th>
-              </tr>
-            </thead>
-            <tbody v-for="(item, idx) in askingboxList" :key="idx">
-              <tr :class="item.type === 1 ? 'que_reply' : ''">
-                <td>
-                  <div class="custom-control custom-checkbox form-inline">
-                    <input
-                      :id="`question${idx}`"
-                      type="checkbox"
-                      class="custom-control-input"
-                      :checked="
-                        checkList.some(
-                          (e) => e.qtb_idxs === item.questionvo.qtb_idx
-                        )
-                      "
-                      @input="
-                        onClickQuestionCheck(
-                          item.questionvo.qtb_idx,
-                          item.questionvo.smem_idx
-                        )
-                      "
-                    />
-                    <label
-                      class="custom-control-label"
-                      :for="`question${idx}`"
-                    ></label>
-                  </div>
-                </td>
-                <td
-                  class="cursor"
-                  @click="onOpenQuestionViewModal(item.questionvo.qtb_idx)"
-                >
-                  <div class="study_qustion">
-                    {{ item.questionvo.qtb_title }}
-                  </div>
-                </td>
-                <td>
-                  {{
-                    item.questionvo.qtb_writer_public_yn
-                      ? item.questionvo.mem_name
-                      : '비공개'
-                  }}
-                </td>
-                <td>
-                  {{
-                    item.questionvo.qtb_registration_date
-                      .substr(0, 10)
-                      .replaceAll('-', '.')
-                  }}
-                </td>
-                <td>{{ item.questionvo.icu_title }}</td>
-                <td>
-                  {{ item.questionvo.qtb_open_yn ? '공개' : '비공개' }}
-                </td>
-                <td>{{ item.questionvo.qtb_view_cnt }}</td>
-              </tr>
-              <tr
-                v-for="(items, id) in item.answervo"
-                :key="id"
-                class="que_reply"
-              >
-                <td>
-                  <div class="custom-control custom-checkbox form-inline">
-                    <input
-                      :id="`answer${idx}${id}`"
-                      type="checkbox"
-                      class="custom-control-input"
-                      :checked="
-                        answerCheckList.some(
-                          (e) => e.qba_idxs === items.qba_idx
-                        )
-                      "
-                      @input="onClickAnswerCheck(items.qba_idx, items.mem_idx)"
-                    />
-                    <label
-                      class="custom-control-label"
-                      :for="`answer${idx}${id}`"
-                    ></label>
-                  </div>
-                </td>
-                <td
-                  class="study_qustion"
-                  @click="onOpenReplyViewModal(items.qba_idx)"
-                >
-                  └─ {{ items.qba_title }}
-                </td>
-                <td>{{ items.mem_name }} 선생님</td>
-                <td>
-                  {{
-                    items.qba_registration_date
-                      .substr(0, 10)
-                      .replaceAll('-', '.')
-                  }}
-                </td>
-                <td>{{ items.icu_title === null ? '-' : items.icu_title }}</td>
-                <td>
-                  {{ items.qba_open_yn ? '공개' : '비공개' }}
-                </td>
-                <td>
-                  {{ items.qba_view_cnt === null ? 0 : items.qba_view_cnt }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <!-- /.테이블 영역 -->
-        <!-- 페이징 영역 -->
-        <div class="pagination_section">
-          <nav aria-label="Page navigation example">
-            <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link cursor" @click="onClickPrevPage">
-                  <span class="previous"></span>
-                </a>
-              </li>
-              <li v-for="(item, idx) in endPage" :key="idx" class="page-item">
-                <a
-                  class="page-link cursor"
-                  :class="{ active: currentPage === item }"
-                  @click="onClickCurrentPage(item)"
-                  >{{ item }}</a
-                >
-              </li>
-              <li class="page-item">
-                <a class="page-link cursor" @click="onClickNextPage">
-                  <span class="next"></span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-        <!-- /.페이징 영역 -->
-      </div>
+      <QuestionListBox
+        :filterList="filterList"
+        :search.sync="search"
+        :allCheck="allCheck"
+        :checkList="checkList"
+        :askingboxList="askingboxList"
+        :answerCheckList="answerCheckList"
+        :endPage="endPage"
+        :currentPage="currentPage"
+        @qa-delete="onClickQuestionDelete"
+        @open-quefilter="onOpenQueFilterModal"
+        @delete-quefilter="onClickDeleteFilter"
+        @search-question="getQuestionList"
+        @click-allcheck="onClickQuestionAllCheck"
+        @check-question="onClickQuestionCheck"
+        @check-answer="onClickAnswerCheck"
+        @open-question="onOpenQuestionViewModal"
+        @open-reply="onOpenReplyViewModal"
+        @prev-page="onClickPrevPage"
+        @next-page="onClickNextPage"
+        @current-page="onClickCurrentPage"
+      />
     </div>
 
     <QueFilterModal
@@ -301,6 +78,7 @@
 </template>
 
 <script>
+import QuestionListBox from '@/components/learningBox/QuestionListBox.vue'
 import QueFilterModal from '@/components/common/modal/learningbox/QueFilterModal.vue'
 import QuestionViewModal from '@/components/common/modal/learningbox/QuestionViewModal.vue'
 import ReplyViewModal from '@/components/common/modal/learningbox/ReplyViewModal.vue'
@@ -310,6 +88,7 @@ import { apiLeaningBox } from '~/services'
 export default {
   name: 'Question',
   components: {
+    QuestionListBox,
     QueFilterModal,
     QuestionViewModal,
     ReplyViewModal,
@@ -581,12 +360,23 @@ export default {
 
     // 질문 체크박스
     onClickQuestionCheck(qtb_idx, mem_idx) {
+      // 리스트의 답변 총 개수
+      let answervoNum = 0
+      for (let i = 0; i < this.askingboxList.length; i++) {
+        if (this.askingboxList[i].answervo !== null) {
+          answervoNum = answervoNum + this.askingboxList[i].answervo.length
+        }
+      }
+
       if (this.checkList.some((e) => e.qtb_idxs === qtb_idx)) {
         this.checkList = this.checkList.filter(
           (item) => item.qtb_idxs !== qtb_idx
         )
 
-        if (this.checkList.length !== this.askingboxList.length) {
+        if (
+          this.checkList.length !== this.askingboxList.length ||
+          this.answerCheckList.length !== answervoNum
+        ) {
           this.allCheck = false
         }
       } else {
@@ -596,7 +386,10 @@ export default {
         }
         this.checkList.push(questionInfo)
 
-        if (this.checkList.length === this.askingboxList.length) {
+        if (
+          this.checkList.length === this.askingboxList.length &&
+          this.answerCheckList.length === answervoNum
+        ) {
           this.allCheck = true
         }
       }
@@ -604,16 +397,38 @@ export default {
     },
     // 답변 체크박스
     onClickAnswerCheck(qba_idx, mem_idx) {
+      // 리스트의 답변 총 개수
+      let answervoNum = 0
+      for (let i = 0; i < this.askingboxList.length; i++) {
+        if (this.askingboxList[i].answervo !== null) {
+          answervoNum = answervoNum + this.askingboxList[i].answervo.length
+        }
+      }
+
       if (this.answerCheckList.some((e) => e.qba_idxs === qba_idx)) {
         this.answerCheckList = this.answerCheckList.filter(
           (item) => item.qba_idxs !== qba_idx
         )
+
+        if (
+          this.checkList.length !== this.askingboxList.length ||
+          this.answerCheckList.length !== answervoNum
+        ) {
+          this.allCheck = false
+        }
       } else {
         const answerInfo = {
           mem_idxs: mem_idx,
           qba_idxs: qba_idx,
         }
         this.answerCheckList.push(answerInfo)
+
+        if (
+          this.checkList.length === this.askingboxList.length &&
+          this.answerCheckList.length === answervoNum
+        ) {
+          this.allCheck = true
+        }
       }
       console.log(this.answerCheckList)
     },

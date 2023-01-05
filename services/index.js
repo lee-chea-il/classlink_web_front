@@ -4,7 +4,7 @@ import apiLectureCourse from './apiLectureCourse'
 import apiData from './apiData'
 import apiLesson from './apiLesson'
 import api from './api'
-import apiFranchise from './apiFranchise'
+import apiFranchiseSubscribe from './apiFranchiseSubscribe'
 import apiOperation from './apiOperation'
 import apiLecture from './apiLecture'
 import apiLeaningBox from './apiLearningBox'
@@ -17,7 +17,7 @@ export {
   apiLesson,
   apiMypage,
   apiLectureCourse,
-  apiFranchise,
+  apiFranchiseSubscribe,
   apiOperation,
   apiLecture,
   apiLeaningBox,

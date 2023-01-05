@@ -22,74 +22,11 @@
       </ul>
 
       <div class="tab-content depth03 ac_manage_frc">
-        <div class="tab-pane active">
-          <!-- [개발참조]가맹한 프랜차이즈 없을때 -->
-          <div
-            v-if="
-              franchiseList.length === 0 && franchiseWaitingList.length === 0
-            "
-            class="page_nodata"
-          >
-            <p>
-              현재 가맹한 프랜차이즈가 없습니다.<br />
-              가입을 요청해 보세요.
-            </p>
-            <button
-              class="btn btn_regi_franchise"
-              @click="onOpenFranchiseSignUpModal"
-            >
-              프랜차이즈 가입하기
-            </button>
-          </div>
-          <div v-else class="cards_section">
-            <div v-for="(item, idx) in franchiseList" :key="idx" class="card">
-              <div
-                class="logo"
-                :style="`background-image: url(${item?.fram_img})`"
-              >
-                <!-- <img src="@/assets/images/sample_franchise_logo01.png" alt="" /> -->
-              </div>
-              <div class="academy">{{ item?.fra_name }}</div>
-            </div>
-
-            <div
-              v-for="(item, idx) in franchiseWaitingList"
-              :key="`o-${idx}`"
-              class="card standby"
-            >
-              <div class="standby_txt">승인 대기 중</div>
-              <div
-                class="logo"
-                :style="`background-image: url(${item?.fram_img})`"
-              >
-                <!-- <img src="@/assets/images/sample_franchise_logo01.png" alt="" /> -->
-              </div>
-              <div class="academy">{{ item?.fra_name }}</div>
-            </div>
-            <!-- [개발참조] 승인대기중 의 예 class="card standby" -->
-            <!-- <div class="card standby">
-              <div class="standby_txt">승인 대기 중</div>
-              <div class="logo"></div>
-              <div class="academy">학원명학원명</div>
-            </div> -->
-            <!-- [개발참조] 프랜차이즈 가입 추가 class="card standby" -->
-            <div class="card signup">
-              <div
-                class="logo"
-                :style="`background-image: url(${thumbnail})`"
-              ></div>
-              <div class="academy">
-                <button
-                  type="button"
-                  class="btn signup"
-                  @click="onOpenFranchiseSignUpModal"
-                >
-                  + 프랜차이즈 가입 추가
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <AffiliatedListBox
+          :franchiseList="franchiseList"
+          :franchiseWaitingList="franchiseWaitingList"
+          @open-signup="onOpenFranchiseSignUpModal"
+        />
       </div>
     </div>
 
@@ -105,12 +42,13 @@
 
 <script>
 import FranchiseSignupModal from '@/components/common/modal/franchise/FranchiseSignUpModal.vue'
-import iconThumbnail from '@/assets/images/icons/icon_thumbnail_blue.svg'
-import { apiFranchise } from '~/services'
+import AffiliatedListBox from '@/components/franchiseSubscribe/AffiliatedListBox.vue'
+import { apiFranchiseSubscribe } from '~/services'
 export default {
   name: 'List',
   components: {
     FranchiseSignupModal,
+    AffiliatedListBox,
   },
   data() {
     return {
@@ -126,8 +64,6 @@ export default {
       openFranchiseSignUpModal: {
         open: false,
       },
-      // 프랜차이즈 가입추가 이미지
-      thumbnail: iconThumbnail,
     }
   },
   // watch: {
@@ -150,7 +86,7 @@ export default {
   methods: {
     // 프랜차이즈 리스트 api
     async getFranchiseList() {
-      await apiFranchise
+      await apiFranchiseSubscribe
         .getFranchiseList(this.mem_idx)
         .then(({ data: { data } }) => {
           console.log(data)
@@ -170,7 +106,7 @@ export default {
     },
 
     async getFranchiseSearchCode() {
-      await apiFranchise
+      await apiFranchiseSubscribe
         .getFranchiseSearchCode(this.codeSearch)
         .then(({ data }) => {
           console.log(data)
