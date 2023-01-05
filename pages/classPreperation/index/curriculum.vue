@@ -198,7 +198,6 @@ export default {
       }
     },
     delData() {
-      this.identity = 'institution'
       if (this.identity === 'institution') {
         const instiTab = document.getElementById('institute')
         if (instiTab.classList.contains('show')) {

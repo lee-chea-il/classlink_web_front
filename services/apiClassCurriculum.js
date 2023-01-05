@@ -22,7 +22,6 @@ const deleteFolderTreeViewList = async (payload) => {
 
 // 트리뷰에 폴더 수정
 const updateFolderTreeViewList = async (data) => {
-  console.log('--------',data)
   return await http.put(
     '/api/v1/prepare-class/curriculum/tree-view-list/folder', data
   )

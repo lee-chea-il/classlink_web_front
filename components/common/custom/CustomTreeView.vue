@@ -3,8 +3,8 @@
     :model="datas"
     :default-expanded="expanded"
     default-tree-node-name="새 폴더"
-    :is-drop="true"
-    :is-show-option="true"
+    :is-drop="identity == 'institution' ? true : false"
+    :is-show-option="identity == 'institution' ? true : false"
     :isHideDownload="isHideDownload"
     @leaf-name-click="$emit('un-active')"
     @click="$emit('un-active')"
@@ -160,7 +160,7 @@ export default {
       }
       this.datas = new Tree(
         !this.editable,
-        dataMapping(dataList, !this.editable)
+        dataMapping(dataList[0].children, !this.editable)
       )
     },
     delData() {
@@ -197,8 +197,6 @@ export default {
     },
     onChangeName(params) {
       if (params.eventType && params.eventType === 'blur') {
-        console.log('000---- ', params)
-        console.log('000---- ', params.node.treeViewId)
         this.updateFolderInfo = {
           datatable_type: this.treeViewType,
           treeinfo_idx: params.node.treeViewId,
@@ -208,24 +206,11 @@ export default {
       }
     },
 
-    onDel(node) {
-      console.log(node)
-      node.remove()
-    },
-    onAddNode(params) {
-      console.log(params)
-    },
 
-    onClick(params) {
-      console.log(params)
-      this.$emit('un-active')
-    },
 
-    addNode() {
-      const node = new TreeNode({ name: 'new node', isLeaf: false })
-      if (!this.data.children) this.data.children = []
-      this.data.addChildren(node)
-    },
+
+
+    
     addData(data) {
       const sp = data.savepathInfo.path.split(' > ')
       let depth = 0

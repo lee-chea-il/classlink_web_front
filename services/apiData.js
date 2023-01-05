@@ -87,6 +87,13 @@ const addFolderTreeViewList = async (payload) => {
   )
 }
 
+// 트리뷰에 폴더 수정
+const updateFolderTreeViewList = async (data) => {
+  return await http.put(
+    '/api/v1/prepare-class/dataroom/tree-view-list/folder', data
+  )
+}
+
 // 트리뷰에 폴더 삭제
 const deleteFolderTreeViewList = async (payload) => {
   // console.log('-------- MD/1-2-3 ',payload)
@@ -109,6 +116,7 @@ const apiData = {
   updateDataroomFile,
   updateDataroomQuiz,
   updateDataroomNoteExam,
+  updateFolderTreeViewList,
 
   deleteData,
   deleteFolderTreeViewList,

@@ -368,7 +368,7 @@ export default {
         this.getInsTreeViewList(),
         this.getFranTreeViewList(),
         this.getMyTreeViewList(),
-        this.getPublicTreeViewList(),
+        // this.getPublicTreeViewList(),
       ])
     },
 
@@ -1514,15 +1514,21 @@ export default {
       }
     },
 
+    copyDataCallBack(copyData) {
+      this.copyCheckData = copyData
+      console.log("this.copyCheckData   "+this.copyCheckData)
+    },
+
     pasteData() {
-      this.$refs.mainEducation.$refs.myData.$refs.mydata.pasteData(
+      console.log("this.pasteData   "+this.copyCheckData)
+      /* this.$refs.mainEducation.$refs.myData.$refs.mydata.pasteData(
         this.copyCheckData
       )
       if (this.isCopyType === 'institution') {
         this.$refs.mainEducation.$refs.education.$refs.institution.copyComp()
       } else if (this.isCopyType === 'franchise') {
         this.$refs.mainEducation.$refs.education.$refs.franchise.copyComp()
-      }
+      } */
     },
 
     delData() {
@@ -1533,10 +1539,6 @@ export default {
         else this.$refs.mainEducation.$refs.education.$refs.franchise.delData()
       }
       this.$refs.mainEducation.$refs.myData.$refs.mydata.delData()
-    },
-
-    copyDataCallBack(copyData) {
-      this.copyCheckData = copyData
     },
 
     // PDF변환

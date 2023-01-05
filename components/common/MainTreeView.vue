@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
+import { VueTreeList, Tree } from 'vue-tree-list'
 import { apiData } from '~/services'
 export default {
   name: 'MainTreeView',
@@ -133,7 +133,18 @@ export default {
           console.log(err)
         })
     },
+    async updateFolder() {
+      await apiData
+        .updateFolderTreeViewList(this.updateFolderInfo)
+        .then(({ data: { data } }) => {
+          this.$emit(`tree-view-${this.treeViewType.toLowerCase()}`)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
     setData(dataList) {
+      console.log(dataList,this.treeViewType)
       const dataMapping = (data, isReadOnly) => {
         const result = []
         const len = data.length
@@ -165,7 +176,7 @@ export default {
       }
       this.datas = new Tree(
         !this.editable,
-        dataMapping(dataList, !this.editable)
+        dataMapping(dataList[0].children, !this.editable)
       )
     },
     setType(type) {
@@ -198,25 +209,55 @@ export default {
     },
 
     onChangeName(params) {
-      console.log(params)
+      if (params.eventType && params.eventType === 'blur') {
+        this.updateFolderInfo = {
+          datatable_type: this.treeViewType,
+          treeinfo_idx: params.node.treeViewId,
+          title: params.newName,
+        }
+        this.updateFolder()
+      }
     },
 
-    onAddNode(params) {
+    /* onAddNode(params) {
       console.log(params)
-    },
+    }, */
 
-    onClick(params) {
+    /* onClick(params) {
       console.log(params)
-    },
+    }, */
 
-    addNode() {
+    /* addNode() {
       const node = new TreeNode({ name: 'new node', isLeaf: false })
       if (!this.data.children) this.data.children = []
       this.data.addChildren(node)
-    },
+    }, */
 
     copyData() {
-      let idNum = new Date().valueOf()
+      const copyList=[]
+      function _dfs(parentChild,oldNode) {
+        const data={}
+        if (oldNode.isChecked) {
+          data.id=oldNode.treeViewId
+        }
+        if (oldNode.children && oldNode.children.length > 0) {
+          const list = []
+          if (oldNode.isChecked) {
+            for (let i = 0, len = oldNode.children.length; i < len; i++) {
+              list.push(_dfs(oldNode.children,oldNode.children[i]))
+            }
+            data.children = list
+          }else{
+            for (let i = 0, len = oldNode.children.length; i < len; i++) {
+              list.push(_dfs(parentChild,oldNode.children[i]))
+            }
+          }
+        }
+      }
+      this.$emit('un-active')
+      console.log(_dfs(copyList,this.datas))
+      // this.$emit('copyDataCallBack', _dfs(this.datas))
+      /* let idNum = new Date().valueOf()
       function _dfs(oldNode) {
         const newNode = {}
         if (oldNode.isChecked) {
@@ -241,7 +282,7 @@ export default {
         return newNode
       }
       this.$emit('un-active')
-      this.$emit('copyDataCallBack', _dfs(this.datas))
+      this.$emit('copyDataCallBack', _dfs(this.datas)) */
     },
 
     copyComp() {
@@ -261,7 +302,8 @@ export default {
     },
 
     pasteData(copyCheckData) {
-      let idNum = new Date().valueOf()
+      console.log("this.pasteData   "+copyCheckData)
+      /* let idNum = new Date().valueOf()
       function _addNode(parentNode, oldNode) {
         let node, i, len
         if (oldNode.name) {
@@ -301,7 +343,7 @@ export default {
         if (oldNode.isPaste) {
           _addNode(oldNode, copyCheckData)
         }
-      }
+      } */
       function _checkPasteData(oldNode) {
         if (oldNode.children && oldNode.children.length > 0) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
@@ -318,18 +360,19 @@ export default {
           oldNode.isPaste = true
         }
       }
-      function _resetPasteData(oldNode) {
+      /* function _resetPasteData(oldNode) {
         if (oldNode.children && oldNode.children.length > 0) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
             if (!oldNode.children[len - i - 1].isLeaf) oldNode.paste = false
           }
         }
         oldNode.paste = false
-      }
+      } */
       if (copyCheckData.children && copyCheckData.children.length > 0) {
         _checkPasteData(this.datas)
-        _pasteData(this.datas)
-        _resetPasteData(this.datas)
+
+        // _pasteData(this.datas)
+        // _resetPasteData(this.datas)
       }
     },
 
