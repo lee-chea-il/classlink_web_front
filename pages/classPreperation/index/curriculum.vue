@@ -175,10 +175,6 @@ export default {
     setMyTreeViewData(data) {
       this.$refs.rightSection.$refs.curriculum.setData(data)
     },
-    openCurriculumAdd() {
-      this.isShowOpenAddModal = true
-      this.$refs.curriculumUpdateModal.setData(null)
-    },
     copyData() {
       const instiTab = document.getElementById('institute')
       if (instiTab.classList.contains('show')) {
@@ -189,13 +185,24 @@ export default {
         this.$refs.leftSection.$refs.franchise.copyData()
       }
     },
+    copyDataCallBack(copyData) {
+      this.copyCheckData = copyData
+    },
+    openCurriculumAdd() {
+      this.isShowOpenAddModal = true
+      this.$refs.curriculumUpdateModal.setData(null)
+    },
     pasteData() {
-      this.$refs.rightSection.$refs.curriculum.pasteData(this.copyCheckData)
+      const parentIdxList = this.$refs.rightSection.$refs.curriculum.checkPastePosition()
+      this.copyCheckData.pasteParentIdxs=parentIdxList
+      console.log("this.parentIdxList   "+JSON.stringify(this.copyCheckData))
+      
+      /* this.$refs.rightSection.$refs.curriculum.pasteData(this.copyCheckData)
       if (this.isCopyType === 'institution') {
         this.$refs.leftSection.$refs.institution.copyComp()
       } else if (this.isCopyType === 'franchise') {
         this.$refs.leftSection.$refs.franchise.copyComp()
-      }
+      } */
     },
     delData() {
       if (this.identity === 'institution') {
@@ -207,10 +214,6 @@ export default {
         }
       }
       this.$refs.rightSection.$refs.curriculum.delData()
-    },
-    copyDataCallBack(copyData) {
-      this.copyCheckData = copyData
-      console.log(this.copyCheckData)
     },
     saveFilePath(pathInfo) {
       this.$refs.curriculumUpdateModal.setSavePath(pathInfo)

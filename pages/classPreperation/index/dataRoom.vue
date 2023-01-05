@@ -1520,7 +1520,11 @@ export default {
     },
 
     pasteData() {
-      console.log("this.pasteData   "+this.copyCheckData)
+      const parentIdxList = this.$refs.mainEducation.$refs.myData.$refs.mydata.checkPastePosition()
+      this.copyCheckData.pasteParentIdxs=parentIdxList
+      console.log("this.parentIdxList   "+JSON.stringify(this.copyCheckData))
+      
+      // console.log("this.pasteData   "+this.copyCheckData)
       /* this.$refs.mainEducation.$refs.myData.$refs.mydata.pasteData(
         this.copyCheckData
       )

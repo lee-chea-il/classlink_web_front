@@ -75,6 +75,7 @@ export default {
       datas: new Tree(false, []),
       pid: this.pidNum,
       deleteList: [],
+      checkboxCopyData:{}
     }
   },
   watch: {
@@ -218,73 +219,65 @@ export default {
         this.updateFolder()
       }
     },
-
-    /* onAddNode(params) {
-      console.log(params)
-    }, */
-
-    /* onClick(params) {
-      console.log(params)
-    }, */
-
-    /* addNode() {
-      const node = new TreeNode({ name: 'new node', isLeaf: false })
-      if (!this.data.children) this.data.children = []
-      this.data.addChildren(node)
-    }, */
-
     copyData() {
       const copyList=[]
       function _dfs(parentChild,oldNode) {
-        const data={}
-        if (oldNode.isChecked) {
-          data.id=oldNode.treeViewId
-        }
-        if (oldNode.children && oldNode.children.length > 0) {
-          const list = []
+        let data={}
+        if(!oldNode.isLeaf){
           if (oldNode.isChecked) {
-            for (let i = 0, len = oldNode.children.length; i < len; i++) {
-              list.push(_dfs(oldNode.children,oldNode.children[i]))
+            data={
+              id:oldNode.treeViewId,
+              children:[]
             }
-            data.children = list
-          }else{
-            for (let i = 0, len = oldNode.children.length; i < len; i++) {
-              list.push(_dfs(parentChild,oldNode.children[i]))
+            parentChild.push(data)
+          }
+          if (oldNode.children && oldNode.children.length > 0) {
+            if (oldNode.isChecked) {
+              for (let i = 0, len = oldNode.children.length; i < len; i++) {
+                _dfs(data.children,oldNode.children[i])
+              }
+            }else{
+              for (let i = 0, len = oldNode.children.length; i < len; i++) {
+                _dfs(parentChild,oldNode.children[i])
+              }
             }
           }
+        }else if (oldNode.isChecked) {
+          parentChild.push({id:oldNode.treeViewId})
         }
       }
       this.$emit('un-active')
-      console.log(_dfs(copyList,this.datas))
-      // this.$emit('copyDataCallBack', _dfs(this.datas))
-      /* let idNum = new Date().valueOf()
-      function _dfs(oldNode) {
-        const newNode = {}
-        if (oldNode.isChecked) {
-          oldNode.isactive = true
-          for (const item in oldNode) {
-            newNode[item] = oldNode[item]
-          }
-          newNode.children = []
-          newNode.id = idNum
-          newNode.isChecked = false
-          idNum++
-        } else {
-          oldNode.isactive = false
-        }
-        if (oldNode.children && oldNode.children.length > 0) {
-          const list = []
-          for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            list.push(_dfs(oldNode.children[i]))
-          }
-          newNode.children = list
-        }
-        return newNode
+      _dfs(copyList,this.datas)
+      
+      this.checkboxCopyData={
+        type:this.treeViewType,
+        copyTreeData:copyList,
+        pasteParentIdxs:[]
       }
-      this.$emit('un-active')
-      this.$emit('copyDataCallBack', _dfs(this.datas)) */
+      this.$emit('copyDataCallBack',this.checkboxCopyData)
     },
+    checkPastePosition(){
+      const checkList = []
+      function _checkData(oldNode) {
+        if (oldNode.isLeaf) {
+          if(oldNode.isChecked){
+            checkList.push(oldNode.data.parent)
+          }
+        }else{
+          if(oldNode.isChecked){
+            checkList.push(oldNode.treeViewId)
+          }
 
+          if (oldNode.children && oldNode.children.length > 0) {
+            for (let i = 0, len = oldNode.children.length; i < len; i++) {
+              _checkData(oldNode.children[i])
+            }
+          }
+        }
+      }
+      _checkData(this.datas)
+      return checkList
+    },
     copyComp() {
       function _copyComp(oldNode) {
         if (oldNode.isactive) {
@@ -300,82 +293,6 @@ export default {
       }
       _copyComp(this.datas)
     },
-
-    pasteData(copyCheckData) {
-      console.log("this.pasteData   "+copyCheckData)
-      /* let idNum = new Date().valueOf()
-      function _addNode(parentNode, oldNode) {
-        let node, i, len
-        if (oldNode.name) {
-          const newNode = {}
-          for (const item in oldNode) {
-            newNode[item] = oldNode[item]
-          }
-          newNode.active = true
-          newNode.children = []
-          newNode.id = idNum
-          newNode.isChecked = false
-
-          node = new TreeNode(newNode)
-          parentNode.addChildren(node)
-          idNum++
-          if (!oldNode.isLeaf) {
-            if (oldNode.children && oldNode.children.length > 0) {
-              len = oldNode.children.length
-              for (i = 0; i < len; i++) {
-                _addNode(node, oldNode.children[i])
-              }
-            }
-          }
-        } else if (oldNode.children && oldNode.children.length > 0) {
-          len = oldNode.children.length
-          for (i = 0; i < len; i++) {
-            _addNode(parentNode, oldNode.children[i])
-          }
-        }
-      }
-      function _pasteData(oldNode) {
-        if (oldNode.children && oldNode.children.length > 0) {
-          for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            _pasteData(oldNode.children[len - i - 1])
-          }
-        }
-        if (oldNode.isPaste) {
-          _addNode(oldNode, copyCheckData)
-        }
-      } */
-      function _checkPasteData(oldNode) {
-        if (oldNode.children && oldNode.children.length > 0) {
-          for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            if (oldNode.children[len - i - 1].isLeaf) {
-              if (oldNode.children[len - i - 1].isChecked) {
-                oldNode.isPaste = true
-              }
-            } else {
-              _checkPasteData(oldNode.children[len - i - 1])
-            }
-          }
-        }
-        if (oldNode.isChecked) {
-          oldNode.isPaste = true
-        }
-      }
-      /* function _resetPasteData(oldNode) {
-        if (oldNode.children && oldNode.children.length > 0) {
-          for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            if (!oldNode.children[len - i - 1].isLeaf) oldNode.paste = false
-          }
-        }
-        oldNode.paste = false
-      } */
-      if (copyCheckData.children && copyCheckData.children.length > 0) {
-        _checkPasteData(this.datas)
-
-        // _pasteData(this.datas)
-        // _resetPasteData(this.datas)
-      }
-    },
-
     delData() {
       this.deleteList = []
       const deleteList = this.deleteList
