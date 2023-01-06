@@ -26,9 +26,9 @@
                     {{ selectedExamInfo.course }}
                     레슨{{ selectedExamInfo.lesson }}
                     {{
-                      selectedExamInfo.fileType === 'quiz'
+                      examQuestion.uploadType === 'quiz'
                         ? '퀴즈'
-                        : selectedExamInfo.fileType === 'test'
+                        : examQuestion.uploadType === 'test'
                         ? '쪽지시험'
                         : ''
                     }}
@@ -37,7 +37,7 @@
                   <div class="date">{{ selectedExamInfo.date }}</div>
                 </div>
                 <div
-                  v-if="selectedExamInfo.fileType === 'quiz'"
+                  v-if="examQuestion.uploadType === 'quiz'"
                   class="questions_section"
                 >
                   <!-- 왼쪽문제들 -->

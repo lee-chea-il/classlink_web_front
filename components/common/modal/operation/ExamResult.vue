@@ -27,9 +27,9 @@
                     {{ selectedExamInfo.course }}
                     레슨{{ selectedExamInfo.lesson }}
                     {{
-                      selectedExamInfo.fileType === 'quiz'
+                      examQuestion.uploadType === 'quiz'
                         ? '퀴즈'
-                        : selectedExamInfo.fileType === 'test'
+                        : examQuestion.uploadType === 'test'
                         ? '쪽지시험'
                         : ''
                     }}
@@ -38,14 +38,14 @@
                   <div class="date">{{ selectedExamInfo.date }}</div>
                 </div>
                 <div
-                  v-if="selectedExamInfo.fileType === 'quiz'"
+                  v-if="examQuestion.uploadType === 'quiz'"
                   class="questions_section"
                 >
                   <!-- 왼쪽문제들 -->
                   <div class="questions_area">
                     <!-- 문제 BOX(퀴즈)-->
                     <div
-                      v-for="(item, idx) in examQuestion.quizList.filter(
+                      v-for="(item, idx) in examQuestion?.quizList.filter(
                         (items) =>
                           items.id + 1 <=
                           Math.ceil(examQuestion.quizList.length / 2)
@@ -103,7 +103,7 @@
                   <div class="questions_area">
                     <!-- 문제 BOX(퀴즈)-->
                     <div
-                      v-for="(item, idx) in examQuestion.quizList.filter(
+                      v-for="(item, idx) in examQuestion.quizList?.filter(
                         (items) =>
                           items.id + 1 >
                           Math.ceil(examQuestion.quizList.length / 2)
@@ -360,10 +360,42 @@
                         </tr>
                       </thead>
                     </table>
-                    <div
-                      v-if="selectedExamInfo.fileType === 'test'"
-                      class="tbl_overflow"
-                    >
+
+                    <div v-if="examQuestion.uploadType === 'quiz'">
+                      <table class="table table-borderless">
+                        <!-- <colgroup>
+												<col width="20%">
+												<col width="35%">
+												<col width="45%">
+											</colgroup> -->
+                        <tbody>
+                          <tr
+                            v-for="(item, idx) in selectedExamInfo.examResult"
+                            :key="idx"
+                          >
+                            <td class="td01">{{ item.num }}</td>
+                            <td class="td02">
+                              {{
+                                item.check ===
+                                examQuestion?.quizList[idx].oxAnswer
+                                  ? 'O'
+                                  : 'X'
+                              }}
+                            </td>
+                            <td class="td03">
+                              <span>{{ item.check }}</span>
+                            </td>
+                          </tr>
+                          <!-- <tr>
+                          <td>2</td>
+                          <td>X</td>
+                          <td><span class="wrong">이순신</span></td>
+                        </tr> -->
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div v-else class="tbl_overflow">
                       <table class="table table-borderless">
                         <!-- <colgroup>
 												<col width="20%">
@@ -403,40 +435,6 @@
                                     : ''
                                 }}</span
                               >
-                            </td>
-                          </tr>
-                          <!-- <tr>
-                          <td>2</td>
-                          <td>X</td>
-                          <td><span class="wrong">이순신</span></td>
-                        </tr> -->
-                        </tbody>
-                      </table>
-                    </div>
-
-                    <div v-else>
-                      <table class="table table-borderless">
-                        <!-- <colgroup>
-												<col width="20%">
-												<col width="35%">
-												<col width="45%">
-											</colgroup> -->
-                        <tbody>
-                          <tr
-                            v-for="(item, idx) in selectedExamInfo.examResult"
-                            :key="idx"
-                          >
-                            <td class="td01">{{ item.num }}</td>
-                            <td class="td02">
-                              {{
-                                item.check ===
-                                examQuestion?.questionList[idx].oxAnswer
-                                  ? 'O'
-                                  : 'X'
-                              }}
-                            </td>
-                            <td class="td03">
-                              <span>{{ item.check }}</span>
                             </td>
                           </tr>
                           <!-- <tr>

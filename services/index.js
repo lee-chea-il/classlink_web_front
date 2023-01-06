@@ -9,6 +9,7 @@ import apiOperation from './apiOperation'
 import apiLecture from './apiLecture'
 import apiLeaningBox from './apiLearningBox'
 import apiClassCurriculum from './apiClassCurriculum'
+import apiNotice from './apiNotice'
 
 export {
   api,
@@ -22,4 +23,5 @@ export {
   apiLecture,
   apiLeaningBox,
   apiClassCurriculum,
+  apiNotice,
 }

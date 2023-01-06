@@ -12,31 +12,33 @@
             {{ sortChange }}
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" @click="$emit('select-sort', 1)">최신순</a>
-            <a class="dropdown-item" @click="$emit('select-sort', 2)"
+            <a class="dropdown-item" @click="$emit('select-sort', $event)"
               >조회 높은 순</a
             >
-            <a class="dropdown-item" @click="$emit('select-sort', 3)">이름순</a>
+            <a class="dropdown-item" @click="$emit('select-sort', $event)"
+              >최신순</a
+            >
+            <a class="dropdown-item" @click="$emit('select-sort', $event)"
+              >이름순</a
+            >
           </div>
         </div>
+        <!-- <button class="btn btn_crud_danger">삭제</button> -->
       </div>
       <div class="right_area">
         <div class="input-group input-search form-inline form-search">
           <input
-            v-model="syncSearchText"
             type="text"
             class="form-control"
             placeholder="제목, 내용, 작성자 검색"
-            @keyup.enter="$emit('search-notice')"
           />
           <div class="input-group-append">
-            <button
-              class="btn icons_search_off"
-              type="button"
-              @click="$emit('search-notice')"
-            ></button>
+            <button class="btn icons_search_off" type="button"></button>
           </div>
         </div>
+        <!-- <a href="(완)공지사항-등록.html" class="btn btn_crud_point">
+                등록
+              </a> -->
       </div>
     </div>
     <!-- /.검색 영역 -->
@@ -54,10 +56,8 @@
               <div class="custom-control custom-checkbox form-inline">
                 <input
                   id="chkAll"
-                  :checked="allCheck"
                   type="checkbox"
                   class="custom-control-input"
-                  @input="$emit('click-allcheck')"
                 />
                 <label class="custom-control-label" for="chkAll"></label>
               </div>
@@ -85,57 +85,39 @@
             <td>
               <div class="custom-control custom-checkbox form-inline">
                 <input
-                  :id="`${idx}`"
+                  :id="`${item.id}`"
                   type="checkbox"
                   class="custom-control-input"
-                  :checked="checkList.includes(item.brd_idx)"
-                  @input="$emit('click-checkbox', item.brd_idx)"
                 />
-                <label class="custom-control-label" :for="`${idx}`"></label>
+                <label class="custom-control-label" :for="`${item.id}`"></label>
               </div>
             </td>
-            <td class="word">{{ item.brd_title }}</td>
+            <td class="word">{{ item.attributes.title }}</td>
             <td>
               <span
                 class="state"
-                :class="{
-                  warning: setFilterStatus(
-                    item?.brd_time_sdate.substr(0, 10),
-                    item?.brd_time_edate.substr(0, 10)
-                  )?.includes('D-'),
-                }"
+                :class="{ warning: item.attributes.state.includes('D-') }"
+                >{{ item.attributes.state }}</span
               >
-                {{
-                  setFilterStatus(
-                    item.brd_time_sdate.substr(0, 10),
-                    item.brd_time_edate.substr(0, 10)
-                  )
-                }}
-              </span>
             </td>
             <td>
               <span class="date">
-                {{ item.brd_time_sdate.replaceAll('-', '.').substr(0, 10) }} -
-                {{ item.brd_time_edate.replaceAll('-', '.').substr(0, 10)
-                }}<br />
-                {{ item.brd_time_stime }} -
-                {{ item.brd_time_etime }}
+                {{ item.attributes.deadline.startDate }} -
+                {{ item.attributes.deadline.endDate }}<br />
+                {{ item.attributes.deadline.startTime }} -
+                {{ item.attributes.deadline.endTime }}
               </span>
             </td>
-            <td>{{ item.mem_name }}</td>
-            <td>전체</td>
-            <td>
-              {{
-                item.brd_registration_date.replaceAll('-', '.').substr(0, 10)
-              }}
-            </td>
-            <td>{{ item.brd_view_cnt }}</td>
+            <td>{{ item.attributes.writer }}</td>
+            <td>{{ item.attributes.target }}</td>
+            <td>{{ item.attributes.createdAt }}</td>
+            <td>{{ item.attributes.view_count }}</td>
             <td>
               <button
                 id="btnExpand cursor"
                 class="btn icons_arrow_dn btn_expand"
                 :class="{ up: open_detail.includes(idx) }"
-                @click="$emit('click-showContent', idx)"
+                @click="$emit('open-content', idx)"
               ></button>
             </td>
           </tr>
@@ -154,40 +136,48 @@
               </div>
               <div class="file_name">컴플레인 응대 매뉴얼.hwp</div>
               <div class="notice_contents">
-                {{ item.brd_content }}
+                {{ item.attributes.content }}
               </div>
               <div class="functional_area">
                 <div class="thumbnail_area">
-                  <!-- <div
-                          class="thumbnail"
-                          style="
-                            background-image: url('../images/sample_teacher.jpg');
-                          "
-                        ></div> -->
-                  <div
-                    v-for="(items, id) in 10"
-                    :key="id"
-                    class="thumbnail"
-                  ></div>
-                  <!-- <div class="thumbnail"></div>
-												<div class="thumbnail"></div>
-												<div class="thumbnail"></div>
-												<div class="thumbnail"></div> -->
+                  <div class="thumbnail"></div>
+                  <div class="thumbnail"></div>
+                  <div class="thumbnail"></div>
+                  <div class="thumbnail"></div>
+                  <div class="thumbnail"></div>
+                  <div class="thumbnail"></div>
+                  <div class="thumbnail"></div>
+                  <div class="thumbnail"></div>
+                  <div class="thumbnail"></div>
+                  <div class="thumbnail"></div>
                   <div class="thumbnail">
                     <div class="more_cover">+3</div>
                   </div>
                 </div>
                 <div class="btns_area">
+                  <!-- <a
+                          href="(완)공지사항-등록.html"
+                          class="btn btn_crud_default"
+                          >수정</a
+                        > -->
                   <button
                     class="btn btn_crud_default"
-                    @click="$emit('open-noticeDetail', item)"
+                    @click="$emit('open-noticeDetail', item.attributes)"
                   >
                     상세
                   </button>
+                  <!-- <button
+                          class="btn btn_crud_default"
+                          data-toggle="modal"
+                          data-target="#modalNoticeConfirm"
+                        >
+                          컨펌체크
+                        </button> -->
                 </div>
               </div>
             </td>
           </tr>
+          <!-- /.상세 tr -->
         </tbody>
       </table>
     </div>
@@ -197,17 +187,17 @@
       <nav aria-label="Page navigation example">
         <ul class="pagination">
           <li class="page-item">
-            <a class="page-link">
+            <a class="page-link" href="#">
               <span class="previous"></span>
             </a>
           </li>
-          <li v-for="(item, idx) in endPage" :key="idx" class="page-item">
-            <a class="page-link" :class="{ active: item === currentPage }">{{
-              item
-            }}</a>
-          </li>
           <li class="page-item">
-            <a class="page-link">
+            <a class="page-link active" href="#">1</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#">
               <span class="next"></span>
             </a>
           </li>
@@ -220,19 +210,11 @@
 
 <script>
 export default {
-  name: 'AllNoticeListBox',
+  name: 'FranchiseNoticeListBox',
   props: {
     sortChange: {
       type: String,
       default: '',
-    },
-    searchText: {
-      type: String,
-      default: '',
-    },
-    allCheck: {
-      type: Boolean,
-      default: false,
     },
     noticeList: {
       type: Array,
@@ -241,36 +223,6 @@ export default {
     open_detail: {
       type: Array,
       default: () => [],
-    },
-    checkList: {
-      type: Array,
-      default: () => [],
-    },
-    endPage: {
-      type: Number,
-      default: 1,
-    },
-    currentPage: {
-      type: Number,
-      default: 1,
-    },
-    setFilterStatus: {
-      type: Function,
-      default: () => {},
-    },
-    beforeExpire: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  computed: {
-    syncSearchText: {
-      get() {
-        return this.searchText
-      },
-      set(value) {
-        this.$emit('update:searchText', value)
-      },
     },
   },
 }

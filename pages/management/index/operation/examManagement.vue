@@ -638,7 +638,6 @@ export default {
     filterSelectRange(e) {
       this.filterRange.start = e.start
       this.filterRange.end = e.end
-      // console.log(this.range)
     },
     filterOpenDatePickerModalDesc() {
       this.filterDatePickerModalDesc.open = true
@@ -718,7 +717,6 @@ export default {
       } else {
         this.tagList.studentList = []
       }
-      console.log(this.tagList.classList)
     },
     onClickTagList(text, title, e) {
       if (title === 'classList') {
@@ -727,7 +725,6 @@ export default {
             (item) => item !== text
           )
         } else {
-          console.log(text)
           this.tagList.classList.push(text)
           if (this.tagList.classList.length === this.filterList.class.length) {
             this.tagList.classList = []
@@ -740,7 +737,6 @@ export default {
             (item) => item !== text
           )
         } else {
-          console.log(text)
           this.tagList.subjectList.push(text)
           if (
             this.tagList.subjectList.length === this.filterList.subject.length
@@ -755,7 +751,6 @@ export default {
             (item) => item !== text
           )
         } else {
-          console.log(text)
           this.tagList.courseList.push(text)
           if (
             this.tagList.courseList.length === this.filterList.course.length
@@ -770,7 +765,6 @@ export default {
             (item) => item !== text
           )
         } else {
-          console.log(text)
           this.tagList.examList.push(text)
           if (this.tagList.examList.length === this.filterList.exam.length) {
             this.tagList.examList = []
@@ -783,7 +777,6 @@ export default {
             (item) => item !== text
           )
         } else {
-          console.log(text)
           this.tagList.studentList.push(text)
           if (
             this.tagList.studentList.length === this.filterList.student.length
@@ -793,11 +786,6 @@ export default {
           }
         }
       }
-      console.log(
-        this.tagList.subjectList.length,
-        this.filterList.subject.length
-      )
-      console.log(this.tagList)
     },
     onClickAddFilterTag() {
       if (
@@ -839,7 +827,6 @@ export default {
     // 문제 정답 여부
     onSettingClassAnswer(answer, id, idx) {
       let result = ''
-      console.log(answer, id)
       if (answer === id) {
         result = 'blue'
       } else if (
@@ -853,9 +840,6 @@ export default {
       } else {
         result = 'red'
       }
-
-      console.log('result', result)
-      console.log('props', answer, id, idx)
       return result
     },
 

@@ -666,6 +666,9 @@ export default {
       // 선생님 선택
       tchIdx: 0,
 
+      // 필터 상태
+      filterStatus: false,
+
       // 검색
       searchText: '',
       detailSearch: '',
@@ -843,18 +846,7 @@ export default {
       this.orderList = order_list
     },
     onDrop(evt) {
-      console.log(evt.moved)
-      console.log(
-        'csm_idx',
-        evt.moved.element.csm_idx,
-        'index',
-        this.classList.length - evt.moved.oldIndex,
-        'update_index',
-        this.classList.length - evt.moved.newIndex
-      )
-      console.log(this.classList)
-
-      if (evt.moved.oldIndex !== evt.moved.newIndex) {
+      if (evt.moved.oldIndex !== evt.moved.newIndex && !this.filterStatus) {
         this.putChangeOrder(
           evt.moved.element.csm_idx,
           this.classList.length - evt.moved.oldIndex,
@@ -882,17 +874,23 @@ export default {
           this.endPage = data.pageMaker.end_page
           this.next = data.pageMaker.next
           this.prev = data.pageMaker.prev
+          if (
+            this.searchText === '' &&
+            this.showCount === 1 &&
+            this.tchIdx === 0
+          ) {
+            this.filterStatus = false
+          } else {
+            this.filterStatus = true
+          }
 
           if (this.classListB.length === 0) {
-            this.getClassListCheck()
+            this.classListB = this.classList
           }
         })
         .catch((err) => {
           console.log(err)
         })
-    },
-    getClassListCheck() {
-      this.classListB = this.classList
     },
 
     // 반 목록 이동

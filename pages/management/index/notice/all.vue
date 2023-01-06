@@ -10,10 +10,14 @@
           :allCheck="allCheck"
           :noticeList="noticeList"
           :open_detail="open_detail"
+          :checkList="checkList"
+          :endPage="endPage"
+          :currentPage="currentPage"
+          :setFilterStatus="setFilterStatus"
           @select-sort="onSelectSort"
-          @notice-delete="onClickDelete"
-          @search-notice="onClickSearchNotice"
+          @search-notice="getAllNoticeList"
           @click-allcheck="onClickAllCheck"
+          @click-checkbox="onClickCheckBox"
           @click-showContent="onClickShowContent"
           @open-noticeDetail="onOpenNoticeDetailModal"
           @open-confirmCheck="onOpenNoticeConfirmCheckModal"
@@ -21,17 +25,10 @@
       </div>
     </div>
 
-    <ShowNoticeConfirmCheck
-      :show="openNoticeConfirmCheckModal.open"
-      :data="openNoticeConfirmCheckModal.data"
-      :openConfirmFilter="open_confirmFilter"
-      @onClickConfirm="onClickConfirm"
-      @filter-radio="onClickConfirmRadio"
-      @close="onCloseNoticeConfirmCheckModal"
-    />
     <ShowNoticeDetailModal
       :show="openNoticeDetailModal.open"
       :data="openNoticeDetailModal.data"
+      :setFilterStatus="setFilterStatus"
       @close="onCloseNoticeDetailModal"
     />
     <ModalDesc
@@ -50,242 +47,56 @@
 import AllNoticeListBox from '@/components/notice/AllNoticeListBox.vue'
 import CustomPageHeader from '~/components/notice/CustomPageHeader.vue'
 import ShowNoticeDetailModal from '~/components/common/modal/notice/ShowNoticeDetailModal.vue'
-import ShowNoticeConfirmCheck from '~/components/common/modal/notice/ShowNoticeConfirmCheck.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 import CustomSnackbar from '@/components/common/CustomSnackbar.vue'
+import { apiNotice } from '~/services'
 export default {
   name: 'All',
   components: {
     AllNoticeListBox,
     CustomPageHeader,
     ShowNoticeDetailModal,
-    ShowNoticeConfirmCheck,
     ModalDesc,
     CustomSnackbar,
   },
   data() {
     return {
-      sortChange: '조회 높은 순',
-      pageNumberList: 3,
+      sortChange: '최신순',
+      sortFilter: 1,
+
+      endPage: 3,
       currentPage: 1,
-      notice: [
+
+      // 공지사항 리스트
+      noticeList: [
         {
-          id: 1,
-          attributes: {
-            title: '컴플레인 이슈사항 공지드립니다.',
-            state: 'D-1',
-            deadline: {
-              startDate: '2022.06.06',
-              startTime: '오전 09:00',
-              endDate: '2022.08.05',
-              endTime: '오후 11:59',
-            },
-            writer: '홍길동',
-            target: '전체',
-            content:
-              '안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다.  안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다. 안녕하십니까? 홍길동 학원장입니다. 컴플레인 관련 이슈사항 공지드립니다.',
-            createdAt: '2022-08-01',
-            view_count: 222,
-            confirmSearchRadio: 0,
-            check: false,
-            student: [
-              {
-                name: '홍길동',
-                class: '영어심화A',
-              },
-              {
-                name: '강희진',
-                class: '영어심화A',
-              },
-              {
-                name: '전미진',
-                class: '영어심화A',
-              },
-              {
-                name: '홍길동',
-                class: '영어심화A',
-              },
-            ],
-          },
-        },
-        {
-          id: 2,
-          attributes: {
-            title: '지속적인 컴플레인이 공유드립니다.​',
-            state: 'D-2',
-            deadline: {
-              startDate: '2022.06.06',
-              startTime: '오전 09:00',
-              endDate: '2022.08.25',
-              endTime: '오후 11:59',
-            },
-            writer: '강희진',
-            target: '전체',
-            content: '안녕하십니까? 학원장입니다.',
-            createdAt: '2022-08-01',
-            view_count: 87,
-            confirmSearchRadio: 0,
-            check: false,
-            student: [
-              {
-                name: '홍길동',
-                class: '영어심화A',
-              },
-              {
-                name: '강희진',
-                class: '영어심화A',
-              },
-              {
-                name: '전미진',
-                class: '영어심화A',
-              },
-              {
-                name: '홍길동',
-                class: '영어심화A',
-              },
-            ],
-          },
-        },
-        {
-          id: 3,
-          attributes: {
-            title: '컴플레인 이슈사항 공지드립니다.',
-            state: 'D-1',
-            deadline: {
-              startDate: '2022.06.06',
-              startTime: '오전 09:00',
-              endDate: '2022.08.25',
-              endTime: '오후 11:59',
-            },
-            writer: '홍길동',
-            target: '전체',
-            content: '안녕하십니까? 홍길동 학원장입니다.',
-            createdAt: '2022-08-15',
-            view_count: 57,
-            confirmSearchRadio: 0,
-            check: false,
-            student: [
-              {
-                name: '홍길동',
-                class: '영어심화C',
-              },
-              {
-                name: '강희진',
-                class: '영어심화A',
-              },
-              {
-                name: '전미진',
-                class: '영어심화B',
-              },
-              {
-                name: '홍길동',
-                class: '영어심화A',
-              },
-            ],
-          },
-        },
-        {
-          id: 4,
-          attributes: {
-            title: '지속적인 컴플레인이 공유드립니다.​',
-            state: 'D-3',
-            deadline: {
-              startDate: '2022.06.06',
-              startTime: '오전 09:00',
-              endDate: '2022.08.25',
-              endTime: '오후 11:59',
-            },
-            writer: '전미진',
-            target: '전체',
-            content: '안녕하십니까? 홍길동 학원장입니다.',
-            createdAt: '2022-09-24',
-            view_count: 3,
-            confirmSearchRadio: 0,
-            check: false,
-            student: [
-              {
-                name: '홍길동',
-                class: '영어심화A',
-              },
-              {
-                name: '강희진',
-                class: '영어심화A',
-              },
-              {
-                name: '전미진',
-                class: '영어심화A',
-              },
-              {
-                name: '홍길동',
-                class: '영어심화A',
-              },
-            ],
-          },
-        },
-        {
-          id: 5,
-          attributes: {
-            title: '컴플레인 이슈사항 공지드립니다.',
-            state: '준비중',
-            deadline: {
-              startDate: '2022.06.06',
-              startTime: '오전 09:00',
-              endDate: '2022.08.25',
-              endTime: '오후 11:59',
-            },
-            writer: '심화A',
-            target: '전체',
-            content: '안녕하십니까? 홍길동 학원장입니다.',
-            createdAt: '2022-12-01',
-            view_count: 16,
-            confirmSearchRadio: 0,
-            check: false,
-            student: [
-              {
-                name: '홍길동',
-                class: '영어심화A',
-              },
-              {
-                name: '강희진',
-                class: '영어심화A',
-              },
-              {
-                name: '전미진',
-                class: '영어심화A',
-              },
-              {
-                name: '홍길동',
-                class: '영어심화A',
-              },
-            ],
-          },
+          brd_time_sdate: '',
+          brd_time_edate: '',
+          brd_registration_date: '',
+          brd_view_cnt: 0,
+          mem_name: '',
         },
       ],
-
-      noticeList: [],
-      selectNoticeList: [],
+      // 리스트 검색
       searchText: '',
-      searchKeyword: '',
+      // 체크박스 전체 선택
       allCheck: false,
+      checkList: [],
       open_detail: [],
       open_confirmFilter: 0,
 
-      openNoticeConfirmCheckModal: {
-        open: false,
-        data: {
-          confirmFilter: false,
-        },
-      },
       openNoticeDetailModal: {
         open: false,
         data: {},
       },
 
+      // 스낵바
       openSnackbar: {
         open: false,
       },
       message: '',
 
+      // 모달
       modalDesc: {
         open: false,
         title: '',
@@ -294,13 +105,112 @@ export default {
     }
   },
   watch: {
-    // allCheck: 'onClickAllCheck',
-    noticeList: 'check',
-  },
-  mounted() {
-    this.noticeList = this.notice
+    currentPage: {
+      handler() {
+        this.getAllNoticeList()
+      },
+      immediate: true,
+    },
+    sortFilter: {
+      handler() {
+        this.getAllNoticeList()
+      },
+      immediate: false,
+    },
   },
   methods: {
+    // 공지사항 전체 api
+    async getAllNoticeList() {
+      const payload = {
+        current_page: `?current_page=${this.currentPage}`,
+        filter: this.sortFilter === 1 ? '' : `&filter=${this.sortFilter}`,
+        keyword: this.searchText === '' ? '' : `&keyword=${this.searchText}`,
+      }
+
+      await apiNotice
+        .getAllNoticeList(payload)
+        .then(({ data: { data } }) => {
+          this.noticeList = data.listAll
+          this.endPage = data.pageMaker.end_page
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 상태 필터
+    setFilterStatus(sdate, edate) {
+      if (new Date() < new Date(sdate)) {
+        return '준비중'
+      } else if (
+        Math.floor(
+          (new Date().getTime() - new Date(edate).getTime()) /
+            (1000 * 60 * 60 * 24)
+        ) >= -3
+      ) {
+        return `D${Math.floor(
+          (new Date().getTime() - new Date(edate).getTime()) /
+            (1000 * 60 * 60 * 24)
+        )}`
+      } else if (new Date() > new Date(edate)) {
+        return '만료'
+      }
+    },
+
+    // 정렬
+    onSelectSort(num) {
+      if (num === 1) {
+        this.sortChange = '최신순'
+      } else if (num === 2) {
+        this.sortChange = '조회 높은 순'
+      } else {
+        this.sortChange = '이름순'
+      }
+      this.sortFilter = num
+    },
+
+    // 컨펌체크 필터 검색
+    onClickSearchKeyword() {
+      if (this.student.name === '') {
+        this.noticeList.student = this.notice.student
+      } else if (this.student.name.length === 1) {
+        return false
+      } else {
+        this.noticeList.student = this.notice.student.filter((elem) => {
+          return elem.attributes.student.includes(this.searchKeyword)
+        })
+      }
+    },
+
+    // 체크박스 모두 선택
+    onClickAllCheck() {
+      if (!this.allCheck) {
+        this.checkList = []
+        for (let i = 0; i < this.noticeList.length; i++) {
+          this.checkList.push(this.noticeList[i].brd_idx)
+        }
+        this.allCheck = true
+      } else {
+        this.checkList = []
+        this.allCheck = false
+      }
+      console.log(this.checkList)
+    },
+    // 공지사항 삭제
+    onClickCheckBox(idx) {
+      if (this.checkList.includes(idx)) {
+        this.checkList = this.checkList.filter((item) => item !== idx)
+        if (this.checkList.length !== this.noticeList.length) {
+          this.allCheck = false
+        }
+      } else {
+        this.checkList.push(idx)
+        if (this.checkList.length === this.noticeList.length) {
+          this.allCheck = true
+        }
+      }
+      console.log(this.checkList)
+    },
+
     // 스낵바
     onOpenSnackbar(text) {
       this.openSnackbar.open = true
@@ -337,6 +247,7 @@ export default {
 
     // 공지사항 상세 열기
     onOpenNoticeDetailModal(data) {
+      console.log(data)
       this.openNoticeDetailModal.open = true
       this.openNoticeDetailModal.data = data
     },
@@ -353,144 +264,6 @@ export default {
         this.open_detail.push(idx)
       }
     },
-
-    // 컨펌체크 필터 열기 닫기
-    onClickConfirm() {
-      if (this.open_confirmFilter === 0) {
-        this.open_confirmFilter = 1
-      } else {
-        this.open_confirmFilter = 0
-      }
-    },
-
-    // 정렬
-    onSelectSort(e) {
-      if (e.target.innerText === '조회 높은 순') {
-        this.sortChange = '조회 높은 순'
-        this.noticeList = this.noticeList.sort((a, b) => {
-          return b.attributes.view_count - a.attributes.view_count
-        })
-      } else if (e.target.innerText === '최신순') {
-        this.sortChange = '최신순'
-        this.noticeList = this.noticeList.sort(
-          (a, b) =>
-            new Date(b.attributes.createdAt) - new Date(a.attributes.createdAt)
-        )
-      } else {
-        this.sortChange = '이름순'
-        this.noticeList = this.noticeList.sort((a, b) => {
-          if (a.attributes.writer > b.attributes.writer) return 1
-          if (a.attributes.writer < b.attributes.writer) return -1
-          return 0
-        })
-      }
-    },
-
-    // 공지사항 검색
-    onClickSearchNotice() {
-      if (this.searchText.length < 2) {
-        this.openModalDesc('검색 실패', '검색어는 2글자 이상 입력해주세요.')
-      } else {
-        const result = this.notice.filter((elem) => {
-          return (
-            elem.attributes.title.includes(this.searchText) ||
-            elem.attributes.content.includes(this.searchText) ||
-            elem.attributes.writer.includes(this.searchText)
-          )
-        })
-        if (result.length === 0) {
-          this.openModalDesc('검색 실패', '일치하는 공지사항이 없습니다.')
-          return false
-        } else {
-          this.noticeList = result
-        }
-      }
-    },
-
-    // 컨펌체크 필터 검색
-    onClickSearchKeyword() {
-      if (this.student.name === '') {
-        this.noticeList.student = this.notice.student
-      } else if (this.student.name.length === 1) {
-        return false
-      } else {
-        this.noticeList.student = this.notice.student.filter((elem) => {
-          return elem.attributes.student.includes(this.searchKeyword)
-        })
-      }
-    },
-
-    // 체크박스 모두 선택
-    onClickAllCheck() {
-      if (!this.allCheck) {
-        this.selectNoticeList.splice(0, 10)
-        for (let i = 0; i < this.noticeList.length; i++) {
-          this.noticeList[i].attributes.check = true
-          this.selectNoticeList.push(i)
-        }
-      } else {
-        for (let i = 0; i < this.noticeList.length; i++) {
-          this.noticeList[i].attributes.check = false
-          this.selectNoticeList.pop()
-        }
-      }
-      console.log(this.selectNoticeList)
-    },
-    // 공지사항 삭제
-    onClickCheckBox(data) {
-      if (data.attributes.check) {
-        data.attributes.check = false
-        this.selectNoticeList = this.selectNoticeList.filter(
-          (item) => item !== data.id - 1
-        )
-        if (this.selectNoticeList.length !== 5) {
-          this.allCheck = false
-        }
-      } else {
-        data.attributes.check = true
-        this.selectNoticeList.push(data.id - 1)
-        if (this.selectNoticeList.length === 5) {
-          this.allCheck = true
-        }
-      }
-      console.log(this.selectNoticeList)
-      // if (this.noticeList[id - 1].attributes.check) {
-      //   this.noticeList[id - 1].attributes.check = false
-      //   this.selectNoticeList = this.selectNoticeList.filter((item) => item !== )
-      // } else {
-      //   this.noticeList[id - 1].attributes.check = true
-      //   this.selectNoticeList.push(id - 1)
-      // }
-    },
-
-    check() {
-      if (this.selectNoticeList.length === 5) {
-        this.allCheck = true
-      } else {
-        this.allCheck = false
-      }
-    },
-
-    onClickDelete() {
-      console.log(this.selectNoticeList.length)
-      if (this.selectNoticeList.length === 0) {
-        this.onOpenSnackbar('공지사항을 선택해주세요.')
-        setTimeout(() => {
-          this.onCloseSnackbar()
-        }, 2000)
-      }
-    },
-
-    // 컨펌체크 필터 반, 학생 선택
-    onClickConfirmRadio({ target: { id } }, data) {
-      // console.log(id)
-      if (id === 'radio01') {
-        data.confirmSearchRadio = 0
-      } else if (id === 'radio02') {
-        data.confirmSearchRadio = 1
-      }
-      // console.log(this.noticeList)
-    },
   },
 }
 </script>
@@ -500,7 +273,7 @@ export default {
   border-top: 0;
 }
 .word {
-  max-width: 525px;
+  max-width: 250px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
