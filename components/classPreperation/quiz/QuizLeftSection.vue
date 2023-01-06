@@ -26,14 +26,8 @@ export default {
   name: 'QuizLeftSection',
   components: { PageNumberList, PaginationBox, QuizEditorField },
   props: {
-    currentIdx: {
-      type: Number,
-      default: 0,
-    },
-    quizList: {
-      type: Array,
-      default: () => [],
-    },
+    currentIdx: { type: Number, default: 0 },
+    quizList: { type: Array, default: () => [] },
   },
   methods: {
     setPagination(e, idx) {

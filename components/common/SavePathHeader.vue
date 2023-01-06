@@ -1,6 +1,6 @@
 <template>
   <ul id="myTab" class="nav nav-tabs" role="tablist">
-    <li class="nav-item" role="presentation">
+    <li v-if="idType" class="nav-item" role="presentation">
       <button
         id="grade-tab"
         class="nav-link active"
@@ -14,7 +14,7 @@
         교육기관
       </button>
     </li>
-    <li class="nav-item" role="presentation">
+    <li v-if="identity !== 'institution'" class="nav-item" role="presentation">
       <button
         id="class-tab"
         class="nav-link"
@@ -28,7 +28,7 @@
         프랜차이즈
       </button>
     </li>
-    <li class="nav-item" role="presentation">
+    <li v-if="myType" class="nav-item" role="presentation">
       <button
         id="class-tab"
         class="nav-link"
@@ -48,6 +48,11 @@
 <script>
 export default {
   name: 'SavePathHeader',
+  props: {
+    identity: { type: String, default: '' },
+    idType: { type: Boolean, default: false },
+    myType: { type: Boolean, default: false },
+  },
 }
 </script>
 

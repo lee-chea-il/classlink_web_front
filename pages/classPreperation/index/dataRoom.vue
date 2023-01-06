@@ -6,15 +6,15 @@
       <div class="tab-pane active">
         <!-- 컨트롤 버튼 영역 -->
         <MainBtnBox
-          :value="searchData.word"
           pageType="reference"
+          :value="searchData.word"
+          @copy="copyData"
+          @change-word="changeSearchData"
+          @delete="delData"
           @open-filter="openFilterModal"
           @open-search-list="openSearchListModal"
-          @change-word="changeSearchData"
-          @copy="copyData"
           @paste="pasteData"
-          @delete="delData"
-          @open-add="openSelectReferenceType"
+          @set-create="setCreateModalTitle"
         />
         <!-- /.컨트롤 버튼 영역 -->
 
@@ -22,21 +22,21 @@
         <TreeSection
           ref="mainEducation"
           pageType="reference"
-          :identity="identity"
-          :insData="institutionData"
           :franchiseData="franchiseData"
           :myData="myData"
           :openData="openData"
-          @open-data="onClickView"
+          :identity="identity"
+          :insData="institutionData"
           @copyDataCallBack="copyDataCallBack"
-          @download-data="downloadSelectData"
-          @update-data="updateSelectData"
-          @get-savepath="getSavePath"
           @delete-data="deleteMoreMenuBtn"
+          @download-data="downloadSelectData"
+          @get-savepath="getSavePath"
+          @open-data="onClickView"
           @tree-view-id="getInsTreeViewList"
           @tree-view-fd="getFranTreeViewList"
           @tree-view-od="getPublicTreeViewList"
           @tree-view-md="getMyTreeViewList"
+          @update-data="updateSelectData"
         />
         <!-- /.2단 분류 컨텐츠 -->
       </div>
@@ -62,27 +62,27 @@
     <AddReferenceModal
       :open="isReferenceAddModal"
       :modalTitle="modalTitle"
-      :reference="referenceData"
       :pushKeyword="pushKeyword"
+      :reference="referenceData"
       :uploadInfo="uploadInfo"
-      @change-keyword="changePushKeyword"
+      @change-file="changeFile"
       @change-input="onChangeUploadFile"
+      @change-keyword="changePushKeyword"
+      @change-submit="updateDataroomFile"
       @close="onCloseReferenceAddModal"
-      @set-keyword="setKeyword"
       @delete-keyword="deleteKeyword"
       @open-save-path="onOpenSavePathModal"
+      @set-keyword="setKeyword"
       @submit="postDataroomFile"
-      @change-submit="updateDataroomFile"
-      @change-file="changeFile"
     />
 
     <!-- 퀴즈 등록 -->
     <AddQuizModal
       :open="isQuizAddModal"
+      :currentPageIdx="currentPageIdx"
       :modalTitle="modalTitle"
       :reference="referenceData"
       :quizList="referenceData.quiz_asks"
-      :currentPageIdx="currentPageIdx"
       :pushKeyword="pushKeyword"
       :uploadInfo="uploadInfo"
       @change-number="onClickPagination"
@@ -142,7 +142,7 @@
       @reference-change="onOpenReferenceChangeModal"
       @view-url="onOpenShareViewModal"
       @delete="openSelectModal"
-      @open-save-path="onOpenSavePathModal"
+      @open-save-path="openMovePathModal"
     />
     <!-- 일반용 -->
     <!-- 일반용 -->
@@ -170,7 +170,7 @@
       @preview="onOpenQuizPreviewModal"
       @view-url="onOpenShareViewModal"
       @delete="openSelectModal"
-      @open-save-path="onOpenSavePathModal"
+      @open-save-path="openMovePathModal"
       @export-pdf="exportPdf"
     />
 
@@ -197,7 +197,7 @@
       @preview="onOpenNoteTestPreviewModal"
       @view-url="onOpenShareViewModal"
       @delete="openSelectModal"
-      @open-save-path="onOpenSavePathModal"
+      @open-save-path="openMovePathModal"
       @export-pdf="exportPdf"
     />
 
@@ -236,13 +236,29 @@
 
     <!-- 저장경로 설정 -->
     <SavePathModal
-      ref="savepathRef"
+      :identity="identity"
       :open="isSavePathModal.open"
       :institutionData="treeInstitutionData"
       :franchiseData="treeFranchiseData"
       :myData="treeMyData"
+      :tableType="selectDatatableType"
+      :modalTitle="modalTitle"
       @save-file-path="setSavePath"
       @close="onCloseSavePathModal"
+    />
+
+    <!-- 이동 모달 -->
+    <MovePathModal
+      :identity="identity"
+      :open="isMovePathModal.open"
+      :institutionData="moveInstitutionData"
+      :franchiseData="moveFranchiseData"
+      :dataInfo="referenceData"
+      :myData="moveMyData"
+      :tableType="selectDatatableType"
+      :modalTitle="modalTitle"
+      @move-data="postMoveData"
+      @close="closeMovePathModal"
     />
 
     <!-- 자료실 검색 필터 -->
@@ -317,6 +333,7 @@ import UploadVideoFileModal from '~/components/classPreperation/modal/UploadVide
 import initialState from '~/data/common/dataRoom/initialState'
 import { urlRegex, setNewArray, jsonItem } from '~/utiles/common'
 import { api, apiData } from '~/services'
+import MovePathModal from '~/components/common/modal/MovePathModal.vue'
 
 export default {
   name: 'ReferenceRoom',
@@ -346,13 +363,14 @@ export default {
     SelectReferenceModal,
     UploadYoutubeModal,
     UploadVideoFileModal,
+    MovePathModal,
   },
   data() {
     return initialState()
   },
   mounted() {
     this.identity = localStorage.getItem('identity')
-    const user = this.$store.state.common.user
+    const { user } = this.$store.state.common
     this.initReferenceData = {
       ...this.initReferenceData,
       ins_code: user.ins_code,
@@ -368,7 +386,7 @@ export default {
         this.getInsTreeViewList(),
         this.getFranTreeViewList(),
         this.getMyTreeViewList(),
-        // this.getPublicTreeViewList(),
+        this.getPublicTreeViewList(),
       ])
     },
 
@@ -380,6 +398,7 @@ export default {
           const newItem = jsonItem(data)
           this.institutionData = jsonItem(newItem)
           this.treeInstitutionData = jsonItem(newItem)
+          this.moveInstitutionData = jsonItem(newItem)
         })
         .catch((err) => {
           console.log(err)
@@ -394,6 +413,7 @@ export default {
           const newItem = jsonItem(data)
           this.franchiseData = jsonItem(newItem)
           this.treeFranchiseData = jsonItem(newItem)
+          this.moveFranchiseData = jsonItem(newItem)
         })
         .catch((err) => {
           console.log(err)
@@ -409,6 +429,7 @@ export default {
           const newItem = jsonItem(data)
           this.myData = jsonItem(newItem)
           this.treeMyData = jsonItem(newItem)
+          this.moveMyData = jsonItem(newItem)
           this.isLoading = false
         })
         .catch((err) => {
@@ -423,6 +444,7 @@ export default {
         .then(({ data: { data } }) => {
           this.openData = jsonItem(data)
           this.treeOpenData = jsonItem(data)
+          this.moveOpenData = jsonItem(data)
         })
         .catch((err) => {
           console.log(err)
@@ -439,6 +461,7 @@ export default {
         this.getMyTreeViewList()
       }
     },
+
     // 일반용
     // 일반용
     // 등록 자료 내용 변경
@@ -457,12 +480,9 @@ export default {
     // api 통신
     // 업로드 주소 가져오기
     async getServerUrl() {
-      // this.isLoading = true
       await apiData
         .getServerUrl()
-        .then(() => {
-          // this.isLoading = false
-        })
+        .then(() => {})
         .catch(() => {})
     },
 
@@ -732,10 +752,11 @@ export default {
           level: item.level,
           explain: item.explain,
           treeinfo_idx: item.treeinfo_idx,
+          correct_no: item.correct_no,
           note_exam_ask_views: item.note_exam_ask_views.map((data, i) => {
             return {
               question: data.question,
-              no: data.no,
+              no: i + 1,
             }
           }),
         }
@@ -757,6 +778,14 @@ export default {
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
         .catch(() => {})
+    },
+
+    // 파일 이동
+    async postMoveData({ datatable_type, parent_treeinfo_idx, treeinfo_idx }) {
+      const payload = { datatable_type, parent_treeinfo_idx, treeinfo_idx }
+      await apiData.postMoveData(payload).then(() => {
+        this.setUpdateTree(datatable_type)
+      })
     },
 
     // 파일 삭제
@@ -865,7 +894,7 @@ export default {
       this.referenceData = {
         ...this.referenceData,
         datatype: '04',
-        note_exam_asks: [{ ...this.testItem }],
+        note_exam_asks: [{ ...jsonItem(this.testItem) }],
       }
       this.isNoteTestAddModal = true
     },
@@ -1018,6 +1047,22 @@ export default {
       this[this.isSavePathModal.prevPage] = true
     },
 
+    // 이동 경로 모달
+    openMovePathModal(path) {
+      if (this[path]) {
+        this[path] = false
+      }
+      this.isMovePathModal = {
+        open: true,
+        prevPage: path,
+      }
+    },
+
+    closeMovePathModal() {
+      this.isMovePathModal.open = false
+      this[this.isMovePathModal.prevPage] = true
+    },
+
     // 필터 모달
     openFilterModal(path) {
       if (this.isSearchListModal) {
@@ -1055,14 +1100,8 @@ export default {
       this.modalTitle = str
     },
 
-    // 자료 선택 모달
-    openSelectReferenceType() {
-      this.setModalTitle('등록')
-      this.isSelectType = true
-    },
-
-    closeSelectReferenceType() {
-      this.isSelectType = false
+    setCreateModalTitle() {
+      this.modalTitle = '등록'
     },
 
     // 스넥바 오픈
@@ -1253,6 +1292,7 @@ export default {
     // 트리 저장경로 설정
     getSavePath(path) {
       this.deleteTreeIdx = path.treeViewId
+      this.selectDatatableType = path.type
       this.uploadInfo.saveFolderPath = path.path
     },
 
@@ -1288,7 +1328,6 @@ export default {
           title: files[0].name.replace('.mp4', ''),
           file_name: files[0].name,
           full_path: URL.createObjectURL(files[0]),
-          // datatable_type: 'ID',
           datatype: '01',
         }
         this.getFileSize(files[0].size)
@@ -1311,7 +1350,6 @@ export default {
           title: target.name.replace('.pdf', ''),
           file_name: target.name,
           full_path: URL.createObjectURL(files[0]),
-          // datatable_type: 'ID',
           datatype: '02',
         }
         this.getFileSize(files[0].size)
@@ -1340,7 +1378,6 @@ export default {
                 .replace(/\./, '')
                 .substring(0, 60),
               description: item.snippet.localized.description.substring(0, 100),
-              // datatable_type: 'ID',
               datatype: '05',
               full_path: `//www.youtube.com/embed/${youtubeUrl}`,
               file: `//www.youtube.com/embed/${youtubeUrl}`,
@@ -1370,9 +1407,8 @@ export default {
       if (isTest) {
         this.referenceData = {
           ...this.referenceData,
-          name: url,
+          title: url,
           file_name: url,
-          // datatable_type: 'ID',
           datatype: '06',
           full_path: url,
           file: url,
@@ -1396,7 +1432,6 @@ export default {
           title: files[0].name,
           full_path: URL.createObjectURL(files[0]),
           file_name: files[0].name,
-          // datatable_type: 'ID',
           datatype: name,
         }
       }
@@ -1512,11 +1547,14 @@ export default {
       const isLength = len <= 19
       const setId = len + 1
       this.currentPageIdx = len
-      const newExam = this.referenceData.note_exam_asks.map((item, idx) => {
+      const newExam = target.note_exam_asks.map((item, idx) => {
         return { ...item, no: idx + 1 }
       })
       if (isLength) {
-        target.note_exam_asks = [...newExam, { ...this.testItem, no: setId }]
+        target.note_exam_asks = [
+          ...newExam,
+          { ...jsonItem(this.testItem), no: setId },
+        ]
         this.focusEditorField()
       }
     },
@@ -1545,15 +1583,19 @@ export default {
 
     // 쪽지시험 예제 추가
     plusExampleList(idx) {
-      const item = this.referenceData.note_exam_asks[idx].note_exam_ask_views
-      const id = item.length + 1
+      const target = this.referenceData.note_exam_asks[idx].note_exam_ask_views
+      const id = target.length + 1
       const example = { no: id, question: '' }
-      this.referenceData.note_exam_asks[idx].note_exam_ask_views.push(example)
-      this.referenceData.note_exam_asks[idx].note_exam_ask_views = item.map(
-        (ask, i) => {
-          return { ...ask, no: i + 1 }
-        }
-      )
+      this.referenceData.note_exam_asks[idx].note_exam_ask_views = {
+        ...target,
+        example,
+      }
+      // this.referenceData.note_exam_asks[idx].note_exam_ask_views =
+      //   this.referenceData.note_exam_asks[idx].note_exam_ask_views.map(
+      //     (ask, i) => {
+      //       return { ...ask, no: i + 1 }
+      //     }
+      //   )
     },
 
     // 쪽지시험 예제 제거
@@ -1606,14 +1648,15 @@ export default {
 
     copyDataCallBack(copyData) {
       this.copyCheckData = copyData
-      console.log("this.copyCheckData   "+this.copyCheckData)
+      console.log('this.copyCheckData   ' + this.copyCheckData)
     },
 
     pasteData() {
-      const parentIdxList = this.$refs.mainEducation.$refs.myData.$refs.mydata.checkPastePosition()
-      this.copyCheckData.pasteParentIdxs=parentIdxList
-      console.log("this.parentIdxList   "+JSON.stringify(this.copyCheckData))
-      
+      const parentIdxList =
+        this.$refs.mainEducation.$refs.myData.$refs.mydata.checkPastePosition()
+      this.copyCheckData.pasteParentIdxs = parentIdxList
+      console.log('this.parentIdxList   ' + JSON.stringify(this.copyCheckData))
+
       // console.log("this.pasteData   "+this.copyCheckData)
       /* this.$refs.mainEducation.$refs.myData.$refs.mydata.pasteData(
         this.copyCheckData

@@ -62,7 +62,7 @@ export default {
   .write_area
   .edit_area {
   height: 100%;
-  min-height: 275px;
+  min-height: 285px;
   max-height: 330px !important;
   overflow: scroll !important;
 }

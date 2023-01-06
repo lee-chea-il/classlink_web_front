@@ -155,5 +155,12 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  // build: { transpile: ['vee-validate/dist/rules'] },
+  build:
+    process.env.NODE_ENV === 'production'
+      ? {
+          babel: {
+            plugins: [['transform-remove-console']],
+          },
+        }
+      : {},
 }

@@ -76,6 +76,7 @@ export default {
 #modalPreviewTest .answer_area05 .aa_result,
 #modalPreviewTest .answer_area05 .aa_result_select {
   width: 150px;
+  height: 90px;
   margin-top: 12px;
 }
 
@@ -84,14 +85,22 @@ export default {
   display: flex;
 }
 
+#modalPreviewQuiz .answer_area05 .aa_wrong,
+#modalPreviewTest .answer_area05 .aa_wrong {
+  height: 100%;
+}
+
 .answer::v-deep p {
-  height: 67px;
-  padding: 2px;
+  /* max-height: 67px; */
+  min-height: 43px;
+  height: 100%;
+  /* padding: 2px; */
   overflow: hidden;
 }
 
 .answer::v-deep p img {
   object-fit: contain !important;
-  height: 90%;
+  max-width: 100%;
+  /* height: 90%; */
 }
 </style>

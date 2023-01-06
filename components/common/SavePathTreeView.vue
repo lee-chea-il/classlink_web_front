@@ -1,11 +1,11 @@
 <template>
   <vue-tree-list
+    class="tree"
     :model="datas"
     :default-expanded="true"
     listType="folder"
     @click="onClick"
-  >
-  </vue-tree-list>
+  />
 </template>
 
 <script>
@@ -38,8 +38,12 @@ export default {
     }
   },
   watch: {
-    dataList(newValue) {
-      this.setData(newValue)
+    dataList: {
+      handler(newValue) {
+        this.setData(newValue)
+      },
+      immediate: true,
+      flush: true,
     },
   },
   methods: {
@@ -122,3 +126,13 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.tree::v-deep .vtl-node-content.vtl-ml {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100%;
+  white-space: nowrap;
+  text-align: left;
+}
+</style>

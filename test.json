@@ -1,32 +1,18 @@
 {
-  "note_exam_idx": 131,
-  "dataroom_idx": 211,
-  "datatable_type": "ID",
-  "ins_code": "12345678",
-  "fra_code": null,
-  "save_path": null,
   "subject": 1,
-  "description": "234",
-  "delete_yn": false,
-  "open_yn": false,
-  "public_open_yn": false,
-  "datatype": "04",
-  "keyword": "12",
-  "title": "등록1111.exam",
-  "treeinfo_idx": 256,
-  "note_exam_asks": [
-    {
-      "no": 1,
-      "question": "<p>123512351235</p>",
-      "limit_time": 33,
-      "level": "상",
-      "explain": "23522",
-      "note_exam_ask_views": [
-        { "question": "<p>123512353</p>", "no": 1 },
-        { "question": "<p>1235555</p>", "no": 2 },
-        { "question": "<p>1235</p>", "no": 3 },
-        { "question": "<p>3333</p>", "no": 4 }
-      ]
-    }
-  ]
+  "description": "#크리스마스 #Christmas #캐롤 #플레이리스트\n#playlist #christmascarol #크리스마스노래 \n#alliwantforchristmasisyou #겨울 #ch",
+  "save_path": "",
+  "parent_treeinfo_idx": 261,
+  "public_open_yn": true,
+  "open_yn": true,
+  "file_name": "𝐏𝐥𝐚𝐲𝐥𝐢𝐬𝐭 다가오는 크리스마스를 기다리며 l 캐롤 BEST 인기곡 총모음 𝑴𝒆𝒓𝒓",
+  "datatable_type": "ID",
+  "datatype": "05",
+  "thumbnail": "",
+  "registrant_name": "베네딕트",
+  "ins_code": "12345678",
+  "full_path": "//www.youtube.com/embed/1CYbySbtyF0",
+  "file": "//www.youtube.com/embed/1CYbySbtyF0",
+  "keyword": "1235",
+  "title": "𝐏𝐥𝐚𝐲𝐥𝐢𝐬𝐭 다가오는 크리스마스를 기다리며 l 캐롤 BEST 인기곡 총모음 𝑴𝒆𝒓𝒓.youtube"
 }

@@ -3,7 +3,7 @@
     <!-- 왼쪽 영역 -->
     <div class="divide_area left">
       <!-- 탭 컨텐츠 -->
-      <EducationTabMenu />
+      <EducationTabMenu :pageType="pageType"/>
       <LeftTreeTab
         ref="education"
         :insData="insData"

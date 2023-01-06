@@ -73,6 +73,11 @@ const deleteData = async (data) => {
   return await http.delete('/api/v1/prepare-class/dataroom/data', { data })
 }
 
+// 열람 페이지 자료 이동
+const postMoveData = async (data) => {
+  return await http.post('/api/v1/prepare-class/dataroom/move-data', data)
+}
+
 // 트리뷰 리스트 가져오기
 const getTreeViewList = async (payload) => {
   return await http.get(
@@ -83,21 +88,25 @@ const getTreeViewList = async (payload) => {
 // 트리뷰에 폴더 생성
 const addFolderTreeViewList = async (payload) => {
   return await http.post(
-    '/api/v1/prepare-class/dataroom/tree-view-list/folder', payload
+    '/api/v1/prepare-class/dataroom/tree-view-list/folder',
+    payload
   )
 }
 
 // 트리뷰에 폴더 수정
 const updateFolderTreeViewList = async (data) => {
   return await http.put(
-    '/api/v1/prepare-class/dataroom/tree-view-list/folder', data
+    '/api/v1/prepare-class/dataroom/tree-view-list/folder',
+    data
   )
 }
 
 // 트리뷰에 폴더 삭제
 const deleteFolderTreeViewList = async (payload) => {
   // console.log('-------- MD/1-2-3 ',payload)
-  return await http.delete(`/api/v1/prepare-class/dataroom/tree-view-list/folder/${payload}`)
+  return await http.delete(
+    `/api/v1/prepare-class/dataroom/tree-view-list/folder/${payload}`
+  )
 }
 
 const apiData = {
@@ -111,6 +120,8 @@ const apiData = {
   postDataroomFile,
   postDataroomQuiz,
   postDataroomNoteExam,
+  postMoveData,
+  
   addFolderTreeViewList,
 
   updateDataroomFile,

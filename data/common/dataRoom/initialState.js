@@ -2,6 +2,7 @@ export default function initialState() {
   return {
     currentPageIdx: 0,
     // datatype: '',
+    isDev: false,
     isLoading: true,
     isApiCall: false,
     isUploading: false,
@@ -10,8 +11,8 @@ export default function initialState() {
     modalTitle: '등록',
     isCopyType: '',
     selectDataType: '',
+    selectDatatableType: '',
     // Modal Flag
-    isSelectType: false,
     isQuizPrint: false,
     isNoteTestPrint: false,
     isReferenceAddModal: false,
@@ -26,6 +27,7 @@ export default function initialState() {
     isSelectModal: { open: false, prevPage: '' },
     isFilterModal: { open: false, prevPage: '' },
     isSavePathModal: { open: false, prevPage: '' },
+    isMovePathModal: { open: false, prevPage: '' },
     modalDesc: { open: false, title: '', desc: '', path: '' },
     isShareViewModal: { open: false, path: '', url: '' },
     isQuizPreviewModal: { open: false, prevPage: '', select: false },
@@ -120,6 +122,10 @@ export default function initialState() {
     treeInstitutionData: [],
     treeFranchiseData: [],
     treeOpenData: [],
+    moveMyData: [],
+    moveInstitutionData: [],
+    moveFranchiseData: [],
+    moveOpenData: [],
     referenceList: [
       {
         id: 0,

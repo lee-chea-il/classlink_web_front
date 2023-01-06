@@ -29,6 +29,7 @@
         color="point"
         data-toggle="modal"
         data-target="#modalDataregi"
+        @click-item="$emit('set-create')"
       />
       <ButtonItem
         v-show="pageType === 'lesson'"
@@ -36,7 +37,6 @@
         color="point"
         data-toggle="modal"
         data-target="#modalCuriRegi"
-        @click-item="$emit('open-add')"
       />
     </div>
   </div>

@@ -7,19 +7,19 @@
         @preview="setPreview"
       />
 
-      <QuizCommentary :show="idx === currentIdx" />
+      <!-- <QuizCommentary :show="idx === currentIdx" /> -->
     </div>
   </div>
 </template>
 
 <script>
-import QuizCommentary from './QuizCommentary.vue'
+// import QuizCommentary from './QuizCommentary.vue'
 import QuizRightFormField from './QuizRightFormField.vue'
 
 export default {
   name: 'QuizRightSection',
   components: {
-    QuizCommentary,
+    // QuizCommentary,
     QuizRightFormField,
   },
   props: {

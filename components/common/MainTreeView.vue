@@ -1,6 +1,7 @@
 <template>
   <vue-tree-list
     ref="treeItem"
+    class="tree"
     :model="datas"
     :default-expanded="expanded"
     default-tree-node-name="새 폴더"
@@ -20,6 +21,7 @@
     @leaf-name-click="$emit('un-active')"
     @click="$emit('un-active')"
     @drag-start="$emit('un-active')"
+    @drop-before="dropBefore"
   >
     <span slot="addTreeNodeIcon" class="icon">＋</span>
     <span slot="addLeafNodeIcon" class="icon"></span>
@@ -75,7 +77,7 @@ export default {
       datas: new Tree(false, []),
       pid: this.pidNum,
       deleteList: [],
-      checkboxCopyData:{}
+      checkboxCopyData: {},
     }
   },
   watch: {
@@ -88,6 +90,9 @@ export default {
     },
   },
   methods: {
+    dropBefore({ node, src, target }) {
+      console.log(node, src, target)
+    },
     async addFolder(node) {
       await apiData
         .addFolderTreeViewList(this.addFolderData(node))
@@ -149,10 +154,10 @@ export default {
         })
     },
     setData(dataList) {
-      console.log(dataList,this.treeViewType)
+      console.log(dataList, this.treeViewType)
       const dataMapping = (data, isReadOnly) => {
         const result = []
-        const len = data.length
+        const len = data?.length
         for (let i = 0; i < len; i++) {
           const nObj = data[i]
           nObj.treeViewId = nObj.id
@@ -181,7 +186,7 @@ export default {
       }
       this.datas = new Tree(
         !this.editable,
-        dataMapping(dataList[0].children, !this.editable)
+        dataMapping(dataList[0]?.children, !this.editable)
       )
     },
     setType(type) {
@@ -215,6 +220,7 @@ export default {
 
     onChangeName(params) {
       if (params.eventType && params.eventType === 'blur') {
+        console.log(params)
         this.updateFolderInfo = {
           datatable_type: this.treeViewType,
           treeinfo_idx: params.node.treeViewId,
@@ -224,51 +230,51 @@ export default {
       }
     },
     copyData() {
-      const copyList=[]
-      function _dfs(parentChild,oldNode) {
-        let data={}
-        if(!oldNode.isLeaf){
+      const copyList = []
+      function _dfs(parentChild, oldNode) {
+        let data = {}
+        if (!oldNode.isLeaf) {
           if (oldNode.isChecked) {
-            data={
-              id:oldNode.treeViewId,
-              children:[]
+            data = {
+              id: oldNode.treeViewId,
+              children: [],
             }
             parentChild.push(data)
           }
           if (oldNode.children && oldNode.children.length > 0) {
             if (oldNode.isChecked) {
               for (let i = 0, len = oldNode.children.length; i < len; i++) {
-                _dfs(data.children,oldNode.children[i])
+                _dfs(data.children, oldNode.children[i])
               }
-            }else{
+            } else {
               for (let i = 0, len = oldNode.children.length; i < len; i++) {
-                _dfs(parentChild,oldNode.children[i])
+                _dfs(parentChild, oldNode.children[i])
               }
             }
           }
-        }else if (oldNode.isChecked) {
-          parentChild.push({id:oldNode.treeViewId})
+        } else if (oldNode.isChecked) {
+          parentChild.push({ id: oldNode.treeViewId })
         }
       }
       this.$emit('un-active')
-      _dfs(copyList,this.datas)
-      
-      this.checkboxCopyData={
-        type:this.treeViewType,
-        copyTreeData:copyList,
-        pasteParentIdxs:[]
+      _dfs(copyList, this.datas)
+
+      this.checkboxCopyData = {
+        type: this.treeViewType,
+        copyTreeData: copyList,
+        pasteParentIdxs: [],
       }
-      this.$emit('copyDataCallBack',this.checkboxCopyData)
+      this.$emit('copyDataCallBack', this.checkboxCopyData)
     },
-    checkPastePosition(){
+    checkPastePosition() {
       const checkList = []
       function _checkData(oldNode) {
         if (oldNode.isLeaf) {
-          if(oldNode.isChecked){
+          if (oldNode.isChecked) {
             checkList.push(oldNode.data.parent)
           }
-        }else{
-          if(oldNode.isChecked){
+        } else {
+          if (oldNode.isChecked) {
             checkList.push(oldNode.treeViewId)
           }
 
@@ -440,4 +446,11 @@ export default {
   },
 }
 </script>
-<style scoped></style>
+<style scoped>
+.tree::v-deep .vtl-node-content.vtl-ml {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100%;
+  white-space: nowrap;
+}
+</style>

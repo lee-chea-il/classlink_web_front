@@ -15,17 +15,18 @@
           <ModalHeader title="저장 경로" @close="$emit('close')" />
           <div class="modal-body">
             <!-- 탭 컨텐츠 -->
-            <SavePathHeader
+            <MovePathHeader
               :identity="identity"
-              :idType="isOpenFlag(modalTitle, tableType, 'ID')"
-              :myType="isOpenFlag(modalTitle, tableType, 'MD')"
+              :idType="tableType === 'ID'"
+              :myType="tableType === 'MD'"
             />
             <div id="myTabContent" class="tab-content path_list">
               <!-- 탭01 내용 -->
               <div
-                v-show="isOpenFlag(modalTitle, tableType, 'ID')"
-                id="tab01"
+                v-show="tableType === 'ID'"
+                id="moveTab01"
                 class="tab-pane fade show active"
+                :class="{ active: tableType === 'ID' }"
                 role="tabpanel"
                 aria-labelledby="grade-tab"
               >
@@ -42,8 +43,9 @@
               <!-- 탭02 내용 -->
               <div
                 v-show="identity !== 'institution'"
-                id="tab02"
+                id="moveTab02"
                 class="tab-pane fade"
+                :class="{ active: tableType === 'FD' }"
                 role="tabpanel"
                 aria-labelledby="class-tab"
               >
@@ -56,11 +58,12 @@
                 />
               </div>
               <!-- /.탭02 내용 -->
-              <!-- 탭02 내용 -->
+              <!-- 탭03 내용 -->
               <div
-                v-show="isOpenFlag(modalTitle, tableType, 'MD')"
-                id="tab03"
+                v-show="tableType === 'MD'"
+                id="moveTab03"
                 class="tab-pane fade"
+                :class="{ active: tableType === 'MD' }"
                 role="tabpanel"
                 aria-labelledby="class-tab"
               >
@@ -82,11 +85,8 @@
             </div>
           </div>
 
-          <ModalBtnBox
-            submitTxt="저장"
-            @submit="saveFilePath"
-            @close="$emit('close')"
-          />
+          <ModalBtnBox submitTxt="저장" @submit="saveFilePath" />
+          <!-- @close="$emit('close')" -->
         </div>
       </div>
     </div>
@@ -94,17 +94,17 @@
 </template>
 
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
 import ModalHeader from '../ModalHeader.vue'
 import ModalBtnBox from '../ModalBtnBox.vue'
-import SavePathHeader from '~/components/common/SavePathHeader.vue'
+import MovePathHeader from '~/components/common/MovePathHeader.vue'
 import TreeView from '~/components/common/SavePathTreeView.vue'
 
 export default {
-  name: 'SavePathModal',
+  name: 'MovePathModal',
   components: {
     ModalHeader,
-    SavePathHeader,
+    MovePathHeader,
     TreeView,
     ModalBtnBox,
   },
@@ -117,6 +117,7 @@ export default {
     identity: { type: String, default: 'institution' },
     modalTitle: { type: String, default: '등록' },
     tableType: { type: String, default: 'ID' },
+    dataInfo: { type: Object, default: () => {} },
   },
   data() {
     return {
@@ -146,8 +147,17 @@ export default {
       this.folderInfo.type = 'MD'
     },
     saveFilePath() {
-      this.folderInfo.filename = $('#inputSavePath').val()
-      this.$emit('save-file-path', this.folderInfo)
+      const {
+        datatable_type,
+        tree: { treeinfo_idx },
+      } = this.dataInfo
+      const item = this.folderInfo.id
+      const payload = {
+        datatable_type,
+        parent_treeinfo_idx: item,
+        treeinfo_idx,
+      }
+      this.$emit('move-data', payload)
       this.$emit('close')
     },
     isOpenFlag(str, type, myType) {

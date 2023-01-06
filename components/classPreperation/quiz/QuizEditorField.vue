@@ -38,7 +38,7 @@ export default {
   .reading_section.modal_dataquiz
   .write_area
   .edit_area {
-  min-height: 275px;
+  min-height: 285px;
   overflow-y: scroll;
   height: 100%;
   max-height: 275px;

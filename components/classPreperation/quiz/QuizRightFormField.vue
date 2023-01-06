@@ -7,13 +7,22 @@
         :item="item"
       />
       <QuizBrowsePreview @preview="setPreview" />
-      <QuizShortForm :checked="item.type === 'EQ'" :value="item.correct" />
+      <QuizShortForm
+        style="padding-top: 40px"
+        :checked="item.type === 'EQ'"
+        :value="item.correct"
+      />
       <QuizShortAnswer
+        style="padding-top: 40px"
         :type="item.type"
         :correct="item.correct"
         :wrong="item.wrong"
       />
-      <QuizDifficultyAndTime :level="item.level" :time="item.limit_time" />
+      <QuizDifficultyAndTime
+        style="padding-top: 62px"
+        :level="item.level"
+        :time="item.limit_time"
+      />
     </div>
   </div>
 </template>

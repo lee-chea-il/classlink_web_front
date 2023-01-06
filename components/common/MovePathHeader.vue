@@ -1,48 +1,45 @@
 <template>
   <ul id="myTab" class="nav nav-tabs" role="tablist">
-    <li class="nav-item" role="presentation">
+    <li v-if="idType" class="nav-item" role="presentation">
       <button
         id="grade-tab"
-        class="nav-link active"
+        class="nav-link"
         data-toggle="tab"
-        data-target="#institute"
+        data-target="#moveTab01"
         type="button"
         role="tab"
         aria-controls="home"
         aria-selected="true"
       >
-        <span class="icon_institute"></span>
         교육기관
       </button>
     </li>
-    <li class="nav-item" role="presentation">
+    <li v-if="identity !== 'institution'" class="nav-item" role="presentation">
       <button
         id="class-tab"
         class="nav-link"
         data-toggle="tab"
-        data-target="#franchise"
+        data-target="#moveTab02"
         type="button"
         role="tab"
         aria-controls="profile"
         aria-selected="false"
       >
-        <span class="icon_fran"></span>
         프랜차이즈
       </button>
     </li>
-    <li v-if="pageType === 'reference'" class="nav-item" role="presentation">
+    <li v-if="myType" class="nav-item" role="presentation">
       <button
         id="class-tab"
         class="nav-link"
         data-toggle="tab"
-        data-target="#open"
+        data-target="#moveTab03"
         type="button"
         role="tab"
         aria-controls="profile"
         aria-selected="false"
       >
-        <span class="icon_open"></span>
-        공개 자료실
+        내자료
       </button>
     </li>
   </ul>
@@ -50,12 +47,11 @@
 
 <script>
 export default {
-  name: 'EducationTabMenu',
+  name: 'MovePathHeader',
   props: {
-    pageType: {
-      type: String,
-      default: '',
-    },
+    identity: { type: String, default: '' },
+    idType: { type: Boolean, default: false },
+    myType: { type: Boolean, default: false },
   },
 }
 </script>
