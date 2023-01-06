@@ -2,7 +2,7 @@
   <div class="left_area">
     <div class="num_area" style="justify-content: flex-start">
       <button
-        v-for="(item, idx) in noteTestList"
+        v-for="(item, idx) in examList"
         :key="idx"
         class="num"
         :class="{ active: idx === currentIdx }"
@@ -35,7 +35,7 @@ export default {
   name: 'ProblemField',
   components: { PaginationBox },
   props: {
-    noteTestList: {
+    examList: {
       type: Array,
       default: () => [],
     },

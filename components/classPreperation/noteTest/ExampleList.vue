@@ -9,6 +9,9 @@
               :itemList="noteTestList[currentIdx]"
               :currentIdx="currentIdx"
               :isCreate="isCreate"
+              :isDelete="
+                noteTestList[currentIdx].note_exam_ask_views.length > 2
+              "
               @select-answer="$emit('select-answer', currentIdx, $event)"
               @delete-example="setDeleteExample"
             />
@@ -88,10 +91,10 @@
             >
               <div class="cnt_area">
                 <textarea
-                  id="commentary"
+                  id="explain"
                   class="textarea"
                   name="해설"
-                  :value="item.commentary"
+                  :value="item.explain"
                   :disabled="!item.isCommentary"
                   rows="4"
                   placeholder="입력한 해설"

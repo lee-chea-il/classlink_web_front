@@ -6,33 +6,25 @@
         type="radio"
         name="radA01"
         class="custom-control-input"
-        :checked="quiz.type === 2"
+        :checked="type === 'SA'"
         disabled
       />
       <label class="custom-control-label" for="rad03">단답형</label>
     </div>
     <CustomBrowseInput
-      v-if="quiz.type === 'EQ'"
+      v-if="type === 'SA'"
       title="정답"
-      placeholder="정답 입력"
-      :value="quiz.correct"
+      placeholder="정답 "
+      :value="correct"
     />
     <CustomBrowseInput
-      v-if="quiz.type === 'EQ'"
+      v-if="type === 'SA'"
       title="오답"
-      placeholder="오답입력"
-      :value="quiz.wrong"
+      placeholder="오답"
+      :value="wrong"
     />
-    <CustomBrowseInput
-      v-if="quiz.type !== 'EQ'"
-      title="정답"
-      placeholder="정답 입력"
-    />
-    <CustomBrowseInput
-      v-if="quiz.type !== 'EQ'"
-      title="오답"
-      placeholder="오답입력"
-    />
+    <CustomBrowseInput v-if="type !== 'SA'" title="정답" placeholder="정답 " />
+    <CustomBrowseInput v-if="type !== 'SA'" title="오답" placeholder="오답" />
   </div>
 </template>
 
@@ -40,15 +32,12 @@
 import CustomBrowseInput from '../common/custom/CustomBrowseInput.vue'
 
 export default {
-  name: 'QuizArea',
+  name: 'QuizShortAnswer',
   components: { CustomBrowseInput },
   props: {
-    quiz: {
-      type: Object,
-      default: () => {},
-    },
+    type: { type: String, default: '' },
+    correct: { type: String, default: '' },
+    wrong: { type: String, default: '' },
   },
 }
 </script>
-
-<style></style>

@@ -33,4 +33,9 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.form-control:disabled,
+.form-control[readonly] {
+  background: white !important;
+}
+</style>

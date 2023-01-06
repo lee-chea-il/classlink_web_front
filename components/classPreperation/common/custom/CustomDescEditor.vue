@@ -35,7 +35,7 @@
         >
           <client-only>
             <VueEditor
-              v-model="item.example"
+              v-model="item.question"
               :editorOptions="editorOptions"
               :editorToolbar="editorToolbar"
               :useCustomImageHandler="true"
@@ -46,7 +46,7 @@
         </ValidationProvider>
       </div>
       <button
-        v-if="idx !== 0"
+        v-if="isDelete"
         class="btn icons_x_circle_off"
         @click="$emit('delete-example', currentPageIdx, idx)"
       ></button>
@@ -81,6 +81,10 @@ export default {
       default: false,
     },
     isCreate: {
+      type: Boolean,
+      default: false,
+    },
+    isDelete: {
       type: Boolean,
       default: false,
     },

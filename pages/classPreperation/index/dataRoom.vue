@@ -32,6 +32,7 @@
           @download-data="downloadSelectData"
           @update-data="updateSelectData"
           @get-savepath="getSavePath"
+          @delete-data="deleteMoreMenuBtn"
           @tree-view-id="getInsTreeViewList"
           @tree-view-fd="getFranTreeViewList"
           @tree-view-od="getPublicTreeViewList"
@@ -362,7 +363,6 @@ export default {
   },
   methods: {
     getEarlyData() {
-      this.isLoading = true
       Promise.all([
         this.getServerUrl(),
         this.getInsTreeViewList(),
@@ -377,7 +377,6 @@ export default {
       await apiData
         .getTreeViewList({ type: 'ID' })
         .then(({ data: { data } }) => {
-          this.isLoading = false
           const newItem = jsonItem(data)
           this.institutionData = jsonItem(newItem)
           this.treeInstitutionData = jsonItem(newItem)
@@ -403,12 +402,14 @@ export default {
 
     // 내 트리 가져오기
     async getMyTreeViewList() {
+      this.isLoading = true
       await apiData
         .getTreeViewList({ type: 'MD' })
         .then(({ data: { data } }) => {
           const newItem = jsonItem(data)
           this.myData = jsonItem(newItem)
           this.treeMyData = jsonItem(newItem)
+          this.isLoading = false
         })
         .catch((err) => {
           console.log(err)
@@ -447,7 +448,7 @@ export default {
       if (type === 'checkbox') {
         if (checked) return (elem[name] = true)
         else return (elem[name] = false)
-      } else if (id === 'name') return (elem[id] = newVal)
+      } else if (id === 'title') return (elem[id] = newVal)
       else return (elem[id] = value)
     },
     // 일반용
@@ -456,11 +457,11 @@ export default {
     // api 통신
     // 업로드 주소 가져오기
     async getServerUrl() {
-      this.isLoading = true
+      // this.isLoading = true
       await apiData
         .getServerUrl()
         .then(() => {
-          this.isLoading = false
+          // this.isLoading = false
         })
         .catch(() => {})
     },
@@ -514,9 +515,18 @@ export default {
       return msg
     },
 
+    setCallTimeout() {
+      this.isApiCall = true
+      setTimeout(() => {
+        this.isApiCall = false
+      }, 2000)
+    },
+
     // 파일 업로드
     // 동영상, PDF, YOUTUBE, URL 업로드
     async postDataroomFile() {
+      if (this.isApiCall) return false
+      this.setCallTimeout()
       const { title, keyword, ...rest } = this.referenceData
       const payload = {
         ...rest,
@@ -537,6 +547,8 @@ export default {
 
     // 퀴즈 업로드
     async postDataroomQuiz() {
+      if (this.isApiCall) return false
+      this.setCallTimeout()
       const { title, keyword, ...rest } = this.referenceData
       const payload = {
         ...rest,
@@ -557,6 +569,8 @@ export default {
 
     // 쪽지시험 업로드
     postDataroomNoteExam() {
+      if (this.isApiCall) return false
+      this.setCallTimeout()
       const { title, keyword, ...rest } = this.referenceData
       const payload = {
         ...rest,
@@ -652,12 +666,14 @@ export default {
     // 파일 수정
     // 동영상, PDF, YOUTUBE, URL 수정
     updateDataroomFile() {
+      if (this.isApiCall) return false
+      this.setCallTimeout()
       const { keyword, title, ...rest } = this.referenceData
-      console.log(this.referenceData)
       const data = {
         ...rest,
         keyword: keyword.join(','),
         title: title + this.setExtension(rest.datatype),
+        treeinfo_idx: rest.tree.treeinfo_idx,
       }
       apiData
         .updateDataroomFile(data)
@@ -671,11 +687,14 @@ export default {
 
     // 퀴즈 수정
     updateDataroomQuiz() {
+      if (this.isApiCall) return false
+      this.setCallTimeout()
       const { keyword, title, ...rest } = this.referenceData
       const data = {
         ...rest,
         keyword: keyword.join(','),
         title: title + this.setExtension(rest.datatype),
+        treeinfo_idx: rest.tree.treeinfo_idx,
       }
       apiData
         .updateDataroomQuiz(data)
@@ -689,12 +708,47 @@ export default {
 
     // 쪽지 시험 수정
     updateDataroomNoteExam() {
-      const { keyword, title, ...rest } = this.referenceData
+      if (this.isApiCall) return false
+      this.setCallTimeout()
+      const {
+        keyword,
+        title,
+        registrant,
+        registrant_name,
+        registration_date,
+        study_type,
+        tree,
+        file,
+        file_name,
+        note_exam_asks,
+        ...rest
+      } = this.referenceData
+
+      const newNoteExam = note_exam_asks.map((item) => {
+        return {
+          no: item.no,
+          question: item.question,
+          limit_time: item.limit_time,
+          level: item.level,
+          explain: item.explain,
+          treeinfo_idx: item.treeinfo_idx,
+          note_exam_ask_views: item.note_exam_ask_views.map((data, i) => {
+            return {
+              question: data.question,
+              no: data.no,
+            }
+          }),
+        }
+      })
+
       const data = {
         ...rest,
         keyword: keyword.join(','),
         title: title + this.setExtension(rest.datatype),
+        treeinfo_idx: tree.treeinfo_idx,
+        note_exam_asks: newNoteExam,
       }
+
       apiData
         .updateDataroomNoteExam(data)
         .then(() => {
@@ -707,6 +761,8 @@ export default {
 
     // 파일 삭제
     deleteData({ datatable_type }) {
+      if (this.isApiCall) return false
+      this.setCallTimeout()
       const payload = {
         treeinfo_idx: this.deleteTreeIdx,
         datatable_type,
@@ -715,11 +771,17 @@ export default {
         .deleteData(payload)
         .then(() => {
           this.isSelectModal.open = false
-          console.log(payload)
           this.setUpdateTree(payload.datatable_type)
-          // this.openModalDesc('삭제 성공', '자료를 삭제했습니다.')
+          this.openModalDesc('삭제 성공', '자료를 삭제했습니다.')
         })
         .catch(() => {})
+    },
+
+    // 트리에서 자료 삭제
+    deleteMoreMenuBtn(node) {
+      this.deleteTreeIdx = node.treeViewId
+      this.referenceData.datatable_type = node.type
+      this.isSelectModal.open = true
     },
 
     // 등록 자료 초기화
@@ -758,6 +820,7 @@ export default {
 
     // 등록 유형 선택 모달
     openSelectModal(url) {
+      this.modalTitle = '등록'
       this[url] = false
       this.isSelectModal = {
         open: true,
@@ -819,6 +882,7 @@ export default {
 
     onCloseReferenceBrowseModal() {
       this.isReferenceBrowse = false
+      this.initReference()
     },
 
     // 퀴즈 조회
@@ -1018,7 +1082,7 @@ export default {
     onOpenReferenceChangeModal() {
       this.setModalTitle('수정')
       if (this.isReferenceBrowse) {
-        this.onCloseReferenceBrowseModal()
+        this.isReferenceBrowse = false
       }
       this.isReferenceAddModal = true
     },
@@ -1145,7 +1209,7 @@ export default {
         if (checked) return (testElem[name] = true)
         else {
           if (name === 'isCommentary') {
-            testElem.commentary = ''
+            testElem.explain = ''
           }
           testElem[name] = false
         }
@@ -1371,9 +1435,12 @@ export default {
       const len = target.quiz_asks.length
       const isLength = len <= 19
       this.currentPageIdx = len
+      const newQuiz = this.referenceData.quiz_asks.map((item, idx) => {
+        return { ...item, no: idx + 1 }
+      })
       if (isLength) {
         target.quiz_asks = [
-          ...target.quiz_asks,
+          ...newQuiz,
           {
             ...this.quizItem,
             no: len + 1,
@@ -1387,11 +1454,17 @@ export default {
     onDeleteQuizItem(idx) {
       if (this.referenceData.quiz_asks.length > 1) {
         this.referenceData.quiz_asks.splice(idx, 1)
-        if (idx !== 0) {
+        if (idx === 0) {
           this.currentPageIdx = 0
+        } else {
+          this.currentPageIdx = this.currentPageIdx - 1
         }
         this.focusEditorField()
       }
+      const newQuiz = this.referenceData.quiz_asks.map((item, index) => {
+        return { ...item, no: index + 1 }
+      })
+      this.referenceData.quiz_asks = newQuiz
     },
 
     // 퀴즈 타입 변경
@@ -1400,7 +1473,7 @@ export default {
       if (num === 'OX') {
         target.correct = 'O'
         target.wrong = 'X'
-      } else if (num === 'SA') {
+      } else if (num === 'EQ') {
         target.correct = ''
         target.wrong = ''
       } else {
@@ -1439,11 +1512,11 @@ export default {
       const isLength = len <= 19
       const setId = len + 1
       this.currentPageIdx = len
+      const newExam = this.referenceData.note_exam_asks.map((item, idx) => {
+        return { ...item, no: idx + 1 }
+      })
       if (isLength) {
-        target.note_exam_asks = [
-          ...target.note_exam_asks,
-          { ...this.testItem, no: setId },
-        ]
+        target.note_exam_asks = [...newExam, { ...this.testItem, no: setId }]
         this.focusEditorField()
       }
     },
@@ -1452,11 +1525,17 @@ export default {
     onDeleteNoteTest(idx) {
       if (this.referenceData.note_exam_asks.length > 1) {
         this.referenceData.note_exam_asks.splice(idx, 1)
-        if (idx !== 0) {
-          this.currentPageIdx = idx - 1
+        if (idx === 0) {
+          this.currentPageIdx = 0
+        } else {
+          this.currentPageIdx = this.currentPageIdx - 1
         }
         this.focusEditorField()
       }
+      const newExam = this.referenceData.note_exam_asks.map((item, idx) => {
+        return { ...item, no: idx + 1 }
+      })
+      this.referenceData.note_exam_asks = newExam
     },
 
     // 정답 입력
@@ -1466,17 +1545,28 @@ export default {
 
     // 쪽지시험 예제 추가
     plusExampleList(idx) {
-      const id =
-        this.referenceData.note_exam_asks[idx].note_exam_ask_views.length + 1
+      const item = this.referenceData.note_exam_asks[idx].note_exam_ask_views
+      const id = item.length + 1
       const example = { no: id, question: '' }
       this.referenceData.note_exam_asks[idx].note_exam_ask_views.push(example)
+      this.referenceData.note_exam_asks[idx].note_exam_ask_views = item.map(
+        (ask, i) => {
+          return { ...ask, no: i + 1 }
+        }
+      )
     },
 
     // 쪽지시험 예제 제거
     deleteExample(idx, targetIdx) {
+      const item = this.referenceData.note_exam_asks[idx].note_exam_ask_views
       this.referenceData.note_exam_asks[idx].note_exam_ask_views.splice(
         targetIdx,
         1
+      )
+      this.referenceData.note_exam_asks[idx].note_exam_ask_views = item.map(
+        (exam, i) => {
+          return { ...exam, no: i + 1 }
+        }
       )
     },
 

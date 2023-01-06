@@ -22,6 +22,7 @@
         @un-active="$emit('un-active')"
         @get-savepath="$emit('get-savepath', $event)"
         @tree-view-md="$emit('tree-view-md')"
+        @delete-data="$emit('delete-data', $event)"
       />
     </div>
     <!-- /.탭 내용01 -->

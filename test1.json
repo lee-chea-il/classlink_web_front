@@ -1,0 +1,82 @@
+{
+  "dataroom_idx": 210,
+  "treeinfo_idx": 255,
+  "note_exam_idx": 130,
+  "parent_tree_idx": 0,
+  "datatable_type": "ID",
+  "fra_code": "string",
+  "ins_code": "12345678",
+  "keyword": "키워드1, 키워드2",
+  "open_yn": "string",
+  "public_open_yn": "string",
+  "subject": 1,
+  "title": "쪽지시험 제목",
+  "note_exam_ask": [
+    {
+      "no": 1,
+      "correct_no": 1,
+      "explain": "쪽지시험 해설1",
+      "level": "상",
+      "limit_time": 60,
+      "question": "쪽지시험 문제 지문1 ",
+      "note_exam_ask_views": [
+        {
+          "no": 1,
+          "question": "쪽지시험 보기문 지문 1"
+        },
+        {
+          "no": 2,
+          "question": "쪽지시험 보기문 지문 2"
+        },
+        {
+          "no": 3,
+          "question": "쪽지시험 보기문 지문 3"
+        }
+      ]
+    },
+    {
+      "no": 2,
+      "correct_no": 2,
+      "explain": "쪽지시험 해설2",
+      "level": "상",
+      "limit_time": 60,
+      "question": "쪽지시험 문제 지문2 ",
+      "note_exam_ask_views": [
+        {
+          "no": 1,
+          "question": "쪽지시험 보기문 지문 1"
+        },
+        {
+          "no": 2,
+          "question": "쪽지시험 보기문 지문 2"
+        },
+        {
+          "no": 3,
+          "question": "쪽지시험 보기문 지문 3"
+        }
+      ]
+    },
+    {
+      "no": 3,
+      "correct_no": 3,
+      "explain": "쪽지시험 해설3",
+      "level": "상",
+      "limit_time": 60,
+      "question": "쪽지시험 문제 지문3 ",
+      "note_exam_ask_views": [
+        {
+          "no": 1,
+          "question": "쪽지시험 보기문 지문 1"
+        },
+        {
+          "no": 2,
+          "question": "쪽지시험 보기문 지문 2"
+        },
+        {
+          "no": 3,
+          "question": "쪽지시험 보기문 지문 3"
+        }
+      ]
+    }
+  ]
+}

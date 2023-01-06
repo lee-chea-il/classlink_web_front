@@ -1143,7 +1143,7 @@ export default {
       if (num === 'OX') {
         target.correct = 'O'
         target.wrong = 'X'
-      } else if (num === 'SA') {
+      } else if (num === 'EQ') {
         target.correct = ''
         target.wrong = ''
       } else {

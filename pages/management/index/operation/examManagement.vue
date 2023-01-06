@@ -343,7 +343,7 @@ export default {
               limit_time: '',
               answer: 1,
               isCommentary: true,
-              commentary: '',
+              explain: '',
             },
             {
               id: 1,

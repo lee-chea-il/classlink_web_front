@@ -4,7 +4,6 @@
     <div class="divide_area left">
       <!-- 탭 컨텐츠 -->
       <EducationTabMenu />
-      <!-- :isOpenData="openData.length > 0" -->
       <LeftTreeTab
         ref="education"
         :insData="insData"
@@ -20,6 +19,7 @@
         @get-savepath="$emit('get-savepath', $event)"
         @tree-view-id="$emit('tree-view-id')"
         @tree-view-fd="$emit('tree-view-fd')"
+        @delete-data="$emit('delete-data', $event)"
       />
       <!-- /.탭 컨텐츠 -->
     </div>
@@ -40,6 +40,7 @@
         @un-active="unActive"
         @get-savepath="$emit('get-savepath', $event)"
         @tree-view-md="$emit('tree-view-md')"
+        @delete-data="$emit('delete-data', $event)"
       />
       <!-- /.탭 컨텐츠 -->
     </div>
@@ -79,11 +80,9 @@ export default {
   },
   methods: {
     unActive() {
-      // console.log('feafefaw')
       this.$refs.education.$refs.institution.unActiveAll()
       this.$refs.education.$refs.franchise.unActiveAll()
       this.$refs.education.$refs.open.unActiveAll()
-      // this.$refs.myData.$refs.myData.unActiveAll()
     },
   },
 }

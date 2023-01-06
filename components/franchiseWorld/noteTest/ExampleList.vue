@@ -88,10 +88,10 @@
             >
               <div class="cnt_area">
                 <textarea
-                  id="commentary"
+                  id="explain"
                   class="textarea"
                   name="해설"
-                  :value="item.commentary"
+                  :value="item.explain"
                   :disabled="!item.isCommentary"
                   rows="4"
                   placeholder="입력한 해설"

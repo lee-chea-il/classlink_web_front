@@ -2,7 +2,7 @@
   <div class="left_area">
     <div class="num_area" style="justify-content: flex-start">
       <button
-        v-for="(item, idx) in noteTestList"
+        v-for="(item, idx) in examList"
         :key="idx"
         class="num"
         :class="{ active: idx === currentIdx }"
@@ -11,10 +11,10 @@
         {{ idx + 1 }}
       </button>
     </div>
-    <div v-for="(item, idx) in noteTestList" :key="idx">
+    <div v-for="(item, idx) in examList" :key="idx">
       <div v-if="idx === currentIdx" ref="questionNoteTest" class="write_area">
         <div class="edit_area edit_area_padding_12">
-          <div v-html="item.question"></div>
+          <div class="question" v-html="item.question"></div>
           <button class="btn icons_fullscreen" @click="getFullscreen"></button>
         </div>
       </div>
@@ -22,7 +22,7 @@
 
     <PaginationBox
       :currentIdx="currentIdx"
-      :length="noteTestList.length"
+      :length="examList.length"
       @pagination="setPagination"
     />
   </div>
@@ -35,7 +35,7 @@ export default {
   name: 'ProblemField',
   components: { PaginationBox },
   props: {
-    noteTestList: {
+    examList: {
       type: Array,
       default: () => [],
     },
@@ -65,5 +65,10 @@ export default {
   min-height: 275px;
   max-height: 330px !important;
   overflow: scroll !important;
+}
+
+.question::v-deep p img {
+  max-width: 100%;
+  width: 100%;
 }
 </style>

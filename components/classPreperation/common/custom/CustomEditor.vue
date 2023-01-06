@@ -62,17 +62,9 @@ export default {
           { align: 'justify' },
         ],
         [{ list: 'ordered' }, { list: 'bullet' }],
-        [
-          'image',
-          // 'code-block'
-        ],
+        ['image'],
       ],
     }
-  },
-  watch: {
-    itemList(newValue, oldValue) {
-      console.log(newValue)
-    },
   },
   methods: {
     handleImageAdded(file, Editor, cursorLocation, resetUploader) {

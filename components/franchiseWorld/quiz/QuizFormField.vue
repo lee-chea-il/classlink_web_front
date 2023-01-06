@@ -73,10 +73,10 @@
                 id="isShortAnswer"
                 type="radio"
                 :name="isCreate ? 'type' : 'type1'"
-                value="SA"
+                value="EQ"
                 class="custom-control-input"
-                :checked="item.type === 'SA'"
-                @click="$emit('select-type', $event, idx, 'SA')"
+                :checked="item.type === 'EQ'"
+                @click="$emit('select-type', $event, idx, 'EQ')"
               />
               <label class="custom-control-label" for="isShortAnswer"
                 >주관식 단답형</label
@@ -84,13 +84,13 @@
             </div>
           </div>
           <QuizInput
-            v-if="item.type === 'SA'"
+            v-if="item.type === 'EQ'"
             rules="required_quiz"
             idProp="correct"
             nameProp="정답"
             :idx="idx"
             :value="item.correct"
-            :disabled="item.type !== 'SA'"
+            :disabled="item.type !== 'EQ'"
             placeholder="정답 입력"
             @change-item="setChangeInput"
           />
@@ -123,10 +123,10 @@
                   id="isSubjective"
                   type="radio"
                   :name="isCreate ? 'type' : 'type1'"
-                  value="EQ"
+                  value="SA"
                   class="custom-control-input"
-                  :checked="item.type === 'EQ'"
-                  @click="$emit('select-type', $event, idx, 'EQ')"
+                  :checked="item.type === 'SA'"
+                  @click="$emit('select-type', $event, idx, 'SA')"
                 />
                 <label class="custom-control-label" for="isSubjective"
                   >단답형</label
@@ -134,7 +134,7 @@
               </div>
             </div>
           </div>
-          <div v-if="item.type === 'EQ'" class="mult">
+          <div v-if="item.type === 'SA'" class="mult">
             <div class="tit stit">정답</div>
             <QuizInput
               rules="required_quiz"
@@ -143,11 +143,11 @@
               :idx="idx"
               :value="item.correct"
               placeholder="정답 입력"
-              :disabled="item.type !== 'EQ'"
+              :disabled="item.type !== 'SA'"
               @change-item="setChangeInput"
             />
           </div>
-          <div v-if="item.type === 'EQ'" class="mult">
+          <div v-if="item.type === 'SA'" class="mult">
             <div class="tit stit">오답</div>
             <QuizInput
               rules="required_quiz"
@@ -156,7 +156,7 @@
               :idx="idx"
               :value="item.wrong"
               placeholder="오답 입력"
-              :disabled="item.type !== 'EQ'"
+              :disabled="item.type !== 'SA'"
               @change-item="setChangeInput"
             />
           </div>

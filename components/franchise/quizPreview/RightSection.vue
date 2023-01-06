@@ -52,7 +52,7 @@
           </div>
 
           <!-- 주관식 단답형일때 -->
-          <div v-if="quiz.type === 'SA'" class="answer_area03 row">
+          <div v-if="quiz.type === 'EQ'" class="answer_area03 row">
             <div class="aa_question row">
               <div class="aa_number_select">
                 <div class="aa_num_font01">정답</div>
@@ -66,7 +66,7 @@
           </div>
 
           <!-- 단답형일때 -->
-          <div v-if="quiz.type === 'EQ'" class="answer_area02 row">
+          <div v-if="quiz.type === 'SA'" class="answer_area02 row">
             <div class="aa_question row">
               <!-- [개발참조]문제 선택 시 출력  -->
               <div class="aa_number_select">

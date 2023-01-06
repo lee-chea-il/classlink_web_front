@@ -43,6 +43,7 @@
                   :quizList="reference.quiz_asks"
                   :currentPageIdx="currentPageIdx"
                   :uploadInfo="uploadInfo"
+                  :isComplete="isCompleteArr(reference.quiz_asks)"
                   @change-item="onChangeItem"
                   @pagination="setPagination"
                   @select-type="setSelectType"
@@ -57,7 +58,13 @@
               </div>
             </div>
             <ModalBtnBox
-              :invalid="isDisabled(invalid, reference.keyword?.length === 0)"
+              :invalid="
+                isDisabled(
+                  invalid,
+                  reference.keyword?.length === 0,
+                  isCompleteArr(reference.quiz_asks).includes(false)
+                )
+              "
               :submitTxt="modalTitle"
               @submit="setSubmit(modalTitle)"
               @close="$emit('close')"
@@ -113,8 +120,8 @@ export default {
     setPreview(prev, isFirst) {
       this.$emit('preview', 'add', isFirst)
     },
-    isDisabled(aFlag, bFlag) {
-      if (!aFlag && !bFlag) {
+    isDisabled(aFlag, bFlag, cFlag) {
+      if (!aFlag && !bFlag && !cFlag) {
         return false
       } else return true
     },
@@ -122,6 +129,27 @@ export default {
       if (type === '수정') {
         return this.$emit('change-submit', this.reference)
       } else return this.$emit('submit')
+    },
+    isCompleteArr(item) {
+      const result = []
+      if (item) {
+        for (const x of item) {
+          const isComp =
+            x.correct === '' || x.limit_time === '' || x.question === ''
+          if (x.type === 'EQ') {
+            if (isComp) {
+              result.push(false)
+            } else {
+              result.push(true)
+            }
+          } else if (isComp || x.wrong === '') {
+            result.push(false)
+          } else {
+            result.push(true)
+          }
+        }
+      }
+      return result
     },
   },
 }

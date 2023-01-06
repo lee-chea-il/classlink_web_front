@@ -32,6 +32,10 @@ export default {
       type: Number,
       default: 0,
     },
+    isComplete: {
+      type: Array,
+      default: () => [],
+    },
   },
 }
 </script>

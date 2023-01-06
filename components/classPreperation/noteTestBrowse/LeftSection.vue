@@ -1,13 +1,13 @@
 <template>
   <div class="left_section">
     <ProblemField
-      :noteTestList="noteTestList"
+      :examList="examList"
       :currentIdx="currentIdx"
       @pagination="setPagination"
       @change-number="setChangeNumber"
     />
 
-    <ExampleList :answerList="noteTestList[currentIdx]?.note_exam_ask_views" />
+    <ExampleList :answerList="examList[currentIdx]?.note_exam_ask_views" />
   </div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
   name: 'LeftSection',
   components: { ExampleList, ProblemField },
   props: {
-    noteTestList: {
+    examList: {
       type: Array,
       default: () => [],
     },

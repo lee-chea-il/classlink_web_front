@@ -58,7 +58,13 @@
               </div>
             </div>
             <ModalBtnBox
-              :invalid="isDisabled(invalid, reference.keyword?.length === 0)"
+              :invalid="
+                isDisabled(
+                  invalid,
+                  reference.keyword?.length === 0,
+                  isComplete(reference.note_exam_asks).includes(false)
+                )
+              "
               :submitTxt="modalTitle"
               @submit="setSubmit(modalTitle)"
               @close="$emit('close')"
@@ -114,8 +120,8 @@ export default {
     setDeleteExample(idx, targetIdx) {
       this.$emit('delete-example', this.currentPageIdx, targetIdx)
     },
-    isDisabled(aFlag, bFlag) {
-      if (!aFlag && !bFlag) {
+    isDisabled(aFlag, bFlag, cFlag) {
+      if (!aFlag && !bFlag && !cFlag) {
         return false
       } else return true
     },
@@ -123,6 +129,23 @@ export default {
       if (type === '수정') {
         return this.$emit('change-submit', this.reference)
       } else return this.$emit('submit')
+    },
+    isComplete(item) {
+      const result = []
+      if (item) {
+        for (const x of item) {
+          if (
+            x.limit_time === '' ||
+            x.question === '' ||
+            x.note_exam_ask_views.map((item) => item.question).includes('')
+          ) {
+            result.push(false)
+          } else {
+            result.push(true)
+          }
+        }
+      }
+      return result
     },
   },
 }

@@ -46,7 +46,7 @@ import PageNumberList from '../common/PageNumberList.vue'
 import PreviewField from './PreviewField.vue'
 import ExampleList from './ExampleList.vue'
 export default {
-  name: 'NoteTestRightField',
+  name: 'BrowseRightField',
   components: {
     CustomEditor,
     PageNumberList,

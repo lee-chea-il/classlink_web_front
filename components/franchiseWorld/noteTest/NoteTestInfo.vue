@@ -103,7 +103,7 @@
                   id=""
                   rows="3"
                   placeholder="입력한 해설"
-                  :value="item.commentary"
+                  :value="item.explain"
                 ></textarea>
               </div>
             </div>

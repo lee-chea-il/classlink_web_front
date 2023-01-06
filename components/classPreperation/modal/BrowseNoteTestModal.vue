@@ -16,13 +16,22 @@
 
           <div class="modal-body">
             <!-- 자료 열람 -->
-            <NoteTestInfo
-              :selectData="selectData"
-              :currentIdx="currentPageIdx"
-              @change-number="setChangeNumber"
-              @pagination="setPagination"
-              @preview="setPreview"
-            />
+            <div class="reading_section modal_dataquiz note_divide">
+              <LeftSection
+                :examList="selectData.note_exam_asks"
+                :currentIdx="currentPageIdx"
+                @change-number="setChangeNumber"
+                @pagination="setPagination"
+                @preview="setPreview"
+              />
+              <RightSection
+                :examList="selectData.note_exam_asks"
+                :currentIdx="currentPageIdx"
+                @change-number="setChangeNumber"
+                @pagination="setPagination"
+                @preview="setPreview"
+              />
+            </div>
             <!-- /.자료 열람 -->
 
             <div class="btnsec">
@@ -63,12 +72,19 @@
 <script>
 import ModalHeader from '../../common/ModalHeader.vue'
 import ReferenceBtn from '../common/ReferenceBtn.vue'
-import NoteTestInfo from '../noteTest/NoteTestInfo.vue'
+import RightSection from '../noteTest/BrowseRightField.vue'
+import LeftSection from '../noteTestBrowse/LeftSection.vue'
 import FileInfoSection from '../reference/FileInfoSection.vue'
 
 export default {
   name: 'BrowseNoteTestModal',
-  components: { FileInfoSection, ModalHeader, NoteTestInfo, ReferenceBtn },
+  components: {
+    FileInfoSection,
+    ModalHeader,
+    ReferenceBtn,
+    LeftSection,
+    RightSection,
+  },
   props: {
     open: { type: Boolean, default: false },
     identity: { type: String, default: '' },
@@ -114,4 +130,10 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+#modalDataRead .modal-body,
+#modalDataReadQuiz .modal-body,
+#modalDataReadNote .modal-body {
+  text-align: initial;
+}
+</style>

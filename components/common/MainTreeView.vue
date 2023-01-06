@@ -79,8 +79,12 @@ export default {
     }
   },
   watch: {
-    dataList(newValue) {
-      this.setData(newValue)
+    dataList: {
+      handler(newValue) {
+        this.setData(newValue)
+      },
+      immediate: true,
+      flush: true,
     },
   },
   methods: {
@@ -298,20 +302,20 @@ export default {
       const deleteList = this.deleteList
       this.$emit('un-active')
 
-      function _dell(oldNode,isChildAll) {
-        if(isChildAll){
+      function _dell(oldNode, isChildAll) {
+        if (isChildAll) {
           deleteList.push(oldNode.treeViewId)
-        }else if(oldNode.isChecked){
+        } else if (oldNode.isChecked) {
           deleteList.push(oldNode.treeViewId)
-          if(oldNode.group_yn)isChildAll=true
+          if (oldNode.group_yn) isChildAll = true
         }
         if (oldNode.children && oldNode.children.length > 0) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            _dell(oldNode.children[i],isChildAll)
+            _dell(oldNode.children[i], isChildAll)
           }
         }
       }
-      _dell(this.datas,false)
+      _dell(this.datas, false)
       const len = this.deleteList.length
       if (len > 0) {
         let deleteStr = ''
@@ -394,7 +398,8 @@ export default {
     },
 
     moreMenuDell(node) {
-      node.remove()
+      // node.remove()
+      this.$emit('delete-data', node)
     },
 
     moreMenuCopy(node) {

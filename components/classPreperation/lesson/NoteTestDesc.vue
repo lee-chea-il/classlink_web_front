@@ -27,7 +27,7 @@
             <input
               type="text"
               placeholder="입력한 해설"
-              :value="test.commentary"
+              :value="test.explain"
               class="form-control form-inline"
             />
           </div>

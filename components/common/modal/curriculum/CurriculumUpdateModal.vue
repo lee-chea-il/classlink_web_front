@@ -187,15 +187,21 @@
                           {{ txtInfo.listEmptyTxt }}
                         </div>
                         <div v-else class="section">
-                          <span class="custom-control custom-checkbox form-inline checkbox100">
+                          <span
+                            class="custom-control custom-checkbox form-inline checkbox100"
+                          >
                             <input
-                              id="checkbox100"  
+                              id="checkbox100"
                               v-model="isMultiCheck"
                               type="checkbox"
                               class="custom-control-input"
+                            />
+                            <label
+                              class="custom-control-label checkbox100"
+                              for="checkbox100"
+                              >일괄배치</label
                             >
-                            <label class="custom-control-label checkbox100" for="checkbox100">일괄배치</label>
-												  </span>
+                          </span>
                           <!-- 커리큘럼 등록 시 출력됨 -->
                           <span v-if="!isUpdate" class="sum"
                             >연결 개수: {{ linkDataCnt }}개</span
@@ -342,7 +348,7 @@ export default {
     return {
       isUpdate: false,
       tabIdx: 0,
-      isMultiCheck:false,
+      isMultiCheck: false,
       submitBtnName: '등록',
       dropMenuList: [],
       dropMenuListData: [],
@@ -836,7 +842,7 @@ export default {
                     limit_time: '',
                     answer: 1,
                     isCommentary: true,
-                    commentary: '',
+                    explain: '',
                   },
                   {
                     id: 1,
@@ -851,7 +857,7 @@ export default {
                     limit_time: '',
                     answer: 2,
                     isCommentary: true,
-                    commentary: '',
+                    explain: '',
                   },
                 ],
                 isLeaf: false,
@@ -1039,7 +1045,7 @@ export default {
                     limit_time: '',
                     answer: 1,
                     isCommentary: true,
-                    commentary: '',
+                    explain: '',
                   },
                   {
                     id: 1,
@@ -1054,7 +1060,7 @@ export default {
                     limit_time: '',
                     answer: 2,
                     isCommentary: true,
-                    commentary: '',
+                    explain: '',
                   },
                 ],
                 isLeaf: false,
@@ -1264,7 +1270,7 @@ export default {
                     limit_time: '',
                     answer: 1,
                     isCommentary: true,
-                    commentary: '',
+                    explain: '',
                   },
                   {
                     id: 1,
@@ -1279,7 +1285,7 @@ export default {
                     limit_time: '',
                     answer: 2,
                     isCommentary: true,
-                    commentary: '',
+                    explain: '',
                   },
                 ],
                 isLeaf: false,
@@ -1489,7 +1495,7 @@ export default {
                     limit_time: '',
                     answer: 1,
                     isCommentary: true,
-                    commentary: '',
+                    explain: '',
                   },
                   {
                     id: 1,
@@ -1504,7 +1510,7 @@ export default {
                     limit_time: '',
                     answer: 2,
                     isCommentary: true,
-                    commentary: '',
+                    explain: '',
                   },
                 ],
                 isLeaf: false,
@@ -1715,7 +1721,7 @@ export default {
                     limit_time: '',
                     answer: 1,
                     isCommentary: true,
-                    commentary: '',
+                    explain: '',
                   },
                   {
                     id: 1,
@@ -1730,7 +1736,7 @@ export default {
                     limit_time: '',
                     answer: 2,
                     isCommentary: true,
-                    commentary: '',
+                    explain: '',
                   },
                 ],
                 isLeaf: false,
@@ -1918,7 +1924,7 @@ export default {
                     limit_time: '',
                     answer: 1,
                     isCommentary: true,
-                    commentary: '',
+                    explain: '',
                   },
                   {
                     id: 1,
@@ -1933,7 +1939,7 @@ export default {
                     limit_time: '',
                     answer: 2,
                     isCommentary: true,
-                    commentary: '',
+                    explain: '',
                   },
                 ],
                 isLeaf: false,
@@ -2143,7 +2149,7 @@ export default {
                     limit_time: '',
                     answer: 1,
                     isCommentary: true,
-                    commentary: '',
+                    explain: '',
                   },
                   {
                     id: 1,
@@ -2158,7 +2164,7 @@ export default {
                     limit_time: '',
                     answer: 2,
                     isCommentary: true,
-                    commentary: '',
+                    explain: '',
                   },
                 ],
                 isLeaf: false,
@@ -2368,7 +2374,7 @@ export default {
                     limit_time: '',
                     answer: 1,
                     isCommentary: true,
-                    commentary: '',
+                    explain: '',
                   },
                   {
                     id: 1,
@@ -2383,7 +2389,7 @@ export default {
                     limit_time: '',
                     answer: 2,
                     isCommentary: true,
-                    commentary: '',
+                    explain: '',
                   },
                 ],
                 isLeaf: false,

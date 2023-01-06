@@ -3,6 +3,7 @@ export default function initialState() {
     currentPageIdx: 0,
     // datatype: '',
     isLoading: true,
+    isApiCall: false,
     isUploading: false,
     pushKeyword: '',
     identity: 'teacher',
@@ -54,7 +55,7 @@ export default function initialState() {
       wrong: 'X',
     },
     testItem: {
-      no: 0,
+      no: 1,
       question: '',
       note_exam_ask_views: [
         { no: 1, question: '' },
@@ -66,7 +67,7 @@ export default function initialState() {
       limit_time: '',
       correct_no: 1,
       isCommentary: true,
-      commentary: '',
+      explain: '',
     },
     typeList: [
       { id: 0, name: '전체' },

@@ -4,6 +4,7 @@
       <PageNumberList
         :itemList="quizList"
         :currentIdx="currentPageIdx"
+        :isComplete="isComplete"
         @change-number="$emit('change-number', $event)"
         @plus-item="$emit('plus-item', $event)"
       />
@@ -11,6 +12,7 @@
       <div class="write_area">
         <PreviewField :currentPageIdx="currentPageIdx" @preview="setPreview" />
         <CustomEditor
+          ref="editor"
           rules="start_limit|end_limit|edit_required"
           :itemList="quizList"
           :currentIdx="currentPageIdx"
@@ -56,6 +58,7 @@ export default {
     quizList: { type: Array, default: () => [] },
     currentPageIdx: { type: Number, default: 0 },
     isCreate: { type: Boolean, default: false },
+    isComplete: { type: Array, default: () => [] },
   },
   methods: {
     setPreview(prev, isFirst) {

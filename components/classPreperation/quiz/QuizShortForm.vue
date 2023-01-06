@@ -7,7 +7,7 @@
           type="radio"
           name="radA01"
           class="custom-control-input"
-          :checked="quiz.type === 'SA'"
+          :checked="checked"
           disabled
         />
         <label class="custom-control-label" for="rad02">주관식 단답형</label>
@@ -15,19 +15,19 @@
     </div>
     <div class="cnt">
       <input
-        v-if="quiz.type === 'SA'"
+        v-if="checked"
         type="text"
-        placeholder="정답 입력"
+        placeholder="정답"
         class="form-control form-inline"
-        :value="quiz.correct"
-        readOnly
+        :value="value"
+        readonly
       />
       <input
         v-else
         type="text"
-        placeholder="정답 입력"
+        placeholder="정답"
         class="form-control form-inline"
-        readOnly
+        readonly
       />
     </div>
   </div>
@@ -37,12 +37,15 @@
 export default {
   name: 'QuizTitle',
   props: {
-    quiz: {
-      type: Object,
-      default: () => {},
-    },
+    checked: { type: Boolean, default: false },
+    value: { type: String, default: '' },
   },
 }
 </script>
 
-<style></style>
+<style scoped>
+.form-control:disabled,
+.form-control[readonly] {
+  background: white !important;
+}
+</style>

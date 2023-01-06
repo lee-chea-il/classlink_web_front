@@ -1085,7 +1085,7 @@ export default {
         if (checked) return (testElem[name] = true)
         else {
           if (name === 'isCommentary') {
-            testElem.commentary = ''
+            testElem.explain = ''
           }
           testElem[name] = false
         }
@@ -1316,7 +1316,7 @@ export default {
       if (num === 'OX') {
         target.correct = 'O'
         target.wrong = 'X'
-      } else if (num === 'SA') {
+      } else if (num === 'EQ') {
         target.correct = ''
         target.wrong = ''
       } else {
