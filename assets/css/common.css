@@ -17591,16 +17591,6 @@ a {
   width: 50%;
 }
 
-/* 공지사항.html
-공지사항 상세보기 (팝업 L) */
-.fr_notice_modal .notice_title {
-  width: 62% !important;
-}
-
-.notice_rigi_fr .date_area {
-  margin-bottom: 60px;
-}
-
 /*---------------------------------------*/
 /*--------   12. fr_class.scss     ------*/
 /*---------------------------------------*/
@@ -17865,7 +17855,7 @@ a {
   padding: 11px 20px 10px 25px;
 }
 
-/* 공지사항-시스템공지-등록.html */
+/* 공지사항-시스템공지.html */
 .notice_rigi_cl .date_area {
   margin-bottom: 60px;
 }
@@ -17875,14 +17865,24 @@ a {
 .notice_rigi_cl .file_area .title_image {
   margin-right: 16px;
 }
-.notice_rigi_cl .system_image {
+.notice_rigi_cl .banner_image {
   width: 284px;
   height: 84px;
   background: #F9F9FC;
   margin: 6px auto;
 }
-.notice_rigi_cl .system_image .icons_thumbnail {
+.notice_rigi_cl .banner_image .icons_thumbnail {
   margin: 0 auto;
+  width: 48px;
+}
+.notice_rigi_cl .notice_image {
+  width: 284px;
+  height: 175px;
+  background: #F9F9FC;
+  margin: 0 auto;
+}
+.notice_rigi_cl .notice_image .icons_thumbnail {
+  margin: 50px auto;
   width: 48px;
 }
 .notice_rigi_cl .cl_notice {
@@ -17899,21 +17899,6 @@ a {
 /* 공지사항 상세보기 (팝업 L) */
 .cl_notice_modal .notice_title {
   width: 62% !important;
-}
-
-/* 공지사항-이벤트공지-등록.html */
-.notice_rigi_cl .event_image {
-  width: 284px;
-  height: 142px;
-  background: #F9F9FC;
-  margin: 0 auto;
-}
-.notice_rigi_cl .event_image .icons_thumbnail {
-  margin: 30px auto;
-  width: 48px;
-}
-.notice_rigi_cl .evnet_height {
-  height: 184px !important;
 }
 
 /*---------------------------------------*/
