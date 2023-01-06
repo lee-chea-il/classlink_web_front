@@ -96,7 +96,7 @@
   }
 }
 
-/* 공지사항-시스템공지.html */
+/* 공지사항-시스템공지-등록.html */
 .notice_rigi_cl {
   .date_area {
     margin-bottom: 60px;
@@ -110,7 +110,7 @@
     margin-right: 16px;
   }
 
-  .banner_image {
+  .system_image {
     width: 284px;
     height: 84px;
     background: #F9F9FC;
@@ -122,17 +122,6 @@
     }
   }
 
-  .notice_image {
-    width: 284px;
-    height: 175px;
-    background: #F9F9FC;
-    margin: 0 auto;
-
-    .icons_thumbnail {
-      margin: 50px auto;
-      width: 48px;
-    }
-  }
 
   .cl_notice {
     height: 216px !important;
@@ -152,5 +141,26 @@
 .cl_notice_modal {
   .notice_title {
     width: 62% !important;
+  }
+}
+
+/* 공지사항-이벤트공지-등록.html */
+
+.notice_rigi_cl {
+
+  .event_image {
+    width: 284px;
+    height: 142px;
+    background: #F9F9FC;
+    margin: 0 auto;
+
+    .icons_thumbnail {
+      margin: 30px auto;
+      width: 48px;
+    }
+  }
+
+  .evnet_height {
+    height: 184px !important;
   }
 }
