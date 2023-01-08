@@ -109,6 +109,15 @@ const deleteFolderTreeViewList = async (payload) => {
   )
 }
 
+// 트리뷰에 파일 복사
+const copyTreeViewList = async (payload) => {
+  console.log('-----copyTreeViewList ',payload)
+  return await http.post(
+    '/api/v1/prepare-class/dataroom/tree-view-list/copy-folder',
+    payload
+  )
+}
+
 const apiData = {
   getYoutubeData,
   getServerUrl,
@@ -121,6 +130,7 @@ const apiData = {
   postDataroomQuiz,
   postDataroomNoteExam,
   postMoveData,
+  copyTreeViewList,
   
   addFolderTreeViewList,
 

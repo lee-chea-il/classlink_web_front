@@ -167,9 +167,9 @@ export default {
           nObj.readOnly = isReadOnly
           nObj.active = false
           nObj.name = nObj.title
-          nObj.type = this.treeViewType
-
+          
           if (nObj.group_yn) {
+            nObj.type = this.treeViewType
             nObj.isLeaf = false
             result[i] = nObj
             this.pid++
@@ -177,6 +177,11 @@ export default {
               result[i].children = dataMapping(nObj.children, isReadOnly)
             }
           } else {
+            if(this.treeViewType==="MD"){
+              nObj.type = nObj.datatable_type
+            }else{
+              nObj.type = this.treeViewType
+            }
             nObj.isLeaf = true
             result[i] = nObj
             this.pid++
@@ -260,7 +265,7 @@ export default {
       _dfs(copyList, this.datas)
 
       this.checkboxCopyData = {
-        type: this.treeViewType,
+        datatable_type: this.treeViewType,
         copyTreeData: copyList,
         pasteParentIdxs: [],
       }
@@ -268,14 +273,27 @@ export default {
     },
     checkPastePosition() {
       const checkList = []
+      const parentIdList=[]
       function _checkData(oldNode) {
         if (oldNode.isLeaf) {
           if (oldNode.isChecked) {
-            checkList.push(oldNode.data.parent)
+            const pIdx = parentIdList.indexOf(oldNode.data.parent)
+            if(pIdx===-1){
+              checkList.push({
+                parentIdx:oldNode.data.parent
+              })
+              parentIdList.push(oldNode.data.parent)
+            }
           }
         } else {
           if (oldNode.isChecked) {
-            checkList.push(oldNode.treeViewId)
+            const pIdx = parentIdList.indexOf(oldNode.treeViewId)
+            if(pIdx===-1){
+              checkList.push({
+                parentIdx:oldNode.treeViewId
+              })
+              parentIdList.push(oldNode.treeViewId)
+            }
           }
 
           if (oldNode.children && oldNode.children.length > 0) {
