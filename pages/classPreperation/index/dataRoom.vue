@@ -382,6 +382,8 @@ export default {
     this.getEarlyData()
   },
   methods: {
+    // api 통신
+    // 초기 접근 시 api호출
     getEarlyData() {
       this.isLoading = true
       Promise.all([
@@ -484,6 +486,7 @@ export default {
           console.log(err)
         })
     },
+
     // 자료등록시 트리 호출
     setUpdateTree(type) {
       if (type === 'ID') {
@@ -494,12 +497,13 @@ export default {
         this.getMyTreeViewList()
       }
     },
+
     treeViewCopy(parentInfo) {
       this.copyData()
       this.copyCheckData.pasteParentIdxs = [parentInfo]
       this.copyTreeViewList()
     },
-    // 일반용
+
     // 일반용
     // 등록 자료 내용 변경
     onChangeUploadFile({ target: { id, value, type, checked, name } }) {
@@ -511,7 +515,6 @@ export default {
       } else if (id === 'title') return (elem[id] = newVal)
       else return (elem[id] = value)
     },
-    // 일반용
     // 일반용
 
     // api 통신
@@ -575,6 +578,7 @@ export default {
       return msg
     },
 
+    // 연타 막기
     setCallTimeout() {
       this.isApiCall = true
       setTimeout(() => {
@@ -667,8 +671,17 @@ export default {
           } else {
             this.onOpenReferenceBrowseModal()
           }
+          if (data.datatype === '05') {
+            const youtubeUrl = data.full_path.replace(
+              '//www.youtube.com/embed/',
+              ''
+            )
+            this.setYoutubeTime(youtubeUrl)
+          }
         })
-        .catch(() => {})
+        .catch(() => {
+          this.openModalDesc('조회 실패', '조회를 실패했습니다.')
+        })
     },
 
     // 퀴즈 조회
@@ -688,7 +701,9 @@ export default {
             this.onOpenQuizBrowseModal()
           }
         })
-        .catch(() => {})
+        .catch(() => {
+          this.openModalDesc('조회 실패', '조회를 실패했습니다.')
+        })
     },
 
     // 쪽지시험 조회
@@ -708,13 +723,15 @@ export default {
             this.onOpenNoteTestBrowseModal()
           }
         })
-        .catch(() => {})
+        .catch(() => {
+          this.openModalDesc('조회 실패', '조회를 실패했습니다.')
+        })
     },
 
     // 자료 유형별 핸들러
     selectDataroomType(type, data) {
       const { title } = data
-      console.log(data)
+      // console.log(data)
       const payload = {
         treeinfo_idx: data.treeViewId,
         type: data.type,
@@ -867,6 +884,7 @@ export default {
           page: '',
         }
         this.uploadInfo.saveFolderPath = ''
+        this.selectDatatableType = 'ID'
       }, 300)
     },
 
@@ -1446,6 +1464,21 @@ export default {
         })
     },
 
+    // 유튜브 재생시간 가져오기
+    async setYoutubeTime(youtubeUrl) {
+      await apiData.getYoutubeData(youtubeUrl).then(
+        ({
+          data: {
+            items: [item],
+          },
+        }) => {
+          // 유튜브 재생시간 가져오기
+          const playTime = item.contentDetails.duration
+          this.uploadInfo.youtubePlayTime = playTime
+        }
+      )
+    },
+
     // 유튜브 업로드
     onUploadYoutube() {
       const youtubeUrl = this.urlData.youtube.replace('https://youtu.be/', '')
@@ -1595,7 +1628,7 @@ export default {
       if (isLength) {
         target.note_exam_asks = [
           ...target.note_exam_asks,
-          { ...this.testItem, no: setId },
+          { ...jsonItem(this.testItem), no: setId },
         ]
         this.focusEditorField()
       }
@@ -1632,15 +1665,6 @@ export default {
         1
       )
     },
-
-    // // 자료 클릭 이벤트
-    // onClickSelectData(data) {
-    //   this.referenceData = jsonItem(data)
-    //   thi
-    //   if (data.datatype === '03') return this.onOpenQuizBrowseModal()
-    //   else if (data.datatype === '04') return this.onOpenNoteTestBrowseModal()
-    //   else return this.onOpenReferenceBrowseModal()
-    // },
 
     // 자료 조회
     onClickView(data) {

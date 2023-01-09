@@ -144,7 +144,6 @@ export default {
     pushKeyword: { type: String, default: '' },
     modalTitle: { type: String, default: '' },
     lessonData: { type: Object, default: () => {} },
-    referenceList: { type: Array, default: () => [] },
     treeReference: { type: Array, default: () => [] },
     uploadInfo: { type: Object, default: () => {} },
   },

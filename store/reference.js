@@ -1,10 +1,20 @@
 // import http from '@/services/http'
-export const state = () => ({
-})
+// import _ from 'lodash'
+
+// const initState = {
+//   institutionData: [],
+//   franchiseData: [],
+//   openData: [],
+//   myData: [],
+// }
+
+export const state = () => {
+  // return _.cloneDeep(initState)
+}
 
 export const mutations = {
-  setActiveNavIdx(state, payload) {
-    state.activeNavIdx = payload
+  getInstiturionData(state, payload) {
+    state.institutionData = payload
   },
 }
 

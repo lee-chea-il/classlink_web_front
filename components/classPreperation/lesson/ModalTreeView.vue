@@ -1,6 +1,7 @@
 <template>
   <vue-tree-list
     ref="treeItem"
+    class="tree"
     :model="datas"
     :default-expanded="expanded"
     default-tree-node-name="새 폴더"
@@ -385,4 +386,11 @@ export default {
   },
 }
 </script>
-<style scoped></style>
+<style scoped>
+.tree::v-deep .vtl-node-content.vtl-ml {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100%;
+  white-space: nowrap;
+}
+</style>

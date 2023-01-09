@@ -2,7 +2,6 @@ export default function initialState() {
   return {
     currentPageIdx: 0,
     // datatype: '',
-    isDev: false,
     isLoading: true,
     isApiCall: false,
     isUploading: false,
@@ -12,8 +11,8 @@ export default function initialState() {
     isCopyType: '',
     selectDataType: '',
     selectDatatableType: 'ID',
-    isCopyMD:false,
-    copyMDData:null,
+    isCopyMD: false,
+    copyMDData: null,
     // Modal Flag
     isQuizPrint: false,
     isNoteTestPrint: false,

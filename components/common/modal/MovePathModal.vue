@@ -23,7 +23,10 @@
             <div id="myTabContent" class="tab-content path_list">
               <!-- 탭01 내용 -->
               <div
-                v-if="tableType === 'ID'"
+                v-if="
+                  tableType === 'ID' &&
+                  (identity === 'institution' || identity === 'teacher')
+                "
                 id="moveTab01"
                 class="tab-pane fade"
                 :class="{
@@ -45,7 +48,7 @@
               <!-- /.탭01 내용 -->
               <!-- 탭02 내용 -->
               <div
-                v-if="identity !== 'institution'"
+                v-if="identity === 'franchise'"
                 id="moveTab02"
                 class="tab-pane fade"
                 :class="{

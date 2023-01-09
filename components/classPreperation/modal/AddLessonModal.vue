@@ -49,7 +49,11 @@
                           교육기관
                         </button>
                       </li>
-                      <li class="nav-item" role="presentation">
+                      <li
+                        v-show="$store.state.common.user.fra_code"
+                        class="nav-item"
+                        role="presentation"
+                      >
                         <button
                           id="class-tab"
                           class="nav-link"
@@ -167,7 +171,8 @@
                         <TreeView
                           ref="myLesson"
                           listType="lesson"
-                          :dataList="receiveInstitutionData"
+                          :dataList="institutionData"
+                          treeViewType="ID"
                           :editable="identity == 'institution' ? true : false"
                           :identity="identity"
                           :pidNum="12000"
@@ -185,9 +190,11 @@
                         aria-labelledby="class-tab"
                       >
                         <TreeView
+                          v-show="$store.state.common.user.fra_code"
                           ref="myFranchise"
                           listType="lesson"
-                          :dataList="receiveFranchiseData"
+                          treeViewType="FD"
+                          :dataList="franchiseData"
                           :editable="identity == 'institution' ? true : false"
                           :identity="identity"
                           :pidNum="13000"
@@ -205,9 +212,10 @@
                         aria-labelledby="class-tab"
                       >
                         <TreeView
-                          ref="myFranchise"
+                          ref="mydata"
                           listType="lesson"
-                          :dataList="receiveMyData"
+                          treeViewType="MD"
+                          :dataList="myData"
                           :editable="identity == 'institution' ? true : false"
                           :identity="identity"
                           :pidNum="13000"
@@ -226,7 +234,6 @@
                     ref="right"
                     :modalTitle="modalTitle"
                     :lessonData="lessonData"
-                    :referenceList="receiveMyData"
                     :treeReference="referenceList"
                     :pushKeyword="pushKeyword"
                     :uploadInfo="uploadInfo"
@@ -284,14 +291,15 @@ export default {
     modalTitle: { type: String, default: '' },
     identity: { type: String, default: '' },
     isLesson: { type: Boolean, default: false },
+    pushKeyword: { type: String, default: '' },
     receiveInstitutionLessonData: { type: Array, default: () => [] },
     receiveFranchiseLessonData: { type: Array, default: () => [] },
     lessonData: { type: Object, default: () => {} },
     referenceList: { type: Array, default: () => [] },
-    receiveInstitutionData: { type: Array, default: () => [] },
-    receiveFranchiseData: { type: Array, default: () => [] },
-    pushKeyword: { type: String, default: '' },
-    receiveMyData: { type: Array, default: () => {} },
+    institutionData: { type: Array, default: () => [] },
+    franchiseData: { type: Array, default: () => [] },
+    openData: { type: Array, default: () => {} },
+    myData: { type: Array, default: () => {} },
     receiveLessonList: { type: Array, default: () => {} },
     uploadInfo: { type: Object, default: () => {} },
     isContinuedRegist: { type: Boolean, default: false },
@@ -319,7 +327,7 @@ export default {
       }
       getParentName(data.parent)
       this.$emit('open-reference', data, 'isAddLesson')
-      this.$emit('get-savepath', path)
+      this.$emit('get-savepath', { ...data, path })
     },
     unActive() {
       this.$refs.myLesson.unActiveAll()

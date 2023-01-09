@@ -25,8 +25,11 @@
               <div
                 v-show="isOpenFlag(modalTitle, tableType, 'ID')"
                 id="tab01"
-                class="tab-pane fade show"
-                :class="{ active: tableType === 'ID' }"
+                class="tab-pane fade"
+                :class="{
+                  show: tableType === 'ID',
+                  active: tableType === 'ID',
+                }"
                 role="tabpanel"
                 aria-labelledby="grade-tab"
               >
@@ -45,7 +48,10 @@
                 v-show="identity !== 'institution'"
                 id="tab02"
                 class="tab-pane fade"
-                :class="{ active: tableType === 'FD' }"
+                :class="{
+                  show: tableType === 'FD',
+                  active: tableType === 'FD',
+                }"
                 role="tabpanel"
                 aria-labelledby="class-tab"
               >
@@ -64,7 +70,10 @@
                 v-show="isOpenFlag(modalTitle, tableType, 'MD')"
                 id="tab03"
                 class="tab-pane fade"
-                :class="{ active: tableType === 'MD' }"
+                :class="{
+                  show: tableType === 'MD',
+                  active: tableType === 'MD',
+                }"
                 role="tabpanel"
                 aria-labelledby="class-tab"
               >

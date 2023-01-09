@@ -58,10 +58,12 @@ export default {
           this.setEmptyArea()
         } else {
           this.isEmptyData = false
-          this.datas = new Tree(false, this.dataMapping(value, false))
+          this.setData(value)
+          // this.datas = new Tree(false, this.dataMapping(value, false))
         }
       },
       immediate: true,
+      flush: true,
     },
   },
   mounted() {
@@ -70,7 +72,7 @@ export default {
       this.setEmptyArea()
     } else {
       this.isEmptyData = false
-      this.datas = new Tree(false, this.dataMapping(this.dataList, false))
+      // this.datas = new Tree(false, this.dataMapping(this.dataList, false))
     }
   },
   methods: {
@@ -129,6 +131,47 @@ export default {
       }
       return result
     },
+    setData(dataList) {
+      console.log('dataList', dataList, this.treeViewType)
+      const dataMapping = (data, isReadOnly) => {
+        const result = []
+        const len = data?.length
+        for (let i = 0; i < len; i++) {
+          const nObj = data[i]
+          nObj.treeViewId = nObj.id
+          nObj.id = this.pid
+          nObj.pid = this.pid
+          nObj.isChecked = false
+          nObj.readOnly = isReadOnly
+          nObj.active = false
+          nObj.name = nObj.title
+
+          if (nObj.group_yn) {
+            nObj.type = this.treeViewType
+            nObj.isLeaf = false
+            result[i] = nObj
+            this.pid++
+            if (nObj.children) {
+              result[i].children = dataMapping(nObj.children, isReadOnly)
+            }
+          } else {
+            if (this.treeViewType === 'MD') {
+              nObj.type = nObj.datatable_type
+            } else {
+              nObj.type = this.treeViewType
+            }
+            nObj.isLeaf = true
+            result[i] = nObj
+            this.pid++
+          }
+        }
+        return result
+      }
+      this.datas = new Tree(
+        !this.editable,
+        dataMapping(dataList[0]?.children, !this.editable)
+      )
+    },
     setEmptyArea() {
       const dummy = [
         {
@@ -168,7 +211,7 @@ export default {
       target.css({ height: nHei + 'px' })
     },
     unActiveAll() {
-      console.log('fffff')
+      // console.log('fffff')
       function _unActiveAll(oldNode) {
         oldNode.active = false
         if (oldNode.children) {

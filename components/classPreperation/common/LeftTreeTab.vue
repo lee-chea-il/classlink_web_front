@@ -57,6 +57,7 @@
     <!-- /.탭 내용02 -->
     <!-- 탭 내용03 -->
     <div
+      v-if="pageType === 'reference'"
       id="open"
       class="tab-pane fade"
       role="tabpanel"

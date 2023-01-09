@@ -1,6 +1,7 @@
 <template>
   <vue-tree-list
     ref="treeItem"
+    class="tree"
     :model="datas"
     :default-expanded="expanded"
     default-tree-node-name="새 폴더"
@@ -58,6 +59,10 @@ export default {
       type: String,
       default: '',
     },
+    treeViewType: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -65,46 +70,57 @@ export default {
       pid: this.pidNum,
     }
   },
-  mounted() {
-    const dataMapping = (data, isReadOnly) => {
-      const result = []
-      const len = data.length
-      for (let i = 0; i < len; i++) {
-        const newStr = JSON.stringify(data[i])
-        const nObj = JSON.parse(newStr)
-        nObj.treeViewId = nObj.id
-        nObj.id = this.pid
-        nObj.pid = this.pid
-        nObj.isChecked = false
-        nObj.readOnly = isReadOnly
-        nObj.active = false
-        nObj.name = nObj.title
-        nObj.type = this.setType(nObj.datatable_type)
-        // if(nObj.group_yn){
-        // API연동 후 변경 예정
-        if (nObj.children !== undefined) {
-          nObj.isLeaf = false
-          result[i] = nObj
-          this.pid++
-          if (nObj.children) {
-            result[i].children = dataMapping(nObj.children, isReadOnly)
-          }
-        } else {
-          nObj.isLeaf = true
-          result[i] = nObj
-          this.pid++
-        }
-      }
-      return result
-    }
-    console.log('-----------')
-    console.log(this.identity)
-    this.datas = new Tree(
-      !this.editable,
-      dataMapping(this.dataList, !this.editable)
-    )
+  watch: {
+    dataList: {
+      handler(newValue) {
+        this.setData(newValue)
+      },
+      immediate: true,
+      flush: true,
+    },
   },
   methods: {
+    setData(dataList) {
+      console.log('dataList', dataList, this.treeViewType)
+      const dataMapping = (data, isReadOnly) => {
+        const result = []
+        const len = data?.length
+        for (let i = 0; i < len; i++) {
+          const nObj = data[i]
+          nObj.treeViewId = nObj.id
+          nObj.id = this.pid
+          nObj.pid = this.pid
+          nObj.isChecked = false
+          nObj.readOnly = isReadOnly
+          nObj.active = false
+          nObj.name = nObj.title
+
+          if (nObj.group_yn) {
+            nObj.type = this.treeViewType
+            nObj.isLeaf = false
+            result[i] = nObj
+            this.pid++
+            if (nObj.children) {
+              result[i].children = dataMapping(nObj.children, isReadOnly)
+            }
+          } else {
+            if (this.treeViewType === 'MD') {
+              nObj.type = nObj.datatable_type
+            } else {
+              nObj.type = this.treeViewType
+            }
+            nObj.isLeaf = true
+            result[i] = nObj
+            this.pid++
+          }
+        }
+        return result
+      }
+      this.datas = new Tree(
+        !this.editable,
+        dataMapping(dataList[0]?.children, !this.editable)
+      )
+    },
     setType(type) {
       let newType = ''
       switch (type) {
@@ -384,5 +400,12 @@ export default {
 <style scoped>
 .vtl::v-deep .icon_mydata {
   margin: 0px !important;
+}
+
+.tree::v-deep .vtl-node-content.vtl-ml {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100%;
+  white-space: nowrap;
 }
 </style>

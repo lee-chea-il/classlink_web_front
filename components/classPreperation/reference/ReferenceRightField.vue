@@ -116,7 +116,7 @@ export default {
       else return null
     },
     setPlayTime(time) {
-      return time.replace(/H|M/g, ':').replace(/PT|S/g, '')
+      return time?.replace(/H|M/g, ':').replace(/PT|S/g, '')
     },
   },
 }

@@ -36,6 +36,13 @@
         title="등록"
         color="point"
         data-toggle="modal"
+        @click-item="$emit('open-add')"
+      />
+      <ButtonItem
+        v-show="pageType === 'curri'"
+        title="등록"
+        color="point"
+        data-toggle="modal"
         data-target="#modalCuriRegi"
       />
     </div>

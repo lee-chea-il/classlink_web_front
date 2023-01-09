@@ -5,7 +5,6 @@
       <!-- 탭 컨텐츠 -->
       <EducationTabMenu
         :pageType="pageType"
-        :isOpenData="openData.length > 0"
       />
       <LeftTreeTab
         ref="education"

@@ -4,7 +4,7 @@
     <div class="tab-content depth03 ac_manage_dtr">
       <div class="tab-pane active">
         <MainBtnBox
-          pageType="lesson"
+          pageType="curri"
           @open-add="openCurriculumAdd"
           @copy="copyData"
           @paste="pasteData"
