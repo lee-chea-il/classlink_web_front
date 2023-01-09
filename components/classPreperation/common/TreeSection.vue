@@ -20,6 +20,7 @@
         @tree-view-id="$emit('tree-view-id')"
         @tree-view-fd="$emit('tree-view-fd')"
         @delete-data="$emit('delete-data', $event)"
+        @tree-view-copy="$emit('tree-view-copy', $event)"
       />
       <!-- /.탭 컨텐츠 -->
     </div>
@@ -41,6 +42,7 @@
         @get-savepath="$emit('get-savepath', $event)"
         @tree-view-md="$emit('tree-view-md')"
         @delete-data="$emit('delete-data', $event)"
+        @tree-view-copy="$emit('tree-view-copy', $event)"
       />
       <!-- /.탭 컨텐츠 -->
     </div>
@@ -82,6 +84,7 @@ export default {
     unActive() {
       this.$refs.education.$refs.institution.unActiveAll()
       this.$refs.education.$refs.franchise.unActiveAll()
+      this.$refs.myData.$refs.mydata.unActiveAll()
       this.$refs.education.$refs.open.unActiveAll()
     },
   },

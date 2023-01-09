@@ -12,6 +12,8 @@ export default function initialState() {
     isCopyType: '',
     selectDataType: '',
     selectDatatableType: '',
+    isCopyMD:false,
+    copyMDData:null,
     // Modal Flag
     isQuizPrint: false,
     isNoteTestPrint: false,

@@ -23,6 +23,7 @@
         @get-savepath="$emit('get-savepath', $event)"
         @tree-view-md="$emit('tree-view-md')"
         @delete-data="$emit('delete-data', $event)"
+        @tree-view-copy="$emit('tree-view-copy', $event)"
       />
     </div>
     <!-- /.탭 내용01 -->

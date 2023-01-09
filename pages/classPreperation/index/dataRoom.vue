@@ -36,6 +36,7 @@
           @tree-view-fd="getFranTreeViewList"
           @tree-view-od="getPublicTreeViewList"
           @tree-view-md="getMyTreeViewList"
+          @tree-view-copy="treeViewCopy"
         />
         <!-- /.2단 분류 컨텐츠 -->
       </div>
@@ -409,6 +410,19 @@ export default {
           const newItem = jsonItem(data)
           this.myData = jsonItem(newItem)
           this.treeMyData = jsonItem(newItem)
+
+          if(this.isCopyMD){
+            this.isCopyMD=false
+            if(this.copyCheckData.datatable_type==="ID"){
+              this.$refs.mainEducation.$refs.education.$refs.institution.copyComp()
+            }else if(this.copyCheckData.datatable_type==="FD"){
+              this.$refs.mainEducation.$refs.education.$refs.franchise.copyComp()
+            }
+            setTimeout(()=>{
+              this.$refs.mainEducation.$refs.myData.$refs.mydata.setActiveDataList(this.copyMDData)
+              this.copyMDData=null
+            },100)
+          }
         })
         .catch((err) => {
           console.log(err)
@@ -433,14 +447,17 @@ export default {
       await apiData
         .copyTreeViewList( this.copyCheckData )
         .then(({ data: { data } }) => {
-          this.setUpdateTree("ID")
-          this.setUpdateTree("MD")
+          console.log('datassdatadata    ',data)
+          if(data.length>0){
+            this.isCopyMD=true
+            this.copyMDData=data
+            this.setUpdateTree("MD")
+          }
         })
         .catch((err) => {
           console.log(err)
         })
     },
-
     // 자료등록시 트리 호출
     setUpdateTree(type) {
       if (type === 'ID') {
@@ -450,6 +467,11 @@ export default {
       } else {
         this.getMyTreeViewList()
       }
+    },
+    treeViewCopy(parentInfo){
+      this.copyData()
+      this.copyCheckData.pasteParentIdxs=[parentInfo]
+      this.copyTreeViewList()
     },
     // 일반용
     // 일반용
@@ -1529,7 +1551,7 @@ export default {
 
     copyDataCallBack(copyData) {
       this.copyCheckData = copyData
-      console.log("this.copyCheckData   "+this.copyCheckData)
+      console.log("this.copyCheckData   "+this.copyCheckData, this.copyCheckData.copyType)
     },
 
     pasteData() {

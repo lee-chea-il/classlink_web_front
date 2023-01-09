@@ -22,6 +22,7 @@
     @click="$emit('un-active')"
     @drag-start="$emit('un-active')"
     @drop-before="dropBefore"
+    @drop="drop"
   >
     <span slot="addTreeNodeIcon" class="icon">＋</span>
     <span slot="addLeafNodeIcon" class="icon"></span>
@@ -90,9 +91,6 @@ export default {
     },
   },
   methods: {
-    dropBefore({ node, src, target }) {
-      console.log(node, src, target)
-    },
     async addFolder(node) {
       await apiData
         .addFolderTreeViewList(this.addFolderData(node))
@@ -222,7 +220,6 @@ export default {
       console.log(node)
       node.remove()
     },
-
     onChangeName(params) {
       if (params.eventType && params.eventType === 'blur') {
         console.log(params)
@@ -238,6 +235,7 @@ export default {
       const copyList = []
       function _dfs(parentChild, oldNode) {
         let data = {}
+        oldNode.isactive=false
         if (!oldNode.isLeaf) {
           if (oldNode.isChecked) {
             data = {
@@ -245,6 +243,7 @@ export default {
               children: [],
             }
             parentChild.push(data)
+            oldNode.isactive=true
           }
           if (oldNode.children && oldNode.children.length > 0) {
             if (oldNode.isChecked) {
@@ -259,6 +258,7 @@ export default {
           }
         } else if (oldNode.isChecked) {
           parentChild.push({ id: oldNode.treeViewId })
+          oldNode.isactive=true
         }
       }
       this.$emit('un-active')
@@ -267,7 +267,7 @@ export default {
       this.checkboxCopyData = {
         datatable_type: this.treeViewType,
         copyTreeData: copyList,
-        pasteParentIdxs: [],
+        pasteParentIdxs: []
       }
       this.$emit('copyDataCallBack', this.checkboxCopyData)
     },
@@ -313,6 +313,7 @@ export default {
         } else {
           oldNode.active = false
         }
+        oldNode.isactive=false
         if (oldNode.children && oldNode.children.length > 0) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
             _copyComp(oldNode.children[i])
@@ -320,6 +321,50 @@ export default {
         }
       }
       _copyComp(this.datas)
+    },
+    setActiveDataList(dataList){
+      function _active(oldNode) {
+        if (oldNode.isLeaf) {
+          const pIdx = dataList.indexOf(oldNode.treeViewId)
+          if(pIdx>-1){
+            oldNode.active=true
+          }
+        } else {
+          const pIdx = dataList.indexOf(oldNode.treeViewId)
+          if(pIdx>-1){
+            oldNode.active=true
+          }
+          if (oldNode.children && oldNode.children.length > 0) {
+            for (let i = 0, len = oldNode.children.length; i < len; i++) {
+              _active(oldNode.children[i])
+            }
+          }
+        }
+      }
+      _active(this.datas)
+    },
+    dropBefore({ node, target }) {
+      console.log('dropBefore',node, target)
+    },
+    drop({ node, target }) {
+      if(target.type==="MD"){
+        if(target.type!==node.type){
+          if(node.isChecked){
+            if(target.group_yn){
+              this.$emit("tree-view-copy",{parentIdx:target.treeViewId})
+            }else{
+              this.$emit("tree-view-copy",{parentIdx:target.data.parent})
+            }
+          }else if(target.group_yn){
+              this.$emit("tree-view-copy",{parentIdx:target.treeViewId})
+          }else{
+            this.$emit("tree-view-copy",{parentIdx:target.data.parent})
+          }
+        }else{
+          this.$emit("tree-view-move",{parentIdx:target.data.parent})
+          console.log('drop2 isMove  ',node, target)
+        }
+      }
     },
     delData() {
       this.deleteList = []

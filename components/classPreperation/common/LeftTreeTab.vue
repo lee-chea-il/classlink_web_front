@@ -23,6 +23,7 @@
         @get-savepath="$emit('get-savepath', $event)"
         @tree-view-id="$emit('tree-view-id')"
         @delete-data="$emit('delete-data', $event)"
+        @tree-view-copy="$emit('tree-view-copy', $event)"
       />
     </div>
     <!-- /.탭 내용01 -->
@@ -49,6 +50,7 @@
         @get-savepath="$emit('get-savepath', $event)"
         @tree-view-fd="$emit('tree-view-fd')"
         @delete-data="$emit('delete-data', $event)"
+        @tree-view-copy="$emit('tree-view-copy', $event)"
       />
     </div>
     <!-- /.탭 내용02 -->
@@ -75,6 +77,7 @@
         @get-savepath="$emit('get-savepath', $event)"
         @tree-view-od="$emit('tree-view-od')"
         @delete-data="$emit('delete-data', $event)"
+        @tree-view-copy="$emit('tree-view-copy', $event)"
       />
     </div>
     <!-- /.탭 내용03 -->
