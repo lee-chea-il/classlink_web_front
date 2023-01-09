@@ -9,11 +9,8 @@ import apiOperation from './apiOperation'
 import apiLecture from './apiLecture'
 import apiLeaningBox from './apiLearningBox'
 import apiClassCurriculum from './apiClassCurriculum'
-<<<<<<< Updated upstream
 import apiNotice from './apiNotice'
-=======
 import apiPayment from './apiPayment'
->>>>>>> Stashed changes
 
 export {
   api,
@@ -27,9 +24,6 @@ export {
   apiLecture,
   apiLeaningBox,
   apiClassCurriculum,
-<<<<<<< Updated upstream
   apiNotice,
-=======
   apiPayment,
->>>>>>> Stashed changes
 }

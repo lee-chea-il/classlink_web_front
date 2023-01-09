@@ -2743,4 +2743,18 @@ ol {
     background-repeat: no-repeat;
     background-position: center center;
   }
+}
+
+/* (완)마이홈-서비스구독전.html */
+.service_before {
+  padding: 190px 270px;
+  text-align: center;
+}
+.service_before .service_before02 {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: #A7A9AC;
+  margin-bottom: 20px;
 }/*# sourceMappingURL=myhome.css.map */
