@@ -214,12 +214,12 @@
     />
 
     <!-- 납부일 설정 모달 -->
-    <!-- <DatePickerModal
-      :open="datePickerModalDesc.open"
-      @close="onCloseDatePickerModalDesc"
+    <DatePickerModal
+      :open="datePickerDueDateModal.open"
+      @close="onCloseDueDatePickerModal"
       @select-date="selectDay"
       @confirm="onClickDueDateConfirm"
-    /> -->
+    />
 
     <!-- 메모-팝업 L -->
     <StudentMemoModal
@@ -580,6 +580,9 @@ export default {
         open: false,
       },
       datePickerLectureDateModalDesc: {
+        open: false,
+      },
+      datePickerDueDateModal: {
         open: false,
       },
       uploadStudentImgModalDesc: {
@@ -1345,6 +1348,33 @@ export default {
           console.log(err)
         })
     },
+    // 납부일 설정
+    onClickDueDatePicker(lectureId) {
+      this.lectureId = lectureId
+      console.log(this.lectureId)
+      this.datePickerDueDateModal.open = true
+    },
+    onCloseDueDatePickerModal() {
+      this.datePickerDueDateModal.open = false
+      this.selectedDate = ''
+    },
+    onClickDueDateConfirm() {
+      const lecture = this.lectureList.find((x) => {
+        return x.lec_idx === this.lectureId
+      })
+      lecture.sl_payment_date = this.selectedDate
+      this.onCloseDueDatePickerModal()
+    },
+
+    // 납부일 위와 동일
+    onClickSameDate(lectureId) {
+      this.lectureId = lectureId
+      const lectureIdx = this.lectureList.findIndex((x) => {
+        return x.lec_idx === this.lectureId
+      })
+      this.lectureList[lectureIdx].sl_payment_date =
+        this.lectureList[lectureIdx - 1].sl_payment_date
+    },
 
     // 모달 이벤트
     openModalDesc(tit, msg) {
@@ -1627,27 +1657,6 @@ export default {
       const idx = lecture.memo.indexOf(memo)
       lecture.memo.splice(idx, 1)
       this.deleteLectureMemoModalDesc.open = false
-    },
-    // 납부일 설정
-    onClickDueDatePicker(lectureId) {
-      this.lectureId = lectureId
-      this.datePickerModalDesc.open = true
-    },
-    // onClickDueDateConfirm() {
-    //   const lecture = this.studentInfo.lectureInfo.find(
-    //     (result) => result.id === this.lectureId
-    //   )
-    //   lecture.dueDate = this.selectedDate
-    //   this.datePickerModalDesc.open = false
-    // },
-    // 납부일 위와 동일
-    onClickSameDate(lectureId) {
-      this.lectureId = lectureId
-      const lecture = this.studentInfo.lectureInfo.find(
-        (result) => result.id === this.lectureId
-      )
-      const idx = this.studentInfo.lectureInfo.indexOf(lecture)
-      lecture.dueDate = this.studentInfo.lectureInfo[idx - 1].dueDate
     },
 
     onClickNewStudentMemoBtn() {
