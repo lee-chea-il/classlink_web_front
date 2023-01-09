@@ -11,7 +11,7 @@ export default function initialState() {
     modalTitle: '등록',
     isCopyType: '',
     selectDataType: '',
-    selectDatatableType: '',
+    selectDatatableType: 'ID',
     isCopyMD:false,
     copyMDData:null,
     // Modal Flag

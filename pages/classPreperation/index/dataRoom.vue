@@ -2,6 +2,7 @@
   <div>
     <PageHeader title="자료실" />
     <LoadingBox v-if="isLoading" />
+
     <div v-else class="tab-content depth03 ac_manage_dtr">
       <div class="tab-pane active">
         <!-- 컨트롤 버튼 영역 -->
@@ -14,7 +15,7 @@
           @copy="copyData"
           @paste="pasteData"
           @delete="delData"
-          @open-add="openSelectReferenceType"
+          @set-create="openSelectReferenceType"
         />
         <!-- /.컨트롤 버튼 영역 -->
 
@@ -409,17 +410,19 @@ export default {
 
     // 프랜차이즈 트리 가져오기
     async getFranTreeViewList() {
-      await apiData
-        .getTreeViewList({ type: 'FD' })
-        .then(({ data: { data } }) => {
-          const newItem = jsonItem(data)
-          this.franchiseData = jsonItem(newItem)
-          this.treeFranchiseData = jsonItem(newItem)
-          this.moveFranchiseData = jsonItem(newItem)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      if (this.$store.state.common.user.fra_code) {
+        await apiData
+          .getTreeViewList({ type: 'FD' })
+          .then(({ data: { data } }) => {
+            const newItem = jsonItem(data)
+            this.franchiseData = jsonItem(newItem)
+            this.treeFranchiseData = jsonItem(newItem)
+            this.moveFranchiseData = jsonItem(newItem)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      } else return null
     },
 
     // 내 트리 가져오기
@@ -430,6 +433,7 @@ export default {
           const newItem = jsonItem(data)
           this.myData = jsonItem(newItem)
           this.treeMyData = jsonItem(newItem)
+          this.moveMyData = jsonItem(newItem)
 
           if (this.isCopyMD) {
             this.isCopyMD = false
@@ -731,6 +735,7 @@ export default {
         keyword: keyword.join(','),
         title: title + this.setExtension(rest.datatype),
         treeinfo_idx: rest.tree.treeinfo_idx,
+        parent_treeinfo_idx: rest.tree.parent_treeinfo_idx,
       }
       apiData
         .updateDataroomFile(data)
@@ -752,6 +757,7 @@ export default {
         keyword: keyword.join(','),
         title: title + this.setExtension(rest.datatype),
         treeinfo_idx: rest.tree.treeinfo_idx,
+        parent_treeinfo_idx: rest.tree.parent_treeinfo_idx,
       }
       apiData
         .updateDataroomQuiz(data)
@@ -788,7 +794,6 @@ export default {
           limit_time: item.limit_time,
           level: item.level,
           explain: item.explain,
-          treeinfo_idx: item.treeinfo_idx,
           correct_no: item.correct_no,
           note_exam_ask_views: item.note_exam_ask_views.map((data, i) => {
             return {
@@ -804,6 +809,7 @@ export default {
         keyword: keyword.join(','),
         title: title + this.setExtension(rest.datatype),
         treeinfo_idx: tree.treeinfo_idx,
+        parent_treeinfo_idx: tree.parent_treeinfo_idx,
         note_exam_asks: newNoteExam,
       }
 
@@ -882,6 +888,11 @@ export default {
       if (this.modalDesc.path) {
         this[this.modalDesc.path] = true
       }
+    },
+
+    // 등록시 이름 변경
+    openSelectReferenceType() {
+      this.setModalTitle('등록')
     },
 
     // 등록 유형 선택 모달
@@ -1321,6 +1332,7 @@ export default {
       this.referenceData = {
         ...this.referenceData,
         parent_treeinfo_idx: data.id,
+        tree: { parent_treeinfo_idx: data.id },
         datatable_type: data.type,
       }
       return (this.uploadInfo.saveFolderPath = data.path)

@@ -29,6 +29,7 @@
     <!-- /.탭 내용01 -->
     <!-- 탭 내용02 -->
     <div
+      v-show="$store.state.common.user.fra_code"
       id="franchise"
       class="tab-pane fade"
       role="tabpanel"

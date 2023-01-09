@@ -23,10 +23,13 @@
             <div id="myTabContent" class="tab-content path_list">
               <!-- 탭01 내용 -->
               <div
-                v-show="tableType === 'ID'"
+                v-if="tableType === 'ID'"
                 id="moveTab01"
-                class="tab-pane fade show active"
-                :class="{ active: tableType === 'ID' }"
+                class="tab-pane fade"
+                :class="{
+                  show: tableType === 'ID',
+                  active: tableType === 'ID',
+                }"
                 role="tabpanel"
                 aria-labelledby="grade-tab"
               >
@@ -42,10 +45,13 @@
               <!-- /.탭01 내용 -->
               <!-- 탭02 내용 -->
               <div
-                v-show="identity !== 'institution'"
+                v-if="identity !== 'institution'"
                 id="moveTab02"
                 class="tab-pane fade"
-                :class="{ active: tableType === 'FD' }"
+                :class="{
+                  show: tableType === 'FD',
+                  active: tableType === 'FD',
+                }"
                 role="tabpanel"
                 aria-labelledby="class-tab"
               >
@@ -60,10 +66,13 @@
               <!-- /.탭02 내용 -->
               <!-- 탭03 내용 -->
               <div
-                v-show="tableType === 'MD'"
+                v-if="tableType === 'MD'"
                 id="moveTab03"
                 class="tab-pane fade"
-                :class="{ active: tableType === 'MD' }"
+                :class="{
+                  show: tableType === 'MD',
+                  active: tableType === 'MD',
+                }"
                 role="tabpanel"
                 aria-labelledby="class-tab"
               >
@@ -85,8 +94,11 @@
             </div>
           </div>
 
-          <ModalBtnBox submitTxt="저장" @submit="saveFilePath" />
-          <!-- @close="$emit('close')" -->
+          <ModalBtnBox
+            submitTxt="저장"
+            @submit="saveFilePath"
+            @close="$emit('close')"
+          />
         </div>
       </div>
     </div>

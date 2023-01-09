@@ -25,7 +25,8 @@
               <div
                 v-show="isOpenFlag(modalTitle, tableType, 'ID')"
                 id="tab01"
-                class="tab-pane fade show active"
+                class="tab-pane fade show"
+                :class="{ active: tableType === 'ID' }"
                 role="tabpanel"
                 aria-labelledby="grade-tab"
               >
@@ -44,6 +45,7 @@
                 v-show="identity !== 'institution'"
                 id="tab02"
                 class="tab-pane fade"
+                :class="{ active: tableType === 'FD' }"
                 role="tabpanel"
                 aria-labelledby="class-tab"
               >
@@ -56,11 +58,13 @@
                 />
               </div>
               <!-- /.탭02 내용 -->
+
               <!-- 탭02 내용 -->
               <div
                 v-show="isOpenFlag(modalTitle, tableType, 'MD')"
                 id="tab03"
                 class="tab-pane fade"
+                :class="{ active: tableType === 'MD' }"
                 role="tabpanel"
                 aria-labelledby="class-tab"
               >

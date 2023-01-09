@@ -15,7 +15,11 @@
         교육기관
       </button>
     </li>
-    <li class="nav-item" role="presentation">
+    <li
+      v-show="$store.state.common.user.fra_code"
+      class="nav-item"
+      role="presentation"
+    >
       <button
         id="class-tab"
         class="nav-link"
@@ -30,7 +34,11 @@
         프랜차이즈
       </button>
     </li>
-    <li v-if="pageType === 'reference'" class="nav-item" role="presentation">
+    <li
+      v-if="pageType === 'reference' && isOpenData"
+      class="nav-item"
+      role="presentation"
+    >
       <button
         id="class-tab"
         class="nav-link"
@@ -52,10 +60,8 @@
 export default {
   name: 'EducationTabMenu',
   props: {
-    pageType: {
-      type: String,
-      default: '',
-    },
+    pageType: { type: String, default: '' },
+    isOpenData: { type: Boolean, default: false },
   },
 }
 </script>
