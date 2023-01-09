@@ -50,7 +50,7 @@
       <table class="table">
         <thead>
           <tr>
-            <th>
+            <th class="width">
               <div class="custom-control custom-checkbox form-inline">
                 <input
                   id="chkAll"
@@ -100,17 +100,12 @@
                 class="state"
                 :class="{
                   warning: setFilterStatus(
-                    item?.brd_time_sdate.substr(0, 10),
-                    item?.brd_time_edate.substr(0, 10)
+                    item?.brd_time_sdate,
+                    item?.brd_time_edate
                   )?.includes('D-'),
                 }"
               >
-                {{
-                  setFilterStatus(
-                    item.brd_time_sdate.substr(0, 10),
-                    item.brd_time_edate.substr(0, 10)
-                  )
-                }}
+                {{ setFilterStatus(item.brd_time_sdate, item.brd_time_edate) }}
               </span>
             </td>
             <td>
@@ -118,8 +113,10 @@
                 {{ item.brd_time_sdate.replaceAll('-', '.').substr(0, 10) }} -
                 {{ item.brd_time_edate.replaceAll('-', '.').substr(0, 10)
                 }}<br />
-                {{ item.brd_time_stime }} -
-                {{ item.brd_time_etime }}
+                {{ item.brd_time_stime.split(':')[0] >= 12 ? '오후' : '오전' }}
+                {{ item.brd_time_stime.substr(0, 5) }} -
+                {{ item.brd_time_etime.split(':')[0] >= 12 ? '오후' : '오전' }}
+                {{ item.brd_time_etime.substr(0, 5) }}
               </span>
             </td>
             <td>{{ item.mem_name }}</td>
@@ -140,11 +137,7 @@
             </td>
           </tr>
           <!-- 상세 tr [개발참조] 공지사항 상세 TR 펼치고 접기 -->
-          <tr
-            v-show="open_detail.includes(idx)"
-            id="trExpand"
-            class="tr_expand"
-          >
+          <tr v-show="open_detail.includes(idx)" class="tr_expand">
             <td></td>
             <td class="td_expand" colspan="8">
               <div class="file_info">
@@ -159,11 +152,11 @@
               <div class="functional_area">
                 <div class="thumbnail_area">
                   <!-- <div
-                          class="thumbnail"
-                          style="
-                            background-image: url('../images/sample_teacher.jpg');
-                          "
-                        ></div> -->
+                    class="thumbnail"
+                    style="
+                      background-image: url('../images/sample_teacher.jpg');
+                    "
+                  ></div> -->
                   <div
                     v-for="(items, id) in 10"
                     :key="id"
@@ -197,17 +190,20 @@
       <nav aria-label="Page navigation example">
         <ul class="pagination">
           <li class="page-item">
-            <a class="page-link">
+            <a class="page-link cursor" @click="$emit('prev-page')">
               <span class="previous"></span>
             </a>
           </li>
           <li v-for="(item, idx) in endPage" :key="idx" class="page-item">
-            <a class="page-link" :class="{ active: item === currentPage }">{{
-              item
-            }}</a>
+            <a
+              class="page-link cursor"
+              :class="{ active: item === currentPage }"
+              @click="$emit('current-page', item)"
+              >{{ item }}</a
+            >
           </li>
           <li class="page-item">
-            <a class="page-link">
+            <a class="page-link cursor" @click="$emit('next-page')">
               <span class="next"></span>
             </a>
           </li>
@@ -281,12 +277,21 @@ export default {
   border-top: 0;
 }
 .word {
-  max-width: 525px;
+  max-width: 250px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 }
 .cursor {
   cursor: pointer;
+}
+.notice_contents {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  word-break: break-all;
+}
+.width {
+  width: 70px;
 }
 </style>

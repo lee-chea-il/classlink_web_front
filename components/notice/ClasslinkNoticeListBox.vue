@@ -242,12 +242,21 @@ export default {
   border-top: 0;
 }
 .word {
-  max-width: 525px;
+  max-width: 250px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 }
 .cursor {
   cursor: pointer;
+}
+.notice_contents {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  word-break: break-all;
+}
+.width {
+  width: 70px;
 }
 </style>

@@ -4,144 +4,12 @@
       <!--  3Depth -->
       <CustomPageHeader />
       <div class="tab-content depth03 ac_manage_notice notice_rigi">
-        <div class="tab-pane active">
-          <div class="setting_section">
-            <div class="left_section">
-              <div class="subject_area">
-                <span class="title">제목</span>
-                <input
-                  v-model="noticeList.title"
-                  type="text"
-                  placeholder="제목을 입력해주세요."
-                  class="form-control form-inline"
-                />
-                <span class="content">작성자는 자동으로 기록에 남습니다.</span>
-              </div>
-              <div class="file_area">
-                <span class="title">파일첨부</span>
-                <input
-                  id="fileSelect"
-                  type="file"
-                  class="custom-control-input"
-                />
-                <label for="fileSelect" class="btn btn_crud_default mypc"
-                  >내 PC</label
-                >
-                <button class="btn btn_crud_default">삭제</button>
-              </div>
-            </div>
-            <div class="right_section">
-              <div class="date_area">
-                <button
-                  class="btn btn_crud_default"
-                  data-toggle="modal"
-                  data-target="#modalNoticeData"
-                >
-                  기한 설정
-                </button>
-                <span class="box01">
-                  <span class="content02">
-                    {{ noticeList.date_range_start }} -
-                    {{ noticeList.date_range_end }}
-                    {{ noticeList.time_range_start_m === 0 ? '오전' : '오후' }}
-                    {{ noticeList.time_range_start }} -
-                    {{ noticeList.time_range_end_m === 0 ? '오전' : '오후' }}
-                    {{ noticeList.time_range_end }}
-                  </span>
-                </span>
-              </div>
-              <div class="target_area">
-                <button
-                  class="btn btn_crud_default"
-                  data-toggle="modal"
-                  data-target="#modalNoticeTarget"
-                >
-                  대상 설정
-                </button>
-                <span class="box02">
-                  <span class="content02">
-                    <span
-                      v-for="(item, idx) in noticeList.targetSetting"
-                      :key="idx"
-                    >
-                      {{ item }}
-                      <span v-if="noticeList.targetSetting.length - 1 !== idx"
-                        >|</span
-                      >
-                    </span>
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="file_list mb-3">
-            <div id="searchTable" class="search_result">
-              <table class="table table-borderless">
-                <!-- <colgroup>
-									<col width="10%" />
-									<col width="20%" />
-									<col width="20%" />
-									<col width="10%" />
-									<col width="20%" />
-									<col width="20%" />
-								</colgroup> -->
-                <thead>
-                  <tr>
-                    <th scope="col">선택</th>
-                    <th scope="col">파일이름</th>
-                    <th scope="col">업로드 상태</th>
-                    <th scope="col">용량</th>
-                    <th scope="col">첨부방식(전환)</th>
-                    <th scope="col">다운로드 가능기간</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- 	<tr>
-										<td colspan="6">
-											<span class="exp_txt">마우스로 파일을 끌어오세요</span>
-										</td>
-									</tr> -->
-
-                  <tr v-for="(item, idx) in 5" :key="idx">
-                    <td>
-                      <div class="custom-control custom-checkbox form-inline">
-                        <input
-                          :id="`chk${idx}`"
-                          type="checkbox"
-                          class="custom-control-input"
-                        />
-                        <label
-                          class="custom-control-label"
-                          :for="`chk${idx}`"
-                        ></label>
-                      </div>
-                    </td>
-                    <td class="table001">영어리딩심화.pdf</td>
-                    <td></td>
-                    <td>4MB</td>
-                    <td>대용량첨부</td>
-                    <td>~22/08/01(30일간)</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <VueEditor
-            v-model="noticeList.content"
-            :editorOptions="editorOptions"
-            :editorToolbar="editorToolbar"
-          />
-          <div class="btn_area">
-            <button class="btn btn_crud_point" @click="onClickNoticeRegist">
-              등록
-            </button>
-            <NuxtLink
-              to="/management/notice/education"
-              class="btn btn_crud_default"
-              >취소</NuxtLink
-            >
-          </div>
-        </div>
+        <ModifyEducationNoticeBox
+          :noticeList="noticeList"
+          :editorOptions="editorOptions"
+          :editorToolbar="editorToolbar"
+          @modify-notice="onClickNoticeRegist"
+        />
       </div>
     </div>
     <SettingNoticeDeadline
@@ -177,6 +45,7 @@
 
 <script>
 // import PageHeader from '~/components/common/PageHeader.vue'
+import ModifyEducationNoticeBox from '@/components/notice/ModifyEducationNoticeBox.vue'
 import CustomPageHeader from '~/components/notice/CustomPageHeader.vue'
 import SettingNoticeDeadline from '~/components/common/modal/notice/SettingNoticeDeadline.vue'
 import SettingNoticeTarget from '~/components/common/modal/notice/SettingNoticeTarget.vue'
@@ -185,6 +54,7 @@ import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 export default {
   name: 'All',
   components: {
+    ModifyEducationNoticeBox,
     CustomPageHeader,
     SettingNoticeDeadline,
     SettingNoticeTarget,

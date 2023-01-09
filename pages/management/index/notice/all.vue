@@ -20,7 +20,9 @@
           @click-checkbox="onClickCheckBox"
           @click-showContent="onClickShowContent"
           @open-noticeDetail="onOpenNoticeDetailModal"
-          @open-confirmCheck="onOpenNoticeConfirmCheckModal"
+          @current-page="onClickCurrentPage"
+          @prev-page="onClickPrevPage"
+          @next-page="onClickNextPage"
         />
       </div>
     </div>
@@ -37,8 +39,6 @@
       :desc="modalDesc.desc"
       @close="onCloseModalDesc"
     />
-
-    <CustomSnackbar :show="openSnackbar.open" :message="message" />
   </div>
 </template>
 
@@ -48,7 +48,6 @@ import AllNoticeListBox from '@/components/notice/AllNoticeListBox.vue'
 import CustomPageHeader from '~/components/notice/CustomPageHeader.vue'
 import ShowNoticeDetailModal from '~/components/common/modal/notice/ShowNoticeDetailModal.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
-import CustomSnackbar from '@/components/common/CustomSnackbar.vue'
 import { apiNotice } from '~/services'
 export default {
   name: 'All',
@@ -57,21 +56,28 @@ export default {
     CustomPageHeader,
     ShowNoticeDetailModal,
     ModalDesc,
-    CustomSnackbar,
   },
   data() {
     return {
+      // 필터
       sortChange: '최신순',
       sortFilter: 1,
 
+      // 총 페이지 개수
       endPage: 3,
+      // 현재 페이지
       currentPage: 1,
+      // 다음/이전 페이지 여부
+      next: false,
+      prev: false,
 
       // 공지사항 리스트
       noticeList: [
         {
           brd_time_sdate: '',
+          brd_time_stime: '',
           brd_time_edate: '',
+          brd_time_etime: '',
           brd_registration_date: '',
           brd_view_cnt: 0,
           mem_name: '',
@@ -83,18 +89,12 @@ export default {
       allCheck: false,
       checkList: [],
       open_detail: [],
-      open_confirmFilter: 0,
 
+      // 공지 상세 모달
       openNoticeDetailModal: {
         open: false,
         data: {},
       },
-
-      // 스낵바
-      openSnackbar: {
-        open: false,
-      },
-      message: '',
 
       // 모달
       modalDesc: {
@@ -121,6 +121,8 @@ export default {
   methods: {
     // 공지사항 전체 api
     async getAllNoticeList() {
+      this.open_detail = []
+
       const payload = {
         current_page: `?current_page=${this.currentPage}`,
         filter: this.sortFilter === 1 ? '' : `&filter=${this.sortFilter}`,
@@ -132,6 +134,8 @@ export default {
         .then(({ data: { data } }) => {
           this.noticeList = data.listAll
           this.endPage = data.pageMaker.end_page
+          this.next = data.pageMaker.next
+          this.prev = data.pageMaker.prev
         })
         .catch((err) => {
           console.log(err)
@@ -139,20 +143,22 @@ export default {
     },
     // 상태 필터
     setFilterStatus(sdate, edate) {
-      if (new Date() < new Date(sdate)) {
+      const today = new Date()
+      const start = new Date(sdate)
+      const end = new Date(edate)
+
+      const dayCount = Math.floor(
+        (today.getTime() - end.getTime()) / (1000 * 60 * 60 * 24)
+      )
+
+      if (today < start) {
         return '준비중'
-      } else if (
-        Math.floor(
-          (new Date().getTime() - new Date(edate).getTime()) /
-            (1000 * 60 * 60 * 24)
-        ) >= -3
-      ) {
-        return `D${Math.floor(
-          (new Date().getTime() - new Date(edate).getTime()) /
-            (1000 * 60 * 60 * 24)
-        )}`
-      } else if (new Date() > new Date(edate)) {
+      } else if (today > end) {
         return '만료'
+      } else if (dayCount >= -3) {
+        return `D${dayCount}`
+      } else {
+        return ''
       }
     },
 
@@ -166,19 +172,6 @@ export default {
         this.sortChange = '이름순'
       }
       this.sortFilter = num
-    },
-
-    // 컨펌체크 필터 검색
-    onClickSearchKeyword() {
-      if (this.student.name === '') {
-        this.noticeList.student = this.notice.student
-      } else if (this.student.name.length === 1) {
-        return false
-      } else {
-        this.noticeList.student = this.notice.student.filter((elem) => {
-          return elem.attributes.student.includes(this.searchKeyword)
-        })
-      }
     },
 
     // 체크박스 모두 선택
@@ -211,15 +204,6 @@ export default {
       console.log(this.checkList)
     },
 
-    // 스낵바
-    onOpenSnackbar(text) {
-      this.openSnackbar.open = true
-      this.message = text
-    },
-    onCloseSnackbar() {
-      this.openSnackbar.open = false
-      this.message = ''
-    },
     // 모달
     openModalDesc(tit, msg) {
       this.modalDesc = {
@@ -230,19 +214,6 @@ export default {
     },
     onCloseModalDesc() {
       this.modalDesc.open = false
-    },
-
-    // 공지사항 컨펌체크 열기
-    onOpenNoticeConfirmCheckModal(data) {
-      this.openNoticeConfirmCheckModal.open = true
-      this.openNoticeConfirmCheckModal.data = data
-      console.log(this.openNoticeConfirmCheckModal.data)
-    },
-    // 공지사항 컨펌체크 닫기
-    onCloseNoticeConfirmCheckModal() {
-      this.openNoticeConfirmCheckModal.open = false
-      this.openNoticeConfirmCheckModal.data = {}
-      this.open_confirmFilter = 0
     },
 
     // 공지사항 상세 열기
@@ -264,21 +235,23 @@ export default {
         this.open_detail.push(idx)
       }
     },
+
+    // 페이지네이션
+    onClickPrevPage() {
+      if (this.prev) {
+        this.currentPage = this.currentPage - 1
+      }
+    },
+    onClickNextPage() {
+      if (this.next) {
+        this.currentPage = this.currentPage + 1
+      }
+    },
+    onClickCurrentPage(item) {
+      this.currentPage = item
+    },
   },
 }
 </script>
 
-<style scoped>
-.table tbody + tbody {
-  border-top: 0;
-}
-.word {
-  max-width: 250px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-.cursor {
-  cursor: pointer;
-}
-</style>
+<style scoped></style>

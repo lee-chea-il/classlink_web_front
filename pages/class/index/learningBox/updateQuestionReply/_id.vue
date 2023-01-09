@@ -110,7 +110,6 @@ export default {
     this.answer.qbaTitle = this.answerData.answerList.qba_title
     this.answer.qbaDescription = this.answerData.answerList.qba_description
     this.answerFileList = this.answerData.answerFile
-    console.log('answerData', this.answerData)
   },
   methods: {
     // 답변 수정
@@ -137,8 +136,6 @@ export default {
         qtb_idx: this.answerData.answerList.qtb_idx,
         updateFileCheck: fileList.length !== 0,
       }
-
-      console.log(payload)
 
       if (this.answer.qbaTitle !== '' && this.answer.qbaDescription !== '') {
         await apiLeaningBox

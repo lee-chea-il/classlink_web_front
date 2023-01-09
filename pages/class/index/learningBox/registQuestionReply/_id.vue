@@ -55,7 +55,10 @@ export default {
       questionData: {
         content: '',
       },
-      questionInfo: {},
+      questionInfo: {
+        cstm_idx: 0,
+        icu_idx: 0,
+      },
 
       ins_code: this.$store.state.common.user.ins_code,
       fra_code: this.$store.state.common.user.fra_code,
@@ -123,7 +126,7 @@ export default {
       }
       console.log(payload)
 
-      if (this.answer.qbaTitle !== '' && this.answer.qbaDescription !== '') {
+      if (payload.qba_title !== '' && payload.qba_description !== '') {
         await apiLeaningBox
           .postRegistAnswer(payload)
           .then(() => {

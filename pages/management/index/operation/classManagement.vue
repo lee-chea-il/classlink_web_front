@@ -902,7 +902,6 @@ export default {
         order_list: orderList,
         update_index: update,
       }
-      console.log(orderList)
       if (
         this.cond === true &&
         this.searchText === '' &&
@@ -911,8 +910,7 @@ export default {
       ) {
         await apiOperation
           .putChangeOrder(payload)
-          .then(({ data: { data } }) => {
-            console.log(data)
+          .then(() => {
             this.getClassList()
           })
           .catch((err) => {
@@ -1033,9 +1031,7 @@ export default {
       await apiOperation
         .getSearchStudent(payload)
         .then(({ data: { data } }) => {
-          console.log(data)
           this.studentList = data
-          console.log(this.studentList)
         })
         .catch((err) => {
           console.log(err)
@@ -1065,7 +1061,6 @@ export default {
         studentList: selStudentList,
         teacherList: this.selectedTeacher,
       }
-      console.log(payload, selStudentList)
 
       if (
         payload.csm_name !== '' &&
@@ -1130,7 +1125,10 @@ export default {
           })
           .catch((err) => {
             console.log(err)
+            this.openModalDesc('수정 실패', '수정을 실패했습니다.')
           })
+      } else {
+        this.openModalDesc('수정 실패', '수정을 실패했습니다.')
       }
     },
 
@@ -1305,7 +1303,6 @@ export default {
               data.student_list[i].std_year
             )
           }
-
           this.selectedTeacher = data.teacher_list
           this.selectedStudentList = data.student_list
           this.className = item.csm_name
@@ -1313,7 +1310,6 @@ export default {
         .catch((err) => {
           console.log(err)
         })
-      console.log(item)
       this.openClassModify.open = true
       this.openClassModify.data = item
     },
@@ -1347,7 +1343,6 @@ export default {
     },
 
     onClickOpenDetailMore(id) {
-      console.log(id)
       if (this.modalDetailMore === id) {
         this.modalDetailMore = null
       } else {
@@ -1358,10 +1353,10 @@ export default {
     // 체크박스
     onClickClassAllCheck() {
       if (this.allCheck) {
-        this.checkList.splice(0, this.classList.length)
+        this.checkList = []
         this.allCheck = false
       } else {
-        this.checkList.splice(0, this.classList.length)
+        this.checkList = []
         for (let i = 0; i < this.classList.length; i++) {
           this.checkList.push(this.classList[i].csm_idx)
         }
@@ -1458,8 +1453,6 @@ export default {
         moveBanDataList: studentList,
       }
 
-      console.log('sadfasdfag', payload, this.selectedMoveModalRightCheckbox)
-
       if (payload.moveBanDataList.length !== 0) {
         await apiOperation
           .putMoveReverseClass(payload)
@@ -1493,10 +1486,8 @@ export default {
         const payload = {
           ...items,
         }
-        // console.log('items', items, payload)
         this.selectedUnallocationCheckbox.push(payload)
       }
-      console.log('asfsfsf', this.selectedUnallocationCheckbox)
     },
     // 배정X에서 반으로 이동
     async onUnallocationPutMoveClass() {

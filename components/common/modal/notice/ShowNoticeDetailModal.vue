@@ -37,7 +37,7 @@
                 <span>{{
                   data.brd_registration_date.replaceAll('-', '.').substr(0, 10)
                 }}</span>
-                (최종수정일<span>2022-12-09</span>)
+                (최종수정일<span>2022.12.09</span>)
               </span>
               <span class="notice_writer">{{ data.mem_name }} 선생님</span>
             </div>
