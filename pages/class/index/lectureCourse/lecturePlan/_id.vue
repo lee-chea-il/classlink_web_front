@@ -318,10 +318,15 @@ export default {
       }
       await apiLectureCourse
         .deleteSyllabus(payload)
-        .then(() => {
-          this.getSyllabusList()
-          this.deleteIdxList = []
-          this.onCloseDeleteModalDesc()
+        .then((res) => {
+          if (res.data.return_code === '_15') {
+            this.onCloseDeleteModalDesc()
+            this.openModalDesc('강의 계획서 삭제', '권한이 없습니다.')
+          } else {
+            this.getSyllabusList()
+            this.deleteIdxList = []
+            this.onCloseDeleteModalDesc()
+          }
         })
         .catch((err) => {
           console.log(err)

@@ -272,7 +272,7 @@ export default {
         mem_phone: '',
         mem_sex: '',
         tch_grade: 'T',
-        tch_use_yn: 'Y',
+        tch_use_yn: true,
         auth_check: false,
         auth_list: [],
         subject_check: false,

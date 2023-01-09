@@ -235,28 +235,20 @@ export default {
         ins_phone: '',
       },
       initInstitutionInfo: {
-        fra_code: '',
         ins_address1: '',
         ins_address2: '',
         ins_code: '',
         ins_name: '',
         ins_phone: '',
         ins_desc: '',
-        zone_code: '',
-        mem_idx: this.$store.state.common.user.mem_idx,
       },
       newInstitutionInfo: {
-        fra_code: '',
         ins_address1: '',
         ins_address2: '',
         ins_code: '',
         ins_name: '',
         ins_phone: '',
         ins_desc: '',
-        zone_code: '',
-        mem_idx: this.$store.state.common.user.mem_idx,
-        ins_academy_img: '',
-        ins_logo_img: '',
       },
       isInstitutionFlag: false,
       insZoneCode: '',
@@ -619,7 +611,14 @@ export default {
     },
     // 교육기관 개설 api
     async openInstitution() {
-      const payload = this.newInstitutionInfo
+      // const payload = this.newInstitutionInfo
+      const payload = {
+        ins_address1: '인천 계양구 계양산로134번길 37',
+        ins_address2: '1',
+        ins_desc: '1',
+        ins_name: '유잔학원',
+        ins_phone: '010-1111-1111',
+      }
       console.log(payload)
       await apiMypage
         .postOpenInstitution(payload)
@@ -724,7 +723,6 @@ export default {
     },
     addressSearched(data) {
       if (this.isOpenInstitutionInfo) {
-        this.newInstitutionInfo.zone_code = data.zonecode
         const selectAddress = data.userSelectedType
         if (selectAddress === 'J') {
           this.newInstitutionInfo.ins_address1 = data.jibunAddress

@@ -1,6 +1,6 @@
 <template>
-  <div id="content" class="content">
-    <div class="content_area">
+  <div>
+    <div>
       <!--  3Depth -->
       <NavBox />
       <div class="tab-content depth03 ac_manage_pay">
@@ -248,10 +248,10 @@ export default {
       } else if (checked) {
         this.checkList = [...this.checkList, this.invoiceList[idx]]
       } else {
-      const idx = this.checkList.findIndex(
-        (item) => item.id === parseInt(name)
-      )
-      console.log(idx)
+        const idx = this.checkList.findIndex(
+          (item) => item.id === parseInt(name)
+        )
+        console.log(idx)
         this.checkList.splice(idx, 1)
       }
       console.log(this.checkList)

@@ -93,10 +93,11 @@
             <th>
               <div class="custom-control custom-checkbox form-inline">
                 <input
+                  v-if="teacherList.length > 0"
                   id="chkAll"
                   type="checkbox"
                   class="custom-control-input"
-                  :checked="deleteIdxList.length === 10"
+                  :checked="deleteIdxList.length === teacherList.length"
                   @input="$emit('checked-all', $event)"
                 />
                 <label class="custom-control-label" for="chkAll"></label>

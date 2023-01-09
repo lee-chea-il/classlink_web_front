@@ -1,11 +1,7 @@
 <template>
   <div>
-    <div id="content" class="content">
-      <div class="content_area">
-        <NavBox />
-        <MyPaymentPlanBox :paymentPlan="paymentPlan" />
-      </div>
-    </div>
+    <NavBox />
+    <MyPaymentPlanBox :paymentPlan="paymentPlan" />
 
     <!-- 모달 팝업 ------------------------------------->
 

@@ -1,59 +1,56 @@
 <template>
-  <!-- container -->
-  <div id="content" class="content">
-    <div class="content_area">
-      <!--  3Depth -->
-      <NavBox />
+  <div>
+    <NavBox />
 
-      <div class="tab-content depth03 ac_manage_pay">
-        <div class="tab-pane active">
-          <!-- [개발참조]구독중 서비스가 없을때  -->
-          <div v-if="!myPaymentPlan.title" class="page_nodata">
-            <p>
-              현재 구독 중인 서비스가 없습니다.<br />
-              서비스를 구독하여 사용해 보세요.
-            </p>
-            <p>
-              <button class="btn btn_crud_point">내 카드 등록</button>
-              <button class="btn btn_crud_point">서비스 구독</button>
-            </p>
-          </div>
-          <div v-else>
-            <SelectPaymentPlanBox
-              v-show="isEditStepFlag === 0"
-              :paymentList="paymentList"
-              :myPaymentPlan="myPaymentPlan"
-              :allPrice="allPriceString"
-              :teacherCount="teacherCount"
-              @select-plan="selectPaymentPlan"
-              @change-count="changeTeacherCount"
-              @click-up="onClickCountUpBtn"
-              @click-down="onClickCountDownBtn"
-            />
-            <CardInfoBox
-              v-show="isEditStepFlag === 1"
-              :cardInfo="cardInfo"
-              :myCardInfo="myCardInfo"
-              :isBillingContact="isBillingContact"
-              :isBuyerContact="isBuyerContact"
-              :isPaymentType="isPaymentType"
-              @click-updateIcon="onClickUpdateIcon"
-              @change-input="changeCardInfoInput"
-              @click-save="onClickSaveBtn"
-              @click-cancel="onClickCancelBtn"
-              @click-sameContact="changeSameContact"
-              @click-sameAddress="changeSameAddress"
-            />
-            <ConfirmPaymentPlan v-show="isEditStepFlag === 2" />
-          </div>
-          <div class="btn_area">
-            <button class="btn btn_crud_default" @click="onClickPrevBtn">
-              {{ isEditStepFlag === 0 ? '취소' : '이전' }}
-            </button>
-            <button class="btn btn_crud_point" @click="onClickNextBtn">
-              {{ isEditStepFlag === 2 ? '결제' : '다음' }}
-            </button>
-          </div>
+    <div class="tab-content depth03 ac_manage_pay">
+      <div class="tab-pane active">
+        <!-- [개발참조]구독중 서비스가 없을때  -->
+        <div v-if="!myPaymentPlan.title" class="page_nodata">
+          <p>
+            현재 구독 중인 서비스가 없습니다.<br />
+            서비스를 구독하여 사용해 보세요.
+          </p>
+          <p>
+            <button class="btn btn_crud_point">내 카드 등록</button>
+            <button class="btn btn_crud_point">서비스 구독</button>
+          </p>
+        </div>
+        <div v-else>
+          <SelectPaymentPlanBox
+            v-show="isEditStepFlag === 0"
+            :paymentList="paymentList"
+            :myPaymentPlan="myPaymentPlan"
+            :allPrice="allPriceString"
+            :teacherCount="teacherCount"
+            @select-plan="selectPaymentPlan"
+            @change-count="changeTeacherCount"
+            @click-up="onClickCountUpBtn"
+            @click-down="onClickCountDownBtn"
+          />
+          <CardInfoBox
+            v-show="isEditStepFlag === 1"
+            :cardInfo="cardInfo"
+            :myCardInfo="myCardInfo"
+            :isBillingContact="isBillingContact"
+            :isBuyerContact="isBuyerContact"
+            :isPaymentType="isPaymentType"
+            @click-updateIcon="onClickUpdateIcon"
+            @change-input="changeCardInfoInput"
+            @click-save="onClickSaveBtn"
+            @click-cancel="onClickCancelBtn"
+            @click-sameContact="changeSameContact"
+            @click-sameAddress="changeSameAddress"
+          />
+          <ConfirmPaymentPlan v-show="isEditStepFlag === 2" />
+          <Payment v-show="isEditStepFlag === 3" />
+        </div>
+        <div class="btn_area">
+          <button class="btn btn_crud_default" @click="onClickPrevBtn">
+            {{ isEditStepFlag === 0 ? '취소' : '이전' }}
+          </button>
+          <button class="btn btn_crud_point" @click="onClickNextBtn">
+            {{ isEditStepFlag === 2 ? '결제' : '다음' }}
+          </button>
         </div>
       </div>
     </div>
@@ -65,6 +62,7 @@ import NavBox from '@/components/payment/NavBox.vue'
 import SelectPaymentPlanBox from '@/components/payment/SelectPaymentPlanBox.vue'
 import CardInfoBox from '@/components/payment/CardInfoBox.vue'
 import ConfirmPaymentPlan from '@/components/payment/ConfirmPaymentPlan.vue'
+import Payment from '@/components/payment/Payment.vue'
 export default {
   name: 'EditPaymentPlan',
   components: {
@@ -72,10 +70,11 @@ export default {
     SelectPaymentPlanBox,
     CardInfoBox,
     ConfirmPaymentPlan,
+    Payment,
   },
   data() {
     return {
-      isEditStepFlag: 0,
+      isEditStepFlag: 4,
       paymentList: [
         {
           id: 0,

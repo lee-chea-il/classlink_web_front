@@ -161,8 +161,13 @@ export default {
           localStorage.setItem('token', data.refresh_token)
           // this.$store.commit('common/setUser', this.userInfo)
           // this.$store.commit('common/setUserLogin')
-          this.goIdentitySelectPage()
           // console.log(this.$store.state.userInfo.userInfo)
+          if (this.userInfo.mem_pw === '123456') {
+            this.$store.commit('common/setPwResetFlag')
+            this.$router.push('/resetpw')
+          } else {
+            this.goIdentitySelectPage()
+          }
         })
         .catch(() => {
           this.openModalDesc('로그인 실패', '일치하는 회원이 없습니다.')

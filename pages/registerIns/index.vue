@@ -116,14 +116,11 @@ export default {
   data() {
     return {
       institutionInfo: {
-        fra_code: '',
         ins_address1: '',
         ins_address2: '',
         ins_desc: '',
         ins_name: '',
         ins_phone: '',
-        zone_code: '',
-        mem_idx: this.$store.state.common.user.mem_idx,
       },
       mapSearchModal: {
         open: false,
@@ -173,9 +170,7 @@ export default {
       this.mapSearchModal.open = false
     },
     addressSearched(data) {
-      this.institutionInfo.zone_code = data.zonecode
       const selectAddress = data.userSelectedType
-      console.log(selectAddress)
       if (selectAddress === 'J') {
         this.institutionInfo.ins_address1 = data.jibunAddress
       } else if (selectAddress === 'R') {

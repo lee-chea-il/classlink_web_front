@@ -19,7 +19,7 @@ async function getEmailCheck(email) {
 
 // 교육기관 개설
 async function postOpenInstitution(payload) {
-  return await http.post('/api/v1/account/open-institution', payload)
+  return await http.post('/api/v1/institution', payload)
 }
 
 // 유저 정보 불러오기
@@ -42,6 +42,11 @@ async function putUpdatePw(payload) {
   return await http.put('/api/v1/account/pw', payload)
 }
 
+// 로그인 한 유저 비밀번호 변경
+async function putUpdateLoginPw(payload) {
+  return await http.put('/api/v1/mypage/pw', payload)
+}
+
 const apiLogin = {
   postLogin,
   postSignup,
@@ -52,6 +57,7 @@ const apiLogin = {
   getFindId,
   getFindPw,
   putUpdatePw,
+  putUpdateLoginPw,
 }
 
 export default apiLogin

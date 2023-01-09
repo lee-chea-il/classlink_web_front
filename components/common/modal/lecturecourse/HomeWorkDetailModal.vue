@@ -138,7 +138,11 @@
           <!-- div class="modal-body" -->
           <!-- [개발참조] 강의계획서 열람 시 출력되는 버튼 -->
           <div class="modal-footer">
-            <button class="btn btn_crud_point" @click="$emit('update')">
+            <button
+              class="btn btn_crud_point"
+              :disabled="task.mem_idx !== $store.state.common.user.mem_idx"
+              @click="$emit('update')"
+            >
               수정
             </button>
             <button class="btn btn_crud_default" data-dismiss="modal">

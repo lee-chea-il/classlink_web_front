@@ -1,51 +1,45 @@
 <template>
   <div>
-    <!-- container -->
-    <div id="content" class="content">
-      <div class="content_area">
-        <!--  3Depth -->
-        <NavBox />
-        <div class="tab-content depth03 ac_manage_pay">
-          <div class="tab-pane active">
-            <div class="search_section">
-              <div class="right_area">
-                <button class="btn btn_crud_default" @click="goBackPage">
-                  돌아가기
-                </button>
-              </div>
-            </div>
-            <!-- 검색 영역 -->
-            <CardInfoBox
-              :cardInfo="cardInfo"
-              :myCardInfo="myCardInfo"
-              :isBillingContact="isBillingContact"
-              :isBuyerContact="isBuyerContact"
-              :isPaymentType="isPaymentType"
-              :isCardInfoTab="true"
-              @click-updateIcon="onClickUpdateIcon"
-              @change-input="changeCardInfoInput"
-              @click-save="onClickSaveBtn"
-              @click-cancel="onClickCancelBtn"
-              @click-sameContact="changeSameContact"
-              @click-sameAddress="changeSameAddress"
-            />
-
-            <div class="btn_area">
-              <button
-                class="btn btn_crud_point"
-                type="button"
-                data-toggle="modal"
-                data-target="#modalServiceSub"
-                data-dismiss="modal"
-              >
-                서비스 구독하기
-              </button>
-            </div>
+    <!--  3Depth -->
+    <NavBox />
+    <div class="tab-content depth03 ac_manage_pay">
+      <div class="tab-pane active">
+        <div class="search_section">
+          <div class="right_area">
+            <button class="btn btn_crud_default" @click="goBackPage">
+              돌아가기
+            </button>
           </div>
+        </div>
+        <!-- 검색 영역 -->
+        <CardInfoBox
+          :cardInfo="cardInfo"
+          :myCardInfo="myCardInfo"
+          :isBillingContact="isBillingContact"
+          :isBuyerContact="isBuyerContact"
+          :isPaymentType="isPaymentType"
+          :isCardInfoTab="true"
+          @click-updateIcon="onClickUpdateIcon"
+          @change-input="changeCardInfoInput"
+          @click-save="onClickSaveBtn"
+          @click-cancel="onClickCancelBtn"
+          @click-sameContact="changeSameContact"
+          @click-sameAddress="changeSameAddress"
+        />
+
+        <div class="btn_area">
+          <button
+            class="btn btn_crud_point"
+            type="button"
+            data-toggle="modal"
+            data-target="#modalServiceSub"
+            data-dismiss="modal"
+          >
+            서비스 구독하기
+          </button>
         </div>
       </div>
     </div>
-    <!-- //container -->
     <SubscribeModal @click-go="goPaymentPlanPage" />
   </div>
 </template>

@@ -51,7 +51,7 @@
                       <td class="td01">{{ item.lec_title }}</td>
                       <td class="td02">
                         <div class="date">
-                          <div class="box01 mr-1">{{ item.dueDate }}</div>
+                          <div class="box01 mr-1">{{ item.sl_payment_date }}</div>
                           <i
                             class="icons_calendar_off mr-1"
                             @click="$emit('click-date', item.lec_idx)"
@@ -65,7 +65,7 @@
                           </div>
                         </div>
                       </td>
-                      <td class="date02">{{ item.lectureDate }}</td>
+                      <td class="date02">{{ item.sl_lec_sdate }}</td>
                       <td class="i td04">
                         <i
                           class="icons_plus_circle_off"

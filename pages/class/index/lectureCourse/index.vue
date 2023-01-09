@@ -278,28 +278,29 @@ export default {
 
     // 강좌 요일, 시간
     setLectureDay(data) {
+      console.log(data)
       let day = ''
       let startTime = ''
       let endTime = ''
-      if (data.lec_mon_yn === '1') {
+      if (data.lec_mon_yn) {
         day = day + '월'
       }
-      if (data.lec_tue_yn === '1') {
+      if (data.lec_tue_yn) {
         day = day + '화'
       }
-      if (data.lec_wed_yn === '1') {
+      if (data.lec_wed_yn) {
         day = day + '수'
       }
-      if (data.lec_thu_yn === '1') {
+      if (data.lec_thu_yn) {
         day = day + '목'
       }
-      if (data.lec_fri_yn === '1') {
+      if (data.lec_fri_yn) {
         day = day + '금'
       }
-      if (data.lec_sat_yn === '1') {
+      if (data.lec_sat_yn) {
         day = day + '토'
       }
-      if (data.lec_sun_yn === '1') {
+      if (data.lec_sun_yn) {
         day = day + '일'
       }
       startTime = data.lec_time_stime.substr(0, 5)

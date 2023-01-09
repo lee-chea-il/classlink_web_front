@@ -18,10 +18,14 @@
               <span class="notice_tit">제목</span>
               <span class="notice_title">{{ syllabus.lep_title }}</span>
               <span class="notice_day02"
-                ><span>{{ dateFormat(syllabus.lep_registration_date) }}</span
-                >(최종수정일 <span>2022.12.09</span>)
-              </span>
-              <span class="notice_writer">{{ syllabus.mem_name }}</span>
+                ><span>{{ syllabus.lep_registration_date.substr(0, 10) }}</span>
+                <span v-if="syllabus.lep_update_date !== null"
+                  >(최종수정일{{
+                    syllabus.lep_update_date.substr(0, 10)
+                  }})</span
+                ></span
+              >
+              <span class="notice_writer">{{ syllabus.mem_name }} 선생님</span>
             </div>
 
             <div v-if="syllabus.fileList !== null" class="file_info">
@@ -46,7 +50,11 @@
           <!-- [개발참조] 강의계획서 열람 시 출력되는 버튼
 					미리보기에는 출력되지않음 -->
           <div class="modal-footer">
-            <button class="btn btn_crud_point" @click="$emit('update')">
+            <button
+              class="btn btn_crud_point"
+              :disabled="syllabus.mem_idx !== $store.state.common.user.mem_idx"
+              @click="$emit('update')"
+            >
               수정
             </button>
             <button class="btn btn_crud_default" @click="$emit('close')">
@@ -75,16 +83,6 @@ export default {
   },
   data() {
     return {
-      lecturePlan: {
-        id: 0,
-        course_id: 0,
-        title: '성격심리학 레슨1 강의계획서0',
-        writer: '홍길동 선생님',
-        created_at: '2022.07.10',
-        open: false,
-        views: 3,
-        contents: '성격심리학 레슨1 강의계획서입니다. 수업에 참고해 주세요',
-      },
       editorOptions: {
         modules: {
           toolbar: false,

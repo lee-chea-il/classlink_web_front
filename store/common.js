@@ -5,6 +5,7 @@ const initState = {
   isLogin: false,
   loginIdentity: '',
   userEmail: '',
+  isReset: false,
 }
 export const state = () => {
   return _.cloneDeep(initState)
@@ -29,6 +30,14 @@ export const mutations = {
   // 비밀번호 재설정
   setUserEmail(state, email) {
     state.userEmail = email
+  },
+  // 비밀번호 초기화 후 비밀번호 재설정
+  setPwResetFlag(state) {
+    if (state.isReset) {
+      state.isReset = false
+    } else {
+      state.isReset = true
+    }
   },
 
   setActiveNavIdx(state, payload) {

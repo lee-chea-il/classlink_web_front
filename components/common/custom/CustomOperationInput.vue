@@ -101,13 +101,15 @@
         v-if="
           isEmailCheckBtn && !isEmailCheck && inputValue.length > 0 && !invalid
         "
-        class="invalid_text check-margin"
+        class="invalid_text"
+        :class="isStudentInput ? 'check-margin' : 'teacher-email-check'"
       >
         이메일 중복확인을 해주세요.
       </div>
       <div
         v-if="isIdCheckBtn && !isIdCheck && inputValue.length > 0 && !invalid"
-        class="invalid_text id-check-margin"
+        class="invalid_text"
+        :class="isStudentInput ? 'id-check-margin' : 'teacher-id-check'"
       >
         아이디 중복확인을 해주세요.
       </div>
@@ -255,6 +257,14 @@ button {
 }
 .id-check-margin {
   margin-top: -30px;
+  margin-bottom: -35px;
+}
+.teacher-id-check {
+  margin-top: -12px;
+  margin-bottom: -35px;
+}
+.teacher-email-check {
+  margin-top: 1px;
   margin-bottom: -35px;
 }
 </style>

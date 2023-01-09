@@ -10,7 +10,7 @@
       </div>
       <div class="form_section">
         <ValidationObserver v-slot="{ invalid }">
-          <form @submit.prevent="handleSubmit">
+          <form @submit.prevent>
             <!-- <CustomInput
               id="authNumber"
               name="인증코드"
@@ -136,7 +136,8 @@ export default {
       }
     },
 
-    async handleSubmit() {
+    // 비밀번호 재설정 api
+    async putUpdatePw() {
       const payload = {
         auth_code: 0,
         mem_email: this.$store.state.common.userEmail,
@@ -153,6 +154,35 @@ export default {
         .catch((err) => {
           console.log(err)
         })
+    },
+
+    // 비밀번호 초기화 후 비밀번호 재설정 api
+    async putUpdateLoginPw() {
+      const payload = {
+        mem_pw: '123456',
+        new_pw: this.userInfo.password,
+      }
+      await apiLogin
+        .putUpdateLoginPw(payload)
+        .then(() => {
+          this.$store.commit('common/setPwResetFlag')
+          this.openSuccessModalDesc(
+            '비밀번호 재설정',
+            '비밀번호가 변경되었습니다.'
+          )
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
+    // 비밀번호 재설정
+    handleSubmit() {
+      if (this.$store.state.common.isReset) {
+        this.putUpdateLoginPw()
+      } else {
+        this.putUpdatePw()
+      }
     },
 
     // 로그인 페이지로 이동

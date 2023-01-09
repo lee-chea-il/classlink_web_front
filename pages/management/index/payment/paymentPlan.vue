@@ -1,244 +1,241 @@
 <template>
-  <div id="content" class="content">
-    <div class="content_area">
-      <!--  3Depth -->
-      <NavBox />
+  <div>
+    <NavBox />
 
-      <div class="tab-content depth03 ac_manage_pay">
-        <div class="tab-pane active">
-          <!-- 검색 영역 -->
-          <div class="search_section">
-            <div class="right_area">
-              <button class="btn btn_crud_default" @click="goBackPage">
-                돌아가기
-              </button>
+    <div class="tab-content depth03 ac_manage_pay">
+      <div class="tab-pane active">
+        <!-- 검색 영역 -->
+        <div class="search_section">
+          <div class="right_area">
+            <button class="btn btn_crud_default" @click="goBackPage">
+              돌아가기
+            </button>
+          </div>
+        </div>
+        <div class="rateplan_section">
+          <div class="mu_area">
+            <ul>
+              <li :class="isTabFlag === 0 ? 'active' : ''">
+                <a class="btn" @click="onClickTab0">중·소형 교육기관</a>
+              </li>
+              <li :class="isTabFlag === 1 ? 'active' : ''">
+                <a class="btn" @click="onClickTab1">대형 교육기관</a>
+              </li>
+              <li :class="isTabFlag === 2 ? 'active' : ''">
+                <a class="btn" @click="onClickTab2">MOU</a>
+              </li>
+            </ul>
+          </div>
+          <div v-show="isTabFlag === 0" class="plan_area">
+            <div
+              v-for="(item, idx) in paymentTab0List"
+              :key="idx"
+              class="plan_card color01"
+              :class="`color0${item.id + 1}`"
+            >
+              <div
+                v-show="item.id === 2"
+                :class="item.id === 2 ? 'popular' : ''"
+              >
+                가장 인기많은 상품
+              </div>
+              <div class="plan_box">
+                <div class="plan_tit">
+                  <div class="name">{{ item.title }}</div>
+                  <div class="price">
+                    {{
+                      item.id === 0
+                        ? item.price
+                        : '₩' + priceToString(item.price) + '/월'
+                    }}
+                  </div>
+                </div>
+                <!-- [개발참조] 하단 추가 스크립트의 '상세더보기' 동작구현은 실제 개발 후 제거 -->
+                <div class="btn_area">
+                  <button
+                    class="btn btn_crud_default btn_signup"
+                    @click="goRecentPlanPage"
+                  >
+                    {{ item.id === 0 ? '가입' : '지금 구독' }}
+                  </button>
+                  <button
+                    id="btnPlanExpand01"
+                    class="btn PlanExpand"
+                    @click="onClickExpandBtn(idx)"
+                  >
+                    <i
+                      class="icons_plus_circle_on"
+                      :class="
+                        expandIdx.includes(idx)
+                          ? 'icons_minus_circle_off'
+                          : 'icons_plus_circle_on'
+                      "
+                    ></i>
+                    {{ expandIdx.includes(idx) ? '접기' : '더보기' }}
+                  </button>
+                </div>
+                <div
+                  id="planDetails01"
+                  class="detail_area"
+                  :class="expandIdx.includes(idx) ? 'expand_show' : ''"
+                  style="display: none"
+                >
+                  <div class="detail_list">
+                    <div class="detail_title">
+                      <i class="icons_check_circle"></i> 클래스 링크
+                    </div>
+                    <div class="detail_info">
+                      <span>{{ item.classLink[0] }}</span>
+                    </div>
+                    <ul class="list">
+                      <li
+                        v-for="(child_item, child_idx) in paymentTab0List[
+                          idx
+                        ].classLink.slice(1)"
+                        :key="child_idx"
+                      >
+                        {{ child_item }}
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="detail_list">
+                    <div class="detail_title">
+                      <i class="icons_check_circle"></i> 클래스 보드
+                    </div>
+                    <div class="detail_info">
+                      <span>{{ item.classBoard[0] }}</span>
+                    </div>
+                    <ul class="list">
+                      <li
+                        v-for="(child_item, child_idx) in paymentTab0List[
+                          idx
+                        ].classBoard.slice(1)"
+                        :key="child_idx"
+                      >
+                        {{ child_item }}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="rateplan_section">
-            <div class="mu_area">
-              <ul>
-                <li :class="isTabFlag === 0 ? 'active' : ''">
-                  <a class="btn" @click="onClickTab0">중·소형 교육기관</a>
-                </li>
-                <li :class="isTabFlag === 1 ? 'active' : ''">
-                  <a class="btn" @click="onClickTab1">대형 교육기관</a>
-                </li>
-                <li :class="isTabFlag === 2 ? 'active' : ''">
-                  <a class="btn" @click="onClickTab2">MOU</a>
-                </li>
-              </ul>
-            </div>
-            <div v-show="isTabFlag === 0" class="plan_area">
+          <div v-show="isTabFlag === 1" class="plan_area">
+            <div
+              v-for="(item, idx) in paymentTab1List"
+              :key="idx"
+              class="plan_card"
+              :class="`color0${item.id - 1}`"
+            >
               <div
-                v-for="(item, idx) in paymentTab0List"
-                :key="idx"
-                class="plan_card color01"
-                :class="`color0${item.id + 1}`"
+                v-show="item.id === 4"
+                :class="item.id === 4 ? 'popular' : ''"
               >
-                <div
-                  v-show="item.id === 2"
-                  :class="item.id === 2 ? 'popular' : ''"
-                >
-                  가장 인기많은 상품
+                가장 인기많은 상품
+              </div>
+              <div class="plan_box">
+                <div class="plan_tit">
+                  <div class="name">{{ item.title }}</div>
+                  <div class="price">
+                    {{ '₩' + priceToString(item.price) + '/월' }}
+                  </div>
                 </div>
-                <div class="plan_box">
-                  <div class="plan_tit">
-                    <div class="name">{{ item.title }}</div>
-                    <div class="price">
-                      {{
-                        item.id === 0
-                          ? item.price
-                          : '₩' + priceToString(item.price) + '/월'
-                      }}
-                    </div>
-                  </div>
-                  <!-- [개발참조] 하단 추가 스크립트의 '상세더보기' 동작구현은 실제 개발 후 제거 -->
-                  <div class="btn_area">
-                    <button
-                      class="btn btn_crud_default btn_signup"
-                      @click="goRecentPlanPage"
-                    >
-                      {{ item.id === 0 ? '가입' : '지금 구독' }}
-                    </button>
-                    <button
-                      id="btnPlanExpand01"
-                      class="btn PlanExpand"
-                      @click="onClickExpandBtn(idx)"
-                    >
-                      <i
-                        class="icons_plus_circle_on"
-                        :class="
-                          expandIdx.includes(idx)
-                            ? 'icons_minus_circle_off'
-                            : 'icons_plus_circle_on'
-                        "
-                      ></i>
-                      {{ expandIdx.includes(idx) ? '접기' : '더보기' }}
-                    </button>
-                  </div>
-                  <div
-                    id="planDetails01"
-                    class="detail_area"
-                    :class="expandIdx.includes(idx) ? 'expand_show' : ''"
-                    style="display: none"
+                <div class="btn_area">
+                  <button
+                    class="btn btn_crud_default btn_signup"
+                    @click="goRecentPlanPage"
                   >
-                    <div class="detail_list">
-                      <div class="detail_title">
-                        <i class="icons_check_circle"></i> 클래스 링크
-                      </div>
-                      <div class="detail_info">
-                        <span>{{ item.classLink[0] }}</span>
-                      </div>
-                      <ul class="list">
-                        <li
-                          v-for="(child_item, child_idx) in paymentTab0List[
-                            idx
-                          ].classLink.slice(1)"
-                          :key="child_idx"
-                        >
-                          {{ child_item }}
-                        </li>
-                      </ul>
+                    지금 구독
+                  </button>
+                  <button
+                    id="btnPlanExpand01"
+                    class="btn PlanExpand"
+                    @click="onClickExpandBtn(idx)"
+                  >
+                    <i
+                      class="icons_plus_circle_on"
+                      :class="
+                        expandIdx.includes(idx)
+                          ? 'icons_minus_circle_off'
+                          : 'icons_plus_circle_on'
+                      "
+                    ></i>
+                    {{ expandIdx.includes(idx) ? '접기' : '더보기' }}
+                  </button>
+                </div>
+                <div
+                  id="planDetails01"
+                  class="detail_area"
+                  :class="expandIdx.includes(idx) ? 'expand_show' : ''"
+                  style="display: none"
+                >
+                  <div class="detail_list">
+                    <div class="detail_title">
+                      <i class="icons_check_circle"></i> 클래스 링크
                     </div>
-                    <div class="detail_list">
-                      <div class="detail_title">
-                        <i class="icons_check_circle"></i> 클래스 보드
-                      </div>
-                      <div class="detail_info">
-                        <span>{{ item.classBoard[0] }}</span>
-                      </div>
-                      <ul class="list">
-                        <li
-                          v-for="(child_item, child_idx) in paymentTab0List[
-                            idx
-                          ].classBoard.slice(1)"
-                          :key="child_idx"
-                        >
-                          {{ child_item }}
-                        </li>
-                      </ul>
+                    <div class="detail_info">
+                      <span>{{ item.classLink[0] }}</span>
                     </div>
+                    <ul class="list">
+                      <li
+                        v-for="(child_item, child_idx) in paymentTab1List[
+                          idx
+                        ].classLink.slice(1)"
+                        :key="child_idx"
+                      >
+                        {{ child_item }}
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="detail_list">
+                    <div class="detail_title">
+                      <i class="icons_check_circle"></i> 클래스 보드
+                    </div>
+                    <div class="detail_info">
+                      <span>{{ item.classBoard[0] }}</span>
+                    </div>
+                    <ul class="list">
+                      <li
+                        v-for="(child_item, child_idx) in paymentTab1List[
+                          idx
+                        ].classBoard.slice(1)"
+                        :key="child_idx"
+                      >
+                        {{ child_item }}
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="detail_list">
+                    <div class="detail_title">
+                      <i class="icons_check_circle"></i> 프랜차이즈
+                    </div>
+                    <ul class="list">
+                      <li
+                        v-for="(child_item, child_idx) in paymentTab1List[idx]
+                          .franchise"
+                        :key="child_idx"
+                      >
+                        {{ child_item }}
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
             </div>
-            <div v-show="isTabFlag === 1" class="plan_area">
-              <div
-                v-for="(item, idx) in paymentTab1List"
-                :key="idx"
-                class="plan_card"
-                :class="`color0${item.id - 1}`"
-              >
-                <div
-                  v-show="item.id === 4"
-                  :class="item.id === 4 ? 'popular' : ''"
-                >
-                  가장 인기많은 상품
+          </div>
+          <div v-show="isTabFlag === 2" class="plan_area">
+            <div class="plan_card service">
+              <div class="plan_box">
+                <div class="plan_tit">
+                  <div class="name">영업문의</div>
                 </div>
-                <div class="plan_box">
-                  <div class="plan_tit">
-                    <div class="name">{{ item.title }}</div>
-                    <div class="price">
-                      {{ '₩' + priceToString(item.price) + '/월' }}
-                    </div>
-                  </div>
-                  <div class="btn_area">
-                    <button
-                      class="btn btn_crud_default btn_signup"
-                      @click="goRecentPlanPage"
-                    >
-                      지금 구독
-                    </button>
-                    <button
-                      id="btnPlanExpand01"
-                      class="btn PlanExpand"
-                      @click="onClickExpandBtn(idx)"
-                    >
-                      <i
-                        class="icons_plus_circle_on"
-                        :class="
-                          expandIdx.includes(idx)
-                            ? 'icons_minus_circle_off'
-                            : 'icons_plus_circle_on'
-                        "
-                      ></i>
-                      {{ expandIdx.includes(idx) ? '접기' : '더보기' }}
-                    </button>
-                  </div>
-                  <div
-                    id="planDetails01"
-                    class="detail_area"
-                    :class="expandIdx.includes(idx) ? 'expand_show' : ''"
-                    style="display: none"
-                  >
-                    <div class="detail_list">
-                      <div class="detail_title">
-                        <i class="icons_check_circle"></i> 클래스 링크
-                      </div>
-                      <div class="detail_info">
-                        <span>{{ item.classLink[0] }}</span>
-                      </div>
-                      <ul class="list">
-                        <li
-                          v-for="(child_item, child_idx) in paymentTab1List[
-                            idx
-                          ].classLink.slice(1)"
-                          :key="child_idx"
-                        >
-                          {{ child_item }}
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div class="detail_list">
-                      <div class="detail_title">
-                        <i class="icons_check_circle"></i> 클래스 보드
-                      </div>
-                      <div class="detail_info">
-                        <span>{{ item.classBoard[0] }}</span>
-                      </div>
-                      <ul class="list">
-                        <li
-                          v-for="(child_item, child_idx) in paymentTab1List[
-                            idx
-                          ].classBoard.slice(1)"
-                          :key="child_idx"
-                        >
-                          {{ child_item }}
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div class="detail_list">
-                      <div class="detail_title">
-                        <i class="icons_check_circle"></i> 프랜차이즈
-                      </div>
-                      <ul class="list">
-                        <li
-                          v-for="(child_item, child_idx) in paymentTab1List[idx]
-                            .franchise"
-                          :key="child_idx"
-                        >
-                          {{ child_item }}
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div v-show="isTabFlag === 2" class="plan_area">
-              <div class="plan_card service">
-                <div class="plan_box">
-                  <div class="plan_tit">
-                    <div class="name">영업문의</div>
-                  </div>
-                  <div class="service">MOU 서비스</div>
-                  <div class="btn_area">
-                    <button class="btn btn_crud_default btn_signup">
-                      신청하기
-                    </button>
-                  </div>
+                <div class="service">MOU 서비스</div>
+                <div class="btn_area">
+                  <button class="btn btn_crud_default btn_signup">
+                    신청하기
+                  </button>
                 </div>
               </div>
             </div>
