@@ -74,9 +74,9 @@
             <div class="col">
               <button
                 class="btn btn_activated"
-                :class="userInfo.mem_status === 'Y' ? 'active' : ''"
+                :class="userInfo.mem_status === 'R' ? 'active' : ''"
               >
-                {{ userInfo.mem_status === 'Y' ? '활성화' : '비활성화' }}
+                {{ userInfo.mem_status === 'R' ? '활성화' : '비활성화' }}
               </button>
               <!-- <button class="btn btn_activated">비활성화</button> -->
             </div>
@@ -94,14 +94,14 @@
             <div class="col">
               <button
                 class="btn btn_activated"
-                :class="userInfo.alarm_yn === 'Y' ? 'active' : ''"
+                :class="userInfo.alarm_yn ? 'active' : ''"
                 @click="$emit('click-alarm')"
               >
                 ON
               </button>
               <button
                 class="btn btn_activated"
-                :class="userInfo.alarm_yn === 'N' ? 'active' : ''"
+                :class="!userInfo.alarm_yn ? 'active' : ''"
                 @click="$emit('click-alarm')"
               >
                 OFF

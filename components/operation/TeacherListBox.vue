@@ -93,7 +93,7 @@
             <th>
               <div class="custom-control custom-checkbox form-inline">
                 <input
-                  v-if="teacherList.length > 0"
+                  v-if="teacherList !== undefined && teacherList.length > 0"
                   id="chkAll"
                   type="checkbox"
                   class="custom-control-input"

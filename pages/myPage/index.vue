@@ -227,7 +227,6 @@ export default {
       isAlarm: false,
       // 교육기관
       institutionInfo: {
-        fra_code: '',
         ins_address1: '',
         ins_address2: '',
         ins_code: '',
@@ -636,7 +635,9 @@ export default {
     },
     // 교육기관 정보 수정 api
     async updateInstitution() {
+      delete this.newInstitutionInfo.fra_code
       const payload = this.newInstitutionInfo
+      console.log(payload)
       await apiMypage
         .putUpdateInstitution(payload)
         .then((res) => {

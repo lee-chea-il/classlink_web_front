@@ -451,7 +451,7 @@ export default {
       await apiOperation
         .getTeacherList(payload)
         .then(({ data: { data } }) => {
-          if (data === null) {
+          if (data.dto === null) {
             this.teacherList = []
           } else {
             this.stateTrue = data.activate_count
