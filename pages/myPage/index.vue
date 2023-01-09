@@ -5,8 +5,8 @@
     <MyInfoLeft
       :userInfo="userInfo"
       :myInfo="myInfo"
-      :identityNames="setIdentity($store.state.common.user.idt_name)"
-      :positionNames="setPosition($store.state.common.user.idt_name)"
+      :identityNames="setIdentity(userInfo.identity_type)"
+      :positionNames="setPosition(userInfo.position)"
       @click-updatePw="openUpdatePwModal"
       @click-alarm="updateAlarm"
     />
@@ -611,14 +611,16 @@ export default {
     },
     // 교육기관 개설 api
     async openInstitution() {
-      // const payload = this.newInstitutionInfo
-      const payload = {
-        ins_address1: '인천 계양구 계양산로134번길 37',
-        ins_address2: '1',
-        ins_desc: '1',
-        ins_name: '유잔학원',
-        ins_phone: '010-1111-1111',
-      }
+      delete this.newInstitutionInfo.ins_code
+      const payload = this.newInstitutionInfo
+      console.log(payload)
+      // const payload = {
+      //   ins_address1: '인천 계양구 계양산로134번길 37',
+      //   ins_address2: '1',
+      //   ins_desc: '1',
+      //   ins_name: '유잔학원',
+      //   ins_phone: '010-1111-1111',
+      // }
       console.log(payload)
       await apiMypage
         .postOpenInstitution(payload)
@@ -705,6 +707,8 @@ export default {
         .getNewUserInfo()
         .then(({ data: { data } }) => {
           this.$store.commit('common/setUser', data)
+          localStorage.setItem('identity', 'institution')
+          console.log('identity', 'institution')
         })
         .catch((err) => {
           console.log(err)
@@ -776,17 +780,17 @@ export default {
     },
     setIdentity(array) {
       if (array !== undefined) {
-        if (array !== null) {
+        if (array.length > 0) {
           const names = []
           for (const x of array) {
             names.push(this.setIdentityName(x))
           }
           return names.join(', ')
         } else {
-          return ''
+          return '교육기관장'
         }
       } else {
-        return ''
+        return '교육기관장'
       }
     },
     // 신분 목록 변환
@@ -823,7 +827,7 @@ export default {
           result = new Set(names)
           return result.join(', ')
         } else {
-          return ''
+          return '교육기관장'
         }
       } else {
         return ''
