@@ -28,6 +28,7 @@
           :myData="myData"
           :openData="openData"
           @open-data="onClickView"
+          @delete-data="deleteMoreMenuBtn"
           @copyDataCallBack="copyDataCallBack"
           @download-data="downloadSelectData"
           @update-data="updateSelectData"
@@ -142,7 +143,7 @@
       @reference-change="onOpenReferenceChangeModal"
       @view-url="onOpenShareViewModal"
       @delete="openSelectModal"
-      @open-save-path="onOpenSavePathModal"
+      @open-save-path="openMovePathModal"
     />
     <!-- 일반용 -->
     <!-- 일반용 -->
@@ -170,7 +171,7 @@
       @preview="onOpenQuizPreviewModal"
       @view-url="onOpenShareViewModal"
       @delete="openSelectModal"
-      @open-save-path="onOpenSavePathModal"
+      @open-save-path="openMovePathModal"
       @export-pdf="exportPdf"
     />
 
@@ -197,7 +198,7 @@
       @preview="onOpenNoteTestPreviewModal"
       @view-url="onOpenShareViewModal"
       @delete="openSelectModal"
-      @open-save-path="onOpenSavePathModal"
+      @open-save-path="openMovePathModal"
       @export-pdf="exportPdf"
     />
 
@@ -236,13 +237,29 @@
 
     <!-- 저장경로 설정 -->
     <SavePathModal
-      ref="savepathRef"
+      :identity="identity"
       :open="isSavePathModal.open"
       :institutionData="treeInstitutionData"
       :franchiseData="treeFranchiseData"
       :myData="treeMyData"
+      :tableType="selectDatatableType"
+      :modalTitle="modalTitle"
       @save-file-path="setSavePath"
       @close="onCloseSavePathModal"
+    />
+
+    <!-- 이동 모달 -->
+    <MovePathModal
+      :identity="identity"
+      :open="isMovePathModal.open"
+      :institutionData="moveInstitutionData"
+      :franchiseData="moveFranchiseData"
+      :dataInfo="referenceData"
+      :myData="moveMyData"
+      :tableType="selectDatatableType"
+      :modalTitle="modalTitle"
+      @move-data="postMoveData"
+      @close="closeMovePathModal"
     />
 
     <!-- 자료실 검색 필터 -->
@@ -317,6 +334,7 @@ import UploadVideoFileModal from '~/components/classPreperation/modal/UploadVide
 import initialState from '~/data/common/dataRoom/initialState'
 import { urlRegex, setNewArray, jsonItem } from '~/utiles/common'
 import { api, apiData } from '~/services'
+import MovePathModal from '~/components/common/modal/MovePathModal.vue'
 
 export default {
   name: 'ReferenceRoom',
@@ -346,13 +364,14 @@ export default {
     SelectReferenceModal,
     UploadYoutubeModal,
     UploadVideoFileModal,
+    MovePathModal,
   },
   data() {
     return initialState()
   },
   mounted() {
     this.identity = localStorage.getItem('identity')
-    const user = this.$store.state.common.user
+    const { user } = this.$store.state.common
     this.initReferenceData = {
       ...this.initReferenceData,
       ins_code: user.ins_code,
@@ -369,7 +388,7 @@ export default {
         this.getInsTreeViewList(),
         this.getFranTreeViewList(),
         this.getMyTreeViewList(),
-        // this.getPublicTreeViewList(),
+        this.getPublicTreeViewList(),
       ])
     },
 
@@ -378,10 +397,10 @@ export default {
       await apiData
         .getTreeViewList({ type: 'ID' })
         .then(({ data: { data } }) => {
-          this.isLoading = false
           const newItem = jsonItem(data)
           this.institutionData = jsonItem(newItem)
           this.treeInstitutionData = jsonItem(newItem)
+          this.moveInstitutionData = jsonItem(newItem)
         })
         .catch((err) => {
           console.log(err)
@@ -396,6 +415,7 @@ export default {
           const newItem = jsonItem(data)
           this.franchiseData = jsonItem(newItem)
           this.treeFranchiseData = jsonItem(newItem)
+          this.moveFranchiseData = jsonItem(newItem)
         })
         .catch((err) => {
           console.log(err)
@@ -411,17 +431,19 @@ export default {
           this.myData = jsonItem(newItem)
           this.treeMyData = jsonItem(newItem)
 
-          if(this.isCopyMD){
-            this.isCopyMD=false
-            if(this.copyCheckData.datatable_type==="ID"){
+          if (this.isCopyMD) {
+            this.isCopyMD = false
+            if (this.copyCheckData.datatable_type === 'ID') {
               this.$refs.mainEducation.$refs.education.$refs.institution.copyComp()
-            }else if(this.copyCheckData.datatable_type==="FD"){
+            } else if (this.copyCheckData.datatable_type === 'FD') {
               this.$refs.mainEducation.$refs.education.$refs.franchise.copyComp()
             }
-            setTimeout(()=>{
-              this.$refs.mainEducation.$refs.myData.$refs.mydata.setActiveDataList(this.copyMDData)
-              this.copyMDData=null
-            },100)
+            setTimeout(() => {
+              this.$refs.mainEducation.$refs.myData.$refs.mydata.setActiveDataList(
+                this.copyMDData
+              )
+              this.copyMDData = null
+            }, 100)
           }
         })
         .catch((err) => {
@@ -445,13 +467,13 @@ export default {
     // 체크 박스로 파일 복사
     async copyTreeViewList() {
       await apiData
-        .copyTreeViewList( this.copyCheckData )
+        .copyTreeViewList(this.copyCheckData)
         .then(({ data: { data } }) => {
-          console.log('datassdatadata    ',data)
-          if(data.length>0){
-            this.isCopyMD=true
-            this.copyMDData=data
-            this.setUpdateTree("MD")
+          console.log('datassdatadata    ', data)
+          if (data.length > 0) {
+            this.isCopyMD = true
+            this.copyMDData = data
+            this.setUpdateTree('MD')
           }
         })
         .catch((err) => {
@@ -468,9 +490,9 @@ export default {
         this.getMyTreeViewList()
       }
     },
-    treeViewCopy(parentInfo){
+    treeViewCopy(parentInfo) {
       this.copyData()
-      this.copyCheckData.pasteParentIdxs=[parentInfo]
+      this.copyCheckData.pasteParentIdxs = [parentInfo]
       this.copyTreeViewList()
     },
     // 일반용
@@ -482,7 +504,7 @@ export default {
       if (type === 'checkbox') {
         if (checked) return (elem[name] = true)
         else return (elem[name] = false)
-      } else if (id === 'name') return (elem[id] = newVal)
+      } else if (id === 'title') return (elem[id] = newVal)
       else return (elem[id] = value)
     },
     // 일반용
@@ -549,9 +571,18 @@ export default {
       return msg
     },
 
+    setCallTimeout() {
+      this.isApiCall = true
+      setTimeout(() => {
+        this.isApiCall = false
+      }, 2000)
+    },
+
     // 파일 업로드
     // 동영상, PDF, YOUTUBE, URL 업로드
     async postDataroomFile() {
+      if (this.isApiCall) return false
+      this.setCallTimeout()
       const { title, keyword, ...rest } = this.referenceData
       const payload = {
         ...rest,
@@ -572,6 +603,8 @@ export default {
 
     // 퀴즈 업로드
     async postDataroomQuiz() {
+      if (this.isApiCall) return false
+      this.setCallTimeout()
       const { title, keyword, ...rest } = this.referenceData
       const payload = {
         ...rest,
@@ -592,6 +625,8 @@ export default {
 
     // 쪽지시험 업로드
     postDataroomNoteExam() {
+      if (this.isApiCall) return false
+      this.setCallTimeout()
       const { title, keyword, ...rest } = this.referenceData
       const payload = {
         ...rest,
@@ -675,6 +710,7 @@ export default {
     // 자료 유형별 핸들러
     selectDataroomType(type, data) {
       const { title } = data
+      console.log(data)
       const payload = {
         treeinfo_idx: data.treeViewId,
         type: data.type,
@@ -687,12 +723,14 @@ export default {
     // 파일 수정
     // 동영상, PDF, YOUTUBE, URL 수정
     updateDataroomFile() {
+      if (this.isApiCall) return false
+      this.setCallTimeout()
       const { keyword, title, ...rest } = this.referenceData
-      console.log(this.referenceData)
       const data = {
         ...rest,
         keyword: keyword.join(','),
         title: title + this.setExtension(rest.datatype),
+        treeinfo_idx: rest.tree.treeinfo_idx,
       }
       apiData
         .updateDataroomFile(data)
@@ -706,11 +744,14 @@ export default {
 
     // 퀴즈 수정
     updateDataroomQuiz() {
+      if (this.isApiCall) return false
+      this.setCallTimeout()
       const { keyword, title, ...rest } = this.referenceData
       const data = {
         ...rest,
         keyword: keyword.join(','),
         title: title + this.setExtension(rest.datatype),
+        treeinfo_idx: rest.tree.treeinfo_idx,
       }
       apiData
         .updateDataroomQuiz(data)
@@ -724,12 +765,48 @@ export default {
 
     // 쪽지 시험 수정
     updateDataroomNoteExam() {
-      const { keyword, title, ...rest } = this.referenceData
+      if (this.isApiCall) return false
+      this.setCallTimeout()
+      const {
+        keyword,
+        title,
+        registrant,
+        registrant_name,
+        registration_date,
+        study_type,
+        tree,
+        file,
+        file_name,
+        note_exam_asks,
+        ...rest
+      } = this.referenceData
+
+      const newNoteExam = note_exam_asks.map((item) => {
+        return {
+          no: item.no,
+          question: item.question,
+          limit_time: item.limit_time,
+          level: item.level,
+          explain: item.explain,
+          treeinfo_idx: item.treeinfo_idx,
+          correct_no: item.correct_no,
+          note_exam_ask_views: item.note_exam_ask_views.map((data, i) => {
+            return {
+              question: data.question,
+              no: i + 1,
+            }
+          }),
+        }
+      })
+
       const data = {
         ...rest,
         keyword: keyword.join(','),
         title: title + this.setExtension(rest.datatype),
+        treeinfo_idx: tree.treeinfo_idx,
+        note_exam_asks: newNoteExam,
       }
+
       apiData
         .updateDataroomNoteExam(data)
         .then(() => {
@@ -740,8 +817,18 @@ export default {
         .catch(() => {})
     },
 
+    // 파일 이동
+    async postMoveData({ datatable_type, parent_treeinfo_idx, treeinfo_idx }) {
+      const payload = { datatable_type, parent_treeinfo_idx, treeinfo_idx }
+      await apiData.postMoveData(payload).then(() => {
+        this.setUpdateTree(datatable_type)
+      })
+    },
+
     // 파일 삭제
     deleteData({ datatable_type }) {
+      if (this.isApiCall) return false
+      this.setCallTimeout()
       const payload = {
         treeinfo_idx: this.deleteTreeIdx,
         datatable_type,
@@ -750,11 +837,17 @@ export default {
         .deleteData(payload)
         .then(() => {
           this.isSelectModal.open = false
-          console.log(payload)
           this.setUpdateTree(payload.datatable_type)
-          // this.openModalDesc('삭제 성공', '자료를 삭제했습니다.')
+          this.openModalDesc('삭제 성공', '자료를 삭제했습니다.')
         })
         .catch(() => {})
+    },
+
+    // 트리에서 자료 삭제
+    deleteMoreMenuBtn(node) {
+      this.deleteTreeIdx = node.treeViewId
+      this.referenceData.datatable_type = node.type
+      this.isSelectModal.open = true
     },
 
     // 등록 자료 초기화
@@ -793,6 +886,7 @@ export default {
 
     // 등록 유형 선택 모달
     openSelectModal(url) {
+      this.modalTitle = '등록'
       this[url] = false
       this.isSelectModal = {
         open: true,
@@ -837,7 +931,7 @@ export default {
       this.referenceData = {
         ...this.referenceData,
         datatype: '04',
-        note_exam_asks: [{ ...this.testItem }],
+        note_exam_asks: [{ ...jsonItem(this.testItem) }],
       }
       this.isNoteTestAddModal = true
     },
@@ -854,6 +948,7 @@ export default {
 
     onCloseReferenceBrowseModal() {
       this.isReferenceBrowse = false
+      this.initReference()
     },
 
     // 퀴즈 조회
@@ -989,6 +1084,22 @@ export default {
       this[this.isSavePathModal.prevPage] = true
     },
 
+    // 이동 경로 모달
+    openMovePathModal(path) {
+      if (this[path]) {
+        this[path] = false
+      }
+      this.isMovePathModal = {
+        open: true,
+        prevPage: path,
+      }
+    },
+
+    closeMovePathModal() {
+      this.isMovePathModal.open = false
+      this[this.isMovePathModal.prevPage] = true
+    },
+
     // 필터 모달
     openFilterModal(path) {
       if (this.isSearchListModal) {
@@ -1026,14 +1137,8 @@ export default {
       this.modalTitle = str
     },
 
-    // 자료 선택 모달
-    openSelectReferenceType() {
-      this.setModalTitle('등록')
-      this.isSelectType = true
-    },
-
-    closeSelectReferenceType() {
-      this.isSelectType = false
+    setCreateModalTitle() {
+      this.modalTitle = '등록'
     },
 
     // 스넥바 오픈
@@ -1053,7 +1158,7 @@ export default {
     onOpenReferenceChangeModal() {
       this.setModalTitle('수정')
       if (this.isReferenceBrowse) {
-        this.onCloseReferenceBrowseModal()
+        this.isReferenceBrowse = false
       }
       this.isReferenceAddModal = true
     },
@@ -1180,7 +1285,7 @@ export default {
         if (checked) return (testElem[name] = true)
         else {
           if (name === 'isCommentary') {
-            testElem.commentary = ''
+            testElem.explain = ''
           }
           testElem[name] = false
         }
@@ -1224,6 +1329,7 @@ export default {
     // 트리 저장경로 설정
     getSavePath(path) {
       this.deleteTreeIdx = path.treeViewId
+      this.selectDatatableType = path.type
       this.uploadInfo.saveFolderPath = path.path
     },
 
@@ -1527,6 +1633,7 @@ export default {
     // 자료 조회
     onClickView(data) {
       this.setModalTitle('등록')
+      console.log(data)
       const type = data.datatype
       this.selectDataroomType(type, data)
     },
@@ -1551,13 +1658,20 @@ export default {
 
     copyDataCallBack(copyData) {
       this.copyCheckData = copyData
-      console.log("this.copyCheckData   "+this.copyCheckData, this.copyCheckData.copyType)
+      console.log(
+        'this.copyCheckData   ' + this.copyCheckData,
+        this.copyCheckData.copyType
+      )
     },
 
     pasteData() {
-      const parentIdxList = this.$refs.mainEducation.$refs.myData.$refs.mydata.checkPastePosition()
-      this.copyCheckData.pasteParentIdxs=parentIdxList
-      if(this.copyCheckData.pasteParentIdxs.length>0 && this.copyCheckData.copyTreeData.length>0){
+      const parentIdxList =
+        this.$refs.mainEducation.$refs.myData.$refs.mydata.checkPastePosition()
+      this.copyCheckData.pasteParentIdxs = parentIdxList
+      if (
+        this.copyCheckData.pasteParentIdxs.length > 0 &&
+        this.copyCheckData.copyTreeData.length > 0
+      ) {
         /* console.log('parentIdxList  ',JSON.stringify(parentIdxList)) */
         // console.log("this.parentIdxList   "+JSON.stringify(this.copyCheckData))
         this.copyTreeViewList()

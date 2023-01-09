@@ -152,7 +152,7 @@ export default {
         })
     },
     setData(dataList) {
-      console.log(dataList, this.treeViewType)
+      console.log('dataList', dataList, this.treeViewType)
       const dataMapping = (data, isReadOnly) => {
         const result = []
         const len = data?.length
@@ -165,7 +165,7 @@ export default {
           nObj.readOnly = isReadOnly
           nObj.active = false
           nObj.name = nObj.title
-          
+
           if (nObj.group_yn) {
             nObj.type = this.treeViewType
             nObj.isLeaf = false
@@ -175,11 +175,11 @@ export default {
               result[i].children = dataMapping(nObj.children, isReadOnly)
             }
           } else {
-            if(this.treeViewType==="MD"){
-              nObj.type = nObj.datatable_type
-            }else{
-              nObj.type = this.treeViewType
-            }
+            // if (this.treeViewType === 'MD') {
+            //   nObj.type = nObj.datatable_type
+            // } else {
+            nObj.type = this.treeViewType
+            // }
             nObj.isLeaf = true
             result[i] = nObj
             this.pid++
@@ -192,30 +192,30 @@ export default {
         dataMapping(dataList[0]?.children, !this.editable)
       )
     },
-    setType(type) {
-      let newType = ''
-      switch (type) {
-        case 'IL':
-        case 'ID':
-          newType = 'ID'
-          break
-        case 'FL':
-        case 'FD':
-          newType = 'FD'
-          break
-        case 'ML':
-        case 'MD':
-          newType = 'MD'
-          break
-        case 'OD':
-          newType = 'OD'
-          break
-        default:
-          newType = ''
-          break
-      }
-      return newType
-    },
+    // setType(type) {
+    //   let newType = ''
+    //   switch (type) {
+    //     case 'IL':
+    //     case 'ID':
+    //       newType = 'ID'
+    //       break
+    //     case 'FL':
+    //     case 'FD':
+    //       newType = 'FD'
+    //       break
+    //     case 'ML':
+    //     case 'MD':
+    //       newType = 'MD'
+    //       break
+    //     case 'OD':
+    //       newType = 'OD'
+    //       break
+    //     default:
+    //       newType = ''
+    //       break
+    //   }
+    //   return newType
+    // },
     onDel(node) {
       console.log(node)
       node.remove()
@@ -235,7 +235,7 @@ export default {
       const copyList = []
       function _dfs(parentChild, oldNode) {
         let data = {}
-        oldNode.isactive=false
+        oldNode.isactive = false
         if (!oldNode.isLeaf) {
           if (oldNode.isChecked) {
             data = {
@@ -243,7 +243,7 @@ export default {
               children: [],
             }
             parentChild.push(data)
-            oldNode.isactive=true
+            oldNode.isactive = true
           }
           if (oldNode.children && oldNode.children.length > 0) {
             if (oldNode.isChecked) {
@@ -258,7 +258,7 @@ export default {
           }
         } else if (oldNode.isChecked) {
           parentChild.push({ id: oldNode.treeViewId })
-          oldNode.isactive=true
+          oldNode.isactive = true
         }
       }
       this.$emit('un-active')
@@ -267,20 +267,20 @@ export default {
       this.checkboxCopyData = {
         datatable_type: this.treeViewType,
         copyTreeData: copyList,
-        pasteParentIdxs: []
+        pasteParentIdxs: [],
       }
       this.$emit('copyDataCallBack', this.checkboxCopyData)
     },
     checkPastePosition() {
       const checkList = []
-      const parentIdList=[]
+      const parentIdList = []
       function _checkData(oldNode) {
         if (oldNode.isLeaf) {
           if (oldNode.isChecked) {
             const pIdx = parentIdList.indexOf(oldNode.data.parent)
-            if(pIdx===-1){
+            if (pIdx === -1) {
               checkList.push({
-                parentIdx:oldNode.data.parent
+                parentIdx: oldNode.data.parent,
               })
               parentIdList.push(oldNode.data.parent)
             }
@@ -288,9 +288,9 @@ export default {
         } else {
           if (oldNode.isChecked) {
             const pIdx = parentIdList.indexOf(oldNode.treeViewId)
-            if(pIdx===-1){
+            if (pIdx === -1) {
               checkList.push({
-                parentIdx:oldNode.treeViewId
+                parentIdx: oldNode.treeViewId,
               })
               parentIdList.push(oldNode.treeViewId)
             }
@@ -313,7 +313,7 @@ export default {
         } else {
           oldNode.active = false
         }
-        oldNode.isactive=false
+        oldNode.isactive = false
         if (oldNode.children && oldNode.children.length > 0) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
             _copyComp(oldNode.children[i])
@@ -322,17 +322,17 @@ export default {
       }
       _copyComp(this.datas)
     },
-    setActiveDataList(dataList){
+    setActiveDataList(dataList) {
       function _active(oldNode) {
         if (oldNode.isLeaf) {
           const pIdx = dataList.indexOf(oldNode.treeViewId)
-          if(pIdx>-1){
-            oldNode.active=true
+          if (pIdx > -1) {
+            oldNode.active = true
           }
         } else {
           const pIdx = dataList.indexOf(oldNode.treeViewId)
-          if(pIdx>-1){
-            oldNode.active=true
+          if (pIdx > -1) {
+            oldNode.active = true
           }
           if (oldNode.children && oldNode.children.length > 0) {
             for (let i = 0, len = oldNode.children.length; i < len; i++) {
@@ -344,25 +344,25 @@ export default {
       _active(this.datas)
     },
     dropBefore({ node, target }) {
-      console.log('dropBefore',node, target)
+      console.log('dropBefore', node, target)
     },
     drop({ node, target }) {
-      if(target.type==="MD"){
-        if(target.type!==node.type){
-          if(node.isChecked){
-            if(target.group_yn){
-              this.$emit("tree-view-copy",{parentIdx:target.treeViewId})
-            }else{
-              this.$emit("tree-view-copy",{parentIdx:target.data.parent})
+      if (target.type === 'MD') {
+        if (target.type !== node.type) {
+          if (node.isChecked) {
+            if (target.group_yn) {
+              this.$emit('tree-view-copy', { parentIdx: target.treeViewId })
+            } else {
+              this.$emit('tree-view-copy', { parentIdx: target.data.parent })
             }
-          }else if(target.group_yn){
-              this.$emit("tree-view-copy",{parentIdx:target.treeViewId})
-          }else{
-            this.$emit("tree-view-copy",{parentIdx:target.data.parent})
+          } else if (target.group_yn) {
+            this.$emit('tree-view-copy', { parentIdx: target.treeViewId })
+          } else {
+            this.$emit('tree-view-copy', { parentIdx: target.data.parent })
           }
-        }else{
-          this.$emit("tree-view-move",{parentIdx:target.data.parent})
-          console.log('drop2 isMove  ',node, target)
+        } else {
+          this.$emit('tree-view-move', { parentIdx: target.data.parent })
+          console.log('drop2 isMove  ', node, target)
         }
       }
     },
@@ -468,6 +468,7 @@ export default {
 
     moreMenuDell(node) {
       // node.remove()
+      console.log(node)
       this.$emit('delete-data', node)
     },
 
