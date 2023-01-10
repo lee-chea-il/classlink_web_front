@@ -18,8 +18,15 @@ const deleteLesson = async (id) => {
   return await http.delete(`/api/v1/prepare-class/lesson/${id}`)
 }
 
+const getLessonTreeViewList = async ({ type }) => {
+  return await http.get(
+    `/api/v1/prepare-class/lesson/tree-view-list?type=${type}`
+  )
+}
+
 const apiLesson = {
   getLesson,
+  getLessonTreeViewList,
   postLesson,
   updateLesson,
   deleteLesson,

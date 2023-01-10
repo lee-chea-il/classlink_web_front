@@ -104,5 +104,11 @@ export default function initialState() {
     institutionLesson: [],
     franchiseLesson: [],
     myLesson: [],
+    treeInstitutionLesson: [],
+    treeFranchiseLesson: [],
+    treeMyLesson: [],
+    moveInstitutionLesson: [],
+    moveFranchiseLesson: [],
+    moveMyLesson: [],
   }
 }

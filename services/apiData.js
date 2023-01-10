@@ -84,9 +84,9 @@ const postMoveData = async (data) => {
 }
 
 // 트리뷰 리스트 가져오기
-const getTreeViewList = async (payload) => {
+const getTreeViewList = async ({ type }) => {
   return await http.get(
-    `/api/v1/prepare-class/dataroom/tree-view-list?type=${payload.type}`
+    `/api/v1/prepare-class/dataroom/tree-view-list?type=${type}`
   )
 }
 

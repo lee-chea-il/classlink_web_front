@@ -347,21 +347,71 @@ export default {
       ins_code: user.ins_code,
       registrant_name: user.mem_name,
     }
-    this.setInitLessonData()
     this.getEarlyData()
+    this.setInitLessonData()
   },
   methods: {
     // api 통신
     // 초기 접근 시 api호출
     getEarlyData() {
-      this.isLoading = true
       Promise.all([
         this.getServerUrl(),
+        this.getInsLessonTreeList(),
+        this.getFranLessonTreeList(),
+        this.getMyLessonTreeList(),
+      ])
+    },
+    // 자료실 트리 가져오기
+    getTreeData() {
+      Promise.all([
         this.getInsTreeViewList(),
         this.getFranTreeViewList(),
         this.getMyTreeViewList(),
         this.getPublicTreeViewList(),
       ])
+    },
+
+    // 레슨 교육기관 트리 가져오기
+    async getInsLessonTreeList() {
+      await apiLesson
+        .getLessonTreeViewList({ type: 'IL' })
+        .then(({ data: { data } }) => {
+          const newItem = deepCopy(data)
+          this.institutionLesson = deepCopy(newItem)
+          this.treeInstitutionLesson = deepCopy(newItem)
+          this.moveInstitutionLesson = deepCopy(newItem)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 레슨 프렌차이즈 트리 가져오기
+    async getFranLessonTreeList() {
+      await apiLesson
+        .getLessonTreeViewList({ type: 'FL' })
+        .then(({ data: { data } }) => {
+          const newItem = deepCopy(data)
+          this.franchiseLesson = deepCopy(newItem)
+          this.treeFranchiseLesson = deepCopy(newItem)
+          this.moveFranchiseLesson = deepCopy(newItem)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 레슨 내자료 트리 가져오기
+    async getMyLessonTreeList() {
+      await apiLesson
+        .getLessonTreeViewList({ type: 'ML' })
+        .then(({ data: { data } }) => {
+          const newItem = deepCopy(data)
+          this.myLesson = deepCopy(newItem)
+          this.treeMyLesson = deepCopy(newItem)
+          this.moveMyLesson = deepCopy(newItem)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
 
     // 교육기관 트리 가져오기
@@ -438,7 +488,6 @@ export default {
           console.log(err)
         })
     },
-
     // 자료등록시 트리 호출
     setUpdateTree(type) {
       if (type === 'ID') {
@@ -897,6 +946,7 @@ export default {
 
     // [레슨] 레슨 등록 모달
     openLessonAdd() {
+      this.getTreeData()
       this.setInitLessonData()
       this.setModalTitle('등록')
       this.treeReferenceList = []
