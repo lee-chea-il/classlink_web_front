@@ -34,6 +34,7 @@
           @download-data="downloadSelectData"
           @update-data="updateSelectData"
           @get-savepath="getSavePath"
+          @copy-item="postCopyData"
           @tree-view-id="getInsTreeViewList"
           @tree-view-fd="getFranTreeViewList"
           @tree-view-od="getPublicTreeViewList"
@@ -279,7 +280,7 @@
     <SearchResultModal
       :open="isSearchListModal"
       :searchData="searchData"
-      :filterItem="filterItem(referenceList)"
+      :filterItem="referenceList"
       :checkList="checkList"
       @change-word="changeSearchData"
       @close="closeSearchListModal"
@@ -287,6 +288,7 @@
       @copy="copyData"
       @check-handler="checkHandler"
       @detail-view="onClickViewDetail"
+      @search-submit="getSearchTreeList"
     />
 
     <!-- 퀴즈 프린트 영역 -->
@@ -333,7 +335,7 @@ import SelectReferenceModal from '~/components/classPreperation/modal/SelectRefe
 import UploadYoutubeModal from '~/components/classPreperation/modal/UploadYoutubeModal.vue'
 import UploadVideoFileModal from '~/components/classPreperation/modal/UploadVideoFileModal.vue'
 import initialState from '~/data/common/dataRoom/initialState'
-import { urlRegex, setNewArray, jsonItem } from '~/utiles/common'
+import { urlRegex, setNewArray, deepCopy } from '~/utiles/common'
 import { api, apiData } from '~/services'
 import MovePathModal from '~/components/common/modal/MovePathModal.vue'
 
@@ -378,7 +380,7 @@ export default {
       ins_code: user.ins_code,
       registrant_name: user.mem_name,
     }
-    this.referenceData = jsonItem(this.initReferenceData)
+    this.referenceData = deepCopy(this.initReferenceData)
     this.getEarlyData()
   },
   methods: {
@@ -400,10 +402,10 @@ export default {
       await apiData
         .getTreeViewList({ type: 'ID' })
         .then(({ data: { data } }) => {
-          const newItem = jsonItem(data)
-          this.institutionData = jsonItem(newItem)
-          this.treeInstitutionData = jsonItem(newItem)
-          this.moveInstitutionData = jsonItem(newItem)
+          const newItem = deepCopy(data)
+          this.institutionData = deepCopy(newItem)
+          this.treeInstitutionData = deepCopy(newItem)
+          this.moveInstitutionData = deepCopy(newItem)
         })
         .catch((err) => {
           console.log(err)
@@ -416,10 +418,10 @@ export default {
         await apiData
           .getTreeViewList({ type: 'FD' })
           .then(({ data: { data } }) => {
-            const newItem = jsonItem(data)
-            this.franchiseData = jsonItem(newItem)
-            this.treeFranchiseData = jsonItem(newItem)
-            this.moveFranchiseData = jsonItem(newItem)
+            const newItem = deepCopy(data)
+            this.franchiseData = deepCopy(newItem)
+            this.treeFranchiseData = deepCopy(newItem)
+            this.moveFranchiseData = deepCopy(newItem)
           })
           .catch((err) => {
             console.log(err)
@@ -432,10 +434,10 @@ export default {
       await apiData
         .getTreeViewList({ type: 'MD' })
         .then(({ data: { data } }) => {
-          const newItem = jsonItem(data)
-          this.myData = jsonItem(newItem)
-          this.treeMyData = jsonItem(newItem)
-          this.moveMyData = jsonItem(newItem)
+          const newItem = deepCopy(data)
+          this.myData = deepCopy(newItem)
+          this.treeMyData = deepCopy(newItem)
+          this.moveMyData = deepCopy(newItem)
 
           if (this.isCopyMD) {
             this.isCopyMD = false
@@ -462,12 +464,41 @@ export default {
       await apiData
         .getTreeViewList({ type: 'OD' })
         .then(({ data: { data } }) => {
-          this.openData = jsonItem(data)
-          this.treeOpenData = jsonItem(data)
+          this.openData = deepCopy(data)
+          this.treeOpenData = deepCopy(data)
         })
         .catch((err) => {
           console.log(err)
         })
+    },
+
+    // 검색 목록 트리 가져오기
+    async getSearchTreeList() {
+      const target = this.searchData
+      const payload = {
+        word: target.word.length ? `?word="${this.searchData.word}"` : '',
+        dataroom: target.type.length
+          ? `&dataroom="${this.searchData.type.join(',')}"`
+          : '',
+        subject: target.subject.length
+          ? `&subject="${this.searchData.subject.join(',')}"`
+          : '',
+        type: target.datatype.length
+          ? `&type="${this.searchData.datatype.join(',')}"`
+          : '',
+      }
+      if (target.word.length) {
+        await apiData
+          .getSearchTreeList(payload)
+          .then((res) => {
+            console.log(res)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      } else {
+        this.openSnackbar('검색어를 입력하세요.')
+      }
     },
 
     // 체크 박스로 파일 복사
@@ -729,9 +760,8 @@ export default {
     },
 
     // 자료 유형별 핸들러
-    selectDataroomType(type, data) {
+    selectDataroomType(data) {
       const { title } = data
-      // console.log(data)
       const payload = {
         treeinfo_idx: data.treeViewId,
         type: data.type,
@@ -841,8 +871,12 @@ export default {
     },
 
     // 파일 이동
-    async postMoveData({ datatable_type, parent_treeinfo_idx, treeinfo_idx }) {
+    async postMoveData(
+      { datatable_type, parent_treeinfo_idx, treeinfo_idx },
+      path
+    ) {
       const payload = { datatable_type, parent_treeinfo_idx, treeinfo_idx }
+      this.uploadInfo.saveFolderPath = path
       await apiData.postMoveData(payload).then(() => {
         this.setUpdateTree(datatable_type)
       })
@@ -866,6 +900,22 @@ export default {
         .catch(() => {})
     },
 
+    // 파일 복사 (바로 밑에 복사)
+    async postCopyData({ datatable_type, treeinfo_idx }) {
+      const payload = {
+        datatable_type,
+        treeinfo_idx,
+      }
+      await apiData
+        .poatCopyData(payload)
+        .then(() => {
+          this.setUpdateTree(datatable_type)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
     // 트리에서 자료 삭제
     deleteMoreMenuBtn(node) {
       this.deleteTreeIdx = node.treeViewId
@@ -875,7 +925,7 @@ export default {
 
     // 등록 자료 초기화
     initReference() {
-      const init = jsonItem(this.initReferenceData)
+      const init = deepCopy(this.initReferenceData)
       setTimeout(() => {
         this.currentPageIdx = 0
         this.referenceData = init
@@ -960,7 +1010,7 @@ export default {
       this.referenceData = {
         ...this.referenceData,
         datatype: '04',
-        note_exam_asks: [{ ...jsonItem(this.testItem) }],
+        note_exam_asks: [{ ...deepCopy(this.testItem) }],
       }
       this.isNoteTestAddModal = true
     },
@@ -1131,10 +1181,14 @@ export default {
 
     // 필터 모달
     openFilterModal(path) {
+      if (this.searchData.word.length) {
+        this.isFilterModal.open = true
+      } else {
+        this.openSnackbar('검색어를 입력하세요.')
+      }
       if (this.isSearchListModal) {
         this.isSearchListModal = false
       }
-      this.isFilterModal.open = true
       if (path !== '') {
         this.isFilterModal.prevPage = path
       }
@@ -1153,11 +1207,16 @@ export default {
       if (this.isFilterModal) {
         this.closeFilterModal()
       }
-      return (this.isSearchListModal = true)
+      if (this.searchData.word.length) {
+        this.getSearchTreeList()
+        return (this.isSearchListModal = true)
+      } else {
+        this.openSnackbar('검색어를 입력하세요.')
+      }
     },
 
     closeSearchListModal() {
-      const newItem = jsonItem(this.initSearchData)
+      const newItem = deepCopy(this.initSearchData)
       this.searchData = newItem
       return (this.isSearchListModal = false)
     },
@@ -1172,10 +1231,13 @@ export default {
 
     // 스넥바 오픈
     openSnackbar(msg) {
-      this.isSnackbar.open = {
+      this.isSnackbar = {
         open: true,
         message: msg,
       }
+      setTimeout(() => {
+        this.isSnackbar.open = false
+      }, 4000)
     },
 
     closeSnackbar() {
@@ -1232,46 +1294,8 @@ export default {
       else return '쪽지시험'
     },
 
-    // 자료 검색 필터링 result
-    filterItem(list) {
-      const filter = this.searchData
-      const filterName = () => {
-        if (filter && filter.word !== '')
-          return list.filter(
-            (item) =>
-              item.name.includes(filter.word) ||
-              item.keyword.includes(filter.word)
-          )
-        else return []
-      }
-      const filterSubject = () => {
-        if (filter.subject?.length)
-          return filterName().filter((item) =>
-            filter.subject.includes(item.subject)
-          )
-        else return filterName()
-      }
-
-      const filterDivision = () => {
-        if (filter.type?.length)
-          return filterSubject().filter((item) =>
-            filter.type.includes(item.datatable_type)
-          )
-        else return filterSubject()
-      }
-
-      const filterCategory = () => {
-        if (filter.datatype?.length)
-          return filterDivision().filter((item) =>
-            filter.datatype.includes(this.setType(item.datatype))
-          )
-        else return filterDivision()
-      }
-      return filterCategory()
-    },
-
     onClickDetailView(item) {
-      this.referenceData = jsonItem(item)
+      this.referenceData = deepCopy(item)
     },
 
     // 검색결과 체크박스
@@ -1628,7 +1652,7 @@ export default {
       if (isLength) {
         target.note_exam_asks = [
           ...target.note_exam_asks,
-          { ...jsonItem(this.testItem), no: setId },
+          { ...deepCopy(this.testItem), no: setId },
         ]
         this.focusEditorField()
       }
@@ -1669,16 +1693,13 @@ export default {
     // 자료 조회
     onClickView(data) {
       this.setModalTitle('등록')
-      console.log(data)
-      const type = data.datatype
-      this.selectDataroomType(type, data)
+      this.selectDataroomType(data)
     },
 
     // 자료 수정
     updateSelectData(data) {
       this.setModalTitle('수정')
-      const type = data.datatype
-      this.selectDataroomType(type, data)
+      this.selectDataroomType(data)
     },
 
     copyData() {
@@ -1708,8 +1729,6 @@ export default {
         this.copyCheckData.pasteParentIdxs.length > 0 &&
         this.copyCheckData.copyTreeData.length > 0
       ) {
-        /* console.log('parentIdxList  ',JSON.stringify(parentIdxList)) */
-        // console.log("this.parentIdxList   "+JSON.stringify(this.copyCheckData))
         this.copyTreeViewList()
       }
     },
@@ -1771,7 +1790,7 @@ export default {
 
     // tree menu download button
     downloadSelectData(data) {
-      const newItem = jsonItem(data)
+      const newItem = deepCopy(data)
       this.referenceData = newItem
       const type = data.datatype
       if (type === '03') return false

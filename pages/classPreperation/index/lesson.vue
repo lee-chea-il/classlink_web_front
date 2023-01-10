@@ -303,7 +303,7 @@ import TreeSection from '~/components/classPreperation/common/TreeSection.vue'
 import PreviewQuizModal from '~/components/classPreperation/modal/PreviewQuizModal.vue'
 import PreviewNoteTestModal from '~/components/classPreperation/modal/PreviewNoteTestModal.vue'
 import initialState from '~/data/common/lesson/initialState'
-import { setNewArray, jsonItem } from '~/utiles/common'
+import { setNewArray, deepCopy } from '~/utiles/common'
 import { api, apiData, apiLesson } from '~/services'
 import ModalDesc from '~/components/common/modal/ModalDesc.vue'
 import LoadingBox from '~/components/common/LoadingBox.vue'
@@ -369,10 +369,10 @@ export default {
       await apiData
         .getTreeViewList({ type: 'ID' })
         .then(({ data: { data } }) => {
-          const newItem = jsonItem(data)
-          this.institutionData = jsonItem(newItem)
-          this.treeInstitutionData = jsonItem(newItem)
-          this.moveInstitutionData = jsonItem(newItem)
+          const newItem = deepCopy(data)
+          this.institutionData = deepCopy(newItem)
+          this.treeInstitutionData = deepCopy(newItem)
+          this.moveInstitutionData = deepCopy(newItem)
         })
         .catch((err) => {
           console.log(err)
@@ -385,10 +385,10 @@ export default {
         await apiData
           .getTreeViewList({ type: 'FD' })
           .then(({ data: { data } }) => {
-            const newItem = jsonItem(data)
-            this.franchiseData = jsonItem(newItem)
-            this.treeFranchiseData = jsonItem(newItem)
-            this.moveFranchiseData = jsonItem(newItem)
+            const newItem = deepCopy(data)
+            this.franchiseData = deepCopy(newItem)
+            this.treeFranchiseData = deepCopy(newItem)
+            this.moveFranchiseData = deepCopy(newItem)
           })
           .catch((err) => {
             console.log(err)
@@ -401,10 +401,10 @@ export default {
       await apiData
         .getTreeViewList({ type: 'MD' })
         .then(({ data: { data } }) => {
-          const newItem = jsonItem(data)
-          this.myData = jsonItem(newItem)
-          this.treeMyData = jsonItem(newItem)
-          this.moveMyData = jsonItem(newItem)
+          const newItem = deepCopy(data)
+          this.myData = deepCopy(newItem)
+          this.treeMyData = deepCopy(newItem)
+          this.moveMyData = deepCopy(newItem)
 
           if (this.isCopyMD) {
             this.isCopyMD = false
@@ -431,8 +431,8 @@ export default {
       await apiData
         .getTreeViewList({ type: 'OD' })
         .then(({ data: { data } }) => {
-          this.openData = jsonItem(data)
-          this.treeOpenData = jsonItem(data)
+          this.openData = deepCopy(data)
+          this.treeOpenData = deepCopy(data)
         })
         .catch((err) => {
           console.log(err)
@@ -600,7 +600,7 @@ export default {
             save_path: data.savePath,
             registration_date: data.uploadDate,
           }
-          this.getFileSize(`http://112.171.101.31:45290/file/${data.savedNm}`)
+          this.getFileSize(`${process.env.VUE_APP_FILE_URL}${data.savedNm}`)
           this.onOpenReferenceAddModal()
         })
         .catch(() => {})
@@ -1026,7 +1026,7 @@ export default {
 
     // [레슨] 레슨에 자료 추가
     addReferenceOfLesson(item) {
-      const list = jsonItem(item)
+      const list = deepCopy(item)
       const newList = [...this.treeReferenceList, list]
       const newSet = Array.from(new Set(newList))
       return (this.treeReferenceList = newSet)
@@ -1355,7 +1355,7 @@ export default {
 
     // [자료실] 자료실 자료 설정
     setReference(item) {
-      this.selectReferenceItem = jsonItem(item)
+      this.selectReferenceItem = deepCopy(item)
     },
 
     // [자료실] 키워드 변경

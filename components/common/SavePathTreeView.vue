@@ -70,6 +70,11 @@ export default {
               result[i].children = dataMapping(nObj.children, isReadOnly)
             }
           } else {
+            if (this.treeViewType === 'MD') {
+              nObj.type = nObj.datatable_type
+            } else {
+              nObj.type = this.treeViewType
+            }
             nObj.isLeaf = true
             result[i] = nObj
             this.pid++

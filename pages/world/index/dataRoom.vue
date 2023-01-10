@@ -314,7 +314,7 @@ import SelectReferenceModal from '~/components/world/modal/SelectReferenceModal.
 import UploadYoutubeModal from '~/components/world/modal/UploadYoutubeModal.vue'
 import UploadVideoFileModal from '~/components/world/modal/UploadVideoFileModal.vue'
 import initialState from '~/data/common/dataRoom/initialState'
-import { urlRegex, setNewArray, jsonItem, deepCopy } from '~/utiles/common'
+import { urlRegex, setNewArray,  deepCopy } from '~/utiles/common'
 import { api, apiData } from '~/services'
 import LoadingBox from '~/components/common/LoadingBox.vue'
 
@@ -449,7 +449,7 @@ export default {
             upload_date: data.uploadDate,
           }
           $('#modalDataregi02').modal('hide')
-          this.getFileSize(`http://112.171.101.31:45290/file/${data.savedNm}`)
+          this.getFileSize(`${process.env.VUE_APP_FILE_URL}${data.savedNm}`)
           this.onOpenReferenceAddModal()
           this.isUploading = false
         })
@@ -923,7 +923,7 @@ export default {
     },
 
     closeSearchListModal() {
-      const newItem = jsonItem(this.initSearchData)
+      const newItem = deepCopy(this.initSearchData)
       this.searchData = newItem
       return (this.isSearchListModal = false)
     },
@@ -1043,7 +1043,7 @@ export default {
     },
 
     onClickDetailView(item) {
-      this.referenceData = jsonItem(item)
+      this.referenceData = deepCopy(item)
     },
 
     // 검색결과 체크박스
@@ -1397,7 +1397,7 @@ export default {
 
     // 자료 클릭 이벤트
     onClickSelectData(data) {
-      this.referenceData = jsonItem(data)
+      this.referenceData = deepCopy(data)
       if (data.datatype === '03') return this.onOpenQuizBrowseModal()
       else if (data.datatype === '04') return this.onOpenNoteTestBrowseModal()
       else return this.onOpenReferenceBrowseModal()
@@ -1506,7 +1506,7 @@ export default {
 
     // tree menu download button
     downloadSelectData(data) {
-      const newItem = jsonItem(data)
+      const newItem = deepCopy(data)
       this.referenceData = newItem
       const type = data.datatype
       if (type === '03') return false

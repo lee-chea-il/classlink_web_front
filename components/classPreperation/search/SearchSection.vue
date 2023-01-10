@@ -16,7 +16,11 @@
           @input="$emit('change-word', $event)"
         />
         <div class="input-group-append">
-          <button class="btn icons_search_off" type="button"></button>
+          <button
+            class="btn icons_search_off"
+            type="button"
+            @click="$emit('search-submit')"
+          ></button>
         </div>
       </div>
       <button class="btn btn_filter" @click="$emit('open-filter', 'prev')">

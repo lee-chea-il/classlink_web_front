@@ -10,6 +10,7 @@
         :listItem="listData"
         :allCheck="idx === 0 ? true : false"
         :name="name"
+        :value="item.value"
         @click-item="$emit('click-item', $event)"
       />
     </div>

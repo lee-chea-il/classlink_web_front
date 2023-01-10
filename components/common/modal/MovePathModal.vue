@@ -172,7 +172,7 @@ export default {
         parent_treeinfo_idx: item,
         treeinfo_idx,
       }
-      this.$emit('move-data', payload)
+      this.$emit('move-data', payload, this.folderInfo.path)
       this.$emit('close')
     },
     isOpenFlag(str, type, myType) {

@@ -4,7 +4,7 @@ import http from './http'
 // 유튜브 api호출
 const getYoutubeData = async (youtubeUrl) => {
   return await axios.get(
-    `https://www.googleapis.com/youtube/v3/videos?id=${youtubeUrl}&key=AIzaSyB5-JcQb2Ltp3ENM5U2AYE80m_LLK9KjAY&part=snippet,contentDetails`
+    `${process.env.VUE_APP_YOUTUBE_URL}?id=${youtubeUrl}&key=AIzaSyB5-JcQb2Ltp3ENM5U2AYE80m_LLK9KjAY&part=snippet,contentDetails`
   )
 }
 
@@ -73,6 +73,11 @@ const deleteData = async (data) => {
   return await http.delete('/api/v1/prepare-class/dataroom/data', { data })
 }
 
+// 자료 복사 (바로 아래에 같은이름으로 복사)
+const poatCopyData = async (data) => {
+  return await http.post('/api/v1/prepare-class/dataroom/copy-data', data)
+}
+
 // 열람 페이지 자료 이동
 const postMoveData = async (data) => {
   return await http.post('/api/v1/prepare-class/dataroom/move-data', data)
@@ -111,11 +116,16 @@ const deleteFolderTreeViewList = async (payload) => {
 
 // 트리뷰에 파일 복사
 const copyTreeViewList = async (payload) => {
-  console.log('-----copyTreeViewList ',payload)
+  console.log('-----copyTreeViewList ', payload)
   return await http.post(
     '/api/v1/prepare-class/dataroom/tree-view-list/copy-folder',
     payload
   )
+}
+
+// 트리뷰 목록 조회
+const getSearchTreeList = async ({ word, dataroom, subject, type }) => {
+  return await http.get(`/search${word}${dataroom}${subject}${type}`)
 }
 
 const apiData = {
@@ -125,13 +135,15 @@ const apiData = {
   getDataroomQuiz,
   getDataroomNoteExam,
   getTreeViewList,
+  getSearchTreeList,
 
   postDataroomFile,
   postDataroomQuiz,
   postDataroomNoteExam,
   postMoveData,
+  poatCopyData,
   copyTreeViewList,
-  
+
   addFolderTreeViewList,
 
   updateDataroomFile,

@@ -16,7 +16,7 @@
     @more-menu-update="moreMenuUpdate"
     @more-menu-view="moreMenuView"
     @more-menu-dell="moreMenuDell"
-    @more-menu-copy="copyData"
+    @more-menu-copy="moreMenuCopy"
     @add-node="addFolder"
     @leaf-name-click="$emit('un-active')"
     @click="$emit('un-active')"
@@ -438,7 +438,11 @@ export default {
     },
 
     moreMenuUpdate(node) {
-      this.$emit('update-data', node)
+      const newItem = {
+        ...node,
+        type: this.treeViewType,
+      }
+      this.$emit('update-data', newItem)
       let path = node.name
       const getParentName = (item) => {
         if (item.name !== 'root') {
@@ -452,8 +456,12 @@ export default {
     },
 
     moreMenuView(node) {
-      console.log(`view ${node}`)
-      this.$emit('open-data', node)
+      const newItem = {
+        ...node,
+        type: this.treeViewType,
+      }
+      // console.log(`view ${node}`)
+      this.$emit('open-data', newItem)
       let path = node.name
       const getParentName = (item) => {
         if (item.name !== 'root') {
@@ -467,13 +475,22 @@ export default {
     },
 
     moreMenuDell(node) {
+      const newItem = {
+        ...node,
+        type: this.treeViewType,
+      }
       // node.remove()
-      console.log(node)
-      this.$emit('delete-data', node)
+      // console.log(node)
+      this.$emit('delete-data', newItem)
     },
 
     moreMenuCopy(node) {
-      console.log(`copy ${node}`)
+      // const payload={}
+      this.$emit('copy-item', {
+        datatable_type: node.type,
+        treeinfo_idx: node.treeViewId,
+      })
+      // console.log(`copy ${node}`)
     },
 
     getCheckDataList() {

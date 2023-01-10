@@ -30,9 +30,15 @@ export default {
   opacity: 1;
   top: 93%;
   left: 3%;
+  z-index: 9999;
+}
+
+.message {
+  font-size: 16px;
 }
 .toast .toast-body {
   background-color: #fb5353;
+  padding: 12px 25px;
 }
 .fade-enter-active,
 .fade-leave-active {

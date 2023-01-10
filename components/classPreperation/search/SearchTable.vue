@@ -37,7 +37,7 @@
                   :id="`search_checkbox${idx}`"
                   type="checkbox"
                   class="custom-control-input"
-                  :value="reference.name"
+                  :value="reference.title"
                   :checked="checkList.includes(reference)"
                   @input="$emit('check-handler', $event)"
                 />
@@ -49,7 +49,7 @@
             </td>
             <td>
               <div class="title">
-                {{ reference.name }}
+                {{ reference.title }}
               </div>
             </td>
             <td>

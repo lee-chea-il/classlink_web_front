@@ -20,6 +20,7 @@
                 :value="searchData.word"
                 :checkList="checkList"
                 @copy="$emit('copy')"
+                @search-submit="$emit('search-submit')"
                 @change-word="$emit('change-word', $event)"
                 @open-filter="$emit('open-filter', 'prev')"
               />

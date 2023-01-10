@@ -5,7 +5,7 @@ const httpFile = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  baseURL: 'http://112.171.101.31:45290',
+  baseURL: process.env.VUE_APP_UPLOAD_URL,
   timeout: 10000,
 })
 

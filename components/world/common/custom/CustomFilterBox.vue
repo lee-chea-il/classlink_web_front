@@ -5,7 +5,7 @@
         :id="id"
         :name="name"
         type="checkbox"
-        :data-value="label"
+        :data-value="value"
         class="custom-control-input"
         :checked="allCheck ? listItem.length === 0 : listItem.includes(label)"
         @input="$emit('click-item', $event)"
@@ -39,6 +39,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    value: { type: String, default: '' },
   },
 }
 </script>

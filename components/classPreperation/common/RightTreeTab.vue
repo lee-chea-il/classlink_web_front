@@ -18,6 +18,7 @@
         @open-data="$emit('open-data', $event)"
         @update-data="$emit('update-data', $event)"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
+        @copy-item="$emit('copy-item', $event)"
         @download-data="$emit('download-data', $event)"
         @un-active="$emit('un-active')"
         @get-savepath="$emit('get-savepath', $event)"

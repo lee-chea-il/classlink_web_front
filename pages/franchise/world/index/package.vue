@@ -277,7 +277,7 @@ import PreviewQuizModal from '~/components/world/modal/PreviewQuizModal.vue'
 import PreviewNoteTestModal from '~/components/world/modal/PreviewNoteTestModal.vue'
 
 import initialState from '~/data/common/lesson/initialState'
-import { setNewArray, jsonItem } from '~/utiles/common'
+import { setNewArray, deepCopy } from '~/utiles/common'
 import { api, apiData, apiLesson } from '~/services'
 import LoadingBox from '~/components/common/LoadingBox.vue'
 
@@ -409,7 +409,7 @@ export default {
             save_path: data.savePath,
             upload_date: data.uploadDate,
           }
-          this.getFileSize(`http://112.171.101.31:45290/file/${data.savedNm}`)
+          this.getFileSize(`${process.env.VUE_APP_FILE_URL}${data.savedNm}`)
           this.onOpenReferenceAddModal()
         })
         .catch((err) => {
@@ -667,7 +667,7 @@ export default {
         this.closeLessonBrowseModal()
       }
       this.setModalTitle('수정')
-      const newItem = jsonItem(data)
+      const newItem = deepCopy(data)
       this.lessonData = newItem
       this.treeReferenceList = newItem.datarooms
       this.isAddLesson.open = true
@@ -679,8 +679,8 @@ export default {
 
     // [레슨] 열람 데이터 초기 설정
     // setViewLesson(item) {
-    //   this.setViewLessonFirstReference(jsonItem(item))
-    //   return (this.lessonViewData = jsonItem(item))
+    //   this.setViewLessonFirstReference(deepCopy(item))
+    //   return (this.lessonViewData = deepCopy(item))
     // },
 
     setViewLessonFirstReference(item) {
@@ -788,7 +788,7 @@ export default {
 
     // [레슨] 레슨에 자료 추가
     addReferenceOfLesson(item) {
-      const list = jsonItem(item)
+      const list = deepCopy(item)
       const newList = [...this.treeReferenceList, list]
       const newSet = Array.from(new Set(newList))
       return (this.treeReferenceList = newSet)
@@ -1064,7 +1064,7 @@ export default {
 
     // [자료실] 자료실 자료 설정
     setReference(item) {
-      this.selectReferenceItem = jsonItem(item)
+      this.selectReferenceItem = deepCopy(item)
     },
 
     // [자료실] 키워드 변경

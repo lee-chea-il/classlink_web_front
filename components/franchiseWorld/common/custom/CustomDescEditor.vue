@@ -121,7 +121,7 @@ export default {
       api
         .postFile(formData)
         .then(({ data: { data } }) => {
-          const img = `http://112.171.101.31:45290/file/${data.savedNm}`
+          const img = `${process.env.VUE_APP_FILE_URL}${data.savedNm}`
           Editor.insertEmbed(cursorLocation, 'image', img)
           resetUploader()
         })

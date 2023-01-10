@@ -3,9 +3,7 @@
     <!-- 왼쪽 영역 -->
     <div class="divide_area left">
       <!-- 탭 컨텐츠 -->
-      <EducationTabMenu
-        :pageType="pageType"
-      />
+      <EducationTabMenu :pageType="pageType" />
       <LeftTreeTab
         ref="education"
         :insData="insData"
@@ -38,6 +36,7 @@
         :pageType="pageType"
         @open-data="$emit('open-data', $event)"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
+        @copy-item="$emit('copy-item', $event)"
         @download-data="$emit('download-data', $event)"
         @update-data="$emit('update-data', $event)"
         @un-active="unActive"
