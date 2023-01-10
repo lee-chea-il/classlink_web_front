@@ -201,9 +201,9 @@ import ResetPasswordModal from '@/components/common/modal/operation/ResetPasswor
 import TeacherCountAlertModal from '@/components/common/modal/operation/TeacherCountAlertModal.vue'
 import TeacherInfoModal from '@/components/common/modal/operation/TeacherInfoModal.vue'
 import UploadTeacherImg from '@/components/common/modal/operation/UploadTeacherImg.vue'
+import UploadTeacherCWImg from '@/components/common/modal/operation/UploadTeacherCWImg.vue'
 import EditSubjectsModal from '@/components/common/modal/operation/EditSubjectsModal.vue'
 import DatePickerModal from '@/components/common/modal/operation/DatePickerModal.vue'
-import UploadTeacherCWImg from '@/components/common/modal/operation/UploadTeacherCWImg.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 import DeleteModal from '@/components/lecturecourse/DeletePlanModal.vue'
 export default {

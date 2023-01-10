@@ -1,7 +1,7 @@
 <template>
   <Transition name="modal">
     <div
-      v-show="open"
+      v-if="open"
       id="modalMyinfo"
       class="modal modal_myinfo ac_manage_std modal-mask modal-index"
       tabindex="-1"
@@ -35,13 +35,13 @@
                 <div
                   class="profile_photo"
                   :style="
-                    studentInfo.profile_image === '' ||
-                    studentInfo.profile_image === null
+                    studentInfo.image.mem_img === '' ||
+                    studentInfo.image.mem_img === null
                       ? {
                           'background-image': `url(${sample_photo})`,
                         }
                       : {
-                          'background-image': `url(${studentInfo.profile_image})`,
+                          'background-image': `url(${studentInfo.image.mem_img})`,
                         }
                   "
                 >

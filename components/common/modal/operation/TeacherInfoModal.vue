@@ -97,25 +97,6 @@
                           :isCheckBox="true"
                           @change-input="$emit('change-input', $event)"
                         />
-                        <!-- <div class="group">
-                        <input
-                          type="text"
-                          placeholder="닉네임입력"
-                          class="form-control"
-                          value=""
-                        />
-                        <div class="custom-control custom-checkbox custom-sm">
-                          <input
-                            id="checkbox01"
-                            type="checkbox"
-                            class="custom-control-input"
-                            checked
-                          />
-                          <label class="custom-control-label" for="checkbox01"
-                            >이름과 동일</label
-                          >
-                        </div>
-                      </div> -->
                       </div>
                     </div>
                     <div class="form-group row">

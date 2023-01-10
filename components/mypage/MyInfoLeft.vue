@@ -5,7 +5,7 @@
       <div class="row">
         <div class="pp_area">
           <!-- [개발참조]: 업로드 사진은 <span>의 backgroung-image로 젹용 -->
-          <div
+          <!-- <div
             class="profile_photo"
             :style="
               myInfo.profile_image === '' || myInfo.profile_image === null
@@ -16,6 +16,12 @@
                     'background-image': `url(${myInfo.profile_image})`,
                   }
             "
+          > -->
+          <div
+            class="profile_photo"
+            :style="{
+              'background-image': `url(${sample_photo})`,
+            }"
           >
             <!-- <span
               style="background-image: url(../images/sample_profile_photo.jpg)"
@@ -73,7 +79,7 @@
             <label for="" class="info_area_title col-form-label">상태</label>
             <div class="col">
               <button
-                class="btn btn_activated"
+                class="btn btn_activated none_cursor"
                 :class="userInfo.mem_status === 'R' ? 'active' : ''"
               >
                 {{ userInfo.mem_status === 'R' ? '활성화' : '비활성화' }}
@@ -173,5 +179,8 @@ export default {
 .profile_photo {
   background-size: cover;
   background-position: center;
+}
+.none_cursor {
+  cursor: default !important;
 }
 </style>

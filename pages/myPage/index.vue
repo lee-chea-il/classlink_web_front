@@ -54,23 +54,32 @@
       @change-check="onChangeCheckBox"
       @click-update="updateUserInfo"
       @close="onCloseUpdateUserInfoModal"
+      @upload-img="openUploadImgModal"
+      @upload-cw="openUploadCWImgModal"
     />
 
-    <!-- 팝업 M2- 내정보 수정 - 프로필 이미지 등록1 -->
-    <ProfileImageModal
-      title="프로필 이미지 등록"
-      :myInfo="myInfo"
+    <!-- 팝업 M2- 내정보 수정 - 프로필 이미지 등록 -->
+    <UploadImg
+      :open="isOpenUploadImgModal"
+      :imageInfo="newUserInfo.mem_img"
       :uploadImageFile="uploadImageFile"
-      @uploadBtn-click="onClickInputButton"
+      @confirm="onCloseUploadImgModal"
       @selected-file="onFileSelected"
+      @uploadBtn-click="onClickInputButton"
+      @click-upload="onClickInputButton"
+      @close="onCloseUploadImgModal"
     />
 
     <!-- 팝업 M2- 내정보 수정 - CW 이미지 등록1 -->
-    <ProfileCWImageModal
-      :myInfo="myInfo"
+    <UploadCWImg
+      :open="isOpenUploadCWImgModal"
+      :imageInfo="newUserInfo.mem_cw_img"
       :uploadImageFile="uploadImageFile"
-      @uploadBtn-click="onClickInputButton"
       @selected-file="onFileSelected"
+      @uploadBtn-click="onClickInputButton"
+      @click-upload="onClickInputButton"
+      @close="onCloseUploadCWImgModal"
+      @confirm="onCloseUploadCWImgModal"
     />
 
     <!-- 팝업 M2-비밀번호변경 -->
@@ -108,6 +117,35 @@
       @click-address="openModalAddress"
       @click-update="updateInstitution"
       @close="onCloseUpdateInstitution"
+      @upload-img="openUploadInsImgModal"
+      @upload-logo="openUploadLogoImgModal"
+    />
+
+    <!-- 교육기관 수정 - 로고 이미지 등록 -->
+    <UploadImg
+      :open="isOpenUploadLogoImgModal"
+      :imageInfo="newInstitutionInfo.ins_logo_img"
+      :uploadImageFile="uploadImageFile"
+      :isInsImage="true"
+      @confirm="onCloseUploadLogoImgModal"
+      @selected-file="onFileSelected"
+      @uploadBtn-click="onClickInputButton"
+      @click-upload="onClickInputButton"
+      @close="onCloseUploadLogoImgModal"
+    />
+
+    <!-- 교육기관 수정 - 교육기관 이미지 등록 -->
+    <UploadCWImg
+      :open="isOpenUploadInsImgModal"
+      :imageInfo="newInstitutionInfo.ins_academy_img"
+      :uploadImageFile="uploadImageFile"
+      :isInsImage="true"
+      @selected-file="onFileSelected"
+      @uploadBtn-click="onClickInputButton"
+      @click-upload="onClickInputButton"
+      @close="onCloseUploadInsImgModal"
+      @confirm="onCloseUploadInsImgModal"
+
     />
 
     <!-- 프랜차이즈 개설 -->
@@ -118,23 +156,6 @@
       @click-address="openModalAddress"
       @open-institution="openFranchise"
       @close="onCloseFranchiseModal"
-    />
-
-    <!-- 팝업 M2-교육기관정보수정2 - 로고업로드1 -->
-    <EduLogoImageModal
-      title="교육기관 로고 업로드"
-      :eduInfo="eduInfo"
-      :uploadImageFile="uploadImageFile"
-      @uploadBtn-click="onClickInputButton"
-      @selected-file="onFileSelected"
-    />
-
-    <!-- 팝업 M2-교육기관정보수정4 - 교육기관이미지등록1 -->
-    <EduCWImageModal
-      :eduInfo="eduInfo"
-      :uploadImageFile="uploadImageFile"
-      @uploadBtn-click="onClickInputButton"
-      @selected-file="onFileSelected"
     />
 
     <!-- 팝업 S2-로그아웃 -->
@@ -161,45 +182,42 @@
 </template>
 
 <script>
-import { apiMypage } from '~/services'
+import { api, apiMypage } from '~/services'
 import MyInfoLeft from '@/components/mypage/MyInfoLeft.vue'
 import MyInfoRightEdu from '@/components/mypage/MyInfoRightEdu.vue'
 import UpdateMyInfoModal from '@/components/common/modal/mypage/UpdateMyInfoModal.vue'
-import ProfileImageModal from '@/components/common/modal/mypage/ProfileImageModal.vue'
-import ProfileCWImageModal from '@/components/common/modal/mypage/ProfileCWImageModal.vue'
 import UpdatePasswordModal from '@/components/common/modal/mypage/UpdatePasswordModal.vue'
 import LogoutModal from '@/components/common/modal/mypage/LogoutModal.vue'
 import ChangeIdentityModal from '@/components/common/modal/mypage/ChangeIdentityModal.vue'
 import UpdateInstitutionModal from '@/components/common/modal/mypage/UpdateInstitutionModal.vue'
 import OpenInstitutionModal from '@/components/common/modal/mypage/OpenInstitutionModal.vue'
 import OpenFranchiseModal from '@/components/common/modal/mypage/OpenFranchiseModal.vue'
-import EduLogoImageModal from '@/components/common/modal/mypage/EduLogoImageModal.vue'
-import EduCWImageModal from '@/components/common/modal/mypage/EduCWImageModal.vue'
 import MapSearchModal from '@/components/common/modal/mypage/MapSearchModal.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 import { deepCopy } from '~/utiles/common'
+import UploadImg from '@/components/common/modal/operation/UploadTeacherImg.vue'
+import UploadCWImg from '@/components/common/modal/operation/UploadTeacherCWImg.vue'
 export default {
   name: 'MyPage',
   components: {
     MyInfoLeft,
     MyInfoRightEdu,
     UpdateMyInfoModal,
-    ProfileImageModal,
-    ProfileCWImageModal,
     UpdatePasswordModal,
     LogoutModal,
     ChangeIdentityModal,
     UpdateInstitutionModal,
     OpenInstitutionModal,
     OpenFranchiseModal,
-    EduLogoImageModal,
-    EduCWImageModal,
     MapSearchModal,
     ModalDesc,
+    UploadImg,
+    UploadCWImg,
   },
   layout: 'EducationLayout',
   data() {
     return {
+      // 유저 정보
       userIdx: 0,
       userInfo: {
         alarm_yn: '',
@@ -209,7 +227,8 @@ export default {
         mem_nickname: '',
         mem_phone: '',
         mem_status: '',
-        tch_grade: null,
+        mem_cw_img: '',
+        mem_img: '',
       },
       newUserInfo: {
         alarm_yn: '',
@@ -219,12 +238,16 @@ export default {
         mem_nickname: '',
         mem_phone: '',
         mem_status: '',
-        tch_grade: null,
+        mem_cw_img: '',
+        mem_img: '',
       },
       isUserInfoFlag: false,
       isChangeUserInfo: false,
       isEmailCheck: true,
       isAlarm: false,
+      // 이미지 모달
+      isOpenUploadImgModal: false,
+      isOpenUploadCWImgModal: false,
       // 교육기관
       institutionInfo: {
         ins_address1: '',
@@ -255,6 +278,9 @@ export default {
       isOpenInstitutionInfo: false,
       // 교육기관 정보 수정 모달
       isUpdateInstitution: false,
+      // 교육기관 이미지 모달
+      isOpenUploadLogoImgModal: false,
+      isOpenUploadInsImgModal: false,
       //
       modalDesc: {
         open: false,
@@ -304,6 +330,7 @@ export default {
         password: '',
         passwordCheck: '',
       },
+      isPasswordCheck: false,
       initNewPassword: {
         recentPassword: '',
         password: '',
@@ -317,6 +344,7 @@ export default {
       isError: false,
       nickNameCheck: false,
       uploadImageFile: '',
+      imageFileInfo: {},
       // 프랜차이즈 개설
       isOpenFranchise: false,
       franchiseInfo: {
@@ -325,7 +353,6 @@ export default {
         fra_address2: '',
         fra_name: '',
         fra_phone: '',
-        fra_zoncode: '',
         fra_cw_img: '',
         fra_desc: '',
         fra_img: '',
@@ -337,7 +364,6 @@ export default {
         fra_address2: '',
         fra_name: '',
         fra_phone: '',
-        fra_zoncode: '',
         fra_cw_img: '',
         fra_desc: '',
         fra_img: '',
@@ -397,8 +423,10 @@ export default {
       this.isUpdatePw = true
     },
     onCloseUpdatePwModal() {
-      this.newPassword = this.deepCopy(this.initNewPassword)
       this.isUpdatePw = false
+      setTimeout(() => {
+        this.newPassword = this.deepCopy(this.initNewPassword)
+      }, 500)
     },
 
     // 로그아웃
@@ -412,6 +440,11 @@ export default {
     // 정보 수정
     onChangeInput({ target: { value, id } }) {
       this.newPassword[id] = value
+      if (this.newPassword.passwordCheck === this.newPassword.password) {
+        this.isError = false
+      } else {
+        this.isError = true
+      }
     },
     // 비밀번호 확인
     onChangePasswordCheck({ target: { value } }) {
@@ -461,33 +494,15 @@ export default {
         })
     },
 
-    // 이미지 업로드
-    onClickInputButton() {
-      const inputBtn = document.getElementById('upload-input')
-      inputBtn.click()
-    },
-    onFileSelected({ target }) {
-      const input = target
-      if (input.files && input.files[0]) {
-        if (input.files[0].size < 3145728) {
-          const reader = new FileReader()
-          reader.onload = (e) => {
-            this.uploadImageFile = e.target.result
-          }
-          reader.readAsDataURL(input.files[0])
-        } else {
-          this.openModalDesc(
-            '업로드 제한',
-            '해당 파일은 제한된 용량을 초과하였습니다. (이미지 제한 용량: 3MB)'
-          )
-        }
-      }
-    },
-
     // 내 정보 수정
     // 내 정보 수정 모달
     openUpdateUserInfoModal() {
       Object.assign(this.newUserInfo, deepCopy(this.userInfo))
+      if (this.newUserInfo.mem_name === this.newUserInfo.mem_nickname) {
+        this.nickNameCheck = true
+      } else {
+        this.nickNameCheck = false
+      }
       this.isUserInfoFlag = true
     },
     onCloseUpdateUserInfoModal() {
@@ -517,6 +532,7 @@ export default {
       } else {
         this.isEmailCheck = false
       }
+      console.log(this.isEmailCheck)
     },
     // 닉네임 체크
     onClickNickNameCheck() {
@@ -531,6 +547,7 @@ export default {
     // 내 정보 수정 api
     async updateUserInfo() {
       const payload = this.newUserInfo
+      console.log(payload)
       await apiMypage
         .putUpdateUserInfo(payload)
         .then((res) => {
@@ -559,10 +576,63 @@ export default {
           console.log(err)
         })
     },
+    // 프로필 이미지
+    openUploadImgModal() {
+      this.isOpenUploadImgModal = true
+    },
+    onCloseUploadImgModal() {
+      this.isOpenUploadImgModal = false
+      this.uploadImageFile = ''
+    },
+    openUploadCWImgModal() {
+      this.isOpenUploadCWImgModal = true
+    },
+    onCloseUploadCWImgModal() {
+      this.isOpenUploadCWImgModal = false
+      this.uploadImageFile = ''
+    },
+    // 파일서버 업로드
+    async postFile(file) {
+      this.isUploading = true
+      const formData = new FormData()
+      formData.append('file', file)
+      await api
+        .postFile(formData)
+        .then(({ data: { data } }) => {
+          this.imageFileInfo = data
+          console.log(this.imageFileInfo)
+        })
+        .catch(() => {})
+    },
+
+    // 이미지 업로드
+    onClickInputButton() {
+      const inputBtn = document.getElementById('upload-input')
+      inputBtn.click()
+    },
+    onFileSelected({ target }) {
+      const input = target
+      if (input.files && input.files[0]) {
+        if (input.files[0].size < 3145728) {
+          const reader = new FileReader()
+          reader.onload = (e) => {
+            this.uploadImageFile = e.target.result
+          }
+          reader.readAsDataURL(input.files[0])
+
+          this.postFile(input.files[0])
+        } else {
+          this.openModalDesc(
+            '업로드 제한',
+            '해당 파일은 제한된 용량을 초과하였습니다. (이미지 제한 용량: 3MB)'
+          )
+        }
+      }
+    },
 
     // 알림 팝업 수정
     async updateAlarm() {
-      if (this.userInfo.alarm_yn === 'Y') {
+      if (this.userInfo.alarm_yn) {
         this.isAlarm = false
       } else {
         this.isAlarm = true
@@ -653,6 +723,21 @@ export default {
           console.log(err)
         })
     },
+    // 교육기관 이미지
+    openUploadLogoImgModal() {
+      this.isOpenUploadLogoImgModal = true
+    },
+    onCloseUploadLogoImgModal() {
+      this.isOpenUploadLogoImgModal = false
+      this.uploadImageFile = ''
+    },
+    openUploadInsImgModal() {
+      this.isOpenUploadInsImgModal = true
+    },
+    onCloseUploadInsImgModal() {
+      this.isOpenUploadInsImgModal = false
+      this.uploadImageFile = ''
+    },
 
     // 프랜차이즈
     openFranchiseModal() {
@@ -677,6 +762,9 @@ export default {
     // 프랜차이즈 개설 api
     async openFranchise() {
       const payload = this.franchiseInfo
+      delete this.franchiseInfo.fra_code
+      delete this.franchiseInfo.fra_cw_img
+      delete this.franchiseInfo.fra_img
       console.log(payload)
       await apiMypage
         .postOpenFranchise(payload)
@@ -727,7 +815,7 @@ export default {
       this.mapSearchModal.open = false
     },
     addressSearched(data) {
-      if (this.isOpenInstitutionInfo) {
+      if (this.isOpenInstitutionInfo || this.isUpdateInstitution) {
         const selectAddress = data.userSelectedType
         if (selectAddress === 'J') {
           this.newInstitutionInfo.ins_address1 = data.jibunAddress
@@ -735,7 +823,6 @@ export default {
           this.newInstitutionInfo.ins_address1 = data.roadAddress
         }
       } else {
-        this.franchiseInfo.fra_zoncode = data.zonecode
         const selectAddress = data.userSelectedType
         if (selectAddress === 'J') {
           this.franchiseInfo.fra_address = data.jibunAddress
@@ -743,7 +830,6 @@ export default {
           this.franchiseInfo.fra_address = data.roadAddress
         }
       }
-
       this.mapSearchModal.open = false
     },
 

@@ -62,14 +62,14 @@
           <div class="col">
             <button
               class="btn btn_activated"
-              :class="userInfo.alarm_yn === 'Y' ? 'active' : ''"
+              :class="userInfo.alarm_yn ? 'active' : ''"
               @click="$emit('click-alarm')"
             >
               ON
             </button>
             <button
               class="btn btn_activated"
-              :class="userInfo.alarm_yn === 'N' ? 'active' : ''"
+              :class="!userInfo.alarm_yn ? 'active' : ''"
               @click="$emit('click-alarm')"
             >
               OFF
@@ -174,14 +174,14 @@
           <div class="col">
             <button
               class="btn btn_activated"
-              :class="userInfo.alarm_yn === 'Y' ? 'active' : ''"
+              :class="userInfo.alarm_yn ? 'active' : ''"
               @click="$emit('click-alarm')"
             >
               ON
             </button>
             <button
               class="btn btn_activated"
-              :class="userInfo.alarm_yn === 'N' ? 'active' : ''"
+              :class="!userInfo.alarm_yn ? 'active' : ''"
               @click="$emit('click-alarm')"
             >
               OFF
@@ -228,7 +228,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    
   },
 }
 </script>

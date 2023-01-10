@@ -30,7 +30,7 @@
                       id="recentPassword"
                       name="현재 비밀번호"
                       placeholder="현재 비밀번호 입력"
-                      rules="required"
+                      rules="required|password"
                       type="password"
                       :inputValue="newPassword.recentPassword"
                       :isPwEyeOn="pwTypeInfo.isPwEyeOn1"
@@ -101,8 +101,7 @@
             <div class="modal-footer">
               <button
                 id="passwordClose"
-                :disabled="invalid"
-                :class="{ disabled: invalid }"
+                :disabled="invalid || isError"
                 class="btn btn_crud_point"
                 :data-dismiss="
                   myInfo.password === newPassword.recentPassword ? 'modal' : ''

@@ -22,38 +22,26 @@
           </div>
           <ValidationObserver v-slot="{ invalid }">
             <div class="modal-body">
-              <div
-                class="profile_images_area"
-                :style="{
+              <div class="profile_images_area">
+                <!-- :style="{
                   'background-image': `url(${myInfo.profile_cw_image})`,
-                }"
-              >
+                }" -->
                 <!-- <img :src="myInfo.profile_cw_image" class="profile_cw_img" /> -->
                 <button
                   type="button"
                   class="btn icons_camera_gray"
-                  data-toggle="modal"
-                  data-target="#modalMyinfo04"
-                  data-dismiss="modal"
+                  @click="$emit('upload-cw')"
                 ></button>
                 <div
                   class="profile_photo"
-                  :style="
-                    myInfo.profile_image === '' || myInfo.profile_image === null
-                      ? {
-                          'background-image': `url(${sample_photo})`,
-                        }
-                      : {
-                          'background-image': `url(${myInfo.profile_image})`,
-                        }
-                  "
+                  :style="{
+                    'background-image': `url(${sample_photo})`,
+                  }"
                 >
                   <button
                     type="button"
                     class="btn icons_camera"
-                    data-toggle="modal"
-                    data-target="#modalMyinfo02"
-                    data-dismiss="modal"
+                    @click="$emit('upload-img')"
                   ></button>
                 </div>
               </div>

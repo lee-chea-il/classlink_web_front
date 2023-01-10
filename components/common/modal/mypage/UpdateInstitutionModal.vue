@@ -22,32 +22,26 @@
           </div>
           <ValidationObserver v-slot="{ invalid }">
             <div class="modal-body">
-              <div
-                class="thumbnail_area"
-                :style="{
+              <div class="thumbnail_area">
+                <!-- :style="{
                   'background-image': `url(${eduInfo.cw_image})`,
-                }"
-              >
+                }" -->
                 <button
                   type="button"
                   class="btn icons_camera_gray"
-                  data-toggle="modal"
-                  data-target="#modalInstinfo04"
-                  data-dismiss="modal"
+                  @click="$emit('upload-img')"
                 ></button>
                 <i id="thumbnail"></i>
                 <div class="edit_result">
                   <button
                     type="button"
                     class="btn icons_camera"
-                    data-toggle="modal"
-                    data-target="#modalInstinfo02"
-                    data-dismiss="modal"
+                    @click="$emit('upload-logo')"
                   ></button>
                   <div
                     class="outer2"
                     :style="{
-                      'background-image': `url(${eduInfo.logo_image})`,
+                      'background-image': `url(${sample_photo})`,
                     }"
                   >
                     <i
@@ -122,7 +116,6 @@
             <div class="modal-footer">
               <button
                 class="btn btn_crud_point"
-                :class="{ disabled: invalid }"
                 :disabled="invalid"
                 @click="$emit('click-update')"
               >
@@ -161,6 +154,11 @@ export default {
       type: Object,
       default: () => {},
     },
+  },
+  data() {
+    return {
+      sample_photo: require('@/assets/images/sample_profile_photo.jpg'),
+    }
   },
 }
 </script>

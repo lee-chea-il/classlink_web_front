@@ -38,7 +38,7 @@
             ? 'form-inline'
             : '')
         "
-        :readonly="id.includes('address1')"
+        :readonly="id.includes('address1') || id === 'fra_address'"
         autocomplete="off"
         @click="$emit('click-address', $event)"
         @input="$emit('change-input', $event)"
