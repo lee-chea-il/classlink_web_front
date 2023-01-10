@@ -51,7 +51,9 @@
                       <td class="td01">{{ item.lec_title }}</td>
                       <td class="td02">
                         <div class="date">
-                          <div class="box01 mr-1">{{ item.sl_payment_date }}</div>
+                          <div class="box01 mr-1">
+                            {{ item.sl_payment_date }}
+                          </div>
                           <i
                             class="icons_calendar_off mr-1"
                             @click="$emit('click-date', item.lec_idx)"
@@ -69,30 +71,33 @@
                       <td class="i td04">
                         <i
                           class="icons_plus_circle_off"
-                          @click="$emit('click-newMemo', item.lec_idx)"
+                          @click="$emit('click-newMemo', item)"
                         ></i>
                       </td>
                     </tr>
 
                     <!-- 메모입력 TR : 메모입력 전 -->
                     <tr
-                      v-if="isNewLectureMemoFlag && item.id === lectureId"
+                      v-if="isNewLectureMemoFlag && item.lec_idx === lectureId"
                       class="memo"
                     >
                       <td colspan="4" class="memo02">
                         <textarea
                           placeholder="메모입력"
-                          :value="lectureInfoMemo.contents"
+                          :value="lectureInfoMemo.slm_memo"
                           @input="$emit('change-input', $event)"
                         ></textarea>
                         <button
                           class="btn btn_crud_point"
                           type="button"
-                          @click="$emit('add-memo', item.id)"
+                          @click="$emit('add-memo')"
                         >
                           등록
                         </button>
-                        <button @click="$emit('click-cancel')">x</button>
+                        <i
+                          class="icons_x_circle_off"
+                          @click="$emit('click-cancel')"
+                        ></i>
                       </td>
                     </tr>
 
@@ -106,14 +111,14 @@
                       <td
                         v-if="
                           isUpdateLectureMemoFlag &&
-                          child_item.id === lectureMemoId
+                          lectureInfoMemo.slm_idx === child_item.slm_idx
                         "
                         colspan="4"
                         class="memo02"
                       >
                         <textarea
                           placeholder="메모입력"
-                          :value="lectureInfoMemo.contents"
+                          :value="lectureInfoMemo.slm_memo"
                           @input="$emit('change-input', $event)"
                         ></textarea>
                         <button
@@ -123,25 +128,49 @@
                         >
                           저장
                         </button>
-                        <button @click="$emit('click-cancel')">x</button>
+                        <i
+                          class="icons_x_circle_off"
+                          @click="$emit('click-cancel')"
+                        ></i>
                       </td>
                       <td v-else colspan="4" class="memo02">
                         <div class="box02">
-                          {{ child_item.contents }}
+                          {{ child_item.slm_memo }}
                         </div>
                         <div class="memo03">
                           최신 업데이트 :
-                          <span>{{ child_item.updatedAt }}</span> 최신 작성자 :
-                          <span>{{ child_item.writer }} 선생님</span>
+                          <span>{{
+                            child_item.slm_update_date === null
+                              ? child_item.slm_registration_date
+                              : child_item.slm_update_date
+                          }}</span>
+                          최신 작성자 :
+                          <span
+                            >{{ child_item.slm_registrant_name }} 선생님</span
+                          >
                         </div>
                       </td>
 
                       <td>
-                        <i class="btn icons_mu_off more_mu">
-                          <div class="more_list">
+                        <i
+                          v-show="!isUpdateLectureMemoFlag"
+                          class="btn icons_mu_off more_mu"
+                          @click.stop="
+                            $emit('click-more', item.sl_idx, child_item)
+                          "
+                        >
+                          <div
+                            class="more_list"
+                            style="display: none"
+                            :class="
+                              lectureMemoId.includes(child_item.slm_idx)
+                                ? 'show'
+                                : ''
+                            "
+                          >
                             <ul>
                               <li
-                                @click="
+                                @click.stop="
                                   $emit('click-update', item.id, child_item.id)
                                 "
                               >
@@ -150,7 +179,7 @@
                               <li
                                 data-toggle="modal"
                                 data-target="#modalLectureMemoDelete"
-                                @click="
+                                @click.stop="
                                   $emit('click-delete', item.id, child_item.id)
                                 "
                               >
@@ -196,8 +225,8 @@ export default {
       default: false,
     },
     lectureMemoId: {
-      type: Number,
-      default: 0,
+      type: Array,
+      default: () => [],
     },
     lectureInfoMemo: {
       type: Object,
@@ -214,7 +243,7 @@ export default {
 .modal-index {
   z-index: 999;
 }
-#modalMoreCourse .table_area .table_tbody tr.memo textarea {
-  width: 607px !important;
+.show {
+  display: block !important;
 }
 </style>

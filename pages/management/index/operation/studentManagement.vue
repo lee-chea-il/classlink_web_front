@@ -201,6 +201,7 @@
       :isUpdateLectureMemoFlag="isUpdateLectureMemoFlag"
       :lectureMemoId="lectureMemoId"
       :lectureInfoMemo="lectureInfoMemo"
+      @click-more="onClickLectureMemoMoreBtn"
       @click-cancel="onClickLectureMemoCancelBtn"
       @click-sameBtn="onClickSameDate"
       @click-date="onClickDueDatePicker"
@@ -683,16 +684,20 @@ export default {
         memo: [],
       },
       lectureInfoMemo: {
-        contents: '',
-        updatedAt: '',
-        writer: '',
+        csm_idx: 0,
+        ins_code: '',
+        lec_idx: 0,
+        mem_idx: this.$store.state.common.user.mem_idx,
+        sl_lec_sdate: '',
+        slm_memo: '',
+        sl_payment_date: '',
       },
       initLectureMemo: {},
       isNewLectureMemoFlag: false,
       lectureId: 0,
       // 수강 정보 메모 수정하기
       isUpdateLectureMemoFlag: false,
-      lectureMemoId: 0,
+      lectureMemoId: [],
       // 학생 메모
       selectStudentIdx: 0,
       studentMemoList: [],
@@ -1362,18 +1367,133 @@ export default {
       const lecture = this.lectureList.find((x) => {
         return x.lec_idx === this.lectureId
       })
+      console.log(lecture)
       lecture.sl_payment_date = this.selectedDate
       this.onCloseDueDatePickerModal()
+      this.updatePaymentDay(lecture)
     },
 
     // 납부일 위와 동일
     onClickSameDate(lectureId) {
       this.lectureId = lectureId
+      const lecture = this.lectureList.find((x) => {
+        return x.lec_idx === this.lectureId
+      })
       const lectureIdx = this.lectureList.findIndex((x) => {
         return x.lec_idx === this.lectureId
       })
       this.lectureList[lectureIdx].sl_payment_date =
         this.lectureList[lectureIdx - 1].sl_payment_date
+      this.updatePaymentDay(lecture)
+    },
+    // 수강 정보 메모 추가
+    onClickNewLectureMemoBtn(item) {
+      this.lectureInfoMemo = this.deepCopy(this.initLectureMemo)
+      if (!this.isNewLectureMemoFlag) {
+        this.lectureId = item.lec_idx
+        Object.assign(this.lectureInfoMemo, item)
+        console.log(this.lectureInfoMemo)
+        this.isNewLectureMemoFlag = true
+        this.isUpdateLectureMemoFlag = false
+      } else {
+        this.isNewLectureMemoFlag = false
+      }
+    },
+    // 수강 정보 메모 등록 api
+    async addLectureMemo() {
+      this.lectureInfoMemo.lec_idx = this.lectureId
+      const payload = this.lectureInfoMemo
+      await apiOperation
+        .addLectureMemo(payload)
+        .then((res) => {
+          this.getStudentLectureList()
+          this.isNewLectureMemoFlag = false
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 수강 정보 - 새 메모 만들기
+    changeLectureMemoInput({ target: { value } }) {
+      this.lectureInfoMemo.slm_memo = value
+    },
+    onClickLectureMemoCancelBtn() {
+      if (this.isNewLectureMemoFlag || this.isUpdateLectureMemoFlag) {
+        this.isNewLectureMemoFlag = false
+        this.isUpdateLectureMemoFlag = false
+        this.lectureInfoMemo = this.deepCopy(this.initLectureMemo)
+      }
+    },
+    // 수강 정보 - 메모 더보기
+    onClickLectureMemoMoreBtn(sl_idx, memo) {
+      if (this.lectureInfoMemo.slm_idx === memo.slm_idx) {
+        this.lectureInfoMemo = this.deepCopy(this.initLectureMemo)
+        this.lectureMemoId = []
+        this.isUpdateLectureMemoFlag = false
+      } else {
+        this.lectureMemoId.pop()
+        this.lectureMemoId.push(memo.slm_idx)
+        this.lectureInfoMemo = memo
+        this.lectureInfoMemo.sl_idx = sl_idx
+      }
+      console.log(this.lectureInfoMemo)
+    },
+    // 수강 정보 - 메모 수정
+    onClickUpdateLectureMemoBtn() {
+      console.log(this.lectureInfoMemo)
+      this.lectureMemoId.pop()
+      this.isUpdateLectureMemoFlag = true
+    },
+    // 수강 정보 메모 수정 api
+    async updateLectureMemo() {
+      const payload = {
+        sl_idx: this.lectureInfoMemo.sl_idx,
+        slm_idx: this.lectureInfoMemo.slm_idx,
+        slm_memo: this.lectureInfoMemo.slm_memo,
+      }
+      await apiOperation
+        .updateLectureMemo(payload)
+        .then((res) => {
+          this.getStudentLectureList()
+          this.isUpdateLectureMemoFlag = false
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 수강 정보 - 메모 삭제
+    onClickLectureMemoDelete() {
+      this.openDeleteLectureMemoModalDesc()
+    },
+    // 수강 정보 - 메모 삭제 api
+    async deleteLectureMemo() {
+      await apiOperation
+        .deleteLectureMemo(this.lectureInfoMemo.slm_idx)
+        .then(() => {
+          this.getStudentLectureList()
+          this.onCloseDeleteLectureMemoModal()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 수강 정보 납부일 수정 api
+    async updatePaymentDay(item) {
+    
+      const payload = {
+        sl_idx: item.sl_idx,
+        sl_lec_sdate: item.sl_lec_sdate,
+        sl_payment_date: item.sl_payment_date,
+      }
+      await apiOperation
+        .updatePaymentDay(payload)
+        .then((res) => {
+          this.getStudentLectureList()
+          this.isUpdateLectureMemoFlag = false
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
 
     // 모달 이벤트
@@ -1595,68 +1715,6 @@ export default {
     },
     onXlsxFileSelected({ target }) {
       this.uploadFileName = target.files[0].name
-    },
-
-    // 수강 정보 - 새 메모 만들기
-    changeLectureMemoInput({ target: { value } }) {
-      this.lectureInfoMemo.contents = value
-    },
-    onClickNewLectureMemoBtn(id) {
-      this.lectureInfoMemo = this.deepCopy(this.initLectureMemo)
-      if (!this.isNewLectureMemoFlag) {
-        this.lectureId = id
-        this.isNewLectureMemoFlag = true
-      } else {
-        this.isNewLectureMemoFlag = false
-      }
-    },
-    addLectureMemo(id) {
-      const lecture = this.studentInfo.lectureInfo.find(
-        (result) => result.id === id
-      )
-      lecture.memo.push(this.lectureInfoMemo)
-      this.isNewLectureMemoFlag = false
-    },
-    onClickLectureMemoCancelBtn() {
-      if (this.isNewLectureMemoFlag || this.isUpdateLectureMemoFlag) {
-        this.isNewLectureMemoFlag = false
-        this.isUpdateLectureMemoFlag = false
-      }
-    },
-    // 수강 정보 - 메모 수정
-    onClickUpdateLectureMemoBtn(lectureId, memoId) {
-      this.lectureMemoId = memoId
-      this.isUpdateLectureMemoFlag = true
-      const lecture = this.studentInfo.lectureInfo.find(
-        (result) => result.id === lectureId
-      )
-      const memo = lecture.memo.find((result) => result.id === memoId)
-      this.lectureInfoMemo.contents = memo.contents
-    },
-    updateLectureMemo(lectureId, memoId) {
-      const lecture = this.studentInfo.lectureInfo.find(
-        (result) => result.id === lectureId
-      )
-      const memo = lecture.memo.find((result) => result.id === memoId)
-      memo.contents = this.lectureInfoMemo.contents
-      this.isUpdateLectureMemoFlag = false
-    },
-    // 수강 정보 - 메모 삭제
-    onClickLectureMemoDelete(lectureId, memoId) {
-      this.lectureId = lectureId
-      this.lectureMemoId = memoId
-      this.openDeleteLectureMemoModalDesc()
-    },
-    deleteLectureMemo() {
-      const lecture = this.studentInfo.lectureInfo.find(
-        (result) => result.id === this.lectureId
-      )
-      const memo = lecture.memo.find(
-        (result) => result.id === this.lectureMemoId
-      )
-      const idx = lecture.memo.indexOf(memo)
-      lecture.memo.splice(idx, 1)
-      this.deleteLectureMemoModalDesc.open = false
     },
 
     onClickNewStudentMemoBtn() {

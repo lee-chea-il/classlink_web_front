@@ -133,11 +133,19 @@ async function updateLectureMemo(payload) {
   )
 }
 // 수강정보 메모 삭제
-async function deleteLectureMemo(sl_idx) {
+async function deleteLectureMemo(slm_idx) {
   return await http.delete(
-    `/api/v1/management/operation/student/lecture/memo?sl_idx=${sl_idx}`
+    `/api/v1/management/operation/student/lecture/memo?slm_idx=${slm_idx}`
   )
 }
+// 수강정보 납부일 수정
+async function updatePaymentDay(payload) {
+  return await http.put(
+    `/api/v1/management/operation/student/lecture?sl_idx=${payload.sl_idx}&sl_lec_sdate=${payload.sl_lec_sdate}&sl_payment_date=${payload.sl_payment_date}`,
+    payload
+  )
+}
+
 // 메모 목록
 async function getStudentMemoList(payload) {
   return await http.get(
@@ -266,6 +274,7 @@ const apiOperation = {
   addStudentMemo,
   updateStudentMemo,
   deleteStudentMemo,
+  updatePaymentDay,
 
   getClassList,
   getClassDetail,
