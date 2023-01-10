@@ -153,6 +153,7 @@ export default {
     },
     setData(dataList) {
       console.log('dataList', dataList, this.treeViewType)
+      let isFirst = true
       const dataMapping = (data, isReadOnly) => {
         const result = []
         const len = data?.length
@@ -165,6 +166,10 @@ export default {
           nObj.readOnly = isReadOnly
           nObj.active = false
           nObj.name = nObj.title
+          if (isFirst) {
+            isFirst = false
+            nObj.checkboxDisable = true
+          }
 
           if (nObj.group_yn) {
             nObj.type = this.treeViewType

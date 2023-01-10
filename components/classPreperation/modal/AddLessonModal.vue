@@ -7,7 +7,7 @@
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
-      style="display: block"
+      style="display: block;"
     >
       <ValidationObserver v-slot="{ invalid }">
         <div class="background_close" />
@@ -171,6 +171,7 @@
                         <TreeView
                           ref="myLesson"
                           listType="lesson"
+                          :isDragable="true"
                           :dataList="institutionData"
                           treeViewType="ID"
                           :editable="identity == 'institution' ? true : false"

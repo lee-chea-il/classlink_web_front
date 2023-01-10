@@ -6,6 +6,7 @@
       listType="lessonList"
       :is-drop="true"
       :is-show-option="false"
+      :isDragable="true"
       @more-show-click="moreShowClick"
       @more-remove-click="moreRemoveClick"
       @drop-before="dropBefore"
@@ -191,6 +192,7 @@ export default {
       }, 10)
     },
     dropBefore({ node, isCopy, target }) {
+      console.log('#2323', node, isCopy, target)
       if (isCopy) {
         for (const item in node) {
           if (item !== 'parent' && item !== 'readOnly' && item !== 'isLeaf') {
