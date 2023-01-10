@@ -280,7 +280,7 @@
     <SearchResultModal
       :open="isSearchListModal"
       :searchData="searchData"
-      :filterItem="referenceList"
+      :filterItem="dataList"
       :checkList="checkList"
       @change-word="changeSearchData"
       @close="closeSearchListModal"
@@ -476,22 +476,22 @@ export default {
     async getSearchTreeList() {
       const target = this.searchData
       const payload = {
-        word: target.word.length ? `?word="${this.searchData.word}"` : '',
+        word: target.word.length ? `?word=${this.searchData.word}` : '',
         dataroom: target.type.length
-          ? `&dataroom="${this.searchData.type.join(',')}"`
+          ? `&dataroom=${this.searchData.type.join(',')}`
           : '',
         subject: target.subject.length
-          ? `&subject="${this.searchData.subject.join(',')}"`
+          ? `&subject=${this.searchData.subject.join(',')}`
           : '',
         type: target.datatype.length
-          ? `&type="${this.searchData.datatype.join(',')}"`
+          ? `&type=${this.searchData.datatype.join(',')}`
           : '',
       }
       if (target.word.length) {
         await apiData
           .getSearchTreeList(payload)
-          .then((res) => {
-            console.log(res)
+          .then(({ data: { data } }) => {
+            this.dataList = data
           })
           .catch((err) => {
             console.log(err)
@@ -510,7 +510,7 @@ export default {
           if (data.length > 0) {
             this.isCopyMD = true
             this.copyMDData = data
-            this.setUpdateTree('MD')
+            this.updateTree('MD')
           }
         })
         .catch((err) => {
@@ -519,7 +519,7 @@ export default {
     },
 
     // 자료등록시 트리 호출
-    setUpdateTree(type) {
+    updateTree(type) {
       if (type === 'ID') {
         this.getInsTreeViewList()
       } else if (type === 'FD') {
@@ -632,7 +632,7 @@ export default {
         .postDataroomFile(payload)
         .then(() => {
           this.onCloseReferenceAddModal()
-          this.setUpdateTree(payload.datatable_type)
+          this.updateTree(payload.datatable_type)
           this.openModalDesc('등록 성공', '자료를 등록했습니다.')
         })
         .catch(() => {
@@ -654,7 +654,7 @@ export default {
         .postDataroomQuiz(payload)
         .then(() => {
           this.onCloseQuizAddModal()
-          this.setUpdateTree(payload.datatable_type)
+          this.updateTree(payload.datatable_type)
           this.openModalDesc('등록 성공', '자료를 등록했습니다.')
         })
         .catch(() => {
@@ -676,7 +676,7 @@ export default {
         .postDataroomNoteExam(payload)
         .then(() => {
           this.onCloseNoteTestAddModal()
-          this.setUpdateTree(payload.datatable_type)
+          this.updateTree(payload.datatable_type)
           this.openModalDesc('등록 성공', '자료를 등록했습니다.')
         })
         .catch(() => {
@@ -788,7 +788,7 @@ export default {
         .updateDataroomFile(data)
         .then(() => {
           this.onCloseReferenceAddModal()
-          this.setUpdateTree(data.datatable_type)
+          this.updateTree(data.datatable_type)
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
         .catch(() => {})
@@ -810,7 +810,7 @@ export default {
         .updateDataroomQuiz(data)
         .then(() => {
           this.onCloseQuizAddModal()
-          this.setUpdateTree(data.datatable_type)
+          this.updateTree(data.datatable_type)
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
         .catch(() => {})
@@ -864,7 +864,7 @@ export default {
         .updateDataroomNoteExam(data)
         .then(() => {
           this.onCloseNoteTestAddModal()
-          this.setUpdateTree(data.datatable_type)
+          this.updateTree(data.datatable_type)
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
         .catch(() => {})
@@ -878,7 +878,7 @@ export default {
       const payload = { datatable_type, parent_treeinfo_idx, treeinfo_idx }
       this.uploadInfo.saveFolderPath = path
       await apiData.postMoveData(payload).then(() => {
-        this.setUpdateTree(datatable_type)
+        this.updateTree(datatable_type)
       })
     },
 
@@ -894,7 +894,7 @@ export default {
         .deleteData(payload)
         .then(() => {
           this.isSelectModal.open = false
-          this.setUpdateTree(payload.datatable_type)
+          this.updateTree(payload.datatable_type)
           this.openModalDesc('삭제 성공', '자료를 삭제했습니다.')
         })
         .catch(() => {})
@@ -909,7 +909,7 @@ export default {
       await apiData
         .poatCopyData(payload)
         .then(() => {
-          this.setUpdateTree(datatable_type)
+          this.updateTree(datatable_type)
         })
         .catch((err) => {
           console.log(err)
@@ -1270,6 +1270,8 @@ export default {
     changeSearchData(e) {
       const { name, checked, dataset, value } = e.target
       const result = this.searchData
+      console.log('dataset.value', dataset.value)
+      console.log('name', name)
       if (name === 'word') return (result[name] = value)
       else if (checked) {
         if (dataset.value === '전체') return (result[name] = [])
@@ -1300,12 +1302,12 @@ export default {
 
     // 검색결과 체크박스
     checkHandler({ target: { checked, value, id } }) {
-      const idx = this.referenceList?.findIndex((item) => item.name === value)
+      const idx = this.dataList?.findIndex((item) => item.name === value)
       if (id === 'all_check') {
-        if (checked) return (this.checkList = [...this.referenceList])
+        if (checked) return (this.checkList = [...this.dataList])
         else return (this.checkList = [])
       } else if (checked)
-        return (this.checkList = [...this.checkList, this.referenceList[idx]])
+        return (this.checkList = [...this.checkList, this.dataList[idx]])
       else return this.checkList.splice(idx, 1)
     },
 

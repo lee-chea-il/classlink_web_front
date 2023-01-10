@@ -131,25 +131,6 @@ export default function initialState() {
     moveInstitutionData: [],
     moveFranchiseData: [],
     moveOpenData: [],
-    referenceList: [
-      {
-        id: 0,
-        title: '국어학습자료 애니메이션.mp4',
-        subject: 1,
-        description: '등록한 자료 1',
-        keyword: ['국어', '수학'],
-        worker: '등록인',
-        save_path: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
-        public_open_yn: true,
-        open_yn: true,
-        file_name: '',
-        datatable_type: 'ID',
-        datatype: '01',
-        createAt: '',
-        dbIdx: 1,
-        thumbnail: '',
-        type: 'institution',
-      },
-    ],
+    dataList: [],
   }
 }

@@ -13,6 +13,7 @@
           class="form-control"
           name="word"
           :value="value"
+          @keypress.enter="$emit('search-submit')"
           @input="$emit('change-word', $event)"
         />
         <div class="input-group-append">

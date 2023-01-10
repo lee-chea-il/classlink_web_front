@@ -7,7 +7,9 @@
         type="checkbox"
         :data-value="value"
         class="custom-control-input"
-        :checked="allCheck ? listItem.length === 0 : listItem.includes(value)"
+        :checked="
+          allCheck ? listItem.length === 0 : listItem.includes(String(value))
+        "
         @input="$emit('click-item', $event)"
       />
       <label class="custom-control-label" :for="id">{{ label }}</label>
