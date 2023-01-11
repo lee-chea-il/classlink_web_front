@@ -5246,7 +5246,6 @@ ol {
   display: flex;
   justify-content: center;
   line-height: 40px;
-  align-items: center;
 }
 #modalCuriRegi .custom-checkbox .custom-control-label::before {
   border-radius: 0.25rem;

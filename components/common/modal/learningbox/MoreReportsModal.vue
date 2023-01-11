@@ -34,47 +34,47 @@
                           <th scope="col">학습 기간</th>
                           <th scope="col">강좌</th>
                           <th scope="col">반</th>
-                          <th scope="col">출석률</th>
                           <th scope="col">시험 유형</th>
                           <th scope="col">응시일</th>
+                          <th scope="col">정답문항수</th>
                           <th scope="col">점수(%)</th>
                           <th scope="col">반평균(%)</th>
-                          <th scope="col">문항별</th>
+                          <th scope="col">완료율(%)</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
                           <td>22.05.11 - 22.05.21</td>
                           <td>영어리딩심화</td>
-                          <td>심화A</td>
-                          <td>80%</td>
+                          <td>A</td>
                           <td>쪽지시험</td>
                           <td>22.05.11</td>
+                          <td>12/15</td>
                           <td>80</td>
                           <td>70</td>
-                          <td>12/15</td>
+                          <td>70</td>
                         </tr>
                         <tr>
                           <td>22.05.11 - 22.05.21</td>
-                          <td>영어리딩심화</td>
-                          <td>심화A</td>
-                          <td>80%</td>
-                          <td>쪽지시험</td>
+                          <td>수학 수1</td>
+                          <td>A</td>
+                          <td>퀴즈</td>
                           <td>22.05.11</td>
-                          <td>80</td>
-                          <td>70</td>
                           <td>12/15</td>
+                          <td>80</td>
+                          <td>50</td>
+                          <td>70</td>
                         </tr>
                         <tr>
                           <td>22.05.11 - 22.05.21</td>
-                          <td>영어리딩심화</td>
-                          <td>심화A</td>
-                          <td>80%</td>
+                          <td>국어문법심화</td>
+                          <td>A</td>
                           <td>쪽지시험</td>
                           <td>22.05.11</td>
+                          <td>12/15</td>
+                          <td>30</td>
                           <td>80</td>
                           <td>70</td>
-                          <td>12/15</td>
                         </tr>
                       </tbody>
                     </table>
@@ -144,13 +144,13 @@
                     <!-- /.커리큘럼 그래프 박스 color03 -->
                   </div>
                   <div class="per_area">
-                    <div class="title">학습 리포트</div>
+                    <div class="title">백분율</div>
                     <div class="value">80</div>
                     <div class="value">-</div>
                     <div class="value">30</div>
                   </div>
                   <div class="per_area">
-                    <div class="title">학습 리포트</div>
+                    <div class="title">문항별</div>
                     <div class="value">12/15</div>
                     <div class="value">-</div>
                     <div class="value">10/12</div>

@@ -127,16 +127,18 @@ export default {
       console.log(payload)
 
       if (payload.qba_title !== '' && payload.qba_description !== '') {
-        await apiLeaningBox
-          .postRegistAnswer(payload)
-          .then(() => {
-            this.$router.push(`/class/learningBox/question`)
-            this.openModalDesc('등록 성공', '답변을 등록했습니다.')
-          })
-          .catch((err) => {
-            console.log(err)
-            this.openModalDesc('등록 실패', '답변 등록을 실패했습니다.')
-          })
+        if (payload.qba_title.length >= 2) {
+          await apiLeaningBox
+            .postRegistAnswer(payload)
+            .then(() => {
+              this.$router.push(`/class/learningBox/question`)
+              this.openModalDesc('등록 성공', '답변을 등록했습니다.')
+            })
+            .catch((err) => {
+              console.log(err)
+              this.openModalDesc('등록 실패', '답변 등록을 실패했습니다.')
+            })
+        }
       } else {
         this.openModalDesc('등록 실패', '답변을 작성해주세요.')
       }

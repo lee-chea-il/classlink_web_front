@@ -362,9 +362,9 @@ export default {
     onClickQuestionCheck(qtb_idx, mem_idx) {
       // 리스트의 답변 총 개수
       let answervoNum = 0
-      for (let i = 0; i < this.askingboxList.length; i++) {
-        if (this.askingboxList[i].answervo !== null) {
-          answervoNum = answervoNum + this.askingboxList[i].answervo.length
+      for (const item of this.askingboxList) {
+        if (item.answervo !== null) {
+          answervoNum = answervoNum + item.answervo.length
         }
       }
 
@@ -399,9 +399,9 @@ export default {
     onClickAnswerCheck(qba_idx, mem_idx) {
       // 리스트의 답변 총 개수
       let answervoNum = 0
-      for (let i = 0; i < this.askingboxList.length; i++) {
-        if (this.askingboxList[i].answervo !== null) {
-          answervoNum = answervoNum + this.askingboxList[i].answervo.length
+      for (const item of this.askingboxList) {
+        if (item.answervo !== null) {
+          answervoNum = answervoNum + item.answervo.length
         }
       }
 
@@ -441,18 +441,18 @@ export default {
       } else {
         this.checkList = []
         this.answerCheckList = []
-        for (let i = 0; i < this.askingboxList.length; i++) {
+        for (const item of this.askingboxList) {
           const questionInfo = {
-            mem_idxs: this.askingboxList[i].questionvo.smem_idx,
-            qtb_idxs: this.askingboxList[i].questionvo.qtb_idx,
+            mem_idxs: item.questionvo.smem_idx,
+            qtb_idxs: item.questionvo.qtb_idx,
           }
           this.checkList.push(questionInfo)
 
-          if (this.askingboxList[i].answervo !== null) {
-            for (let j = 0; j < this.askingboxList[i].answervo.length; j++) {
+          if (item.answervo !== null) {
+            for (const items of item.answervo) {
               const answerInfo = {
-                mem_idxs: this.askingboxList[i].answervo[j].mem_idx,
-                qba_idxs: this.askingboxList[i].answervo[j].qba_idx,
+                mem_idxs: items.mem_idx,
+                qba_idxs: items.qba_idx,
               }
 
               this.answerCheckList.push(answerInfo)

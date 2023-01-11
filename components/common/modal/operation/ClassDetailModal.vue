@@ -188,26 +188,26 @@
                       <td>
                         <i
                           class="btn icons_mu_off more_mu"
-                          @click="$emit('open-detail', idx)"
+                          @click="$emit('click-more', item.std_idx)"
                         >
-                          <div v-if="modalDetailMore === idx" class="more_list">
+                          <div
+                            v-show="expandIdx.includes(item.std_idx)"
+                            class="more_list"
+                            :class="
+                              expandIdx.includes(item.std_idx)
+                                ? 'expand-more'
+                                : ''
+                            "
+                          >
                             <ul>
-                              <li
-                                data-toggle="modal"
-                                data-target="#modalMoreCourse"
-                              >
+                              <li @click="$emit('open-lectureInfo')">
                                 수강 정보
                               </li>
-                              <li @click="$emit('open-attendance', item)">
+                              <li @click="$emit('open-attendance', item.id)">
                                 출결
                               </li>
-                              <li
-                                data-toggle="modal"
-                                data-target="#modalMoreMemo"
-                              >
-                                메모
-                              </li>
-                              <li @click="$emit('open-reportFilter', item)">
+                              <li @click="$emit('open-memo')">메모</li>
+                              <li @click="$emit('open-reportFilter', item.id)">
                                 학습 리포트
                               </li>
                             </ul>
@@ -273,9 +273,9 @@ export default {
       type: Array,
       default: () => [],
     },
-    modalDetailMore: {
-      type: Number,
-      default: 0,
+    expandIdx: {
+      type: Array,
+      default: () => [],
     },
     studentInfoModalDesc: {
       type: Object,

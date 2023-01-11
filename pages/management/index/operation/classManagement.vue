@@ -86,7 +86,7 @@
     <ClassDetailModal
       :open="openClassDetailModal"
       :classInfo="classInfo"
-      :modalDetailMore="modalDetailMore"
+      :expandIdx="expandIdx"
       :studentInfoModalDesc="studentInfoModalDesc"
       :detailSearch.sync="detailSearch"
       :sortDetailChange="sortDetailChange"
@@ -107,8 +107,11 @@
       @change-attend="onChangeAttendSort"
       @open-detail="onClickOpenDetailMore"
       @search="onSearchFilterDetail"
+      @click-more="onClickExpandBtn"
       @open-attendance="openStudentAttendanceModal"
       @open-reportFilter="openReportFilterModal"
+      @open-memo="openStudentMemoModalDesc"
+      @open-lectureInfo="openLectureInfoModalDesc"
     />
 
     <!-- 반관리-반이동 - 팝업 L -->
@@ -158,6 +161,7 @@
       :familySearchText="familySearchText"
       :isEmailCheck="isEmailCheck"
       :isAttNumberCheck="isAttNumberCheck"
+      :uploadImageFile="uploadImageFile"
       @close="onCloseStudentInfoModalDesc"
       @change-input="onChangeUpdateInput"
       @click-birthday="openDatePickerModalDesc"
@@ -187,9 +191,9 @@
     <!-- 학생 정보 수정 - 프로필 이미지 등록1 -->
     <UploadStudentImg
       :open="uploadStudentImgModalDesc.open"
-      :teacherInfo="studentInfo"
       :uploadImageFile="uploadImageFile"
-      @select-file="onFileSelected"
+      :imageInfo="studentInfo.image.mem_img"
+      @selected-file="onFileSelected"
       @click-upload="onClickInputButton"
       @close="onCloseUploadStudentImgModalDesc"
       @confirm="onClickImgConfirm"
@@ -264,6 +268,69 @@
       @close="onCloseReportDetailModal"
     />
 
+    <!-- 수강정보-팝업 M1 -->
+    <LectureInfoModal
+      :open="lectureInfoModalDesc.open"
+      :lectureList="lectureList"
+      :lectureInfo="studentInfo.lectureInfo"
+      :isNewLectureMemoFlag="isNewLectureMemoFlag"
+      :lectureId="lectureId"
+      :isUpdateLectureMemoFlag="isUpdateLectureMemoFlag"
+      :lectureMemoId="lectureMemoId"
+      :lectureInfoMemo="lectureInfoMemo"
+      @click-more="onClickLectureMemoMoreBtn"
+      @click-cancel="onClickLectureMemoCancelBtn"
+      @click-sameBtn="onClickSameDate"
+      @click-date="onClickDueDatePicker"
+      @change-input="changeLectureMemoInput"
+      @add-memo="addLectureMemo"
+      @click-update="onClickUpdateLectureMemoBtn"
+      @click-delete="onClickLectureMemoDelete"
+      @update-memo="updateLectureMemo"
+      @click-newMemo="onClickNewLectureMemoBtn"
+      @close="onCloseLectureInfoModalDesc"
+    />
+    <!-- 납부일 설정 모달 -->
+    <DatePickerModal
+      :open="datePickerDueDateModal.open"
+      @close="onCloseDueDatePickerModal"
+      @select-date="selectDay"
+      @confirm="onClickDueDateConfirm"
+    />
+
+    <!-- 메모-팝업 L -->
+    <StudentMemoModal
+      :open="studentMemoModalDesc.open"
+      :studentMemoList="studentMemoList"
+      :isNewStudentMemoFlag="isNewStudentMemoFlag"
+      :studentMemoId="studentMemoId"
+      :studentMemo="studentMemo"
+      :isStudentMemoMoreFlag="isStudentMemoMoreFlag"
+      :isUpdateStudentMemoFlag="isUpdateStudentMemoFlag"
+      :memoRange="memoRange"
+      :endPageNumber="memoEndPageNumber"
+      :currentPage="memoCurrentPage"
+      @click-page="onClickMemoPagination"
+      @click-direction="memoPaginationDirection"
+      @click-more="onClickMoreBtn"
+      @change-input="changeStudentMemoInput"
+      @click-add="onClickNewStudentMemoBtn"
+      @click-update="onClickUpdateStudentMemoBtn"
+      @update-memo="updateStudentMemo"
+      @click-cancel="onClickCancelBtn"
+      @click-delete="openDeleteStudentMemoModalDesc"
+      @add-memo="addStudentMemo"
+      @select-range="selectMemoRange"
+      @close="onCloseStudentMemoModalDesc"
+    />
+    <!-- 학생 메모 삭제 -->
+    <DeleteSimpleModal
+      :open="deleteStudentMemoDesc.open"
+      :message="deleteStudentMemoDesc.message"
+      @delete="deleteStudentMemo"
+      @close="onCloseDeleteStudentMemoModal"
+    />
+
     <ModalDesc
       :open="modalDesc.open"
       :title="modalDesc.title"
@@ -283,6 +350,7 @@
 
 <script>
 import html2pdf from 'html2pdf.js'
+import { omit } from 'lodash'
 import NavBox from '@/components/operation/NavBox.vue'
 import ClassListBox from '@/components/operation/ClassListBox.vue'
 import ClassModifyModal from '@/components/common/modal/operation/ClassModifyModal.vue'
@@ -292,7 +360,7 @@ import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 import DeleteModal from '@/components/lecturecourse/DeletePlanModal.vue'
 import StudentInfoModal from '@/components/common/modal/operation/StudentInfoModal.vue'
 import CustomSnackbar from '@/components/common/CustomSnackbar.vue'
-import { apiOperation } from '~/services'
+import { api, apiOperation } from '~/services'
 
 import UploadStudentImg from '@/components/common/modal/operation/UploadTeacherImg.vue'
 import DatePickerModal from '@/components/common/modal/operation/DatePickerModal.vue'
@@ -300,6 +368,9 @@ import StudentAttendanceModal from '@/components/common/modal/operation/StudentA
 import RangeDataPicker from '~/components/common/modal/RangeDataPicker.vue'
 import ReportFilterModal from '@/components/common/modal/operation/ReportFilterModal.vue'
 import ReportDetailModal from '@/components/common/modal/operation/ReportDetailModal.vue'
+import LectureInfoModal from '@/components/common/modal/operation/LectureInfoModal.vue'
+import StudentMemoModal from '@/components/common/modal/operation/StudentMemoModal.vue'
+import DeleteSimpleModal from '@/components/common/modal/operation/DeleteSimpleModal.vue'
 export default {
   name: 'ClassManagement',
   components: {
@@ -319,9 +390,16 @@ export default {
     RangeDataPicker,
     ReportFilterModal,
     ReportDetailModal,
+    LectureInfoModal,
+    StudentMemoModal,
+    DeleteSimpleModal,
   },
   data() {
     return {
+      // 더보기
+      expandIdx: [],
+      selectStudent: {},
+
       // 학생 상세 모달
       studentInfoModalDesc: {
         open: false,
@@ -352,29 +430,33 @@ export default {
         mem_name: '',
         ins_code: this.$store.state.common.user.ins_code,
         fra_code: '',
-        mem_img: '',
+        image: {
+          mem_img: '',
+        },
         mem_id: '',
         mem_nickname: '',
         mem_email: '',
-        itm_status: '02',
+        mem_sex: 'M',
+        mem_phone: '',
+        mem_birthday: '',
+        mem_img: '',
         std_year: '',
         std_adult_yn: false,
-        mem_sex: 'M',
         std_grade: 'S',
         std_use_yn: true,
         std_att_num: '',
-        mem_phone: '',
         std_school: '',
         std_courses: '',
-        mem_birthday: '',
         std_parent_phone: '',
         itm_acc_yn: true,
+        itm_status: '02',
         std_idx: 0,
         family_id: null,
         lecture_info_dto: [],
         all_lecture_info: [],
       },
       studentTab: 0,
+      imageFileId: '',
 
       // 출결
       studentAttendanceModal: {
@@ -552,6 +634,56 @@ export default {
         },
       ],
       bgList: ['color01', 'color02', 'color03'],
+
+      // 수강정보
+      lectureInfoModalDesc: {
+        open: false,
+      },
+      datePickerDueDateModal: {
+        open: false,
+      },
+      lectureList: [],
+      isNewLectureMemoFlag: false,
+      lectureId: 0,
+      // 수강 정보 메모 수정하기
+      isUpdateLectureMemoFlag: false,
+      lectureMemoId: [],
+      lectureInfoMemo: {
+        csm_idx: 0,
+        ins_code: '',
+        lec_idx: 0,
+        mem_idx: this.$store.state.common.user.mem_idx,
+        sl_lec_sdate: '',
+        slm_memo: '',
+        sl_payment_date: '',
+      },
+      initLectureMemo: {},
+
+      // 메모
+      studentMemoModalDesc: {
+        open: false,
+      },
+      deleteStudentMemoDesc: {
+        open: false,
+        message: '',
+      },
+      studentMemoList: [],
+      isNewStudentMemoFlag: false,
+      studentMemoId: 0,
+      studentMemo: {
+        sm_idx: 0,
+        ins_code: this.$store.state.common.user.ins_code,
+        sm_consult_date: '2023-01-05',
+        sm_consultant: this.$store.state.common.user.mem_name,
+        sm_desc: '',
+        std_idx: 0,
+      },
+      isStudentMemoMoreFlag: false,
+      isUpdateStudentMemoFlag: false,
+      memoRange: true,
+      memoEndPageNumber: 0,
+      memoCurrentPage: 1,
+      initStudentMemo: {},
 
       // 반 리스트
       classList: [],
@@ -801,8 +933,17 @@ export default {
         }
       }
     },
+
+    memoRange() {
+      this.getStudentMemoList()
+    },
+    memoCurrentPage() {
+      this.getStudentMemoList()
+    },
   },
   created() {
+    // 빈 객체(배열)
+    this.initStudentMemo = JSON.parse(JSON.stringify(this.studentMemo))
     // 현재 날짜의 월요일, 일요일 구하기
     const setDate = (date) =>
       `${date?.getFullYear()}.${date?.getMonth() + 1}.${date?.getDate()}`
@@ -1195,8 +1336,7 @@ export default {
 
       await apiOperation
         .postClassCopy(payload)
-        .then((res) => {
-          console.log(res)
+        .then(() => {
           this.checkList = []
           this.allCheck = false
           this.getClassList()
@@ -1357,8 +1497,8 @@ export default {
         this.allCheck = false
       } else {
         this.checkList = []
-        for (let i = 0; i < this.classList.length; i++) {
-          this.checkList.push(this.classList[i].csm_idx)
+        for (const item of this.classList) {
+          this.checkList.push(item.csm_idx)
         }
         this.allCheck = true
       }
@@ -1437,14 +1577,14 @@ export default {
     async putMoveReverseClass() {
       const studentList = []
 
-      for (let i = 0; i < this.selectedMoveModalRightCheckbox.length; i++) {
+      for (const item of this.selectedMoveModalRightCheckbox) {
         const student = {
-          csm_idx: this.selectedMoveModalRightCheckbox[i].csm_idx,
+          csm_idx: item.csm_idx,
           fra_code: this.fra_code,
           ins_code: this.ins_code,
-          itm_idx: this.selectedMoveModalRightCheckbox[i].itm_idx,
-          mem_idx: this.selectedMoveModalRightCheckbox[i].mem_idx,
-          std_idx: this.selectedMoveModalRightCheckbox[i].std_idx,
+          itm_idx: item.itm_idx,
+          mem_idx: item.mem_idx,
+          std_idx: item.std_idx,
         }
         studentList.push(student)
       }
@@ -1452,6 +1592,8 @@ export default {
       const payload = {
         moveBanDataList: studentList,
       }
+
+      console.log(payload, 'asdf1251')
 
       if (payload.moveBanDataList.length !== 0) {
         await apiOperation
@@ -1493,18 +1635,33 @@ export default {
     async onUnallocationPutMoveClass() {
       const banList = []
       const studentList = []
-      for (let i = 0; i < this.selectedMoveToClassCheckboxRight.length; i++) {
+      // for (let i = 0; i < this.selectedMoveToClassCheckboxRight.length; i++) {
+      //   const ban = {
+      //     csm_idx: this.selectedMoveToClassCheckboxRight[i].csm_idx,
+      //     csm_name: this.selectedMoveToClassCheckboxRight[i].csm_name,
+      //   }
+      //   banList.push(ban)
+      // }
+      // for (let i = 0; i < this.selectedUnallocationCheckbox.length; i++) {
+      //   const student = {
+      //     itm_idx: this.selectedUnallocationCheckbox[i].itm_idx,
+      //     mem_idx: this.selectedUnallocationCheckbox[i].mem_idx,
+      //     std_idx: this.selectedUnallocationCheckbox[i].std_idx,
+      //   }
+      //   studentList.push(student)
+      // }
+      for (const item of this.selectedMoveToClassCheckboxRight) {
         const ban = {
-          csm_idx: this.selectedMoveToClassCheckboxRight[i].csm_idx,
-          csm_name: this.selectedMoveToClassCheckboxRight[i].csm_name,
+          csm_idx: item.csm_idx,
+          csm_name: item.csm_name,
         }
         banList.push(ban)
       }
-      for (let i = 0; i < this.selectedUnallocationCheckbox.length; i++) {
+      for (const item of this.selectedUnallocationCheckbox) {
         const student = {
-          itm_idx: this.selectedUnallocationCheckbox[i].itm_idx,
-          mem_idx: this.selectedUnallocationCheckbox[i].mem_idx,
-          std_idx: this.selectedUnallocationCheckbox[i].std_idx,
+          itm_idx: item.itm_idx,
+          mem_idx: item.mem_idx,
+          std_idx: item.std_idx,
         }
         studentList.push(student)
       }
@@ -1522,6 +1679,8 @@ export default {
           .putMoveClass(payload)
           .then(({ data: { data } }) => {
             console.log(data)
+            this.selectedMoveToClassCheckboxRight = []
+            this.selectedUnallocationCheckbox = []
             this.openModalDesc('이동 성공', '반 이동을 성공했습니다.')
             this.onSearchUnallocation()
             this.getMoveClassRight()
@@ -1606,8 +1765,8 @@ export default {
     // 반 학생 학년 추가/삭제 (학년 전체)
     onClickAddSelectedStudentAll(data) {
       console.log(data)
-      for (let i = 0; i < data.studentList.length; i++) {
-        this.onClickAddSelectedStudent(data.studentList[i], data.std_year)
+      for (const item of data.studentList) {
+        this.onClickAddSelectedStudent(item, data.std_year)
       }
     },
     onClickDeleteSelectedStudentAll(data) {
@@ -1617,12 +1776,9 @@ export default {
       }
     },
     onClickAddSelectedBanListAll(data) {
-      console.log(data)
-      for (let i = 0; i < data.studentList.length; i++) {
-        this.onClickAddSelectedStudent(
-          data.studentList[i],
-          data.studentList[i].std_year
-        )
+      console.log('ban', data)
+      for (const item of data.studentList) {
+        this.onClickAddSelectedStudent(item, item.std_year)
       }
     },
     // 반 학생 반 학년 추가/삭제 (개인)
@@ -1653,17 +1809,32 @@ export default {
       }
     },
     onClickDeleteSelectedStudent(data, stdYear) {
-      for (let i = 0; i < this.selectedStudentAll.length; i++) {
-        if (this.selectedStudentAll[i].grade === stdYear) {
-          this.selectedStudentAll[i].student = this.selectedStudentAll[
-            i
-          ].student.filter((item) => item.mem_idx !== data.mem_idx)
+      // for (let i = 0; i < this.selectedStudentAll.length; i++) {
+      //   if (this.selectedStudentAll[i].grade === stdYear) {
+      //     this.selectedStudentAll[i].student = this.selectedStudentAll[
+      //       i
+      //     ].student.filter((item) => item.mem_idx !== data.mem_idx)
 
+      //     this.selectedStudentList = this.selectedStudentList.filter(
+      //       (item) => item.mem_idx !== data.mem_idx
+      //     )
+
+      //     if (this.selectedStudentAll[i].student.length === 0) {
+      //       this.selectedStudentAll = this.selectedStudentAll.filter(
+      //         (item) => item.student.length !== 0
+      //       )
+      //     }
+      //   }
+      // }
+      for (const item of this.selectedStudentAll) {
+        if (item.grade === stdYear) {
+          item.student = item.student.filter(
+            (item) => item.mem_idx !== data.mem_idx
+          )
           this.selectedStudentList = this.selectedStudentList.filter(
             (item) => item.mem_idx !== data.mem_idx
           )
-
-          if (this.selectedStudentAll[i].student.length === 0) {
+          if (item.student.length === 0) {
             this.selectedStudentAll = this.selectedStudentAll.filter(
               (item) => item.student.length !== 0
             )
@@ -1783,8 +1954,8 @@ export default {
       await apiOperation
         .getMoveClass(payload)
         .then(({ data: { data } }) => {
-          for (let i = 0; i < this.checkList.length; i++) {
-            item.push(data.find((e) => e.csm_idx === this.checkList[i]))
+          for (const i of this.checkList) {
+            item.push(data.find((e) => e.csm_idx === i))
           }
 
           this.modalMoveLeftList = item
@@ -1829,59 +2000,48 @@ export default {
       const banStudent = []
       // type => true: 오른쪽 화실표, false: 왼쪽 화살표
       if (type) {
-        for (let i = 0; i < this.selectedMoveModalLeftCheckbox.length; i++) {
+        for (const item of this.selectedMoveModalLeftCheckbox) {
           const student = {
-            csm_idx: this.selectedMoveModalLeftCheckbox[i]?.csm_idx,
-            itm_idx: this.selectedMoveModalLeftCheckbox[i]?.itm_idx,
-            mem_idx: this.selectedMoveModalLeftCheckbox[i]?.mem_idx,
-            std_idx: this.selectedMoveModalLeftCheckbox[i]?.std_idx,
+            csm_idx: item?.csm_idx,
+            itm_idx: item?.itm_idx,
+            mem_idx: item?.mem_idx,
+            std_idx: item?.std_idx,
           }
           studentList.push(student)
         }
-        for (let i = 0; i < this.selectedMoveToClassCheckboxRight.length; i++) {
+        for (const item of this.selectedMoveToClassCheckboxRight) {
           const ban = {
-            csm_idx: this.selectedMoveToClassCheckboxRight[i].csm_idx,
-            csm_name: this.selectedMoveToClassCheckboxRight[i].csm_name,
+            csm_idx: item.csm_idx,
+            csm_name: item.csm_name,
           }
           banList.push(ban)
-          for (
-            let j = 0;
-            j < this.selectedMoveToClassCheckboxRight[i].student_list.length;
-            j++
-          ) {
+          for (const items of item.student_list) {
             const studentInfo = {
-              mem_idx:
-                this.selectedMoveToClassCheckboxRight[i].student_list[j]
-                  .mem_idx,
+              mem_idx: items.mem_idx,
             }
             banStudent.push(studentInfo)
           }
         }
       } else {
-        for (let i = 0; i < this.selectedMoveModalRightCheckbox.length; i++) {
+        for (const item of this.selectedMoveModalRightCheckbox) {
           const student = {
-            csm_idx: this.selectedMoveModalRightCheckbox[i]?.csm_idx,
-            itm_idx: this.selectedMoveModalRightCheckbox[i]?.itm_idx,
-            mem_idx: this.selectedMoveModalRightCheckbox[i]?.mem_idx,
-            std_idx: this.selectedMoveModalRightCheckbox[i]?.std_idx,
+            csm_idx: item?.csm_idx,
+            itm_idx: item?.itm_idx,
+            mem_idx: item?.mem_idx,
+            std_idx: item?.std_idx,
           }
           studentList.push(student)
         }
-        for (let i = 0; i < this.selectedMoveToClassCheckbox.length; i++) {
+        for (const item of this.selectedMoveToClassCheckbox) {
           const ban = {
-            csm_idx: this.selectedMoveToClassCheckbox[i].csm_idx,
-            csm_name: this.selectedMoveToClassCheckbox[i].csm_name,
+            csm_idx: item.csm_idx,
+            csm_name: item.csm_name,
           }
           banList.push(ban)
 
-          for (
-            let j = 0;
-            j < this.selectedMoveToClassCheckbox[i].student_list.length;
-            j++
-          ) {
+          for (const items of item.student_list) {
             const studentInfo = {
-              mem_idx:
-                this.selectedMoveToClassCheckbox[i].student_list[j].mem_idx,
+              mem_idx: items.mem_idx,
             }
             banStudent.push(studentInfo)
           }
@@ -2032,6 +2192,29 @@ export default {
       console.log('classCheckbox', this.selectedMoveToClassCheckboxRight)
     },
 
+    // 더보기
+    onClickExpandBtn(idx) {
+      if (this.expandIdx.includes(idx)) {
+        this.expandIdx.pop()
+      } else {
+        this.expandIdx.push(idx)
+        this.selectStudentIdx = this.expandIdx[0]
+        const student = this.classInfo.find(
+          (result) => result.std_idx === this.selectStudentIdx
+        )
+        this.selectStudent = student
+      }
+      if (this.expandIdx.length === 2) {
+        this.expandIdx.splice(0, 1)
+      }
+
+      console.log(this.selectStudent, this.expandIdx)
+    },
+    // 깊은 복사
+    deepCopy(data) {
+      return JSON.parse(JSON.stringify(data))
+    },
+
     // 학생 개별 등록/학생 상세 정보 모달
     // 모달 이벤트
     // 학생 상세 api
@@ -2169,6 +2352,7 @@ export default {
     },
     onCloseUploadStudentImgModalDesc() {
       this.uploadStudentImgModalDesc.open = false
+      this.uploadImageFile = ''
     },
     // 일촌 삭제
     onClickFamilyDeleteBtn(id) {
@@ -2244,7 +2428,7 @@ export default {
     },
     // 학생 수정 api
     async updateStudentInfo() {
-      const payload = this.studentInfo
+      const payload = omit(this.studentInfo, ['image'])
       await apiOperation
         .updateStudentInfo(payload)
         .then((res) => {
@@ -2279,6 +2463,20 @@ export default {
           console.log(err)
         })
     },
+    // 프로필 이미지
+    // 파일서버 업로드
+    async postFile(file) {
+      this.isUploading = true
+      const formData = new FormData()
+      formData.append('file', file)
+      await api
+        .postFile(formData)
+        .then(({ data: { data } }) => {
+          this.uploadImageFile = process.env.VUE_APP_FILE_URL + data.savedNm
+          this.imageFileId = data.savedNm
+        })
+        .catch(() => {})
+    },
     // 이미지 업로드
     onClickInputButton() {
       const inputBtn = document.getElementById('upload-input')
@@ -2288,12 +2486,7 @@ export default {
       const input = target
       if (input.files && input.files[0]) {
         if (input.files[0].size < 3145728) {
-          const reader = new FileReader()
-          reader.onload = (e) => {
-            this.uploadImageFile = e.target.result
-            console.log(this.uploadImageFile)
-          }
-          reader.readAsDataURL(input.files[0])
+          this.postFile(input.files[0])
         } else {
           this.openModalDesc(
             '업로드 제한',
@@ -2303,9 +2496,10 @@ export default {
       }
     },
     onClickImgConfirm() {
-      this.studentInfo.profile_image = this.uploadImageFile
+      this.studentInfo.mem_img = this.imageFileId
       this.uploadStudentImgModalDesc.open = false
     },
+
     // 생일 수정
     selectDay(e) {
       this.selectedDate = e.id
@@ -2326,9 +2520,9 @@ export default {
 
     // 반 상세 출결 모달
     // 학생 출결관리
-    openStudentAttendanceModal(item) {
-      // const student = this.studentList.find((result) => result.id === id)
-      Object.assign(this.studentInfo, item)
+    openStudentAttendanceModal(id) {
+      const student = this.classInfo.find((result) => result.id === id)
+      Object.assign(this.studentInfo, student)
       this.studentAttendanceModal.open = true
     },
     onCloseStudentAttendanceModal() {
@@ -2378,9 +2572,9 @@ export default {
     },
 
     // 학습리포트
-    openReportFilterModal(item) {
-      // const student = this.studentList.find((result) => result.id === id)
-      Object.assign(this.studentInfo, item)
+    openReportFilterModal(id) {
+      const student = this.classInfo.find((result) => result.id === id)
+      Object.assign(this.studentInfo, student)
       this.reportFilterModal.open = true
       this.isMonthRange = true
     },
@@ -2579,6 +2773,333 @@ export default {
           compressPDF: true,
         },
       })
+    },
+
+    // 수강 정보
+    // 수강 정보 목록 api
+    async getStudentLectureList() {
+      const payload = {
+        ins_code: this.ins_code,
+        std_idx: this.selectStudent.std_idx,
+        mem_idx: this.selectStudent.mem_idx,
+      }
+      await apiOperation
+        .getStudentLectureList(payload)
+        .then(({ data: { data } }) => {
+          console.log(data)
+          this.lectureList = data.lectureList
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 수강 정보 모달
+    openLectureInfoModalDesc() {
+      this.getStudentLectureList()
+      this.lectureInfoModalDesc.open = true
+    },
+    onCloseLectureInfoModalDesc() {
+      Object.assign(this.studentInfo, this.initStudent)
+      this.lectureInfoModalDesc.open = false
+      this.isNewLectureMemoFlag = false
+      this.isUpdateLectureMemoFlag = false
+    },
+    // 수강 정보 - 메모 더보기
+    onClickLectureMemoMoreBtn(sl_idx, memo) {
+      if (this.lectureInfoMemo.slm_idx === memo.slm_idx) {
+        this.lectureInfoMemo = this.deepCopy(this.initLectureMemo)
+        this.lectureMemoId = []
+        this.isUpdateLectureMemoFlag = false
+      } else {
+        this.lectureMemoId.pop()
+        this.lectureMemoId.push(memo.slm_idx)
+        this.lectureInfoMemo = memo
+        this.lectureInfoMemo.sl_idx = sl_idx
+      }
+      console.log(this.lectureInfoMemo)
+    },
+    // 수강 정보 - 새 메모 만들기
+    changeLectureMemoInput({ target: { value } }) {
+      this.lectureInfoMemo.slm_memo = value
+    },
+    onClickLectureMemoCancelBtn() {
+      if (this.isNewLectureMemoFlag || this.isUpdateLectureMemoFlag) {
+        this.isNewLectureMemoFlag = false
+        this.isUpdateLectureMemoFlag = false
+        this.lectureInfoMemo = this.deepCopy(this.initLectureMemo)
+      }
+    },
+    // 납부일 위와 동일
+    onClickSameDate(lectureId) {
+      this.lectureId = lectureId
+      const lecture = this.lectureList.find((x) => {
+        return x.lec_idx === this.lectureId
+      })
+      const lectureIdx = this.lectureList.findIndex((x) => {
+        return x.lec_idx === this.lectureId
+      })
+      this.lectureList[lectureIdx].sl_payment_date =
+        this.lectureList[lectureIdx - 1].sl_payment_date
+      this.updatePaymentDay(lecture)
+    },
+    // 납부일 설정
+    onClickDueDatePicker(lectureId) {
+      this.lectureId = lectureId
+      console.log(this.lectureId)
+      this.datePickerDueDateModal.open = true
+    },
+    onCloseDueDatePickerModal() {
+      this.datePickerDueDateModal.open = false
+      this.selectedDate = ''
+    },
+    onClickDueDateConfirm() {
+      const lecture = this.lectureList.find((x) => {
+        return x.lec_idx === this.lectureId
+      })
+      console.log(lecture)
+      lecture.sl_payment_date = this.selectedDate
+      this.onCloseDueDatePickerModal()
+      this.updatePaymentDay(lecture)
+    },
+    // 수강 정보 메모 등록 api
+    async addLectureMemo() {
+      this.lectureInfoMemo.lec_idx = this.lectureId
+      const payload = this.lectureInfoMemo
+      await apiOperation
+        .addLectureMemo(payload)
+        .then((res) => {
+          this.getStudentLectureList()
+          this.isNewLectureMemoFlag = false
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 수강 정보 - 메모 수정
+    onClickUpdateLectureMemoBtn() {
+      console.log(this.lectureInfoMemo)
+      this.lectureMemoId.pop()
+      this.isUpdateLectureMemoFlag = true
+    },
+    // 수강 정보 - 메모 삭제
+    onClickLectureMemoDelete() {
+      this.openDeleteLectureMemoModalDesc()
+    },
+    // 수강 정보 메모 수정 api
+    async updateLectureMemo() {
+      const payload = {
+        sl_idx: this.lectureInfoMemo.sl_idx,
+        slm_idx: this.lectureInfoMemo.slm_idx,
+        slm_memo: this.lectureInfoMemo.slm_memo,
+      }
+      await apiOperation
+        .updateLectureMemo(payload)
+        .then((res) => {
+          this.getStudentLectureList()
+          this.isUpdateLectureMemoFlag = false
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 수강 정보 메모 추가
+    onClickNewLectureMemoBtn(item) {
+      this.lectureInfoMemo = this.deepCopy(this.initLectureMemo)
+      if (!this.isNewLectureMemoFlag) {
+        this.lectureId = item.lec_idx
+        Object.assign(this.lectureInfoMemo, item)
+        console.log(this.lectureInfoMemo)
+        this.isNewLectureMemoFlag = true
+        this.isUpdateLectureMemoFlag = false
+      } else {
+        this.isNewLectureMemoFlag = false
+      }
+    },
+    // 수강 정보 납부일 수정 api
+    async updatePaymentDay(item) {
+      if (item.sl_lec_sdate === null) {
+        item.sl_lec_sdate = ''
+      }
+      const payload = {
+        sl_idx: item.sl_idx,
+        sl_lec_sdate: item.sl_lec_sdate,
+        sl_payment_date: item.sl_payment_date,
+      }
+      console.log(payload)
+      await apiOperation
+        .updatePaymentDay(payload)
+        .then((res) => {
+          this.getStudentLectureList()
+          this.isUpdateLectureMemoFlag = false
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
+    // 메모
+    // 학생 메모 모달
+    openStudentMemoModalDesc() {
+      this.getStudentMemoList()
+      this.studentMemoModalDesc.open = true
+    },
+    onCloseStudentMemoModalDesc() {
+      Object.assign(this.studentInfo, this.initStudent)
+      console.log(this.studentInfo)
+      this.studentMemoModalDesc.open = false
+      this.isNewStudentMemoFlag = false
+      this.isUpdateStudentMemoFlag = false
+    },
+    openDeleteStudentMemoModalDesc() {
+      this.deleteStudentMemoDesc = {
+        open: true,
+        message: '메모를 삭제하시겠습니까?',
+      }
+    },
+    onCloseDeleteStudentMemoModal() {
+      this.deleteStudentMemoDesc.open = false
+    },
+    // 메모 [pagination] 숫자로 페이징
+    onClickMemoPagination(number) {
+      this.memoCurrentPage = number
+    },
+    // 메모 [pagination] 방향으로 페이징
+    memoPaginationDirection(direction) {
+      const current = this.memoCurrentPage
+      if (direction === 'plus') {
+        if (current < this.memoEndPageNumber) {
+          this.memoCurrentPage += 1
+        }
+      } else if (current > 1) {
+        this.memoCurrentPage -= 1
+      }
+    },
+    // 학생 메모 - 더보기
+    onClickMoreBtn(sm_idx) {
+      if (this.isStudentMemoMoreFlag && this.studentMemoId === sm_idx) {
+        this.isStudentMemoMoreFlag = false
+        return false
+      }
+      this.studentMemoId = sm_idx
+      const memo = this.studentMemoList.find(
+        (result) => result.sm_idx === this.studentMemoId
+      )
+      this.studentMemo = memo
+      this.isStudentMemoMoreFlag = true
+      this.isNewStudentMemoFlag = false
+      this.isUpdateStudentMemoFlag = false
+    },
+    // 학생 메모 - 새 메모
+    changeStudentMemoInput({ target: { value } }) {
+      this.studentMemo.sm_desc = value
+    },
+    // 학생 일괄 등록
+    onClickNewStudentMemoBtn() {
+      this.isUpdateStudentMemoFlag = false
+      this.studentMemo = this.deepCopy(this.initStudentMemo)
+      if (!this.isNewStudentMemoFlag) {
+        this.isNewStudentMemoFlag = true
+      } else {
+        this.isNewStudentMemoFlag = false
+      }
+    },
+    onClickCancelBtn() {
+      if (this.isNewStudentMemoFlag || this.isUpdateStudentMemoFlag) {
+        this.isNewStudentMemoFlag = false
+        this.isUpdateStudentMemoFlag = false
+      }
+    },
+    // 학생 메모 - 수정
+    onClickUpdateStudentMemoBtn() {
+      this.isUpdateStudentMemoFlag = true
+      this.isNewStudentMemoFlag = false
+    },
+    // 메모 수정 api
+    async updateStudentMemo() {
+      this.studentMemo.std_idx = this.selectStudentIdx
+      const payload = this.studentMemo
+      await apiOperation
+        .updateStudentMemo(payload)
+        .then((res) => {
+          this.getStudentMemoList()
+          this.isUpdateStudentMemoFlag = false
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 메모 등록 api
+    async addStudentMemo() {
+      this.studentMemo.std_idx = this.selectStudentIdx
+      const payload = this.studentMemo
+      console.log(payload)
+      await apiOperation
+        .addStudentMemo(payload)
+        .then((res) => {
+          this.getStudentMemoList()
+          this.isNewStudentMemoFlag = false
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 메모 정렬
+    selectMemoRange() {
+      if (this.memoRange) {
+        this.memoRange = false
+      } else {
+        this.memoRange = true
+      }
+    },
+    // 메모 목록 api
+    async getStudentMemoList() {
+      const payload = {
+        ins_code: this.ins_code,
+        std_idx: this.selectStudentIdx,
+        current_page: this.memoCurrentPage,
+        per_page_num: 10,
+        filter: this.memoRange,
+      }
+      await apiOperation
+        .getStudentMemoList(payload)
+        .then(({ data: { data } }) => {
+          this.studentMemoList = data.dataList
+          this.memoEndPageNumber = data.pageMaker.end_page
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 메모 삭제 모달
+    openDeleteLectureMemoModalDesc() {
+      this.deleteLectureMemoModalDesc = {
+        open: true,
+        message: '메모를 삭제하시겠습니까?',
+      }
+    },
+    // 메모 삭제 api
+    async deleteStudentMemo() {
+      await apiOperation
+        .deleteStudentMemo(this.studentMemo.sm_idx)
+        .then(() => {
+          this.onCloseDeleteStudentMemoModal()
+          this.getStudentMemoList()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 수강 정보 - 메모 삭제 api
+    async deleteLectureMemo() {
+      await apiOperation
+        .deleteLectureMemo(this.lectureInfoMemo.slm_idx)
+        .then(() => {
+          this.getStudentLectureList()
+          this.onCloseDeleteLectureMemoModal()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
   },
 }

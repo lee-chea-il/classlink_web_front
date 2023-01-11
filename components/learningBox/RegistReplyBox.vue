@@ -72,6 +72,7 @@
                     id="chk01"
                     type="checkbox"
                     class="custom-control-input"
+                    maxlength="60"
                   />
                   <label class="custom-control-label" for="chk01"></label>
                 </div>
