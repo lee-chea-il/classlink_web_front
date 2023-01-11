@@ -105,9 +105,7 @@
                     {{ item.lec_title }}
                   </div>
                   <div
-                    v-for="(
-                      time_item, time_idx
-                    ) in item.lecture_time_list.slice(0, 2)"
+                    v-for="(time_item, time_idx) in item.lecture_time_list"
                     :key="`time_${time_idx}`"
                     class="course_time"
                   >
