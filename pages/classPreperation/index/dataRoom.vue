@@ -1,6 +1,8 @@
 <template>
   <div>
     <PageHeader title="자료실" />
+    {{ referenceData }}
+
     <LoadingBox v-if="isLoading" />
 
     <div v-else class="tab-content depth03 ac_manage_dtr">
@@ -309,6 +311,7 @@
 import html2pdf from 'html2pdf.js'
 import $ from 'jquery'
 import file_size_url from 'file_size_url'
+import _ from 'lodash'
 import LoadingBox from '~/components/common/LoadingBox.vue'
 import UploadLoadingBox from '~/components/common/UploadLoadingBox.vue'
 import MainBtnBox from '~/components/common/MainBtnBox.vue'
@@ -473,7 +476,7 @@ export default {
     },
 
     // 검색 목록 트리 가져오기
-    async getSearchTreeList() {
+    getSearchTreeList: _.debounce(async function () {
       const target = this.searchData
       const payload = {
         word: target.word.length ? `?word=${this.searchData.word}` : '',
@@ -499,7 +502,7 @@ export default {
       } else {
         this.openSnackbar('검색어를 입력하세요.')
       }
-    },
+    }, 500),
 
     // 체크 박스로 파일 복사
     async copyTreeViewList() {
@@ -691,10 +694,20 @@ export default {
       apiData
         .getDataroomFile(payload)
         .then(({ data: { data } }) => {
+          console.log(type, data.datatable_type)
+          const newType = (type) => {
+            if (
+              type === 'MD' &&
+              (data.datatable_type === 'ID' || data.datatable_type === 'FD')
+            )
+              return 'MD'
+            else return type
+          }
           this.referenceData = {
             ...data,
             keyword: data.keyword.split(','),
             title: data.title.replace(/.mp4|.pdf|.youtube|.url/g, ''),
+            datatable_type: newType(type),
           }
           this.getFileSize(data.full_path)
           if (this.modalTitle === '수정') {

@@ -41,7 +41,6 @@ export default function initialState() {
       youtubePlayTime: '',
     },
     initSearchData: {
-      initWord: '',
       word: '',
       type: [],
       subject: [],

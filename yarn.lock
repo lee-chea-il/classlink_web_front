@@ -1435,6 +1435,14 @@
     "consola" "^2.10.1"
     "dayjs" "^1.10.4"
 
+"@nuxtjs/dotenv@^1.4.1":
+  "integrity" "sha512-DpdObsvRwC8d89I9mzz6pBg6e/PEXHazDM57DOI1mmML2ZjHfQ/DvkjlSzUL7T+TnW3b/a4Ks5wQx08DqFBmeQ=="
+  "resolved" "https://registry.npmjs.org/@nuxtjs/dotenv/-/dotenv-1.4.1.tgz"
+  "version" "1.4.1"
+  dependencies:
+    "consola" "^2.10.1"
+    "dotenv" "^8.1.0"
+
 "@nuxtjs/eslint-config@^8.0.0":
   "integrity" "sha512-NuZSiMdSCuBukwWgmNQuMYoA/jgL9SLfecOurUUQw/1QTcD0YKh0RxY4h9rNJB2jkfayzmZ+Y11hlOml40FVvw=="
   "resolved" "https://registry.npmjs.org/@nuxtjs/eslint-config/-/eslint-config-8.0.0.tgz"
@@ -4516,6 +4524,11 @@
   "version" "5.3.0"
   dependencies:
     "is-obj" "^2.0.0"
+
+"dotenv@^8.1.0":
+  "integrity" "sha512-IrPdXQsk2BbzvCBGBOTmmSH5SodmqZNt4ERAZDmW4CT+tL8VtvinqywuANaFu4bOMWki16nqf0e4oC0QIaDr/g=="
+  "resolved" "https://registry.npmjs.org/dotenv/-/dotenv-8.6.0.tgz"
+  "version" "8.6.0"
 
 "dotenv@^9.0.2":
   "integrity" "sha512-I9OvvrHp4pIARv4+x9iuewrWycX6CcZtoAu1XrzPxc5UygMJXJZYmBsynku8IkrJwgypE5DGNjDPmPRhDCptUg=="

@@ -166,6 +166,7 @@ export default {
           nObj.readOnly = isReadOnly
           nObj.active = false
           nObj.name = nObj.title
+          nObj.iconType = this.treeViewType
           if (isFirst) {
             isFirst = false
             nObj.checkboxDisable = true
@@ -182,6 +183,15 @@ export default {
           } else {
             if (this.treeViewType === 'MD') {
               nObj.type = nObj.datatable_type
+              if (nObj.mda_correct_yn) {
+                if (nObj.datatable_type === 'ID') {
+                  nObj.iconType = 'IM'
+                } else if (nObj.datatable_type === 'FD') {
+                  nObj.iconType = 'FM'
+                }
+              } else {
+                nObj.iconType = nObj.datatable_type
+              }
             } else {
               nObj.type = this.treeViewType
             }
@@ -447,6 +457,7 @@ export default {
         ...node,
         type: this.treeViewType,
       }
+      console.log(this.treeViewType)
       this.$emit('update-data', newItem)
       let path = node.name
       const getParentName = (item) => {
