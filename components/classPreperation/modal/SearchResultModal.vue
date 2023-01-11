@@ -30,11 +30,18 @@
                 :checkList="checkList"
                 @check-handler="$emit('check-handler', $event)"
                 @detail-view="$emit('detail-view', $event)"
+                @move-data="$emit('move-data', $event)"
               />
 
-              <ListLengthItem :length="filterItem.length" />
+              <ListLengthItem :length="filterTotal" />
 
-              <PaginationBox />
+              <PaginationBox
+                :currentPage="currentPage"
+                :pageList="pageList"
+                :currentList="currentList"
+                @pagination="$emit('pagination', $event)"
+                @paginationList="$emit('paginationList', $event)"
+              />
             </div>
           </div>
         </div>
@@ -60,22 +67,14 @@ export default {
     PaginationBox,
   },
   props: {
-    open: {
-      type: Boolean,
-      default: false,
-    },
-    searchData: {
-      type: Object,
-      default: () => {},
-    },
-    filterItem: {
-      type: Array,
-      default: () => [],
-    },
-    checkList: {
-      type: Array,
-      default: () => [],
-    },
+    open: { type: Boolean, default: false },
+    searchData: { type: Object, default: () => {} },
+    filterItem: { type: Array, default: () => [] },
+    checkList: { type: Array, default: () => [] },
+    currentPage: { type: Number, default: 0 },
+    pageList: { type: Array, default: () => [] },
+    filterTotal: { type: Number, default: 0 },
+    currentList: { type: Number, default: 0 },
   },
 }
 </script>

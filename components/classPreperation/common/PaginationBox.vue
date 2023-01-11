@@ -18,14 +18,8 @@
 export default {
   name: 'PaginationBox',
   props: {
-    currentIdx: {
-      type: Number,
-      default: 0,
-    },
-    length: {
-      type: Number,
-      default: 0,
-    },
+    currentIdx: { type: Number, default: 0 },
+    length: { type: Number, default: 0 },
   },
 }
 </script>

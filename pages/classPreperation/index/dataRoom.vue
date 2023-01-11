@@ -1,8 +1,6 @@
 <template>
   <div>
     <PageHeader title="자료실" />
-    {{ referenceData }}
-
     <LoadingBox v-if="isLoading" />
 
     <div v-else class="tab-content depth03 ac_manage_dtr">
@@ -243,9 +241,9 @@
     <SavePathModal
       :identity="identity"
       :open="isSavePathModal.open"
-      :institutionData="treeInstitutionData"
-      :franchiseData="treeFranchiseData"
-      :myData="treeMyData"
+      :institutionData="institutionData"
+      :franchiseData="franchiseData"
+      :myData="myData"
       :tableType="selectDatatableType"
       :modalTitle="modalTitle"
       @save-file-path="setSavePath"
@@ -256,10 +254,10 @@
     <MovePathModal
       :identity="identity"
       :open="isMovePathModal.open"
-      :institutionData="moveInstitutionData"
-      :franchiseData="moveFranchiseData"
+      :institutionData="institutionData"
+      :franchiseData="franchiseData"
       :dataInfo="referenceData"
-      :myData="moveMyData"
+      :myData="myData"
       :tableType="selectDatatableType"
       :modalTitle="modalTitle"
       @move-data="postMoveData"
@@ -284,12 +282,19 @@
       :searchData="searchData"
       :filterItem="dataList"
       :checkList="checkList"
+      :currentPage="filterCurrentPage"
+      :pageList="setPerPageList(filterEndPage)"
+      :filterTotal="filterTotal"
+      :currentList="filterCurrentPageNum"
+      @pagination="paginationNumber"
+      @paginationList="paginationList"
       @change-word="changeSearchData"
       @close="closeSearchListModal"
       @open-filter="openFilterModal"
       @copy="copyData"
       @check-handler="checkHandler"
       @detail-view="onClickViewDetail"
+      @move-data="moveFilterData"
       @search-submit="getSearchTreeList"
     />
 
@@ -375,6 +380,21 @@ export default {
   data() {
     return initialState()
   },
+  computed: {
+    endPageIdx() {
+      return this.filterCurrentPageNum * this.filterPerPageNum
+    },
+    startPageIdx() {
+      return this.endPageIdx - this.filterPerPageNum
+    },
+  },
+  watch: {
+    filterCurrentPage(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.getSearchTreeList()
+      }
+    },
+  },
   mounted() {
     this.identity = localStorage.getItem('identity')
     const { user } = this.$store.state.common
@@ -383,13 +403,15 @@ export default {
       ins_code: user.ins_code,
       registrant_name: user.mem_name,
     }
-    this.referenceData = deepCopy(this.initReferenceData)
+
     this.getEarlyData()
   },
   methods: {
     // api 통신
     // 초기 접근 시 api호출
     getEarlyData() {
+      this.referenceData = deepCopy(this.initReferenceData)
+      this.searchData = deepCopy(this.initSearchData)
       this.isLoading = true
       Promise.all([
         this.getServerUrl(),
@@ -405,10 +427,7 @@ export default {
       await apiData
         .getTreeViewList({ type: 'ID' })
         .then(({ data: { data } }) => {
-          const newItem = deepCopy(data)
-          this.institutionData = deepCopy(newItem)
-          this.treeInstitutionData = deepCopy(newItem)
-          this.moveInstitutionData = deepCopy(newItem)
+          this.institutionData = data
         })
         .catch((err) => {
           console.log(err)
@@ -421,10 +440,7 @@ export default {
         await apiData
           .getTreeViewList({ type: 'FD' })
           .then(({ data: { data } }) => {
-            const newItem = deepCopy(data)
-            this.franchiseData = deepCopy(newItem)
-            this.treeFranchiseData = deepCopy(newItem)
-            this.moveFranchiseData = deepCopy(newItem)
+            this.franchiseData = data
           })
           .catch((err) => {
             console.log(err)
@@ -437,10 +453,7 @@ export default {
       await apiData
         .getTreeViewList({ type: 'MD' })
         .then(({ data: { data } }) => {
-          const newItem = deepCopy(data)
-          this.myData = deepCopy(newItem)
-          this.treeMyData = deepCopy(newItem)
-          this.moveMyData = deepCopy(newItem)
+          this.myData = data
 
           if (this.isCopyMD) {
             this.isCopyMD = false
@@ -467,8 +480,7 @@ export default {
       await apiData
         .getTreeViewList({ type: 'OD' })
         .then(({ data: { data } }) => {
-          this.openData = deepCopy(data)
-          this.treeOpenData = deepCopy(data)
+          this.openData = data
         })
         .catch((err) => {
           console.log(err)
@@ -479,7 +491,9 @@ export default {
     getSearchTreeList: _.debounce(async function () {
       const target = this.searchData
       const payload = {
-        word: target.word.length ? `?word=${this.searchData.word}` : '',
+        current: this.filterCurrentPage,
+        perPage: this.filterPerPage,
+        word: target.word.length ? `&word=${this.searchData.word}` : '',
         dataroom: target.type.length
           ? `&dataroom=${this.searchData.type.join(',')}`
           : '',
@@ -494,7 +508,13 @@ export default {
         await apiData
           .getSearchTreeList(payload)
           .then(({ data: { data } }) => {
-            this.dataList = data
+            this.dataList = data.search
+            const arr = []
+            for (let i = 1; i <= data.page.end_page; i++) {
+              arr.push(i)
+            }
+            this.filterEndPage = arr
+            this.filterTotal = data.page.total_count
           })
           .catch((err) => {
             console.log(err)
@@ -502,7 +522,7 @@ export default {
       } else {
         this.openSnackbar('검색어를 입력하세요.')
       }
-    }, 500),
+    }, 300),
 
     // 체크 박스로 파일 복사
     async copyTreeViewList() {
@@ -778,6 +798,18 @@ export default {
       const payload = {
         treeinfo_idx: data.treeViewId,
         type: data.type,
+      }
+      if (title.includes('.quiz')) return this.getDataroomQuiz(payload)
+      else if (title.includes('.exam')) return this.getDataroomNoteExam(payload)
+      else return this.getDataroomFile(payload)
+    },
+
+    // 필터에서 자료 유형별 핸들러
+    selectFilterDataroomType(data) {
+      const { title } = data
+      const payload = {
+        treeinfo_idx: data.treeinfo_idx,
+        type: data.datatable_type,
       }
       if (title.includes('.quiz')) return this.getDataroomQuiz(payload)
       else if (title.includes('.exam')) return this.getDataroomNoteExam(payload)
@@ -1283,8 +1315,6 @@ export default {
     changeSearchData(e) {
       const { name, checked, dataset, value } = e.target
       const result = this.searchData
-      console.log('dataset.value', dataset.value)
-      console.log('name', name)
       if (name === 'word') return (result[name] = value)
       else if (checked) {
         if (dataset.value === '전체') return (result[name] = [])
@@ -1324,10 +1354,42 @@ export default {
       else return this.checkList.splice(idx, 1)
     },
 
-    // 검색결과에서 상세 보기
+    // 검색 결과에서 상세 보기
     onClickViewDetail(data) {
-      this.onClickView(data)
+      this.selectFilterDataroomType(data)
       this.isSearchListModal = false
+    },
+
+    // 검색 결과에서 이동 하기
+    moveFilterData(data) {
+      this.referenceData = data
+      this.selectDatatableType = data.table_type
+      this.openMovePathModal('isSearchListModal')
+    },
+
+    // 검색 결과 필터링
+    paginationNumber(num) {
+      return (this.filterCurrentPage = num)
+    },
+
+    // 결과 페이지 나누기
+    setPerPageList(item) {
+      return item.slice(this.startPageIdx, this.endPageIdx)
+    },
+
+    // 숫자 페이지 처리하기
+    paginationList(arrow) {
+      const last = this.filterEndPage[this.filterEndPage.length - 1]
+      const currentList = this.setPerPageList(this.filterEndPage)
+      if (arrow === 'plus') {
+        if (!currentList.includes(last)) {
+          this.filterCurrentPageNum += 1
+          this.filterCurrentPage = this.setPerPageList(this.filterEndPage)[0]
+        }
+      } else if (this.filterCurrentPageNum !== 1) {
+        this.filterCurrentPageNum -= 1
+        this.filterCurrentPage = this.setPerPageList(this.filterEndPage)[0]
+      }
     },
 
     // 유튜브, 링크 변경
@@ -1389,7 +1451,7 @@ export default {
       this.referenceData = {
         ...this.referenceData,
         parent_treeinfo_idx: data.id,
-        tree: { parent_treeinfo_idx: data.id },
+        tree: { ...this.referenceData.tree, parent_treeinfo_idx: data.id },
         datatable_type: data.type,
       }
       return (this.uploadInfo.saveFolderPath = data.path)

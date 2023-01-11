@@ -11,6 +11,7 @@
 <script>
 import $ from 'jquery'
 import { VueTreeList, Tree } from 'vue-tree-list'
+import { deepCopy } from '~/utiles/common'
 export default {
   name: 'SavePathTreeView',
   components: {
@@ -48,6 +49,8 @@ export default {
   },
   methods: {
     setData(dataList) {
+      const newItem = deepCopy(dataList)
+      let isFirst = true
       const dataMapping = (data, isReadOnly) => {
         const result = []
         const len = data.length
@@ -61,8 +64,14 @@ export default {
           nObj.active = false
           nObj.name = nObj.title
           nObj.type = this.treeViewType
+          nObj.iconType = this.treeViewType
+          if (isFirst) {
+            isFirst = false
+            nObj.checkboxDisable = true
+          }
 
           if (nObj.group_yn) {
+            nObj.type = this.treeViewType
             nObj.isLeaf = false
             result[i] = nObj
             this.pid++
@@ -72,6 +81,15 @@ export default {
           } else {
             if (this.treeViewType === 'MD') {
               nObj.type = nObj.datatable_type
+              if (nObj.mda_correct_yn) {
+                if (nObj.datatable_type === 'ID') {
+                  nObj.iconType = 'IM'
+                } else if (nObj.datatable_type === 'FD') {
+                  nObj.iconType = 'FM'
+                }
+              } else {
+                nObj.iconType = nObj.datatable_type
+              }
             } else {
               nObj.type = this.treeViewType
             }
@@ -84,7 +102,7 @@ export default {
       }
       this.datas = new Tree(
         !this.editable,
-        dataMapping(dataList, !this.editable)
+        dataMapping(newItem, !this.editable)
       )
     },
     setType(type) {

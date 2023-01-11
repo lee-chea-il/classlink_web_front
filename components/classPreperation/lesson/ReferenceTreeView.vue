@@ -29,6 +29,7 @@
 
 <script>
 import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
+import { deepCopy } from '~/utiles/common'
 export default {
   name: 'ReferenceTreeView',
   components: {
@@ -81,7 +82,9 @@ export default {
   },
   methods: {
     setData(dataList) {
-      console.log('dataList', dataList, this.treeViewType)
+      const copyItem = deepCopy(dataList)
+      console.log('dataList', copyItem, this.treeViewType)
+      let isFirst = true
       const dataMapping = (data, isReadOnly) => {
         const result = []
         const len = data?.length
@@ -94,6 +97,11 @@ export default {
           nObj.readOnly = isReadOnly
           nObj.active = false
           nObj.name = nObj.title
+          nObj.iconType = this.treeViewType
+          if (isFirst) {
+            isFirst = false
+            nObj.checkboxDisable = true
+          }
 
           if (nObj.group_yn) {
             nObj.type = this.treeViewType
@@ -106,6 +114,15 @@ export default {
           } else {
             if (this.treeViewType === 'MD') {
               nObj.type = nObj.datatable_type
+              if (nObj.mda_correct_yn) {
+                if (nObj.datatable_type === 'ID') {
+                  nObj.iconType = 'IM'
+                } else if (nObj.datatable_type === 'FD') {
+                  nObj.iconType = 'FM'
+                }
+              } else {
+                nObj.iconType = nObj.datatable_type
+              }
             } else {
               nObj.type = this.treeViewType
             }
@@ -118,7 +135,7 @@ export default {
       }
       this.datas = new Tree(
         !this.editable,
-        dataMapping(dataList[0]?.children, !this.editable)
+        dataMapping(copyItem[0]?.children, !this.editable)
       )
     },
     setType(type) {

@@ -124,9 +124,16 @@ const copyTreeViewList = async (payload) => {
 }
 
 // 트리뷰 검색 목록 조회
-const getSearchTreeList = async ({ word, dataroom, subject, type }) => {
+const getSearchTreeList = async ({
+  current,
+  perPage,
+  word,
+  dataroom,
+  subject,
+  type,
+}) => {
   return await http.get(
-    `/api/v1/prepare-class/dataroom/search${word}${dataroom}${subject}${type}`
+    `/api/v1/prepare-class/dataroom/search?current_page=${current}&per_page_num=${perPage}${word}${dataroom}${subject}${type}`
   )
 }
 

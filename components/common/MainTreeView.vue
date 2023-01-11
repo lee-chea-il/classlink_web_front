@@ -34,6 +34,7 @@
 <script>
 import { VueTreeList, Tree } from 'vue-tree-list'
 import { apiData } from '~/services'
+import { deepCopy } from '~/utiles/common'
 export default {
   name: 'MainTreeView',
   components: {
@@ -152,7 +153,8 @@ export default {
         })
     },
     setData(dataList) {
-      console.log('dataList', dataList, this.treeViewType)
+      const copyItem = deepCopy(dataList)
+      console.log('dataList', copyItem, this.treeViewType)
       let isFirst = true
       const dataMapping = (data, isReadOnly) => {
         const result = []
@@ -204,33 +206,9 @@ export default {
       }
       this.datas = new Tree(
         !this.editable,
-        dataMapping(dataList[0]?.children, !this.editable)
+        dataMapping(copyItem[0]?.children, !this.editable)
       )
     },
-    // setType(type) {
-    //   let newType = ''
-    //   switch (type) {
-    //     case 'IL':
-    //     case 'ID':
-    //       newType = 'ID'
-    //       break
-    //     case 'FL':
-    //     case 'FD':
-    //       newType = 'FD'
-    //       break
-    //     case 'ML':
-    //     case 'MD':
-    //       newType = 'MD'
-    //       break
-    //     case 'OD':
-    //       newType = 'OD'
-    //       break
-    //     default:
-    //       newType = ''
-    //       break
-    //   }
-    //   return newType
-    // },
     onDel(node) {
       console.log(node)
       node.remove()
@@ -468,7 +446,7 @@ export default {
       }
       getParentName(node.parent)
       this.moreMenuClose()
-      this.$emit('get-savepath', { ...node, path })
+      this.$emit('get-savepath', { ...node, type: this.treeViewType, path })
     },
 
     moreMenuView(node) {
@@ -487,7 +465,7 @@ export default {
       }
       getParentName(node.parent)
       this.moreMenuClose()
-      this.$emit('get-savepath', { ...node, path })
+      this.$emit('get-savepath', { ...node, type: this.treeViewType, path })
     },
 
     moreMenuDell(node) {
