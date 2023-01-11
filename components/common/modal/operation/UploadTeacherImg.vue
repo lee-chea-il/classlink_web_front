@@ -68,7 +68,10 @@
               </a>
             </div>
             <div v-else class="preview-area">
-              <img class="preview-img" :src="uploadImageFile" />
+              <img
+                class="preview-img"
+                :src="uploadImageFile === '' ? imageInfo : uploadImageFile"
+              />
             </div>
           </div>
           <div class="modal-footer">

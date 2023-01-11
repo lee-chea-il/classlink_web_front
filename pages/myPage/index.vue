@@ -145,7 +145,6 @@
       @click-upload="onClickInputButton"
       @close="onCloseUploadInsImgModal"
       @confirm="onCloseUploadInsImgModal"
-
     />
 
     <!-- 프랜차이즈 개설 -->

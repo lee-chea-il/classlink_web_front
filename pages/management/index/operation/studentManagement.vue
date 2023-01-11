@@ -74,6 +74,7 @@
       :isEmailCheck="isEmailCheck"
       :isAttNumberCheck="isAttNumberCheck"
       :isStayRegister="isStayRegister"
+      :uploadImageFile="uploadImageFile"
       @close="onCloseNewStudentInfoModalDesc"
       @change-input="onChangeUpdateInput"
       @click-birthday="openDatePickerModalDesc"
@@ -110,6 +111,7 @@
       :familySearchText="familySearchText"
       :isEmailCheck="isEmailCheck"
       :isAttNumberCheck="isAttNumberCheck"
+      :uploadImageFile="uploadImageFile"
       @close="onCloseStudentInfoModalDesc"
       @change-input="onChangeUpdateInput"
       @click-birthday="openDatePickerModalDesc"
@@ -351,6 +353,7 @@
 </template>
 <script>
 import html2pdf from 'html2pdf.js'
+import { omit } from 'lodash'
 import { api, apiOperation } from '~/services'
 import NavBox from '@/components/operation/NavBox.vue'
 import StudentListBox from '@/components/operation/StudentListBox.vue'
@@ -413,19 +416,20 @@ export default {
         mem_id: '',
         mem_nickname: '',
         mem_email: '',
-        itm_status: '02',
+        mem_sex: 'M',
+        mem_phone: '',
+        mem_birthday: '',
+        mem_img: '',
         std_year: '',
         std_adult_yn: false,
-        mem_sex: 'M',
         std_grade: 'S',
         std_use_yn: true,
         std_att_num: '',
-        mem_phone: '',
         std_school: '',
         std_courses: '',
-        mem_birthday: '',
         std_parent_phone: '',
         itm_acc_yn: true,
+        itm_status: '02',
         std_idx: 0,
         family_id: null,
         lecture_info_dto: [],
@@ -660,7 +664,7 @@ export default {
       lectureDate: '',
       resetClassList: [],
       uploadImageFile: '',
-      imageFileInfo: {},
+      imageFileId: '',
       familySearchText: '',
       familySearchList: [],
       registerFamilyList: [],
@@ -934,7 +938,7 @@ export default {
     },
     // 학생 수정 api
     async updateStudentInfo() {
-      const payload = this.studentInfo
+      const payload = omit(this.studentInfo, ['image'])
       await apiOperation
         .updateStudentInfo(payload)
         .then((res) => {
@@ -1241,8 +1245,8 @@ export default {
       await api
         .postFile(formData)
         .then(({ data: { data } }) => {
-          this.imageFileInfo = data
-          console.log(this.imageFileInfo)
+          this.uploadImageFile = process.env.VUE_APP_FILE_URL + data.savedNm
+          this.imageFileId = data.savedNm
         })
         .catch(() => {})
     },
@@ -1255,13 +1259,6 @@ export default {
       const input = target
       if (input.files && input.files[0]) {
         if (input.files[0].size < 3145728) {
-          const reader = new FileReader()
-          reader.onload = (e) => {
-            this.uploadImageFile = e.target.result
-            console.log(this.uploadImageFile)
-          }
-          reader.readAsDataURL(input.files[0])
-
           this.postFile(input.files[0])
         } else {
           this.openModalDesc(
@@ -1272,7 +1269,7 @@ export default {
       }
     },
     onClickImgConfirm() {
-      this.studentInfo.profile_image = this.uploadImageFile
+      this.studentInfo.mem_img = this.imageFileId
       this.uploadStudentImgModalDesc.open = false
     },
 
@@ -1612,6 +1609,7 @@ export default {
     },
     onCloseUploadStudentImgModalDesc() {
       this.uploadStudentImgModalDesc.open = false
+      this.uploadImageFile = ''
     },
     // 학생 일괄 등록
     openBatchRegistrationModalDesc() {

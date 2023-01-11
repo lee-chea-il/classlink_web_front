@@ -27,9 +27,17 @@
               <!-- 프로필 사진 영역 -->
               <div
                 class="profile_images_area"
-                :style="{
-                  'background-image': `url(${teacherInfo.profile_cw_image})`,
-                }"
+                :style="
+                  teacherInfo.image.mem_cw_img === null
+                    ? {
+                        'background-image': `url(${teacherInfo.image.mem_cw_img})`,
+                      }
+                    : uploadImageFile !== ''
+                    ? uploadImageFile
+                    : {
+                        'background-image': `url(${sample_photo})`,
+                      }
+                "
               >
                 <button
                   type="button"
@@ -40,13 +48,13 @@
                 <div
                   class="profile_photo"
                   :style="
-                    teacherInfo.profile_image === '' ||
-                    teacherInfo.profile_image === null
+                    teacherInfo.image.mem_img === '' ||
+                    teacherInfo.image.mem_img === null
                       ? {
                           'background-image': `url(${sample_photo})`,
                         }
                       : {
-                          'background-image': `url(${teacherInfo.profile_image})`,
+                          'background-image': `url(${teacherInfo.image.mem_img})`,
                         }
                   "
                 >

@@ -35,21 +35,19 @@
                 <div
                   class="profile_photo"
                   :style="
-                    studentInfo.image.mem_img === '' ||
                     studentInfo.image.mem_img === null
                       ? {
                           'background-image': `url(${sample_photo})`,
                         }
-                      : {
+                      : uploadImageFile === ''
+                      ? {
                           'background-image': `url(${studentInfo.image.mem_img})`,
+                        }
+                      : {
+                          'background-image': `url(${uploadImageFile})`,
                         }
                   "
                 >
-                  <!-- <span
-                  style="
-                    background-image: url(../images/sample_profile_photo.jpg);
-                  "
-                ></span> -->
                   <button
                     type="button"
                     class="btn icons_camera"
@@ -612,6 +610,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    uploadImageFile: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -651,10 +653,10 @@ export default {
   z-index: 999;
 }
 .profile_img {
-  width: 108px;
-  height: 108px;
+  width: 107px;
+  height: 107px;
   object-fit: cover;
-  border-radius: 55px;
+  border-radius: 50%;
 }
 .profile_images_area {
   width: 100%;
@@ -664,9 +666,10 @@ export default {
 }
 
 .profile_photo {
-  border-radius: 50;
+  border-radius: 50% !important;
   background-size: cover;
   background-position: center;
+  border: 0.4px solid rgb(193 193 193) !important;
 }
 .form-control[readonly] {
   background-color: #ffffff;
