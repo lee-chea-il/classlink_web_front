@@ -250,6 +250,59 @@ export default {
       }
       this.$emit('copyDataCallBack', this.checkboxCopyData)
     },
+    noCheckedCopyData(targetIdx) {
+      const copyList = []
+      let isAutoChecked = false
+      function _dfs(parentChild, oldNode) {
+        let data = {}
+        oldNode.isactive = false
+        if (!oldNode.isLeaf) {
+          console.log('111')
+          if (!isAutoChecked) {
+            if (oldNode.treeViewId === targetIdx) {
+              console.log('112221')
+              data = {
+                id: oldNode.treeViewId,
+                children: [],
+              }
+              parentChild.push(data)
+              oldNode.isactive = true
+              isAutoChecked = true
+            }
+          } else {
+            console.log('1133331')
+            data = {
+              id: oldNode.treeViewId,
+              children: [],
+            }
+            parentChild.push(data)
+            oldNode.isactive = true
+          }
+          if (oldNode.children && oldNode.children.length > 0) {
+            for (let i = 0, len = oldNode.children.length; i < len; i++) {
+              _dfs(data.children, oldNode.children[i])
+            }
+          }
+        } else if (isAutoChecked) {
+          console.log('4444')
+          parentChild.push({ id: oldNode.treeViewId })
+          oldNode.isactive = true
+        } else if (oldNode.treeViewId === targetIdx) {
+          console.log('5555')
+          parentChild.push({ id: oldNode.treeViewId })
+          oldNode.isactive = true
+        }
+      }
+      this.$emit('un-active')
+      _dfs(copyList, this.datas)
+
+      this.checkboxCopyData = {
+        datatable_type: this.treeViewType,
+        copyTreeData: copyList,
+        pasteParentIdxs: [],
+      }
+      this.$emit('copyDataCallBack', this.checkboxCopyData)
+    },
     checkPastePosition() {
       const checkList = []
       const parentIdList = []
@@ -348,7 +401,6 @@ export default {
         }
       }
       _checkData(this.datas, this.checkedIdxList)
-      // console.log('gggggg   ', this.treeViewType, '  ', this.checkedIdxList)
     },
     setCheckedIdxList() {
       function _checkData(oldNode, checkedIdxList) {
@@ -371,7 +423,6 @@ export default {
         }
       }
       _checkData(this.datas, this.checkedIdxList)
-      // console.log('ssssss   ', this.treeViewType, '  ', this.checkedIdxList)
     },
     dropBefore({ node, target }) {
       console.log('dropBefore', node, target)
@@ -385,26 +436,29 @@ export default {
               this.$emit('tree-view-copy', {
                 isChecked: true,
                 parentIdx: target.treeViewId,
-                isFolder: true,
                 displayNo: 10000,
               })
             } else {
               this.$emit('tree-view-copy', {
                 isChecked: true,
                 parentIdx: target.data.parent,
-                isFolder: true,
                 displayNo: target.display_no,
               })
-              console.log('isChecked 2', node, target)
             }
-          } else if (target.group_yn) {
-            // 체크 아니고 폴더에 복사
-            this.$emit('tree-view-copy', { parentIdx: target.treeViewId })
-            console.log('isChecked 3', node, target)
+          } else if (node.group_yn) {
+            this.$emit('tree-view-copy', {
+              isChecked: false,
+              nodeIdx: node.treeViewId,
+              parentIdx: target.data.parent,
+              displayNo: 10000,
+            })
           } else {
-            // 체크 아니고 단일에 복사
-            this.$emit('tree-view-copy', { parentIdx: target.data.parent })
-            console.log('isChecked 4', node, target)
+            this.$emit('tree-view-copy', {
+              isChecked: false,
+              nodeIdx: node.treeViewId,
+              parentIdx: target.data.parent,
+              displayNo: target.display_no,
+            })
           }
         } else {
           // this.$emit('tree-view-move', { parentIdx: target.data.parent })

@@ -587,6 +587,27 @@ export default {
           this.copyDepthData.type = 'FD'
           this.$refs.mainEducation.$refs.education.$refs.franchise.copyData()
         }
+      } else {
+        /* const instiTab = document.getElementById('institute')
+        this.copyDepthData = {
+          type: '',
+          copyTreeData: null,
+          parentId: copyInfo.parentIdx,
+          displayNo: copyInfo.displayNo,
+        }
+        this.isCopyData = true
+        if (instiTab.classList.contains('show')) {
+          this.copyDepthData.type = 'ID'
+          this.$refs.mainEducation.$refs.education.$refs.institution.noCheckedCopyData(
+            copyInfo.nodeIdx
+          )
+        } else {
+          this.copyDepthData.type = 'FD'
+          this.$refs.mainEducation.$refs.education.$refs.franchise.noCheckedCopyData(
+            copyInfo.nodeIdx
+          )
+        } */
+        console.log('----')
       }
     },
 
@@ -1824,10 +1845,6 @@ export default {
 
     copyDataCallBack(copyData) {
       this.copyCheckData = copyData
-      console.log(
-        'this.copyCheckData   ' + this.copyCheckData,
-        this.copyCheckData.copyType
-      )
       if (this.isCopyData) {
         this.copyDepthData.copyTreeData = this.copyCheckData.copyTreeData
         this.copyTreeViewListDepth(this.copyDepthData)
