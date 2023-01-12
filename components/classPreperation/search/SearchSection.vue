@@ -1,10 +1,11 @@
 <template>
   <div class="search_section">
-    <div class="left_area">
+    <!-- <div class="left_area">
       <button class="btn btn_crud_default copy" data-dismiss="modal">
         복사
       </button>
-    </div>
+    </div> -->
+    
     <div class="right_area">
       <div class="input-group input-search form-inline">
         <input

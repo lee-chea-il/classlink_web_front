@@ -2,10 +2,10 @@
   <div class="divide_area left">
     <CustomTitle title="제목" :value="lessonItem?.title" />
     <CustomTitle title="설명" :value="lessonItem?.description" />
-    <CustomTitle title="교육 목표" :value="lessonItem?.educationgoal" />
+    <CustomTitle title="교육 목표" :value="lessonItem?.educational_goal" />
 
     <LessonFileField
-      :reference="lessonItem?.datarooms"
+      :reference="lessonItem?.dataroom"
       @select-reference="$emit('select-reference', $event)"
     />
 

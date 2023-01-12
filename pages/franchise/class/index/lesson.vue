@@ -331,15 +331,15 @@ export default {
         .getLesson(payload)
         .then(({ data: { data } }) => {
           this.lessonViewData = { ...data, keyword: data.keyword.split(',') }
-          // console.log(data.datarooms)
-          const newDatarooms = data.datarooms.map((item) =>
+          // console.log(data.dataroom)
+          const newDatarooms = data.dataroom.map((item) =>
             Object.assign({
               ...item,
               name: item.title,
             })
           )
           this.lessonViewData.referenceList = newDatarooms
-          this.selectReferenceItem = data.datarooms[0]
+          this.selectReferenceItem = data.dataroom[0]
         })
         .catch((err) => {
           console.log(err)
@@ -645,14 +645,14 @@ export default {
     openLessonAdd() {
       this.lessonData = {
         name: '',
-        educationgoal: '',
+        educational_goal: '',
         description: '',
         save_path: '',
         keyword: [],
         public_open_yn: true,
         isContinuedRegist: true,
         createAt: '',
-        datarooms: [],
+        dataroom: [],
       }
       this.setModalTitle('등록')
       this.treeReferenceList = []
@@ -671,7 +671,7 @@ export default {
       this.setModalTitle('수정')
       const newItem = deepCopy(data)
       this.lessonData = newItem
-      this.treeReferenceList = newItem.datarooms
+      this.treeReferenceList = newItem.dataroom
       this.isAddLesson.open = true
     },
 
@@ -828,8 +828,8 @@ export default {
     // [레슨] 레슨 추가 Submit (임시)
     onSubmitAddLesson() {
       // 레슨 추가시 tree자료로 바꾸기 임시
-      this.lessonData.datarooms = this.treeReferenceList
-      this.postLessonData(this.lessonData.datarooms)
+      this.lessonData.dataroom = this.treeReferenceList
+      this.postLessonData(this.lessonData.dataroom)
     },
 
     // [자료실] 자료 클릭시 해당자료 열기

@@ -41,38 +41,14 @@ export default {
     VueTreeList,
   },
   props: {
-    editable: {
-      type: Boolean,
-      default: true,
-    },
-    identity: {
-      type: String,
-      default: '',
-    },
-    pidNum: {
-      type: Number,
-      default: 0,
-    },
-    expanded: {
-      type: Boolean,
-      default: true,
-    },
-    listType: {
-      type: String,
-      default: '',
-    },
-    isHideDownload: {
-      type: Boolean,
-      default: true,
-    },
-    treeViewType: {
-      type: String,
-      default: 'ins',
-    },
-    dataList: {
-      type: Array,
-      default: () => [],
-    },
+    editable: { type: Boolean, default: true },
+    identity: { type: String, default: '' },
+    pidNum: { type: Number, default: 0 },
+    expanded: { type: Boolean, default: true },
+    listType: { type: String, default: '' },
+    isHideDownload: { type: Boolean, default: true },
+    treeViewType: { type: String, default: 'ID' },
+    dataList: { type: Array, default: () => [] },
   },
   data() {
     return {
@@ -131,6 +107,26 @@ export default {
         }
       }
     },
+    setType(type) {
+      switch (type) {
+        case 'ID':
+        case 'IL':
+        case 'IC':
+          return 'ID'
+        case 'FD':
+        case 'FL':
+        case 'FC':
+          return 'FD'
+        case 'MD':
+        case 'ML':
+        case 'MC':
+          return 'MD'
+        case 'OD':
+          return 'OD'
+        default:
+          return null
+      }
+    },
     deleteFolder(ids) {
       if (this.treeViewType !== 'MD' && ids !== '') {
         console.log('내자료 아닌 상태로 삭제 요청옴. 얼럿창 필요')
@@ -159,6 +155,7 @@ export default {
     },
     setData(dataList) {
       const copyItem = deepCopy(dataList)
+      const iconType = this.setType(this.treeViewType)
       console.log('dataList', copyItem, this.treeViewType)
       let isFirst = true
       const dataMapping = (data, isReadOnly) => {
@@ -173,7 +170,7 @@ export default {
           nObj.readOnly = isReadOnly
           nObj.active = false
           nObj.name = nObj.title
-          nObj.iconType = this.treeViewType
+          nObj.iconType = iconType
           nObj.treeViewType = this.treeViewType
           if (isFirst) {
             isFirst = false
@@ -189,16 +186,16 @@ export default {
               result[i].children = dataMapping(nObj.children, isReadOnly)
             }
           } else {
-            if (this.treeViewType === 'MD') {
+            if (iconType === 'MD') {
               nObj.type = nObj.datatable_type
               if (nObj.mda_correct_yn) {
-                if (nObj.datatable_type === 'ID') {
+                if (this.setType(nObj.datatable_type) === 'ID') {
                   nObj.iconType = 'IM'
-                } else if (nObj.datatable_type === 'FD') {
+                } else if (this.setType(nObj.datatable_type) === 'FD') {
                   nObj.iconType = 'FM'
                 }
               } else {
-                nObj.iconType = nObj.datatable_type
+                nObj.iconType = this.setType(nObj.datatable_type)
               }
             } else {
               nObj.type = this.treeViewType
@@ -507,7 +504,6 @@ export default {
         ...node,
         type: this.treeViewType,
       }
-      console.log(this.treeViewType)
       this.$emit('update-data', newItem)
       let path = node.name
       const getParentName = (item) => {

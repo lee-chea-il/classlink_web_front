@@ -11,6 +11,7 @@
         :openData="openData"
         :identity="identity"
         :pageType="pageType"
+        :typeList="typeList"
         @open-data="$emit('open-data', $event)"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @download-data="$emit('download-data', $event)"
@@ -34,6 +35,7 @@
         ref="myData"
         :myData="myData"
         :pageType="pageType"
+        :typeList="typeList"
         @open-data="$emit('open-data', $event)"
         @copyDataCallBack="$emit('copyDataCallBack', $event)"
         @copy-item="$emit('copy-item', $event)"
@@ -71,6 +73,7 @@ export default {
     franchiseData: { type: Array, default: () => [] },
     openData: { type: Array, default: () => [] },
     myData: { type: Array, default: () => [] },
+    typeList: { type: Array, default: () => [] },
   },
   data() {
     return {
@@ -86,7 +89,7 @@ export default {
       this.$refs.education.$refs.institution.unActiveAll()
       this.$refs.education.$refs.franchise.unActiveAll()
       this.$refs.myData.$refs.mydata.unActiveAll()
-      this.$refs.education.$refs.open.unActiveAll()
+      this.$refs.education.$refs.open?.unActiveAll()
     },
   },
 }

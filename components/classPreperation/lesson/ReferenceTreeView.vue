@@ -113,7 +113,8 @@ export default {
             }
           } else {
             if (this.treeViewType === 'MD') {
-              nObj.type = nObj.datatable_type
+              nObj.type = this.treeViewType
+              nObj.iconType = nObj.datatable_type
               if (nObj.mda_correct_yn) {
                 if (nObj.datatable_type === 'ID') {
                   nObj.iconType = 'IM'

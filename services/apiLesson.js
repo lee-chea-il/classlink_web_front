@@ -2,7 +2,7 @@ import http from './http'
 
 const getLesson = async (pl) => {
   return await http.get(
-    `/api/v1/prepare-class/lesson/?lesson_idx=${pl.lesson_idx}&datatable_type=${pl.datatable_type}`
+    `/api/v1/prepare-class/lesson/?treeinfo_idx=${pl.treeinfo_idx}&datatable_type=${pl.datatable_type}`
   )
 }
 
@@ -14,8 +14,8 @@ const postLesson = async (data) => {
   return await http.post('/api/v1/prepare-class/lesson', data)
 }
 
-const deleteLesson = async (id) => {
-  return await http.delete(`/api/v1/prepare-class/lesson/${id}`)
+const deleteLesson = async (pl) => {
+  return await http.delete('/api/v1/prepare-class/lesson', pl)
 }
 
 const getLessonTreeViewList = async ({ type }) => {

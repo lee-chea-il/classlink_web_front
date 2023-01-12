@@ -23,6 +23,7 @@
         <TreeSection
           ref="mainEducation"
           pageType="reference"
+          :typeList="['ID', 'FD', 'MD']"
           :identity="identity"
           :insData="institutionData"
           :franchiseData="franchiseData"
@@ -821,13 +822,13 @@ export default {
     updateDataroomFile() {
       if (this.isApiCall) return false
       this.setCallTimeout()
-      const { keyword, title, ...rest } = this.referenceData
+      const { keyword, title, tree, ...rest } = this.referenceData
       const data = {
         ...rest,
         keyword: keyword.join(','),
         title: title + this.setExtension(rest.datatype),
-        treeinfo_idx: rest.tree.treeinfo_idx,
-        parent_treeinfo_idx: rest.tree.parent_treeinfo_idx,
+        treeinfo_idx: tree.treeinfo_idx,
+        parent_treeinfo_idx: tree.parent_treeinfo_idx,
       }
       apiData
         .updateDataroomFile(data)
@@ -1799,7 +1800,8 @@ export default {
     },
 
     pasteData() {
-      const parentIdxList = this.$refs.mainEducation.$refs.myData.$refs.mydata.checkPastePosition()
+      const parentIdxList =
+        this.$refs.mainEducation.$refs.myData.$refs.mydata.checkPastePosition()
       this.copyCheckData.pasteParentIdxs = parentIdxList
       if (
         this.copyCheckData.pasteParentIdxs.length > 0 &&

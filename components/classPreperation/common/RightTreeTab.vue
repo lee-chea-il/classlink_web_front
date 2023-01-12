@@ -9,7 +9,7 @@
     >
       <TreeView
         ref="mydata"
-        treeViewType="MD"
+        :treeViewType="typeList[2]"
         :expanded="true"
         :dataList="myData"
         identity="institution"
@@ -39,14 +39,9 @@ export default {
     TreeView,
   },
   props: {
-    myData: {
-      type: Array,
-      default: () => [],
-    },
-    pageType: {
-      type: String,
-      default: '',
-    },
+    myData: { type: Array, default: () => [] },
+    pageType: { type: String, default: '' },
+    typeList: { type: Array, default: () => [] },
   },
 }
 </script>

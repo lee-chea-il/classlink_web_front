@@ -42,7 +42,7 @@ export default {
       default: '',
     },
     keyword: {
-      type: Array,
+      type: [String, Array],
       default: () => [],
     },
     rules: {

@@ -29,40 +29,21 @@
 
 <script>
 import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
+import { deepCopy } from '~/utiles/common'
 export default {
   name: 'ModalReferenceTreeView',
   components: {
     VueTreeList,
   },
   props: {
-    dataList: {
-      type: Array,
-      default: () => [],
-    },
-    editable: {
-      type: Boolean,
-      default: true,
-    },
-    dragDisabled: {
-      type: Boolean,
-      default: true,
-    },
-    identity: {
-      type: String,
-      default: '',
-    },
-    pidNum: {
-      type: Number,
-      default: 0,
-    },
-    expanded: {
-      type: Boolean,
-      default: true,
-    },
-    listType: {
-      type: String,
-      default: '',
-    },
+    dataList: { type: Array, default: () => [] },
+    editable: { type: Boolean, default: true },
+    dragDisabled: { type: Boolean, default: true },
+    identity: { type: String, default: '' },
+    pidNum: { type: Number, default: 0 },
+    expanded: { type: Boolean, default: true },
+    listType: { type: String, default: '' },
+    treeViewType: { type: String, default: 'ID' },
   },
   data() {
     return {
@@ -70,69 +51,94 @@ export default {
       pid: this.pidNum,
     }
   },
-  mounted() {
-    const dataMapping = (data, isReadOnly) => {
-      const result = []
-      const len = data.length
-      for (let i = 0; i < len; i++) {
-        const newStr = JSON.stringify(data[i])
-        const nObj = JSON.parse(newStr)
-        nObj.treeViewId = nObj.id
-        nObj.id = this.pid
-        nObj.pid = this.pid
-        nObj.isChecked = false
-        nObj.readOnly = isReadOnly
-        nObj.active = false
-        nObj.name = nObj.title
-        nObj.type = this.setType(nObj.datatable_type)
-        // if(nObj.group_yn){
-        // API연동 후 변경 예정
-        if (nObj.children !== undefined) {
-          nObj.isLeaf = false
-          result[i] = nObj
-          this.pid++
-          if (nObj.children) {
-            result[i].children = dataMapping(nObj.children, isReadOnly)
-          }
-        } else {
-          nObj.isLeaf = true
-          result[i] = nObj
-          this.pid++
-        }
-      }
-      return result
-    }
-    console.log('-----------')
-    console.log(this.identity)
-    this.datas = new Tree(
-      !this.editable,
-      dataMapping(this.dataList, !this.editable)
-    )
+  watch: {
+    dataList: {
+      handler(newValue) {
+        this.setData(newValue)
+      },
+      immediate: true,
+      flush: true,
+    },
   },
   methods: {
     setType(type) {
-      let newType = ''
       switch (type) {
-        case 'IL':
         case 'ID':
-          newType = 'ID'
-          break
-        case 'FL':
+        case 'IL':
+        case 'IC':
+          return 'ID'
         case 'FD':
-          newType = 'FD'
-          break
-        case 'ML':
+        case 'FL':
+        case 'FC':
+          return 'FD'
         case 'MD':
-          newType = 'MD'
-          break
+        case 'ML':
+        case 'MC':
+          return 'MD'
         case 'OD':
-          newType = 'OD'
-          break
+          return 'OD'
         default:
-          newType = ''
-          break
+          return null
       }
-      return newType
+    },
+    setData(dataList) {
+      const copyItem = deepCopy(dataList)
+      const iconType = this.setType(this.treeViewType)
+      console.log('dataList', copyItem, this.treeViewType)
+      let isFirst = true
+      const dataMapping = (data, isReadOnly) => {
+        const result = []
+        const len = data?.length
+        for (let i = 0; i < len; i++) {
+          const nObj = data[i]
+          nObj.treeViewId = nObj.id
+          nObj.id = this.pid
+          nObj.pid = this.pid
+          nObj.isChecked = false
+          nObj.readOnly = isReadOnly
+          nObj.active = false
+          nObj.name = nObj.title
+          nObj.iconType = iconType
+          nObj.treeViewType = this.treeViewType
+          if (isFirst) {
+            isFirst = false
+            nObj.checkboxDisable = true
+          }
+
+          if (nObj.group_yn) {
+            nObj.type = this.treeViewType
+            nObj.isLeaf = false
+            result[i] = nObj
+            this.pid++
+            if (nObj.children) {
+              result[i].children = dataMapping(nObj.children, isReadOnly)
+            }
+          } else {
+            if (iconType === 'MD') {
+              nObj.type = nObj.datatable_type
+              if (nObj.mda_correct_yn) {
+                if (this.setType(nObj.datatable_type) === 'ID') {
+                  nObj.iconType = 'IM'
+                } else if (this.setType(nObj.datatable_type) === 'FD') {
+                  nObj.iconType = 'FM'
+                }
+              } else {
+                nObj.iconType = this.setType(nObj.datatable_type)
+              }
+            } else {
+              nObj.type = this.treeViewType
+            }
+            nObj.isLeaf = true
+            result[i] = nObj
+            this.pid++
+          }
+        }
+        return result
+      }
+      this.datas = new Tree(
+        !this.editable,
+        dataMapping(copyItem[0]?.children, !this.editable)
+      )
     },
     onDel(node) {
       console.log(node)
