@@ -454,19 +454,19 @@ export default {
         .getTreeViewList({ type: 'MD' })
         .then(({ data: { data } }) => {
           this.myData = data
-
-          if (this.isCopyMD) {
-            this.isCopyMD = false
+          console.log('datadatadata   ', data)
+          if (this.isUpdateMD) {
+            this.isUpdateMD = false
             if (this.copyCheckData.datatable_type === 'ID') {
-              this.$refs.mainEducation.$refs.education.$refs.institution.copyComp()
+              this.$refs.mainEducation.$refs.education.$refs.institution.changeIsactiveToActive()
             } else if (this.copyCheckData.datatable_type === 'FD') {
-              this.$refs.mainEducation.$refs.education.$refs.franchise.copyComp()
+              this.$refs.mainEducation.$refs.education.$refs.franchise.changeIsactiveToActive()
             }
             setTimeout(() => {
               this.$refs.mainEducation.$refs.myData.$refs.mydata.setActiveDataList(
-                this.copyMDData
+                this.activeMDData
               )
-              this.copyMDData = null
+              this.activeMDData = null
             }, 100)
           }
         })
@@ -529,10 +529,10 @@ export default {
       await apiData
         .copyTreeViewList(this.copyCheckData)
         .then(({ data: { data } }) => {
-          console.log('datassdatadata    ', data)
           if (data.length > 0) {
-            this.isCopyMD = true
-            this.copyMDData = data
+            this.$refs.mainEducation.$refs.myData.$refs.mydata.getCheckedIdxList()
+            this.isUpdateMD = true
+            this.activeMDData = data
             this.updateTree('MD')
           }
         })
@@ -553,9 +553,9 @@ export default {
     },
 
     treeViewCopy(parentInfo) {
-      this.copyData()
+      /* this.copyData()
       this.copyCheckData.pasteParentIdxs = [parentInfo]
-      this.copyTreeViewList()
+      this.copyTreeViewList() */
     },
 
     // 일반용
@@ -1799,8 +1799,7 @@ export default {
     },
 
     pasteData() {
-      const parentIdxList =
-        this.$refs.mainEducation.$refs.myData.$refs.mydata.checkPastePosition()
+      const parentIdxList = this.$refs.mainEducation.$refs.myData.$refs.mydata.checkPastePosition()
       this.copyCheckData.pasteParentIdxs = parentIdxList
       if (
         this.copyCheckData.pasteParentIdxs.length > 0 &&

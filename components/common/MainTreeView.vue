@@ -80,6 +80,7 @@ export default {
       pid: this.pidNum,
       deleteList: [],
       checkboxCopyData: {},
+      checkedIdxList: [],
     }
   },
   watch: {
@@ -93,6 +94,7 @@ export default {
   },
   methods: {
     async addFolder(node) {
+      this.getCheckedIdxList()
       await apiData
         .addFolderTreeViewList(this.addFolderData(node))
         .then(({ data: { data } }) => {
@@ -130,7 +132,10 @@ export default {
       }
     },
     deleteFolder(ids) {
-      const payload = `${this.treeViewType}/${ids}`
+      if (this.treeViewType !== 'MD' && ids !== '') {
+        console.log('내자료 아닌 상태로 삭제 요청옴. 얼럿창 필요')
+      }
+      /* const payload = `${this.treeViewType}/${ids}`
       apiData
         .deleteFolderTreeViewList(payload)
         .then(({ data: { data } }) => {
@@ -140,7 +145,7 @@ export default {
         })
         .catch((err) => {
           console.log(err)
-        })
+        }) */
     },
     async updateFolder() {
       await apiData
@@ -169,6 +174,7 @@ export default {
           nObj.active = false
           nObj.name = nObj.title
           nObj.iconType = this.treeViewType
+          nObj.treeViewType = this.treeViewType
           if (isFirst) {
             isFirst = false
             nObj.checkboxDisable = true
@@ -208,6 +214,7 @@ export default {
         !this.editable,
         dataMapping(copyItem[0]?.children, !this.editable)
       )
+      this.setCheckedIdxList()
     },
     onDel(node) {
       console.log(node)
@@ -299,8 +306,8 @@ export default {
       _checkData(this.datas)
       return checkList
     },
-    copyComp() {
-      function _copyComp(oldNode) {
+    changeIsactiveToActive() {
+      function _changeIsactiveToActive(oldNode) {
         if (oldNode.isactive) {
           oldNode.active = true
         } else {
@@ -309,11 +316,11 @@ export default {
         oldNode.isactive = false
         if (oldNode.children && oldNode.children.length > 0) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            _copyComp(oldNode.children[i])
+            _changeIsactiveToActive(oldNode.children[i])
           }
         }
       }
-      _copyComp(this.datas)
+      _changeIsactiveToActive(this.datas)
     },
     setActiveDataList(dataList) {
       function _active(oldNode) {
@@ -336,27 +343,92 @@ export default {
       }
       _active(this.datas)
     },
+    getCheckedIdxList() {
+      this.checkedIdxList = []
+      function _checkData(oldNode, checkedIdxList) {
+        if (oldNode.isLeaf) {
+          if (oldNode.isChecked) {
+            const pIdx = checkedIdxList.indexOf(oldNode.treeViewId)
+            if (pIdx === -1) {
+              checkedIdxList.push(oldNode.treeViewId)
+            }
+          }
+        } else {
+          if (oldNode.isChecked) {
+            const pIdx = checkedIdxList.indexOf(oldNode.treeViewId)
+            if (pIdx === -1) {
+              checkedIdxList.push(oldNode.treeViewId)
+            }
+          }
+
+          if (oldNode.children && oldNode.children.length > 0) {
+            for (let i = 0, len = oldNode.children.length; i < len; i++) {
+              _checkData(oldNode.children[i], checkedIdxList)
+            }
+          }
+        }
+      }
+      _checkData(this.datas, this.checkedIdxList)
+      console.log('gggggg   ', this.treeViewType, '  ', this.checkedIdxList)
+    },
+    setCheckedIdxList() {
+      function _checkData(oldNode, checkedIdxList) {
+        if (oldNode.isLeaf) {
+          const pIdx = checkedIdxList.indexOf(oldNode.treeViewId)
+          if (pIdx > -1) {
+            oldNode.isChecked = true
+          }
+        } else {
+          const pIdx = checkedIdxList.indexOf(oldNode.treeViewId)
+          if (pIdx > -1) {
+            oldNode.isChecked = true
+          }
+
+          if (oldNode.children && oldNode.children.length > 0) {
+            for (let i = 0, len = oldNode.children.length; i < len; i++) {
+              _checkData(oldNode.children[i], checkedIdxList)
+            }
+          }
+        }
+      }
+      _checkData(this.datas, this.checkedIdxList)
+      console.log('ssssss   ', this.treeViewType, '  ', this.checkedIdxList)
+    },
     dropBefore({ node, target }) {
       console.log('dropBefore', node, target)
     },
     drop({ node, target }) {
-      if (target.type === 'MD') {
-        if (target.type !== node.type) {
+      console.log('aaaaa 1', node.treeViewType, this.treeViewType)
+      if (this.treeViewType === 'MD') {
+        if (this.treeViewType !== node.treeViewType) {
           if (node.isChecked) {
+            // 폴더일 경우,    멀티 복사로 구현
             if (target.group_yn) {
+              // 폴더 복사
               this.$emit('tree-view-copy', { parentIdx: target.treeViewId })
+              console.log('isChecked 1', node, target)
+              // 파일일 경우
             } else {
+              // 단일 복사
               this.$emit('tree-view-copy', { parentIdx: target.data.parent })
+              console.log('isChecked 2', node, target)
             }
           } else if (target.group_yn) {
+            // 체크 아니고 폴더에 복사
             this.$emit('tree-view-copy', { parentIdx: target.treeViewId })
+            console.log('isChecked 3', node, target)
           } else {
+            // 체크 아니고 단일에 복사
             this.$emit('tree-view-copy', { parentIdx: target.data.parent })
+            console.log('isChecked 4', node, target)
           }
         } else {
-          this.$emit('tree-view-move', { parentIdx: target.data.parent })
-          console.log('drop2 isMove  ', node, target)
+          // this.$emit('tree-view-move', { parentIdx: target.data.parent })
+          console.log('MD isMove 1 ', node, target)
         }
+      } else if (this.treeViewType === node.treeViewType) {
+        // this.$emit('tree-view-move', { parentIdx: target.data.parent })
+        console.log('ID,FD isMove 2 ', node, target)
       }
     },
     delData() {
@@ -469,6 +541,7 @@ export default {
     },
 
     moreMenuDell(node) {
+      this.getCheckedIdxList()
       const newItem = {
         ...node,
         type: this.treeViewType,
@@ -479,6 +552,7 @@ export default {
     },
 
     moreMenuCopy(node) {
+      this.getCheckedIdxList()
       // const payload={}
       this.$emit('copy-item', {
         datatable_type: node.type,

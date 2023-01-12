@@ -16,8 +16,11 @@ export default function initialState() {
     isLoading: true,
     isApiCall: false,
     isUploading: false,
-    isCopyMD: false,
-    copyMDData: null,
+    isUpdateID: false,
+    isUpdateFD: false,
+    isUpdateMD: false,
+    isUpdateOD: false,
+    activeMDData: null,
     // Modal Flag
     isQuizPrint: false,
     isNoteTestPrint: false,
