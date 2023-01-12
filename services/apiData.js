@@ -123,6 +123,15 @@ const copyTreeViewList = async (payload) => {
   )
 }
 
+// 트리뷰에 파일 복사 뎁스
+const copyTreeViewListDepth = async (payload) => {
+  console.log('-----copyTreeViewList ', payload)
+  return await http.post(
+    '/api/v1/prepare-class/dataroom/tree-view-list/copy-folder-depth',
+    payload
+  )
+}
+
 // 트리뷰 검색 목록 조회
 const getSearchTreeList = async ({
   current,
@@ -152,6 +161,7 @@ const apiData = {
   postMoveData,
   poatCopyData,
   copyTreeViewList,
+  copyTreeViewListDepth,
 
   addFolderTreeViewList,
 

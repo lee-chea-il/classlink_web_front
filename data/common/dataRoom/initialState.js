@@ -20,6 +20,9 @@ export default function initialState() {
     isUpdateFD: false,
     isUpdateMD: false,
     isUpdateOD: false,
+    isCopyData: false,
+    copyDepthData: null,
+    pasteMyDataInfo: null,
     activeMDData: null,
     // Modal Flag
     isQuizPrint: false,

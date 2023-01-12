@@ -81,30 +81,10 @@ export default {
         })
     },
     addFolderData(node) {
-      if (this.treeViewType === 'ID') {
-        return {
-          datatable_type: this.treeViewType,
-          parent_id: node.target.treeViewId,
-          title: '새 폴더',
-        }
-      } else if (this.treeViewType === 'FD') {
-        return {
-          datatable_type: this.treeViewType,
-          parent_id: node.target.treeViewId,
-          title: '새 폴더',
-        }
-      } else if (this.treeViewType === 'OD') {
-        return {
-          datatable_type: this.treeViewType,
-          parent_id: node.target.treeViewId,
-          title: '새 폴더',
-        }
-      } else {
-        return {
-          datatable_type: this.treeViewType,
-          parent_id: node.target.treeViewId,
-          title: '새 폴더',
-        }
+      return {
+        datatable_type: this.treeViewType,
+        parent_id: node.target.treeViewId,
+        title: '새 폴더',
       }
     },
     setType(type) {
@@ -128,20 +108,22 @@ export default {
       }
     },
     deleteFolder(ids) {
+      this.getCheckedIdxList()
       if (this.treeViewType !== 'MD' && ids !== '') {
         console.log('내자료 아닌 상태로 삭제 요청옴. 얼럿창 필요')
+      } else {
+        const payload = `${this.treeViewType}/${ids}`
+        apiData
+          .deleteFolderTreeViewList(payload)
+          .then(({ data: { data } }) => {
+            if (data) {
+              this.$emit(`tree-view-${this.treeViewType.toLowerCase()}`)
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+          })
       }
-      /* const payload = `${this.treeViewType}/${ids}`
-      apiData
-        .deleteFolderTreeViewList(payload)
-        .then(({ data: { data } }) => {
-          if (data) {
-            this.$emit(`tree-view-${this.treeViewType.toLowerCase()}`)
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-        }) */
     },
     async updateFolder() {
       await apiData
@@ -366,7 +348,7 @@ export default {
         }
       }
       _checkData(this.datas, this.checkedIdxList)
-      console.log('gggggg   ', this.treeViewType, '  ', this.checkedIdxList)
+      // console.log('gggggg   ', this.treeViewType, '  ', this.checkedIdxList)
     },
     setCheckedIdxList() {
       function _checkData(oldNode, checkedIdxList) {
@@ -389,25 +371,30 @@ export default {
         }
       }
       _checkData(this.datas, this.checkedIdxList)
-      console.log('ssssss   ', this.treeViewType, '  ', this.checkedIdxList)
+      // console.log('ssssss   ', this.treeViewType, '  ', this.checkedIdxList)
     },
     dropBefore({ node, target }) {
       console.log('dropBefore', node, target)
     },
     drop({ node, target }) {
-      console.log('aaaaa 1', node.treeViewType, this.treeViewType)
       if (this.treeViewType === 'MD') {
+        this.getCheckedIdxList()
         if (this.treeViewType !== node.treeViewType) {
           if (node.isChecked) {
-            // 폴더일 경우,    멀티 복사로 구현
             if (target.group_yn) {
-              // 폴더 복사
-              this.$emit('tree-view-copy', { parentIdx: target.treeViewId })
-              console.log('isChecked 1', node, target)
-              // 파일일 경우
+              this.$emit('tree-view-copy', {
+                isChecked: true,
+                parentIdx: target.treeViewId,
+                isFolder: true,
+                displayNo: 10000,
+              })
             } else {
-              // 단일 복사
-              this.$emit('tree-view-copy', { parentIdx: target.data.parent })
+              this.$emit('tree-view-copy', {
+                isChecked: true,
+                parentIdx: target.data.parent,
+                isFolder: true,
+                displayNo: target.display_no,
+              })
               console.log('isChecked 2', node, target)
             }
           } else if (target.group_yn) {
@@ -422,6 +409,12 @@ export default {
         } else {
           // this.$emit('tree-view-move', { parentIdx: target.data.parent })
           console.log('MD isMove 1 ', node, target)
+          // target이 먼저 생성된거면
+          /* if(){
+
+          }else{
+
+          } */
         }
       } else if (this.treeViewType === node.treeViewType) {
         // this.$emit('tree-view-move', { parentIdx: target.data.parent })

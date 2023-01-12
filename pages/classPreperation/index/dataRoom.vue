@@ -542,6 +542,23 @@ export default {
         })
     },
 
+    // 체크된 리스트 드래그로 복사
+    async copyTreeViewListDepth(data) {
+      await apiData
+        .copyTreeViewListDepth(data)
+        .then(({ data: { data } }) => {
+          if (data.length > 0) {
+            this.$refs.mainEducation.$refs.myData.$refs.mydata.getCheckedIdxList()
+            this.isUpdateMD = true
+            this.activeMDData = data
+            this.updateTree('MD')
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
     // 자료등록시 트리 호출
     updateTree(type) {
       if (type === 'ID') {
@@ -553,10 +570,24 @@ export default {
       }
     },
 
-    treeViewCopy(parentInfo) {
-      /* this.copyData()
-      this.copyCheckData.pasteParentIdxs = [parentInfo]
-      this.copyTreeViewList() */
+    treeViewCopy(copyInfo) {
+      if (copyInfo.isChecked) {
+        const instiTab = document.getElementById('institute')
+        this.copyDepthData = {
+          type: '',
+          copyTreeData: null,
+          parentId: copyInfo.parentIdx,
+          displayNo: copyInfo.displayNo,
+        }
+        this.isCopyData = true
+        if (instiTab.classList.contains('show')) {
+          this.copyDepthData.type = 'ID'
+          this.$refs.mainEducation.$refs.education.$refs.institution.copyData()
+        } else {
+          this.copyDepthData.type = 'FD'
+          this.$refs.mainEducation.$refs.education.$refs.franchise.copyData()
+        }
+      }
     },
 
     // 일반용
@@ -1797,11 +1828,16 @@ export default {
         'this.copyCheckData   ' + this.copyCheckData,
         this.copyCheckData.copyType
       )
+      if (this.isCopyData) {
+        this.copyDepthData.copyTreeData = this.copyCheckData.copyTreeData
+        this.copyTreeViewListDepth(this.copyDepthData)
+        this.copyDepthData = null
+        this.isCopyData = false
+      }
     },
 
     pasteData() {
-      const parentIdxList =
-        this.$refs.mainEducation.$refs.myData.$refs.mydata.checkPastePosition()
+      const parentIdxList = this.$refs.mainEducation.$refs.myData.$refs.mydata.checkPastePosition()
       this.copyCheckData.pasteParentIdxs = parentIdxList
       if (
         this.copyCheckData.pasteParentIdxs.length > 0 &&
