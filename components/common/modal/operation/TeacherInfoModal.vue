@@ -28,14 +28,14 @@
               <div
                 class="profile_images_area"
                 :style="
-                  teacherInfo.image.mem_cw_img === null
+                  uploadCWImageFile !== ''
                     ? {
-                        'background-image': `url(${teacherInfo.image.mem_cw_img})`,
+                        'background-image': `url(${uploadCWImageFile})`,
                       }
-                    : uploadImageFile !== ''
-                    ? uploadImageFile
+                    : teacherInfo.image.mem_cw_img === null
+                    ? ''
                     : {
-                        'background-image': `url(${sample_photo})`,
+                        'background-image': `url(${teacherInfo.image.mem_cw_img})`,
                       }
                 "
               >
@@ -48,8 +48,11 @@
                 <div
                   class="profile_photo"
                   :style="
-                    teacherInfo.image.mem_img === '' ||
-                    teacherInfo.image.mem_img === null
+                    uploadImageFile !== ''
+                      ? {
+                          'background-image': `url(${uploadImageFile})`,
+                        }
+                      : teacherInfo.image.mem_img === null
                       ? {
                           'background-image': `url(${sample_photo})`,
                         }
@@ -1062,6 +1065,14 @@ export default {
       type: Array,
       default: () => [],
     },
+    uploadImageFile: {
+      type: String,
+      default: '',
+    },
+    uploadCWImageFile: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -1098,6 +1109,7 @@ export default {
 .profile_photo {
   background-size: cover;
   background-position: center;
+  border: 0.4px solid rgb(193 193 193) !important;
 }
 
 .mt {

@@ -38,11 +38,7 @@
                 class="btn btn_crud_default btn_sec btn_width"
                 @click="$emit('click-upload')"
               >
-                {{
-                  imageInfo === '' || imageInfo === null
-                    ? '이미지 불러오기'
-                    : '이미지 교체하기'
-                }}
+                {{ imageInfo === null ? '이미지 불러오기' : '이미지 교체하기' }}
               </button>
               <input
                 id="upload-input"
@@ -55,7 +51,7 @@
             </button> -->
             </div>
             <div
-              v-if="imageInfo === '' && uploadImageFile === ''"
+              v-if="uploadImageFile === '' && imageInfo === null"
               class="explainType02"
             >
               <a

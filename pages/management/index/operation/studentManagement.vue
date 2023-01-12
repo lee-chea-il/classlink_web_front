@@ -411,7 +411,7 @@ export default {
         ins_code: this.$store.state.common.user.ins_code,
         fra_code: '',
         image: {
-          mem_img: '',
+          mem_img: null,
         },
         mem_id: '',
         mem_nickname: '',
@@ -929,7 +929,6 @@ export default {
         .then(({ data: { data } }) => {
           console.log(data)
           this.studentInfo = data
-
           this.openStudentInfoModalDesc()
         })
         .catch((err) => {
@@ -944,6 +943,7 @@ export default {
         .then((res) => {
           console.log(res)
           this.openModalDesc('학생 상세 정보', '학생 정보가 수정되었습니다.')
+
           this.getStudentList()
         })
         .catch((err) => {
@@ -1574,6 +1574,7 @@ export default {
         this.selectedDate = ''
         this.lectureDate = ''
         this.familySearchText = ''
+        this.uploadImageFile = ''
       }, 500)
     },
     // 학생 개별 등록
@@ -1587,6 +1588,7 @@ export default {
         this.selectedDate = ''
         this.lectureDate = ''
         this.familySearchText = ''
+        this.uploadImageFile = ''
       }, 500)
     },
     // 생년월일

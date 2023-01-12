@@ -13,7 +13,9 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 id="exampleModalLabel" class="modal-title">{{isInsImage?'교육기관 이미지 등록':'CW 이미지 등록'}}</h5>
+            <h5 id="exampleModalLabel" class="modal-title">
+              {{ isInsImage ? '교육기관 이미지 등록' : 'CW 이미지 등록' }}
+            </h5>
             <button
               type="button"
               class="close"
@@ -50,7 +52,7 @@
               />
             </div>
             <div
-              v-if="imageInfo === '' && imageInfo === ''"
+              v-if="uploadImageFile === '' && imageInfo === null"
               class="explainType02"
             >
               <a
@@ -70,7 +72,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn_crud_point" @click="$emit('close')">
+            <button class="btn btn_crud_point" @click="$emit('confirm')">
               저장
             </button>
             <button class="btn btn_crud_default" @click="$emit('close')">

@@ -35,16 +35,16 @@
                 <div
                   class="profile_photo"
                   :style="
-                    studentInfo.image.mem_img === null
+                    uploadImageFile !== ''
+                      ? {
+                          'background-image': `url(${uploadImageFile})`,
+                        }
+                      : studentInfo.image.mem_img === null
                       ? {
                           'background-image': `url(${sample_photo})`,
                         }
-                      : uploadImageFile === ''
-                      ? {
-                          'background-image': `url(${studentInfo.image.mem_img})`,
-                        }
                       : {
-                          'background-image': `url(${uploadImageFile})`,
+                          'background-image': `url(${studentInfo.image.mem_img})`,
                         }
                   "
                 >

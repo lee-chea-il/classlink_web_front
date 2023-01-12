@@ -45,9 +45,11 @@
       :isEmailCheck="isEmailCheck"
       :isIdCheck="isIdCheck"
       :subjectList="subjectList"
+      :uploadImageFile="uploadImageFile"
+      :uploadCWImageFile="uploadCWImageFile"
       @close="onCloseRegisterTeacherModalDesc"
-      @click-profile="openUploadNewTeacherImgModalDesc"
-      @click-cwimg="openUploadNewTeacherCWImgModalDesc"
+      @click-profile="openUploadTeacherImgModalDesc"
+      @click-cwimg="openUploadTeacherCWImgModalDesc"
       @change-input="onChangeUpdateInput"
       @click-birthday="openDatePickerModalDesc"
       @select-position="selectPosition"
@@ -74,6 +76,8 @@
       :targetCheckList="targetCheckList"
       :roleCheckList="roleCheckList"
       :subjectList="subjectList"
+      :uploadImageFile="uploadImageFile"
+      :uploadCWImageFile="uploadCWImageFile"
       @close="onCloseTeacherInfoModalDesc"
       @click-profile="openUploadTeacherImgModalDesc"
       @click-cwimg="openUploadTeacherCWImgModalDesc"
@@ -94,8 +98,8 @@
     <!-- 프로필 이미지 등록 -->
     <UploadTeacherImg
       :open="uploadTeacherImgModalDesc.open"
-      :teacherInfo="teacherInfo"
       :uploadImageFile="uploadImageFile"
+      :imageInfo="teacherInfo.image.mem_img"
       @selected-file="onFileSelected"
       @click-upload="onClickInputButton"
       @close="onCloseUploadTeacherImgModalDesc"
@@ -105,34 +109,12 @@
     <!-- CW 이미지 등록 -->
     <UploadTeacherCWImg
       :open="uploadTeacherCWImgModalDesc.open"
-      :teacherInfo="teacherInfo"
-      :uploadImageFile="uploadImageFile"
+      :imageInfo="teacherInfo.image.mem_cw_img"
+      :uploadImageFile="uploadCWImageFile"
       @selected-file="onFileSelected"
       @click-upload="onClickInputButton"
       @close="onCloseUploadTeacherCWImgModalDesc"
-      @confirm="onClickImgConfirm"
-    />
-
-    <!-- 선생님 등록 - 프로필 이미지 등록1 -->
-    <UploadTeacherImg
-      :open="uploadNewTeacherImgModalDesc.open"
-      :teacherInfo="newTeacherInfo"
-      :uploadImageFile="uploadImageFile"
-      :register="registerTeacherModal.open"
-      @select-file="onFileSelected"
-      @click-upload="onClickInputButton"
-      @close="onCloseUploadNewTeacherImgModalDesc"
-    />
-
-    <!-- 선생님 등록 - CW 이미지 등록1 -->
-    <UploadTeacherCWImg
-      :open="uploadNewTeacherCWImgModalDesc.open"
-      :teacherInfo="newTeacherInfo"
-      :uploadImageFile="uploadImageFile"
-      :register="registerTeacherModal.open"
-      @select-file="onFileSelected"
-      @click-upload="onClickInputButton"
-      @close="onCloseUploadNewTeacherCWImgModalDesc"
+      @confirm="onClickCWImgConfirm"
     />
 
     <!-- 생일 날짜 선택 모달 -->
@@ -230,8 +212,8 @@ export default {
       teacherInfo: {
         ins_code: this.$store.state.common.user.ins_code,
         image: {
-          mem_img: '',
-          mem_cw_img: '',
+          mem_img: null,
+          mem_cw_img: null,
         },
         mem_birthday: null,
         mem_email: '',
@@ -329,7 +311,9 @@ export default {
       nickNameCheck: false,
       birthday: '',
       uploadImageFile: '',
-      imageFileInfo: {},
+      imageFileId: '',
+      uploadCWImageFile: '',
+      cwImageFileId: '',
       isEmailCheck: false,
       isIdCheck: false,
       prevEmail: '',
@@ -444,6 +428,7 @@ export default {
           this.teacherInfo.auth_list = data.auth_list
           this.teacherInfo.target_list = data.target_list
           this.teacherInfo.subject_list = data.subject_list
+          this.teacherInfo.image = data.image
           if (data.auth_list.length > 0) {
             this.teacherInfo.auth_check = true
           }
@@ -460,6 +445,7 @@ export default {
           console.log(err)
         })
       this.openTeacherInfoModalDesc()
+      console.log(this.teacherInfo)
     },
 
     // 선생님 등록 api
@@ -718,6 +704,8 @@ export default {
         this.teacherInfo = deepCopy(this.initTeacherInfo)
         this.isIdCheck = false
         this.isEmailCheck = false
+        this.uploadImageFile = ''
+        this.uploadCWImageFile = ''
       }, 500)
     },
     openTeacherInfoModalDesc() {
@@ -731,6 +719,8 @@ export default {
         this.teacherInfo = deepCopy(this.initTeacherInfo)
         this.isIdCheck = false
         this.isEmailCheck = false
+        this.uploadImageFile = ''
+        this.uploadCWImageFile = ''
       }, 500)
     },
     openUploadTeacherImgModalDesc() {
@@ -738,12 +728,14 @@ export default {
     },
     onCloseUploadTeacherImgModalDesc() {
       this.uploadTeacherImgModalDesc.open = false
+      this.uploadImageFile = ''
     },
     openUploadTeacherCWImgModalDesc() {
       this.uploadTeacherCWImgModalDesc.open = true
     },
     onCloseUploadTeacherCWImgModalDesc() {
       this.uploadTeacherCWImgModalDesc.open = false
+      this.uploadCWImageFile = ''
     },
     openUploadNewTeacherImgModalDesc() {
       this.uploadNewTeacherImgModalDesc.open = true
@@ -832,7 +824,14 @@ export default {
       await api
         .postFile(formData)
         .then(({ data: { data } }) => {
-          this.imageFileInfo = data
+          if (this.uploadTeacherCWImgModalDesc.open) {
+            this.uploadCWImageFile = process.env.VUE_APP_FILE_URL + data.savedNm
+            this.cwImageFileId = data.savedNm
+            console.log(this.uploadCWImageFile)
+          } else {
+            this.uploadImageFile = process.env.VUE_APP_FILE_URL + data.savedNm
+            this.imageFileId = data.savedNm
+          }
         })
         .catch(() => {})
     },
@@ -845,13 +844,6 @@ export default {
       const input = target
       if (input.files && input.files[0]) {
         if (input.files[0].size < 3145728) {
-          const reader = new FileReader()
-          reader.onload = (e) => {
-            this.uploadImageFile = e.target.result
-            console.log(this.uploadImageFile)
-          }
-          reader.readAsDataURL(input.files[0])
-
           this.postFile(input.files[0])
         } else {
           this.openModalDesc(
@@ -862,34 +854,14 @@ export default {
       }
     },
     // 프로필 이미지 저장
-    async onClickImgConfirm() {
-      this.teacherInfo.mem_img = this.imageFileInfo.savedNm
-      // const payload = omit(this.studentInfo, ['image'])
-      const payload = this.teacherInfo
-      await apiOperation
-        .updateTeacherInfo(payload)
-        .then(() => {
-          this.getTeacherInfo(this.teacherInfo.mem_idx)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-      this.onCloseUploadTeacherImgModalDesc()
+    onClickImgConfirm() {
+      this.teacherInfo.mem_img = this.imageFileId
+      this.uploadTeacherImgModalDesc.open = false
     },
     // cw 이미지 저장
-    async onClickCWImgConfirm() {
-      this.teacherInfo.mem_cw_img = this.imageFileInfo.savedNm
-      // const payload = omit(this.studentInfo, ['image'])
-      const payload = this.teacherInfo
-      await apiOperation
-        .updateTeacherInfo(payload)
-        .then(() => {
-          this.getTeacherInfo(this.teacherInfo.mem_idx)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-      // this.onCloseUploadTeacherCWImgModalDesc()
+    onClickCWImgConfirm() {
+      this.teacherInfo.mem_cw_img = this.cwImageFileId
+      this.uploadTeacherCWImgModalDesc.open = false
     },
 
     // 과목 수정
