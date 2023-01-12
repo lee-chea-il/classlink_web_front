@@ -364,7 +364,7 @@ export default {
       let answervoNum = 0
       for (const item of this.askingboxList) {
         if (item.answervo !== null) {
-          answervoNum = answervoNum + item.answervo.length
+          answervoNum = item.answervo.length
         }
       }
 

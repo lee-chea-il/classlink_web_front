@@ -47,9 +47,13 @@
                   <span class="type">{{
                     noticeTabMenuList[item.category].title
                   }}</span>
-                  <span class="subject">{{ item.subject }}</span>
+                  <span
+                    class="subject cursor"
+                    @click="$emit('open-notice', item)"
+                    >{{ item.brd_title }}</span
+                  >
                   <i class="icons_new"></i>
-                  <span class="date">{{ item.date }}</span>
+                  <span class="date">{{ item.brd_registration_date }}</span>
                 </li>
               </ul>
               <ul v-else>
@@ -57,9 +61,13 @@
                   <span class="type">{{
                     noticeTabMenuList[item.category].title
                   }}</span>
-                  <span class="subject">{{ item.subject }}</span>
+                  <span
+                    class="subject cursor"
+                    @click="$emit('open-notice', item)"
+                    >{{ item.brd_title }}</span
+                  >
                   <i class="icons_new"></i>
-                  <span class="date">{{ item.date }}</span>
+                  <span class="date">{{ item.brd_registration_date }}</span>
                 </li>
               </ul>
             </div>
@@ -92,4 +100,8 @@ export default {
   },
 }
 </script>
-<style scoped></style>
+<style scoped>
+.cursor {
+  cursor: pointer;
+}
+</style>

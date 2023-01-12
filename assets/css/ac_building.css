@@ -2475,21 +2475,6 @@ ol {
 }
 
 /* 건물-건물SET.html */
-.ac_building_wld .icons_mu_off02 {
-  display: inline-block;
-  width: 4px;
-  height: 16px;
-  text-align: center;
-  vertical-align: middle;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: contain;
-  background-image: url(../images/icons/icon_mu_off02.svg);
-}
-.ac_building_wld .icons_mu_off02:hover, .ac_building_wld .icons_mu_off02:focus, .ac_building_wld .icons_mu_off02:active {
-  background-image: url(../images/icons/icon_mu_on.svg);
-  cursor: pointer;
-}
 .ac_building_wld .line {
   border: 1px solid #E6E7E8;
   margin: 10px 0;

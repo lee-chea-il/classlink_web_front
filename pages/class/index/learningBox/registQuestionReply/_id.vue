@@ -63,9 +63,6 @@ export default {
       ins_code: this.$store.state.common.user.ins_code,
       fra_code: this.$store.state.common.user.fra_code,
       qtbIdx: Number(this.$route.params.id),
-      // openYN: Boolean(this.$route.query.open_yn),
-      // cstmIdx: Number(this.$route.query.cstm_idx),
-      // icuIdx: Number(this.$route.query.icu_idx),
 
       answer: {
         qbaTitle: '',
@@ -127,18 +124,16 @@ export default {
       console.log(payload)
 
       if (payload.qba_title !== '' && payload.qba_description !== '') {
-        if (payload.qba_title.length >= 2) {
-          await apiLeaningBox
-            .postRegistAnswer(payload)
-            .then(() => {
-              this.$router.push(`/class/learningBox/question`)
-              this.openModalDesc('등록 성공', '답변을 등록했습니다.')
-            })
-            .catch((err) => {
-              console.log(err)
-              this.openModalDesc('등록 실패', '답변 등록을 실패했습니다.')
-            })
-        }
+        await apiLeaningBox
+          .postRegistAnswer(payload)
+          .then(() => {
+            this.openModalDesc('등록 성공', '답변을 등록했습니다.')
+            this.$router.push(`/class/learningBox/question`)
+          })
+          .catch((err) => {
+            console.log(err)
+            this.openModalDesc('등록 실패', '답변 등록을 실패했습니다.')
+          })
       } else {
         this.openModalDesc('등록 실패', '답변을 작성해주세요.')
       }

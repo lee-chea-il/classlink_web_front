@@ -45,7 +45,7 @@
       />
     </div>
 
-    <!-- ------- 모달 --------- -->
+    <!--------- 모달 ----------->
     <!-- 반관리-반등록,수정 - 팝업 L -->
     <ClassModifyModal
       :show="openClassModify"
@@ -994,7 +994,6 @@ export default {
           this.classList.length - evt.moved.newIndex,
           this.orderList
         )
-
         this.orderList = []
       }
     },
@@ -1116,7 +1115,6 @@ export default {
       await apiOperation
         .getClassDetail(payload)
         .then(({ data: { data } }) => {
-          console.log(data)
           this.modalDetailMore = null
           this.classInfo = data.dto_list
         })
@@ -1149,7 +1147,6 @@ export default {
       await apiOperation
         .getSearchTeacher(payload)
         .then(({ data: { data } }) => {
-          // console.log(data)
           this.teacherList = data
         })
         .catch((err) => {
@@ -1181,16 +1178,15 @@ export default {
     setInitSearchStudent() {
       this.classStudentSearch = ''
     },
-    // 반 등록하기 api
+    // 반 등록 api
     async postRegistClass() {
       const selStudentList = []
-
-      for (let i = 0; i < this.selectedStudentList.length; i++) {
+      for (const item of this.selectedStudentList) {
         const student = {
-          itm_idx: this.selectedStudentList[i].itm_idx,
-          mem_idx: this.selectedStudentList[i].mem_idx,
-          mem_name: this.selectedStudentList[i].mem_name,
-          std_idx: this.selectedStudentList[i].std_idx,
+          itm_idx: item.itm_idx,
+          mem_idx: item.mem_idx,
+          mem_name: item.mem_name,
+          std_idx: item.std_idx,
         }
         selStudentList.push(student)
       }
@@ -1208,17 +1204,21 @@ export default {
         payload.studentList.length !== 0 &&
         payload.teacherList.length !== 0
       ) {
-        await apiOperation
-          .postRegistClass(payload)
-          .then((res) => {
-            console.log(res)
-            this.openModalDesc('등록 성공', '반 등록을 성공했습니다.')
-            this.onCloseClassModify()
-            this.getClassList()
-          })
-          .catch((err) => {
-            console.log(err)
-          })
+        if (payload.studentList.length <= 35) {
+          await apiOperation
+            .postRegistClass(payload)
+            .then(() => {
+              this.openModalDesc('등록 성공', '반 등록을 성공했습니다.')
+              this.onCloseClassModify()
+              this.getClassList()
+            })
+            .catch((err) => {
+              console.log(err)
+              this.openModalDesc('등록 실패', '등록을 실패했습니다.')
+            })
+        } else {
+          this.openModalDesc('등록 실패', '학생은 35명까지만 가능합니다.')
+        }
       } else {
         this.openModalDesc('등록 실패', '반을 작성해주세요.')
       }
@@ -1226,13 +1226,12 @@ export default {
     // 반 수정하기 api
     async putUpdClass(csmIdx) {
       const selStudentList = []
-
-      for (let i = 0; i < this.selectedStudentList.length; i++) {
+      for (const item of this.selectedStudentList) {
         const student = {
-          itm_idx: this.selectedStudentList[i].itm_idx,
-          mem_idx: this.selectedStudentList[i].mem_idx,
-          mem_name: this.selectedStudentList[i].mem_name,
-          std_idx: this.selectedStudentList[i].std_idx,
+          itm_idx: item.itm_idx,
+          mem_idx: item.mem_idx,
+          mem_name: item.mem_name,
+          std_idx: item.std_idx,
         }
         selStudentList.push(student)
       }
@@ -1240,7 +1239,7 @@ export default {
       const payload = {
         choice_GradeList: [
           {
-            std_num: 0,
+            std_num: selStudentList.length,
             studentList: selStudentList,
           },
         ],
@@ -1253,21 +1252,25 @@ export default {
       console.log(payload)
 
       if (
-        payload.choice_GradeList[0].studentList.length !== 0 &&
-        payload.teacherList.length !== 0
+        payload.choice_GradeList.some((e) => e.studentList.length !== 0) &&
+        payload.teacherList.length !== 0 &&
+        payload.csm_name !== ''
       ) {
-        await apiOperation
-          .putUpdClass(payload)
-          .then((res) => {
-            console.log(res)
-            this.openModalDesc('수정 성공', '반 수정을 성공했습니다.')
-            this.onCloseClassModify()
-            this.getClassList()
-          })
-          .catch((err) => {
-            console.log(err)
-            this.openModalDesc('수정 실패', '수정을 실패했습니다.')
-          })
+        if (payload.choice_GradeList.some((e) => e.studentList.length <= 35)) {
+          await apiOperation
+            .putUpdClass(payload)
+            .then(() => {
+              this.openModalDesc('수정 성공', '반 수정을 성공했습니다.')
+              this.onCloseClassModify()
+              this.getClassList()
+            })
+            .catch((err) => {
+              console.log(err)
+              this.openModalDesc('수정 실패', '수정을 실패했습니다.')
+            })
+        } else {
+          this.openModalDesc('등록 실패', '학생은 35명까지만 가능합니다.')
+        }
       } else {
         this.openModalDesc('수정 실패', '수정을 실패했습니다.')
       }
@@ -1299,26 +1302,15 @@ export default {
     // 반 복사 api
     async postClassCopy() {
       const postList = []
-      console.log(
-        'filter',
-        this.classList.filter((item) =>
-          item.csm_name.includes(
-            this.classList.find((e) => e.csm_idx === this.checkList[0]).csm_name
-          )
-        )
-      )
-
-      for (let i = 0; i < this.checkList.length; i++) {
+      for (const item of this.checkList) {
         const copyList = {
-          copy_csm_idx: this.checkList[i],
+          copy_csm_idx: item,
           csm_name:
-            this.classList.find((e) => e.csm_idx === this.checkList[i])
-              .csm_name +
+            this.classList.find((e) => e.csm_idx === item).csm_name +
             `(${
-              this.classList.filter((item) =>
-                item.csm_name.includes(
-                  this.classList.find((e) => e.csm_idx === this.checkList[i])
-                    .csm_name
+              this.classList.filter((i) =>
+                i.csm_name.includes(
+                  this.classList.find((e) => e.csm_idx === item).csm_name
                 )
               ).length
             })`,
@@ -1351,14 +1343,14 @@ export default {
       if (this.currentPage >= this.endPage) {
         return false
       } else {
-        this.currentPage = this.currentPage + 1
+        this.currentPage += 1
       }
     },
     onClickPrevPage() {
       if (this.currentPage <= 1) {
         return false
       } else {
-        this.currentPage = this.currentPage - 1
+        this.currentPage -= 1
       }
     },
     onClickCurrentPage(page) {
@@ -1369,14 +1361,14 @@ export default {
       if (this.detailCurrentPage >= this.detailEndPage) {
         return false
       } else {
-        this.detailCurrentPage = this.detailCurrentPage + 1
+        this.detailCurrentPage += 1
       }
     },
     onClickDetailPrevPage() {
       if (this.detailCurrentPage <= 1) {
         return false
       } else {
-        this.detailCurrentPage = this.detailCurrentPage - 1
+        this.detailCurrentPage -= 1
       }
     },
     onClickDetailCurrentPage(page) {
@@ -1385,10 +1377,11 @@ export default {
 
     // 검색 라디오 버튼
     searchRadio(radio) {
-      this.searchText = ''
+      // this.searchText = ''
       this.cond = radio
     },
 
+    // 반 상세 모달
     onOpenClassDetailModal() {
       this.openClassDetailModal.open = true
     },
@@ -1436,12 +1429,8 @@ export default {
       await apiOperation
         .getUpdClassList(item.csm_idx, this.ins_code)
         .then(({ data: { data } }) => {
-          console.log('res', data, item)
-          for (let i = 0; i < data.student_list.length; i++) {
-            this.onClickAddSelectedStudent(
-              data.student_list[i],
-              data.student_list[i].std_year
-            )
+          for (const item of data.student_list) {
+            this.onClickAddSelectedStudent(item, item.std_year)
           }
           this.selectedTeacher = data.teacher_list
           this.selectedStudentList = data.student_list
@@ -1529,7 +1518,6 @@ export default {
       await apiOperation
         .getNoAssignStudent(payload)
         .then(({ data: { data } }) => {
-          console.log(data)
           this.noAssignStudent = data
         })
         .catch((err) => {
@@ -1635,21 +1623,6 @@ export default {
     async onUnallocationPutMoveClass() {
       const banList = []
       const studentList = []
-      // for (let i = 0; i < this.selectedMoveToClassCheckboxRight.length; i++) {
-      //   const ban = {
-      //     csm_idx: this.selectedMoveToClassCheckboxRight[i].csm_idx,
-      //     csm_name: this.selectedMoveToClassCheckboxRight[i].csm_name,
-      //   }
-      //   banList.push(ban)
-      // }
-      // for (let i = 0; i < this.selectedUnallocationCheckbox.length; i++) {
-      //   const student = {
-      //     itm_idx: this.selectedUnallocationCheckbox[i].itm_idx,
-      //     mem_idx: this.selectedUnallocationCheckbox[i].mem_idx,
-      //     std_idx: this.selectedUnallocationCheckbox[i].std_idx,
-      //   }
-      //   studentList.push(student)
-      // }
       for (const item of this.selectedMoveToClassCheckboxRight) {
         const ban = {
           csm_idx: item.csm_idx,
@@ -1724,8 +1697,8 @@ export default {
         await apiOperation
           .getMoveClass(payload)
           .then(({ data: { data } }) => {
-            for (let i = 0; i < this.checkList.length; i++) {
-              item.push(data.find((e) => e.csm_idx === this.checkList[i]))
+            for (const i of this.checkList) {
+              item.push(data.find((e) => e.csm_idx === i))
             }
 
             this.modalMoveLeftList = item
@@ -1783,8 +1756,6 @@ export default {
     },
     // 반 학생 반 학년 추가/삭제 (개인)
     onClickAddSelectedStudent(data, stdYear) {
-      // console.log('data,stdYear', data, stdYear)
-
       if (
         this.selectedStudentAll.find((e) => e.grade === stdYear) === undefined
       ) {
@@ -1809,23 +1780,6 @@ export default {
       }
     },
     onClickDeleteSelectedStudent(data, stdYear) {
-      // for (let i = 0; i < this.selectedStudentAll.length; i++) {
-      //   if (this.selectedStudentAll[i].grade === stdYear) {
-      //     this.selectedStudentAll[i].student = this.selectedStudentAll[
-      //       i
-      //     ].student.filter((item) => item.mem_idx !== data.mem_idx)
-
-      //     this.selectedStudentList = this.selectedStudentList.filter(
-      //       (item) => item.mem_idx !== data.mem_idx
-      //     )
-
-      //     if (this.selectedStudentAll[i].student.length === 0) {
-      //       this.selectedStudentAll = this.selectedStudentAll.filter(
-      //         (item) => item.student.length !== 0
-      //       )
-      //     }
-      //   }
-      // }
       for (const item of this.selectedStudentAll) {
         if (item.grade === stdYear) {
           item.student = item.student.filter(
@@ -2244,6 +2198,7 @@ export default {
         this.selectedDate = ''
         this.lectureDate = ''
         this.familySearchText = ''
+        this.uploadImageFile = ''
       }, 500)
     },
     // 학생 정보 수정
@@ -2454,7 +2409,7 @@ export default {
             this.getStudentList()
             this.onSearchFilterDetail()
           } else {
-            this.onCloseNewStudentInfoModalDesc()
+            // this.onCloseNewStudentInfoModalDesc()
             this.getStudentList()
             this.onSearchFilterDetail()
           }

@@ -9442,8 +9442,14 @@ a {
   padding-left: 30px;
   padding-right: 30px;
   text-align: left;
-  height: 490px;
-  overflow-y: scroll;
+  height: 752px;
+  overflow-y: auto;
+}
+@media (max-width: 1199.98px) {
+  .modal_ac_manage_lesson .modal-body,
+.modal_ac_manage_curi .modal-body {
+    height: 490px !important;
+  }
 }
 .modal_ac_manage_lesson .divide_section .divide_area,
 .modal_ac_manage_curi .divide_section .divide_area {
@@ -12175,6 +12181,12 @@ a {
   background-image: url(../images/icon_inst_my.png);
   margin-right: 6px;
   margin-left: 17px;
+}
+#modalLessonRegi .form-group textarea {
+  padding: 10px 10px 10px 10px !important;
+}
+#modalLessonRegi .col {
+  padding-left: 0px;
 }
 
 /* -----------------------------    커리큘럼    ----------------------------- */
@@ -15953,11 +15965,14 @@ a {
 .ac_manage_course .course_more {
   padding-top: 120px !important;
 }
+.ac_manage_course .course_more03 {
+  padding-top: 30px !important;
+}
 .ac_manage_course .course_tit {
   font-style: normal;
   font-weight: 700;
   font-size: 16px;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 .ac_manage_course .course_time {
   padding: 5px 20px;
@@ -15999,7 +16014,7 @@ a {
   height: 188px;
 }
 .ac_manage_course .cards_section .card.course_more02::before {
-  height: 305px;
+  height: 226px;
 }
 .ac_manage_course .course_bgcolor02 {
   background: #E7EDFF;
@@ -17242,21 +17257,6 @@ a {
 }
 
 /* 건물-건물SET.html */
-.ac_building_wld .icons_mu_off02 {
-  display: inline-block;
-  width: 4px;
-  height: 16px;
-  text-align: center;
-  vertical-align: middle;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: contain;
-  /* background-image: url(../images/icons/icon_mu_off02.svg); */
-}
-.ac_building_wld .icons_mu_off02:hover, .ac_building_wld .icons_mu_off02:focus, .ac_building_wld .icons_mu_off02:active {
-  background-image: url(../images/icons/icon_mu_on.svg);
-  cursor: pointer;
-}
 .ac_building_wld .line {
   border: 1px solid #E6E7E8;
   margin: 10px 0;
