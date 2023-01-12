@@ -318,8 +318,9 @@ export default {
       noticeTabMenuList: [
         { id: 0, title: '전체' },
         { id: 1, title: '클래스링크' },
-        { id: 2, title: '교육기관 공지' },
-        { id: 3, title: '반 공지' },
+        { id: 2, title: '교육기관' },
+        { id: 3, title: '반' },
+        { id: 4, title: '프랜' },
       ],
       selectedNoticeTab: 0,
       noticeList: [
