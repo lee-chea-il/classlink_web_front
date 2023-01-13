@@ -54,7 +54,7 @@
             </td>
             <td>
               <div class="path">
-                {{ reference.save_path }}
+                {{ reference.path }}
               </div>
             </td>
             <td>
@@ -62,9 +62,7 @@
             </td>
             <td>
               <div class="keyword">
-                <span v-for="(title, index) in reference.keyword" :key="index"
-                  >{{ title }}
-                </span>
+                <span>{{ reference.keyword }} </span>
               </div>
             </td>
             <td>
@@ -74,7 +72,11 @@
               ></i>
             </td>
             <td>
-              <button class="btn btn_crud_default" data-dismiss="modal">
+              <button
+                class="btn btn_crud_default"
+                data-dismiss="modal"
+                @click="$emit('move-data', reference)"
+              >
                 이동
               </button>
             </td>

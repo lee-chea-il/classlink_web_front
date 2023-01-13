@@ -2413,8 +2413,14 @@ ol {
   padding-left: 30px;
   padding-right: 30px;
   text-align: left;
-  height: 490px;
-  overflow-y: scroll;
+  height: 752px;
+  overflow-y: auto;
+}
+@media (max-width: 1199.98px) {
+  .modal_ac_manage_lesson .modal-body,
+.modal_ac_manage_curi .modal-body {
+    height: 490px !important;
+  }
 }
 .modal_ac_manage_lesson .divide_section .divide_area,
 .modal_ac_manage_curi .divide_section .divide_area {
@@ -5147,6 +5153,12 @@ ol {
   margin-right: 6px;
   margin-left: 17px;
 }
+#modalLessonRegi .form-group textarea {
+  padding: 10px 10px 10px 10px !important;
+}
+#modalLessonRegi .col {
+  padding-left: 0px;
+}
 
 /* -----------------------------    커리큘럼    ----------------------------- */
 /* 커리큘럼등록/수정 (팝업 L) */
@@ -5246,7 +5258,6 @@ ol {
   display: flex;
   justify-content: center;
   line-height: 40px;
-  align-items: center;
 }
 #modalCuriRegi .custom-checkbox .custom-control-label::before {
   border-radius: 0.25rem;

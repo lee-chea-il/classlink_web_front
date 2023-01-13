@@ -2,17 +2,17 @@
   <div class="tab-content depth03 ac_manage_frc ac_manage_course">
     <div class="tab-pane active">
       <!-- [개발참조]수강하는 강의코스가 없을때  -->
-      <div v-if="lectureCourseList === null" class="page_nodata">
+      <!-- <div v-if="lectureCourseList.length === 0" class="page_nodata">
         <p>수강하는 강의 코스가 없습니다.</p>
         <button
-          class="btn btn_regi_franchise"
+          class="btn btn_crud_point"
           data-toggle="modal"
-          data-target="#modalFrcsignup"
+          data-target="#modalLectureRegi"
         >
-          프랜차이즈 가입하기
+          강좌 만들기
         </button>
-      </div>
-      <div v-else>
+      </div> -->
+      <div>
         <div class="course_line">
           <div class="dropdown form-inline">
             <button
@@ -63,99 +63,191 @@
         <div class="course_center">
           <div class="cards_section">
             <div class="cards_section02">
-              <!-- [개발참조] 반이 5개 이상일때는 강좌이름에 class="course_more"을 붙이기 -->
-              <!-- [개발참조]주담임 색상 class="card course_bgcolor01" -->
-              <a v-for="(item, idx) in lectureCourseList" :key="idx">
-                <div
-                  class="card course_bgcolor01 cursor"
+              <div class="cards_section02-1">
+                <a
+                  v-for="(item, idx) in lectureCourseListOne"
+                  :key="idx"
                   @click="onClickLecture(item.lec_idx)"
                 >
-                  <div
-                    class="course_tit"
-                    :class="item.class_info.length > 4 ? 'course_more' : ''"
-                  >
-                    {{ item.lec_title }}
+                  <div class="card course_bgcolor01">
+                    <!-- [개발참조] 반이 5개 이상일때는 강좌이름에 class="course_more"을 붙이기 -->
+                    <!-- [개발참조]주담임 색상 class="card course_bgcolor01" -->
+                    <div
+                      class="course_tit"
+                      :class="
+                        item.sub_teacher_list.length + item.class_list.length >
+                        3
+                          ? 'course_more'
+                          : ''
+                      "
+                    >
+                      {{ item.lec_title }}
+                    </div>
+                    <div class="course_time">월수금 2:00 - 3:00</div>
+                    <div class="course_time">월수금 2:00 - 3:00</div>
+                    <div class="course_info">{{ item.mem_name }} 선생님</div>
+                    <div
+                      v-if="item.sub_teacher_list !== null"
+                      class="course_info"
+                    >
+                      ({{ setNameArray(item.sub_teacher_list) }})
+                    </div>
+                    <div
+                      v-for="(class_item, class_idx) in item.class_list"
+                      :key="class_idx"
+                      class="course_info"
+                    >
+                      {{ class_item.csm_name }}
+                    </div>
                   </div>
-                  <div
-                    v-for="(
-                      time_item, time_idx
-                    ) in item.lecture_time_list.slice(0, 2)"
-                    :key="`time_${time_idx}`"
-                    class="course_time"
-                  >
-                    {{ setLectureDay(time_item) }}
+                </a>
+              </div>
+              <div class="cards_section02-1">
+                <a
+                  v-for="(item, idx) in lectureCourseListTwo"
+                  :key="idx"
+                  @click="onClickLecture(item.lec_idx)"
+                >
+                  <div class="card course_bgcolor01">
+                    <div
+                      class="course_tit"
+                      :class="
+                        item.sub_teacher_list.length + item.class_list.length >
+                        3
+                          ? 'course_more'
+                          : ''
+                      "
+                    >
+                      {{ item.lec_title }}
+                    </div>
+                    <div class="course_time">월수금 2:00 - 3:00</div>
+                    <div class="course_info">{{ item.mem_name }} 선생님</div>
+                    <div
+                      v-if="item.sub_teacher_list !== null"
+                      class="course_info"
+                    >
+                      ({{ setNameArray(item.sub_teacher_list) }})
+                    </div>
+                    <div
+                      v-for="(class_item, class_idx) in item.class_list"
+                      :key="class_idx"
+                      class="course_info"
+                    >
+                      {{ class_item.csm_name }}
+                    </div>
                   </div>
-                  <div
-                    v-for="(sub_item, sub_idx) in item.class_info"
-                    :key="sub_idx"
-                    class="course_info"
-                  >
-                    {{ sub_item.csm_name }} | {{ sub_item.mem_name }} 선생님
+                </a>
+              </div>
+              <div class="cards_section02-1">
+                <a
+                  v-for="(item, idx) in lectureCourseListThree"
+                  :key="idx"
+                  @click="onClickLecture(item.lec_idx)"
+                >
+                  <div class="card course_bgcolor01">
+                    <div
+                      class="course_tit"
+                      :class="
+                        item.sub_teacher_list.length + item.class_list.length >
+                        3
+                          ? 'course_more'
+                          : ''
+                      "
+                    >
+                      {{ item.lec_title }}
+                    </div>
+                    <div class="course_time">월수금 2:00 - 3:00</div>
+                    <div class="course_info">{{ item.mem_name }} 선생님</div>
+                    <div
+                      v-if="item.sub_teacher_list !== null"
+                      class="course_info"
+                    >
+                      ({{ setNameArray(item.sub_teacher_list) }})
+                    </div>
+                    <div
+                      v-for="(class_item, class_idx) in item.class_list"
+                      :key="class_idx"
+                      class="course_info"
+                    >
+                      {{ class_item.csm_name }}
+                    </div>
                   </div>
-                </div>
-              </a>
+                </a>
+              </div>
             </div>
-            <div v-if="subTeacherCourseList.length > 0" class="cards_section02">
-              <a v-for="(item, idx) in subTeacherCourseList" :key="idx">
+
+            <div class="cards_section03">
+              <a
+                v-for="(item, idx) in subTeacherCourseList"
+                :key="idx"
+                @click="onClickLecture(item.lec_idx)"
+              >
+                <!-- [개발참조]부담임 색상 class="card course_bgcolor02" -->
                 <div class="card course_bgcolor02">
                   <div
                     class="course_tit"
-                    :class="item.class_info.length > 4 ? 'course_more' : ''"
+                    :class="
+                      item.sub_teacher_list.length + item.class_list.length > 3
+                        ? 'course_more'
+                        : ''
+                    "
                   >
                     {{ item.lec_title }}
                   </div>
+                  <div class="course_time">월수금 2:00 - 3:00</div>
+                  <div class="course_info">{{ item.mem_name }} 선생님</div>
                   <div
-                    v-for="(
-                      time_item, time_idx
-                    ) in item.lecture_time_list.slice(0, 2)"
-                    :key="`time_${time_idx}`"
-                    class="course_time"
-                  >
-                    {{ setLectureDay(time_item) }}
-                  </div>
-                  <div
-                    v-for="(sub_item, sub_idx) in item.class_info"
-                    :key="sub_idx"
+                    v-if="item.sub_teacher_list !== null"
                     class="course_info"
                   >
-                    {{ sub_item.csm_name }} | {{ sub_item.mem_name }} 선생님
+                    ({{ setNameArray(item.sub_teacher_list) }})
+                  </div>
+                  <div
+                    v-for="(class_item, class_idx) in item.class_list"
+                    :key="class_idx"
+                    class="course_info"
+                  >
+                    {{ class_item.csm_name }}
                   </div>
                 </div>
               </a>
             </div>
+
             <!-- [개발참조] 종료된코스 예 class="card standby" -->
-            <div v-if="endLectureCourseList.length > 0" class="standby_set">
-              <div class="standby_font">종료된 코스</div>
-              <div class="standby_set02">
-                <div
-                  v-for="(item, idx) in endLectureCourseList"
-                  :key="idx"
-                  class="card standby"
-                >
+            <div v-if="endLectureCourseList.length > 0" class="standby_font">
+              종료된 코스
+            </div>
+            <div class="cards_section03">
+              <a v-for="(item, idx) in endLectureCourseList" :key="idx">
+                <div class="card standby course_more02">
                   <div
                     class="course_tit"
-                    :class="item.class_info.length > 4 ? 'course_more' : ''"
+                    :class="
+                      item.sub_teacher_list.length + item.class_list.length > 3
+                        ? 'course_more'
+                        : ''
+                    "
                   >
                     {{ item.lec_title }}
                   </div>
+                  <div class="course_time">월수금 2:00 - 3:00</div>
+                  <div class="course_time">월수금 2:00 - 3:00</div>
+                  <div class="course_info">{{ item.mem_name }} 선생님</div>
                   <div
-                    v-for="(
-                      time_item, time_idx
-                    ) in item.lecture_time_list.slice(0, 2)"
-                    :key="`time_${time_idx}`"
-                    class="course_time"
-                  >
-                    {{ setLectureDay(time_item) }}
-                  </div>
-                  <div
-                    v-for="(sub_item, sub_idx) in item.class_info"
-                    :key="sub_idx"
+                    v-if="item.sub_teacher_list !== null"
                     class="course_info"
                   >
-                    {{ sub_item.csm_name }} | {{ sub_item.mem_name }} 선생님
+                    ({{ setNameArray(item.sub_teacher_list) }})
+                  </div>
+                  <div
+                    v-for="(class_item, class_idx) in item.class_list"
+                    :key="class_idx"
+                    class="course_info"
+                  >
+                    {{ class_item.csm_name }}
                   </div>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
         </div>
@@ -179,10 +271,14 @@ export default {
   data() {
     return {
       // 유저 정보
+      loginIdentity: 'T',
       insCode: '',
       userIdx: 0,
-      // 강의코스
+      // 강의코스'
       lectureCourseList: [],
+      lectureCourseListOne: [],
+      lectureCourseListTwo: [],
+      lectureCourseListThree: [],
       endLectureCourseList: [],
       subTeacherCourseList: [],
       bgColorList: [],
@@ -201,6 +297,7 @@ export default {
       this.getLectureCourseList()
     },
   },
+  created() {},
   mounted() {
     this.insCode = this.$store.state.common.user.ins_code
     this.userIdx = this.$store.state.common.user.mem_idx
@@ -214,26 +311,63 @@ export default {
         ins_code: this.insCode,
         keyword: this.searchText,
         mem_idx: this.userIdx,
+        identity_type: this.loginIdentity,
       }
       await apiLectureCourse
         .getLectureCourse(payload)
         .then(({ data: { data } }) => {
           console.log(data)
           this.lectureCourseList = []
-          this.endLectureCourseList = []
           this.subTeacherCourseList = []
-          if (data.courseList !== null) {
-            this.lectureCourseList = data.courseList
+          this.endLectureCourseList = []
+          this.lectureCourseListOne = []
+          this.lectureCourseListTwo = []
+          this.lectureCourseListThree = []
+          // 주담임 코스 목록
+          if (data.course_list !== null) {
+            this.lectureCourseList = data.course_list
+            // 신분별 줄 나눔
+            if (this.loginIdentity === 'T') {
+              if (this.lectureCourseList.length < 9) {
+                this.lectureCourseListOne = this.lectureCourseList.slice(0, 4)
+                this.lectureCourseListTwo = this.lectureCourseList.slice(4)
+              } else {
+                const index = Math.ceil(this.lectureCourseList.length / 2)
+                this.lectureCourseListOne = this.lectureCourseList.slice(
+                  0,
+                  index
+                )
+                this.lectureCourseListTwo = this.lectureCourseList.slice(index)
+              }
+            } else if (this.lectureCourseList.length < 13) {
+              this.lectureCourseListOne = this.lectureCourseList.slice(0, 4)
+              this.lectureCourseListTwo = this.lectureCourseList.slice(4, 8)
+              this.lectureCourseListThree = this.lectureCourseList.slice(8)
+            } else {
+              const index = Math.ceil(this.lectureCourseList.length / 3)
+              const sub_index = Math.ceil(
+                (this.lectureCourseList.length - index) / 2
+              )
+              this.lectureCourseListOne = this.lectureCourseList.slice(0, index)
+              this.lectureCourseListTwo = this.lectureCourseList.slice(
+                index,
+                index + sub_index
+              )
+              this.lectureCourseListThree = this.lectureCourseList.slice(
+                index + sub_index
+              )
+            }
           }
-          if (data.courseListEnd !== null) {
-            this.endLectureCourseList = data.courseListEnd
+          // 부담임 코스 목록
+          if (data.course_list_subteacher !== null) {
+            this.subTeacherCourseList = data.course_list_subteacher
           }
-          if (data.courseListSubTeacher !== null) {
-            this.subTeacherCourseList = data.courseListSubTeacher
+          // 종료된 코스 목록
+          if (data.course_list_end !== null) {
+            this.endLectureCourseList = data.course_list_end
           }
           console.log(this.lectureCourseList)
           console.log(this.endLectureCourseList)
-          console.log(this.subTeacherCourseList)
         })
         .catch((err) => {
           console.log(err)
@@ -306,6 +440,17 @@ export default {
       startTime = data.lec_time_stime.substr(0, 5)
       endTime = data.lec_time_etime.substr(0, 5)
       return day + ' ' + startTime + ' - ' + endTime
+    },
+
+    // 부담임 이름 목록
+    setNameArray(array) {
+      if (array !== null) {
+        const names = []
+        for (const x of array) {
+          names.push(x.mem_name)
+        }
+        return names.join(', ')
+      }
     },
   },
 }

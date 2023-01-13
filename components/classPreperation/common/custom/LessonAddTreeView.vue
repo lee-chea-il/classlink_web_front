@@ -6,6 +6,7 @@
       listType="lessonList"
       :is-drop="true"
       :is-show-option="false"
+      :isDragable="true"
       @more-show-click="moreShowClick"
       @more-remove-click="moreRemoveClick"
       @drop-before="dropBefore"
@@ -24,6 +25,7 @@
 <script>
 import $ from 'jquery'
 import { VueTreeList, Tree } from 'vue-tree-list'
+import { deepCopy } from '~/utiles/common'
 export default {
   name: 'CustomListViewLesson',
   components: {
@@ -58,8 +60,8 @@ export default {
           this.setEmptyArea()
         } else {
           this.isEmptyData = false
-          this.setData(value)
-          // this.datas = new Tree(false, this.dataMapping(value, false))
+          // this.setData(value)
+          this.datas = new Tree(false, this.dataMapping(value, false))
         }
       },
       immediate: true,
@@ -72,7 +74,7 @@ export default {
       this.setEmptyArea()
     } else {
       this.isEmptyData = false
-      // this.datas = new Tree(false, this.dataMapping(this.dataList, false))
+      this.datas = new Tree(false, this.dataMapping(this.dataList, false))
     }
   },
   methods: {
@@ -112,14 +114,14 @@ export default {
       this.$emit('un-active')
     },
     copyData(data) {
-      const newStr = JSON.stringify(data)
-      const newData = JSON.parse(newStr)
+      const newData = deepCopy(data)
       newData.treeViewId = newData.id
-      newData.id = 'list_' + this.pid
+      newData.id = `list_${this.pid}`
       newData.pid = this.pid
       newData.isLeaf = true
       newData.readOnly = true
       newData.name = newData.title
+      newData.iconType = this.setType(newData.datatable_type)
       newData.type = this.setType(newData.datatable_type)
       return newData
     },
@@ -131,47 +133,62 @@ export default {
       }
       return result
     },
-    setData(dataList) {
-      console.log('dataList', dataList, this.treeViewType)
-      const dataMapping = (data, isReadOnly) => {
-        const result = []
-        const len = data?.length
-        for (let i = 0; i < len; i++) {
-          const nObj = data[i]
-          nObj.treeViewId = nObj.id
-          nObj.id = this.pid
-          nObj.pid = this.pid
-          nObj.isChecked = false
-          nObj.readOnly = isReadOnly
-          nObj.active = false
-          nObj.name = nObj.title
-
-          if (nObj.group_yn) {
-            nObj.type = this.treeViewType
-            nObj.isLeaf = false
-            result[i] = nObj
-            this.pid++
-            if (nObj.children) {
-              result[i].children = dataMapping(nObj.children, isReadOnly)
-            }
-          } else {
-            if (this.treeViewType === 'MD') {
-              nObj.type = nObj.datatable_type
-            } else {
-              nObj.type = this.treeViewType
-            }
-            nObj.isLeaf = true
-            result[i] = nObj
-            this.pid++
-          }
-        }
-        return result
-      }
-      this.datas = new Tree(
-        !this.editable,
-        dataMapping(dataList[0]?.children, !this.editable)
-      )
-    },
+    // setData(dataList) {
+    //   const copyItem = deepCopy(dataList)
+    //   console.log('dataList', copyItem, this.treeViewType)
+    //   let isFirst = true
+    //   const dataMapping = (data, isReadOnly) => {
+    //     const result = []
+    //     const len = data?.length
+    //     for (let i = 0; i < len; i++) {
+    //       const nObj = data[i]
+    //       nObj.treeViewId = nObj.id
+    //       nObj.id = `list_${this.pid}`
+    //       nObj.pid = this.pid
+    //       nObj.isChecked = false
+    //       nObj.readOnly = isReadOnly
+    //       nObj.active = false
+    //       nObj.name = nObj.title
+    //       nObj.iconType = this.treeViewType
+    //       if (isFirst) {
+    //         isFirst = false
+    //         nObj.checkboxDisable = true
+    //       }
+    //       if (nObj.group_yn) {
+    //         nObj.type = this.treeViewType
+    //         nObj.isLeaf = false
+    //         result[i] = nObj
+    //         this.pid++
+    //         if (nObj.children) {
+    //           result[i].children = dataMapping(nObj.children, isReadOnly)
+    //         }
+    //       } else {
+    //         if (this.treeViewType === 'MD') {
+    //           nObj.type = nObj.datatable_type
+    //           if (nObj.mda_correct_yn) {
+    //             if (nObj.datatable_type === 'ID') {
+    //               nObj.iconType = 'IM'
+    //             } else if (nObj.datatable_type === 'FD') {
+    //               nObj.iconType = 'FM'
+    //             }
+    //           } else {
+    //             nObj.iconType = nObj.datatable_type
+    //           }
+    //         } else {
+    //           nObj.type = this.treeViewType
+    //         }
+    //         nObj.isLeaf = true
+    //         result[i] = nObj
+    //         this.pid++
+    //       }
+    //     }
+    //     return result
+    //   }
+    //   this.datas = new Tree(
+    //     !this.editable,
+    //     dataMapping(copyItem[0]?.children, !this.editable)
+    //   )
+    // },
     setEmptyArea() {
       const dummy = [
         {

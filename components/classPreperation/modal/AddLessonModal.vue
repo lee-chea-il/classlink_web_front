@@ -87,6 +87,25 @@
                           내 자료
                         </button>
                       </li>
+                      <li
+                        v-show="!isLesson"
+                        class="nav-item"
+                        role="presentation"
+                      >
+                        <button
+                          id="class-tab"
+                          class="nav-link"
+                          data-toggle="tab"
+                          data-target="#openPop"
+                          type="button"
+                          role="tab"
+                          aria-controls="profile"
+                          aria-selected="false"
+                        >
+                          <span class="icon_open"></span>
+                          공개 자료실
+                        </button>
+                      </li>
                     </ul>
                     <div
                       v-show="isLesson"
@@ -103,8 +122,9 @@
                         <LessonModalTreeView
                           ref="institution"
                           listType="lesson"
-                          :dataList="receiveInstitutionLessonData"
-                          :editable="identity == 'institution' ? true : false"
+                          treeViewType="IL"
+                          :dataList="institutionLesson"
+                          :editable="false"
                           :identity="identity"
                           :pidNum="10000"
                           :dragDisabled="true"
@@ -124,8 +144,9 @@
                         <LessonModalTreeView
                           ref="franchise"
                           listType="lesson"
-                          :dataList="receiveFranchiseLessonData"
-                          :editable="identity == 'institution' ? true : false"
+                          treeViewType="FL"
+                          :dataList="franchiseLesson"
+                          :editable="false"
                           :identity="identity"
                           :pidNum="11000"
                           :dragDisabled="true"
@@ -144,8 +165,9 @@
                         <LessonModalTreeView
                           ref="franchise"
                           listType="lesson"
-                          :dataList="receiveLessonList"
-                          :editable="identity == 'institution' ? true : false"
+                          treeViewType="ML"
+                          :dataList="myLesson"
+                          :editable="false"
                           :identity="identity"
                           :pidNum="11000"
                           :dragDisabled="true"
@@ -171,9 +193,10 @@
                         <TreeView
                           ref="myLesson"
                           listType="lesson"
+                          :isDragable="true"
                           :dataList="institutionData"
                           treeViewType="ID"
-                          :editable="identity == 'institution' ? true : false"
+                          :editable="false"
                           :identity="identity"
                           :pidNum="12000"
                           @moreShowClick="moreShowClickReference"
@@ -195,7 +218,7 @@
                           listType="lesson"
                           treeViewType="FD"
                           :dataList="franchiseData"
-                          :editable="identity == 'institution' ? true : false"
+                          :editable="false"
                           :identity="identity"
                           :pidNum="13000"
                           @moreShowClick="moreShowClickReference"
@@ -216,7 +239,7 @@
                           listType="lesson"
                           treeViewType="MD"
                           :dataList="myData"
-                          :editable="identity == 'institution' ? true : false"
+                          :editable="false"
                           :identity="identity"
                           :pidNum="13000"
                           @moreShowClick="moreShowClickReference"
@@ -225,6 +248,28 @@
                         />
                       </div>
                       <!-- /.탭 내용03 -->
+
+                      <!-- 탭 내용04 -->
+                      <div
+                        id="openPop"
+                        class="tab-pane fade"
+                        role="tabpanel"
+                        aria-labelledby="class-tab"
+                      >
+                        <TreeView
+                          ref="open"
+                          listType="lesson"
+                          treeViewType="OD"
+                          :dataList="openData"
+                          :editable="false"
+                          :identity="identity"
+                          :pidNum="14000"
+                          @moreShowClick="moreShowClickReference"
+                          @copyDataCallBack="$emit('call-back')"
+                          @un-active="unActive"
+                        />
+                      </div>
+                      <!-- /.탭 내용04 -->
                     </div>
                     <!-- /.탭 컨텐츠 -->
                   </div>
@@ -255,7 +300,7 @@
               </div>
             </div>
             <ModalBtnBox
-              :invalid="isDisabled(invalid, lessonData.keyword.length === 0)"
+              :invalid="isDisabled(invalid, lessonData?.keyword?.length === 0)"
               :submitTxt="modalTitle"
               @submit="onSubmit(modalTitle)"
               @close="$emit('close')"
@@ -292,8 +337,9 @@ export default {
     identity: { type: String, default: '' },
     isLesson: { type: Boolean, default: false },
     pushKeyword: { type: String, default: '' },
-    receiveInstitutionLessonData: { type: Array, default: () => [] },
-    receiveFranchiseLessonData: { type: Array, default: () => [] },
+    institutionLesson: { type: Array, default: () => [] },
+    franchiseLesson: { type: Array, default: () => [] },
+    myLesson: { type: Array, default: () => [] },
     lessonData: { type: Object, default: () => {} },
     referenceList: { type: Array, default: () => [] },
     institutionData: { type: Array, default: () => [] },
@@ -357,6 +403,9 @@ export default {
 
 #franchisePop > .vtl,
 #franchisePop1 > .vtl {
+  height: 349px;
+}
+#openPop > .vtl {
   height: 349px;
 }
 

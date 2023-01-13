@@ -40,7 +40,7 @@
       <!-- /.검색 영역 -->
       <!-- 테이블 영역 -->
       <!-- [개발참조] 데이터 없을 경우  -->
-      <div v-if="syllabusList.length === 0" class="page_nodata">
+      <div v-if="syllabusList === null" class="page_nodata">
         등록된 강의계획서가 없습니다.
       </div>
 
@@ -76,7 +76,7 @@
               <th></th>
             </tr>
           </thead>
-          <tbody >
+          <tbody>
             <tr v-for="(item, idx) in syllabusList" :key="idx" class="cursor">
               <td>
                 <div class="custom-control custom-checkbox form-inline">

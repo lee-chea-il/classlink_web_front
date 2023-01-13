@@ -45,9 +45,11 @@
       :isEmailCheck="isEmailCheck"
       :isIdCheck="isIdCheck"
       :subjectList="subjectList"
+      :uploadImageFile="uploadImageFile"
+      :uploadCWImageFile="uploadCWImageFile"
       @close="onCloseRegisterTeacherModalDesc"
-      @click-profile="openUploadNewTeacherImgModalDesc"
-      @click-cwimg="openUploadNewTeacherCWImgModalDesc"
+      @click-profile="openUploadTeacherImgModalDesc"
+      @click-cwimg="openUploadTeacherCWImgModalDesc"
       @change-input="onChangeUpdateInput"
       @click-birthday="openDatePickerModalDesc"
       @select-position="selectPosition"
@@ -74,6 +76,8 @@
       :targetCheckList="targetCheckList"
       :roleCheckList="roleCheckList"
       :subjectList="subjectList"
+      :uploadImageFile="uploadImageFile"
+      :uploadCWImageFile="uploadCWImageFile"
       @close="onCloseTeacherInfoModalDesc"
       @click-profile="openUploadTeacherImgModalDesc"
       @click-cwimg="openUploadTeacherCWImgModalDesc"
@@ -91,26 +95,26 @@
       @edit-subjects="openEditSubjectsModal"
     />
 
-    <!-- 선생님 등록 - 프로필 이미지 등록1 -->
+    <!-- 프로필 이미지 등록 -->
     <UploadTeacherImg
-      :open="uploadNewTeacherImgModalDesc.open"
-      :teacherInfo="newTeacherInfo"
+      :open="uploadTeacherImgModalDesc.open"
       :uploadImageFile="uploadImageFile"
-      :register="registerTeacherModal.open"
-      @select-file="onFileSelected"
+      :imageInfo="teacherInfo.image.mem_img"
+      @selected-file="onFileSelected"
       @click-upload="onClickInputButton"
-      @close="onCloseUploadNewTeacherImgModalDesc"
+      @close="onCloseUploadTeacherImgModalDesc"
+      @confirm="onClickImgConfirm"
     />
 
-    <!-- 선생님 등록 - CW 이미지 등록1 -->
+    <!-- CW 이미지 등록 -->
     <UploadTeacherCWImg
-      :open="uploadNewTeacherCWImgModalDesc.open"
-      :teacherInfo="newTeacherInfo"
-      :uploadImageFile="uploadImageFile"
-      :register="registerTeacherModal.open"
-      @select-file="onFileSelected"
+      :open="uploadTeacherCWImgModalDesc.open"
+      :imageInfo="teacherInfo.image.mem_cw_img"
+      :uploadImageFile="uploadCWImageFile"
+      @selected-file="onFileSelected"
       @click-upload="onClickInputButton"
-      @close="onCloseUploadNewTeacherCWImgModalDesc"
+      @close="onCloseUploadTeacherCWImgModalDesc"
+      @confirm="onClickCWImgConfirm"
     />
 
     <!-- 생일 날짜 선택 모달 -->
@@ -120,28 +124,6 @@
       @close="onCloseDatePickerModalDesc"
       @select-date="selectBirthday"
       @confirm="onClickBirthdayConfirm"
-    />
-
-    <!-- 팝업 M2- 내정보 수정 - 프로필 이미지 등록1 -->
-    <UploadTeacherImg
-      :open="uploadTeacherImgModalDesc.open"
-      :teacherInfo="teacherInfo"
-      :uploadImageFile="uploadImageFile"
-      :register="registerTeacherModal.open"
-      @select-file="onFileSelected"
-      @click-upload="onClickInputButton"
-      @close="onCloseUploadTeacherImgModalDesc"
-    />
-
-    <!-- 팝업 M2- 내정보 수정 - CW 이미지 등록1 -->
-    <UploadTeacherCWImg
-      :open="uploadTeacherCWImgModalDesc.open"
-      :teacherInfo="teacherInfo"
-      :uploadImageFile="uploadImageFile"
-      :register="registerTeacherModal.open"
-      @select-file="onFileSelected"
-      @click-upload="onClickInputButton"
-      @close="onCloseUploadTeacherCWImgModalDesc"
     />
 
     <!-- 팝업 S2-비밀번호초기화 -->
@@ -194,16 +176,17 @@
   </div>
 </template>
 <script>
-import { apiOperation } from '~/services'
+import { apiOperation, api } from '~/services'
+import { deepCopy } from '~/utiles/common'
 import NavBox from '@/components/operation/NavBox.vue'
 import TeacherListBox from '@/components/operation/TeacherListBox.vue'
 import ResetPasswordModal from '@/components/common/modal/operation/ResetPasswordModal.vue'
 import TeacherCountAlertModal from '@/components/common/modal/operation/TeacherCountAlertModal.vue'
 import TeacherInfoModal from '@/components/common/modal/operation/TeacherInfoModal.vue'
 import UploadTeacherImg from '@/components/common/modal/operation/UploadTeacherImg.vue'
+import UploadTeacherCWImg from '@/components/common/modal/operation/UploadTeacherCWImg.vue'
 import EditSubjectsModal from '@/components/common/modal/operation/EditSubjectsModal.vue'
 import DatePickerModal from '@/components/common/modal/operation/DatePickerModal.vue'
-import UploadTeacherCWImg from '@/components/common/modal/operation/UploadTeacherCWImg.vue'
 import ModalDesc from '@/components/common/modal/ModalDesc.vue'
 import DeleteModal from '@/components/lecturecourse/DeletePlanModal.vue'
 export default {
@@ -224,73 +207,25 @@ export default {
   data() {
     return {
       institutionIdx: this.$store.state.common.user.ins_code,
-      newTeacherInfo: {
-        id: 0,
-        name: '',
-        nickname: '',
-        account: '',
-        subject: '',
-        group: '',
-        phone: '',
-        status: false,
-        gender: 0,
-        educationCode: 123456,
-        email: '',
-        birthday: '',
-        identity: '',
-        position: '교육기관장',
-        profile_image: '',
-        profile_cw_image: '',
-      },
-      // teacherInfo: {
-      //   id: 0,
-      //   name: '김지원',
-      //   nickname: '지원쓰',
-      //   account: 'wldnjs93',
-      //   subject: '수학',
-      //   group: '초등, 중등',
-      //   phone: '010-1234-1234',
-      //   status: true,
-      //   gender: 0,
-      //   educationCode: 123456,
-      //   email: 'wldnjs@naver.com',
-      //   birthday: '2022-11-15',
-      //   identity: '',
-      //   position: '교육기관장',
-      //   profile_image: require('@/assets/images/mypage/profile1.png'),
-      //   profile_cw_image: require('@/assets/images/mypage/cwprofile1.png'),
-      // },
       teacherList: [],
-      initTeacherInfo: {
-        ins_code: this.$store.state.common.user.ins_code,
-        mem_birthday: null,
-        mem_email: '',
-        mem_id: '',
-        mem_idx: 33,
-        mem_name: '',
-        mem_nickname: '',
-        mem_phone: '',
-        mem_sex: '',
-        tch_grade: 'T',
-        tch_use_yn: true,
-        auth_check: false,
-        auth_list: [],
-        subject_check: false,
-        subject_list: [],
-        target_check: false,
-        target_list: [],
-        img_filepath: '',
-      },
+      initTeacherInfo: {},
       teacherInfo: {
         ins_code: this.$store.state.common.user.ins_code,
+        image: {
+          mem_img: null,
+          mem_cw_img: null,
+        },
         mem_birthday: null,
         mem_email: '',
         mem_id: '',
-        mem_idx: 33,
+        mem_idx: 0,
         mem_name: '',
         mem_nickname: '',
         mem_phone: '',
         mem_sex: '',
+        mem_img: '',
+        mem_cw_img: '',
+        tch_idx: 0,
         tch_grade: 'T',
         tch_use_yn: true,
         auth_check: false,
@@ -299,7 +234,6 @@ export default {
         subject_list: [],
         target_check: false,
         target_list: [],
-        img_filepath: '',
       },
       allAuthList: [
         { rca_idx: 1, rin_idx: 1 },
@@ -367,7 +301,6 @@ export default {
       searchFlag: 0,
       stateFlag: true,
       sortFlag: 1,
-
       stateTrue: 0,
       stateFalse: 0,
       searchText: '',
@@ -378,6 +311,9 @@ export default {
       nickNameCheck: false,
       birthday: '',
       uploadImageFile: '',
+      imageFileId: '',
+      uploadCWImageFile: '',
+      cwImageFileId: '',
       isEmailCheck: false,
       isIdCheck: false,
       prevEmail: '',
@@ -415,6 +351,7 @@ export default {
     },
   },
   created() {
+    this.initTeacherInfo = deepCopy(this.teacherInfo)
     const trueArray = this.teacherList.filter((elem) => {
       return elem.status === true
     })
@@ -430,10 +367,6 @@ export default {
     this.getSubjectList()
   },
   methods: {
-    // 깊은 복사
-    deepCopy(data) {
-      return JSON.parse(JSON.stringify(data))
-    },
     // 인덱스
     setIdxNumber(string) {
       return Number(string.substr(4))
@@ -495,6 +428,7 @@ export default {
           this.teacherInfo.auth_list = data.auth_list
           this.teacherInfo.target_list = data.target_list
           this.teacherInfo.subject_list = data.subject_list
+          this.teacherInfo.image = data.image
           if (data.auth_list.length > 0) {
             this.teacherInfo.auth_check = true
           }
@@ -511,6 +445,7 @@ export default {
           console.log(err)
         })
       this.openTeacherInfoModalDesc()
+      console.log(this.teacherInfo)
     },
 
     // 선생님 등록 api
@@ -647,7 +582,7 @@ export default {
       } else {
         this.teacherInfo.tch_grade = 'M'
         this.teacherInfo.auth_check = true
-        this.teacherInfo.auth_list = this.deepCopy(this.allAuthList)
+        this.teacherInfo.auth_list = deepCopy(this.allAuthList)
       }
     },
 
@@ -766,9 +701,11 @@ export default {
     onCloseRegisterTeacherModalDesc() {
       this.registerTeacherModal.open = false
       setTimeout(() => {
-        this.teacherInfo = this.deepCopy(this.initTeacherInfo)
+        this.teacherInfo = deepCopy(this.initTeacherInfo)
         this.isIdCheck = false
         this.isEmailCheck = false
+        this.uploadImageFile = ''
+        this.uploadCWImageFile = ''
       }, 500)
     },
     openTeacherInfoModalDesc() {
@@ -779,9 +716,11 @@ export default {
     onCloseTeacherInfoModalDesc() {
       this.teacherInfoModalDesc.open = false
       setTimeout(() => {
-        this.teacherInfo = this.deepCopy(this.initTeacherInfo)
+        this.teacherInfo = deepCopy(this.initTeacherInfo)
         this.isIdCheck = false
         this.isEmailCheck = false
+        this.uploadImageFile = ''
+        this.uploadCWImageFile = ''
       }, 500)
     },
     openUploadTeacherImgModalDesc() {
@@ -789,12 +728,14 @@ export default {
     },
     onCloseUploadTeacherImgModalDesc() {
       this.uploadTeacherImgModalDesc.open = false
+      this.uploadImageFile = ''
     },
     openUploadTeacherCWImgModalDesc() {
       this.uploadTeacherCWImgModalDesc.open = true
     },
     onCloseUploadTeacherCWImgModalDesc() {
       this.uploadTeacherCWImgModalDesc.open = false
+      this.uploadCWImageFile = ''
     },
     openUploadNewTeacherImgModalDesc() {
       this.uploadNewTeacherImgModalDesc.open = true
@@ -874,7 +815,26 @@ export default {
           console.log(err)
         })
     },
-
+    // 프로필 이미지
+    // 파일서버 업로드
+    async postFile(file) {
+      this.isUploading = true
+      const formData = new FormData()
+      formData.append('file', file)
+      await api
+        .postFile(formData)
+        .then(({ data: { data } }) => {
+          if (this.uploadTeacherCWImgModalDesc.open) {
+            this.uploadCWImageFile = process.env.VUE_APP_FILE_URL + data.savedNm
+            this.cwImageFileId = data.savedNm
+            console.log(this.uploadCWImageFile)
+          } else {
+            this.uploadImageFile = process.env.VUE_APP_FILE_URL + data.savedNm
+            this.imageFileId = data.savedNm
+          }
+        })
+        .catch(() => {})
+    },
     // 이미지 업로드
     onClickInputButton() {
       const inputBtn = document.getElementById('upload-input')
@@ -884,12 +844,7 @@ export default {
       const input = target
       if (input.files && input.files[0]) {
         if (input.files[0].size < 3145728) {
-          const reader = new FileReader()
-          reader.onload = (e) => {
-            this.uploadImageFile = e.target.result
-            console.log(this.uploadImageFile)
-          }
-          reader.readAsDataURL(input.files[0])
+          this.postFile(input.files[0])
         } else {
           this.openModalDesc(
             '업로드 제한',
@@ -897,6 +852,16 @@ export default {
           )
         }
       }
+    },
+    // 프로필 이미지 저장
+    onClickImgConfirm() {
+      this.teacherInfo.mem_img = this.imageFileId
+      this.uploadTeacherImgModalDesc.open = false
+    },
+    // cw 이미지 저장
+    onClickCWImgConfirm() {
+      this.teacherInfo.mem_cw_img = this.cwImageFileId
+      this.uploadTeacherCWImgModalDesc.open = false
     },
 
     // 과목 수정

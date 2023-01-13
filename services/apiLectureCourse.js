@@ -3,7 +3,7 @@ import http from './http'
 // 강의코스 메인
 async function getLectureCourse(payload) {
   return await http.get(
-    `/api/v1/class/courses?end_course_check=${payload.end_course_check}&ins_code=${payload.ins_code}&keyword=${payload.keyword}&mem_idx=${payload.mem_idx}`
+    `/api/v1/class/courses?end_course_check=${payload.end_course_check}&identity_type=${payload.identity_type}&ins_code=${payload.ins_code}&keyword=${payload.keyword}&mem_idx=${payload.mem_idx}`
   )
 }
 

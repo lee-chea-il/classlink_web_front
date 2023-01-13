@@ -556,8 +556,14 @@
 		padding-left: 30px;
 		padding-right: 30px;
 		text-align: left;
-		height: 490px;
-		overflow-y: scroll;
+		height: 752px;
+		overflow-y: auto;
+	}
+
+	@media (max-width: 1199.98px) {
+		.modal-body {
+			height: 490px !important;
+		}
 	}
 
 	.divide_section .divide_area {
@@ -3578,6 +3584,15 @@
 		margin-right: 6px;
 		margin-left: 17px;
 	}
+
+	.form-group textarea {
+		padding: 10px 10px 10px 10px !important;
+	}
+
+	.col {
+		padding-left: 0px;
+	}
+
 }
 
 /* -----------------------------    커리큘럼    ----------------------------- */
@@ -3694,7 +3709,7 @@
 		display: flex;
 		justify-content: center;
 		line-height: 40px;
-		align-items: center;
+		// align-items: center;
 	}
 
 	.custom-checkbox .custom-control-label::before {

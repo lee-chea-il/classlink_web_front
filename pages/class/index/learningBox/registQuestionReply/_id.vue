@@ -63,9 +63,6 @@ export default {
       ins_code: this.$store.state.common.user.ins_code,
       fra_code: this.$store.state.common.user.fra_code,
       qtbIdx: Number(this.$route.params.id),
-      // openYN: Boolean(this.$route.query.open_yn),
-      // cstmIdx: Number(this.$route.query.cstm_idx),
-      // icuIdx: Number(this.$route.query.icu_idx),
 
       answer: {
         qbaTitle: '',
@@ -130,8 +127,8 @@ export default {
         await apiLeaningBox
           .postRegistAnswer(payload)
           .then(() => {
-            this.$router.push(`/class/learningBox/question`)
             this.openModalDesc('등록 성공', '답변을 등록했습니다.')
+            this.$router.push(`/class/learningBox/question`)
           })
           .catch((err) => {
             console.log(err)

@@ -16,7 +16,11 @@
 
           <div class="modal-body">
             <!-- 탭 컨텐츠 -->
-            <SavePathHeader />
+            <SavePathHeader
+              :identity="identity"
+              :idType="isOpenFlag(modalTitle, tableType, 'ID')"
+              :myType="isOpenFlag(modalTitle, tableType, 'MD')"
+            />
             <div id="myTabContent" class="tab-content path_list">
               <!-- 탭01 내용 -->
               <div
@@ -27,6 +31,7 @@
               >
                 <TreeView
                   ref="institutionFolderView"
+                  treeViewType="ID"
                   :dataList="institutionData"
                   :expanded="true"
                   :pidNum="110"
@@ -106,22 +111,13 @@ export default {
     TreeView,
   },
   props: {
-    institutionData: {
-      type: Array,
-      default: () => [],
-    },
-    franchiseData: {
-      type: Array,
-      default: () => [],
-    },
-    myData: {
-      type: Array,
-      default: () => [],
-    },
-    open: {
-      type: Boolean,
-      default: false,
-    },
+    open: { type: Boolean, default: false },
+    identity: { type: String, default: '' },
+    tableType: { type: String, default: '' },
+    modalTitle: { type: String, default: '' },
+    institutionData: { type: Array, default: () => [] },
+    franchiseData: { type: Array, default: () => [] },
+    myData: { type: Array, default: () => [] },
   },
   data() {
     return {
@@ -133,22 +129,35 @@ export default {
     }
   },
   methods: {
-    folderClickInsti(pathInfo) {
+    folderClickInsti(pathInfo, data) {
       this.folderInfo.path = pathInfo
-      this.folderInfo.type = 'institution'
+      this.folderInfo.id = data.treeViewId
+      // this.folderInfo.id = 157
+      this.folderInfo.type = 'IL'
     },
-    folderClickFran(pathInfo) {
+    folderClickFran(pathInfo, data) {
       this.folderInfo.path = pathInfo
-      this.folderInfo.type = 'franchise'
+      this.folderInfo.id = data.treeViewId
+      this.folderInfo.type = 'FL'
     },
-    folderClickMyData(pathInfo) {
+    folderClickMyData(pathInfo, data) {
       this.folderInfo.path = pathInfo
-      this.folderInfo.type = 'curriculum'
+      this.folderInfo.id = data.treeViewId
+      this.folderInfo.type = 'ML'
     },
     saveFilePath() {
       this.folderInfo.filename = $('#inputSavePath').val()
-      this.$emit('save-file-path', this.folderInfo.path)
+      this.$emit('save-file-path', this.folderInfo)
       this.$emit('close')
+    },
+    isOpenFlag(str, type, myType) {
+      if (str === '등록') {
+        return true
+      } else if (type === myType) {
+        return true
+      } else {
+        return false
+      }
     },
   },
 }

@@ -75,7 +75,6 @@
 
                       <button
                         class="btn btn_crud_point btn_mb"
-                        :class="{ disabled: invalid }"
                         :disabled="invalid"
                         @click.prevent="$emit('open-institution')"
                       >

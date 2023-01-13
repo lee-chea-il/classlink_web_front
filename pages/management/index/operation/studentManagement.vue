@@ -74,6 +74,7 @@
       :isEmailCheck="isEmailCheck"
       :isAttNumberCheck="isAttNumberCheck"
       :isStayRegister="isStayRegister"
+      :uploadImageFile="uploadImageFile"
       @close="onCloseNewStudentInfoModalDesc"
       @change-input="onChangeUpdateInput"
       @click-birthday="openDatePickerModalDesc"
@@ -110,6 +111,7 @@
       :familySearchText="familySearchText"
       :isEmailCheck="isEmailCheck"
       :isAttNumberCheck="isAttNumberCheck"
+      :uploadImageFile="uploadImageFile"
       @close="onCloseStudentInfoModalDesc"
       @change-input="onChangeUpdateInput"
       @click-birthday="openDatePickerModalDesc"
@@ -135,6 +137,17 @@
       @check-sttnumber="getAttendanceNumberCheck"
       @update-student="updateStudentInfo"
       @add-student="registerStudent"
+    />
+
+    <!-- 학생 정보 수정 - 프로필 이미지 등록1 -->
+    <UploadStudentImg
+      :open="uploadStudentImgModalDesc.open"
+      :uploadImageFile="uploadImageFile"
+      :imageInfo="studentInfo.image.mem_img"
+      @selected-file="onFileSelected"
+      @click-upload="onClickInputButton"
+      @close="onCloseUploadStudentImgModalDesc"
+      @confirm="onClickImgConfirm"
     />
 
     <!-- 일촌등록 - 팝업 M2 -->
@@ -175,17 +188,6 @@
       @close="onCloseDatePickerLectureDateModalDesc"
       @select-date="selectLectureDate"
       @confirm="onClickLectureDateConfirm"
-    />
-
-    <!-- 학생 정보 수정 - 프로필 이미지 등록1 -->
-    <UploadStudentImg
-      :open="uploadStudentImgModalDesc.open"
-      :teacherInfo="studentInfo"
-      :uploadImageFile="uploadImageFile"
-      @select-file="onFileSelected"
-      @click-upload="onClickInputButton"
-      @close="onCloseUploadStudentImgModalDesc"
-      @confirm="onClickImgConfirm"
     />
 
     <!-- 비밀번호초기화 -->
@@ -351,7 +353,8 @@
 </template>
 <script>
 import html2pdf from 'html2pdf.js'
-import { apiOperation } from '~/services'
+import { omit } from 'lodash'
+import { api, apiOperation } from '~/services'
 import NavBox from '@/components/operation/NavBox.vue'
 import StudentListBox from '@/components/operation/StudentListBox.vue'
 import ReportPrintPage from '@/components/operation/ReportPrintPage.vue'
@@ -407,23 +410,26 @@ export default {
         mem_name: '',
         ins_code: this.$store.state.common.user.ins_code,
         fra_code: '',
-        mem_img: '',
+        image: {
+          mem_img: null,
+        },
         mem_id: '',
         mem_nickname: '',
         mem_email: '',
-        itm_status: '02',
+        mem_sex: 'M',
+        mem_phone: '',
+        mem_birthday: '',
+        mem_img: '',
         std_year: '',
         std_adult_yn: false,
-        mem_sex: 'M',
         std_grade: 'S',
         std_use_yn: true,
         std_att_num: '',
-        mem_phone: '',
         std_school: '',
         std_courses: '',
-        mem_birthday: '',
         std_parent_phone: '',
         itm_acc_yn: true,
+        itm_status: '02',
         std_idx: 0,
         family_id: null,
         lecture_info_dto: [],
@@ -658,6 +664,7 @@ export default {
       lectureDate: '',
       resetClassList: [],
       uploadImageFile: '',
+      imageFileId: '',
       familySearchText: '',
       familySearchList: [],
       registerFamilyList: [],
@@ -930,12 +937,13 @@ export default {
     },
     // 학생 수정 api
     async updateStudentInfo() {
-      const payload = this.studentInfo
+      const payload = omit(this.studentInfo, ['image'])
       await apiOperation
         .updateStudentInfo(payload)
         .then((res) => {
           console.log(res)
           this.openModalDesc('학생 상세 정보', '학생 정보가 수정되었습니다.')
+
           this.getStudentList()
         })
         .catch((err) => {
@@ -1228,6 +1236,43 @@ export default {
           console.log(err)
         })
     },
+    // 프로필 이미지
+    // 파일서버 업로드
+    async postFile(file) {
+      this.isUploading = true
+      const formData = new FormData()
+      formData.append('file', file)
+      await api
+        .postFile(formData)
+        .then(({ data: { data } }) => {
+          this.uploadImageFile = process.env.VUE_APP_FILE_URL + data.savedNm
+          this.imageFileId = data.savedNm
+        })
+        .catch(() => {})
+    },
+    // 이미지 업로드
+    onClickInputButton() {
+      const inputBtn = document.getElementById('upload-input')
+      inputBtn.click()
+    },
+    onFileSelected({ target }) {
+      const input = target
+      if (input.files && input.files[0]) {
+        if (input.files[0].size < 3145728) {
+          this.postFile(input.files[0])
+        } else {
+          this.openModalDesc(
+            '업로드 제한',
+            '해당 파일은 제한된 용량을 초과하였습니다. (이미지 제한 용량: 3MB)'
+          )
+        }
+      }
+    },
+    onClickImgConfirm() {
+      this.studentInfo.mem_img = this.imageFileId
+      this.uploadStudentImgModalDesc.open = false
+    },
+
     // 계속 등록하기
     checkStayRegister({ target: { checked } }) {
       this.isStayRegister = checked
@@ -1479,12 +1524,15 @@ export default {
     },
     // 수강 정보 납부일 수정 api
     async updatePaymentDay(item) {
-    
+      if (item.sl_lec_sdate === null) {
+        item.sl_lec_sdate = ''
+      }
       const payload = {
         sl_idx: item.sl_idx,
         sl_lec_sdate: item.sl_lec_sdate,
         sl_payment_date: item.sl_payment_date,
       }
+      console.log(payload)
       await apiOperation
         .updatePaymentDay(payload)
         .then((res) => {
@@ -1526,6 +1574,7 @@ export default {
         this.selectedDate = ''
         this.lectureDate = ''
         this.familySearchText = ''
+        this.uploadImageFile = ''
       }, 500)
     },
     // 학생 개별 등록
@@ -1539,6 +1588,7 @@ export default {
         this.selectedDate = ''
         this.lectureDate = ''
         this.familySearchText = ''
+        this.uploadImageFile = ''
       }, 500)
     },
     // 생년월일
@@ -1561,6 +1611,7 @@ export default {
     },
     onCloseUploadStudentImgModalDesc() {
       this.uploadStudentImgModalDesc.open = false
+      this.uploadImageFile = ''
     },
     // 학생 일괄 등록
     openBatchRegistrationModalDesc() {
@@ -1678,34 +1729,6 @@ export default {
     },
     onCloseReportDetailModal() {
       this.reportDetailModalDesc.open = false
-    },
-
-    // 이미지 업로드
-    onClickInputButton() {
-      const inputBtn = document.getElementById('upload-input')
-      inputBtn.click()
-    },
-    onFileSelected({ target }) {
-      const input = target
-      if (input.files && input.files[0]) {
-        if (input.files[0].size < 3145728) {
-          const reader = new FileReader()
-          reader.onload = (e) => {
-            this.uploadImageFile = e.target.result
-            console.log(this.uploadImageFile)
-          }
-          reader.readAsDataURL(input.files[0])
-        } else {
-          this.openModalDesc(
-            '업로드 제한',
-            '해당 파일은 제한된 용량을 초과하였습니다. (이미지 제한 용량: 3MB)'
-          )
-        }
-      }
-    },
-    onClickImgConfirm() {
-      this.studentInfo.profile_image = this.uploadImageFile
-      this.uploadStudentImgModalDesc.open = false
     },
 
     // 학생 일괄 등록

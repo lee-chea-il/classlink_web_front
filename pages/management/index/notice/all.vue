@@ -81,6 +81,7 @@ export default {
           brd_registration_date: '',
           brd_view_cnt: 0,
           mem_name: '',
+          brd_idx: 0,
         },
       ],
       // 리스트 검색
@@ -178,8 +179,8 @@ export default {
     onClickAllCheck() {
       if (!this.allCheck) {
         this.checkList = []
-        for (let i = 0; i < this.noticeList.length; i++) {
-          this.checkList.push(this.noticeList[i].brd_idx)
+        for (const item of this.noticeList) {
+          this.checkList.push(item.brd_idx)
         }
         this.allCheck = true
       } else {

@@ -24,7 +24,7 @@
               <input
                 v-model="syncedCodeSearch"
                 type="text"
-                maxlength="13"
+                maxlength="8"
                 class="form-control"
                 placeholder="가맹코드 검색"
                 @keyup.enter="$emit('search')"
@@ -83,12 +83,14 @@ export default {
   computed: {
     syncedCodeSearch: {
       get() {
-        return this.codeSearch
-          .replace(/[^0-9]/g, '')
-          .replace(/^(\d{0,2})(\d{0,5})(\d{0,4})$/g, '$1-$2-$3')
-          .replace(/(-{1,2})$/g, '')
-          .replace(/ /g, '')
-          .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
+        return (
+          this.codeSearch
+            .replace(/[^0-9]/g, '')
+            // .replace(/^(\d{0,2})(\d{0,5})(\d{0,4})$/g, '$1-$2-$3')
+            .replace(/(-{1,2})$/g, '')
+            .replace(/ /g, '')
+            .replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
+        )
       },
       set(value) {
         this.$emit('update:codeSearch', value)

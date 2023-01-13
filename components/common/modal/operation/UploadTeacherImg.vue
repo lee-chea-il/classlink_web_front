@@ -14,7 +14,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 id="exampleModalLabel" class="modal-title">
-              프로필 이미지 등록
+              {{ isInsImage ? '교육기관 로고 등록' : '프로필 이미지 등록' }}
             </h5>
             <button
               type="button"
@@ -38,25 +38,20 @@
                 class="btn btn_crud_default btn_sec btn_width"
                 @click="$emit('click-upload')"
               >
-                {{
-                  teacherInfo.profile_image === '' ||
-                  teacherInfo.profile_image === null
-                    ? '이미지 불러오기'
-                    : '이미지 교체하기'
-                }}
+                {{ imageInfo === null ? '이미지 불러오기' : '이미지 교체하기' }}
               </button>
               <input
                 id="upload-input"
                 type="file"
                 accept="image/png, image/jpeg"
-                @change="$emit('select-file', $event)"
+                @change="$emit('selected-file', $event)"
               />
               <!-- <button class="btn btn_crud_default btn_sec" data-dismiss="modal">
               자르기
             </button> -->
             </div>
             <div
-              v-if="teacherInfo.profile_image === '' && uploadImageFile === ''"
+              v-if="uploadImageFile === '' && imageInfo === null"
               class="explainType02"
             >
               <a
@@ -71,11 +66,7 @@
             <div v-else class="preview-area">
               <img
                 class="preview-img"
-                :src="
-                  uploadImageFile === ''
-                    ? teacherInfo.profile_image
-                    : uploadImageFile
-                "
+                :src="uploadImageFile === '' ? imageInfo : uploadImageFile"
               />
             </div>
           </div>
@@ -107,6 +98,14 @@ export default {
     uploadImageFile: {
       type: String,
       default: '',
+    },
+    imageInfo: {
+      type: String,
+      default: '',
+    },
+    isInsImage: {
+      type: Boolean,
+      default: false,
     },
   },
 }

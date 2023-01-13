@@ -9,7 +9,7 @@
     >
       <TreeView
         ref="institution"
-        treeViewType="ID"
+        :treeViewType="typeList[0]"
         :editable="identity == 'institution' ? true : false"
         :identity="identity"
         :pidNum="0"
@@ -37,7 +37,7 @@
     >
       <TreeView
         ref="franchise"
-        treeViewType="FD"
+        :treeViewType="typeList[1]"
         :editable="identity == 'institution' ? true : false"
         :identity="identity"
         :pidNum="1000"
@@ -100,6 +100,7 @@ export default {
     pageType: { type: String, default: '' },
     insData: { type: Array, default: () => [] },
     franchiseData: { type: Array, default: () => [] },
+    typeList: { type: Array, default: () => [] },
   },
 }
 </script>

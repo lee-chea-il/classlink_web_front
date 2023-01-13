@@ -4,24 +4,18 @@
     <div class="info_area left">
       <div class="row">
         <div class="pp_area">
-          <!-- [개발참조]: 업로드 사진은 <span>의 backgroung-image로 젹용 -->
           <div
             class="profile_photo"
             :style="
-              myInfo.profile_image === '' || myInfo.profile_image === null
+              userInfo.mem_img == null
                 ? {
                     'background-image': `url(${sample_photo})`,
                   }
                 : {
-                    'background-image': `url(${myInfo.profile_image})`,
+                    'background-image': `url(${memImageUrl})`,
                   }
             "
-          >
-            <!-- <span
-              style="background-image: url(../images/sample_profile_photo.jpg)"
-            ></span> -->
-            <!-- <img :src="myInfo.profile_image" class="profile_img" /> -->
-          </div>
+          ></div>
         </div>
         <div class="info_area02">
           <div class="form-group row">
@@ -73,7 +67,7 @@
             <label for="" class="info_area_title col-form-label">상태</label>
             <div class="col">
               <button
-                class="btn btn_activated"
+                class="btn btn_activated none_cursor"
                 :class="userInfo.mem_status === 'R' ? 'active' : ''"
               >
                 {{ userInfo.mem_status === 'R' ? '활성화' : '비활성화' }}
@@ -156,6 +150,10 @@ export default {
       type: String,
       default: '',
     },
+    memImageUrl: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -173,5 +171,9 @@ export default {
 .profile_photo {
   background-size: cover;
   background-position: center;
+  border: 0.4px solid rgb(193 193 193) !important;
+}
+.none_cursor {
+  cursor: default !important;
 }
 </style>

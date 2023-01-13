@@ -133,7 +133,9 @@
                 ></label>
               </div>
             </td>
-            <td><div :class="item.tch_use_yn ? 'tc_active' : ''"></div></td>
+            <td>
+              <div :class="item.tch_use_yn ? 'tc_active' : 'tc_inactive'"></div>
+            </td>
             <td>
               <span>{{ item.mem_name }}</span> 선생님
             </td>

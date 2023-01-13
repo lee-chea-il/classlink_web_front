@@ -13,7 +13,9 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 id="exampleModalLabel" class="modal-title">CW 이미지 등록</h5>
+            <h5 id="exampleModalLabel" class="modal-title">
+              {{ isInsImage ? '교육기관 이미지 등록' : 'CW 이미지 등록' }}
+            </h5>
             <button
               type="button"
               class="close"
@@ -37,8 +39,7 @@
                 @click="$emit('click-upload')"
               >
                 {{
-                  teacherInfo.profile_cw_image === '' ||
-                  teacherInfo.profile_cw_image === null
+                  imageInfo === '' || imageInfo === null
                     ? '이미지 불러오기'
                     : '이미지 교체하기'
                 }}
@@ -47,13 +48,11 @@
                 id="upload-input"
                 type="file"
                 accept="image/png, image/jpeg"
-                @change="$emit('select-file', $event)"
+                @change="$emit('selected-file', $event)"
               />
             </div>
             <div
-              v-if="
-                teacherInfo.profile_cw_image === '' && uploadImageFile === ''
-              "
+              v-if="uploadImageFile === '' && imageInfo === null"
               class="explainType02"
             >
               <a
@@ -68,16 +67,12 @@
             <div v-else class="preview-area">
               <img
                 class="preview-img"
-                :src="
-                  uploadImageFile === ''
-                    ? teacherInfo.profile_cw_image
-                    : uploadImageFile
-                "
+                :src="uploadImageFile === '' ? imageInfo : uploadImageFile"
               />
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn_crud_point" @click="$emit('close')">
+            <button class="btn btn_crud_point" @click="$emit('confirm')">
               저장
             </button>
             <button class="btn btn_crud_default" @click="$emit('close')">
@@ -106,6 +101,14 @@ export default {
       default: '',
     },
     register: {
+      type: Boolean,
+      default: false,
+    },
+    imageInfo: {
+      type: String,
+      default: '',
+    },
+    isInsImage: {
       type: Boolean,
       default: false,
     },

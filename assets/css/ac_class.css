@@ -1947,11 +1947,14 @@ ol {
 .ac_manage_course .course_more {
   padding-top: 120px !important;
 }
+.ac_manage_course .course_more03 {
+  padding-top: 30px !important;
+}
 .ac_manage_course .course_tit {
   font-style: normal;
   font-weight: 700;
   font-size: 16px;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 .ac_manage_course .course_time {
   padding: 5px 20px;
@@ -1993,7 +1996,7 @@ ol {
   height: 188px;
 }
 .ac_manage_course .cards_section .card.course_more02::before {
-  height: 305px;
+  height: 226px;
 }
 .ac_manage_course .course_bgcolor02 {
   background: #E7EDFF;

@@ -27,9 +27,17 @@
               <!-- 프로필 사진 영역 -->
               <div
                 class="profile_images_area"
-                :style="{
-                  'background-image': `url(${teacherInfo.profile_cw_image})`,
-                }"
+                :style="
+                  uploadCWImageFile !== ''
+                    ? {
+                        'background-image': `url(${uploadCWImageFile})`,
+                      }
+                    : teacherInfo.image.mem_cw_img === null
+                    ? ''
+                    : {
+                        'background-image': `url(${teacherInfo.image.mem_cw_img})`,
+                      }
+                "
               >
                 <button
                   type="button"
@@ -40,13 +48,16 @@
                 <div
                   class="profile_photo"
                   :style="
-                    teacherInfo.profile_image === '' ||
-                    teacherInfo.profile_image === null
+                    uploadImageFile !== ''
+                      ? {
+                          'background-image': `url(${uploadImageFile})`,
+                        }
+                      : teacherInfo.image.mem_img === null
                       ? {
                           'background-image': `url(${sample_photo})`,
                         }
                       : {
-                          'background-image': `url(${teacherInfo.profile_image})`,
+                          'background-image': `url(${teacherInfo.image.mem_img})`,
                         }
                   "
                 >
@@ -97,25 +108,6 @@
                           :isCheckBox="true"
                           @change-input="$emit('change-input', $event)"
                         />
-                        <!-- <div class="group">
-                        <input
-                          type="text"
-                          placeholder="닉네임입력"
-                          class="form-control"
-                          value=""
-                        />
-                        <div class="custom-control custom-checkbox custom-sm">
-                          <input
-                            id="checkbox01"
-                            type="checkbox"
-                            class="custom-control-input"
-                            checked
-                          />
-                          <label class="custom-control-label" for="checkbox01"
-                            >이름과 동일</label
-                          >
-                        </div>
-                      </div> -->
                       </div>
                     </div>
                     <div class="form-group row">
@@ -1073,6 +1065,14 @@ export default {
       type: Array,
       default: () => [],
     },
+    uploadImageFile: {
+      type: String,
+      default: '',
+    },
+    uploadCWImageFile: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -1109,6 +1109,7 @@ export default {
 .profile_photo {
   background-size: cover;
   background-position: center;
+  border: 0.4px solid rgb(193 193 193) !important;
 }
 
 .mt {

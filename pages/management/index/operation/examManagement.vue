@@ -586,13 +586,6 @@ export default {
       number: ['①', '②', '③', '④'],
     }
   },
-  computed: {
-    // onSettingAnswerNumber(item) {
-    //   for (let i = 0; i<4; i++) {
-    //   }
-    //   return
-    // },
-  },
   methods: {
     // 모달
     onOpenExamResult() {

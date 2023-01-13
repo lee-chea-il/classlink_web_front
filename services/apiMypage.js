@@ -27,7 +27,7 @@ async function putUpdateUserInfo(payload) {
 }
 // 이메일 중복체크
 async function getEmailCheck(email) {
-  return await http.get(`/api/v1/account/sign-up/email-check?email=${email}`)
+  return await http.get(`/api/v1/account/check-email?email=${email}`)
 }
 
 // 프랜차이즈 개설

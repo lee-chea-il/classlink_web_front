@@ -18,7 +18,7 @@
           :type="type"
           :placeholder="placeholder"
           class="form-control"
-          :maxlength="id === 'phone' ? '13' : ''"
+          :maxlength="id.includes('phone') ? '13' : ''"
           :class="
             (isError ? 'is-invalid' : classes,
             isBtn || isIdCheckBtn ? 'form-inline' : '')
@@ -30,7 +30,7 @@
         <button
           v-if="isBtn"
           class="btn btn_crud_point auth_btn_width"
-          :class="classes['is-valid'] && !isEmailCheck ? '' : 'disabled'"
+          :disabled="isEmailCheck"
           @click="$emit('check-email', $event)"
         >
           중복확인

@@ -23,6 +23,7 @@
         <TreeSection
           ref="mainEducation"
           pageType="reference"
+          :typeList="['ID', 'FD', 'MD']"
           :identity="identity"
           :insData="institutionData"
           :franchiseData="franchiseData"
@@ -241,9 +242,9 @@
     <SavePathModal
       :identity="identity"
       :open="isSavePathModal.open"
-      :institutionData="treeInstitutionData"
-      :franchiseData="treeFranchiseData"
-      :myData="treeMyData"
+      :institutionData="institutionData"
+      :franchiseData="franchiseData"
+      :myData="myData"
       :tableType="selectDatatableType"
       :modalTitle="modalTitle"
       @save-file-path="setSavePath"
@@ -254,10 +255,10 @@
     <MovePathModal
       :identity="identity"
       :open="isMovePathModal.open"
-      :institutionData="moveInstitutionData"
-      :franchiseData="moveFranchiseData"
+      :institutionData="institutionData"
+      :franchiseData="franchiseData"
       :dataInfo="referenceData"
-      :myData="moveMyData"
+      :myData="myData"
       :tableType="selectDatatableType"
       :modalTitle="modalTitle"
       @move-data="postMoveData"
@@ -280,14 +281,21 @@
     <SearchResultModal
       :open="isSearchListModal"
       :searchData="searchData"
-      :filterItem="referenceList"
+      :filterItem="dataList"
       :checkList="checkList"
+      :currentPage="filterCurrentPage"
+      :pageList="setPerPageList(filterEndPage)"
+      :filterTotal="filterTotal"
+      :currentList="filterCurrentPageNum"
+      @pagination="paginationNumber"
+      @paginationList="paginationList"
       @change-word="changeSearchData"
       @close="closeSearchListModal"
       @open-filter="openFilterModal"
       @copy="copyData"
       @check-handler="checkHandler"
       @detail-view="onClickViewDetail"
+      @move-data="moveFilterData"
       @search-submit="getSearchTreeList"
     />
 
@@ -309,6 +317,7 @@
 import html2pdf from 'html2pdf.js'
 import $ from 'jquery'
 import file_size_url from 'file_size_url'
+import _ from 'lodash'
 import LoadingBox from '~/components/common/LoadingBox.vue'
 import UploadLoadingBox from '~/components/common/UploadLoadingBox.vue'
 import MainBtnBox from '~/components/common/MainBtnBox.vue'
@@ -372,6 +381,21 @@ export default {
   data() {
     return initialState()
   },
+  computed: {
+    endPageIdx() {
+      return this.filterCurrentPageNum * this.filterPerPageNum
+    },
+    startPageIdx() {
+      return this.endPageIdx - this.filterPerPageNum
+    },
+  },
+  watch: {
+    filterCurrentPage(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.getSearchTreeList()
+      }
+    },
+  },
   mounted() {
     this.identity = localStorage.getItem('identity')
     const { user } = this.$store.state.common
@@ -380,13 +404,15 @@ export default {
       ins_code: user.ins_code,
       registrant_name: user.mem_name,
     }
-    this.referenceData = deepCopy(this.initReferenceData)
+
     this.getEarlyData()
   },
   methods: {
     // api 통신
     // 초기 접근 시 api호출
     getEarlyData() {
+      this.referenceData = deepCopy(this.initReferenceData)
+      this.searchData = deepCopy(this.initSearchData)
       this.isLoading = true
       Promise.all([
         this.getServerUrl(),
@@ -402,10 +428,7 @@ export default {
       await apiData
         .getTreeViewList({ type: 'ID' })
         .then(({ data: { data } }) => {
-          const newItem = deepCopy(data)
-          this.institutionData = deepCopy(newItem)
-          this.treeInstitutionData = deepCopy(newItem)
-          this.moveInstitutionData = deepCopy(newItem)
+          this.institutionData = data
         })
         .catch((err) => {
           console.log(err)
@@ -418,10 +441,7 @@ export default {
         await apiData
           .getTreeViewList({ type: 'FD' })
           .then(({ data: { data } }) => {
-            const newItem = deepCopy(data)
-            this.franchiseData = deepCopy(newItem)
-            this.treeFranchiseData = deepCopy(newItem)
-            this.moveFranchiseData = deepCopy(newItem)
+            this.franchiseData = data
           })
           .catch((err) => {
             console.log(err)
@@ -434,23 +454,20 @@ export default {
       await apiData
         .getTreeViewList({ type: 'MD' })
         .then(({ data: { data } }) => {
-          const newItem = deepCopy(data)
-          this.myData = deepCopy(newItem)
-          this.treeMyData = deepCopy(newItem)
-          this.moveMyData = deepCopy(newItem)
-
-          if (this.isCopyMD) {
-            this.isCopyMD = false
+          this.myData = data
+          console.log('datadatadata   ', data)
+          if (this.isUpdateMD) {
+            this.isUpdateMD = false
             if (this.copyCheckData.datatable_type === 'ID') {
-              this.$refs.mainEducation.$refs.education.$refs.institution.copyComp()
+              this.$refs.mainEducation.$refs.education.$refs.institution.changeIsactiveToActive()
             } else if (this.copyCheckData.datatable_type === 'FD') {
-              this.$refs.mainEducation.$refs.education.$refs.franchise.copyComp()
+              this.$refs.mainEducation.$refs.education.$refs.franchise.changeIsactiveToActive()
             }
             setTimeout(() => {
               this.$refs.mainEducation.$refs.myData.$refs.mydata.setActiveDataList(
-                this.copyMDData
+                this.activeMDData
               )
-              this.copyMDData = null
+              this.activeMDData = null
             }, 100)
           }
         })
@@ -464,8 +481,7 @@ export default {
       await apiData
         .getTreeViewList({ type: 'OD' })
         .then(({ data: { data } }) => {
-          this.openData = deepCopy(data)
-          this.treeOpenData = deepCopy(data)
+          this.openData = data
         })
         .catch((err) => {
           console.log(err)
@@ -473,25 +489,33 @@ export default {
     },
 
     // 검색 목록 트리 가져오기
-    async getSearchTreeList() {
+    getSearchTreeList: _.debounce(async function () {
       const target = this.searchData
       const payload = {
-        word: target.word.length ? `?word="${this.searchData.word}"` : '',
+        current: this.filterCurrentPage,
+        perPage: this.filterPerPage,
+        word: target.word.length ? `&word=${this.searchData.word}` : '',
         dataroom: target.type.length
-          ? `&dataroom="${this.searchData.type.join(',')}"`
+          ? `&dataroom=${this.searchData.type.join(',')}`
           : '',
         subject: target.subject.length
-          ? `&subject="${this.searchData.subject.join(',')}"`
+          ? `&subject=${this.searchData.subject.join(',')}`
           : '',
         type: target.datatype.length
-          ? `&type="${this.searchData.datatype.join(',')}"`
+          ? `&type=${this.searchData.datatype.join(',')}`
           : '',
       }
       if (target.word.length) {
         await apiData
           .getSearchTreeList(payload)
-          .then((res) => {
-            console.log(res)
+          .then(({ data: { data } }) => {
+            this.dataList = data.search
+            const arr = []
+            for (let i = 1; i <= data.page.end_page; i++) {
+              arr.push(i)
+            }
+            this.filterEndPage = arr
+            this.filterTotal = data.page.total_count
           })
           .catch((err) => {
             console.log(err)
@@ -499,18 +523,35 @@ export default {
       } else {
         this.openSnackbar('검색어를 입력하세요.')
       }
-    },
+    }, 300),
 
     // 체크 박스로 파일 복사
     async copyTreeViewList() {
       await apiData
         .copyTreeViewList(this.copyCheckData)
         .then(({ data: { data } }) => {
-          console.log('datassdatadata    ', data)
           if (data.length > 0) {
-            this.isCopyMD = true
-            this.copyMDData = data
-            this.setUpdateTree('MD')
+            this.$refs.mainEducation.$refs.myData.$refs.mydata.getCheckedIdxList()
+            this.isUpdateMD = true
+            this.activeMDData = data
+            this.updateTree('MD')
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+
+    // 체크된 리스트 드래그로 복사
+    async copyTreeViewListDepth(data) {
+      await apiData
+        .copyTreeViewListDepth(data)
+        .then(({ data: { data } }) => {
+          if (data.length > 0) {
+            this.$refs.mainEducation.$refs.myData.$refs.mydata.getCheckedIdxList()
+            this.isUpdateMD = true
+            this.activeMDData = data
+            this.updateTree('MD')
           }
         })
         .catch((err) => {
@@ -519,7 +560,7 @@ export default {
     },
 
     // 자료등록시 트리 호출
-    setUpdateTree(type) {
+    updateTree(type) {
       if (type === 'ID') {
         this.getInsTreeViewList()
       } else if (type === 'FD') {
@@ -529,10 +570,45 @@ export default {
       }
     },
 
-    treeViewCopy(parentInfo) {
-      this.copyData()
-      this.copyCheckData.pasteParentIdxs = [parentInfo]
-      this.copyTreeViewList()
+    treeViewCopy(copyInfo) {
+      if (copyInfo.isChecked) {
+        const instiTab = document.getElementById('institute')
+        this.copyDepthData = {
+          type: '',
+          copyTreeData: null,
+          parentId: copyInfo.parentIdx,
+          displayNo: copyInfo.displayNo,
+        }
+        this.isCopyData = true
+        if (instiTab.classList.contains('show')) {
+          this.copyDepthData.type = 'ID'
+          this.$refs.mainEducation.$refs.education.$refs.institution.copyData()
+        } else {
+          this.copyDepthData.type = 'FD'
+          this.$refs.mainEducation.$refs.education.$refs.franchise.copyData()
+        }
+      } else {
+        /* const instiTab = document.getElementById('institute')
+        this.copyDepthData = {
+          type: '',
+          copyTreeData: null,
+          parentId: copyInfo.parentIdx,
+          displayNo: copyInfo.displayNo,
+        }
+        this.isCopyData = true
+        if (instiTab.classList.contains('show')) {
+          this.copyDepthData.type = 'ID'
+          this.$refs.mainEducation.$refs.education.$refs.institution.noCheckedCopyData(
+            copyInfo.nodeIdx
+          )
+        } else {
+          this.copyDepthData.type = 'FD'
+          this.$refs.mainEducation.$refs.education.$refs.franchise.noCheckedCopyData(
+            copyInfo.nodeIdx
+          )
+        } */
+        console.log('----')
+      }
     },
 
     // 일반용
@@ -632,7 +708,7 @@ export default {
         .postDataroomFile(payload)
         .then(() => {
           this.onCloseReferenceAddModal()
-          this.setUpdateTree(payload.datatable_type)
+          this.updateTree(payload.datatable_type)
           this.openModalDesc('등록 성공', '자료를 등록했습니다.')
         })
         .catch(() => {
@@ -654,7 +730,7 @@ export default {
         .postDataroomQuiz(payload)
         .then(() => {
           this.onCloseQuizAddModal()
-          this.setUpdateTree(payload.datatable_type)
+          this.updateTree(payload.datatable_type)
           this.openModalDesc('등록 성공', '자료를 등록했습니다.')
         })
         .catch(() => {
@@ -676,7 +752,7 @@ export default {
         .postDataroomNoteExam(payload)
         .then(() => {
           this.onCloseNoteTestAddModal()
-          this.setUpdateTree(payload.datatable_type)
+          this.updateTree(payload.datatable_type)
           this.openModalDesc('등록 성공', '자료를 등록했습니다.')
         })
         .catch(() => {
@@ -691,10 +767,20 @@ export default {
       apiData
         .getDataroomFile(payload)
         .then(({ data: { data } }) => {
+          console.log(type, data.datatable_type)
+          const newType = (type) => {
+            if (
+              type === 'MD' &&
+              (data.datatable_type === 'ID' || data.datatable_type === 'FD')
+            )
+              return 'MD'
+            else return type
+          }
           this.referenceData = {
             ...data,
             keyword: data.keyword.split(','),
             title: data.title.replace(/.mp4|.pdf|.youtube|.url/g, ''),
+            datatable_type: newType(type),
           }
           this.getFileSize(data.full_path)
           if (this.modalTitle === '수정') {
@@ -771,24 +857,36 @@ export default {
       else return this.getDataroomFile(payload)
     },
 
+    // 필터에서 자료 유형별 핸들러
+    selectFilterDataroomType(data) {
+      const { title } = data
+      const payload = {
+        treeinfo_idx: data.treeinfo_idx,
+        type: data.datatable_type,
+      }
+      if (title.includes('.quiz')) return this.getDataroomQuiz(payload)
+      else if (title.includes('.exam')) return this.getDataroomNoteExam(payload)
+      else return this.getDataroomFile(payload)
+    },
+
     // 파일 수정
     // 동영상, PDF, YOUTUBE, URL 수정
     updateDataroomFile() {
       if (this.isApiCall) return false
       this.setCallTimeout()
-      const { keyword, title, ...rest } = this.referenceData
+      const { keyword, title, tree, ...rest } = this.referenceData
       const data = {
         ...rest,
         keyword: keyword.join(','),
         title: title + this.setExtension(rest.datatype),
-        treeinfo_idx: rest.tree.treeinfo_idx,
-        parent_treeinfo_idx: rest.tree.parent_treeinfo_idx,
+        treeinfo_idx: tree.treeinfo_idx,
+        parent_treeinfo_idx: tree.parent_treeinfo_idx,
       }
       apiData
         .updateDataroomFile(data)
         .then(() => {
           this.onCloseReferenceAddModal()
-          this.setUpdateTree(data.datatable_type)
+          this.updateTree(data.datatable_type)
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
         .catch(() => {})
@@ -810,7 +908,7 @@ export default {
         .updateDataroomQuiz(data)
         .then(() => {
           this.onCloseQuizAddModal()
-          this.setUpdateTree(data.datatable_type)
+          this.updateTree(data.datatable_type)
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
         .catch(() => {})
@@ -864,7 +962,7 @@ export default {
         .updateDataroomNoteExam(data)
         .then(() => {
           this.onCloseNoteTestAddModal()
-          this.setUpdateTree(data.datatable_type)
+          this.updateTree(data.datatable_type)
           this.openModalDesc('수정 성공', '자료를 수정했습니다.')
         })
         .catch(() => {})
@@ -878,7 +976,7 @@ export default {
       const payload = { datatable_type, parent_treeinfo_idx, treeinfo_idx }
       this.uploadInfo.saveFolderPath = path
       await apiData.postMoveData(payload).then(() => {
-        this.setUpdateTree(datatable_type)
+        this.updateTree(datatable_type)
       })
     },
 
@@ -894,7 +992,7 @@ export default {
         .deleteData(payload)
         .then(() => {
           this.isSelectModal.open = false
-          this.setUpdateTree(payload.datatable_type)
+          this.updateTree(payload.datatable_type)
           this.openModalDesc('삭제 성공', '자료를 삭제했습니다.')
         })
         .catch(() => {})
@@ -909,7 +1007,7 @@ export default {
       await apiData
         .poatCopyData(payload)
         .then(() => {
-          this.setUpdateTree(datatable_type)
+          this.updateTree(datatable_type)
         })
         .catch((err) => {
           console.log(err)
@@ -1300,19 +1398,51 @@ export default {
 
     // 검색결과 체크박스
     checkHandler({ target: { checked, value, id } }) {
-      const idx = this.referenceList?.findIndex((item) => item.name === value)
+      const idx = this.dataList?.findIndex((item) => item.name === value)
       if (id === 'all_check') {
-        if (checked) return (this.checkList = [...this.referenceList])
+        if (checked) return (this.checkList = [...this.dataList])
         else return (this.checkList = [])
       } else if (checked)
-        return (this.checkList = [...this.checkList, this.referenceList[idx]])
+        return (this.checkList = [...this.checkList, this.dataList[idx]])
       else return this.checkList.splice(idx, 1)
     },
 
-    // 검색결과에서 상세 보기
+    // 검색 결과에서 상세 보기
     onClickViewDetail(data) {
-      this.onClickView(data)
+      this.selectFilterDataroomType(data)
       this.isSearchListModal = false
+    },
+
+    // 검색 결과에서 이동 하기
+    moveFilterData(data) {
+      this.referenceData = data
+      this.selectDatatableType = data.table_type
+      this.openMovePathModal('isSearchListModal')
+    },
+
+    // 검색 결과 필터링
+    paginationNumber(num) {
+      return (this.filterCurrentPage = num)
+    },
+
+    // 결과 페이지 나누기
+    setPerPageList(item) {
+      return item.slice(this.startPageIdx, this.endPageIdx)
+    },
+
+    // 숫자 페이지 처리하기
+    paginationList(arrow) {
+      const last = this.filterEndPage[this.filterEndPage.length - 1]
+      const currentList = this.setPerPageList(this.filterEndPage)
+      if (arrow === 'plus') {
+        if (!currentList.includes(last)) {
+          this.filterCurrentPageNum += 1
+          this.filterCurrentPage = this.setPerPageList(this.filterEndPage)[0]
+        }
+      } else if (this.filterCurrentPageNum !== 1) {
+        this.filterCurrentPageNum -= 1
+        this.filterCurrentPage = this.setPerPageList(this.filterEndPage)[0]
+      }
     },
 
     // 유튜브, 링크 변경
@@ -1374,7 +1504,7 @@ export default {
       this.referenceData = {
         ...this.referenceData,
         parent_treeinfo_idx: data.id,
-        tree: { parent_treeinfo_idx: data.id },
+        tree: { ...this.referenceData.tree, parent_treeinfo_idx: data.id },
         datatable_type: data.type,
       }
       return (this.uploadInfo.saveFolderPath = data.path)
@@ -1715,15 +1845,16 @@ export default {
 
     copyDataCallBack(copyData) {
       this.copyCheckData = copyData
-      console.log(
-        'this.copyCheckData   ' + this.copyCheckData,
-        this.copyCheckData.copyType
-      )
+      if (this.isCopyData) {
+        this.copyDepthData.copyTreeData = this.copyCheckData.copyTreeData
+        this.copyTreeViewListDepth(this.copyDepthData)
+        this.copyDepthData = null
+        this.isCopyData = false
+      }
     },
 
     pasteData() {
-      const parentIdxList =
-        this.$refs.mainEducation.$refs.myData.$refs.mydata.checkPastePosition()
+      const parentIdxList = this.$refs.mainEducation.$refs.myData.$refs.mydata.checkPastePosition()
       this.copyCheckData.pasteParentIdxs = parentIdxList
       if (
         this.copyCheckData.pasteParentIdxs.length > 0 &&

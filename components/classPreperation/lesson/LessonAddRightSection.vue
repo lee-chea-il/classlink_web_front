@@ -33,12 +33,12 @@
       <label for="">교육 목표</label>
       <div class="col">
         <CustomModalInput
-          id="educationgoal"
+          id="educational_goal"
           name="교육 목표"
           placeholder="교육 목표를 입력해 주세요"
           rules="min:2|required"
           type="text"
-          :inputValue="lessonData.educationgoal"
+          :inputValue="lessonData.educational_goal"
           @change-input="$emit('change-lesson', $event)"
         />
       </div>
@@ -55,7 +55,7 @@
             <LessonAddTreeView
               ref="myLessonTreeview"
               list-type="lessonList"
-              :dataList="lessonData.datarooms"
+              :dataList="lessonData.dataroom"
               :expanded="false"
               :pidNum="20000"
               @moreShowClick="$emit('moreShowClick', $event)"

@@ -37,6 +37,7 @@
                       :noticeList="noticeList"
                       :selectedNoticeList="selectedNoticeList"
                       @selected-tab="selectedNoticeTabMenu"
+                      @open-notice="onOpenNoticeDetailModal"
                     />
                     <!-- /.공지사항 -->
                   </div>
@@ -79,6 +80,13 @@
       :selectData="note"
       @close="onCloseNoteDetailModal"
     />
+    <!-- 공지사항 상세 모달 -->
+    <ShowNoticeDetailModal
+      :show="noticeDetailModal.open"
+      :data="noticeDetail"
+      :setFilterStatus="setFilterStatus"
+      @close="onCloseNoticeDetailModal"
+    />
   </div>
   <!-- //container -->
 </template>
@@ -90,6 +98,7 @@ import Calendar from '@/components/myhome/Calendar.vue'
 import LectureCourse from '@/components/myhome/LectureCourse.vue'
 import HomeWorkDetailModal from '@/components/common/modal/lecturecourse/HomeWorkDetailModal.vue'
 import NoteDetailModal from '@/components/common/modal/myhome/NoteDetailModal.vue'
+import ShowNoticeDetailModal from '~/components/common/modal/notice/ShowNoticeDetailModal.vue'
 export default {
   name: 'IndexPage',
   components: {
@@ -100,6 +109,7 @@ export default {
     LectureCourse,
     HomeWorkDetailModal,
     NoteDetailModal,
+    ShowNoticeDetailModal,
   },
   layout: 'EducationLayout',
   data() {
@@ -301,22 +311,55 @@ export default {
       },
 
       // 공지사항
+      noticeDetailModal: {
+        open: false,
+      },
+      noticeDetail: {},
       noticeTabMenuList: [
         { id: 0, title: '전체' },
         { id: 1, title: '클래스링크' },
-        { id: 2, title: '교육기관 공지' },
-        { id: 3, title: '반 공지' },
+        { id: 2, title: '교육기관' },
+        { id: 3, title: '반' },
+        { id: 4, title: '프랜' },
       ],
       selectedNoticeTab: 0,
       noticeList: [
-        { category: 1, subject: '클래스링크 공지', date: '2022.11.08' },
         {
           category: 1,
-          subject: '클래스링크의 공지입니다',
-          date: '2022.11.08',
+          brd_title: '클래스링크 공지',
+          brd_registration_date: '2022.11.08',
+          brd_content: '클래스링크 공지입니다.',
+          brd_time_sdate: '2023-01-15',
+          brd_time_edate: '2023-02-20',
+          mem_name: '홍길동',
         },
-        { category: 2, subject: '교육기관 공지', date: '2022.11.08' },
-        { category: 3, subject: '반 공지입니다.', date: '2022.11.08' },
+        {
+          category: 1,
+          brd_title: '클래스링크의 공지입니다',
+          brd_registration_date: '2022.11.08',
+          brd_content: '클래스링크 공지입니다.',
+          brd_time_sdate: '2023-01-11',
+          brd_time_edate: '2023-01-14',
+          mem_name: '홍길동',
+        },
+        {
+          category: 2,
+          brd_title: '교육기관 공지',
+          brd_registration_date: '2022.11.08',
+          brd_content: '교육기관 공지입니다.',
+          brd_time_sdate: '2023-01-11',
+          brd_time_edate: '2023-01-12',
+          mem_name: '홍길동',
+        },
+        {
+          category: 3,
+          brd_title: '반 공지입니다.',
+          brd_registration_date: '2022.11.08',
+          brd_content: '반 공지입니다.',
+          brd_time_sdate: '2023-01-15',
+          brd_time_edate: '2023-02-20',
+          mem_name: '홍길동',
+        },
       ],
       selectedNoticeList: [],
 
@@ -413,6 +456,35 @@ export default {
         }
       }
       this.selectedNoticeList = array
+    },
+    // 상태 필터
+    setFilterStatus(sdate, edate) {
+      const today = new Date()
+      const start = new Date(sdate)
+      const end = new Date(edate)
+
+      const dayCount = Math.floor(
+        (today.getTime() - end.getTime()) / (1000 * 60 * 60 * 24)
+      )
+
+      if (today < start) {
+        return '준비중'
+      } else if (today > end) {
+        return '만료'
+      } else if (dayCount >= -3) {
+        return `D${dayCount}`
+      } else {
+        return ''
+      }
+    },
+    onOpenNoticeDetailModal(data) {
+      console.log(data)
+      this.noticeDetailModal.open = true
+      this.noticeDetail = data
+    },
+    onCloseNoticeDetailModal() {
+      this.noticeDetailModal.open = false
+      this.noticeDetail = {}
     },
 
     // 캘린더

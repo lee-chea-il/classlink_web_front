@@ -12,6 +12,25 @@ export const setNewArray = (item) => {
   return Array.from(new Set(item))
 }
 
+// 순환 구조를 Json으로 변환
+const getCircularReplacer = () => {
+  const seen = new WeakSet()
+  return (key, value) => {
+    if (typeof value === 'object' && value !== null) {
+      if (seen.has(value)) {
+        return
+      }
+      seen.add(value)
+    }
+    return value
+  }
+}
+
+export const setCircularItem = (item) => {
+  const newList = JSON.stringify(item, getCircularReplacer())
+  return JSON.parse(newList)
+}
+
 // 깊은 복사
 export const deepCopy = (item) => {
   return _.cloneDeep(item)

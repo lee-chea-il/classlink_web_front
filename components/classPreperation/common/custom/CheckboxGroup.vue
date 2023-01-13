@@ -39,12 +39,12 @@ export default {
   name: 'CheckboxGroup',
   props: {
     public_open_yn: {
-      type: Boolean,
-      default: true,
+      type: [Boolean, String],
+      default: false,
     },
     open_yn: {
-      type: Boolean,
-      default: true,
+      type: [Boolean, String],
+      default: false,
     },
     pageRoot: {
       type: String,

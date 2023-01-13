@@ -187,3 +187,31 @@ p > strong {
   top: 5px !important;
   right: 5px !important;
 }
+
+.icon_inst_my {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_inst_my.png);
+  /* margin-right: 6px; */
+  /* margin-left: 17px; */
+}
+
+.icon_fran_my {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_fran_my.png);
+  /* margin-right: 6px; */
+  /* margin-left: 17px; */
+}

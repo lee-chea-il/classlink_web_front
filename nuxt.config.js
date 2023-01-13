@@ -1,3 +1,4 @@
+// require('dotenv').config()
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -123,6 +124,7 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
+    '@nuxtjs/dotenv',
   ],
 
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -163,4 +165,12 @@ export default {
           },
         }
       : {},
+
+  // env: {
+  //   VUE_APP_API_URL: process.env.VUE_APP_API_URL,
+  //   VUE_APP_FILE_URL: process.env.VUE_APP_FILE_URL,
+  //   VUE_APP_UPLOAD_URL: process.env.VUE_APP_UPLOAD_URL,
+  //   VUE_APP_YOUTUBE_URL: process.env.VUE_APP_YOUTUBE_URL,
+  //   VUE_APP_OG_URL: process.env.VUE_APP_OG_URL,
+  // },
 }

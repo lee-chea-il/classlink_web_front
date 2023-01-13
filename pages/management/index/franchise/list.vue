@@ -66,20 +66,6 @@ export default {
       },
     }
   },
-  // watch: {
-  // franchiseList: {
-  //   handler() {
-  //     this.getFranchiseList()
-  //   },
-  //   immediate: true,
-  // },
-  // franchiseWaitingList: {
-  //   handler() {
-  //     this.getFranchiseList()
-  //   },
-  //   immediate: true,
-  // },
-  // },
   mounted() {
     this.getFranchiseList()
   },
@@ -105,12 +91,12 @@ export default {
       this.openFranchiseSignUpModal.open = false
     },
 
+    // 프랜차이즈 가맹코드 검색
     async getFranchiseSearchCode() {
       await apiFranchiseSubscribe
         .getFranchiseSearchCode(this.codeSearch)
-        .then(({ data }) => {
-          console.log(data)
-          this.searchFranchise = data.data
+        .then(({ data: { data } }) => {
+          this.searchFranchise = data
         })
         .catch((err) => {
           console.log(err)

@@ -20,6 +20,42 @@
       flex-wrap: wrap;
       justify-content: space-between;
 
+      .only_place_box {
+        background: #FFFFFF;
+        @include mixin.border_common;
+        border-radius: 5px;
+        width: 100%;
+
+        .place_box_tit {
+          background: #FFFFFF;
+          border-bottom: 0.4px solid rgba(167, 169, 172, 0.4);
+          border-radius: 5px 5px 0px 0px;
+          height: 70px;
+          padding: 20px 20px;
+          width: 100%;
+          line-height: 26px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .place_box_image {
+          height: 67%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .place_box_explain {
+          background: #F9F9FB;
+          border-top: 0.4px solid rgba(167, 169, 172, 0.4);
+          border-radius: 0px 0px 5px 5px;
+          height: 110px;
+          overflow-y: auto;
+          padding: 20px 20px;
+        }
+      }
+
       .place_box {
         position: relative;
         // width: 300px;
@@ -107,14 +143,14 @@
     .right_area {
       position: relative;
       width: 35%;
-      height: 590px;
+      height: 550px;
       @include mixin.border_common;
 
       .placement_area {
         position: relative;
         width: 100%;
         height: 100%;
-        padding: 20px 25px 10px;
+        padding: 0px 25px 10px;
 
         .title {
           font-weight: 500;
@@ -162,12 +198,24 @@
 
             .name {
               margin-left: 10px;
+              display: inline-block;
+              width: 209px;
+              line-height: 26px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
             }
 
             .btn {
               width: 24px;
               height: 24px;
               margin-left: auto;
+            }
+          }
+
+          .info_box_one {
+            .info_box {
+              padding: 20px 15px;
             }
           }
         }
@@ -342,6 +390,10 @@
   //     border: 0.4px solid rgba(167, 169, 172, 0.4);
   //     border-radius: 5px;
   //   }
+
+  .place_section .right_area .placement_area .list_area .box_selcet {
+    background: #E7EDFF;
+  }
 
 }
 
@@ -624,6 +676,187 @@
 }
 
 /* 건물-건물SET.html */
+
+.ac_building_wld {
+
+  .line {
+    border: 1px solid #E6E7E8;
+    margin: 10px 0;
+    width: 100%;
+  }
+
+  .search_section {
+    width: 100%;
+
+    .left_area {
+      width: 48%;
+
+      .left_area02 {
+        display: flex;
+        align-items: center;
+      }
+
+      .left_area03 {
+        display: flex;
+      }
+    }
+
+    .right_area {
+      width: 48%;
+
+      .right_area02 {
+        display: flex;
+      }
+    }
+  }
+
+
+
+  .nav-tabs:not(.depth03)+.tab-content {
+    position: relative;
+    overflow-y: auto;
+    height: 300px;
+  }
+
+  .more_mu .more_list li {
+    min-width: 128px !important;
+  }
+
+  .btn02 {
+    margin-top: 10px;
+  }
+
+  .btn03 {
+    margin-top: 10px;
+  }
+
+  .world_set_tit {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 23px;
+  }
+
+  .dropdown {
+    margin-left: auto;
+  }
+
+}
+
+.icon_wld01 {
+  display: inline-block;
+  width: 45px;
+  height: 18px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_wld01.png);
+  margin-right: 5px;
+}
+
+.icon_wld02 {
+  display: inline-block;
+  width: 45px;
+  height: 18px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_wld02.png);
+  margin-right: 5px;
+}
+
+.icon_wld03 {
+  display: inline-block;
+  width: 45px;
+  height: 18px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_wld03.png);
+  margin-right: 5px;
+}
+
+.icon_wld04 {
+  display: inline-block;
+  width: 45px;
+  height: 18px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_wld04.png);
+  margin-right: 5px;
+}
+
+.icon_wld05 {
+  display: inline-block;
+  width: 45px;
+  height: 18px;
+  text-align: center;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-image: url(../images/icon_wld05.png);
+  margin-right: 5px;
+}
+
+.ac_building_wld_modal {
+  .world_set_tit {
+    margin-right: 13px;
+  }
+
+  .dropdown {
+    width: auto !important;
+    margin-right: 5px;
+  }
+
+  .nav-tabs {
+    margin-top: 10px;
+  }
+
+  .cancel {
+    margin-left: auto !important;
+  }
+
+  .title {
+    margin-top: 10px;
+  }
+
+  .form-group {
+    margin-top: 10px;
+  }
+
+  .modal-body {
+    height: 770px;
+
+    @media (max-width: 1199.98px) {
+      height: 490px;
+    }
+  }
+
+  .worldset_tit {
+    display: flex;
+    align-items: center;
+
+    .world_name {
+      margin-left: auto;
+    }
+  }
+}
+
+.modal_ac_manage_dtr {
+  .file_name {
+    text-align: left;
+    margin-top: 10px;
+  }
+}
 
 #modalCuriRegi.ac_building {
   .modal_curiregi .divide_area.left .cw_box {

@@ -34,44 +34,21 @@
 <script>
 import { VueTreeList, Tree } from 'vue-tree-list'
 import { apiData } from '~/services'
+import { deepCopy } from '~/utiles/common'
 export default {
   name: 'MainTreeView',
   components: {
     VueTreeList,
   },
   props: {
-    editable: {
-      type: Boolean,
-      default: true,
-    },
-    identity: {
-      type: String,
-      default: '',
-    },
-    pidNum: {
-      type: Number,
-      default: 0,
-    },
-    expanded: {
-      type: Boolean,
-      default: true,
-    },
-    listType: {
-      type: String,
-      default: '',
-    },
-    isHideDownload: {
-      type: Boolean,
-      default: true,
-    },
-    treeViewType: {
-      type: String,
-      default: 'ins',
-    },
-    dataList: {
-      type: Array,
-      default: () => [],
-    },
+    editable: { type: Boolean, default: true },
+    identity: { type: String, default: '' },
+    pidNum: { type: Number, default: 0 },
+    expanded: { type: Boolean, default: true },
+    listType: { type: String, default: '' },
+    isHideDownload: { type: Boolean, default: true },
+    treeViewType: { type: String, default: 'ID' },
+    dataList: { type: Array, default: () => [] },
   },
   data() {
     return {
@@ -79,6 +56,7 @@ export default {
       pid: this.pidNum,
       deleteList: [],
       checkboxCopyData: {},
+      checkedIdxList: [],
     }
   },
   watch: {
@@ -92,6 +70,7 @@ export default {
   },
   methods: {
     async addFolder(node) {
+      this.getCheckedIdxList()
       await apiData
         .addFolderTreeViewList(this.addFolderData(node))
         .then(({ data: { data } }) => {
@@ -102,44 +81,49 @@ export default {
         })
     },
     addFolderData(node) {
-      if (this.treeViewType === 'ID') {
-        return {
-          datatable_type: this.treeViewType,
-          parent_id: node.target.treeViewId,
-          title: '새 폴더',
-        }
-      } else if (this.treeViewType === 'FD') {
-        return {
-          datatable_type: this.treeViewType,
-          parent_id: node.target.treeViewId,
-          title: '새 폴더',
-        }
-      } else if (this.treeViewType === 'OD') {
-        return {
-          datatable_type: this.treeViewType,
-          parent_id: node.target.treeViewId,
-          title: '새 폴더',
-        }
-      } else {
-        return {
-          datatable_type: this.treeViewType,
-          parent_id: node.target.treeViewId,
-          title: '새 폴더',
-        }
+      return {
+        datatable_type: this.treeViewType,
+        parent_id: node.target.treeViewId,
+        title: '새 폴더',
+      }
+    },
+    setType(type) {
+      switch (type) {
+        case 'ID':
+        case 'IL':
+        case 'IC':
+          return 'ID'
+        case 'FD':
+        case 'FL':
+        case 'FC':
+          return 'FD'
+        case 'MD':
+        case 'ML':
+        case 'MC':
+          return 'MD'
+        case 'OD':
+          return 'OD'
+        default:
+          return null
       }
     },
     deleteFolder(ids) {
-      const payload = `${this.treeViewType}/${ids}`
-      apiData
-        .deleteFolderTreeViewList(payload)
-        .then(({ data: { data } }) => {
-          if (data) {
-            this.$emit(`tree-view-${this.treeViewType.toLowerCase()}`)
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      this.getCheckedIdxList()
+      if (this.treeViewType !== 'MD' && ids !== '') {
+        console.log('내자료 아닌 상태로 삭제 요청옴. 얼럿창 필요')
+      } else {
+        const payload = `${this.treeViewType}/${ids}`
+        apiData
+          .deleteFolderTreeViewList(payload)
+          .then(({ data: { data } }) => {
+            if (data) {
+              this.$emit(`tree-view-${this.treeViewType.toLowerCase()}`)
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      }
     },
     async updateFolder() {
       await apiData
@@ -152,7 +136,10 @@ export default {
         })
     },
     setData(dataList) {
-      console.log('dataList', dataList, this.treeViewType)
+      const copyItem = deepCopy(dataList)
+      const iconType = this.setType(this.treeViewType)
+      console.log('dataList', copyItem, this.treeViewType)
+      let isFirst = true
       const dataMapping = (data, isReadOnly) => {
         const result = []
         const len = data?.length
@@ -165,6 +152,12 @@ export default {
           nObj.readOnly = isReadOnly
           nObj.active = false
           nObj.name = nObj.title
+          nObj.iconType = iconType
+          nObj.treeViewType = this.treeViewType
+          if (isFirst) {
+            isFirst = false
+            nObj.checkboxDisable = true
+          }
 
           if (nObj.group_yn) {
             nObj.type = this.treeViewType
@@ -175,8 +168,17 @@ export default {
               result[i].children = dataMapping(nObj.children, isReadOnly)
             }
           } else {
-            if (this.treeViewType === 'MD') {
+            if (iconType === 'MD') {
               nObj.type = nObj.datatable_type
+              if (nObj.mda_correct_yn) {
+                if (this.setType(nObj.datatable_type) === 'ID') {
+                  nObj.iconType = 'IM'
+                } else if (this.setType(nObj.datatable_type) === 'FD') {
+                  nObj.iconType = 'FM'
+                }
+              } else {
+                nObj.iconType = this.setType(nObj.datatable_type)
+              }
             } else {
               nObj.type = this.treeViewType
             }
@@ -189,33 +191,10 @@ export default {
       }
       this.datas = new Tree(
         !this.editable,
-        dataMapping(dataList[0]?.children, !this.editable)
+        dataMapping(copyItem[0]?.children, !this.editable)
       )
+      this.setCheckedIdxList()
     },
-    // setType(type) {
-    //   let newType = ''
-    //   switch (type) {
-    //     case 'IL':
-    //     case 'ID':
-    //       newType = 'ID'
-    //       break
-    //     case 'FL':
-    //     case 'FD':
-    //       newType = 'FD'
-    //       break
-    //     case 'ML':
-    //     case 'MD':
-    //       newType = 'MD'
-    //       break
-    //     case 'OD':
-    //       newType = 'OD'
-    //       break
-    //     default:
-    //       newType = ''
-    //       break
-    //   }
-    //   return newType
-    // },
     onDel(node) {
       console.log(node)
       node.remove()
@@ -271,6 +250,59 @@ export default {
       }
       this.$emit('copyDataCallBack', this.checkboxCopyData)
     },
+    noCheckedCopyData(targetIdx) {
+      const copyList = []
+      let isAutoChecked = false
+      function _dfs(parentChild, oldNode) {
+        let data = {}
+        oldNode.isactive = false
+        if (!oldNode.isLeaf) {
+          console.log('111')
+          if (!isAutoChecked) {
+            if (oldNode.treeViewId === targetIdx) {
+              console.log('112221')
+              data = {
+                id: oldNode.treeViewId,
+                children: [],
+              }
+              parentChild.push(data)
+              oldNode.isactive = true
+              isAutoChecked = true
+            }
+          } else {
+            console.log('1133331')
+            data = {
+              id: oldNode.treeViewId,
+              children: [],
+            }
+            parentChild.push(data)
+            oldNode.isactive = true
+          }
+          if (oldNode.children && oldNode.children.length > 0) {
+            for (let i = 0, len = oldNode.children.length; i < len; i++) {
+              _dfs(data.children, oldNode.children[i])
+            }
+          }
+        } else if (isAutoChecked) {
+          console.log('4444')
+          parentChild.push({ id: oldNode.treeViewId })
+          oldNode.isactive = true
+        } else if (oldNode.treeViewId === targetIdx) {
+          console.log('5555')
+          parentChild.push({ id: oldNode.treeViewId })
+          oldNode.isactive = true
+        }
+      }
+      this.$emit('un-active')
+      _dfs(copyList, this.datas)
+
+      this.checkboxCopyData = {
+        datatable_type: this.treeViewType,
+        copyTreeData: copyList,
+        pasteParentIdxs: [],
+      }
+      this.$emit('copyDataCallBack', this.checkboxCopyData)
+    },
     checkPastePosition() {
       const checkList = []
       const parentIdList = []
@@ -306,8 +338,8 @@ export default {
       _checkData(this.datas)
       return checkList
     },
-    copyComp() {
-      function _copyComp(oldNode) {
+    changeIsactiveToActive() {
+      function _changeIsactiveToActive(oldNode) {
         if (oldNode.isactive) {
           oldNode.active = true
         } else {
@@ -316,11 +348,11 @@ export default {
         oldNode.isactive = false
         if (oldNode.children && oldNode.children.length > 0) {
           for (let i = 0, len = oldNode.children.length; i < len; i++) {
-            _copyComp(oldNode.children[i])
+            _changeIsactiveToActive(oldNode.children[i])
           }
         }
       }
-      _copyComp(this.datas)
+      _changeIsactiveToActive(this.datas)
     },
     setActiveDataList(dataList) {
       function _active(oldNode) {
@@ -343,27 +375,104 @@ export default {
       }
       _active(this.datas)
     },
+    getCheckedIdxList() {
+      this.checkedIdxList = []
+      function _checkData(oldNode, checkedIdxList) {
+        if (oldNode.isLeaf) {
+          if (oldNode.isChecked) {
+            const pIdx = checkedIdxList.indexOf(oldNode.treeViewId)
+            if (pIdx === -1) {
+              checkedIdxList.push(oldNode.treeViewId)
+            }
+          }
+        } else {
+          if (oldNode.isChecked) {
+            const pIdx = checkedIdxList.indexOf(oldNode.treeViewId)
+            if (pIdx === -1) {
+              checkedIdxList.push(oldNode.treeViewId)
+            }
+          }
+
+          if (oldNode.children && oldNode.children.length > 0) {
+            for (let i = 0, len = oldNode.children.length; i < len; i++) {
+              _checkData(oldNode.children[i], checkedIdxList)
+            }
+          }
+        }
+      }
+      _checkData(this.datas, this.checkedIdxList)
+    },
+    setCheckedIdxList() {
+      function _checkData(oldNode, checkedIdxList) {
+        if (oldNode.isLeaf) {
+          const pIdx = checkedIdxList.indexOf(oldNode.treeViewId)
+          if (pIdx > -1) {
+            oldNode.isChecked = true
+          }
+        } else {
+          const pIdx = checkedIdxList.indexOf(oldNode.treeViewId)
+          if (pIdx > -1) {
+            oldNode.isChecked = true
+          }
+
+          if (oldNode.children && oldNode.children.length > 0) {
+            for (let i = 0, len = oldNode.children.length; i < len; i++) {
+              _checkData(oldNode.children[i], checkedIdxList)
+            }
+          }
+        }
+      }
+      _checkData(this.datas, this.checkedIdxList)
+    },
     dropBefore({ node, target }) {
       console.log('dropBefore', node, target)
     },
     drop({ node, target }) {
-      if (target.type === 'MD') {
-        if (target.type !== node.type) {
+      if (this.treeViewType === 'MD') {
+        this.getCheckedIdxList()
+        if (this.treeViewType !== node.treeViewType) {
           if (node.isChecked) {
             if (target.group_yn) {
-              this.$emit('tree-view-copy', { parentIdx: target.treeViewId })
+              this.$emit('tree-view-copy', {
+                isChecked: true,
+                parentIdx: target.treeViewId,
+                displayNo: 10000,
+              })
             } else {
-              this.$emit('tree-view-copy', { parentIdx: target.data.parent })
+              this.$emit('tree-view-copy', {
+                isChecked: true,
+                parentIdx: target.data.parent,
+                displayNo: target.display_no,
+              })
             }
-          } else if (target.group_yn) {
-            this.$emit('tree-view-copy', { parentIdx: target.treeViewId })
+          } else if (node.group_yn) {
+            this.$emit('tree-view-copy', {
+              isChecked: false,
+              nodeIdx: node.treeViewId,
+              parentIdx: target.data.parent,
+              displayNo: 10000,
+            })
           } else {
-            this.$emit('tree-view-copy', { parentIdx: target.data.parent })
+            this.$emit('tree-view-copy', {
+              isChecked: false,
+              nodeIdx: node.treeViewId,
+              parentIdx: target.data.parent,
+              displayNo: target.display_no,
+            })
           }
         } else {
-          this.$emit('tree-view-move', { parentIdx: target.data.parent })
-          console.log('drop2 isMove  ', node, target)
+          // this.$emit('tree-view-move', { parentIdx: target.data.parent })
+          console.log('MD isMove 1 ', node, target)
+          // target이 먼저 생성된거면
+          /* if(){
+
+          }else{
+
+          } */
         }
+      } else if (this.treeViewType === node.treeViewType) {
+        // this.$emit('tree-view-move', { parentIdx: target.data.parent })
+        console.log('ID,FD isMove 2 ', node, target)
       }
     },
     delData() {
@@ -452,7 +561,7 @@ export default {
       }
       getParentName(node.parent)
       this.moreMenuClose()
-      this.$emit('get-savepath', { ...node, path })
+      this.$emit('get-savepath', { ...node, type: this.treeViewType, path })
     },
 
     moreMenuView(node) {
@@ -471,10 +580,11 @@ export default {
       }
       getParentName(node.parent)
       this.moreMenuClose()
-      this.$emit('get-savepath', { ...node, path })
+      this.$emit('get-savepath', { ...node, type: this.treeViewType, path })
     },
 
     moreMenuDell(node) {
+      this.getCheckedIdxList()
       const newItem = {
         ...node,
         type: this.treeViewType,
@@ -485,6 +595,7 @@ export default {
     },
 
     moreMenuCopy(node) {
+      this.getCheckedIdxList()
       // const payload={}
       this.$emit('copy-item', {
         datatable_type: node.type,

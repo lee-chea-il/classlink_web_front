@@ -3,7 +3,7 @@
     <video
       v-show="reference.datatype === '01'"
       class="video"
-      :src="reference.save_path"
+      :src="reference.full_path"
       autoplay
       muted
       controls
@@ -11,12 +11,12 @@
     <iframe
       v-show="reference.datatype === '06'"
       class="iframe"
-      :src="reference.save_path"
+      :src="reference.full_path"
     ></iframe>
     <embed
       v-show="reference.datatype === '02' || reference.datatype === '05'"
       class="embed"
-      :src="reference.save_path"
+      :src="reference.full_path"
     />
   </div>
 </template>

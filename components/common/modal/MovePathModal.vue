@@ -162,15 +162,13 @@ export default {
       this.folderInfo.type = 'MD'
     },
     saveFilePath() {
-      const {
-        datatable_type,
-        tree: { treeinfo_idx },
-      } = this.dataInfo
+      console.log(this.dataInfo)
+      const { datatable_type, tree, treeinfo_idx } = this.dataInfo
       const item = this.folderInfo.id
       const payload = {
         datatable_type,
         parent_treeinfo_idx: item,
-        treeinfo_idx,
+        treeinfo_idx: tree ? tree.treeinfo_idx : treeinfo_idx,
       }
       this.$emit('move-data', payload, this.folderInfo.path)
       this.$emit('close')

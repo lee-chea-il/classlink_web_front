@@ -123,9 +123,27 @@ const copyTreeViewList = async (payload) => {
   )
 }
 
-// 트리뷰 목록 조회
-const getSearchTreeList = async ({ word, dataroom, subject, type }) => {
-  return await http.get(`/search${word}${dataroom}${subject}${type}`)
+// 트리뷰에 파일 복사 뎁스
+const copyTreeViewListDepth = async (payload) => {
+  console.log('-----copyTreeViewList ', payload)
+  return await http.post(
+    '/api/v1/prepare-class/dataroom/tree-view-list/copy-folder-depth',
+    payload
+  )
+}
+
+// 트리뷰 검색 목록 조회
+const getSearchTreeList = async ({
+  current,
+  perPage,
+  word,
+  dataroom,
+  subject,
+  type,
+}) => {
+  return await http.get(
+    `/api/v1/prepare-class/dataroom/search?current_page=${current}&per_page_num=${perPage}${word}${dataroom}${subject}${type}`
+  )
 }
 
 const apiData = {
@@ -143,6 +161,7 @@ const apiData = {
   postMoveData,
   poatCopyData,
   copyTreeViewList,
+  copyTreeViewListDepth,
 
   addFolderTreeViewList,
 
