@@ -22,10 +22,20 @@
           </div>
           <ValidationObserver v-slot="{ invalid }">
             <div class="modal-body">
-              <div class="thumbnail_area">
-                <!-- :style="{
-                  'background-image': `url(${eduInfo.cw_image})`,
-                }" -->
+              <div
+                class="thumbnail_area"
+                :style="
+                  uploadInsImageFile !== ''
+                    ? {
+                        'background-image': `url(${uploadInsImageFile})`,
+                      }
+                    : institutionInfo.ins_academy_img !== null
+                    ? {
+                        'background-image': `url(${insImageUrl})`,
+                      }
+                    : ''
+                "
+              >
                 <button
                   type="button"
                   class="btn icons_camera_gray"
@@ -40,9 +50,19 @@
                   ></button>
                   <div
                     class="outer2"
-                    :style="{
-                      'background-image': `url(${sample_photo})`,
-                    }"
+                    :style="
+                      uploadLogoFile !== ''
+                        ? {
+                            'background-image': `url(${uploadLogoFile})`,
+                          }
+                        : institutionInfo.ins_logo_img !== null
+                        ? {
+                            'background-image': `url(${logoImageUrl})`,
+                          }
+                        : {
+                            'background-image': `url(${sample_photo})`,
+                          }
+                    "
                   >
                     <i
                       v-if="
@@ -153,6 +173,22 @@ export default {
     institutionInfo: {
       type: Object,
       default: () => {},
+    },
+    logoImageUrl: {
+      type: String,
+      default: '',
+    },
+    insImageUrl: {
+      type: String,
+      default: '',
+    },
+    uploadLogoFile: {
+      type: String,
+      default: '',
+    },
+    uploadInsImageFile: {
+      type: String,
+      default: '',
     },
   },
   data() {

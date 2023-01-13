@@ -7,6 +7,7 @@
       :myInfo="myInfo"
       :identityNames="setIdentity(userInfo.identity_type)"
       :positionNames="setPosition(userInfo.position)"
+      :memImageUrl="memImageUrl"
       @click-updatePw="openUpdatePwModal"
       @click-alarm="updateAlarm"
     />
@@ -49,6 +50,10 @@
       :myInfo="myInfo"
       :nickNameCheck="nickNameCheck"
       :isEmailCheck="isEmailCheck"
+      :memImageUrl="memImageUrl"
+      :memCWImageUrl="memCWImageUrl"
+      :uploadImageFile="uploadImageFile"
+      :uploadCWImageFile="uploadCWImageFile"
       @check-email="getEmailCheck"
       @change-input="onChangeMyInfoInput"
       @change-check="onChangeCheckBox"
@@ -61,9 +66,9 @@
     <!-- 팝업 M2- 내정보 수정 - 프로필 이미지 등록 -->
     <UploadImg
       :open="isOpenUploadImgModal"
-      :imageInfo="newUserInfo.mem_img"
+      :imageInfo="memImageUrl"
       :uploadImageFile="uploadImageFile"
-      @confirm="onCloseUploadImgModal"
+      @confirm="onClickImgConfirm"
       @selected-file="onFileSelected"
       @uploadBtn-click="onClickInputButton"
       @click-upload="onClickInputButton"
@@ -73,13 +78,13 @@
     <!-- 팝업 M2- 내정보 수정 - CW 이미지 등록1 -->
     <UploadCWImg
       :open="isOpenUploadCWImgModal"
-      :imageInfo="newUserInfo.mem_cw_img"
-      :uploadImageFile="uploadImageFile"
+      :imageInfo="memCWImageUrl"
+      :uploadImageFile="uploadCWImageFile"
       @selected-file="onFileSelected"
       @uploadBtn-click="onClickInputButton"
       @click-upload="onClickInputButton"
       @close="onCloseUploadCWImgModal"
-      @confirm="onCloseUploadCWImgModal"
+      @confirm="onClickCWImgConfirm"
     />
 
     <!-- 팝업 M2-비밀번호변경 -->
@@ -113,6 +118,10 @@
       :open="isUpdateInstitution"
       :eduInfo="eduInfo"
       :institutionInfo="newInstitutionInfo"
+      :logoImageUrl="logoImageUrl"
+      :uploadLogoFile="uploadLogoFile"
+      :insImageUrl="insImageUrl"
+      :uploadInsImageFile="uploadInsImageFile"
       @change-input="onChangeEduInfoInput"
       @click-address="openModalAddress"
       @click-update="updateInstitution"
@@ -123,11 +132,11 @@
 
     <!-- 교육기관 수정 - 로고 이미지 등록 -->
     <UploadImg
-      :open="isOpenUploadLogoImgModal"
-      :imageInfo="newInstitutionInfo.ins_logo_img"
-      :uploadImageFile="uploadImageFile"
       :isInsImage="true"
-      @confirm="onCloseUploadLogoImgModal"
+      :open="isOpenUploadLogoImgModal"
+      :imageInfo="logoImageUrl"
+      :uploadImageFile="uploadLogoFile"
+      @confirm="onClickLogoImgConfirm"
       @selected-file="onFileSelected"
       @uploadBtn-click="onClickInputButton"
       @click-upload="onClickInputButton"
@@ -136,15 +145,15 @@
 
     <!-- 교육기관 수정 - 교육기관 이미지 등록 -->
     <UploadCWImg
-      :open="isOpenUploadInsImgModal"
-      :imageInfo="newInstitutionInfo.ins_academy_img"
-      :uploadImageFile="uploadImageFile"
       :isInsImage="true"
+      :open="isOpenUploadInsImgModal"
+      :imageInfo="insImageUrl"
+      :uploadImageFile="uploadInsImageFile"
       @selected-file="onFileSelected"
       @uploadBtn-click="onClickInputButton"
       @click-upload="onClickInputButton"
       @close="onCloseUploadInsImgModal"
-      @confirm="onCloseUploadInsImgModal"
+      @confirm="onClickInsImgConfirm"
     />
 
     <!-- 프랜차이즈 개설 -->
@@ -226,8 +235,8 @@ export default {
         mem_nickname: '',
         mem_phone: '',
         mem_status: '',
-        mem_cw_img: '',
-        mem_img: '',
+        mem_cw_img: null,
+        mem_img: null,
       },
       newUserInfo: {
         alarm_yn: '',
@@ -237,8 +246,8 @@ export default {
         mem_nickname: '',
         mem_phone: '',
         mem_status: '',
-        mem_cw_img: '',
-        mem_img: '',
+        mem_cw_img: null,
+        mem_img: null,
       },
       isUserInfoFlag: false,
       isChangeUserInfo: false,
@@ -342,7 +351,7 @@ export default {
       },
       isError: false,
       nickNameCheck: false,
-      uploadImageFile: '',
+
       imageFileInfo: {},
       // 프랜차이즈 개설
       isOpenFranchise: false,
@@ -368,6 +377,15 @@ export default {
         fra_img: '',
         mem_idx: this.$store.state.common.user.mem_idx,
       },
+      // 이미지
+      uploadImageFile: '',
+      uploadCWImageFile: '',
+      memImageUrl: '',
+      memCWImageUrl: '',
+      uploadLogoFile: '',
+      uploadInsImageFile: '',
+      logoImageUrl: '',
+      insImageUrl: '',
     }
   },
   created() {
@@ -396,9 +414,27 @@ export default {
           if (data.myPageMainInstitutionList !== null) {
             this.isInstitutionFlag = true
             this.institutionInfo = data.myPageMainInstitutionList
+            if (data.myPageMainInstitutionList.ins_logo_img !== null) {
+              this.logoImageUrl =
+                process.env.VUE_APP_FILE_URL +
+                data.myPageMainInstitutionList.ins_logo_img
+            }
+            if (data.myPageMainInstitutionList.ins_academy_img !== null) {
+              this.insImageUrl =
+                process.env.VUE_APP_FILE_URL +
+                data.myPageMainInstitutionList.ins_academy_img
+            }
           }
           if (data.myPageMainFranchiseVOList !== null) {
             this.franchiseInfo = data.myPageMainFranchiseVOList
+          }
+          if (data.myPageMainList.mem_img !== null) {
+            this.memImageUrl =
+              process.env.VUE_APP_FILE_URL + data.myPageMainList.mem_img
+          }
+          if (data.myPageMainList.mem_cw_img !== null) {
+            this.memCWImageUrl =
+              process.env.VUE_APP_FILE_URL + data.myPageMainList.mem_cw_img
           }
         })
         .catch((err) => {
@@ -506,6 +542,10 @@ export default {
     },
     onCloseUpdateUserInfoModal() {
       this.isUserInfoFlag = false
+      setTimeout(() => {
+        this.uploadImageFile = ''
+        this.uploadCWImageFile = ''
+      }, 500)
     },
     // 내 정보 수정
     onChangeMyInfoInput({ target: { value, id } }) {
@@ -588,7 +628,7 @@ export default {
     },
     onCloseUploadCWImgModal() {
       this.isOpenUploadCWImgModal = false
-      this.uploadImageFile = ''
+      this.uploadCWImageFile = ''
     },
     // 파일서버 업로드
     async postFile(file) {
@@ -598,10 +638,30 @@ export default {
       await api
         .postFile(formData)
         .then(({ data: { data } }) => {
-          this.imageFileInfo = data
-          console.log(this.imageFileInfo)
+          if (this.isOpenUploadCWImgModal) {
+            this.uploadCWImageFile = process.env.VUE_APP_FILE_URL + data.savedNm
+            this.newUserInfo.mem_cw_img = data.savedNm
+          } else if (this.isOpenUploadCWImgModal) {
+            this.uploadImageFile = process.env.VUE_APP_FILE_URL + data.savedNm
+            this.newUserInfo.mem_img = data.savedNm
+          } else if (this.isOpenUploadLogoImgModal) {
+            this.uploadLogoFile = process.env.VUE_APP_FILE_URL + data.savedNm
+            this.newInstitutionInfo.ins_logo_img = data.savedNm
+          } else {
+            this.uploadInsImageFile = process.env.VUE_APP_FILE_URL + data.savedNm
+            this.newInstitutionInfo.ins_academy_img = data.savedNm
+          }
         })
         .catch(() => {})
+    },
+    // 프로필 이미지 저장
+    onClickImgConfirm() {
+      this.isOpenUploadImgModal = false
+    },
+    // cw 이미지 저장
+    onClickCWImgConfirm() {
+      console.log(this.uploadCWImageFile)
+      this.isOpenUploadCWImgModal = false
     },
 
     // 이미지 업로드
@@ -613,12 +673,6 @@ export default {
       const input = target
       if (input.files && input.files[0]) {
         if (input.files[0].size < 3145728) {
-          const reader = new FileReader()
-          reader.onload = (e) => {
-            this.uploadImageFile = e.target.result
-          }
-          reader.readAsDataURL(input.files[0])
-
           this.postFile(input.files[0])
         } else {
           this.openModalDesc(
@@ -664,6 +718,10 @@ export default {
     },
     onCloseUpdateInstitution() {
       this.isUpdateInstitution = false
+      setTimeout(() => {
+        this.uploadLogoFile = ''
+        this.uploadInsImageFile = ''
+      }, 500)
     },
     // 교육기관 정보 수정
     onChangeEduInfoInput({ target: { value, id } }) {
@@ -682,13 +740,6 @@ export default {
       delete this.newInstitutionInfo.ins_code
       const payload = this.newInstitutionInfo
       console.log(payload)
-      // const payload = {
-      //   ins_address1: '인천 계양구 계양산로134번길 37',
-      //   ins_address2: '1',
-      //   ins_desc: '1',
-      //   ins_name: '유잔학원',
-      //   ins_phone: '010-1111-1111',
-      // }
       console.log(payload)
       await apiMypage
         .postOpenInstitution(payload)
@@ -728,14 +779,22 @@ export default {
     },
     onCloseUploadLogoImgModal() {
       this.isOpenUploadLogoImgModal = false
-      this.uploadImageFile = ''
+      this.uploadLogoFile = ''
     },
     openUploadInsImgModal() {
       this.isOpenUploadInsImgModal = true
     },
     onCloseUploadInsImgModal() {
       this.isOpenUploadInsImgModal = false
-      this.uploadImageFile = ''
+      this.uploadInsImageFile = ''
+    },
+    // 로고 이미지 저장
+    onClickLogoImgConfirm() {
+      this.isOpenUploadLogoImgModal = false
+    },
+    // 교육기관 이미지 저장
+    onClickInsImgConfirm() {
+      this.isOpenUploadInsImgModal = false
     },
 
     // 프랜차이즈

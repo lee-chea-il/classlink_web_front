@@ -22,10 +22,18 @@
           </div>
           <ValidationObserver v-slot="{ invalid }">
             <div class="modal-body">
-              <div class="profile_images_area">
-                <!-- :style="{
-                  'background-image': `url(${myInfo.profile_cw_image})`,
-                }" -->
+              <div
+                class="profile_images_area"
+                :style="
+                  uploadCWImageFile !== ''
+                    ? { 'background-image': `url(${uploadCWImageFile})` }
+                    : userInfo.mem_cw_img !== null
+                    ? {
+                        'background-image': `url(${memCWImageUrl})`,
+                      }
+                    : ''
+                "
+              >
                 <!-- <img :src="myInfo.profile_cw_image" class="profile_cw_img" /> -->
                 <button
                   type="button"
@@ -34,9 +42,15 @@
                 ></button>
                 <div
                   class="profile_photo"
-                  :style="{
-                    'background-image': `url(${sample_photo})`,
-                  }"
+                  :style="
+                    uploadImageFile !== ''
+                      ? { 'background-image': `url(${uploadImageFile})` }
+                      : userInfo.mem_img === null
+                      ? {
+                          'background-image': `url(${sample_photo})`,
+                        }
+                      : { 'background-image': `url(${memImageUrl})` }
+                  "
                 >
                   <button
                     type="button"
@@ -151,6 +165,22 @@ export default {
       type: Boolean,
       default: true,
     },
+    memImageUrl: {
+      type: String,
+      default: '',
+    },
+    memCWImageUrl: {
+      type: String,
+      default: '',
+    },
+    uploadImageFile: {
+      type: String,
+      default: '',
+    },
+    uploadCWImageFile: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -180,6 +210,7 @@ export default {
 .profile_photo {
   background-size: cover;
   background-position: center;
+  border: 0.4px solid rgb(193 193 193) !important;
 }
 
 .info_width {
